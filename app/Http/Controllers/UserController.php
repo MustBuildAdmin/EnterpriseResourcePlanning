@@ -10,6 +10,7 @@ use App\Models\JoiningLetter;
 use App\Models\NOC;
 use App\Models\User;
 use App\Models\UserCompany;
+use App\Models\Company_type;
 use Auth;
 use File;
 use App\Models\Utility;
@@ -58,11 +59,12 @@ class UserController extends Controller
         $user  = \Auth::user();
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
+        $company_type=Company_type::get()->pluck('name', 'id');
         if(\Auth::user()->can('create user'))
         {
             $country=Utility::getcountry();
 
-            return view('user.create', compact('roles','gender', 'customFields','country'));
+            return view('user.create', compact('roles','gender', 'customFields','country','company_type'));
         }
         else
         {
@@ -112,6 +114,8 @@ class UserController extends Controller
                 $user['phone']=$request->phone;
                 $user['zip']=$request->zip;
                 $user['address']=$request->address;
+                $user['company_type']       = $request->company_type;
+                $user['company_name']       = $request->company_name;
 
                 $user->save();
                 $role_r = Role::findByName('company');
@@ -204,7 +208,7 @@ class UserController extends Controller
         $user  = \Auth::user();
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
-
+        $company_type=Company_type::get()->pluck('name', 'id');
         if(\Auth::user()->can('edit user'))
         {
             $user              = User::findOrFail($id);
@@ -213,7 +217,7 @@ class UserController extends Controller
             $user->customField = CustomField::getData($user, 'user');
             $customFields      = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
 
-            return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist'));
+            return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
         }
         else
         {
@@ -250,7 +254,14 @@ class UserController extends Controller
 
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);
+                DB::table('users')->where('id',$id)->update(['company_type'=>$request->company_type]);
 
+                $insert2=array(
+                    'name'=>'company_type',
+                    'value'=>$request->company_type,
+                );
+                $data =DB::table('settings')->where('created_by',$id)->update($insert2);
+                
                 $roles[] = $role->id;
                 $user->roles()->sync($roles);
 
@@ -357,95 +368,101 @@ class UserController extends Controller
 
     public function editprofile(Request $request)
     {
-        $userDetail = \Auth::user();
-        echo $userDetail['id'];
-        $user       = User::findOrFail($userDetail['id']);
-        $validator = \Validator::make(
-            $request->all(), [
-                                'name' => 'required|max:120',
-                                'email' => 'required|email|unique:users,email,' . $userDetail['id'],
-                           ]
-        );
-        if($validator->fails())
-        {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if($request->hasFile('profile'))
-        {
-            // image restriction
+        try {
+            $userDetail = \Auth::user();
+            echo $userDetail->id;
+            $user  = User::findOrFail($userDetail->id);
+    
             $validator = \Validator::make(
                 $request->all(), [
-                                    'profile' => 'mimes:jpeg,jpg,png,gif,webp|required|max:20480',
-                               ]
+                    'name' => 'required|max:120',
+                    'email' => 'required|email|unique:users,email,' . $userDetail->id,
+                ]
             );
+    
             if($validator->fails())
             {
                 $messages = $validator->getMessageBag();
                 return redirect()->back()->with('error', $messages->first());
             }
-
-            $filenameWithExt = $request->file('profile')->getClientOriginalName();
-            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension       = $request->file('profile')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-
-            $settings = Utility::getStorageSetting();
-            if($settings['storage_setting']=='local')
+    
+            if($request->hasFile('profile'))
             {
-                $dir        = 'uploads/avatar/';
+                // image restriction
+                $validator = \Validator::make(
+                    $request->all(), [
+                        'profile' => 'mimes:jpeg,jpg,png,gif,webp|required|max:20480',
+                    ]
+                );
+    
+                if($validator->fails())
+                {
+                    $messages = $validator->getMessageBag();
+                    return redirect()->back()->with('error', $messages->first());
+                }
+                
+                $filenameWithExt = $request->file('profile')->getClientOriginalName();
+                $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension       = $request->file('profile')->getClientOriginalExtension();
+                $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        
+                // Storage::disk('s3')->put($filePath, file_get_contents($file));
+                // $s3client = S3Client::factory(
+                //     [
+                //         'signature' => 'v4',
+                //         'version' => 'latest',
+                //         'ACL' => 'private',
+                //         'region' => env('AWS_DEFAULT_REGION'),
+                //         'credentials' => $credentials,
+                //         'Statement' => [
+                //             'Action ' => "*",
+                //         ],
+                //     ]);
+                //aws s3 part
+                $settings = Utility::getStorageSetting();
+                if($settings['storage_setting']=='local')
+                {
+                    $dir = 'uploads/avatar/';
+                }else{
+                    $dir = 'uploads/avatar';
+                }
+    
+                $image_path = $dir . $userDetail->avatar;
+    
+                if(File::exists($image_path))
+                {
+                    File::delete($image_path);
+                }
+    
+    
+                $url = '';
+                $path = Utility::upload_file($request,'profile',$fileNameToStore,$dir,[]);
+                if($path['flag'] == 1)
+                {
+                    $url = $path['url'];
+                }else{
+                    return redirect()->route('profile', \Auth::user()->id)->with('error', __($path->msg));
+                }
+                //aws s3 part
             }
-            else{
-                $dir        = 'uploads/avatar';
-            }
-
-            $image_path = $dir . $userDetail['avatar'];
-
-            if(File::exists($image_path))
+    
+            if(!empty($request->profile))
             {
-                File::delete($image_path);
+                $user->avatar = $fileNameToStore;
             }
-
-
-            $url = '';
-            $path = Utility::upload_file($request,'profile',$fileNameToStore,$dir,[]);
-            if($path['flag'] == 1)
-            {
-                $url = $path['url'];
-            }else{
-                return redirect()->route('profile', \Auth::user()->id)->with('error', __($path['msg']));
-            }
-
-//            $dir        = storage_path('uploads/avatar/');
-//            $image_path = $dir . $userDetail['avatar'];
-//
-//            if(File::exists($image_path))
-//            {
-//                File::delete($image_path);
-//            }
-//
-//            if(!file_exists($dir))
-//            {
-//                mkdir($dir, 0777, true);
-//            }
-//            $path = $request->file('profile')->storeAs('uploads/avatar/', $fileNameToStore);
-
+            $user['name']  = $request->name;
+            $user['email'] = $request->email;
+            $user->save();
+            CustomField::saveData($user, $request->customField);
+    
+            return redirect()->route('dashboard')->with('success', 'Profile successfully updated.');
+        } 
+        catch (Exception $e) {
+            return $e->getMessage();
         }
-
-        if(!empty($request->profile))
-        {
-            $user['avatar'] = $fileNameToStore;
-        }
-        $user['name']  = $request['name'];
-        $user['email'] = $request['email'];
-        $user->save();
-        CustomField::saveData($user, $request->customField);
-
-        return redirect()->route('dashboard')->with(
-            'success', 'Profile successfully updated.'
-        );
+    
     }
+    
 
     public function updatePassword(Request $request)
     {

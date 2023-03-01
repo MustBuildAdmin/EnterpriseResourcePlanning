@@ -1,3 +1,8 @@
+<style>
+    .form-check {
+        margin: 8px 12px !important;
+    }
+</style>
 {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data']) }}
 <div class="modal-body">
     <div class="row">
@@ -84,6 +89,73 @@
             </div>
         </div>
     </div>
+    {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+    <br>
+    <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1" name='non_working_days[]' id='monday'>
+        <label class="form-check-label" for="monday">
+        Monday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="2" name='non_working_days[]' id='tuesday'>
+        <label class="form-check-label" for="tuesday">
+        Tuesday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="3" name='non_working_days[]' id='wednesday'>
+        <label class="form-check-label" for="wednesday">
+            Wednesday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="4" name='non_working_days[]' id='thursday'>
+        <label class="form-check-label" for="thursday">
+            Thursday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="5" name='non_working_days[]' id='friday'>
+        <label class="form-check-label" for="friday">
+            Friday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="6" name='non_working_days[]' id='saturday'>
+        <label class="form-check-label" for="saturday">
+            Saturday
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday'>
+        <label class="form-check-label" for="sunday">
+            Sunday
+        </label>
+    </div>
+</div>
+<br>
+{{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+<div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='monday'>
+        <label class="form-check-label" for="monday">
+            {{__('holidays')}}
+        </label>
+    </div>
+</div>
+<br>
+@if($setting['company_type']==2)
+    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+    <select name="file_status" id="file_status" class="form-control main-element" >
+        <option value='MP'>Microsoft Project</option>
+        <option value='P'>Primavera</option>
+    </select>
+    <br>
+    <input type='file' name='file' id='file' accept=".mpp">
+    <br>
+@endif
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">

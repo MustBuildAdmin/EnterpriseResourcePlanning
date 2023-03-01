@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                {{Form::label('name',__('Name'),['class'=>'form-label']) }}
                 {{Form::text('name',null,array('class'=>'form-control','maxlength' => 35,'placeholder'=>__('Enter User Name'),'required'=>'required'))}}
                 @error('name')
                 <small class="invalid-name" role="alert">
@@ -14,7 +14,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                {{Form::label('email',__('Email'),['class'=>'form-label'])}}
                 {{Form::text('email',null,array('class'=>'form-control','placeholder'=>__('Enter User Email'),'required'=>'required'))}}
                 @error('email')
                 <small class="invalid-email" role="alert">
@@ -26,7 +26,7 @@
         </div>
     <div class="row">
    <div class="form-group col-md-6">
-                {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
                 {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
                 @error('role')
                 <small class="invalid-role" role="alert">
@@ -97,7 +97,7 @@
     </div>
         @if(\Auth::user()->type != 'super admin')
             <div class="form-group col-md-6">
-                {{ Form::label('role', __('User Role'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                {{ Form::label('role', __('User Role'),['class'=>'form-label']) }}
                 {!! Form::select('role', $roles, null,array('class' => 'form-control select2','required'=>'required')) !!}
                 @error('role')
                 <small class="invalid-role" role="alert">
@@ -107,10 +107,30 @@
             </div>
         @elseif(\Auth::user()->type == 'super admin')
             {!! Form::hidden('role', 'company', null,array('class' => 'form-control select2','required'=>'required')) !!}
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{Form::label('company_name',__('Company Name'),['class'=>'form-label']) }}
+                    {{Form::text('company_name',null,array('class'=>'form-control','maxlength' => 35,'placeholder'=>__('Enter Company Name'),'required'=>'required'))}}
+                    @error('company_name')
+                    <small class="invalid-name" role="alert">
+                        <strong class="text-danger">{{ $message }}</strong>
+                    </small>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                {{ Form::label('company_type', __('Company'),['class'=>'form-label']) }}
+                {!! Form::select('company_type', $company_type, null,array('class' => 'form-control select2','required'=>'required')) !!}
+                @error('company_type')
+                <small class="invalid-role" role="alert">
+                    <strong class="text-danger">{{ $message }}</strong>
+                </small>
+                @enderror
+            </div>
         @endif
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('password',__('Password'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                {{Form::label('password',__('Password'),['class'=>'form-label'])}}
                 {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
                 @error('password')
                 <small class="invalid-password" role="alert">

@@ -1487,6 +1487,7 @@ Route::get(
         'XSS',
     ]
 );
+
 Route::delete(
     'projects-con/{id}/users/{uid}', [
                                  'as' => 'projects.user.con.destroy',
@@ -2859,6 +2860,17 @@ Route::get(
     ]
 );
 Route::get(
+    'get_member', [
+    'as' => 'projects.get_member',
+    'uses' => 'ProjectController@get_member',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
     'projects/{id}/gantt/{duration?}', [
     'as' => 'projects.gantt',
     'uses' => 'ProjectController@gantt',
@@ -2880,6 +2892,35 @@ Route::post(
         'XSS',
     ]
 );
+
+// gantt
+Route::resource('task', 'TaskController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::resource('link', 'LinkController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::get(
+    'projects/{id}/gantt_data', [
+    'as' => 'projects.gantt_data',
+    'uses' => 'ProjectController@gantt_data',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::resource('projects', 'ProjectController')->middleware(
     [
         'auth',

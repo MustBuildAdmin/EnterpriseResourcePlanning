@@ -1,3 +1,8 @@
+<style>
+    .form-check {
+        margin: 8px 12px !important;
+    }
+    </style>
 {{ Form::model($project, ['route' => ['projects.update', $project->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
 <div class="modal-body">
     <div class="row">
@@ -75,6 +80,61 @@
             </div>
         </div>
     </div>
+    {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                <br>
+                <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1" name='non_working_days[]' id='monday' @if(str_contains($project->non_working_days, '1')) checked @endif>
+                    <label class="form-check-label" for="monday">
+                    Monday
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="2" name='non_working_days[]' id='tuesday' @if(str_contains($project->non_working_days, '2')) checked @endif>
+                    <label class="form-check-label" for="tuesday">
+                    Tuesday
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="3" name='non_working_days[]' id='wednesday' @if(str_contains($project->non_working_days, '3')) checked @endif>
+                    <label class="form-check-label" for="wednesday">
+                        Wednesday
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="4" name='non_working_days[]' id='thursday' @if(str_contains($project->non_working_days, '4')) checked @endif>
+                    <label class="form-check-label" for="thursday">
+                        Thursday
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="5" name='non_working_days[]' id='friday' @if(str_contains($project->non_working_days, '5')) checked @endif>
+                    <label class="form-check-label" for="friday">
+                        Friday
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="6" name='non_working_days[]' id='saturday' @if(str_contains($project->non_working_days, '6')) checked @endif>
+                    <label class="form-check-label" for="saturday">
+                        Saturday
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday' @if(str_contains($project->non_working_days, '7')) checked @endif>
+                    <label class="form-check-label" for="sunday">
+                        Sunday
+                    </label>
+                </div>
+                </div>
+                {{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='monday'@if($project->holidays==1) checked @endif>
+                        <label class="form-check-label" for="monday">
+                            {{__('holidays')}}
+                        </label>
+                    </div>
+            </div>
     <div class="row">
         <div class="col-sm-12 col-md-12">
             {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}<span class="text-danger">*</span>

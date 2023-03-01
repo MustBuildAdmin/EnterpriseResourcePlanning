@@ -12,15 +12,18 @@ use App\Models\Bug;
 use App\Models\BugStatus;
 use App\Models\BugFile;
 use App\Models\BugComment;
+use App\Models\Con_task;
+use App\Models\Link;
 use App\Models\Milestone;
 use Carbon\Carbon;
 use App\Models\ActivityLog;
 use App\Models\ProjectTask;
 use App\Models\ProjectUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use Session;
 class ProjectController extends Controller
 {
     /**
@@ -50,11 +53,12 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('create project'))
         {
+          $setting  = Utility::settings(\Auth::user()->creatorId());
           $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
           $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
           $clients->prepend('Select Client', '');
           $users->prepend('Select User', '');
-            return view('projects.create', compact('clients','users'));
+            return view('projects.create', compact('clients','users','setting'));
         }
         else
         {
@@ -77,6 +81,7 @@ class ProjectController extends Controller
                 $request->all(), [
                                 'project_name' => 'required',
                                 'project_image' => 'required',
+                                'non_working_days'=>'required',
                                 'status'=>'required'
                             ]
             );
@@ -84,6 +89,7 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
+            // dd($request->all());
             $project = new Project();
             $project->project_name = $request->project_name;
             $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
@@ -94,7 +100,14 @@ class ProjectController extends Controller
                 $request->file('project_image')->storeAs('projects', $imageName);
                 $project->project_image      = 'projects/'.$imageName;
             }
-            $project->client_id = $request->client;
+            if(isset($request->holidays)){
+                $project->holidays= $request->holidays;
+            }
+            if(isset($request->non_working_days)){
+                $project->non_working_days=implode(',',$request->non_working_days);
+            }
+            
+              $project->client_id = $request->client;
             $project->budget = !empty($request->budget) ? $request->budget : 0;
             $project->description = $request->description;
             $project->status = $request->status;
@@ -102,6 +115,94 @@ class ProjectController extends Controller
             $project->tags = $request->tag;
             $project->created_by = \Auth::user()->creatorId();
             $project->save();
+            if(isset($request->file)){
+               if($request->file_status=='MP'){
+                $path='projectfiles/';
+                $name = $_FILES["file"]["name"];
+                $pathname='projectfiles/'.$name;
+                $link=env('APP_URL').'/storage/'.$path.$name;
+                if (file_exists(storage_path($pathname))){
+                    unlink(storage_path($pathname));
+                }
+             
+                $request->file->move(storage_path($path), $name);
+              
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                  CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                  CURLOPT_RETURNTRANSFER => true,
+                  CURLOPT_ENCODING => '',
+                  CURLOPT_MAXREDIRS => 10,
+                  CURLOPT_TIMEOUT => 0,
+                  CURLOPT_FOLLOWLOCATION => true,
+                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                  CURLOPT_CUSTOMREQUEST => 'POST',
+                  CURLOPT_POSTFIELDS => array('file'=> new \CURLFILE($link),'type'=>'msproject-parse'),
+                ));
+                
+                $responseBody = curl_exec($curl);
+                curl_close($curl);
+                if (file_exists(storage_path($pathname))){
+                    unlink(storage_path($pathname));
+                }
+                $responseBody = json_decode($responseBody, true);
+                if(isset($responseBody['data']['data'])){
+                    foreach($responseBody['data']['data'] as $key=>$value){
+                        $task= new Con_task();
+                        $task->project_id=$project->id;
+                        if(isset($value['text'])){
+                            $task->text=$value['text'];
+                        }
+                        if(isset($value['id'])){
+                            $task->id=$value['id'];
+                        }
+                        if(isset($value['start_date'])){
+                            $task->start_date=$value['start_date'];
+                        }
+                        if(isset($value['duration'])){
+                            $task->duration=$value['duration'];
+                        }
+                        if(isset($value['progress'])){
+                            $task->progress=$value['progress'];
+                        }
+                        if(isset($value['parent'])){
+                            $task->parent=$value['parent'];
+                        }
+                        if(isset($value['$raw'])){
+                            $raw=$value['$raw'];
+                            if(isset($raw->Finish)){
+                                $task->end_date=$raw->Finish;
+                            }
+                            $task->custom=json_encode($value['$raw']);
+                        }
+                        
+                        $task->save();
+                    }
+
+                    foreach($responseBody['data']['links'] as $key=>$value){
+                        $link= new Link();
+                        $link->project_id=$project->id;
+                        Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);                       $link->id=$value['id'];
+                        if(isset($value['type'])){
+                            $link->type=$value['type'];
+                        }
+                        if(isset($value['source'])){
+                            
+                            $link->source=$value['source'];
+                        }
+                        if(isset($value['target'])){
+                            $link->target=$value['target'];
+                        }
+                        $link->save();
+                    }
+                }
+
+                // $project->project_json=json_encode($responseBody);
+               }
+            }
+           
+          
 
             if(\Auth::user()->type=='company'){
 
@@ -175,6 +276,13 @@ class ProjectController extends Controller
         }
     }
 
+    
+
+    public function loadproject(Project $project)
+    {
+
+
+    }
     /**
      * Display the specified resource.
      *
@@ -193,6 +301,7 @@ class ProjectController extends Controller
             }else{
               $user_projects = $usr->projects->pluck('id')->toArray();
             }
+            Session::put('project_id',$project->id);
             if(in_array($project->id, $user_projects))
             {
                 $project_data = [];
@@ -392,6 +501,13 @@ class ProjectController extends Controller
                 $request->file('project_image')->storeAs('projects', $imageName);
                 $project->project_image      = 'projects/'.$imageName;
             }
+            if(isset($request->holidays)){
+                $project->holidays= $request->holidays;
+            }
+            if(isset($request->non_working_days)){
+                $project->non_working_days=implode(',',$request->non_working_days);
+            }
+           
             $project->budget = $request->budget;
             $project->client_id = $request->client;
             $project->description = $request->description;
@@ -470,7 +586,7 @@ class ProjectController extends Controller
         return json_encode(
             [
                 'code' => 200,
-                'status' => 'Success',
+                'status' => 'success',
                 'success' => __('User invited successfully.'),
             ]
         );
@@ -503,6 +619,39 @@ class ProjectController extends Controller
             $project    = Project::find($request->project_id);
             $returnHTML = view('projects.users', compact('project'))->render();
 
+            return response()->json(
+                [
+                    'success' => true,
+                    'html' => $returnHTML,
+                ]
+            );
+        }
+    }
+    
+    public function get_member(Request $request){
+        if($request->ajax())
+        {
+            $user_array = array();
+            $project    = Project::find($request->project_id);
+
+            if($project != null){
+                foreach($project->users as $user){
+                    $user_array[] = [
+                        'key' => $user->id,
+                        'label' => $user->name
+                    ];
+                }
+            }
+
+            $returnHTML = view('projects.get_member', compact('project'))->render();
+            
+            $total_data = array(
+                $user_array,
+                $returnHTML
+            );
+
+            return $total_data;
+            
             return response()->json(
                 [
                     'success' => true,
@@ -701,27 +850,33 @@ class ProjectController extends Controller
         {
             $project = Project::find($projectID);
             $tasks   = [];
-
+    
             if($project)
             {
-                $tasksobj = $project->tasks;
+                $setting  = Utility::settings(\Auth::user()->creatorId());
+                if($setting['company_type']==2){
 
-                foreach($tasksobj as $task)
-                {
-                    $tmp                 = [];
-                    $tmp['id']           = 'task_' . $task->id;
-                    $tmp['name']         = $task->name;
-                    $tmp['start']        = $task->start_date;
-                    $tmp['end']          = $task->end_date;
-                    $tmp['custom_class'] = (empty($task->priority_color) ? '#ecf0f1' : $task->priority_color);
-                    $tmp['progress']     = str_replace('%', '', $task->taskProgress()['percentage']);
-                    $tmp['extra']        = [
-                        'priority' => ucfirst(__($task->priority)),
-                        'comments' => count($task->comments),
-                        'duration' => Utility::getDateFormated($task->start_date) . ' - ' . Utility::getDateFormated($task->end_date),
-                    ];
-                    $tasks[]             = $tmp;
+                    return view('projects.congantt', compact('project', 'tasks', 'duration'));
+                }else{
+                    $tasksobj = $project->tasks;
+                    foreach($tasksobj as $task)
+                    {
+                        $tmp                 = [];
+                        $tmp['id']           = 'task_' . $task->id;
+                        $tmp['name']         = $task->name;
+                        $tmp['start']        = $task->start_date;
+                        $tmp['end']          = $task->end_date;
+                        $tmp['custom_class'] = (empty($task->priority_color) ? '#ecf0f1' : $task->priority_color);
+                        $tmp['progress']     = str_replace('%', '', $task->taskProgress()['percentage']);
+                        $tmp['extra']        = [
+                            'priority' => ucfirst(__($task->priority)),
+                            'comments' => count($task->comments),
+                            'duration' => Utility::getDateFormated($task->start_date) . ' - ' . Utility::getDateFormated($task->end_date),
+                        ];
+                        $tasks[]             = $tmp;
+                    }
                 }
+               
             }
 
             return view('projects.gantt', compact('project', 'tasks', 'duration'));
@@ -732,7 +887,33 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
+    
+    public function gantt_data($projectID, Request $request)
+    {
+        $project = Project::find($projectID);
+        if($project){
+            
+            $task=Con_task::where('project_id',$projectID)->orderBy('created_at','ASC')->get();
+            $link=Link::where('project_id',$projectID)->orderBy('created_at','ASC')->get();
+            return response()->json([
+                "data" => $task,
+                "links" => $link,
+            ]);
+            // $project_data=json_decode($project->project_json);
+            // if(isset($project_data->data)){
+            //     return json_encode($project_data->data);
+            // }else{
+            //     $project=array();
+            //     return json_encode($project);
+            // }
+            
+        }else{
 
+            return '';
+        }
+       
+
+    }
     public function ganttPost($projectID, Request $request)
     {
         $project = Project::find($projectID);
