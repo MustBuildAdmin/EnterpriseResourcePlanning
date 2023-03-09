@@ -689,8 +689,8 @@
                                     @endcan
                                     @if($setting_data['company_type']==2)
                                         @can('manage project')
-                                        <li class="dash-item  {{Request::segment(1) == 'diary' ? 'active' : ''}}">
-                                            <a class="dash-link" href="{{route('projects.index')}}">{{__('Dairy')}}</a>
+                                        <li class="dash-item  {{Request::segment(1) == 'dairy' ? 'active' : ''}}">
+                                            <a class="dash-link" href="{{route('dairy.index')}}">{{__('Dairy')}}</a>
                                         </li>
                                         @endcan
                                     @endif
@@ -699,11 +699,11 @@
                                             <a class="dash-link" href="{{ route('taskBoard.view', 'list') }}">{{__('Tasks')}}</a>
                                         </li>
                                     @endcan
-                                    @can('manage timesheet')
+                                    {{-- @can('manage timesheet')
                                         <li class="dash-item {{ (request()->is('timesheet-list*') ? 'active' : '')}}">
                                             <a class="dash-link" href="{{route('timesheet.list')}}">{{__('Timesheet')}}</a>
                                         </li>
-                                    @endcan
+                                    @endcan --}}
                                     @if($setting_data['company_type']!=2)
                                         @can('manage bug report')
                                             <li class="dash-item {{ (request()->is('bugs-report*') ? 'active' : '')}}">
@@ -711,16 +711,27 @@
                                             </li>
                                         @endcan
                                     @endif
-                                    @can('manage project task')
+
+                                    <!-- old calender -->
+                                    {{-- @can('manage project task')
                                         <li class="dash-item {{ (request()->is('calendar*') ? 'active' : '')}}">
                                             <a class="dash-link" href="{{ route('task.calendar',['all']) }}">{{__('Task Calendar')}}</a>
                                         </li>
+                                    @endcan --}}
+                                    <!-- old calender -->
+
+                                    <!-- new calender -->
+                                    @can('manage project task')
+                                        <li class="dash-item {{ (request()->is('calendar*') ? 'active' : '')}}">
+                                            <a class="dash-link" href="{{ route('task.newcalendar',['all']) }}">{{__('Task Calendar')}}</a>
+                                        </li>
                                     @endcan
-                                    @if(\Auth::user()->type!='super admin')
+                                    <!-- new calender -->
+                                    {{-- @if(\Auth::user()->type!='super admin')
                                         <li class="dash-item  {{ (Request::segment(1) == 'time-tracker')?'active open':''}}">
                                             <a class="dash-link" href="{{ route('time.tracker') }}">{{__('Tracker')}}</a>
                                         </li>
-                                    @endif
+                                    @endif --}}
                                     @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'employee')
                                          <li class="dash-item  {{(Request::route()->getName() == 'project_report.index' || Request::route()->getName() == 'project_report.show') ? 'active' : ''}}">
                                              <a class="dash-link" href="{{route('project_report.index') }}">{{__('Project Report')}}</a>

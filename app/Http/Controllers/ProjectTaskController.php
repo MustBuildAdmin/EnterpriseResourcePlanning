@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Con_task;
+use App\Models\Task_progress;
+use App\Models\User;
 use App\Models\Task;
 use App\Models\Utility;
 use App\Models\TaskFile;
@@ -13,10 +16,12 @@ use App\Models\ActivityLog;
 use App\Models\ProjectTask;
 use App\Models\TaskComment;
 use App\Models\TaskChecklist;
+use App\Models\Con_task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use DB;
 
 class ProjectTaskController extends Controller
 {
@@ -134,16 +139,22 @@ class ProjectTaskController extends Controller
     }
 
     // For Taskboard View
-    public function taskBoard($view)
+    public function taskBoard($view, Request $request)
     {
+        $project_id = $request->projects;
+        $user_id    = $request->users;
+        $start_date = $request->start_date;
+        $end_date   = $request->end_date;
 
+        $setting  = Utility::settings(\Auth::user()->creatorId());
+        
         if($view == 'list'){
 
             $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
-            return view('project_task.taskboard', compact('view','tasks'));
+            return view('project_task.taskboard', compact('view','tasks','project_id','user_id','start_date','end_date','setting'));
           }else{
               $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
-            return view('project_task.grid', compact('tasks','view'));
+            return view('project_task.grid', compact('tasks','view','project_id','user_id','start_date','end_date','setting'));
           }
           return redirect()->back()->with('error', __('Permission Denied.'));
 
@@ -176,79 +187,183 @@ class ProjectTaskController extends Controller
 
     // For Load Task using ajax
     public function taskboardView(Request $request)
-    {
+    { // $project_id = $request->project_id;
+        // $user_id    = $request->user_id;
+        // $start_date = $request->start_date;
+        // $end_date   = $request->end_date;
 
-        $usr           = Auth::user();
+        $usr = Auth::user();
         if(\Auth::user()->type == 'client'){
-          $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
+            $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
         }elseif(\Auth::user()->type != 'client'){
-          $user_projects = $usr->projects()->pluck('project_id','project_id')->toArray();
+            $user_projects = $usr->projects()->pluck('project_id','project_id')->toArray();
         }
+
+        if(isset($_GET['project_id'])){
+            if($_GET['project_id'] != ""){
+                $get_user_data =  User::select("users.name", "users.id")
+                        ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
+                        ->where("project.project_id", $_GET['project_id'])
+                        ->groupBy('users.id')
+                        ->get();
+            }
+            else{
+                $get_user_data = array();
+            }
+        }
+        else{
+            $get_user_data = array();
+        }
+       
         if($request->ajax() && $request->has('view') && $request->has('sort'))
         {
             $sort  = explode('-', $request->sort);
-            $task = ProjectTask::whereIn('project_id', $user_projects)->get();
-            $tasks = ProjectTask::whereIn('project_id', $user_projects)->orderBy($sort[0], $sort[1]);
-            if(\Auth::user()->type != 'company'){
-              if(\Auth::user()->type == 'client'){
-                  $tasks->where('created_by',\Auth::user()->creatorId());
-              }
-              else{
-                $tasks->whereRaw("find_in_set('" . $usr->id . "',assign_to)");
-              }
-            }
-            else{
-              $tasks->where('created_by',\Auth::user()->creatorId());
-            }
-            if(!empty($request->keyword))
-            {
-                $tasks->where('name', 'LIKE', $request->keyword . '%');
-            }
+            
+            $project_select = Project::whereIn('id',$user_projects)->orderBy('id','DESC')->get();
+            
+            $setting  = Utility::settings(\Auth::user()->creatorId());
+            if($setting['company_type']==2){
+                $get_start_date = $_GET["start_date"];
+                $get_end_date = $_GET["end_date"];
 
-            if(!empty($request->status))
-            {
-                $todaydate = date('Y-m-d');
-
-                // For Optimization
-                $status = $request->status;
-                foreach($status as $k => $v)
-                {
-                    if($v == 'due_today' || $v == 'over_due' || $v == 'starred' || $v == 'see_my_tasks')
-                    {
-                        unset($status[$k]);
+                if(\Auth::user()->type != 'company'){
+                    // Construction User
+                    if($_GET['project_id'] != "" && $_GET['end_date'] != ""){
+                        $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                            ->join('projects as pro','pro.id','con_tasks.project_id')
+                            ->whereNotNull('pro.instance_id')
+                            ->where('project_id', $_GET['project_id'])
+                            ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)")
+                            ->where(function ($query) use ($get_start_date, $get_end_date) {
+                                $query->whereDate('con_tasks.end_date', '>=', $get_end_date);
+                            });
+                    }
+                    else if($_GET['end_date'] != ""){
+                        $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                            ->join('projects as pro','pro.id','con_tasks.project_id')
+                            ->whereNotNull('pro.instance_id')
+                            ->whereIn('con_tasks.project_id', $user_projects)
+                            ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)")
+                            ->where(function ($query) use ($get_start_date, $get_end_date) {
+                                $query->whereDate('con_tasks.end_date', '>=', $get_end_date);
+                            });
+                    }
+                    else{
+                        $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                            ->join('projects as pro','pro.id','con_tasks.project_id')
+                            ->whereNotNull('pro.instance_id')
+                            ->whereDate('con_tasks.end_date', ">=", date('Y-m-d'))
+                            ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)")
+                            ->whereIn('con_tasks.project_id', $user_projects);
                     }
                 }
-                // end
-
-                if(count($status) > 0)
-                {
-                    $tasks->whereIn('priority', $status);
+                else{
+                    // Construction Company
+                    if($_GET['project_id'] != "" && $_GET['user_id'] != "" && $_GET['start_date'] != "" && $_GET['end_date'] != ""){
+                        $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                            ->join('projects as pro','pro.id','con_tasks.project_id')
+                            ->whereNotNull('pro.instance_id')
+                            ->where('project_id', $_GET['project_id'])
+                            ->whereRaw("find_in_set('" . $_GET['user_id'] . "',users)")
+                            ->where(function ($query) use ($get_start_date, $get_end_date) {
+                                $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                                $query->whereDate('con_tasks.end_date', '<=', $get_end_date);
+                            });
+                    }
+                    else if($_GET['project_id'] != "" && $_GET['start_date'] != "" && $_GET['end_date'] != ""){
+                        $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                            ->join('projects as pro','pro.id','con_tasks.project_id')
+                            ->whereNotNull('pro.instance_id')
+                            ->where('project_id', $_GET['project_id'])
+                            ->where(function ($query) use ($get_start_date, $get_end_date) {
+                                $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                                $query->whereDate('con_tasks.end_date', '<=', $get_end_date);
+                            });
+                    }
+                    else if($_GET['start_date'] != "" && $_GET['end_date'] != ""){
+                        $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                            ->join('projects as pro','pro.id','con_tasks.project_id')
+                            ->whereNotNull('pro.instance_id')
+                            ->whereIn('con_tasks.project_id', $user_projects)
+                            ->where(function ($query) use ($get_start_date, $get_end_date) {
+                                $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                                $query->whereDate('con_tasks.end_date', '<=', $get_end_date);
+                            });
+                    }
+                    else{
+                        $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                            ->join('projects as pro','pro.id','con_tasks.project_id')
+                            ->whereNotNull('pro.instance_id')
+                            ->whereDate('con_tasks.end_date', ">=", date('Y-m-d'))
+                            ->whereIn('con_tasks.project_id', $user_projects);
+                    }
                 }
+    
+                $tasks = $tasks->get();
 
-                if(in_array('see_my_tasks', $request->status))
-                {
+                $returnHTML = view('project_task_con.' . $request->view, compact('tasks','project_select','get_user_data'))->render();
+            }
+            else{
+                $task = ProjectTask::whereIn('project_id', $user_projects)->get();
+                $tasks = ProjectTask::whereIn('project_id', $user_projects)->orderBy($sort[0], $sort[1]);
+
+                if(\Auth::user()->type == 'client'){
+                    $tasks->where('created_by',\Auth::user()->creatorId());
+                }
+                else{
                     $tasks->whereRaw("find_in_set('" . $usr->id . "',assign_to)");
                 }
 
-                if(in_array('due_today', $request->status))
+                if(!empty($request->keyword))
                 {
-                    $tasks->where('end_date', $todaydate);
+                    $tasks->where('name', 'LIKE', $request->keyword . '%');
                 }
 
-                if(in_array('over_due', $request->status))
+                if(!empty($request->status))
                 {
-                    $tasks->where('end_date', '<', $todaydate);
+                    $todaydate = date('Y-m-d');
+
+                    // For Optimization
+                    $status = $request->status;
+                    foreach($status as $k => $v)
+                    {
+                        if($v == 'due_today' || $v == 'over_due' || $v == 'starred' || $v == 'see_my_tasks')
+                        {
+                            unset($status[$k]);
+                        }
+                    }
+                    // end
+
+                    if(count($status) > 0)
+                    {
+                        $tasks->whereIn('priority', $status);
+                    }
+
+                    if(in_array('see_my_tasks', $request->status))
+                    {
+                        $tasks->whereRaw("find_in_set('" . $usr->id . "',assign_to)");
+                    }
+
+                    if(in_array('due_today', $request->status))
+                    {
+                        $tasks->where('end_date', $todaydate);
+                    }
+
+                    if(in_array('over_due', $request->status))
+                    {
+                        $tasks->where('end_date', '<', $todaydate);
+                    }
+
+                    if(in_array('starred', $request->status))
+                    {
+                        $tasks->where('is_favourite', '=', 1);
+                    }
                 }
 
-                if(in_array('starred', $request->status))
-                {
-                    $tasks->where('is_favourite', '=', 1);
-                }
+                $tasks = $tasks->get();
+
+                $returnHTML = view('project_task.' . $request->view, compact('tasks'))->render();
             }
-
-            $tasks = $tasks->get();
-
-            $returnHTML = view('project_task.' . $request->view, compact('tasks'))->render();
 
             return response()->json(
                 [
@@ -257,6 +372,84 @@ class ProjectTaskController extends Controller
                 ]
             );
         }
+    }
+
+    public function taskboard_get(Request $request){
+        try {
+
+            $usr = Auth::user();
+            $user_projects = $usr->projects()->pluck('project_id','project_id')->toArray();
+
+            $project_id = $request->project_id;
+
+            if($project_id != ""){
+                $data =  User::select("users.name", "users.id")
+                    ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
+                    ->where("project.project_id", $project_id)
+                    ->groupBy('users.id')
+                    ->get();
+            }
+            else{
+                $data =  User::select("users.name", "users.id")
+                    ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
+                    ->whereIn('project.project_id',$user_projects)
+                    ->groupBy('users.id')
+                    ->get();
+            }
+            
+            return response()->json($data);
+        }
+        catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function taskboardEdit(Request $request){
+        if($request['get_date'] == ""){
+            $get_date = date('Y-m-d');
+        }
+        else{
+            $get_date = $request['get_date'];
+        }
+
+        if(isset($request['task_id'])){
+            $task_id = $request['task_id'];
+            $get_con_task = Con_task::where('main_id',$task_id)->first();
+            $end_date = $get_con_task->end_date != null ? explode(" ",$get_con_task->end_date) : array();
+
+            
+            $get_popup_data_con = Con_task::where('main_id',$task_id)->first();
+            
+            if(date('Y-m-d') >= $get_date){
+                //Previous
+                $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)->select('percentage','description')->first();
+
+                if($get_popup_data != null){
+                    $data = array(
+                        'percentage' => $get_popup_data->percentage,
+                        'desc'       => $get_popup_data->description,
+                        'get_date'  => $get_date
+                    );
+                }
+                else{
+                    $data = array(
+                        'percentage' => "",
+                        'desc'       => "",
+                        'get_date'  => $get_date
+                    );
+                }
+                
+            }else{
+                //new
+                $data = array(
+                    'percentage' => "",
+                    'desc'       => "",
+                    'get_date'  => $get_date
+                );
+            }
+        }
+        
+        return view('project_task_con.task_edit',compact('task_id','data'));
     }
 
     public function show($project_id, $task_id)
@@ -975,6 +1168,42 @@ class ProjectTaskController extends Controller
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
+
+    public function new_calendar_view($task_by, $project_id = NULL)
+    {
+        
+      try {
+
+        $usr = Auth::user();
+        $transdate = date('Y-m-d', time());
+
+        if($usr->type != 'admin')
+        {
+            if(\Auth::user()->type == 'client'){
+              $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
+            }else{
+              $user_projects = $usr->projects()->pluck('project_id','project_id')->toArray();
+            }
+            
+            $con_task=Con_task::whereIn('project_id',$user_projects)->get();
+            
+
+            return view('tasks.calendar_new', compact('project_id','con_task','transdate'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
+
+
+      } catch (Exception $e) {
+
+        return $e->getMessage();
+
+      }
+       
+    }
+
 
     // Calendar Show
     public function calendarShow($id)

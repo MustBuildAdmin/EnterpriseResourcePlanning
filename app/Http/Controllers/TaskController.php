@@ -9,19 +9,22 @@ class TaskController extends Controller
 {
     public function store(Request $request){
  
-        $implode_users = implode(',', json_decode($request->users));
-
         $max_id=Con_task::max('id');
         $task = new Con_task();
  
         $task->text = $request->text;
         $task->id = $max_id+1;
         $task->project_id = Session::get('project_id');
+        $task->instance_id = Session::get('project_instance');
         $task->start_date = date('Y-m-d h:i',strtotime($request->start_date));
+        $task->end_date = date('Y-m-d h:i',strtotime($request->end_date));
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
-        $task->users = $implode_users;
+        if(isset($request->users)){
+            $implode_users = implode(',', json_decode($request->users));
+            $task->users = $implode_users;
+        }
  
         $task->save();
  
@@ -33,17 +36,18 @@ class TaskController extends Controller
  
     public function update($id, Request $request){
         
-        $implode_users = implode(',', json_decode($request->users));
-        
         $task = Con_task::find($id);
-        $task->where('project_id',Session::get('project_id'));
+        $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->text = $request->text;
         $task->start_date = date('Y-m-d h:i',strtotime($request->start_date));
+        $task->end_date = date('Y-m-d h:i',strtotime($request->end_date));
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
-        $task->users = $implode_users;
- 
+        if(isset($request->users)){
+            $implode_users = implode(',', json_decode($request->users));
+            $task->users = $implode_users;
+        }
         $task->save();
  
         return response()->json([
@@ -54,8 +58,7 @@ class TaskController extends Controller
     public function destroy($id){
         $project=Session::get('project_id');
         $task = Con_task::find($id);
-        $task->where('project_id', $project);
-
+        $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->delete();
  
         return response()->json([

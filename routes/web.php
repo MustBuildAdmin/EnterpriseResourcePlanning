@@ -2464,6 +2464,19 @@ Route::get(
         'XSS',
     ]
 );
+// task progress update for construction part
+    Route::any(
+        'con_taskupdate', [
+        'as' => 'con_taskupdate',
+        'uses' => 'ProjectController@taskupdate',
+    ]
+    )->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+// end
 Route::get(
     'taskboard-view', [
     'as' => 'project.taskboard.view',
@@ -2475,6 +2488,29 @@ Route::get(
         'XSS',
     ]
 );
+Route::get(
+    'taskboard-edit', [
+    'as' => 'project.taskboard.edit',
+    'uses' => 'ProjectTaskController@taskboardEdit',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    'fetch_user_details', [
+    'as' => 'project_report.fetch_user_details',
+    'uses' => 'ProjectTaskController@taskboardEdit',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::post('taskboard_get', 'projecttaskcontroller@taskboard_get')->name('project.taskboard_get')->middleware(['auth','XSS',]);
 Route::resource('document-upload', 'DucumentUploadController')->middleware(
     [
         'auth',
@@ -2921,6 +2957,20 @@ Route::get(
     ]
 );
 
+Route::post('freeze_status', 'ProjectController@freeze_status_change')->name('projects.freeze_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 
+
+Route::any('get_freeze_status', 'ProjectController@get_freeze_status')->name('projects.get_freeze_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 
+
 Route::resource('projects', 'ProjectController')->middleware(
     [
         'auth',
@@ -3138,6 +3188,99 @@ Route::get(
     ]
 );
 
+//dairy
+
+
+
+Route::any(
+    'dairy', [
+    'as' => 'dairy.index',
+    'uses' => 'DairyController@index',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'dairy_create', [
+    'as' => 'dairy.dairy_create',
+    'uses' => 'DairyController@dairy_create',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any(
+    'dairy/{id}', [
+    'as' => 'dairy.show',
+    'uses' => 'DairyController@show',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'dairy-view', [
+    'as' => 'filter.dairy.view',
+    'uses' => 'DairyController@filterDairyView',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any(
+    'dairy/concrete_pouring', [
+    'as' => 'dairy.concrete_pouring',
+    'uses' => 'DairyController@concrete_pouring',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'dairy/destroy/{id}', [
+    'as' => 'dairy.destroy',
+    'uses' => 'DairyController@destroy',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any(
+    'dairy/destroy/{id}', [
+    'as' => 'dairy.destroy',
+    'uses' => 'DairyController@destroy',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
 
 Route::get(
     '/calendar/{id}/show', [
@@ -3160,6 +3303,17 @@ Route::get(
     'calendar/{task}/{pid?}', [
     'as' => 'task.calendar',
     'uses' => 'ProjectTaskController@calendarView',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    'calendar_new/{task}/{pid?}', [
+    'as' => 'task.newcalendar',
+    'uses' => 'ProjectTaskController@new_calendar_view',
 ]
 )->middleware(
     [

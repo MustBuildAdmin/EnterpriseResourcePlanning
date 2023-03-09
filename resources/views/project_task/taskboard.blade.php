@@ -12,6 +12,7 @@
 @endsection
 
 @section('action-btn')
+@if($setting['company_type']!=2)
 <div class="float-end">
 
         <a href="#" class="btn btn-primary btn-sm" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -61,6 +62,7 @@
     @endif
 
 </div>
+@endif
 
 @endsection
 
@@ -119,6 +121,12 @@
         });
 
         // For Filter
+
+        project_id = "<?php echo $project_id; ?>";
+        user_id    = "<?php echo $user_id; ?>";
+        start_date = "<?php echo $start_date; ?>";
+        end_date = "<?php echo $end_date; ?>";
+       
         function ajaxFilterTaskView(task_sort, keyword = '', status = '') {
             var mainEle = $('#taskboard_view');
             var view = '{{$view}}';
@@ -127,6 +135,10 @@
                 sort: task_sort,
                 keyword: keyword,
                 status: status,
+                project_id: project_id,
+                user_id: user_id,
+                start_date: start_date,
+                end_date: end_date,
             }
 
             $.ajax({

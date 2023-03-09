@@ -298,6 +298,36 @@ $(document).on("click", '.bs-pass-para', function () {
         }
     })
 });
+
+$(document).on("click", '.freeze_button', function () {
+    var form = $(this).closest("form");
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "It will freeze gantt chart if you take the action. Do you want to continue?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            form.submit();
+
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+        }
+    })
+});
+
 $(document).on("click", '.bs-pass-para-duplicate', function () {
     var form = $(this).closest("form");
     const swalWithBootstrapButtons = Swal.mixin({

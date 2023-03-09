@@ -145,6 +145,8 @@
     </script>
 @endpush
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
+
+
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('projects.index')}}">{{__('Project')}}</a></li>
@@ -157,35 +159,38 @@
                 {{__('Gantt Chart')}}
             </a>
         @endcan
-        @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
-            <a href="{{ route('projecttime.tracker',$project->id) }}" class="btn btn-sm btn-primary">
-                {{__('Tracker')}}
-            </a>
-        @endif
+       
         @can('view expense')
             <a href="{{ route('projects.expenses.index',$project->id) }}" class="btn btn-sm btn-primary">
                 {{__('Expense')}}
             </a>
         @endcan
-        @if(\Auth::user()->type != 'client')
-            @can('view timesheet')
-                <a href="{{ route('timesheet.index',$project->id) }}" class="btn btn-sm btn-primary">
-                    {{__('Timesheet')}}
-                </a>
-            @endcan
-        @endif
+       
         @if($setting['company_type']!=2)
             @can('manage bug report')
                 <a href="{{ route('task.bug',$project->id) }}" class="btn btn-sm btn-primary">
                     {{__('Bug Report')}}
                 </a>
             @endcan
-        @endif
-        @can('create project task')
+            @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
+            <a href="{{ route('projecttime.tracker',$project->id) }}" class="btn btn-sm btn-primary">
+                {{__('Tracker')}}
+            </a>
+            @endif
+            @can('create project task')
             <a href="{{ route('projects.tasks.index',$project->id) }}" class="btn btn-sm btn-primary">
                 {{__('Task')}}
             </a>
-        @endcan
+            @endcan
+            @if(\Auth::user()->type != 'client')
+            @can('view timesheet')
+                <a href="{{ route('timesheet.index',$project->id) }}" class="btn btn-sm btn-primary">
+                    {{__('Timesheet')}}
+                </a>
+            @endcan
+            @endif
+        @endif
+        
         @can('edit project')
             <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
                 <i class="ti ti-pencil"></i>
