@@ -14,11 +14,7 @@
 
 @endphp
 
-
-
-{{--<html lang="en" dir="{{$SITE_RTL == 'on' ? 'rtl' : '' }}">--}}
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{isset($setting['SITE_RTL']) && $setting['SITE_RTL'] == 'on' ? 'rtl' : '' }}">
-
 <head>
     <title>{{(Utility::getValByName('title_text')) ? Utility::getValByName('title_text') : config('app.name', 'ERPGO')}} - @yield('page-title')</title>
 
@@ -33,114 +29,28 @@
     <link rel="icon" href="{{$logo.'/'.(isset($company_favicon) && !empty($company_favicon)?$company_favicon:'favicon.png')}}" type="image/x-icon"/>
 
     <!-- font css -->
-    <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
-
-    <!-- vendor css -->
-
-@if ( $setting['SITE_RTL'] == 'on')
-        <link rel="stylesheet" href="{{ asset('assets/css/style-rtl.css')}}" id="main-style-link">
-    @endif
-    @if($setting['cust_darklayout']=='on')
-        <link rel="stylesheet" href="{{ asset('assets/css/style-dark.css')}}">
-    @else
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}" id="main-style-link">
-    @endif
-
-
-{{--    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">--}}
-    <link rel="stylesheet" href="{{ asset('assets/css/customizer.css') }}">
+    <link href="{{asset('assets/dist/css/tabler.min.css?1674944402')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/dist/css/tabler-flags.min.css?1674944402')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/dist/css/tabler-payments.min.css?1674944402')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/dist/css/tabler-vendors.min.css?1674944402')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/dist/css/demo.min.css?1674944402')}}" rel="stylesheet"/>
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
 
 </head>
-
-<body class="{{ $color }}">
-<div class="auth-wrapper auth-v3">
-    <div class="bg-auth-side bg-primary"></div>
-    <div class="auth-content">
-        <nav class="navbar navbar-expand-md navbar-light default">
-            <div class="container-fluid pe-2">
-                <a class="navbar-brand" href="#">
-{{--                    <img src="{{ asset('assets/images/logo-dark.png') }}" alt="logo"/>--}}
-                    @if($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on' )
-                        <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
-                             alt="{{ config('app.name', 'ERPGo-SaaS') }}" class="logo w-50">
-                    @else
-                        <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
-                             alt="{{ config('app.name', 'ERPGo-SaaS') }}" class="logo w-50">
-                    @endif
-                </a>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarTogglerDemo01"
-                    aria-controls="navbarTogglerDemo01"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo01" style="flex-grow: 0;">
-                    <ul class="navbar-nav align-items-center ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Support</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Terms</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Privacy</a>
-                        </li>
-                        @yield('auth-topbar')
-                    </ul>
-
-                </div>
-            </div>
-        </nav>
-        <div class="card">
-            <div class="row align-items-center text-start">
-                <div class="col-xl-6">
-                    <div class="card-body">
-                        @yield('content')
-                    </div>
-                </div>
-                <div class="col-xl-6 img-card-side">
-                    <div class="auth-img-content">
-                        <img
-                            src="{{ asset('assets/images/auth/img-auth-3.svg') }}"
-                            alt=""
-                            class="img-fluid"
-                        />
-                        <h3 class="text-white mb-4 mt-5">
-                            “Attention is the new currency”
-                        </h3>
-                        <p class="text-white">
-                            The more effortless the writing looks, the more effort the
-                            writer actually put into the process.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="auth-footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-6">
-                        <p class="">
-                            {{(Utility::getValByName('footer_text')) ? Utility::getValByName('footer_text') :  __('Copyright ERPGO') }} {{ date('Y') }}
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- [ auth-signup ] end -->
-
+<body  class=" d-flex flex-column">
+@yield('content')
+<script src="{{asset('assets/dist/js/demo-theme.min.js?1674944402')}}"></script>
 <!-- Required Js -->
+<script src="{{asset('assets/dist/js/tabler.min.js?1674944402')}}" defer></script>
+<script src="{{asset('assets/dist/js/demo.min.js?1674944402')}}" defer></script>
 <script src="{{ asset('assets/js/vendor-all.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
@@ -181,39 +91,39 @@
 
 
 
-    var custthemebg = document.querySelector("#cust-theme-bg");
-    custthemebg.addEventListener("click", function () {
-        if (custthemebg.checked) {
-            document.querySelector(".dash-sidebar").classList.add("transprent-bg");
-            document
-                .querySelector(".dash-header:not(.dash-mob-header)")
-                .classList.add("transprent-bg");
-        } else {
-            document.querySelector(".dash-sidebar").classList.remove("transprent-bg");
-            document
-                .querySelector(".dash-header:not(.dash-mob-header)")
-                .classList.remove("transprent-bg");
-        }
-    });
+    // var custthemebg = document.querySelector("#cust-theme-bg");
+    // custthemebg.addEventListener("click", function () {
+    //     if (custthemebg.checked) {
+    //         document.querySelector(".dash-sidebar").classList.add("transprent-bg");
+    //         document
+    //             .querySelector(".dash-header:not(.dash-mob-header)")
+    //             .classList.add("transprent-bg");
+    //     } else {
+    //         document.querySelector(".dash-sidebar").classList.remove("transprent-bg");
+    //         document
+    //             .querySelector(".dash-header:not(.dash-mob-header)")
+    //             .classList.remove("transprent-bg");
+    //     }
+    // });
 
-    var custdarklayout = document.querySelector("#cust-darklayout");
-    custdarklayout.addEventListener("click", function () {
-        if (custdarklayout.checked) {
-            document
-                .querySelector(".m-header > .b-brand > .logo-lg")
-                .setAttribute("src", "{{ asset('assets/images/logo.svg') }}");
-            document
-                .querySelector("#main-style-link")
-                .setAttribute("href", "{{ asset('assets/css/style-dark.css') }}");
-        } else {
-            document
-                .querySelector(".m-header > .b-brand > .logo-lg")
-                .setAttribute("src", "{{ asset('assets/images/logo-dark.png') }}");
-            document
-                .querySelector("#main-style-link")
-                .setAttribute("href", "{{ asset('assets/css/style.css') }}");
-        }
-    });
+    // var custdarklayout = document.querySelector("#cust-darklayout");
+    // custdarklayout.addEventListener("click", function () {
+    //     if (custdarklayout.checked) {
+    //         document
+    //             .querySelector(".m-header > .b-brand > .logo-lg")
+    //             .setAttribute("src", "{{ asset('assets/images/logo.svg') }}");
+    //         document
+    //             .querySelector("#main-style-link")
+    //             .setAttribute("href", "{{ asset('assets/css/style-dark.css') }}");
+    //     } else {
+    //         document
+    //             .querySelector(".m-header > .b-brand > .logo-lg")
+    //             .setAttribute("src", "{{ asset('assets/images/logo-dark.png') }}");
+    //         document
+    //             .querySelector("#main-style-link")
+    //             .setAttribute("href", "{{ asset('assets/css/style.css') }}");
+    //     }
+    // });
 
     function removeClassByPrefix(node, prefix) {
         for (let i = 0; i < node.classList.length; i++) {

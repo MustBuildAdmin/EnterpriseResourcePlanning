@@ -26,13 +26,16 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
     </li>
 @endsection
 @section('content')
-    <div class="">
-        <h2 class="mb-3 f-w-600">{{__('Register')}}</h2>
+<div class="page page-center">
+  <div class="container container-tight py-4">
+    <div class="text-center mb-4">
+      <a href="/" class="navbar-brand navbar-brand-autodark"><img src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'logo-dark.png')}}" height="36" alt=""></a>
     </div>
-    <form method="POST" action="{{ route('register') }}">
+    <form class="card card-md" method="POST" action="{{ route('register') }}">
+      <div class="card-body">
         @csrf
-        <div class="">
-            <div class="form-group mb-3">
+        <h2 class="card-title text-center mb-4">{{__('Register')}}</h2>
+            <div class="mb-3">
                 <label for="name" class="form-label">{{__('Name')}}</label>
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                 @error('name')
@@ -41,7 +44,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                 </span>
                 @enderror
             </div>
-            <div class="form-group mb-3">
+            <div class="mb-3">
                 <label for="email" class="form-label">{{__('Email')}}</label>
                 <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 @error('email')
@@ -53,7 +56,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     {{__('Please fill in your email')}}
                 </div>
             </div>
-            <div class="form-group mb-3">
+            <div class="mb-3">
                 <label for="password" class="form-label">{{__('Password')}}</label>
                 <input id="password" type="password" data-indicator="pwindicator" class="form-control pwstrength @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                 @error('password')
@@ -66,7 +69,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     <div class="label"></div>
                 </div>
             </div>
-            <div class="form-group mb-3">
+            <div class="mb-3">
                 <label for="password_confirmation" class="form-label">{{__('Password Confirmation')}}</label>
                 <input id="password_confirmation" type="password" data-indicator="password_confirmation" class="form-control pwstrength @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
                 @error('password_confirmation')
@@ -79,7 +82,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     <div class="label"></div>
                 </div>
             </div>
-            <div class="form-group mb-3">
+            <div class="mb-3">
                 <label for="company_name" class="form-label">{{__('Company Name')}}</label>
                 <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
                 @error('company_name')
@@ -92,7 +95,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     <div class="label"></div>
                 </div>
             </div>
-            <div class="form-group mb-3">
+            <div class="mb-3">
                 <label for="company_type" class="form-label">{{__('Company_type')}}</label>
                 <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required name='company_type'>
                     <option value=''>{{__('Select_Company_type')}}</option>
@@ -112,7 +115,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                 </div>
             </div>
             @if(env('RECAPTCHA_MODULE') == 'on')
-                <div class="form-group mb-3">
+                <div class="mb-3">
                     {!! NoCaptcha::display() !!}
                     @error('g-recaptcha-response')
                     <span class="small text-danger" role="alert">
@@ -121,16 +124,19 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     @enderror
                 </div>
             @endif
-
             <div class="d-grid">
                 <button type="submit" id='submit' class="btn btn-primary btn-block mt-2">{{__('Register')}}</button>
 
             </div>
-
-        </div>
-        <p class="my-4 text-center">{{__("Already' have an account?")}} <a href="{{ route('login',!empty(\Auth::user()->lang)?\Auth::user()->lang:'en') }}" class="text-primary">{{__('Login')}}</a></p>
-
+      </div>
     </form>
+    <div class="text-center text-muted mt-3">
+        {{__("Already' have an account?")}}  <a href="{{ route('login',!empty(\Auth::user()->lang)?\Auth::user()->lang:'en') }}"  tabindex="-1">{{__('Login')}}</a>
+    </div>
+
+  </div>
+
+</div>
 @endsection
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{ asset('js/jquery.form.js') }}"></script>
