@@ -13,18 +13,22 @@
 
 @endsection
 @section('content')
+<div class="page page-center">
+  <div class="container container-tight py-4">
+    <div class="text-center mb-4">
+      <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="36" alt=""></a>
+    </div>
     <div class="">
-        <h2 class="mb-3 f-w-600">{{__('Reset Password')}}</h2>
         @if(session('status'))
             <p class="mb-4 text-muted">
                 {{ session('status') }}
             </p>
         @endif
     </div>
-
-    <form method="POST" action="{{ route('password.email') }}">
+    <form method="POST" class="card card-md" action="{{ route('password.email') }}">
         @csrf
-        <div class="">
+        <div class="card-body">
+     <h2 class="card-title text-center mb-4">{{__('Reset Password')}}</h2>
             <div class="form-group mb-3">
                 <label for="email" class="form-label">{{ __('E-Mail') }}</label>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -53,6 +57,9 @@
 
         </div>
     </form>
+    </div>
+
+</div>
 @endsection
 
 

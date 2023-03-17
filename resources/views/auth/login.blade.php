@@ -26,12 +26,18 @@
     </li>
 @endsection
 @section('content')
-    <div class="">
-        <h2 class="mb-3 f-w-600">{{__('Login')}}</h2>
+<div class="page page-center">
+  <div class="container container-tight py-4">
+    <div class="text-center mb-4">
+      <a href="/" class="navbar-brand navbar-brand-autodark"><img src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'logo-dark.png')}}" height="36" alt=""></a>
     </div>
-    {{Form::open(array('route'=>'login','method'=>'post','id'=>'loginForm' ))}}
+   
+    {{Form::open(array('route'=>'login','method'=>'post',"class"=>"card card-md",'id'=>'loginForm' ))}}
     @csrf
-    <div class="">
+  
+    <div class="card-body">
+    <h2 class="card-title text-center mb-4">{{__('Login')}}</h2>
+
         <div class="form-group mb-3">
             <label for="email" class="form-label">{{__('Email')}}</label>
             <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -75,6 +81,9 @@
 
     </div>
     {{Form::close()}}
+    </div>
+
+</div>
 @endsection
 
 <script src="{{asset('js/jquery.min.js')}}"></script>
