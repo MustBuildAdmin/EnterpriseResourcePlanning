@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
   feather.replace();
   // feather icon end
   // remove pre-loader start
-  setTimeout(function () {
-    document.querySelector(".loader-bg").remove();
-  }, 400);
+  // setTimeout(function () {
+  //   document.querySelector(".loader-bg").remove();
+  // }, 400);
   // remove pre-loader end
   if (!document.querySelector("body").classList.contains("dash-horizontal")) {
     addscroller();
@@ -671,16 +671,16 @@ if (pcovelayclk) {
 }
 // nested Layout end
 
-if (document.querySelector("body").classList.contains("layout-topbar")) {
-  var tplink = document.querySelectorAll(
-    ".dash-header .list-unstyled > .dropdown"
-  );
-  for (var t = 0; t < tplink.length; t++) {
-    var c = tplink[t];
-    c.addEventListener("mouseenter", showmenu);
-    c.addEventListener("mouseleave", hidemenu);
-  }
-}
+// if (document.querySelector("body").classList.contains("layout-topbar")) {
+//   var tplink = document.querySelectorAll(
+//     ".dash-header .list-unstyled > .dropdown"
+//   );
+//   for (var t = 0; t < tplink.length; t++) {
+//     var c = tplink[t];
+//     c.addEventListener("mouseenter", showmenu);
+//     c.addEventListener("mouseleave", hidemenu);
+//   }
+// }
 
 function showmenu(event) {
   event.target.children[1].classList.add("show");
@@ -691,56 +691,56 @@ function hidemenu(event) {
 }
 // topbar Layout end
 // horizontal submenu edge start
-if (document.querySelector("body").classList.contains("dash-horizontal")) {
-  var hpx;
-  var docH = window.innerHeight;
-  var docW = window.innerWidth;
+// if (document.querySelector("body").classList.contains("dash-horizontal")) {
+//   var hpx;
+//   var docH = window.innerHeight;
+//   var docW = window.innerWidth;
 
-  if (docW > 1024) {
-    var topbarhasmenu = document.querySelector(
-      ".dash-horizontal .topbar .dash-submenu .dash-hasmenu"
-    );
-    if (topbarhasmenu) {
-      topbarhasmenu.addEventListener(
-        "mouseenter",
-        function () {
-          var elm = targetElement.children[1];
-          var off = elm.getBoundingClientRect();
-          var l = off.left;
-          var t = off.top;
-          var w = off.width;
-          var h = off.height;
-          var scrw = document.documentElement.scrollTop;
+//   if (docW > 1024) {
+//     var topbarhasmenu = document.querySelector(
+//       ".dash-horizontal .topbar .dash-submenu .dash-hasmenu"
+//     );
+//     if (topbarhasmenu) {
+//       topbarhasmenu.addEventListener(
+//         "mouseenter",
+//         function () {
+//           var elm = targetElement.children[1];
+//           var off = elm.getBoundingClientRect();
+//           var l = off.left;
+//           var t = off.top;
+//           var w = off.width;
+//           var h = off.height;
+//           var scrw = document.documentElement.scrollTop;
 
-          var edgepos = l + w <= docW;
-          if (!edgepos) {
-            elm.classList.add("edge");
-          }
-          var isEntirelyVisible = t + h <= docH;
-          if (!isEntirelyVisible) {
-            var th = t - scrw;
-            elm.classList.add("scroll-menu");
-            elm.css("max-height", "calc(100vh - " + th + "px)");
-            hpx = new PerfectScrollbar(".scroll-menu", {
-              wheelSpeed: 0.5,
-              swipeEasing: 0,
-              suppressScrollX: !0,
-              wheelPropagation: 1,
-              minScrollbarLength: 40,
-            });
-          }
-        },
-        function () {
-          hpx.destroy();
-          document.querySelector(".scroll-menu").removeAttribute("style");
-          document
-            .querySelector(".scroll-menu")
-            .classList.remove("scroll-menu");
-        }
-      );
-    }
-  }
-}
+//           var edgepos = l + w <= docW;
+//           if (!edgepos) {
+//             elm.classList.add("edge");
+//           }
+//           var isEntirelyVisible = t + h <= docH;
+//           if (!isEntirelyVisible) {
+//             var th = t - scrw;
+//             elm.classList.add("scroll-menu");
+//             elm.css("max-height", "calc(100vh - " + th + "px)");
+//             hpx = new PerfectScrollbar(".scroll-menu", {
+//               wheelSpeed: 0.5,
+//               swipeEasing: 0,
+//               suppressScrollX: !0,
+//               wheelPropagation: 1,
+//               minScrollbarLength: 40,
+//             });
+//           }
+//         },
+//         function () {
+//           hpx.destroy();
+//           document.querySelector(".scroll-menu").removeAttribute("style");
+//           document
+//             .querySelector(".scroll-menu")
+//             .classList.remove("scroll-menu");
+//         }
+//       );
+//     }
+//   }
+// }
 // horizontal submenu edge end
 // Collapse meni edge start
 function collapseedge() {

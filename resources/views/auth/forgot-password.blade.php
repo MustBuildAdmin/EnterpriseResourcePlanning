@@ -9,9 +9,7 @@
         {!! NoCaptcha::renderJs() !!}
     @endif
 @endpush
-@section('auth-topbar')
 
-@endsection
 @section('content')
 <div class="page page-center">
   <div class="container container-tight py-4">
