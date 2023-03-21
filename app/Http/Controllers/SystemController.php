@@ -253,6 +253,7 @@ class SystemController extends Controller
                     'company_name' => 'required|string|max:255',
                     'company_email' => 'required',
                     'company_email_from_name' => 'required|string',
+                    'site_currency' => 'required',
                 ]
             );
             $post = $request->all();
