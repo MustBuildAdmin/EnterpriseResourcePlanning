@@ -529,7 +529,7 @@
                         </div>
                     </div>
                 <div class="mt-3 bottombutton">
-                    <button class="button btn-navigate-form-step" type="button" step_number="2">Next</button>
+                    <button class="button btn-navigate-form-step" type="button" id="nextbtn" step_number="2">Next</button>
                 </div>
             </section>
             <section id="step-2" class="form-step d-none">
@@ -746,7 +746,30 @@
     </div>
 </div>
 <script>
-
+   
+    window.addEventListener("DOMContentLoaded", (event) => {
+    var site_currency=document.getElementById("site_currency");
+    var site_currency_symbol=document.getElementById("site_currency_symbol");
+        if(site_currency.value=='' || site_currency_symbol.value==''){
+            document.getElementById("nextbtn").disabled = true;
+        }else{
+            document.getElementById("nextbtn").disabled = false;
+        }
+    });
+    site_currency.addEventListener('change', (event) => {
+        if(site_currency.value=='' || site_currency_symbol.value==''){
+            document.getElementById("nextbtn").disabled = true;
+        }else{
+            document.getElementById("nextbtn").disabled = false;
+        }
+    });
+    site_currency_symbol.addEventListener('change', (event) => {
+        if(site_currency.value=='' || site_currency_symbol.value==''){
+            document.getElementById("nextbtn").disabled = true;
+        }else{
+            document.getElementById("nextbtn").disabled = false;
+        }
+    });
     const navigateToFormStep = (stepNumber) => {
         document.querySelectorAll(".form-step").forEach((formStepElement) => {
             formStepElement.classList.add("d-none");
