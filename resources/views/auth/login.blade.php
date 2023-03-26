@@ -20,6 +20,16 @@
         height: 60;
         object-fit: contain;
     }
+    .navbar-brand-autodark,img.backgroundimge{
+        display:flex !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    li.nav-item {
+        display: flex;
+        position: absolute;
+        right: 10px;
+    }
 </style>
 @php
   //  $logo=asset(Storage::url('uploads/logo/'));
@@ -43,7 +53,6 @@
   <div class="container container-tight py-4">
   <div class="topheader">
         <div class="">
-        <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
         </div>
         <li class="nav-item ">
         <select class="btn btn-primary my-1 me-2 " onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
@@ -59,6 +68,8 @@
   
     <div class="card-body">
     <h2 class="card-title text-center mb-4">{{__('Login')}}</h2>
+    <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+
 
         <div class="form-group mb-3">
             <label for="email" class="form-label">{{__('Email')}}</label>

@@ -20,6 +20,16 @@
         height: 60;
         object-fit: contain;
     }
+    .navbar-brand-autodark,img.backgroundimge{
+        display:flex !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    li.nav-item {
+        display: flex;
+        position: absolute;
+        right: 10px;
+    }
 </style>
 @section('page-title')
     {{__('Register')}}
@@ -38,7 +48,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
   <div class="container container-tight py-4">
     <div class="topheader">
         <div class="">
-        <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+       
         </div>
         <li class="nav-item ">
             <select class="btn btn-primary my-1 me-2 " onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
@@ -52,6 +62,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
       <div class="card-body">
         @csrf
         <h2 class="card-title text-center mb-4">{{__('Register')}}</h2>
+        <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
             <div class="mb-3">
                 <label for="name" class="form-label">{{__('Name')}}</label>
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>

@@ -9,12 +9,27 @@
         {!! NoCaptcha::renderJs() !!}
     @endif
 @endpush
-
+<style>
+    .navbar-brand-autodark,img.backgroundimge{
+        display:flex !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    li.nav-item {
+        display: flex;
+        position: absolute;
+        right: 10px;
+    }
+    .backgroundimge {
+        width: 413px;
+        height: 100px;
+        object-fit: contain;
+    }
+</style>
 @section('content')
 <div class="page page-center">
   <div class="container container-tight py-4">
     <div class="text-center mb-4">
-      <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="36" alt=""></a>
     </div>
     <div class="">
         @if(session('status'))
@@ -27,6 +42,8 @@
         @csrf
         <div class="card-body">
      <h2 class="card-title text-center mb-4">{{__('Reset Password')}}</h2>
+     <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="36"  class="backgroundimge" alt=""></a>
+
             <div class="form-group mb-3">
                 <label for="email" class="form-label">{{ __('E-Mail') }}</label>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
