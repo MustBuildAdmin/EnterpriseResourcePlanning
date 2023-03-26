@@ -84,7 +84,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     {{__('Please fill in your email')}}
                 </div>
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label for="password" class="form-label">{{__('Password')}}</label>
                 <input id="password" type="password" data-indicator="pwindicator" class="form-control pwstrength @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                 @error('password')
@@ -109,7 +109,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     <div class="bar"></div>
                     <div class="label"></div>
                 </div>
-            </div>
+            </div> -->
             <div class="mb-3">
                 <label for="company_name" class="form-label">{{__('Company Name')}}</label>
                 <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
