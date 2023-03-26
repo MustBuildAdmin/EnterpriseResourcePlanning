@@ -183,6 +183,7 @@ Route::group(
 
     Route::get('print-setting', 'SystemController@printIndex')->name('print.setting');
     Route::get('company-setting', 'SystemController@companyIndex')->name('company.setting');
+    Route::get('companysetting', 'SystemController@companyIndex1')->name('company.settings');
     Route::post('business-setting', 'SystemController@saveBusinessSettings')->name('business.setting');
     Route::post('company-payment-setting', 'SystemController@saveCompanyPaymentSettings')->name('company.payment.settings');
 
