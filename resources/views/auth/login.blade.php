@@ -1,4 +1,36 @@
 @extends('layouts.auth')
+<style>
+    .error{
+        color:red;
+    }
+    .page{
+        min-height:auto !important;
+    }
+    .topheader {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items:center;
+    }
+    li.nav-item {
+        list-style: none;
+    }
+    .backgroundimge{
+        width: 100px;
+        height: 60;
+        object-fit: contain;
+    }
+    .navbar-brand-autodark,img.backgroundimge{
+        display:flex !important;
+        margin-left:auto !important;
+        margin-right:auto !important;
+    }
+    li.nav-item {
+        display: flex;
+        position: absolute;
+        right: 10px;
+    }
+</style>
 @php
   //  $logo=asset(Storage::url('uploads/logo/'));
        $logo=\App\Models\Utility::get_file('uploads/logo');
@@ -16,22 +48,29 @@
     {{__('Login')}}
 @endsection
 
-@section('auth-topbar')
-    <li class="nav-item ">
+@section('content')
+<div class="page page-center">
+  <div class="container container-tight py-4">
+  <div class="topheader">
+        <div class="">
+        </div>
+        <li class="nav-item ">
         <select class="btn btn-primary my-1 me-2 " onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
             @foreach(Utility::languages() as $language)
                 <option class="" @if($lang == $language) selected @endif value="{{ route('login',$language) }}">{{Str::upper($language)}}</option>
             @endforeach
         </select>
     </li>
-@endsection
-@section('content')
-    <div class="">
-        <h2 class="mb-3 f-w-600">{{__('Login')}}</h2>
     </div>
-    {{Form::open(array('route'=>'login','method'=>'post','id'=>'loginForm' ))}}
+   
+    {{Form::open(array('route'=>'login','method'=>'post',"class"=>"card card-md",'id'=>'loginForm' ))}}
     @csrf
-    <div class="">
+  
+    <div class="card-body">
+    <h2 class="card-title text-center mb-4">{{__('Login')}}</h2>
+    <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+
+
         <div class="form-group mb-3">
             <label for="email" class="form-label">{{__('Email')}}</label>
             <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -75,6 +114,9 @@
 
     </div>
     {{Form::close()}}
+    </div>
+
+</div>
 @endsection
 
 <script src="{{asset('js/jquery.min.js')}}"></script>

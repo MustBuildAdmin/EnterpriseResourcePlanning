@@ -56,6 +56,7 @@ class Utility extends Model
             "journal_prefix" => "#JUR",
             "invoice_color" => "ffffff",
             "proposal_prefix" => "#PROP",
+            "employee_prefix"=>"#EMP",
             "proposal_color" => "ffffff",
             "bill_prefix" => "#BILL",
             "bill_color" => "ffffff",

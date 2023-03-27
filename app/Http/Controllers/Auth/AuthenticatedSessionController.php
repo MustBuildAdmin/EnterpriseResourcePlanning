@@ -115,26 +115,46 @@ class AuthenticatedSessionController extends Controller
             }
 
         }
+        $last_login=$user->last_login_at;
 
+        if($user->last_login_at==NULL){
+            $user->update(
+                [
+                    'last_login_at' => Carbon::now()->toDateTimeString(),
+                ]
+            );
+            if($user->type =='company' || $user->type =='super admin')
+            {
+                return redirect('company-setting');
 
+            }
+            else  if($user->type =='client')
+            {
+                return redirect('projects');
 
+            }
+            else
+            {
+                return redirect('users');
+            }
+        }else{
+            $user->update(
+                [
+                    'last_login_at' => Carbon::now()->toDateTimeString(),
+                ]
+            );
+            if($user->type =='company' || $user->type =='super admin' || $user->type =='client')
+            {
+                return redirect()->intended(RouteServiceProvider::HOME);
 
-        // Update Last Login Time
-        $user->update(
-            [
-                'last_login_at' => Carbon::now()->toDateTimeString(),
-            ]
-        );
-//        if($user->type =='employee')
-        if($user->type =='company' || $user->type =='super admin' || $user->type =='client')
-        {
-            return redirect()->intended(RouteServiceProvider::HOME);
-
+            }
+            else
+            {
+                return redirect()->intended(RouteServiceProvider::EMPHOME);
+            }
         }
-        else
-        {
-            return redirect()->intended(RouteServiceProvider::EMPHOME);
-        }
+       
+        
 
     }
     /**

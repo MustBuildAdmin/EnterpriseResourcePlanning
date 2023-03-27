@@ -253,6 +253,7 @@ class SystemController extends Controller
                     'company_name' => 'required|string|max:255',
                     'company_email' => 'required',
                     'company_email_from_name' => 'required|string',
+                    'site_currency' => 'required',
                 ]
             );
             $post = $request->all();
@@ -610,6 +611,65 @@ class SystemController extends Controller
             $currnocLang = NOC::where('created_by',  \Auth::user()->id)->where('lang', $noclang)->first();
             $country=Utility::getcountry();
             return view('settings.company', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', 'Permission denied.');
+        }
+    }
+
+    public function companyIndex1(Request $request )
+    {
+        if(\Auth::user()->can('manage company settings'))
+        {
+
+            if($request->offerlangs){
+                $offerlang = $request->offerlangs;
+            }else{
+                $offerlang = "en";
+            }
+            if($request->joininglangs){
+                $joininglang = $request->joininglangs;
+            }else{
+                $joininglang = "en";
+            }
+            if($request->explangs){
+                $explang = $request->explangs;
+            }else{
+                $explang = "en";
+            }
+            if($request->noclangs){
+                $noclang = $request->noclangs;
+            }else{
+                $noclang = "en";
+            }
+
+
+            $settings                = Utility::settings();
+            $timezones               = config('timezones');
+            $company_payment_setting = Utility::getCompanyPaymentSetting(\Auth::user()->creatorId());
+
+            $EmailTemplates = EmailTemplate::all();
+            $ips = IpRestrict::where('created_by', \Auth::user()->creatorId())->get();
+            // $languages = Utility::languages();
+
+            //offer letter
+            $Offerletter=GenerateOfferLetter::all();
+            $currOfferletterLang = GenerateOfferLetter::where('created_by',  \Auth::user()->id)->where('lang', $offerlang)->first();
+
+            //joining letter
+            $Joiningletter=JoiningLetter::all();
+            $currjoiningletterLang = JoiningLetter::where('created_by',  \Auth::user()->id)->where('lang', $joininglang)->first();
+
+            //Experience Certificate
+            $experience_certificate=ExperienceCertificate::all();
+            $curr_exp_cetificate_Lang = ExperienceCertificate::where('created_by',  \Auth::user()->id)->where('lang', $explang)->first();
+
+            //NOC
+            $noc_certificate=NOC::all();
+            $currnocLang = NOC::where('created_by',  \Auth::user()->id)->where('lang', $noclang)->first();
+            $country=Utility::getcountry();
+            return view('settings.companysettings', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang'));
         }
         else
         {

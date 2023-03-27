@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 
+use App\Models\ExperienceCertificate;
+use App\Models\GenerateOfferLetter;
+use App\Models\JoiningLetter;
+use  App\Models\Utility;
+
 class NewPasswordController extends Controller
 {
     /**
@@ -49,9 +54,47 @@ class NewPasswordController extends Controller
                     'password' => Hash::make($request->password),
                     'remember_token' => Str::random(60),
                 ])->save();
+                if($user->verfiy_email==1){
+                    $insert_array=array(
+                        'name'=>'company_name',
+                        'value'=>$user->company_name,
+                        'created_by'=>$user->id,
+                    );
+                    $data =DB::table('settings')->insert($insert_array);
 
-                event(new PasswordReset($user));
-            }
+                    $insert2=array(
+                        'name'=>'company_type',
+                        'value'=>$user->company_type,
+                        'created_by'=>$user->id,
+                    );
+                    $data =DB::table('settings')->insert($insert2);
+                    
+
+                    $role_r = Role::findByName('company');
+                    $user->assignRole($role_r);
+                    $user->userDefaultDataRegister($user->id);
+                    $user->userWarehouseRegister($user->id);
+                    Utility::chartOfAccountTypeData($user->id);
+                    Utility::chartOfAccountData1($user->id);
+                    Utility::pipeline_lead_deal_Stage($user->id);
+                    Utility::project_task_stages($user->id);
+                    Utility::labels($user->id);
+                    Utility::sources($user->id);
+                    Utility::jobStage($user->id);
+                    GenerateOfferLetter::defaultOfferLetterRegister($user->id);
+                    ExperienceCertificate::defaultExpCertificatRegister($user->id);
+                    JoiningLetter::defaultJoiningLetterRegister($user->id);
+                    NOC::defaultNocCertificateRegister($user->id);
+
+                    event(new Registered($user));
+
+                    Auth::login($user);
+
+                    return \Redirect::to('paymentPage');
+
+                        event(new PasswordReset($user));
+                    }
+                }
         );
 
         // If the password was successfully reset, we will redirect the user back to

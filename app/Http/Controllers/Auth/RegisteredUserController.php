@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Spatie\Permission\Models\Role;
 use App\Models\Company_type;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\DB;
 class RegisteredUserController extends Controller
 {
@@ -64,67 +65,36 @@ class RegisteredUserController extends Controller
             'company_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'company_type'=>'required',
-            'password' => ['required', 'string',
-                         'min:8','confirmed', Rules\Password::defaults()],
+            // 'password' => ['required', 'string',
+            //              'min:8','confirmed', Rules\Password::defaults()],
         ]);
 
 
-
+        $password="Change@123";
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'company_name' => $request->company_name,
             'company_type'=>$request->company_type,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($password),
              'type' => 'company',
              'default_pipeline' => 1,
               'plan' => 1,
               'lang' => Utility::getValByName('default_language'),
                'avatar' => '',
                'created_by' => 1,
+               'verfiy_email'=>1
         ]);
-
+        if($user->id){
+            $status = Password::sendResetLink(
+                $request->only('email')
+            );
+            event(new Registered($user));
+            return $status == Password::RESET_LINK_SENT ? back()->with('status', __($status)) : back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
+        }
+       
+   
     
-        $insert_array=array(
-            'name'=>'company_name',
-            'value'=>$request->company_name,
-            'created_by'=>$user->id,
-        );
-        $data =DB::table('settings')->insert($insert_array);
-
-        $insert2=array(
-            'name'=>'company_type',
-            'value'=>$request->company_type,
-            'created_by'=>$user->id,
-        );
-        $data =DB::table('settings')->insert($insert2);
-        
-
-        $role_r = Role::findByName('company');
-        $user->assignRole($role_r);
-//        $user->userDefaultData();
-        $user->userDefaultDataRegister($user->id);
-        $user->userWarehouseRegister($user->id);
-        Utility::chartOfAccountTypeData($user->id);
-        Utility::chartOfAccountData1($user->id);
-        Utility::pipeline_lead_deal_Stage($user->id);
-        Utility::project_task_stages($user->id);
-        Utility::labels($user->id);
-        Utility::sources($user->id);
-        Utility::jobStage($user->id);
-        GenerateOfferLetter::defaultOfferLetterRegister($user->id);
-        ExperienceCertificate::defaultExpCertificatRegister($user->id);
-        JoiningLetter::defaultJoiningLetterRegister($user->id);
-        NOC::defaultNocCertificateRegister($user->id);
-
-
-
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return \Redirect::to('paymentPage');
     }
     public function paymentPage(){
         $plans=Plan::get();
