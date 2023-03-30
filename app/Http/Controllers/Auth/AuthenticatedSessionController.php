@@ -125,7 +125,7 @@ class AuthenticatedSessionController extends Controller
             );
             if($user->type =='company' || $user->type =='super admin')
             {
-                return redirect('company-setting');
+                return redirect('companysetting');
 
             }
             else  if($user->type =='client')
@@ -270,6 +270,7 @@ class AuthenticatedSessionController extends Controller
 
     public function showLoginForm($lang = '')
     {
+       
 
         if($lang == '')
         {
