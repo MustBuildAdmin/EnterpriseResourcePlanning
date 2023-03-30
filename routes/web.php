@@ -174,7 +174,7 @@ Route::group(
 
     Route::resource('systems', 'SystemController');
     Route::post('email-settings', 'SystemController@saveEmailSettings')->name('email.settings');
-    Route::post('company-settings', 'SystemController@saveCompanySettings')->name('company.settings');
+    Route::post('company-settings', 'SystemController@saveCompanySettings')->name('company.settingssave');
     Route::post('system-settings', 'SystemController@saveSystemSettings')->name('system.settings');
     Route::post('zoom-settings', 'SystemController@saveZoomSettings')->name('zoom.settings');
     Route::post('slack-settings', 'SystemController@saveSlackSettings')->name('slack.settings');
