@@ -387,7 +387,7 @@
             </li>
         </ul>
         <div>
-        {{Form::model($settings,array('route'=>'company.settings','method'=>'post','id'=>'company_form'))}}
+        {{Form::model($settings,array('route'=>'company.settingssave','method'=>'post','id'=>'company_form'))}}
             <section id="step-1" class="form-step">
                 <div class="card-body p-0">
                     <h2 class="font-normal">Account Basic Details</h2>
@@ -403,10 +403,21 @@
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         {{Form::label('site_currency',__('Currency *'),array('class' => 'form-label')) }}
-                                        {{ Form::text('site_currency', $settings['site_currency'], ['class' => 'form-control font-style', 'required', 'placeholder' => __('Enter Currency')]) }}
-                                        <small> {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
+                                        <select class="form-control site_currency" name="site_currency" id='site_currency'
+                                                placeholder="Select Currecy" required>
+                                            <option value="">{{ __('Select Currency ...') }}</option>
+                                            @isset($currency)
+                                            @foreach($currency as $key => $value)
+                                                <option value="{{$value->id}}" @isset($settings['site_currency'])
+                                                    @if($settings['site_currency']==$value->id) Selected @endif
+                                                @endisset>{{$value->currency}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                        <!-- {{ Form::text('site_currency', $settings['site_currency'], ['class' => 'form-control font-style', 'required', 'placeholder' => __('Enter Currency')]) }} -->
+                                        <!-- <small> {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
                                             <a href="https://stripe.com/docs/currencies"
-                                                target="_blank">{{ __('you can find out here..') }}</a></small> <br>
+                                                target="_blank">{{ __('you can find out here..') }}</a></small> <br> -->
                                         @error('site_currency')
                                         <span class="invalid-site_currency" role="alert">
                                             <strong class="text-danger">{{ $message }}</strong>
@@ -415,7 +426,18 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         {{Form::label('site_currency_symbol',__('Currency Symbol *'),array('class' => 'form-label')) }}
-                                        {{Form::text('site_currency_symbol',null,array('class'=>'form-control'))}}
+                                        <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol'
+                                                placeholder="Select Currecy" required>
+                                            <option value="">{{ __('Select Currency Symbol ...') }}</option>
+                                            @isset($currency)
+                                            @foreach($currency as $key => $value)
+                                                <option value="{{$value->id}}" @isset($settings['site_currency_symbol'])
+                                                    @if($settings['site_currency_symbol']==$value->id) Selected @endif
+                                                @endisset>{{$value->symbol}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                        <!-- {{Form::text('site_currency_symbol',null,array('class'=>'form-control'))}} -->
                                         @error('site_currency_symbol')
                                         <span class="invalid-site_currency_symbol" role="alert">
                                             <strong class="text-danger">{{ $message }}</strong>
@@ -627,7 +649,7 @@
                             <small class="text-muted">{{ __('Edit details about your Company') }}</small>
                             <div class="card-actions">
                                 <button class="button btn-navigate-form-step" type="button" step_number="1">Prev</button>
-                                <button class="button submit-btn" type="button" id="savebtn">Save</button>
+                                <button class="button submit-btn" type="submit" id="savebtn">Save</button>
                             </div>
                         </div>
                         <div class="card-body">

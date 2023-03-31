@@ -21,6 +21,8 @@
   " quantity sold in" : " Verkaufte Menge ",
   " quantity sold in invoice" : " Menge in Rechnung verkauft ",
   " Remove" : " Entfernen ",
+  "Company_type":"Unternehmensart",
+  "Select_Company_type":"Wählen Sie Unternehmenstyp aus",
   " to" : " bis ",
   "#" : "# ",
   "'s Detail" : "' s Detail ",

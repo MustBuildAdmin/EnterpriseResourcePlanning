@@ -23,6 +23,8 @@
   " Remove" : " Rimuovi ",
   " to" : " a ",
   "#" : "# ",
+  "Company_type":"tipo di affari",
+  "Select_Company_type":"Seleziona Tipo di attività",
   "'s Detail" : "Dettaglio \" s ",
   "'s Expenses" : "\" s Spese ",
   "'s Form Field" : "Campo del modulo ' s ",
