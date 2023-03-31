@@ -21,6 +21,8 @@
   " quantity sold in" : " الكمية المباعة في ",
   " quantity sold in invoice" : " الكمية التى تباع فى الفاتورة ",
   " Remove" : " ازالة ",
+  "Company_type":"نوع العمل",
+  "Select_Company_type":"حدد نوع العمل",
   " to" : " الى ",
   "#" : "# ",
   "'s Detail" : "تفاصيل ",

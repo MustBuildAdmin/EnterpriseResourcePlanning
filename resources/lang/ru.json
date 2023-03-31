@@ -26,6 +26,8 @@
   "'s Response" : "Ответ ",
   "'s Tasks" : "Задачи ",
   "'s Timesheet" : "Тимешет ",
+  "Company_type":"Вид бизнеса",
+  "Select_Company_type":"Выберите тип бизнеса",
   "-" : "- ",
   "`Cancle Request" : "` Отменить запрос ",
   "A" : "A ",

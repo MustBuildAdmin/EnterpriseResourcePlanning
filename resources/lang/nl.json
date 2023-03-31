@@ -22,6 +22,8 @@
   " quantity sold in invoice" : " in factuur verkochte hoeveelheid ",
   " Remove" : " Verwijderen ",
   " to" : " tot ",
+  "Company_type":"Soort bedrijf",
+  "Select_Company_type":"Selecteer Bedrijfstype",
   "#" : "# ",
   "'s Detail" : "' s Detail ",
   "'s Expenses" : "De kosten ",

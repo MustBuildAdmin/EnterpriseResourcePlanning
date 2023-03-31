@@ -22,6 +22,8 @@
   " quantity sold in invoice" : " 数量、インボイスで販売",
   " Remove" : " 削除",
   " to" : " に対する",
+  "Company_type":"事業の種類",
+  "Select_Company_type":"業種を選択",
   "#" : "#",
   "'s Detail" : "の詳細",
   "'s Expenses" : "の経費",

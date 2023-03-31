@@ -21,6 +21,8 @@
   " quantity sold in" : " antal solgt i ",
   " quantity sold in invoice" : " mængde solgt i faktura ",
   " Remove" : " Fjern ",
+  "Company_type":"Forretnings type",
+  "Select_Company_type":"Vælg virksomhedstype",
   " to" : " til ",
   "#" : "-HVAD? ",
   "'s Detail" : "s-detaljer ",

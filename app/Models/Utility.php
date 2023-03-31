@@ -3221,4 +3221,30 @@ class Utility extends Model
 
         }
 
+         // Site Currency 
+         public static function site_currency($user_id){
+           
+            $data =DB::table('settings')->where(['name'=>'site_currency','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="INR";
+            }
+            return  $convertor;
+
+        }
+
+         // Site Currency 
+         public static function site_currency_symbol($user_id){
+           
+            $data =DB::table('settings')->where(['name'=>'site_currency_symbol','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="₹";
+            }
+            return  $convertor;
+
+        }
+
 }
