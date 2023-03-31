@@ -650,4 +650,22 @@ class UserController extends Controller
 
     }
 
+public function new_profile(Request $request){
+
+    $userDetail              = \Auth::user();
+    $userDetail->customField = CustomField::getData($userDetail, 'user');
+    $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
+
+    return view('user_profile.profile', compact('userDetail', 'customFields'));
+   
+
+}
+
+public function view_change_password(Request $request){
+    $userDetail              = \Auth::user();
+    $userDetail->customField = CustomField::getData($userDetail, 'user');
+    $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
+    return view('user_profile.change_password', compact('userDetail', 'customFields'));
+}
+
 }
