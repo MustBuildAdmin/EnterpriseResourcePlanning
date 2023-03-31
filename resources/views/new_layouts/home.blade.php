@@ -74,7 +74,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{route('hrm_main')}}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
@@ -92,7 +92,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{route('construction_main')}}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
@@ -104,7 +104,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Clients')}}</div>
+											<div class="font-weight-medium">{{__('Construction')}}</div>
 										</div>
 									</div>
 								</div>
@@ -128,7 +128,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Construction')}}</div>
+											<div class="font-weight-medium">{{__('Clients')}}</div>
 										</div>
 									</div>
 								</div>

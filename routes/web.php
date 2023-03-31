@@ -54,6 +54,20 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
+Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('/construction_main', 'DashboardController@construction_main')->name('construction_main')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::get('/paymentPage', 'Auth\RegisteredUserController@paymentPage');
 Route::get('/register/{lang?}', 'Auth\RegisteredUserController@showRegistrationForm')->name('register');
 //Route::get('/register/{lang?}', function () {
