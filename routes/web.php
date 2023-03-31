@@ -25,16 +25,43 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/auth.php';
 
 
-//Route::get('/', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['XSS']);
-//Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['auth','XSS']);
+Route::get('/', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['XSS']);
+Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['auth','XSS']);
 
-Route::get('/', 'DashboardController@account_dashboard_index')->name('home')->middleware(
+// Route::get('/', 'DashboardController@account_dashboard_index')->name('home')->middleware(
+//     [
+//         'XSS',
+//         'revalidate',
+//     ]
+// );
+Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
     [
         'XSS',
         'revalidate',
     ]
 );
-Route::get('/home', 'DashboardController@account_dashboard_index')->name('home')->middleware(
+
+Route::get('/', 'DashboardController@naccount_dashboard')->name('new_home')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('/construction_main', 'DashboardController@construction_main')->name('construction_main')->middleware(
     [
         'XSS',
         'revalidate',

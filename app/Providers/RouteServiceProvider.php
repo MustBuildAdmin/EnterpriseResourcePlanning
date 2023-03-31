@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/';
+    public const HOME = 'new_home';
 
     public const EMPHOME = 'hrm-dashboard';
 
