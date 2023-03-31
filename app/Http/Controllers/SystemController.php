@@ -669,7 +669,10 @@ class SystemController extends Controller
             $noc_certificate=NOC::all();
             $currnocLang = NOC::where('created_by',  \Auth::user()->id)->where('lang', $noclang)->first();
             $country=Utility::getcountry();
-            return view('settings.companysettings', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang'));
+            $currency = DB::table('currency')->get();
+
+
+            return view('settings.companysettings', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang','currency'));
         }
         else
         {

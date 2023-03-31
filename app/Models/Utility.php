@@ -3183,5 +3183,68 @@ class Utility extends Model
                 return '';
             }
         }
+        // Date Convert
+        public static function site_date_format($date,$user_id){
+           
+            $data =DB::table('settings')->where(['name'=>'site_date_format','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="M j, Y";
+            }
+            return  date($convertor, strtotime($date));
+
+        }
+
+         // Time Convert
+         public static function site_time_format($date,$user_id){
+           
+            $data =DB::table('settings')->where(['name'=>'site_time_format','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="g:i A";
+            }
+            return  date($convertor, strtotime($date));
+
+        }
+         // Time Convert
+         public static function site_decimal_number($myNumber,$user_id){
+           
+            $data =DB::table('settings')->where(['name'=>'decimal_number','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="2";
+            }
+            return  number_format( $myNumber, $convertor, ',', ' ' );
+
+        }
+
+         // Site Currency 
+         public static function site_currency($user_id){
+           
+            $data =DB::table('settings')->where(['name'=>'site_currency','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="INR";
+            }
+            return  $convertor;
+
+        }
+
+         // Site Currency 
+         public static function site_currency_symbol($user_id){
+           
+            $data =DB::table('settings')->where(['name'=>'site_currency_symbol','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="₹";
+            }
+            return  $convertor;
+
+        }
 
 }

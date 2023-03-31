@@ -22,6 +22,8 @@
   " quantity sold in invoice" : " cantidad vendida en factura ",
   " Remove" : " Eliminar ",
   " to" : " a ",
+  "Company_type":"Tipo de negocio",
+  "Select_Company_type":"Seleccionar tipo de negocio",
   "#" : "# ",
   "'s Detail" : "' s Detalle ",
   "'s Expenses" : "Gastos ",
