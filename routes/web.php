@@ -115,6 +115,13 @@ Route::get('profile', 'UserController@profile')->name('profile')->middleware(
         'revalidate',
     ]
 );
+Route::get('new_profile', 'UserController@new_profile')->name('new_profile')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 Route::post('edit-profile', 'UserController@editprofile')->name('update.account')->middleware(
     [
         'auth',
@@ -124,6 +131,14 @@ Route::post('edit-profile', 'UserController@editprofile')->name('update.account'
 );
 
 Route::resource('users', 'UserController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('view_change_password', 'UserController@view_change_password')->name('view_change_password')->middleware(
     [
         'auth',
         'XSS',

@@ -12,7 +12,7 @@
 </div>
 </div>
 <!-- Libs JS -->
-
+<script src="{{asset('js/jquery.min.js')}}"></script>
 <!-- Libs JS -->
 <script>
 feather.replace();
