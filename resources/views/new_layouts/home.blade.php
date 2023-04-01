@@ -48,7 +48,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">Users</div>
+											<div class="font-weight-medium">{{__('Users')}}</div>
 										</div>
 									</div>
 								</div>
@@ -67,7 +67,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">Roles</div>
+											<div class="font-weight-medium">{{__('Roles')}}</div>
 										</div>
 									</div>
 								</div>
@@ -85,7 +85,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">HRM</div>
+											<div class="font-weight-medium">{{__('Human Resource')}}</div>
 										</div>
 									</div>
 								</div>
@@ -104,7 +104,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">Construction</div>
+											<div class="font-weight-medium">{{__('Construction')}}</div>
 										</div>
 									</div>
 								</div>
@@ -128,7 +128,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">Construction</div>
+											<div class="font-weight-medium">{{__('Clients')}}</div>
 										</div>
 									</div>
 								</div>
@@ -148,7 +148,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">Support System</div>
+											<div class="font-weight-medium">{{__('Support System')}}</div>
 										</div>
 									</div>
 								</div>
@@ -166,7 +166,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">Settings</div>
+											<div class="font-weight-medium">{{__('Settings')}}</div>
 										</div>
 									</div>
 								</div>
