@@ -253,7 +253,7 @@ class SystemController extends Controller
                     'company_name' => 'required|string|max:255',
                     'company_email' => 'required',
                     'company_email_from_name' => 'required|string',
-                    'site_currency' => 'required',
+                    // 'site_currency' => 'required',
                 ]
             );
             $post = $request->all();
@@ -286,6 +286,7 @@ class SystemController extends Controller
             return redirect()->back()->with('error', 'Permission denied.');
         }
     }
+    
 
     public function savePaymentSettings(Request $request)
     {
@@ -558,7 +559,25 @@ class SystemController extends Controller
             return redirect()->back()->with('error', 'Permission denied.');
         }
     }
+    public function emailsettings(Request $request){
+        $EmailTemplates = EmailTemplate::all();
+        return view('settings.emailsettings', compact('EmailTemplates'));
 
+    }
+    public function companysettings(Request $request){
+        $settings                = Utility::settings();
+        $timezones               = config('timezones');
+        $country=Utility::getcountry();
+        return view('settings.company_settings', compact('country','settings','timezones'));
+
+    }
+    public function systemsettings(Request $request){
+        $settings                = Utility::settings();
+        $currency = DB::table('currency')->get();
+
+        return view('settings.systemsettings', compact('settings','currency'));
+
+    }
     public function companyIndex(Request $request )
     {
         if(\Auth::user()->can('manage company settings'))
