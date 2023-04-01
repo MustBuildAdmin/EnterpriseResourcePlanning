@@ -24,7 +24,7 @@
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
-                        {{ __('Company Setting') }}
+                        {{ __('System Setting') }}
                         </h2>
                     </div>
                 </div>
