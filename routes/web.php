@@ -25,16 +25,48 @@ use Illuminate\Support\Facades\Route;
 require __DIR__.'/auth.php';
 
 
-//Route::get('/', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['XSS']);
-//Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['auth','XSS']);
+Route::get('/', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['XSS']);
+Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middleware(['auth','XSS']);
 
-Route::get('/', 'DashboardController@account_dashboard_index')->name('home')->middleware(
+// Route::get('/', 'DashboardController@account_dashboard_index')->name('home')->middleware(
+//     [
+//         'XSS',
+//         'revalidate',
+//     ]
+// );
+Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
     [
         'XSS',
         'revalidate',
     ]
 );
-Route::get('/home', 'DashboardController@account_dashboard_index')->name('home')->middleware(
+
+Route::get('/', 'DashboardController@naccount_dashboard')->name('new_home')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('/email-settings', 'SystemController@emailsettings')->name('emailsettings')->middleware(['XSS','revalidate',]);
+Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['XSS','revalidate',]);
+Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['XSS','revalidate',]);
+
+
+Route::get('/construction_main', 'DashboardController@construction_main')->name('construction_main')->middleware(
     [
         'XSS',
         'revalidate',
@@ -102,6 +134,13 @@ Route::get('profile', 'UserController@profile')->name('profile')->middleware(
         'revalidate',
     ]
 );
+Route::get('new_profile', 'UserController@new_profile')->name('new_profile')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 Route::post('edit-profile', 'UserController@editprofile')->name('update.account')->middleware(
     [
         'auth',
@@ -111,6 +150,14 @@ Route::post('edit-profile', 'UserController@editprofile')->name('update.account'
 );
 
 Route::resource('users', 'UserController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('view_change_password', 'UserController@view_change_password')->name('view_change_password')->middleware(
     [
         'auth',
         'XSS',
@@ -174,7 +221,7 @@ Route::group(
 
     Route::resource('systems', 'SystemController');
     Route::post('email-settings', 'SystemController@saveEmailSettings')->name('email.settings');
-    Route::post('company-settings', 'SystemController@saveCompanySettings')->name('company.settings');
+    Route::post('company-settings', 'SystemController@saveCompanySettings')->name('company.settingssave');
     Route::post('system-settings', 'SystemController@saveSystemSettings')->name('system.settings');
     Route::post('zoom-settings', 'SystemController@saveZoomSettings')->name('zoom.settings');
     Route::post('slack-settings', 'SystemController@saveSlackSettings')->name('slack.settings');

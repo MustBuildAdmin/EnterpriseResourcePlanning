@@ -634,4 +634,124 @@ class DashboardController extends Controller
         return Utility::error_res('Tracker not found.');
     }
 
+    
+    /*********************************************************new ui code work*************************************************/
+    public function account_dashboard()
+    {
+
+        if(Auth::check())
+        {
+            if(Auth::user()->type == 'super admin')
+            {
+                return redirect()->route('client.dashboard.view');
+            }
+            elseif(Auth::user()->type == 'client')
+            {
+                return redirect()->route('client.dashboard.view');
+            }
+            else
+            {
+                if(\Auth::user()->can('show account dashboard'))
+                {
+                $data['latestIncome']  = Revenue::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();
+                $data['latestExpense'] = Payment::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();
+                $currentYer           = date('Y');
+
+
+                $incomeCategory = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 1)->get();
+                $inColor        = array();
+                $inCategory     = array();
+                $inAmount       = array();
+                for($i = 0; $i < count($incomeCategory); $i++)
+                {
+                    $inColor[]    = '#' . $incomeCategory[$i]->color;
+                    $inCategory[] = $incomeCategory[$i]->name;
+                    $inAmount[]   = $incomeCategory[$i]->incomeCategoryRevenueAmount();
+                }
+
+
+                $data['incomeCategoryColor'] = $inColor;
+                $data['incomeCategory']      = $inCategory;
+                $data['incomeCatAmount']     = $inAmount;
+
+
+                $expenseCategory = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 2)->get();
+                $exColor         = array();
+                $exCategory      = array();
+                $exAmount        = array();
+                for($i = 0; $i < count($expenseCategory); $i++)
+                {
+                    $exColor[]    = '#' . $expenseCategory[$i]->color;
+                    $exCategory[] = $expenseCategory[$i]->name;
+                    $exAmount[]   = $expenseCategory[$i]->expenseCategoryAmount();
+                }
+
+                $data['expenseCategoryColor'] = $exColor;
+                $data['expenseCategory']      = $exCategory;
+                $data['expenseCatAmount']     = $exAmount;
+
+                $data['incExpBarChartData']  = \Auth::user()->getincExpBarChartData();
+                $data['incExpLineChartData'] = \Auth::user()->getIncExpLineChartDate();
+
+                $data['currentYear']  = date('Y');
+                $data['currentMonth'] = date('M');
+
+                $constant['taxes']         = Tax::where('created_by', \Auth::user()->creatorId())->count();
+                $constant['category']      = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->count();
+                $constant['units']         = ProductServiceUnit::where('created_by', \Auth::user()->creatorId())->count();
+                $constant['bankAccount']   = BankAccount::where('created_by', \Auth::user()->creatorId())->count();
+                $data['constant']          = $constant;
+                $data['bankAccountDetail'] = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get();
+                $data['recentInvoice']     = Invoice::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();
+                $data['weeklyInvoice']     = \Auth::user()->weeklyInvoice();
+                $data['monthlyInvoice']    = \Auth::user()->monthlyInvoice();
+                $data['recentBill']        = Bill::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();
+                $data['weeklyBill']        = \Auth::user()->weeklyBill();
+                $data['monthlyBill']       = \Auth::user()->monthlyBill();
+                $data['goals']             = Goal::where('created_by', '=', \Auth::user()->creatorId())->where('is_display', 1)->get();
+
+                    return view('new_layouts.home', $data);
+                }
+                else
+                {
+
+                  return $this->hrm_dashboard_index();
+                }
+
+
+            }
+        }
+        else
+        {
+            if(!file_exists(storage_path() . "/installed"))
+            {
+                header('location:install');
+                die;
+            }
+            else
+            {
+                $settings = Utility::settings();
+                if($settings['display_landing_page'] == 'on')
+                {
+
+
+                    return view('layouts.landing', compact('settings'));
+                }
+                else
+                {
+                    return redirect('login');
+                }
+
+            }
+        }
+    }
+
+    public function hrm_main(Request $request){
+        return view('hrm.hrm_main');
+    }
+
+    public function construction_main(Request $request){
+        return view('construction_project.construction_main');
+    }
+
 }

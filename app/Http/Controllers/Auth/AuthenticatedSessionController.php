@@ -125,7 +125,7 @@ class AuthenticatedSessionController extends Controller
             );
             if($user->type =='company' || $user->type =='super admin')
             {
-                return redirect('company-setting');
+                return redirect('companysetting');
 
             }
             else  if($user->type =='client')
@@ -145,11 +145,13 @@ class AuthenticatedSessionController extends Controller
             );
             if($user->type =='company' || $user->type =='super admin' || $user->type =='client')
             {
+               
                 return redirect()->intended(RouteServiceProvider::HOME);
 
             }
             else
             {
+             
                 return redirect()->intended(RouteServiceProvider::EMPHOME);
             }
         }
@@ -159,7 +161,7 @@ class AuthenticatedSessionController extends Controller
     }
     /**
      * Destroy an authenticated session.
-     *
+    *
      * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
@@ -268,6 +270,7 @@ class AuthenticatedSessionController extends Controller
 
     public function showLoginForm($lang = '')
     {
+       
 
         if($lang == '')
         {
