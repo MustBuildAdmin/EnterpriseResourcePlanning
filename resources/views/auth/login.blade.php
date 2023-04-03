@@ -15,9 +15,12 @@
     li.nav-item {
         list-style: none;
     }
+    .font_size{
+        font-size: 11px !important;
+    }
     .backgroundimge{
-        width: 100px;
-        height: 60;
+        width: 150px;
+        height: 80;
         object-fit: contain;
     }
     .navbar-brand-autodark,img.backgroundimge{
@@ -29,6 +32,9 @@
         display: flex;
         position: absolute;
         right: 10px;
+    }
+    .form-control.is-invalid, .was-validated .form-control:invalid {
+        background-image: unset !important;
     }
 </style>
 @php
@@ -55,32 +61,34 @@
         <div class="">
         </div>
         <li class="nav-item ">
-        <select class="btn btn-primary my-1 me-2 " onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
+        <select class="btn btn-primary my-1 me-2 font_size" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
             @foreach(Utility::languages() as $language)
-                <option class="" @if($lang == $language) selected @endif value="{{ route('login',$language) }}">{{Str::upper($language)}}</option>
+                <option class="font_size" @if($lang == $language) selected @endif value="{{ route('login',$language) }}">{{Str::upper($language)}}</option>
             @endforeach
         </select>
     </li>
     </div>
-   
+    <div class="text-center mb-4">
+        <a href="." class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+    </div>
     {{Form::open(array('route'=>'login','method'=>'post',"class"=>"card card-md",'id'=>'loginForm' ))}}
     @csrf
   
     <div class="card-body">
-    <h2 class="card-title text-center mb-4">{{__('Login')}}</h2>
-    <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+        <h2 class="h2 text-center mb-4">{{__('Login to your account')}}</h2>
+   
 
 
         <div class="form-group mb-3">
             <label for="email" class="form-label">{{__('Email')}}</label>
-            <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" placeholder="your@email.com" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
             @error('email')
             <div class="invalid-feedback" role="alert">{{ $message }}</div>
             @enderror
         </div>
         <div class="form-group mb-3">
             <label for="password" class="form-label">{{__('Password')}}</label>
-            <input class="form-control @error('password') is-invalid @enderror" id="password" type="password" name="password" required autocomplete="current-password">
+            <input class="form-control @error('password') is-invalid @enderror" id="password" type="password" name="password" placeholder="Your password" required autocomplete="current-password">
             @error('password')
             <div class="invalid-feedback" role="alert">{{ $message }}</div>
             @enderror
@@ -127,5 +135,9 @@
             return true;
         });
     });
+   
+    $(".is-invalid").click(function(){
+        alert("button");
+    });  
 </script>
 
