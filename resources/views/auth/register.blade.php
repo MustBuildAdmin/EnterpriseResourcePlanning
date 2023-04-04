@@ -16,8 +16,8 @@
         list-style: none;
     }
     .backgroundimge{
-        width: 100px;
-        height: 60;
+        width: 150px;
+        height: 80;
         object-fit: contain;
     }
     .navbar-brand-autodark,img.backgroundimge{
@@ -29,6 +29,16 @@
         display: flex;
         position: absolute;
         right: 10px;
+    }
+    .error_class{
+        color:red;
+        font-weight:bold;
+    }
+    option {
+    text-transform: capitalize;
+    }
+    .font_size{
+        font-size: 11px !important;
     }
 </style>
 @section('page-title')
@@ -51,20 +61,21 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
        
         </div>
         <li class="nav-item ">
-            <select class="btn btn-primary my-1 me-2 " onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
+            <select class="btn btn-primary my-1 me-2 font_size" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
                 @foreach(Utility::languages() as $language)
                     <option class="" @if($lang == $language) selected @endif value="{{ route('register',$language) }}">{{Str::upper($language)}}</option>
                 @endforeach
             </select>
         </li>
     </div>
+    <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
     <form class="card card-md" method="POST" action="{{ route('register') }}">
       <div class="card-body">
         @csrf
-        <h2 class="card-title text-center mb-4">{{__('Register')}}</h2>
-        <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+        <h2 class="card-title text-center mb-4">{{__('Sign Up')}}</h2>
+       
             <div class="mb-3">
-                <label for="name" class="form-label">{{__('Name')}}</label>
+                <label for="name" class="form-label">{{__('Name')}} <span class="error_class">*</span></label>
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                 @error('name')
                 <span class="invalid-feedback" role="alert">
@@ -73,7 +84,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">{{__('Email')}}</label>
+                <label for="email" class="form-label">{{__('Email')}} <span class="error_class">*</span></label>
                 <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 @error('email')
                 <span class="invalid-feedback" role="alert">
@@ -111,7 +122,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                 </div>
             </div> -->
             <div class="mb-3">
-                <label for="company_name" class="form-label">{{__('Company Name')}}</label>
+                <label for="company_name" class="form-label">{{__('Company Name')}} <span class="error_class">*</span></label>
                 <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
                 @error('company_name')
                 <span class="invalid-feedback" role="alert">
@@ -124,11 +135,11 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                 </div>
             </div>
             <div class="mb-3">
-                <label for="company_type" class="form-label">{{__('Company_type')}}</label>
+                <label for="company_type" class="form-label">{{__('Company_type')}} <span class="error_class">*</span></label>
                 <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required name='company_type'>
                     <option value=''>{{__('Select_Company_type')}}</option>
                     @foreach($companytype as $key => $value)
-                    <option value='{{$value->id}}'>{{$value->name}}</option>
+                    <option value='{{$value->id}}'>{{__($value->name)}}</option>
                     @endforeach
                  
                 </select>
@@ -159,7 +170,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
       </div>
     </form>
     <div class="text-center text-muted mt-3">
-        {{__("Already' have an account?")}}  <a href="{{ route('login',!empty(\Auth::user()->lang)?\Auth::user()->lang:'en') }}"  tabindex="-1">{{__('Login')}}</a>
+        {{__("Already have an account?")}}  <a href="{{ route('login',!empty(\Auth::user()->lang)?\Auth::user()->lang:'en') }}"  tabindex="-1">{{__('Login')}}</a>
     </div>
 
   </div>
