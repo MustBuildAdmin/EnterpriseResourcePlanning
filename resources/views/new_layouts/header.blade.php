@@ -50,6 +50,12 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+		#lang{
+			text-decoration: none;
+		}
+		.fa-globe{
+			color:#616876 !important;
+		}
     </style>
 
 </head>
@@ -198,7 +204,7 @@
                                     </span> </a>
 							</li>
 						</ul>
-						<div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+						{{-- <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
 							<form action="./" method="get" autocomplete="off" novalidate>
 								<div class="input-icon"> <span class="input-icon-addon">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/search -->
@@ -213,16 +219,16 @@
                                     </span>
 									<input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search in website"> </div>
 							</form>
-						</div>
+						</div> --}}
 						<div class="dropdown dash-h-item drp-language order-md-last">
-							<a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false"> 
-                                <i class="ti ti-world" style=""</i> 
+							<a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false"> 
+								<i class="fas fa-globe"></i>
                                 <span class="drp-text hide-mob">{{Str::upper(isset($lang)?$lang:'en')}}</span> 
-                                <i class="ti ti-chevron-down drp-arrow nocolor"></i> 
+								
                             </a>
 							<div class="dropdown-menu dash-h-dropdown dropdown-menu-end"> 
                                 @foreach($languages as $language)
-                                    <a href="{{route('change.language',$language)}}" class="dropdown-item @if($language == $lang) text-danger @endif"> 
+                                    <a href="{{route('change.language',$language)}}"  class="dropdown-item @if($language == $lang) text-danger @endif"> 
                                         <span>{{Str::upper($language)}}</span> 
                                     </a> 
                                 @endforeach

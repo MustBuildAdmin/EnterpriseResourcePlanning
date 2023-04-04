@@ -12,7 +12,8 @@
 </div>
 </div>
 <!-- Libs JS -->
-<script src="{{asset('js/jquery.min.js')}}"></script>
+<script src="{{ asset('assets/dist/js/demo-theme.min.js?1674944402') }}"></script>
+<script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
 <!-- Libs JS -->
 <script>
 feather.replace();
@@ -39,7 +40,7 @@ feather.replace();
 <!-- Tabler Core -->
 <script src="{{ asset('assets/dist/js/tabler.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/demo.min.js') }}"></script>
-
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 @if (App\Models\Utility::getValByName1('gdpr_cookie') == 'on')
     <script type="text/javascript">
         var defaults = {
