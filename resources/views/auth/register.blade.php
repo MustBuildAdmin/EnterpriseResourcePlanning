@@ -40,6 +40,9 @@
     .font_size{
         font-size: 11px !important;
     }
+    .form-control.is-invalid, .was-validated .form-control:invalid {
+        background-image: unset !important;
+    }
 </style>
 @section('page-title')
     {{__('Register')}}
@@ -123,7 +126,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
             </div> -->
             <div class="mb-3">
                 <label for="company_name" class="form-label">{{__('Company Name')}} <span class="error_class">*</span></label>
-                <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
+                <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" value="{{ old('company_name') }}" name="company_name" required autocomplete="new-password">
                 @error('company_name')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
