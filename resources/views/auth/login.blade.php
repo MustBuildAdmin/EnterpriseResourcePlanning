@@ -135,9 +135,5 @@
             return true;
         });
     });
-   
-    $(".is-invalid").click(function(){
-        alert("button");
-    });  
 </script>
 
