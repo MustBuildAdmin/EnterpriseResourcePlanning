@@ -155,7 +155,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{ route('systemsettings') }}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
@@ -166,7 +166,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Settings')}}</div>
+											<div class="font-weight-medium"> {{__('System Settings')}}</div>
 										</div>
 									</div>
 								</div>
