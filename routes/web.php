@@ -148,6 +148,13 @@ Route::post('edit-profile', 'UserController@editprofile')->name('update.account'
         'revalidate',
     ]
 );
+Route::post('new_edit_profile', 'UserController@new_edit_profile')->name('new_edit_profile')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 Route::resource('users', 'UserController')->middleware(
     [
@@ -165,6 +172,7 @@ Route::get('view_change_password', 'UserController@view_change_password')->name(
     ]
 );
 Route::post('change-password', 'UserController@updatePassword')->name('update.password');
+Route::post('newpassword', 'UserController@newpassword')->name('newpassword');
 Route::any('user-reset-password/{id}', 'UserController@userPassword')->name('users.reset');
 Route::post('user-reset-password/{id}', 'UserController@userPasswordReset')->name('user.password.update');
 
