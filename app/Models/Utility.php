@@ -1261,103 +1261,353 @@ class Utility extends Model
     public static function sendEmailTemplate($emailTemplate, $mailTo, $obj)
     {
         $usr = Auth::user();
+        if($usr!=null && !empty($usr)){
+            //Remove Current Login user Email don't send mail to them
+            unset($mailTo[$usr->id]);
 
-        //Remove Current Login user Email don't send mail to them
-        unset($mailTo[$usr->id]);
+            $mailTo = array_values($mailTo);
 
-        $mailTo = array_values($mailTo);
-
-        if($usr->type != 'Super Admin')
-        {
-
-            // find template is exist or not in our record
-            $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
-//            dd($template);
-
-
-            if(isset($template) && !empty($template))
+            if($usr->type != 'Super Admin')
             {
-//                dd($usr->creatorId());
 
-                // check template is active or not by company
-                if($usr->type != 'super admin')
+                // find template is exist or not in our record
+                $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+                if(isset($template) && !empty($template))
                 {
-                    $is_active = UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id', '=', $usr->creatorId())->first();
 
-                }
-                else{
-
-                    $is_active = (object) array('is_active' => 1);
-                }
-
-                if($is_active->is_active == 1)
-                {
-                    $settings = self::settings();
-
-                    // get email content language base
-                    $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
-
-                    $content->from = $template->from;
-                    if(!empty($content->content))
+                    // check template is active or not by company
+                    if($usr->type != 'super admin')
                     {
-                        $content->content = self::replaceVariable($content->content, $obj);
-//                        dd($obj);
+                        $is_active = UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id', '=', $usr->creatorId())->first();
 
+                    }
+                    else{
 
-                        // send email
-                        try
+                        $is_active = (object) array('is_active' => 1);
+                    }
+
+                    if($is_active->is_active == 1)
+                    {
+                        $settings = self::settings();
+
+                        // get email content language base
+                        $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
+
+                        $content->from = $template->from;
+                        if(!empty($content->content))
                         {
-//                            dd($mailTo,$content,$settings);
-                            Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+                            $content->content = self::replaceVariable($content->content, $obj);
 
-                        }
 
-                        catch(\Exception $e)
-                        {
-                            $error = $e->getMessage();
-                        }
+                            // send email
+                            try
+                            {
+                                Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
 
-                        if(isset($error))
-                        {
-                            $arReturn = [
-                                'is_success' => false,
-                                'error' => $error,
-                            ];
+                            }
+
+                            catch(\Exception $e)
+                            {
+                                $error = $e->getMessage();
+                            }
+
+                            if(isset($error))
+                            {
+                                $arReturn = [
+                                    'is_success' => false,
+                                    'error' => $error,
+                                ];
+                            }
+                            else
+                            {
+                                $arReturn = [
+                                    'is_success' => true,
+                                    'error' => false,
+                                ];
+                            }
                         }
                         else
                         {
                             $arReturn = [
-                                'is_success' => true,
-                                'error' => false,
+                                'is_success' => false,
+                                'error' => __('Mail not send, email is empty'),
                             ];
                         }
+
+                        return $arReturn;
                     }
                     else
                     {
-                        $arReturn = [
-                            'is_success' => false,
-                            'error' => __('Mail not send, email is empty'),
+                        return [
+                            'is_success' => true,
+                            'error' => false,
                         ];
                     }
-
-                    return $arReturn;
                 }
                 else
                 {
                     return [
-                        'is_success' => true,
-                        'error' => false,
+                        'is_success' => false,
+                        'error' => __('Mail not send, email not found'),
                     ];
                 }
             }
-            else
-            {
-                return [
-                    'is_success' => false,
-                    'error' => __('Mail not send, email not found'),
-                ];
-            }
+        }else{
+             // find template is exist or not in our record
+             $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+             if(isset($template) && !empty($template))
+             {
+
+               
+
+                $is_active = (object) array('is_active' => 1);
+
+                 if($is_active->is_active == 1)
+                 {
+                     $settings = self::settings();
+
+                     // get email content language base
+                     $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
+
+                     $content->from = $template->from;
+                     if(!empty($content->content))
+                     {
+                         $content->content = self::replaceVariable($content->content, $obj);
+
+
+                         // send email
+                         try
+                         {
+                             Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+
+                         }
+
+                         catch(\Exception $e)
+                         {
+                             $error = $e->getMessage();
+                         }
+
+                         if(isset($error))
+                         {
+                             $arReturn = [
+                                 'is_success' => false,
+                                 'error' => $error,
+                             ];
+                         }
+                         else
+                         {
+                             $arReturn = [
+                                 'is_success' => true,
+                                 'error' => false,
+                             ];
+                         }
+                     }
+                     else
+                     {
+                         $arReturn = [
+                             'is_success' => false,
+                             'error' => __('Mail not send, email is empty'),
+                         ];
+                     }
+
+                     return $arReturn;
+                 }
+                 else
+                 {
+                     return [
+                         'is_success' => true,
+                         'error' => false,
+                     ];
+                 }
+             }
+             else
+             {
+                 return [
+                     'is_success' => false,
+                     'error' => __('Mail not send, email not found'),
+                 ];
+             }
         }
+      
+       
+    }
+    public static function sendEmailTemplateHTML($emailTemplate, $mailTo, $obj)
+    {
+        $usr = Auth::user();
+        if($usr!=null && !empty($usr)){
+            //Remove Current Login user Email don't send mail to them
+            unset($mailTo[$usr->id]);
+
+            $mailTo = array_values($mailTo);
+
+            if($usr->type != 'Super Admin')
+            {
+
+                // find template is exist or not in our record
+                $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+                if(isset($template) && !empty($template))
+                {
+
+                    // check template is active or not by company
+                    if($usr->type != 'super admin')
+                    {
+                        $is_active = UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id', '=', $usr->creatorId())->first();
+
+                    }
+                    else{
+
+                        $is_active = (object) array('is_active' => 1);
+                    }
+
+                    if($is_active->is_active == 1)
+                    {
+                        $settings = self::settings();
+
+                        // get email content language base
+                        $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
+
+                        $content->from = $template->from;
+                        if(!empty($content->content))
+                        {
+                            $content->content = self::replaceVariable($content->content, $obj);
+                            $general_template_ending= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta content="telephone=no" name="format-detection"/><title></title><style type="text/css" data-premailer="ignore">@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700);</style><style data-premailer="ignore"> @media screen and (max-width: 600px){u+.body{width: 100vw !important;}}a[x-apple-data-detectors]{color: inherit !important;text-decoration: none !important;font-size: inherit !important;font-family: inherit !important;font-weight: inherit !important;line-height: inherit !important;}</style><link rel="stylesheet" href="./assets/theme.css"/></head><body class="bg-body"><center><table class="main bg-body" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" valign="top"><span class="preheader">This is preheader text. Some clients will show this text as a preview.</span><table class="wrap" cellspacing="0" cellpadding="0"> <tr><td class="p-sm"><table cellpadding="0" cellspacing="0"><tr><td class="py-lg"><table cellspacing="0" cellpadding="0"> <tr> <td> <a href="https://erpdev.mustbuildapp.com/"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="34" alt=""/></a> </td><td class="text-right"> <a href="https://erpdev.mustbuildapp.com/" class="text-muted-light font-sm"> View online </a> </td></tr></table> </td></tr></table> <div class="main-content"> <table class="box" cellpadding="0" cellspacing="0"> <tr> <td> <table cellpadding="0" cellspacing="0"> <tr> <td class="content pb-0" align="center"> <table class="icon icon-lg bg-green" cellspacing="0" cellpadding="0"> <tr> <td valign="middle" align="center"> <img src="./assets/icons-white-check.png" class=" va-middle" width="40" height="40" alt="check"/> </td></tr></table> </td></tr><tr> <td class="content text-center">'.$content->content.'</td></tr><tr> <td class="content text-center border-top"> <p> Yours sincerely,<br><a href="https://erpdev.mustbuildapp.com/" class="text-default">MustBuild</a> </p><p> <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="54" alt=""/></p></td></tr></table> </td></tr></table> </div><table cellspacing="0" cellpadding="0"> <tr> <td class="py-xl"> <table class="font-sm text-center text-muted" cellspacing="0" cellpadding="0"> <tr> <td align="center" class="pb-md"> <table class="w-auto" cellspacing="0" cellpadding="0"> <tr> <td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-facebook-square.png" class=" va-middle" width="24" height="24" alt="social-facebook-square"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-twitter.png" class=" va-middle" width="24" height="24" alt="social-twitter"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-github.png" class=" va-middle" width="24" height="24" alt="social-github"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-youtube.png" class=" va-middle" width="24" height="24" alt="social-youtube"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-pinterest.png" class=" va-middle" width="24" height="24" alt="social-pinterest"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-instagram.png" class=" va-middle" width="24" height="24" alt="social-instagram"/> </a> </td></tr></table> </td></tr><tr> <td class="px-lg"> If you have any questions, feel free to message us at <a href="mailto:support@tabler.io" class="text-muted">support@tabler.io</a>. </td></tr><tr> <td class="pt-md"> You are receiving this email because you have bought or downloaded one of the Tabler products. <a href="https://erpdev.mustbuildapp.com/" class="text-muted">Unsubscribe</a> </td></tr></table> </td></tr></table> </td></tr></table> </td></tr></table> </center></body></html>';
+
+                                                    $content->content=$general_template_ending;
+
+                            // send email
+                            try
+                            {
+                                Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+
+                            }
+
+                            catch(\Exception $e)
+                            {
+                                $error = $e->getMessage();
+                            }
+
+                            if(isset($error))
+                            {
+                                $arReturn = [
+                                    'is_success' => false,
+                                    'error' => $error,
+                                ];
+                            }
+                            else
+                            {
+                                $arReturn = [
+                                    'is_success' => true,
+                                    'error' => false,
+                                ];
+                            }
+                        }
+                        else
+                        {
+                            $arReturn = [
+                                'is_success' => false,
+                                'error' => __('Mail not send, email is empty'),
+                            ];
+                        }
+
+                        return $arReturn;
+                    }
+                    else
+                    {
+                        return [
+                            'is_success' => true,
+                            'error' => false,
+                        ];
+                    }
+                }
+                else
+                {
+                    return [
+                        'is_success' => false,
+                        'error' => __('Mail not send, email not found'),
+                    ];
+                }
+            }
+        }else{
+             // find template is exist or not in our record
+             $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+             if(isset($template) && !empty($template))
+             {
+
+               
+
+                $is_active = (object) array('is_active' => 1);
+
+                 if($is_active->is_active == 1)
+                 {
+                     $settings = self::settings();
+
+                     // get email content language base
+                     $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
+                    //  Common template 
+                    $general_template_starting='';
+                     $content->from = $template->from;
+                     if(!empty($content->content))
+                     {
+                         $content->content = self::replaceVariable($content->content, $obj);
+                         $general_template_ending= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta content="telephone=no" name="format-detection"/><title></title><style type="text/css" data-premailer="ignore">@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700);</style><style data-premailer="ignore"> @media screen and (max-width: 600px){u+.body{width: 100vw !important;}}a[x-apple-data-detectors]{color: inherit !important;text-decoration: none !important;font-size: inherit !important;font-family: inherit !important;font-weight: inherit !important;line-height: inherit !important;}</style><link rel="stylesheet" href="./assets/theme.css"/></head><body class="bg-body"><center><table class="main bg-body" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" valign="top"><span class="preheader">This is preheader text. Some clients will show this text as a preview.</span><table class="wrap" cellspacing="0" cellpadding="0"> <tr><td class="p-sm"><table cellpadding="0" cellspacing="0"><tr><td class="py-lg"><table cellspacing="0" cellpadding="0"> <tr> <td> <a href="https://erpdev.mustbuildapp.com/"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="34" alt=""/></a> </td><td class="text-right"> <a href="https://erpdev.mustbuildapp.com/" class="text-muted-light font-sm"> View online </a> </td></tr></table> </td></tr></table> <div class="main-content"> <table class="box" cellpadding="0" cellspacing="0"> <tr> <td> <table cellpadding="0" cellspacing="0"> <tr> <td class="content pb-0" align="center"> <table class="icon icon-lg bg-green" cellspacing="0" cellpadding="0"> <tr> <td valign="middle" align="center"> <img src="./assets/icons-white-check.png" class=" va-middle" width="40" height="40" alt="check"/> </td></tr></table> </td></tr><tr> <td class="content text-center">'.$content->content.'</td></tr><tr> <td class="content text-center border-top"> <p> Yours sincerely,<br><a href="https://erpdev.mustbuildapp.com/" class="text-default">MustBuild</a> </p><p> <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="54" alt=""/></p></td></tr></table> </td></tr></table> </div><table cellspacing="0" cellpadding="0"> <tr> <td class="py-xl"> <table class="font-sm text-center text-muted" cellspacing="0" cellpadding="0"> <tr> <td align="center" class="pb-md"> <table class="w-auto" cellspacing="0" cellpadding="0"> <tr> <td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-facebook-square.png" class=" va-middle" width="24" height="24" alt="social-facebook-square"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-twitter.png" class=" va-middle" width="24" height="24" alt="social-twitter"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-github.png" class=" va-middle" width="24" height="24" alt="social-github"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-youtube.png" class=" va-middle" width="24" height="24" alt="social-youtube"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-pinterest.png" class=" va-middle" width="24" height="24" alt="social-pinterest"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-instagram.png" class=" va-middle" width="24" height="24" alt="social-instagram"/> </a> </td></tr></table> </td></tr><tr> <td class="px-lg"> If you have any questions, feel free to message us at <a href="mailto:support@tabler.io" class="text-muted">support@tabler.io</a>. </td></tr><tr> <td class="pt-md"> You are receiving this email because you have bought or downloaded one of the Tabler products. <a href="https://erpdev.mustbuildapp.com/" class="text-muted">Unsubscribe</a> </td></tr></table> </td></tr></table> </td></tr></table> </td></tr></table> </center></body></html>';
+
+                         $content->content=$general_template_ending;
+
+                         // send email
+                         try
+                         {
+                             Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+
+                         }
+
+                         catch(\Exception $e)
+                         {
+                             $error = $e->getMessage();
+                         }
+
+                         if(isset($error))
+                         {
+                             $arReturn = [
+                                 'is_success' => false,
+                                 'error' => $error,
+                             ];
+                         }
+                         else
+                         {
+                             $arReturn = [
+                                 'is_success' => true,
+                                 'error' => false,
+                             ];
+                         }
+                     }
+                     else
+                     {
+                         $arReturn = [
+                             'is_success' => false,
+                             'error' => __('Mail not send, email is empty'),
+                         ];
+                     }
+
+                     return $arReturn;
+                 }
+                 else
+                 {
+                     return [
+                         'is_success' => true,
+                         'error' => false,
+                     ];
+                 }
+             }
+             else
+             {
+                 return [
+                     'is_success' => false,
+                     'error' => __('Mail not send, email not found'),
+                 ];
+             }
+        }
+      
+       
     }
     public static function replaceVariable($content, $obj)
     {
@@ -1463,7 +1713,7 @@ class Utility extends Model
             '{contract_subject}',
             '{contract_start_date}',
             '{contract_end_date}',
-
+            '{set_password_url}'
 
 
 //            '{payment_name}',
@@ -1612,6 +1862,7 @@ class Utility extends Model
             'contract_subject' => '-',
             'contract_start_date' => '-',
             'contract_end_date' => '-',
+            'set_password_url'=>'-'
 
 
 
@@ -1630,6 +1881,8 @@ class Utility extends Model
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
+       
+        $arrValue['set_password_url']=  '<a class="btn bg-green border-green" href="' .$arrValue['set_password_url'] . '" target="_blank"><span class="btn-span">Set Password</span></a>';
 
 //        dd($arrVariable);
 //        dd(str_replace($arrVariable, array_values($arrValue), $content));
