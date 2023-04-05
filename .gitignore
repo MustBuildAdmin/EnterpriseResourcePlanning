@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/public/assets/js/gantt/
+.DS_Store
+public/.DS_Store
+public/assets/.DS_Store
+public/assets/js/.DS_Store
+/resources/views/auth/register.blade copy.php
+/resources/views/layouts/auth.blade copy.php
