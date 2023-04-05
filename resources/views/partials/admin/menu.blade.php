@@ -909,7 +909,7 @@
                                 <ul class="dash-submenu">
                                     @if(Gate::check('manage company settings'))
                                         <li class="dash-item dash-hasmenu {{ (Request::segment(1) == 'companysetting') ? ' active' : '' }}">
-                                            <a href="{{ route('company.settings') }}" class="dash-link">{{__('System Settings')}}</a>
+                                            <a href="{{ route('systemsettings') }}" class="dash-link">{{__('System Settings')}}</a>
                                         </li>
                                     @endif
                                     @if(Gate::check('manage company plan'))

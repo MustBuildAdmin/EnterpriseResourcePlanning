@@ -51,6 +51,7 @@
 	<script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script>
 	
 
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -78,8 +79,16 @@
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
 				<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
-                        <img src="./static/logo.svg" width="110" height="32" alt="Must BuildApp"
+                        
+							@if($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on' )
+								<img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
+									alt="{{ config('app.name', 'ERPGo-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
                             class="navbar-brand-image">
+							@else
+								<img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
+									alt="{{ config('app.name', 'ERPGo-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
+                            class="navbar-brand-image">
+							@endif
                     </a>
                 </h1>
 				<div class="navbar-nav flex-row order-md-last">
@@ -185,8 +194,8 @@
 								<div>{{\Auth::user()->name }}</div>
 							</div>
 						</a>
-						<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> <a href="{{route('new_profile')}}" class="dropdown-item">Profile</a>
-							<div class="dropdown-divider"></div> <a href="{{route('company.settings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">Logout</a>
+						<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> <a href="{{route('new_profile')}}" class="dropdown-item">{{__('Profile')}}</a>
+							<div class="dropdown-divider"></div> <a href="{{route('company.settings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">{{__('Logout')}}</a>
 							<form id="frm-logout" action="{{ route('logout') }}" method="POST" class="d-none"> {{ csrf_field() }} </form>
 						</div>
 					</div>
@@ -211,7 +220,7 @@
                                             <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                                         </svg>
                                     </span> <span class="nav-link-title">
-                                        Home
+                                        {{__('Home')}}
                                     </span> </a>
 							</li>
 						</ul>
