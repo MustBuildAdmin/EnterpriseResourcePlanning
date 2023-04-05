@@ -41,6 +41,7 @@ feather.replace();
 <script src="{{ asset('assets/dist/js/tabler.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/demo.min.js') }}"></script>
 <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
 @if (App\Models\Utility::getValByName1('gdpr_cookie') == 'on')
     <script type="text/javascript">
         var defaults = {
