@@ -40,6 +40,7 @@
     <link href="{{ asset('assets/dist/css/tabler-payments.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/tabler-vendors.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -174,8 +175,8 @@
 								<div>{{\Auth::user()->name }}</div>
 							</div>
 						</a>
-						<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> <a href="{{route('new_profile')}}" class="dropdown-item">Profile</a>
-							<div class="dropdown-divider"></div> <a href="{{route('company.settings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">Logout</a>
+						<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> <a href="{{route('new_profile')}}" class="dropdown-item">{{__('Profile')}}</a>
+							<div class="dropdown-divider"></div> <a href="{{route('company.settings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">{{__('Logout')}}</a>
 							<form id="frm-logout" action="{{ route('logout') }}" method="POST" class="d-none"> {{ csrf_field() }} </form>
 						</div>
 					</div>
@@ -200,7 +201,7 @@
                                             <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                                         </svg>
                                     </span> <span class="nav-link-title">
-                                        Home
+                                        {{__('Home')}}
                                     </span> </a>
 							</li>
 						</ul>

@@ -462,6 +462,103 @@ class UserController extends Controller
         }
     
     }
+
+    public function new_edit_profile(Request $request)
+    {
+        try {
+            $userDetail = \Auth::user();
+            echo $userDetail->id;
+            $user  = User::findOrFail($userDetail->id);
+    
+            $validator = \Validator::make(
+                $request->all(), [
+                    'name' => 'required|max:120',
+                    'email' => 'required|email|unique:users,email,' . $userDetail->id,
+                ]
+            );
+    
+            if($validator->fails())
+            {
+                $messages = $validator->getMessageBag();
+                return redirect()->back()->with('error', $messages->first());
+            }
+    
+            if($request->hasFile('profile'))
+            {
+                // image restriction
+                $validator = \Validator::make(
+                    $request->all(), [
+                        'profile' => 'mimes:jpeg,jpg,png,gif,webp|required|max:20480',
+                    ]
+                );
+    
+                if($validator->fails())
+                {
+                    $messages = $validator->getMessageBag();
+                    return redirect()->back()->with('error', $messages->first());
+                }
+                
+                $filenameWithExt = $request->file('profile')->getClientOriginalName();
+                $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension       = $request->file('profile')->getClientOriginalExtension();
+                $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        
+                // Storage::disk('s3')->put($filePath, file_get_contents($file));
+                // $s3client = S3Client::factory(
+                //     [
+                //         'signature' => 'v4',
+                //         'version' => 'latest',
+                //         'ACL' => 'private',
+                //         'region' => env('AWS_DEFAULT_REGION'),
+                //         'credentials' => $credentials,
+                //         'Statement' => [
+                //             'Action ' => "*",
+                //         ],
+                //     ]);
+                //aws s3 part
+                $settings = Utility::getStorageSetting();
+                if($settings['storage_setting']=='local')
+                {
+                    $dir = 'uploads/avatar/';
+                }else{
+                    $dir = 'uploads/avatar';
+                }
+    
+                $image_path = $dir . $userDetail->avatar;
+    
+                if(File::exists($image_path))
+                {
+                    File::delete($image_path);
+                }
+    
+    
+                $url = '';
+                $path = Utility::upload_file($request,'profile',$fileNameToStore,$dir,[]);
+                if($path['flag'] == 1)
+                {
+                    $url = $path['url'];
+                }else{
+                    return redirect()->route('profile', \Auth::user()->id)->with('error', __($path->msg));
+                }
+                //aws s3 part
+            }
+    
+            if(!empty($request->profile))
+            {
+                $user->avatar = $fileNameToStore;
+            }
+            $user['name']  = $request->name;
+            $user['email'] = $request->email;
+            $user->save();
+            CustomField::saveData($user, $request->customField);
+    
+            return redirect()->route('new_profile')->with('success', 'Profile successfully updated.');
+        } 
+        catch (Exception $e) {
+            return $e->getMessage();
+        }
+    
+    }
     
 
     public function updatePassword(Request $request)
@@ -501,6 +598,47 @@ class UserController extends Controller
         else
         {
             return redirect()->route('profile', \Auth::user()->id)->with('error', __('Something is wrong.'));
+        }
+    }
+
+    
+    public function newpassword(Request $request)
+    {
+
+        if(Auth::Check())
+        {
+            $objUser= Auth::user();
+            $request->validate(
+                [
+                    'old_password' =>  ['required', function ($attribute, $value, $fail) use ($objUser) {
+                        if (!\Hash::check($value, $objUser->password)) {
+                            return $fail(__('The current password is incorrect.'));
+                        }
+                    }],
+                    'password' => 'required|min:6',
+                    'password_confirmation' => 'required|same:password',
+                ]
+            );
+
+            $request_data     = $request->All();
+            $current_password = $objUser->password;
+            if(Hash::check($request_data['old_password'], $current_password))
+            {
+                $user_id            = Auth::User()->id;
+                $obj_user           = User::find($user_id);
+                $obj_user->password = Hash::make($request_data['password']);;
+                $obj_user->save();
+
+                return redirect()->route('view_change_password', $objUser->id)->with('success', __('Password successfully updated.'));
+            }
+            else
+            {
+                return redirect()->route('view_change_password', $objUser->id)->with('error', __('Please enter correct current password.'));
+            }
+        }
+        else
+        {
+            return redirect()->route('view_change_password', \Auth::user()->id)->with('error', __('Something is wrong.'));
         }
     }
     // User To do module

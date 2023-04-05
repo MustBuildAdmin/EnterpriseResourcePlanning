@@ -135,5 +135,9 @@
             return true;
         });
     });
+    setTimeout(function() {
+        location.reload();
+    }, 90000);
+
 </script>
 
