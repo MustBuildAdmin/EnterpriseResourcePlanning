@@ -40,6 +40,17 @@
     <link href="{{ asset('assets/dist/css/tabler-payments.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/tabler-vendors.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
+
+	<!-- font css -->
+    <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
+
+	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
+	<script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script>
+	
+
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -251,3 +262,25 @@
 				</div>
 			</div>
 		</header>
+
+		<div class="modal fade" id="commonModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="body">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="position-fixed top-0 end-0 p-3" style="z-index: 99999">
+			<div id="liveToast" class="toast text-white  fade" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body"> </div>
+					<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>

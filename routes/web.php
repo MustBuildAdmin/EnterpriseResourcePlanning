@@ -61,6 +61,13 @@ Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middl
     ]
 );
 
+Route::resource('hrm_doc_setup', 'DucumentUploadController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('/email-settings', 'SystemController@emailsettings')->name('emailsettings')->middleware(['XSS','revalidate',]);
 Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['XSS','revalidate',]);
 Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['XSS','revalidate',]);

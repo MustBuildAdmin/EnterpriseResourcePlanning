@@ -199,7 +199,7 @@
                   </a>
                 </li>
                 <li>
-                    <a href="#" class="">
+                    <a href="{{url('hrm_doc_setup')}}" class="">
                       <span class="icon"><i class="ti ti-certificate"></i>
                       </span>
                       <span class="list">Document Setup</span>
@@ -236,10 +236,6 @@
 
     <div class="col-10 col-md-10 col-xs-10">
 
-    </div>
-</div>
-</div>
-</div>
 <script>
     $(document).ready(function(){
         $(".hamburger").click(function(){
