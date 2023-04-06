@@ -73,8 +73,9 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
     </div>
     <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
     <form class="card card-md" method="POST" action="{{ route('register') }}">
-      <div class="card-body">
         @csrf
+      <div class="card-body">
+       
         <h2 class="card-title text-center mb-4">{{__('Sign Up')}}</h2>
        
             <div class="mb-3">
