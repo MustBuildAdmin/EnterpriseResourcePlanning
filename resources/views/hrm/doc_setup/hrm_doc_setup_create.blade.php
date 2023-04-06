@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-md-6 form-group">
-            {{Form::label('document',__('Document'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+            <label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label>
             <div class="choose-file ">
                 <label for="document" class="form-label">
                     <input type="file" class="form-control" name="document" id="document" data-filename="document_create" required>
