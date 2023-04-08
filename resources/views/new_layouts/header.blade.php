@@ -40,6 +40,18 @@
     <link href="{{ asset('assets/dist/css/tabler-payments.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/tabler-vendors.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
+
+	<!-- font css -->
+    <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
+
+	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
+	<script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script>
+	
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -50,6 +62,12 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+		#lang{
+			text-decoration: none;
+		}
+		.fa-globe{
+			color:#616876 !important;
+		}
     </style>
 
 </head>
@@ -61,8 +79,16 @@
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
 				<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
-                        <img src="./static/logo.svg" width="110" height="32" alt="Must BuildApp"
+                        
+							@if($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on' )
+								<img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
+									alt="{{ config('app.name', 'ERPGo-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
                             class="navbar-brand-image">
+							@else
+								<img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
+									alt="{{ config('app.name', 'ERPGo-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
+                            class="navbar-brand-image">
+							@endif
                     </a>
                 </h1>
 				<div class="navbar-nav flex-row order-md-last">
@@ -168,8 +194,8 @@
 								<div>{{\Auth::user()->name }}</div>
 							</div>
 						</a>
-						<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> <a href="{{route('new_profile')}}" class="dropdown-item">Profile</a>
-							<div class="dropdown-divider"></div> <a href="{{route('company.settings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">Logout</a>
+						<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> <a href="{{route('new_profile')}}" class="dropdown-item">{{__('Profile')}}</a>
+							<div class="dropdown-divider"></div> <a href="{{route('company.settings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">{{__('Logout')}}</a>
 							<form id="frm-logout" action="{{ route('logout') }}" method="POST" class="d-none"> {{ csrf_field() }} </form>
 						</div>
 					</div>
@@ -194,11 +220,11 @@
                                             <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                                         </svg>
                                     </span> <span class="nav-link-title">
-                                        Home
+                                        {{__('Home')}}
                                     </span> </a>
 							</li>
 						</ul>
-						<div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+						{{-- <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
 							<form action="./" method="get" autocomplete="off" novalidate>
 								<div class="input-icon"> <span class="input-icon-addon">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/search -->
@@ -213,16 +239,16 @@
                                     </span>
 									<input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search in website"> </div>
 							</form>
-						</div>
+						</div> --}}
 						<div class="dropdown dash-h-item drp-language order-md-last">
-							<a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false"> 
-                                <i class="ti ti-world" style=""</i> 
+							<a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false"> 
+								<i class="fas fa-globe"></i>
                                 <span class="drp-text hide-mob">{{Str::upper(isset($lang)?$lang:'en')}}</span> 
-                                <i class="ti ti-chevron-down drp-arrow nocolor"></i> 
+								
                             </a>
 							<div class="dropdown-menu dash-h-dropdown dropdown-menu-end"> 
                                 @foreach($languages as $language)
-                                    <a href="{{route('change.language',$language)}}" class="dropdown-item @if($language == $lang) text-danger @endif"> 
+                                    <a href="{{route('change.language',$language)}}"  class="dropdown-item @if($language == $lang) text-danger @endif"> 
                                         <span>{{Str::upper($language)}}</span> 
                                     </a> 
                                 @endforeach
@@ -236,3 +262,25 @@
 				</div>
 			</div>
 		</header>
+
+		<div class="modal fade" id="commonModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="body">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="position-fixed top-0 end-0 p-3" style="z-index: 99999">
+			<div id="liveToast" class="toast text-white  fade" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body"> </div>
+					<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>

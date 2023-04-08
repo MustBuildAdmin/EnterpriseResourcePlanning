@@ -29,7 +29,9 @@ class DucumentUploadController extends Controller
                 )->where('created_by', \Auth::user()->creatorId())->get();
             }
 
-            return view('documentUpload.index', compact('documents'));
+            return view('hrm.doc_setup.hrm_doc_setup', compact('documents'));
+
+            // return view('documentUpload.index', compact('documents'));
         }
         else
         {
@@ -45,7 +47,8 @@ class DucumentUploadController extends Controller
             $roles = Role::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $roles->prepend('All', '0');
 
-            return view('documentUpload.create', compact('roles'));
+            return view('hrm.doc_setup.hrm_doc_setup_create', compact('roles'));
+            // return view('documentUpload.create', compact('roles'));
         }
         else
         {
@@ -61,20 +64,20 @@ class DucumentUploadController extends Controller
         {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
-                                   'document' => 'mimes:jpeg,png,jpg,svg,pdf,doc|max:20480',
-                               ]
+                    'name' => 'required',
+                    'document' => 'mimes:jpeg,png,jpg,svg,pdf,doc|max:20480',
+                ]
             );
+            
             if($validator->fails())
             {
                 $messages = $validator->getMessageBag();
-
                 return redirect()->back()->with('error', $messages->first());
             }
 
             $document              = new DucumentUpload();
             $document->name        = $request->name;
-//            $document->document    = !empty($request->document) ? $fileNameToStore : '';
+            // $document->document    = !empty($request->document) ? $fileNameToStore : '';
             if(!empty($request->document))
             {
                 $fileName = time() . "_" . $request->document->getClientOriginalName();
@@ -84,8 +87,8 @@ class DucumentUploadController extends Controller
                 if($path['flag']==0){
                     return redirect()->back()->with('error', __($path['msg']));
                 }
-//                $request->document  = $fileName;
-//                $document->save();
+                // $request->document  = $fileName;
+                // $document->save();
             }
             $document->role        = $request->role;
             $document->description = $request->description;
@@ -117,7 +120,8 @@ class DucumentUploadController extends Controller
 
             $ducumentUpload = DucumentUpload::find($id);
 
-            return view('documentUpload.edit', compact('roles', 'ducumentUpload'));
+            return view('hrm.doc_setup.hrm_doc_setup_edit', compact('roles', 'ducumentUpload'));
+            // return view('documentUpload.edit', compact('roles', 'ducumentUpload'));
         }
         else
         {

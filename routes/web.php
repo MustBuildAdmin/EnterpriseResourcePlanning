@@ -61,6 +61,13 @@ Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middl
     ]
 );
 
+Route::resource('hrm_doc_setup', 'DucumentUploadController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('/email-settings', 'SystemController@emailsettings')->name('emailsettings')->middleware(['XSS','revalidate',]);
 Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['XSS','revalidate',]);
 Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['XSS','revalidate',]);
@@ -148,6 +155,13 @@ Route::post('edit-profile', 'UserController@editprofile')->name('update.account'
         'revalidate',
     ]
 );
+Route::post('new_edit_profile', 'UserController@new_edit_profile')->name('new_edit_profile')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 Route::resource('users', 'UserController')->middleware(
     [
@@ -165,6 +179,7 @@ Route::get('view_change_password', 'UserController@view_change_password')->name(
     ]
 );
 Route::post('change-password', 'UserController@updatePassword')->name('update.password');
+Route::post('newpassword', 'UserController@newpassword')->name('newpassword');
 Route::any('user-reset-password/{id}', 'UserController@userPassword')->name('users.reset');
 Route::post('user-reset-password/{id}', 'UserController@userPasswordReset')->name('user.password.update');
 
