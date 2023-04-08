@@ -1,6 +1,6 @@
 @include('new_layouts.header')
 <main class="page-wrapper">
-	<section class="row"> {{--
+	<section> {{--
 		<aside class="col-2">
 			<nav id="sidebar">
 				<div class="custom-menu">
@@ -31,7 +31,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="page-body">
 				<div class="container-xl">
 					<div class="row row-cards">
