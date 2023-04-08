@@ -7,20 +7,20 @@ pipeline{
     stages{
         stage('Deploy to dev') {
             steps{
-                sudo rm -rf /var/www/html/erpdev/*
-                scp -r /var/lib/jenkins/workspace/TestEnv/* /var/www/html/erpdev/
-                cd /var/www/html/erpdev/
-                composer install --no-interaction
-                sudo chmod -R 777 /var/www/html/
+                sh 'sudo rm -rf /var/www/html/erpdev/*'
+                sh 'scp -r /var/lib/jenkins/workspace/TestEnv/* /var/www/html/erpdev/'
+                sh 'cd /var/www/html/erpdev/'
+                sh 'composer install --no-interaction'
+                sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
           stage('Deploy to test') {
             steps{
-                sudo rm -rf /var/www/html/erptest/*
-                scp -r /var/lib/jenkins/workspace/TestEnv/* /var/www/html/erptest/
-                cd /var/www/html/erptest/
-                composer install --no-interaction
-                sudo chmod -R 777 /var/www/html/
+                sh 'sudo rm -rf /var/www/html/erptest/*'
+                sh 'scp -r /var/lib/jenkins/workspace/TestEnv/* /var/www/html/erptest/'
+                sh 'cd /var/www/html/erptest/'
+                sh 'composer install --no-interaction'
+                sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
     }
