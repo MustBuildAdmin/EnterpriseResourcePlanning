@@ -714,6 +714,8 @@
   "DeductionOption successfully updated." : "Opcja dedukcji została pomyślnie zaktualizowana. ",
   "Default Language" : "Język domyślny ",
   "Delete" : "Usuń ",
+  "Delete All": "Usuń wszystko ",
+  "Deselect": "Odznacz ",
   "Delete Conversation" : "Usuń konwersację ",
   "Delete Customer" : "Usuń klienta ",
   "Department" : "Dział ",

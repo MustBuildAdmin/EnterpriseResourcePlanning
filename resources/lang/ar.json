@@ -714,6 +714,8 @@
   "DeductionOption successfully updated." : "تم تعديل DenientionOption بنجاح. ",
   "Default Language" : "اللغة المفترضة ",
   "Delete" : "حذف ",
+  "Delete All": "حذف الكل ",
+  "Deselect": "إلغاء ",
   "Delete Conversation" : "حذف محادثة ",
   "Delete Customer" : "حذف العميل ",
   "Department" : "الادارة ",

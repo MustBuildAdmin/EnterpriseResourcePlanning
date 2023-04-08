@@ -715,6 +715,8 @@
   "DeductionOption successfully updated." : "DeductionOption se ha actualizado correctamente. ",
   "Default Language" : "Idioma predeterminado ",
   "Delete" : "Suprimir ",
+  "Delete All": "Eliminar todos ",
+  "Deselect": "Deseleccionar ",
   "Delete Conversation" : "Suprimir conversación ",
   "Delete Customer" : "Suprimir cliente ",
   "Department" : "Departamento ",

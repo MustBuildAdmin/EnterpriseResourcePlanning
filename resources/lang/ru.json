@@ -679,6 +679,8 @@
   "DeductionOption successfully updated." : "Опция дедукции успешно обновлена. ",
   "Default Language" : "Язык по умолчанию ",
   "Delete" : "Удалить ",
+  "Delete All": "Удалить все ",
+  "Deselect": "Отменить выбор ",
   "Delete Conversation" : "Удалить диалог ",
   "Delete Customer" : "Удалить заказчика ",
   "Department" : "Департамент ",

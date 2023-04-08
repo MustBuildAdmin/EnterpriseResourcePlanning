@@ -713,6 +713,8 @@
   "DeductionOption successfully updated." : "Abzugsoption erfolgreich aktualisiert. ",
   "Default Language" : "Standardsprache ",
   "Delete" : "Löschen ",
+  "Delete All": "Alles löschen ",
+  "Deselect": "Abwählen ",
   "Delete Conversation" : "Dialog löschen ",
   "Delete Customer" : "Kunden löschen ",
   "Department" : "Abteilung ",
