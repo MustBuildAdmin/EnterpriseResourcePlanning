@@ -44,39 +44,39 @@
                     <th width="150" data-orderable="false">{{__('Action')}} </th>
                   </tr>
                 </thead>
-                <tbody> 
-                @foreach ($roles as $role) @if($role->name != 'client') 
+                <tbody>
+                @foreach ($roles as $role) @if($role->name != 'client')
                 <tr class="font-style">
                     <th class="w-1">
                       <input name="selectcheck" class="form-check-input m-0 align-middle" type="checkbox" data-id="{{$role->id}}" aria-label="Select all invoices">
                     </th>
                     <td class="Role">{{ $role->name }}</td>
-                    <td class="Permission" data-orderable="false"> 
-                      @for($j=0;$j <count($role->permissions()->pluck('name'));$j++) 
-                      <span class="badge rounded-pill bg-primary">{{$role->permissions()->pluck('name')[$j]}}</span> 
-                      @endfor 
+                    <td class="Permission" data-orderable="false">
+                      @for($j=0;$j <count($role->permissions()->pluck('name'));$j++)
+                      <span class="badge rounded-pill bg-primary m-2">{{$role->permissions()->pluck('name')[$j]}}</span>
+                      @endfor
                     </td>
                     <td class="Action" data-orderable="false">
-                      <span> 
+                      <span>
                       @can('edit role') <div class="ms-2">
                           <a href="#" class="btn btn-md bg-primary" data-url="{{ route('roles.edit',$role->id) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Role Edit')}}">
                             <i class="ti ti-pencil text-white"></i>
                           </a>
-                        </div> 
-                        @endcan 
-                        @can('delete role') 
-                        <div class="ms-2"> 
+                        </div>
+                        @endcan
+                        @can('delete role')
+                        <div class="ms-2">
                         {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id],'id'=>'delete-form-'.$role->id]) !!} <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                             <i class="ti ti-trash text-white"></i>
-                          </a> 
-                          {!! Form::close() !!} 
-                          </div> 
-                          @endcan 
+                          </a>
+                          {!! Form::close() !!}
+                          </div>
+                          @endcan
                           </span>
                     </td>
-                  </tr> 
-                  @endif 
-                  @endforeach 
+                  </tr>
+                  @endif
+                  @endforeach
                   </tbody>
               </table>
             </div>
@@ -85,7 +85,7 @@
       </div>
     </div>
   </div>
-</div> 
+</div>
 <script>
   var clicked = false;
   $(document).on("click", '#checkdelete', function () {
@@ -97,8 +97,8 @@
     $('input[name^="selectcheck"]:checked').each(function(){
       id.push($(this).data('id'));
     });
-   
-    if (id.length === 0) { 
+
+    if (id.length === 0) {
           return false;
     }
     var form = $(this).closest("form");
@@ -118,7 +118,7 @@
         cancelButtonText: 'No',
         reverseButtons: true
     }).then((result) => {
-      
+
         if (result.isConfirmed) {
 
           $.ajax({
@@ -127,7 +127,7 @@
             data: {"_token": "{{ csrf_token() }}",id:id},
             success: function (response) {
               location.reload();
-              
+
             },
             error: function(jqXHR, textStatus, errorThrown) {
               console.log(textStatus, errorThrown);
@@ -139,7 +139,7 @@
         ) {
         }
     })
-   
+
 });
 </script>
 @include('new_layouts.footer')
