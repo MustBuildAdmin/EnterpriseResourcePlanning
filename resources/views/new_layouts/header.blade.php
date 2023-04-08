@@ -11,7 +11,7 @@
     $color = !empty($setting['color']) ? $setting['color'] : 'theme-3';
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
     $SITE_RTL = Utility::getValByName('SITE_RTL');
- 
+
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ $SITE_RTL == 'on' ? 'rtl' : '' }}">
@@ -49,16 +49,14 @@
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
 	<script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script>
-	
+
 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
-
         :root {
             --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
         }
-
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
@@ -79,7 +77,7 @@
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
 				<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
-                        
+
 							@if($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on' )
 								<img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
 									alt="{{ config('app.name', 'ERPGo-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
@@ -241,21 +239,21 @@
 							</form>
 						</div> --}}
 						<div class="dropdown dash-h-item drp-language order-md-last">
-							<a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false"> 
+							<a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 								<i class="fas fa-globe"></i>
-                                <span class="drp-text hide-mob">{{Str::upper(isset($lang)?$lang:'en')}}</span> 
-								
+                                <span class="drp-text hide-mob">{{Str::upper(isset($lang)?$lang:'en')}}</span>
+
                             </a>
-							<div class="dropdown-menu dash-h-dropdown dropdown-menu-end"> 
+							<div class="dropdown-menu dash-h-dropdown dropdown-menu-end">
                                 @foreach($languages as $language)
-                                    <a href="{{route('change.language',$language)}}"  class="dropdown-item @if($language == $lang) text-danger @endif"> 
-                                        <span>{{Str::upper($language)}}</span> 
-                                    </a> 
+                                    <a href="{{route('change.language',$language)}}"  class="dropdown-item @if($language == $lang) text-danger @endif">
+                                        <span>{{Str::upper($language)}}</span>
+                                    </a>
                                 @endforeach
-								<h></h> 
-                                @if(\Auth::user()->type=='super admin') 
-                                <a class="dropdown-item text-primary" href="{{route('manage.language',[isset($lang)?$lang:'en'])}}">{{ __('Manage Language ') }}</a> 
-                                @endif 
+								<h></h>
+                                @if(\Auth::user()->type=='super admin')
+                                <a class="dropdown-item text-primary" href="{{route('manage.language',[isset($lang)?$lang:'en'])}}">{{ __('Manage Language ') }}</a>
+                                @endif
                             </div>
 						</div>
 					</div>
