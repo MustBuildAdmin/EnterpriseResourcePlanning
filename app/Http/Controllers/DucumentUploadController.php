@@ -95,7 +95,7 @@ class DucumentUploadController extends Controller
             $document->created_by  = \Auth::user()->creatorId();
             $document->save();
 
-            return redirect()->route('document-upload.index')->with('success', __('Document successfully uploaded.'));
+            return redirect()->route('hrm_doc_setup.index')->with('success', __('Document successfully uploaded.'));
         }
         else
         {
@@ -172,7 +172,7 @@ class DucumentUploadController extends Controller
             }
             $document->save();
 
-            return redirect()->route('document-upload.index')->with('success', __('Document successfully uploaded.'));
+            return redirect()->route('hrm_doc_setup.index')->with('success', __('Document successfully uploaded.'));
         }
         else
         {
@@ -197,7 +197,7 @@ class DucumentUploadController extends Controller
 //                    unlink($dir . $document->document);
 //                }
 
-                return redirect()->route('document-upload.index')->with('success', __('Document successfully deleted.'));
+                return redirect()->route('hrm_doc_setup.index')->with('success', __('Document successfully deleted.'));
             }
             else
             {
