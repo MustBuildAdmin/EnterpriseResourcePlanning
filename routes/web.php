@@ -199,6 +199,8 @@ Route::resource('roles', 'RoleController')->middleware(
         'revalidate',
     ]
 );
+Route::any('delete_multi_role','RoleController@delete_multi_role')->name('delete_multi_role')->middleware(['auth','XSS']);
+
 Route::resource('permissions', 'PermissionController')->middleware(
     [
         'auth',
