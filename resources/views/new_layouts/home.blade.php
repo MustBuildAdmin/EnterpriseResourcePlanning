@@ -52,7 +52,7 @@
                                             </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Users')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Users')}}</div>
 										</div>
 									</div>
 								</div>
@@ -75,7 +75,7 @@
                                             </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Roles')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Roles')}}</div>
 										</div>
 									</div>
 								</div>
@@ -87,14 +87,16 @@
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-red text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tower" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M5 3h1a1 1 0 0 1 1 1v2h3v-2a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v2h3v-2a1 1 0 0 1 1 -1h1a1 1 0 0 1 1 1v4.394a2 2 0 0 1 -.336 1.11l-1.328 1.992a2 2 0 0 0 -.336 1.11v7.394a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1v-7.394a2 2 0 0 0 -.336 -1.11l-1.328 -1.992a2 2 0 0 1 -.336 -1.11v-4.394a1 1 0 0 1 1 -1z"> </path>
 												<path d="M10 21v-5a2 2 0 1 1 4 0v5"></path>
 											</svg>
+                                        </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Human Resource')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Human Resource')}}</div>
 										</div>
 									</div>
 								</div>
@@ -105,15 +107,17 @@
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-yellow text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
 												<path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
 												<path d="M15 19l2 2l4 -4"></path>
 											</svg>
+                                            </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Construction')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Construction')}}</div>
 										</div>
 									</div>
 								</div>
@@ -138,7 +142,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Clients')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Clients')}}</div>
 										</div>
 									</div>
 								</div>
@@ -159,7 +163,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Support System')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Support System')}}</div>
 										</div>
 									</div>
 								</div>
@@ -177,7 +181,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium"> {{__('System Settings')}}</div>
+											<div class="font-weight-medium mt-2"> {{__('System Settings')}}</div>
 										</div>
 									</div>
 								</div>
