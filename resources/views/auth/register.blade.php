@@ -30,6 +30,10 @@
         position: absolute;
         right: 10px;
     }
+    .name_error{
+        display:none;
+        color:red;
+    }
     .error_class{
         color:red;
         font-weight:bold;
@@ -86,6 +90,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
+                <span class="name_error">Name Must be atleast 3 characters</span>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">{{__('Email')}} <span class="error_class">*</span></label>
@@ -239,4 +244,16 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
         }
         });
     });
+
+$(document).on('keyup', function () {
+
+if ($("#name").val().length <= 2) { 
+  $(".name_error").show();
+  $("#submit").prop('disabled', true);
+}else{
+   $(".name_error").hide();
+   $("#submit").prop('disabled', false);
+}
+
+});
 </script>    

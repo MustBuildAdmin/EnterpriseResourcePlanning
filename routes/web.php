@@ -3027,14 +3027,14 @@ Route::post('freeze_status', 'ProjectController@freeze_status_change')->name('pr
         'auth',
         'XSS',
     ]
-); 
+);
 
 Route::any('get_freeze_status', 'ProjectController@get_freeze_status')->name('projects.get_freeze_status')->middleware(
     [
         'auth',
         'XSS',
     ]
-); 
+);
 
 Route::resource('projects', 'ProjectController')->middleware(
     [
@@ -4286,7 +4286,6 @@ Route::get('report/pos', 'PosController@report')->name('pos.report')->middleware
 
 //Storage Setting
 Route::post('storage-settings',['as' => 'storage.setting.store','uses' =>'SystemController@storageSettingStore'])->middleware(['auth','XSS']);
-
 
 //appricalStar
 Route::post('/appraisals', 'AppraisalController@empByStar')->name('empByStar')->middleware(['auth','XSS']);
