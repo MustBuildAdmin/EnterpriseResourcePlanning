@@ -26,7 +26,7 @@
 					<div class="row g-2 align-items-center">
 						<div class="col">
 							<h2 class="page-title">
-                                    Welcome {{\Auth::user()->name }}!
+								{{__('Welcome')}} {{\Auth::user()->name }}!
                                 </h2> </div>
 					</div>
 				</div>
@@ -155,7 +155,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{ route('systemsettings') }}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
@@ -166,7 +166,7 @@
 											</svg>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Settings')}}</div>
+											<div class="font-weight-medium"> {{__('System Settings')}}</div>
 										</div>
 									</div>
 								</div>
@@ -190,10 +190,7 @@
 							<div class="col-12">
 								<div class="card">
 									<div class="card-body">
-										<div class="divide-y" style="
-                          max-height: 200px;
-                          overflow-y: scroll;
-                      ">
+										<div class="divide-y" style="max-height: 200px;overflow-y: scroll;">
 											<div>
 												<div class="row">
 													<div class="col-auto"> <span class="avatar">JL</span> </div>

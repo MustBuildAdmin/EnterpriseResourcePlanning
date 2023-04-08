@@ -12,7 +12,8 @@
 </div>
 </div>
 <!-- Libs JS -->
-<script src="{{asset('js/jquery.min.js')}}"></script>
+<script src="{{ asset('assets/dist/js/demo-theme.min.js?1674944402') }}"></script>
+<script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
 <!-- Libs JS -->
 <script>
 feather.replace();
@@ -39,6 +40,10 @@ feather.replace();
 <!-- Tabler Core -->
 <script src="{{ asset('assets/dist/js/tabler.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/demo.min.js') }}"></script>
+<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+<script src="{{ asset('assets/js/plugins/sweetalert2.all.min.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 
 @if (App\Models\Utility::getValByName1('gdpr_cookie') == 'on')
     <script type="text/javascript">
@@ -72,6 +77,30 @@ feather.replace();
     </script>
     <script src="{{ asset('js/cookie.notice.js') }}"></script>
 @endif
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+@if(Session::has('success'))
+<script>
+
+  toastr.options =
+  {
+  	"closeButton" : true,
+  	"progressBar" : true
+  }
+  		toastr.success("{{ session('success') }}");
+
+</script>
+@endif
+
+@if(Session::has('error'))
+<script>
+  toastr.options =
+  {
+  	"closeButton" : true,
+  	"progressBar" : true
+  }
+  		toastr.error("{{ session('error') }}");
+</script>
+  @endif
 </body>
 
 </html>

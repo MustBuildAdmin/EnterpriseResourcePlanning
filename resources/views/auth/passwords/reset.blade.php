@@ -1,54 +1,272 @@
 @extends('layouts.auth')
 @php
-  //  $logo=asset(Storage::url('uploads/logo/'));
     $logo=\App\Models\Utility::get_file('uploads/logo');
- $company_logo=Utility::getValByName('company_logo');
+    $company_logo=Utility::getValByName('company_logo');
 @endphp
-@section('page-title')
-    {{__('Forgot Password')}}
-@endsection
-@section('auth-topbar')
+    <style>
+        .mainDiv {
+            display: flex;
+            min-height: 100%;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .cardStyle {
+            width: 500px;
+            border-color: white;
+            background: #fff;
+            padding: 36px 0;
+            border-radius: 4px;
+            margin: 30px 0;
+            box-shadow: 0px 0 2px 0 rgba(0,0,0,0.25);
+        }
+        #signupLogo {
+            max-height: 100px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .formTitle{
+            font-weight: 600;
+            margin-top: 20px;
+            color: #2F2D3B;
+            text-align: center;
+        }
+        .inputLabel {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 6px;
+            margin-top: 24px;
+        }
+        .inputDiv {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+        input {
+            height: 40px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: none;
+            border: solid 1px #ccc;
+            padding: 0 11px;
+        }
+        input:disabled {
+            cursor: not-allowed;
+            border: solid 1px #eee;
+        }
+        .buttonWrapper {
+            margin-top: 40px;
+        }
+        .submitButton {
+            width: 70%;
+            height: 40px;
+            margin: auto;
+            display: block;
+            color: #fff;
+            background-color: #206bc4;
+            border-color: #206bc4;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .submitButton:disabled,
+            button[disabled] {
+            border: 1px solid #cccccc;
+            background-color: #cccccc;
+            color: #666666;
+        }
 
-@endsection
-@section('content')
-    <div class="">
-        <h2 class="mb-3 f-w-600">{{__('Reset Password')}}</h2>
-    </div>
-    {{Form::open(array('route'=>'password.update','method'=>'post','id'=>'loginForm'))}}
-    <input type="hidden" name="token" value="{{ $request->route('token') }}">
-    <div class="">
-        <div class="form-group mb-3">
-            {{Form::label('email',__('E-Mail Address'),['class'=>'form-label'])}}
-            {{Form::text('email',null,array('class'=>'form-control'))}}
-            @error('email')
-            <span class="invalid-email text-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-            @enderror
-        </div>
-        <div class="form-group mb-3">
-            {{Form::label('password',__('Password'),['class'=>'form-label'])}}
-            {{Form::password('password',array('class'=>'form-control'))}}
-            @error('password')
-            <span class="invalid-password text-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-            @enderror
-        </div>
-        <div class="form-group mb-3">
-            {{Form::label('password_confirmation',__('Password Confirmation'),['class'=>'form-label'])}}
-            {{Form::password('password_confirmation',array('class'=>'form-control'))}}
-            @error('password_confirmation')
-            <span class="invalid-password_confirmation text-danger" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-            @enderror
-        </div>
-        <div class="d-grid">
-            {{Form::submit(__('Reset'),array('class'=>'btn btn-primary btn-block mt-2','id'=>'resetBtn'))}}
-        </div>
+        /* Progress Bar */
+        #progress {
+            height: 20px;
+            width: 100%;
+            margin-top: 0.6em;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 20%;
+            transition: width 500ms linear;
+        }
+        .progress-bar-danger {
+            background: #d00;
+        }
+        .progress-bar-warning {
+            background: #f50;
+        }
+        .progress-bar-success {
+            background: #080;
+        }
 
-    </div>
+        .Short {  
+            width: 100%;   
+            color: #dc3545;  
+            font-weight: 500;  
+            font-size: 15px;  
+        }  
+        .Weak {  
+            width: 100%;  
+            color: #ffc107;  
+            font-weight: 500;  
+            font-size: 15px;  
+        }  
+        .Good {  
+            width: 100%;   
+            color: #28a745;  
+            font-weight: 500;  
+            font-size: 15px;  
+        }  
+        .Strong {  
+            width: 100%;   
+            color: #d39e00;  
+            font-weight: 500;  
+            font-size: 15px;  
+        } 
+    </style>
 
-    {{Form::close()}}
-@endsection
+    @section('page-title')
+        {{__('Forgot Password')}}
+    @endsection
+    @section('auth-topbar')
+
+    @endsection
+
+    @section('content')
+        <div class="mainDiv">
+            <div class="cardStyle">
+                {{Form::open(array('route'=>'password.update','method'=>'post','id'=>'loginForm'))}}
+                    <h2 class="formTitle">
+                        {{__('Reset Password')}}
+                    </h2>
+                
+                    <div class="inputDiv">
+                        {{Form::label('email',__('E-Mail Address'),['class'=>'form-label inputLabel'])}}
+                        {{Form::text('email',null,array('required'=>'required'))}}
+
+                        @error('email')
+                            <span class="invalid-email text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="inputDiv">
+                        {{Form::label('email',__('New Password'),['class'=>'form-label inputLabel'])}}
+                        {{Form::password('password',array('required'=>'required','id'=>'password'))}}
+
+                        <div id="show_progress" style="display: none;">
+                            <div id="progress"><div id="progress-bar"></div></div>
+                            <div id="strengthMessage"></div>
+                        </div>
+                        
+
+                        @error('password')
+                            <span class="invalid-password text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                
+                    <div class="inputDiv">
+                        {{Form::label('email',__('Confirm Password'),['class'=>'form-label inputLabel'])}}
+                        {{Form::password('password_confirmation',array('required'=>'required','id'=>'password_confirmations'))}}
+                        <div id="not_match" style="display:none;color:red;">{{ __("Passwords Don't Match") }}</div>
+
+                        @error('password_confirmation')
+                            <span class="invalid-password_confirmation text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+            
+                    <div class="buttonWrapper">
+                        {{Form::submit(__('Reset'),array('class'=>'submitButton pure-button pure-button-primary','id'=>'resetBtn'))}}
+                    </div>
+                {{Form::close()}}
+            </div>
+        </div>
+    @endsection
+
+    <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script>
+        $.strength = function( element, password ) {
+            var desc = [{'width':'0px'}, {'width':'20%'}, {'width':'40%'}, {'width':'60%'}, {'width':'80%'}, {'width':'100%'}];
+            var descClass = ['', 'progress-bar-danger', 'progress-bar-danger', 'progress-bar-warning', 'progress-bar-success', 'progress-bar-success'];
+            var score = 0;
+
+            if(!password){
+                $('#strengthMessage').html('');
+                $("#resetBtn").prop('disabled',true);
+            }
+
+            if( password.length < 6 ) {
+                score++;
+                $('#strengthMessage').removeClass();
+                $('#strengthMessage').addClass('Short');
+                $('#strengthMessage').html('Short');
+                $("#resetBtn").prop('disabled',true);
+            }
+
+            if( password.length > 6 ) {
+                score++;
+                $("#resetBtn").prop('disabled',true);
+            }
+
+            if ( ( password.match(/[a-z]/) ) && ( password.match(/[A-Z]/) ) ) {
+                score++;
+                $('#strengthMessage').removeClass();
+                $('#strengthMessage').addClass('Weak');
+                $('#strengthMessage').html('Weak');
+                $("#resetBtn").prop('disabled',true);
+            }
+
+            if ( password.match(/\d+/) ) {
+                score++;
+                $('#strengthMessage').removeClass(); 
+                $('#strengthMessage').addClass('Good');
+                $('#strengthMessage').html('Good');
+                $("#resetBtn").prop('disabled',false);
+            }
+
+            if ( password.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,(,)]/) ) {
+                score++;
+                $('#strengthMessage').removeClass();
+                $('#strengthMessage').addClass('Strong');
+                $('#strengthMessage').html('Strong');
+                $("#resetBtn").prop('disabled',false);
+            }
+
+            if ( password.length > 10 ) {
+                score++;
+                $("#resetBtn").prop('disabled',false);
+            }
+
+            element.removeClass( descClass[score-1] ).addClass( descClass[score] ).css( desc[score] );
+        };
+
+        $(function() {
+            $("#password").keyup(function() {
+                $("#show_progress").css('display','block');
+                $.strength( $("#progress-bar"), $(this).val());
+            });
+
+            $("#password_confirmations").keyup(function() {
+                var password     = $("#password").val();
+                confirm_password = $(this).val();
+                
+                if(password != confirm_password) {
+                    $("#not_match").css('display','block');
+                    $("#resetBtn").prop('disabled',true);
+                    return false;
+                } else {
+                    $("#not_match").css('display','none');
+                    $("#resetBtn").prop('disabled',false);
+                    return true;
+                }
+            });
+        });
+    </script>
