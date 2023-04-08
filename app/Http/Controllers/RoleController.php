@@ -7,6 +7,8 @@ use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Auth;
+use Cache;
+use Carbon\Carbon;
 
 class RoleController extends Controller
 {
@@ -17,8 +19,9 @@ class RoleController extends Controller
         {
 
             $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get();
-
-            return view('role.index')->with('roles', $roles);
+            Cache::put('roles', $roles, 200);
+            // return view('role.index')->with('roles', $roles);
+            return view('roles.index')->with('roles', $roles);
         }
         else
         {
@@ -47,7 +50,8 @@ class RoleController extends Controller
                 $permissions = $permissions->pluck('name', 'id')->toArray();
             }
 
-            return view('role.create', ['permissions' => $permissions]);
+            // return view('role.create', ['permissions' => $permissions]);
+            return view('roles.create', ['permissions' => $permissions]);
         }
         else
         {
@@ -88,8 +92,11 @@ class RoleController extends Controller
                 $role->givePermissionTo($p);
             }
 
+            // return redirect()->route('roles.index')->with(
+            //     'Role successfully created.', 'Role ' . $role->name . ' added!'
+            // );
             return redirect()->route('roles.index')->with(
-                'Role successfully created.', 'Role ' . $role->name . ' added!'
+                'success', 'Role ' . $role->name . ' added!'
             );
         }
         else
@@ -109,6 +116,7 @@ class RoleController extends Controller
             if($user->type == 'super admin')
             {
                 $permissions = Permission::all()->pluck('name', 'id')->toArray();
+                // Cache::put('permissions', $permissions, 200);
             }
             else
             {
@@ -118,9 +126,11 @@ class RoleController extends Controller
                     $permissions = $permissions->merge($role1->permissions);
                 }
                 $permissions = $permissions->pluck('name', 'id')->toArray();
+                // Cache::put('permissions', $permissions, 200);
             }
 
-            return view('role.edit', compact('role', 'permissions'));
+            // return view('role.edit', compact('role', 'permissions'));
+            return view('roles.edit', compact('role', 'permissions'));
         }
         else
         {
@@ -165,7 +175,7 @@ class RoleController extends Controller
             }
 
             return redirect()->route('roles.index')->with(
-                'Role successfully updated.', 'Role ' . $role->name . ' updated!'
+                'success', 'Role ' . $role->name . ' updated!'
             );
         }
         else
@@ -191,6 +201,23 @@ class RoleController extends Controller
             return redirect()->back()->with('error', 'Permission denied.');
         }
 
+
+    }
+
+    public function delete_multi_role(Role $role,Request $request){
+
+        if(\Auth::user()->can('delete role'))
+        {
+            
+            $role->whereIn('id',$request->id)->delete();
+
+            return redirect()->route('roles.index')->with('success', 'Role successfully deleted');
+            
+        }
+        else
+        {
+            return redirect()->back()->with('error', 'Permission denied.');
+        }
 
     }
 }

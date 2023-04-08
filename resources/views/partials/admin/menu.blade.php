@@ -669,7 +669,7 @@
                                             <a class="dash-link" href="{{route('construction_project.index')}}">{{__('Construction Setting')}}</a>
                                         </li>
                                 </ul>
-                            </li>  
+                            </li>
                             @endif --}}
                     {{-- ----------------construction Management END------------------------}}
                     <!--------------------- Start Project ----------------------------------->

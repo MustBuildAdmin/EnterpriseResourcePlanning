@@ -1,31 +1,25 @@
 @include('new_layouts.header')
 <style>
-
 .wrapper {
     height: 100%;
 }
 .main_body{
     height: 100%;
 }
-
  .sidebar_menu{
   	background: #3421C0;
   	width: 250px;
   	height: 100%;
   	transition: all 0.3s linear;
 }
-
  .sidebar_menu .inner__sidebar_menu{
 	position: relative;
 	padding-top: 60px;
-
 }
-
  .sidebar_menu ul li {
     list-style-type: none;
     padding: 5px;
 }
-
 .sidebar_menu ul li a{
   color: #ffffff;
   font-size: 14px;
@@ -33,25 +27,20 @@
   display: block;
   white-space: nowrap;
 }
-
 .sidebar_menu ul li a .icon{
   margin-right: 8px;
 }
-
  .sidebar_menu ul li a span{
   display: inline-block;
 }
-
  .sidebar_menu ul li a:hover{
   background: #5343c7;
   color: #fff;
 }
-
  .sidebar_menu ul li a.active{
   background: #22119d;
   color: #fff;
 }
-
  .sidebar_menu .hamburger{
   position: absolute;
   top: 5px;
@@ -62,7 +51,6 @@
   border-radius: 50%;
   cursor: pointer;
 }
-
  .sidebar_menu .inner_hamburger,
 .sidebar_menu .hamburger .arrow{
   position: absolute;
@@ -70,14 +58,12 @@
   left: 50%;
   transform: translate(-50%,-50%);
 }
-
 .sidebar_menu .inner_hamburger{
   width: 40px;
   border-radius: 50%;
   height: 40px;
   background: #3421C0;
 }
-
  .sidebar_menu .hamburger .arrow{
   color: #fff;
   font-size: 20px;
@@ -85,7 +71,6 @@
  .sidebar_menu .hamburger  .fa-long-arrow-alt-right{
   display: none;
 }
-
  .main-container{
 	width: calc(100% - 250px);
 	margin-top: 65px;
@@ -93,12 +78,10 @@
 	padding: 25px 40px;
 	transition: all 0.3s linear;
 }
-
 .main-container .item_wrap{
 	display: flex;
 	margin-bottom: 20px;
 }
-
  .main-container .item_wrap .item{
 	background: #fff;
 	border: 1px solid #e0e0e0;
@@ -106,34 +89,25 @@
 	font-size: 14px;
 	line-height: 22px;
 }
-
  .main-container .item_wrap .item:first-child{
 	margin-right: 20px;
 }
-
 /* after adding active class */
 .wrapper.active .sidebar_menu{
   width: 70px;
 }
-
 .wrapper.active .hamburger .fa-long-arrow-alt-right{
   display: block;
 }
-
 .wrapper.active .hamburger .fa-long-arrow-alt-left{
   display: none;
 }
-
 .wrapper.active .sidebar_menu ul li a .list{
   display: none;
 }
-
-
-
 .sidebar_menu .inner__sidebar_menu ul {
     padding: 0px;
 }
-
 </style>
 <div class="wrapper container-fluid">
 <div class="row">
