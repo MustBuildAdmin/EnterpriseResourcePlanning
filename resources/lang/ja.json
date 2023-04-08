@@ -714,6 +714,8 @@
   "DeductionOption successfully updated." : "D控除オプションが正常に更新されました。",
   "Default Language" : "デフォルト言語",
   "Delete" : "削除",
+  "Delete All": "すべて削除 ",
+  "Deselect": "選択解除 ",
   "Delete Conversation" : "会話の削除",
   "Delete Customer" : "カスタマーの削除",
   "Department" : "部門",

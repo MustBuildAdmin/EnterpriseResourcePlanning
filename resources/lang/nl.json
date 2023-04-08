@@ -714,6 +714,8 @@
   "DeductionOption successfully updated." : "DeductionOption is bijgewerkt. ",
   "Default Language" : "Standaardtaal ",
   "Delete" : "Wissen ",
+  "Delete All": "Verwijder alles ",
+  "Deselect": "Deselecteren ",
   "Delete Conversation" : "Conversatie wissen ",
   "Delete Customer" : "Klant wissen ",
   "Department" : "Departement ",

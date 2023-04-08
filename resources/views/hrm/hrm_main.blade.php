@@ -180,7 +180,7 @@
                     </a>
                   </li>
                   <li>
-                    <a href="#" class="">
+                    <a href="{{url('hrm_company_policy')}}" class="">
                       <span class="icon">  <i class="ti ti-clipboard-text"></i>
                       </span>
                       <span class="list">Company Policy</span>

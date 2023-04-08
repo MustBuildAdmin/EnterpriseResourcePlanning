@@ -61,7 +61,16 @@ Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middl
     ]
 );
 
+// HRM Document Setup CRUD
 Route::resource('hrm_doc_setup', 'DucumentUploadController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+// HRM Company Policy CRUD
+Route::resource('hrm_company_policy', 'CompanyPolicyController')->middleware(
     [
         'auth',
         'XSS',
@@ -199,6 +208,8 @@ Route::resource('roles', 'RoleController')->middleware(
         'revalidate',
     ]
 );
+Route::any('delete_multi_role','RoleController@delete_multi_role')->name('delete_multi_role')->middleware(['auth','XSS']);
+
 Route::resource('permissions', 'PermissionController')->middleware(
     [
         'auth',

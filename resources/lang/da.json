@@ -715,6 +715,8 @@
   "DeductionOption successfully updated." : "DeductionOption er opdateret. ",
   "Default Language" : "Standardsprog ",
   "Delete" : "Slet ",
+  "Delete All": "Slet alt ",
+  "Deselect": "Fravælg ",
   "Delete Conversation" : "Slet konversation ",
   "Delete Customer" : "Slet kunde ",
   "Department" : "Afdeling ",
