@@ -50,6 +50,7 @@
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
 	<script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script>
 
+	<script src="{{ asset('js/demo-theme.min.js?1674944402') }}"></script>
 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
