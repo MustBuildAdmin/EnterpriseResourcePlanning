@@ -7,7 +7,7 @@
 <footer class="dash-footer">
     <div class="footer-wrapper">
         <div class="py-1">
-            <span class="text-muted">  {{(Utility::getValByName('footer_text')) ? Utility::getValByName('footer_text') :  __('Copyright ERPGO') }} {{ date('Y') }}</span>
+            <span class="text-muted">  {{(Utility::getValByName('footer_text')) ? Utility::getValByName('footer_text') :  __('Copyright Must BuildApp') }} {{ date('Y') }}</span>
         </div>
 
     </div>
@@ -102,7 +102,7 @@ jQuery.validator.addMethod("validate_email", function(value, element) {
     } else {
         return false;
     }
-    
+
 }, "Please enter a valid Email.");
 
 jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
@@ -111,7 +111,7 @@ jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
 }, "Please specify a valid phone number");
 
 $(document).on("click", 'input[type=submit]', function () {
-    
+
     $(this).closest('form').validate({
     rules: {
         email: {
@@ -143,7 +143,7 @@ $(document).on("keyup", 'input[type=date]', function () {
             // })
     }
     setTimeout(
-        function() 
+        function()
         {
                 $('#error').text('');
         }, 8000);

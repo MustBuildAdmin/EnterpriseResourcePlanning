@@ -16,7 +16,8 @@ class CompanyPolicyController extends Controller
         {
             $companyPolicy = CompanyPolicy::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('companyPolicy.index', compact('companyPolicy'));
+            return view('hrm.company_policy.hrm_company_policy', compact('companyPolicy'));
+            // return view('companyPolicy.index', compact('companyPolicy'));
         }
         else
         {
@@ -32,7 +33,8 @@ class CompanyPolicyController extends Controller
             $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $branch->prepend('Select Branch','');
 
-            return view('companyPolicy.create', compact('branch'));
+            return view('hrm.company_policy.hrm_company_policy_create', compact('branch'));
+            // return view('companyPolicy.create', compact('branch'));
         }
         else
         {
@@ -66,14 +68,14 @@ class CompanyPolicyController extends Controller
                 $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                 $extension       = $request->file('attachment')->getClientOriginalExtension();
                 $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-//                $dir             = storage_path('uploads/companyPolicy/');
-//
-//                if(!file_exists($dir))
-//                {
-//                    mkdir($dir, 0777, true);
-//                }
-//                $path = $request->file('attachment')->storeAs('uploads/companyPolicy/', $fileNameToStore);
-//            }
+
+                // $dir             = storage_path('uploads/companyPolicy/');
+                // if(!file_exists($dir))
+                // {
+                //    mkdir($dir, 0777, true);
+                // }
+                // $path = $request->file('attachment')->storeAs('uploads/companyPolicy/', $fileNameToStore);
+
                 $dir = 'uploads/companyPolicy/';
                 $image_path = $dir . $fileNameToStore;
                 if (\File::exists($image_path)) {
@@ -114,7 +116,7 @@ class CompanyPolicyController extends Controller
                 Utility::send_telegram_msg($msg);
             }
 
-            return redirect()->route('company-policy.index')->with('success', __('Company policy successfully created.'));
+            return redirect()->route('hrm_company_policy.index')->with('success', __('Company policy successfully created.'));
         }
         else
         {
@@ -137,7 +139,8 @@ class CompanyPolicyController extends Controller
             $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $branch->prepend('Select Branch','');
 
-            return view('companyPolicy.edit', compact('branch', 'companyPolicy'));
+            return view('hrm.company_policy.hrm_company_policy_edit', compact('branch', 'companyPolicy'));
+            // return view('companyPolicy.edit', compact('branch', 'companyPolicy'));
         }
         else
         {
@@ -169,15 +172,14 @@ class CompanyPolicyController extends Controller
                 $filenameWithExt = $request->file('attachment')->getClientOriginalName();
                 $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                 $extension       = $request->file('attachment')->getClientOriginalExtension();
+
                 $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-//                $dir             = storage_path('uploads/companyPolicy/');
-//
-//                if(!file_exists($dir))
-//                {
-//                    mkdir($dir, 0777, true);
-//                }
-//                $path = $request->file('attachment')->storeAs('uploads/companyPolicy/', $fileNameToStore);
-//            }
+                // $dir             = storage_path('uploads/companyPolicy/');
+                // if(!file_exists($dir))
+                // {
+                //     mkdir($dir, 0777, true);
+                // }
+                // $path = $request->file('attachment')->storeAs('uploads/companyPolicy/', $fileNameToStore);
 
                 $dir = 'uploads/companyPolicy/';
                 $image_path = $dir . $fileNameToStore;
@@ -203,7 +205,7 @@ class CompanyPolicyController extends Controller
             $companyPolicy->created_by = \Auth::user()->creatorId();
             $companyPolicy->save();
 
-            return redirect()->route('company-policy.index')->with('success', __('Company policy successfully updated.'));
+            return redirect()->route('hrm_company_policy.index')->with('success', __('Company policy successfully updated.'));
         }
         else
         {
@@ -227,7 +229,7 @@ class CompanyPolicyController extends Controller
                     unlink($dir . $companyPolicy->attachment);
                 }
 
-                return redirect()->route('company-policy.index')->with('success', __('Company policy successfully deleted.'));
+                return redirect()->route('hrm_company_policy.index')->with('success', __('Company policy successfully deleted.'));
             }
             else
             {

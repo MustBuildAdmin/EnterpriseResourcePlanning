@@ -1,15 +1,26 @@
 pipeline{
     agent any
     environment {
-        production_server="3.7.159.33"
+        production_server="http://13.234.199.245/"
     }
 
     stages{
-        stage('Deploy to Production') {
+        stage('Deploy to dev') {
             steps{
-                //sh 'scp ${WORKSPACE}/* root@${production_server}:/var/www/html/EnterpriseResourcePlanning-1.1-Version/'
-                sh 'rsync -vrzhe "ssh -o StrictHostkeyChecking=no" ${WORKSPACE}/* root@${production_server}:/var/www/html/EnterpriseResourcePlanning-1.1-Version/'
-
+                sh 'sudo rm -rf /var/www/html/erpdev/*'
+                sh 'scp -r /var/lib/jenkins/workspace/TestEnv/* /var/www/html/erpdev/'
+                sh 'cd /var/www/html/erpdev/'
+                sh 'composer install --no-interaction'
+                sh 'sudo chmod -R 777 /var/www/html/'
+            }
+        }
+          stage('Deploy to test') {
+            steps{
+                sh 'sudo rm -rf /var/www/html/erptest/*'
+                sh 'scp -r /var/lib/jenkins/workspace/TestEnv/* /var/www/html/erptest/'
+                sh 'cd /var/www/html/erptest/'
+                sh 'composer install --no-interaction'
+                sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
     }

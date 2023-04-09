@@ -18,7 +18,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{$SITE_RTL == 'on' ? 'rtl' : '' }}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
 <head>
-    <title>{{(Utility::getValByName('title_text')) ? Utility::getValByName('title_text') : config('app.name', 'ERPGO')}} -  {{__('Settings')}}</title>
+    <title>{{(Utility::getValByName('title_text')) ? Utility::getValByName('title_text') : config('app.name', 'Must BuildApp')}} -  {{__('Settings')}}</title>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
@@ -127,7 +127,7 @@
                         "X-CSCAPI-KEY": '{{ env('Locationapi_key') }}'
                     },
                     };
-            
+
                     $.ajax(settings).done(function (response) {
                             $('#company_state').empty();
                             $('#company_state').append('<option value="">{{__('Select State ...')}}</option>');
@@ -149,9 +149,9 @@
                         "X-CSCAPI-KEY": '{{ env('Locationapi_key') }}'
                     },
                     };
-            
+
                     $.ajax(settings).done(function (response) {
-                        
+
                             $('#company_state').empty();
                             $('#company_state').append('<option value="">{{__("Select State ...")}}</option>');
                                 $.each(response, function (key, value) {
@@ -169,7 +169,7 @@
             if(country!=''&& country!=null){
                 getstate(country);
             }
-            
+
         });
     </script>
 
@@ -594,7 +594,7 @@
                                                         </span>
                                     @enderror
                                 </div>
-                                
+
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_state',__('State'),array('class' => 'form-label')) }}
                                     <select class="form-control " name="company_state" id='company_state'
@@ -626,7 +626,7 @@
                                                         </span>
                                     @enderror
                                 </div>
-                            
+
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_telephone',__('Telephone'),array('class' => 'form-label')) }}
                                     {{Form::number('company_telephone',null,array('class'=>'form-control'))}}
@@ -750,22 +750,22 @@
                                 <input class="btn btn-print-invoice btn-primary m-r-10" id="companysettings" type="submit" value="{{__('Save Changes')}}">
                             </div>
                         </div>
-                        
+
 
                     </div>
-               
+
             </section>
         {{Form::close()}}
         </div>
     </div>
 </div>
-    
+
   </div>
 </div>
 <div>
 
 <script>
-   
+
     window.addEventListener("DOMContentLoaded", (event) => {
     var site_currency=document.getElementById("site_currency");
     var site_currency_symbol=document.getElementById("site_currency_symbol");
@@ -799,7 +799,7 @@
             formStepHeader.classList.remove("form-stepper-active", "form-stepper-completed");
         });
         document.querySelector("#step-" + stepNumber).classList.remove("d-none");
-       
+
         const formStepCircle = document.querySelector('li[step="' + stepNumber + '"]');
         formStepCircle.classList.remove("form-stepper-unfinished", "form-stepper-completed");
         formStepCircle.classList.add("form-stepper-active");
@@ -821,7 +821,7 @@
     //     $('#settings_form').submit();
     //     $('#company_form').submit();
 
-        
+
     // });
 </script>
 <style>
