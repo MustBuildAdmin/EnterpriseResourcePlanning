@@ -177,7 +177,7 @@
 							</div>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> <a href="{{route('new_profile')}}" class="dropdown-item">Profile</a>
-							<div class="dropdown-divider"></div> <a href="{{route('company.settings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">Logout</a>
+							<div class="dropdown-divider"></div> <a href="{{route('systemsettings')}}" class="dropdown-item">Settings</a> <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();" class="dropdown-item">Logout</a>
 							<form id="frm-logout" action="{{ route('logout') }}" method="POST" class="d-none"> {{ csrf_field() }} </form>
 						</div>
 					</div>

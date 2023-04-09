@@ -65,7 +65,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
         <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
             <div class="mb-3">
                 <label for="name" class="form-label">{{__('Name')}}</label>
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                <input id="name" type="text" min="3" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                 @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -112,7 +112,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
             </div> -->
             <div class="mb-3">
                 <label for="company_name" class="form-label">{{__('Company Name')}}</label>
-                <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
+                <input id="company_name"  min="3" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
                 @error('company_name')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
