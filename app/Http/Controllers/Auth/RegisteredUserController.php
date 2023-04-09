@@ -55,6 +55,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
         //ReCpatcha
 
         if(env('RECAPTCHA_MODULE') == 'on')
@@ -106,15 +107,12 @@ class RegisteredUserController extends Controller
                 'email' => $request->email,
                 'set_password_url' => $url,
             ];
-            $role_r = Role::findByName('company');
-            $user->assignRole($role_r);
-            $user->userDefaultDataRegister($user->id);
-            $user->userWarehouseRegister($user->id);
 
             $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
-
             event(new Registered($user));
-            return \Redirect::to('login');
+            return redirect()->route('login')->with('success', __('Registered Successfully. Check you email for verfication'));
+
+            // return \Redirect::to('login');
         }
        
    

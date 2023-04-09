@@ -83,8 +83,8 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
         <h2 class="card-title text-center mb-4">{{__('Sign Up')}}</h2>
        
             <div class="mb-3">
-                <label for="name" class="form-label">{{__('Name')}} <span class="error_class">*</span></label>
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                <label for="name" class="form-label">{{__('Name')}}</label>
+                <input id="name" type="text" min="3" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                 @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -131,8 +131,8 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                 </div>
             </div> -->
             <div class="mb-3">
-                <label for="company_name" class="form-label">{{__('Company Name')}} <span class="error_class">*</span></label>
-                <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" value="{{ old('company_name') }}" name="company_name" required autocomplete="new-password">
+                <label for="company_name" class="form-label">{{__('Company Name')}}</label>
+                <input id="company_name"  min="3" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
                 @error('company_name')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

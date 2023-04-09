@@ -24,7 +24,7 @@
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
-                        {{ __('Company Setting') }}
+                        {{ __('Admin Settings') }}
                         </h2>
                     </div>
                 </div>
@@ -150,32 +150,8 @@
                                 </div>
 
 
-                                <div class="form-group col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                                <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="customRadio8" name="tax_type" value="VAT" class="form-check-input" {{($settings['tax_type'] == 'VAT')?'checked':''}} >
-                                                    <label class="form-check-label" for="customRadio8">{{__('VAT Number')}}</label>
-                                                </div>
-                                            </div>
-                                        <div class="col-md-6">
-                                                <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="customRadio7" name="tax_type" value="GST" class="form-check-input" {{($settings['tax_type'] == 'GST')?'checked':''}}>
-                                                    <label class="form-check-label" for="customRadio7">{{__('GST Number')}}</label>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    {{Form::text('vat_number',null,array('class'=>'form-control','placeholder'=>__('Enter VAT / GST Number')))}}
-                                </div>
-                                <div class="form-group col-md-6 mt-2">
-                                    {{Form::label('timezone',__('Timezone'),array('class' => 'form-label'))}}
-                                    <select type="text" name="timezone" class="form-control custom-select" id="timezone">
-                                        <option value="">{{__('Select Timezone')}}</option>
-                                        @foreach($timezones as $k=>$timezone)
-                                            <option value="{{$k}}" {{(env('TIMEZONE')==$k)?'selected':''}}>{{$timezone}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                               
+                            
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_start_time',__('Company Start Time *'),array('class' => 'form-label')) }}
                                     {{Form::time('company_start_time',null,array('class'=>'form-control'))}}
@@ -195,10 +171,10 @@
                                                                 </span>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     <div class="row">
-                                        <label class="form-check-label" for="s">{{__('Indiangst')}}
-                                        <div class="col-md-12">
+                                        <label class="form-check-label" for="s">{{__('GSTVAT')}}
+                                        <div class="col-md-6">
                                                 <div class="form-check form-check-inline form-group mb-3">
                                                     <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
                                                     <label class="form-check-label" for="indiangst">{{__('Yes')}}</label>
@@ -214,6 +190,23 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                                <div class="form-check form-check-inline form-group mb-3">
+                                                    <input type="radio" id="customRadio8" name="tax_type" value="VAT" class="form-check-input" {{($settings['tax_type'] == 'VAT')?'checked':''}} >
+                                                    <label class="form-check-label" for="customRadio8">{{__('VAT Number')}}</label>
+                                                </div>
+                                            </div>
+                                        <div class="col-md-6">
+                                                <div class="form-check form-check-inline form-group mb-3">
+                                                    <input type="radio" id="customRadio7" name="tax_type" value="GST" class="form-check-input" {{($settings['tax_type'] == 'GST')?'checked':''}}>
+                                                    <label class="form-check-label" for="customRadio7">{{__('GST Number')}}</label>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    {{Form::text('vat_number',null,array('class'=>'form-control','placeholder'=>__('Enter VAT / GST Number')))}}
+                                </div>
                                 {{-- <div class="form-group col-md-6">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -224,6 +217,15 @@
                                             </div>
                                     </div>
                                 </div> --}}
+                                <div class="form-group col-md-6 mt-2">
+                                    {{Form::label('timezone',__('Timezone'),array('class' => 'form-label'))}}
+                                    <select type="text" name="timezone" class="form-control custom-select" id="timezone">
+                                        <option value="">{{__('Select Timezone')}}</option>
+                                        @foreach($timezones as $k=>$timezone)
+                                            <option value="{{$k}}" {{(env('TIMEZONE')==$k)?'selected':''}}>{{$timezone}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
                             </div>
 
@@ -245,6 +247,7 @@
 @include('new_layouts.footer')
 <script type="text/javascript">
  $(document).on("change", '#company_country', function () {
+    console.log("testongsdfsdfs")
             var name=$(this).val();
             var settings = {
                     "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
