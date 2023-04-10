@@ -751,6 +751,7 @@ class DashboardController extends Controller
     }
 
     public function construction_main(Request $request){
+        
         return view('construction_project.construction_main');
     }
 

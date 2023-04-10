@@ -825,7 +825,7 @@ class ProjectController extends Controller
 
     public function filterProjectView(Request $request)
     {
-
+       
         if(\Auth::user()->can('manage project'))
         {
             $usr           = Auth::user();
@@ -834,9 +834,8 @@ class ProjectController extends Controller
             }else{
               $user_projects = $usr->projects()->pluck('project_id', 'project_id')->toArray();
             }
-            if($request->ajax() && $request->has('view') && $request->has('sort'))
-            {
-                $sort     = explode('-', $request->sort);
+        
+                $sort     = explode('-', 'created_at-desc');
                 $projects = Project::whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
 
                 if(!empty($request->keyword))
@@ -847,16 +846,9 @@ class ProjectController extends Controller
                 {
                     $projects->whereIn('status', $request->status);
                 }
-                $projects   = $projects->get();
-                $returnHTML = view('projects.' . $request->view, compact('projects', 'user_projects'))->render();
 
-                return response()->json(
-                    [
-                        'success' => true,
-                        'html' => $returnHTML,
-                    ]
-                );
-            }
+                $projects   = $projects->get();
+                return view('construction_project.construction_main',compact('projects', 'user_projects'));
         }
         else
         {

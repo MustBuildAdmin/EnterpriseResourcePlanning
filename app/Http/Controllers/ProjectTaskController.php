@@ -16,7 +16,6 @@ use App\Models\ActivityLog;
 use App\Models\ProjectTask;
 use App\Models\TaskComment;
 use App\Models\TaskChecklist;
-use App\Models\Con_task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -1187,8 +1186,7 @@ class ProjectTaskController extends Controller
             
             $con_task=Con_task::whereIn('project_id',$user_projects)->get();
             
-
-            return view('tasks.calendar_new', compact('project_id','con_task','transdate'));
+            return view('construction_project.task_calendar', compact('project_id','con_task','transdate'));
         }
         else
         {

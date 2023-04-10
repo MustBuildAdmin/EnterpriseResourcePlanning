@@ -15,7 +15,7 @@
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <!-- Libs JS -->
 <script>
-feather.replace();
+// feather.replace();
 </script>
 <script>
 (function($) {
