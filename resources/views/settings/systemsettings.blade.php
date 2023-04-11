@@ -24,7 +24,7 @@
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
-                        {{ __('System Setting') }}
+                        {{ __('Admin Settings') }}
                         </h2>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         {{Form::label('site_currency_symbol',__('Currency Symbol *'),array('class' => 'form-label')) }}
-                                        <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol'
+                                        <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
                                                 placeholder="Select Currecy" required>
                                             <option value="">{{ __('Select Currency Symbol ...') }}</option>
                                             @isset($currency)
@@ -193,16 +193,7 @@
                                                         </span>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-6">
-                                    {{Form::label('footer_title',__('Invoice/Bill Footer Title'),array('class'=>'form-label')) }}
-                                    {{Form::text('footer_title',null,array('class'=>'form-control'))}}
-                                    @error('footer_title')
-                                    <span class="invalid-footer_title" role="alert">
-                                                            <strong class="text-danger">{{ $message }}</strong>
-                                                        </span>
-                                    @enderror
-                                </div>
-
+                             
                                 <div class="form-group col-md-6">
                                     {{Form::label('decimal_number',__('Decimal Number Format'),array('class'=>'form-label')) }}
                                     {{Form::number('decimal_number', null, ['class'=>'form-control'])}}
@@ -223,7 +214,15 @@
                                     @enderror
                                 </div>
 
-
+                                <div class="form-group col-md-6">
+                                        {{Form::label('employee_prefix',__('Employee Prefix'),array('class'=>'form-label')) }}
+                                        {{Form::text('employee_prefix',null,array('class'=>'form-control'))}}
+                                        @error('employee_prefix')
+                                        <span class="invalid-employee_prefix" role="alert">
+                                                                <strong class="text-danger">{{ $message }}</strong>
+                                                            </span>
+                                        @enderror
+                                    </div>
 
 
                                 <div class="form-group col-md-6 shipping_display_invoice">
@@ -240,7 +239,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <!-- <div class="form-group col-md-6">
                                     <label class="form-label mb-0">{{__('App Site URL')}}</label> <br>
                                     <small>{{__("App Site URL to login app.")}}</small>
                                     {{ Form::text('currency',URL::to('/'), ['class' => 'form-control', 'placeholder' => __('Enter Currency'),'disabled'=>'true']) }}
@@ -250,10 +249,19 @@
                                     <label class="form-label mb-0">{{__('Tracking Interval')}}</label> <br>
                                     <small>{{__("Image Screenshort Take Interval time ( 1 = 1 min)")}}</small>
                                     {{ Form::number('interval_time',isset($settings['interval_time'])?$settings['interval_time']:'10', ['class' => 'form-control', 'placeholder' => __('Enter Tracking Interval')]) }}
+                                </div> -->
+
+                                <div class="form-group col-md-6">
+                                    {{Form::label('footer_title',__('Invoice/Bill Footer Title'),array('class'=>'form-label')) }}
+                                    {{Form::text('footer_title',null,array('class'=>'form-control'))}}
+                                    @error('footer_title')
+                                    <span class="invalid-footer_title" role="alert">
+                                                            <strong class="text-danger">{{ $message }}</strong>
+                                                        </span>
+                                    @enderror
                                 </div>
 
-
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     {{Form::label('footer_notes',__('Invoice/Bill Footer Notes'),array('class'=>'form-label')) }}
                                     {{Form::textarea('footer_notes', null, ['class'=>'form-control','rows'=>'3'])}}
                                     @error('footer_notes')
@@ -278,6 +286,14 @@
             </div>
         </div>
     </div>
+<script>
+var site_currency=document.getElementById("site_currency");
+    var site_currency_symbol=document.getElementById("site_currency_symbol");
+site_currency.addEventListener('change', (event) => {
+    site_currency_symbol.value=site_currency.value;
+   
+});
+</script>
 @include('new_layouts.footer')
 <style>
 .col-md-6{

@@ -31,14 +31,14 @@ $profile=\App\Models\Utility::get_file('uploads/avatar/');
 								<div class="col-lg-6 col-sm-6">
 									<div class="form-group">
 										<label class="col-form-label text-dark">{{__('Name')}}</label>
-										<input class="form-control @error('name') is-invalid @enderror" name="name" type="text" id="name" maxlength="120" placeholder="{{ __('Enter Your Name') }}" value="{{ $userDetail->name }}" required autocomplete="name">
+										<input class="form-control @error('name') is-invalid @enderror" disabled name="name" type="text" id="name" maxlength="120" placeholder="{{ __('Enter Your Name') }}" value="{{ $userDetail->name }}" required autocomplete="name">
 										@error('name')
 										<span class="invalid-feedback text-danger text-xs" role="alert">{{ $message }}</span> @enderror </div>
 								</div>
 								<div class="col-lg-6 col-sm-6">
 									<div class="form-group">
 										<label for="email" class="col-form-label text-dark">{{__('Email')}}</label>
-										<input class="form-control @error('email') is-invalid @enderror" name="email" type="text" id="email" placeholder="{{ __('Enter Your Email Address') }}" value="{{ $userDetail->email }}" required autocomplete="email">
+										<input class="form-control @error('email') is-invalid @enderror" name="email" disabled type="text" id="email" placeholder="{{ __('Enter Your Email Address') }}" value="{{ $userDetail->email }}" required autocomplete="email">
 										@error('email')
 										<span class="invalid-feedback text-danger text-xs" role="alert">{{ $message }}</span> @enderror </div>
 								</div>

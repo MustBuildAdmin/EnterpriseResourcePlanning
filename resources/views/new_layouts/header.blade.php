@@ -21,11 +21,11 @@
 
 <head>
     <title>
-        {{ Utility::getValByName('title_text') ? Utility::getValByName('title_text') : config('app.name', 'ERPGO') }}
+        {{ Utility::getValByName('title_text') ? Utility::getValByName('title_text') : config('app.name', 'Must BuildApp') }}
         - @yield('page-title')</title>
     {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> --}}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
 
     <!-- Meta -->
@@ -73,18 +73,18 @@
 	<div class="page">
 		<!-- Navbar -->
 		<header class="navbar navbar-expand-md navbar-light d-print-none">
-			<div class="container-xl">
+			<div class="container-fluid">
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
 				<h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
 
 							@if($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on' )
 								<img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
-									alt="{{ config('app.name', 'ERPGo-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
+									alt="{{ config('app.name', 'Must BuildApp-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
                             class="navbar-brand-image">
 							@else
 								<img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
-									alt="{{ config('app.name', 'ERPGo-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
+									alt="{{ config('app.name', 'Must BuildApp-SaaS') }}"  width="110" height="32" alt="Must BuildApp"
                             class="navbar-brand-image">
 							@endif
                     </a>
@@ -203,7 +203,7 @@
 		<header class="navbar-expand-md">
 			<div class="collapse navbar-collapse" id="navbar-menu">
 				<div class="navbar navbar-light">
-					<div class="container-xl">
+					<div class="container-fluid">
 						<ul class="navbar-nav">
 							<li class="nav-item">
 								<a class="nav-link" href="{{route('new_home')}}"> <span class="nav-link-icon d-md-none d-lg-inline-block">

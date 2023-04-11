@@ -1,6 +1,6 @@
 @include('new_layouts.header')
 <main class="page-wrapper">
-	<section class="row"> {{--
+	<section> {{--
 		<aside class="col-2">
 			<nav id="sidebar">
 				<div class="custom-menu">
@@ -22,7 +22,7 @@
 		</aside> --}}
 		<article class="col-12">
 			<div class="page-header d-print-none">
-				<div class="container-xl">
+				<div class="container-fluid">
 					<div class="row g-2 align-items-center">
 						<div class="col">
 							<h2 class="page-title">
@@ -31,14 +31,17 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="page-body">
-				<div class="container-xl">
+				<div class="container-fluid">
 					<div class="row row-cards">
+						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{ route('users.index') }}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-primary text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
@@ -46,65 +49,54 @@
 												<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
 												<path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
 											</svg>
+                                            </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Users')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Users')}}</div>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
+						@endif
+						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{ route('roles.index') }}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-primary text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
 												<path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
 												<path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"> </path>
 											</svg>
+                                            </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Roles')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Roles')}}</div>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
+						@endif
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{route('hrm_main')}}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-red text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tower" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M5 3h1a1 1 0 0 1 1 1v2h3v-2a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v2h3v-2a1 1 0 0 1 1 -1h1a1 1 0 0 1 1 1v4.394a2 2 0 0 1 -.336 1.11l-1.328 1.992a2 2 0 0 0 -.336 1.11v7.394a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1v-7.394a2 2 0 0 0 -.336 -1.11l-1.328 -1.992a2 2 0 0 1 -.336 -1.11v-4.394a1 1 0 0 1 1 -1z"> </path>
 												<path d="M10 21v-5a2 2 0 1 1 4 0v5"></path>
 											</svg>
+                                        </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Human Resource')}}</div>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{route('construction_main')}}">
-								<div class="card-body">
-									<div class="row">
-										<div class="col-auto">
-											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-												<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-												<path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
-												<path d="M15 19l2 2l4 -4"></path>
-											</svg>
-										</div>
-										<div class="col">
-											<div class="font-weight-medium">{{__('Construction')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Human Resource')}}</div>
 										</div>
 									</div>
 								</div>
@@ -115,6 +107,30 @@
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-yellow text-white avatar">
+											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+												<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+												<path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+												<path d="M15 19l2 2l4 -4"></path>
+											</svg>
+                                            </span>
+										</div>
+										<div class="col">
+                                            <div class="font-weight-medium mt-2">{{__('Clients')}}</div>
+
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
+						<div class="col-md-6 col-xl-2">
+							<a class="card card-link" href="{{route('construction_main')}}">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-auto">
+                                            <span class="bg-info text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-wrecking-ball" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M19 13m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
@@ -126,19 +142,22 @@
 												<path d="M5 15v-2a1 1 0 0 1 1 -1h7"></path>
 												<path d="M19 11v-7l-6 7"></path>
 											</svg>
+                                            </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Clients')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Construction')}}</div>
 										</div>
 									</div>
 								</div>
 							</a>
 						</div>
+						@endif
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="#">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-success text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-headset" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M4 14v-3a8 8 0 1 1 16 0v3"></path>
@@ -146,9 +165,10 @@
 												<path d="M4 14a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-1a2 2 0 0 1 -2 -2v-3z"> </path>
 												<path d="M15 14a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-1a2 2 0 0 1 -2 -2v-3z"> </path>
 											</svg>
+                                            </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium">{{__('Support System')}}</div>
+											<div class="font-weight-medium mt-2">{{__('Support System')}}</div>
 										</div>
 									</div>
 								</div>
@@ -159,14 +179,16 @@
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
+                                            <span class="bg-dark text-white avatar">
 											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 												<path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"> </path>
 												<path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
 											</svg>
+                                            </span>
 										</div>
 										<div class="col">
-											<div class="font-weight-medium"> {{__('System Settings')}}</div>
+											<div class="font-weight-medium mt-2"> {{__('System Settings')}}</div>
 										</div>
 									</div>
 								</div>
@@ -176,7 +198,7 @@
 				</div>
 			</div>
 			<div>
-				<div class="container-xl mt-5">
+				<div class="container-fluid mt-5">
 					<div class="row g-2 align-items-center">
 						<div class="col">
 							<h2 class="page-title">
@@ -185,7 +207,7 @@
 					</div>
 				</div>
 				<div class="page-body">
-					<div class="container-xl">
+					<div class="container-fluid">
 						<div class="row ">
 							<div class="col-12">
 								<div class="card">

@@ -450,15 +450,7 @@
                                                         </span>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-6">
-                                    {{Form::label('footer_title',__('Invoice/Bill Footer Title'),array('class'=>'form-label')) }}
-                                    {{Form::text('footer_title',null,array('class'=>'form-control'))}}
-                                    @error('footer_title')
-                                    <span class="invalid-footer_title" role="alert">
-                                                            <strong class="text-danger">{{ $message }}</strong>
-                                                        </span>
-                                    @enderror
-                                </div>
+                               
 
                                 <div class="form-group col-md-6">
                                     {{Form::label('decimal_number',__('Decimal Number Format'),array('class'=>'form-label')) }}
@@ -481,11 +473,11 @@
                                 </div>
 
 
-                                <div class="form-group col-md-6">
+                                <!-- <div class="form-group col-md-6">
                                     <label class="form-label mb-0">{{__('App Site URL')}}</label> <br>
                                     <small>{{__("App Site URL to login app.")}}</small>
                                     {{ Form::text('currency',URL::to('/'), ['class' => 'form-control', 'placeholder' => __('Enter Currency'),'disabled'=>'true']) }}
-                                </div>
+                                </div> -->
 
                                 <div class="form-group col-md-6">
                                     <label class="form-label mb-0">{{__('Tracking Interval')}}</label> <br>
@@ -508,9 +500,17 @@
                                 </span>
                                     @enderror
                                 </div>
+                                <div class="form-group col-md-6">
+                                    {{Form::label('footer_title',__('Invoice/Bill Footer Title'),array('class'=>'form-label')) }}
+                                    {{Form::text('footer_title',null,array('class'=>'form-control'))}}
+                                    @error('footer_title')
+                                    <span class="invalid-footer_title" role="alert">
+                                                            <strong class="text-danger">{{ $message }}</strong>
+                                                        </span>
+                                    @enderror
+                                </div>
 
-
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
                                     {{Form::label('footer_notes',__('Invoice/Bill Footer Notes'),array('class'=>'form-label')) }}
                                     {{Form::textarea('footer_notes', null, ['class'=>'form-control','rows'=>'3'])}}
                                     @error('footer_notes')

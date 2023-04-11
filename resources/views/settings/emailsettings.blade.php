@@ -6,7 +6,7 @@
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
-                        {{ request()->route()->uri =='email-settings' ? __('Email Notification') : ''}}
+                        {{ __('Admin Settings') }}
                         </h2>
                     </div>
                 </div>

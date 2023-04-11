@@ -2,7 +2,7 @@
 	<div class="container-xl">
 		<div class="row text-center align-items-center flex-row-reverse">
 			<ul class="list-inline list-inline-dots mb-0">
-				<li class="list-inline-item"> {{(Utility::getValByName('footer_text')) ? Utility::getValByName('footer_text') :  __('Copyright ERPGO') }} {{ date('Y') }}
+				<li class="list-inline-item"> {{(Utility::getValByName('footer_text')) ? Utility::getValByName('footer_text') :  __('Copyright Must BuildApp') }} {{ date('Y') }}
 					<a href="." class="link-secondary"></a>
 				</li>
 			</ul>

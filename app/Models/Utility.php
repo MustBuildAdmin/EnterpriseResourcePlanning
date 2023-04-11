@@ -1358,7 +1358,7 @@ class Utility extends Model
              if(isset($template) && !empty($template))
              {
 
-               
+
 
                 $is_active = (object) array('is_active' => 1);
 
@@ -1428,8 +1428,8 @@ class Utility extends Model
                  ];
              }
         }
-      
-       
+
+
     }
     public static function sendEmailTemplateHTML($emailTemplate, $mailTo, $obj)
     {
@@ -1470,13 +1470,11 @@ class Utility extends Model
                         if(!empty($content->content))
                         {
                             $content->content = self::replaceVariable($content->content, $obj);
-                            $general_template_ending= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta content="telephone=no" name="format-detection"/><title></title><style type="text/css" data-premailer="ignore">@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700);</style><style data-premailer="ignore"> @media screen and (max-width: 600px){u+.body{width: 100vw !important;}}a[x-apple-data-detectors]{color: inherit !important;text-decoration: none !important;font-size: inherit !important;font-family: inherit !important;font-weight: inherit !important;line-height: inherit !important;}</style><link rel="stylesheet" href="./assets/theme.css"/></head><body class="bg-body"><center><table class="main bg-body" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" valign="top"><span class="preheader">This is preheader text. Some clients will show this text as a preview.</span><table class="wrap" cellspacing="0" cellpadding="0"> <tr><td class="p-sm"><table cellpadding="0" cellspacing="0"><tr><td class="py-lg"><table cellspacing="0" cellpadding="0"> <tr> <td> <a href="https://erpdev.mustbuildapp.com/"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="34" alt=""/></a> </td><td class="text-right"> <a href="https://erpdev.mustbuildapp.com/" class="text-muted-light font-sm"> View online </a> </td></tr></table> </td></tr></table> <div class="main-content"> <table class="box" cellpadding="0" cellspacing="0"> <tr> <td> <table cellpadding="0" cellspacing="0"> <tr> <td class="content pb-0" align="center"> <table class="icon icon-lg bg-green" cellspacing="0" cellpadding="0"> <tr> <td valign="middle" align="center"> <img src="./assets/icons-white-check.png" class=" va-middle" width="40" height="40" alt="check"/> </td></tr></table> </td></tr><tr> <td class="content text-center">'.$content->content.'</td></tr><tr> <td class="content text-center border-top"> <p> Yours sincerely,<br><a href="https://erpdev.mustbuildapp.com/" class="text-default">MustBuild</a> </p><p> <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="54" alt=""/></p></td></tr></table> </td></tr></table> </div><table cellspacing="0" cellpadding="0"> <tr> <td class="py-xl"> <table class="font-sm text-center text-muted" cellspacing="0" cellpadding="0"> <tr> <td align="center" class="pb-md"> <table class="w-auto" cellspacing="0" cellpadding="0"> <tr> <td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-facebook-square.png" class=" va-middle" width="24" height="24" alt="social-facebook-square"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-twitter.png" class=" va-middle" width="24" height="24" alt="social-twitter"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-github.png" class=" va-middle" width="24" height="24" alt="social-github"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-youtube.png" class=" va-middle" width="24" height="24" alt="social-youtube"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-pinterest.png" class=" va-middle" width="24" height="24" alt="social-pinterest"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-instagram.png" class=" va-middle" width="24" height="24" alt="social-instagram"/> </a> </td></tr></table> </td></tr><tr> <td class="px-lg"> If you have any questions, feel free to message us at <a href="mailto:support@tabler.io" class="text-muted">support@tabler.io</a>. </td></tr><tr> <td class="pt-md"> You are receiving this email because you have bought or downloaded one of the Tabler products. <a href="https://erpdev.mustbuildapp.com/" class="text-muted">Unsubscribe</a> </td></tr></table> </td></tr></table> </td></tr></table> </td></tr></table> </center></body></html>';
-
-                                                    $content->content=$general_template_ending;
 
                             // send email
                             try
                             {
+                                // Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
                                 Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
 
                             }
@@ -1533,7 +1531,7 @@ class Utility extends Model
              if(isset($template) && !empty($template))
              {
 
-               
+
 
                 $is_active = (object) array('is_active' => 1);
 
@@ -1543,15 +1541,12 @@ class Utility extends Model
 
                      // get email content language base
                      $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
-                    //  Common template 
+                    //  Common template
                     $general_template_starting='';
                      $content->from = $template->from;
                      if(!empty($content->content))
                      {
                          $content->content = self::replaceVariable($content->content, $obj);
-                         $general_template_ending= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta content="telephone=no" name="format-detection"/><title></title><style type="text/css" data-premailer="ignore">@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700);</style><style data-premailer="ignore"> @media screen and (max-width: 600px){u+.body{width: 100vw !important;}}a[x-apple-data-detectors]{color: inherit !important;text-decoration: none !important;font-size: inherit !important;font-family: inherit !important;font-weight: inherit !important;line-height: inherit !important;}</style><link rel="stylesheet" href="./assets/theme.css"/></head><body class="bg-body"><center><table class="main bg-body" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" valign="top"><span class="preheader">This is preheader text. Some clients will show this text as a preview.</span><table class="wrap" cellspacing="0" cellpadding="0"> <tr><td class="p-sm"><table cellpadding="0" cellspacing="0"><tr><td class="py-lg"><table cellspacing="0" cellpadding="0"> <tr> <td> <a href="https://erpdev.mustbuildapp.com/"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="34" alt=""/></a> </td><td class="text-right"> <a href="https://erpdev.mustbuildapp.com/" class="text-muted-light font-sm"> View online </a> </td></tr></table> </td></tr></table> <div class="main-content"> <table class="box" cellpadding="0" cellspacing="0"> <tr> <td> <table cellpadding="0" cellspacing="0"> <tr> <td class="content pb-0" align="center"> <table class="icon icon-lg bg-green" cellspacing="0" cellpadding="0"> <tr> <td valign="middle" align="center"> <img src="./assets/icons-white-check.png" class=" va-middle" width="40" height="40" alt="check"/> </td></tr></table> </td></tr><tr> <td class="content text-center">'.$content->content.'</td></tr><tr> <td class="content text-center border-top"> <p> Yours sincerely,<br><a href="https://erpdev.mustbuildapp.com/" class="text-default">MustBuild</a> </p><p> <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" width="116" height="54" alt=""/></p></td></tr></table> </td></tr></table> </div><table cellspacing="0" cellpadding="0"> <tr> <td class="py-xl"> <table class="font-sm text-center text-muted" cellspacing="0" cellpadding="0"> <tr> <td align="center" class="pb-md"> <table class="w-auto" cellspacing="0" cellpadding="0"> <tr> <td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-facebook-square.png" class=" va-middle" width="24" height="24" alt="social-facebook-square"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-twitter.png" class=" va-middle" width="24" height="24" alt="social-twitter"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-github.png" class=" va-middle" width="24" height="24" alt="social-github"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-youtube.png" class=" va-middle" width="24" height="24" alt="social-youtube"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-pinterest.png" class=" va-middle" width="24" height="24" alt="social-pinterest"/> </a> </td><td class="px-sm"> <a href="https://erpdev.mustbuildapp.com/"> <img src="./assets/icons-gray-social-instagram.png" class=" va-middle" width="24" height="24" alt="social-instagram"/> </a> </td></tr></table> </td></tr><tr> <td class="px-lg"> If you have any questions, feel free to message us at <a href="mailto:support@tabler.io" class="text-muted">support@tabler.io</a>. </td></tr><tr> <td class="pt-md"> You are receiving this email because you have bought or downloaded one of the Tabler products. <a href="https://erpdev.mustbuildapp.com/" class="text-muted">Unsubscribe</a> </td></tr></table> </td></tr></table> </td></tr></table> </td></tr></table> </center></body></html>';
-
-                         $content->content=$general_template_ending;
 
                          // send email
                          try
@@ -1606,8 +1601,8 @@ class Utility extends Model
                  ];
              }
         }
-      
-       
+
+
     }
     public static function replaceVariable($content, $obj)
     {
@@ -1881,8 +1876,9 @@ class Utility extends Model
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
-       
-        $arrValue['set_password_url']=  '<a class="btn bg-green border-green" href="' .$arrValue['set_password_url'] . '" target="_blank"><span class="btn-span">Set Password</span></a>';
+
+        // $arrValue['set_password_url']=  '<a class="btn bg-green border-green" href="' .$arrValue['set_password_url'] . '" target="_blank"><span class="btn-span">Set Password</span></a>';
+        $arrValue['set_password_url']='<tr><td class="content text-center pt-0 pb-xl"><table cellspacing="0" cellpadding="0"><tbody><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-green rounded w-auto"><tbody><tr><td align="center" valign="top" class="lh-1"><a href="'.$arrValue['set_password_url'].'" class="btn bg-green border-green"><span class="btn-span">Set Password</span></a></td></tr></tbody></table></td></tr></tbody></table></td></tr>';
 
 //        dd($arrVariable);
 //        dd(str_replace($arrVariable, array_values($arrValue), $content));
@@ -3025,7 +3021,7 @@ class Utility extends Model
                     }else if($settings['storage_setting'] == 's3'){
                         // print_r($name);
                         // dd($path);
-                        
+
                         if (! $path=Storage::disk('s3')->putFileAs($path, $file , $name)) {
                             // echo 'no';
                         }else{
@@ -3141,8 +3137,8 @@ class Utility extends Model
                     ];
                     return $res;
                 } else {
-                    
-                
+
+
                     if($settings['storage_setting']=='local'){
 
 
@@ -3276,11 +3272,11 @@ class Utility extends Model
 
     public static function getTargetrating($designationid, $competencyCount)
     {
-        
+
         $indicator = Indicator::where('designation', $designationid)->first();
         if (!empty($indicator->rating) && $indicator->rating!='null' && ($competencyCount != 0))
         {
-          
+
             $rating = json_decode($indicator->rating, true);
             $starsum = array_sum($rating);
 
@@ -3295,7 +3291,7 @@ class Utility extends Model
     public static function getcountry()
     {
             $curl = curl_init();
-            
+
             curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries',
             CURLOPT_RETURNTRANSFER => true,
@@ -3304,13 +3300,13 @@ class Utility extends Model
             ),
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-    
+
             $response = curl_exec($curl);
-          
- 
+
+
             curl_close($curl);
             return json_decode($response);
-       
+
     }
 
     public static function getstate($country_code)
@@ -3333,7 +3329,7 @@ class Utility extends Model
             }else{
                 return $data;
             }
-            
+
     }
     public static function getcity($country_code,$state_code)
     {
@@ -3347,9 +3343,9 @@ class Utility extends Model
             ),
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-            
+
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             return json_decode($response);
     }
@@ -3368,11 +3364,11 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             return json_decode($response);
         }
-        
+
         public static function getstate_details($country_code,$state_code)
         {
             $curl = curl_init();
@@ -3386,7 +3382,7 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             return json_decode($response);
         }
@@ -3403,7 +3399,7 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             $data=json_decode($response);
             if(isset($data->name)){
@@ -3411,9 +3407,9 @@ class Utility extends Model
             }else{
                 return '';
             }
-            
+
         }
-        
+
         public static function getstate_detailsonly_name($country_code,$state_code)
         {
             $curl = curl_init();
@@ -3427,7 +3423,7 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             $data=json_decode($response);
             if(isset($data->name)){
@@ -3438,7 +3434,7 @@ class Utility extends Model
         }
         // Date Convert
         public static function site_date_format($date,$user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_date_format','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3451,7 +3447,7 @@ class Utility extends Model
 
          // Time Convert
          public static function site_time_format($date,$user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_time_format','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3463,7 +3459,7 @@ class Utility extends Model
         }
          // Time Convert
          public static function site_decimal_number($myNumber,$user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'decimal_number','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3474,9 +3470,9 @@ class Utility extends Model
 
         }
 
-         // Site Currency 
+         // Site Currency
          public static function site_currency($user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_currency','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3487,9 +3483,9 @@ class Utility extends Model
 
         }
 
-         // Site Currency 
+         // Site Currency
          public static function site_currency_symbol($user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_currency_symbol','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
