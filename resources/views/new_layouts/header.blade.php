@@ -40,6 +40,7 @@
     <link href="{{ asset('assets/dist/css/tabler-payments.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/tabler-vendors.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
     <style>
         @import url('https://rsms.me/inter/inter.css');
 

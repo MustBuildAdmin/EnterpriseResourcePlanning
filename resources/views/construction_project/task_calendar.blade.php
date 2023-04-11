@@ -1,4 +1,6 @@
 @include('new_layouts.header')
+{{-- @extends('layouts.admin') --}}
+<link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.css') }}">
     <div class="page-wrapper">
         <!-- Page header -->
         <div class="page-header d-print-none">
@@ -27,12 +29,10 @@
         </div>
     </div>
 @include('new_layouts.footer')
+<script src="{{ asset('assets/js/plugins/main.min.js') }}"></script>
+<script src="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.js') }}"></script>
 
-@push('script-page')
-    <script src="{{ asset('assets/js/plugins/main.min.js') }}"></script>
-
-    <script type="text/javascript">
-    
+<script>
         (function () {
             var etitle;
             var etype;
@@ -74,4 +74,3 @@
             calendar.render();
         })();
     </script>
-@endpush

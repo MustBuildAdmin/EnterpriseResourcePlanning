@@ -66,7 +66,7 @@ Route::get('/company-settings', 'SystemController@companysettings')->name('compa
 Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['XSS','revalidate',]);
 
 
-Route::get('/construction_main', 'DashboardController@construction_main')->name('construction_main')->middleware(
+Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
     [
         'XSS',
         'revalidate',
