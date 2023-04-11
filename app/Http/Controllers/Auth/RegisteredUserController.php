@@ -91,16 +91,16 @@ class RegisteredUserController extends Controller
                'verfiy_email'=>1
         ]);
         if($user->id){
-        
-            //create a new token to be sent to the user. 
+
+            //create a new token to be sent to the user.
             DB::table('password_resets')->insert([
                 'email' => $request->email,
                 'token' => Str::random(60), //change 60 to any length you want
                 'created_at' => Carbon::now()
             ]);
-        
+
             $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
-        
+
             $token = $tokenData->token;
             $url=url('').'/password-set/'.$token.'?email='.$request->email;
             $userArr = [
@@ -114,9 +114,9 @@ class RegisteredUserController extends Controller
 
             // return \Redirect::to('login');
         }
-       
-   
-    
+
+
+
     }
     public function paymentPage(){
         $plans=Plan::get();
