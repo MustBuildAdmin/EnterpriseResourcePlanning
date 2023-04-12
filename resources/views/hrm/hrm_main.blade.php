@@ -108,6 +108,10 @@
 .sidebar_menu .inner__sidebar_menu ul {
     padding: 0px;
 }
+
+.dropdown-menu.show {
+    background-color: #3421c0;
+}
 </style>
 <div class="wrapper container-fluid">
 <div class="row">
@@ -157,12 +161,43 @@
 
             <ul>
                 <li>
-                  <a href="#">
-                    <span class="icon">
-                        <i class="ti ti-adjustments-horizontal"></i>
-                    </span>
-                    <span class="list">HR Setup</span>
-                  </a>
+                  <div class="dropend">
+                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+                      HR Admin Setup
+                    </a>
+                    <div class="dropdown-menu">
+                      <a href="{{url('award')}}" class="dropdown-item">
+                        Award
+                      </a>
+                      <a href="{{url('transfer')}}" class="dropdown-item">
+                        Transfer
+                      </a>
+                      <a href="{{url('resignation')}}" class="dropdown-item">
+                        Resignation
+                      </a>
+                      <a href="{{url('travel')}}" class="dropdown-item">
+                        Trip
+                      </a>
+                      <a href="{{url('promotion')}}" class="dropdown-item">
+                        Promotion
+                      </a>
+                      <a href="{{url('complaint')}}" class="dropdown-item">
+                        Complaints
+                      </a>
+                      <a href="{{url('warning')}}" class="dropdown-item">
+                        Warning
+                      </a>
+                      <a href="{{url('termination')}}" class="dropdown-item">
+                        Termination
+                      </a>
+                      <a href="{{url('announcement')}}" class="dropdown-item">
+                        Announcement
+                      </a>
+                      <a href="{{url('holiday')}}" class="dropdown-item">
+                        Holidays
+                      </a>
+                    </div>
+                  </div>
                 </li>
                 <li>
                   <a href="#" class="">
