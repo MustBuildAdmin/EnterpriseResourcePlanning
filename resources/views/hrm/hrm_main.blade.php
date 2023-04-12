@@ -169,28 +169,31 @@
                       <a href="{{url('award')}}" class="dropdown-item">
                         Award
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('transfer')}}" class="dropdown-item">
                         Transfer
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('resignation')}}" class="dropdown-item">
                         Resignation
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('travel')}}" class="dropdown-item">
                         Trip
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('promotion')}}" class="dropdown-item">
                         Promotion
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('complaint')}}" class="dropdown-item">
                         Complaints
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('warning')}}" class="dropdown-item">
+                        Warning
+                      </a>
+                      <a href="{{url('termination')}}" class="dropdown-item">
                         Termination
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('announcement')}}" class="dropdown-item">
                         Announcement
                       </a>
-                      <a href="" class="dropdown-item">
+                      <a href="{{url('holiday')}}" class="dropdown-item">
                         Holidays
                       </a>
                     </div>

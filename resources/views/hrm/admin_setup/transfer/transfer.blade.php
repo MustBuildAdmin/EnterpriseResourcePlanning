@@ -8,10 +8,10 @@
 			<div class="row g-0">
 				<div class="col d-flex flex-column">
 					<div class="card-body">
-						<h2 class="mb-4">{{ __('Create New Award') }}</h2>
-                        @can('create award')
-                            <a href="#" data-size="lg" data-url="{{ route('award.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Award')}}" class="mb-3 btn btn-sm btn-primary">
-                                {{__('Create')}} <i class="ti ti-plus"></i>
+						<h2 class="mb-4">{{ __('Transfer') }}</h2>
+                        @can('create transfer')
+                            <a href="#" data-size="lg" data-url="{{ route('transfer.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Transfer')}}" class="mb-3 btn btn-sm btn-primary">
+                                <i class="ti ti-plus"></i>
                             </a>
                         @endcan
 						<div class="row align-items-center">
@@ -23,39 +23,38 @@
                                                 <thead>
                                                     <tr>
                                                         @role('company')
-                                                        <th>{{__('Employee')}}</th>
+                                                        <th>{{__('Employee Name')}}</th>
                                                         @endrole
-                                                        <th>{{__('Award Type')}}</th>
-                                                        <th>{{__('Date')}}</th>
-                                                        <th>{{__('Gift')}}</th>
+                                                        <th>{{__('Branch')}}</th>
+                                                        <th>{{__('Department')}}</th>
+                                                        <th>{{__('Transfer Date')}}</th>
                                                         <th>{{__('Description')}}</th>
-                                                        @if(Gate::check('edit award') || Gate::check('delete award'))
+                                                        @if(Gate::check('edit transfer') || Gate::check('delete transfer'))
                                                             <th width="200px">{{__('Action')}}</th>
                                                         @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody class="font-style">
-                                                    @foreach ($awards as $award)
+                                                    @foreach ($transfers as $transfer)
                                                         <tr>
                                                             @role('company')
-                                                                <td>{{!empty( $award->employee())? $award->employee()->name:'' }}</td>
+                                                            <td>{{ !empty($transfer->employee())?$transfer->employee()->name:'' }}</td>
                                                             @endrole
-                                                            <td>{{ !empty($award->awardType())?$award->awardType()->name:'' }}</td>
-                                                            <td>{{  \Auth::user()->dateFormat($award->date )}}</td>
-                                                            <td>{{ $award->gift }}</td>
-                                                            <td>{{ $award->description }}</td>
-
-                                                            @if(Gate::check('edit award') || Gate::check('delete award'))
-                                                                <td class="Action">
+                                                            <td>{{ !empty($transfer->branch())?$transfer->branch()->name:'' }}</td>
+                                                            <td>{{ !empty($transfer->department())?$transfer->department()->name:'' }}</td>
+                                                            <td>{{  \Auth::user()->dateFormat($transfer->transfer_date) }}</td>
+                                                            <td>{{ $transfer->description }}</td>
+                                                            @if(Gate::check('edit transfer') || Gate::check('delete transfer'))
+                                                                <td>
                                                                     <div class="ms-2" style="display:flex;gap:10px;">
-                                                                        @can('edit award')
-                                                                            <a href="#" data-url="{{ URL::to('award/'.$award->id.'/edit') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Award')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
+                                                                        @can('edit transfer')
+                                                                            <a href="#" data-url="{{ URL::to('transfer/'.$transfer->id.'/edit') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Transfer')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
                                                                                 <i class="ti ti-pencil text-white"></i>
                                                                             </a>
                                                                         @endcan
-                                                                        @can('delete award')
-                                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['award.destroy', $award->id],'id'=>'delete-form-'.$award->id]) !!}
-                                                                                <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$award->id}}').submit();">
+                                                                        @can('delete transfer')
+                                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['transfer.destroy', $transfer->id],'id'=>'delete-form-'.$transfer->id]) !!}
+                                                                                <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" data-original-title="{{__('Delete')}}" title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$transfer->id}}').submit();">
                                                                                     <i class="ti ti-trash text-white"></i>
                                                                                 </a>
                                                                             {!! Form::close() !!}

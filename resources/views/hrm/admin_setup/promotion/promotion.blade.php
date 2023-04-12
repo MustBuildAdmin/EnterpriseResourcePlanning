@@ -8,12 +8,13 @@
 			<div class="row g-0">
 				<div class="col d-flex flex-column">
 					<div class="card-body">
-						<h2 class="mb-4">{{ __('Create New Award') }}</h2>
-                        @can('create award')
-                            <a href="#" data-size="lg" data-url="{{ route('award.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Award')}}" class="mb-3 btn btn-sm btn-primary">
-                                {{__('Create')}} <i class="ti ti-plus"></i>
+						<h2 class="mb-4">{{ __('Promotion') }}</h2>
+                        @can('create promotion')
+                            <a href="#" data-url="{{ route('promotion.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Promotion')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
+                                <i class="ti ti-plus"></i>
                             </a>
                         @endcan
+
 						<div class="row align-items-center">
 							<div id="personal_info" class="card">
 								<div class="card-body"> 
@@ -23,39 +24,38 @@
                                                 <thead>
                                                     <tr>
                                                         @role('company')
-                                                        <th>{{__('Employee')}}</th>
+                                                        <th>{{__('Employee Name')}}</th>
                                                         @endrole
-                                                        <th>{{__('Award Type')}}</th>
-                                                        <th>{{__('Date')}}</th>
-                                                        <th>{{__('Gift')}}</th>
+                                                        <th>{{__('Designation')}}</th>
+                                                        <th>{{__('Promotion Title')}}</th>
+                                                        <th>{{__('Promotion Date')}}</th>
                                                         <th>{{__('Description')}}</th>
-                                                        @if(Gate::check('edit award') || Gate::check('delete award'))
+                                                        @if(Gate::check('edit promotion') || Gate::check('delete promotion'))
                                                             <th width="200px">{{__('Action')}}</th>
                                                         @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody class="font-style">
-                                                    @foreach ($awards as $award)
+                                                    @foreach ($promotions as $promotion)
                                                         <tr>
                                                             @role('company')
-                                                                <td>{{!empty( $award->employee())? $award->employee()->name:'' }}</td>
+                                                            <td>{{ !empty($promotion->employee())?$promotion->employee()->name:'' }}</td>
                                                             @endrole
-                                                            <td>{{ !empty($award->awardType())?$award->awardType()->name:'' }}</td>
-                                                            <td>{{  \Auth::user()->dateFormat($award->date )}}</td>
-                                                            <td>{{ $award->gift }}</td>
-                                                            <td>{{ $award->description }}</td>
-
-                                                            @if(Gate::check('edit award') || Gate::check('delete award'))
-                                                                <td class="Action">
+                                                            <td>{{ !empty($promotion->designation())?$promotion->designation()->name:'' }}</td>
+                                                            <td>{{ $promotion->promotion_title }}</td>
+                                                            <td>{{  \Auth::user()->dateFormat($promotion->promotion_date) }}</td>
+                                                            <td>{{ $promotion->description }}</td>
+                                                            @if(Gate::check('edit promotion') || Gate::check('delete promotion'))
+                                                                <td>
                                                                     <div class="ms-2" style="display:flex;gap:10px;">
-                                                                        @can('edit award')
-                                                                            <a href="#" data-url="{{ URL::to('award/'.$award->id.'/edit') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Award')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
+                                                                        @can('edit promotion')
+                                                                            <a href="#" class="btn btn-md bg-primary" data-url="{{ URL::to('promotion/'.$promotion->id.'/edit') }}" data-ajax-popup="true" data-title="{{__('Edit Promotion')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
                                                                                 <i class="ti ti-pencil text-white"></i>
                                                                             </a>
                                                                         @endcan
-                                                                        @can('delete award')
-                                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['award.destroy', $award->id],'id'=>'delete-form-'.$award->id]) !!}
-                                                                                <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$award->id}}').submit();">
+                                                                        @can('delete promotion')
+                                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['promotion.destroy', $promotion->id],'id'=>'delete-form-'.$promotion->id]) !!}
+                                                                                <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$promotion->id}}').submit();">
                                                                                     <i class="ti ti-trash text-white"></i>
                                                                                 </a>
                                                                             {!! Form::close() !!}

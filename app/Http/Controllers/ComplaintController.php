@@ -25,7 +25,8 @@ class ComplaintController extends Controller
                 $complaints = Complaint::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('complaint.index', compact('complaints'));
+            return view('hrm.admin_setup.complaints.complaints', compact('complaints'));
+            // return view('complaint.index', compact('complaints'));
         }
         else
         {
@@ -50,8 +51,8 @@ class ComplaintController extends Controller
                 $employees = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             }
 
-
-            return view('complaint.create', compact('employees', 'current_employee'));
+            return view('hrm.admin_setup.complaints.complaints_create', compact('employees', 'current_employee'));
+            // return view('complaint.create', compact('employees', 'current_employee'));
         }
         else
         {
@@ -161,7 +162,8 @@ class ComplaintController extends Controller
             }
             if($complaint->created_by == \Auth::user()->creatorId())
             {
-                return view('complaint.edit', compact('complaint', 'employees', 'current_employee'));
+                return view('hrm.admin_setup.complaints.complaints_edit', compact('complaint', 'employees', 'current_employee'));
+                // return view('complaint.edit', compact('complaint', 'employees', 'current_employee'));
             }
             else
             {
