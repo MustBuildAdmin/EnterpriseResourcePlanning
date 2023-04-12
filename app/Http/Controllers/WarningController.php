@@ -25,7 +25,8 @@ class WarningController extends Controller
                 $warnings = Warning::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('warning.index', compact('warnings'));
+            return view('hrm.admin_setup.warning.warning', compact('warnings'));
+            // return view('warning.index', compact('warnings'));
         }
         else
         {
@@ -50,7 +51,8 @@ class WarningController extends Controller
                 $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             }
 
-            return view('warning.create', compact('employees', 'current_employee'));
+            return view('hrm.admin_setup.warning.warning_create', compact('employees', 'current_employee'));
+            // return view('warning.create', compact('employees', 'current_employee'));
         }
         else
         {
@@ -153,7 +155,8 @@ class WarningController extends Controller
             }
             if($warning->created_by == \Auth::user()->creatorId())
             {
-                return view('warning.edit', compact('warning', 'employees', 'current_employee'));
+                return view('hrm.admin_setup.warning.warning_edit', compact('warning', 'employees', 'current_employee'));
+                // return view('warning.edit', compact('warning', 'employees', 'current_employee'));
             }
             else
             {

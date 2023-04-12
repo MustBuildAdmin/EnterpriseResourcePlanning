@@ -26,7 +26,8 @@ class TerminationController extends Controller
                 $terminations = Termination::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('termination.index', compact('terminations'));
+            return view('hrm.admin_setup.termination.termination', compact('terminations'));
+            // return view('termination.index', compact('terminations'));
         }
         else
         {
@@ -41,7 +42,8 @@ class TerminationController extends Controller
             $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $terminationtypes = TerminationType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('termination.create', compact('employees', 'terminationtypes'));
+            return view('hrm.admin_setup.termination.termination_create', compact('employees', 'terminationtypes'));
+            // return view('termination.create', compact('employees', 'terminationtypes'));
         }
         else
         {
@@ -125,7 +127,8 @@ class TerminationController extends Controller
             if($termination->created_by == \Auth::user()->creatorId())
             {
 
-                return view('termination.edit', compact('termination', 'employees', 'terminationtypes'));
+                return view('hrm.admin_setup.termination.termination_edit', compact('termination', 'employees', 'terminationtypes'));
+                // return view('termination.edit', compact('termination', 'employees', 'terminationtypes'));
             }
             else
             {

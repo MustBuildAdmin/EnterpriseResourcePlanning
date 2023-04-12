@@ -49,6 +49,7 @@
     <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
+	<script src="{{ asset('js/demo-theme.min.js?1674944402') }}"></script>
 	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
 	<script src="{{ asset('assets/js/datatables.min.js') }}"></script>
 

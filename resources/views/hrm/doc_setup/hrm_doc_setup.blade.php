@@ -10,7 +10,7 @@
 					<div class="card-body">
 						<h2 class="mb-4">{{ __('Document Setup') }}</h2>
                         @can('create document')
-                            <a class="btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('document-upload.create') }}" data-ajax-popup="true" data-title="{{__('Create New Document Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+                            <a class="btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('hrm_doc_setup.create') }}" data-ajax-popup="true" data-title="{{__('Create New Document Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
                                 ADD  <i class="ti ti-plus"></i>
                             </a>
                         @endcan
@@ -62,10 +62,10 @@
                                                                 <td>
                                                                     <div class="ms-2" style="display:flex;gap:10px;">
                                                                         @can('edit document')
-                                                                            <a href="#" data-url="{{ route('document-upload.edit',$document->id)}}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Document')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
+                                                                            <a href="#" data-url="{{ route('hrm_doc_setup.edit',$document->id)}}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Document')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
                                                                         @endcan
                                                                         @can('delete document')
-                                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['document-upload.destroy', $document->id],'id'=>'delete-form-'.$document->id]) !!}
+                                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['hrm_doc_setup.destroy', $document->id],'id'=>'delete-form-'.$document->id]) !!}
                                                                                 <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$document->id}}').submit();"><i class="ti ti-trash text-white"></i></a>
                                                                             {!! Form::close() !!}
                                                                         @endcan
