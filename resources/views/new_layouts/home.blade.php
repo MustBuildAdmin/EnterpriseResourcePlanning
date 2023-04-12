@@ -103,7 +103,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{route('construction_main')}}">
+							<a class="card card-link" href="{{ route('clients.index') }}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
