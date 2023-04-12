@@ -126,7 +126,7 @@
 						</div>
 						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{route('construction_main')}}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">

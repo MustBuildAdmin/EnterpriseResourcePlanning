@@ -112,111 +112,13 @@
 
 @endphp
 
-@push('css-page')
-    <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
-@endpush
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-@push('script-page')
-    <script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
     <script>
-
-        $('.summernote-simple0').on('summernote.blur', function () {
-            $.ajax({
-                url: "{{route('offerlatter.update',$offerlang)}}",
-                data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
-                type: 'POST',
-                success: function (response) {
-                    console.log(response)
-                    if (response.is_success) {
-                        show_toastr('success', response.success,'success');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                },
-                error: function (response) {
-
-                    response = response.responseJSON;
-                    if (response.is_success) {
-                        show_toastr('error', response.error, 'error');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                }
-            })
-        });
-        $('.summernote-simple1').on('summernote.blur', function () {
-            $.ajax({
-                url: "{{route('joiningletter.update',$joininglang)}}",
-                data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
-                type: 'POST',
-                success: function (response) {
-                    console.log(response)
-                    if (response.is_success) {
-                        show_toastr('success', response.success,'success');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                },
-                error: function (response) {
-
-                    response = response.responseJSON;
-                    if (response.is_success) {
-                        show_toastr('error', response.error, 'error');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                }
-            })
-        });
-        $('.summernote-simple2').on('summernote.blur', function () {
-            $.ajax({
-                url: "{{route('experiencecertificate.update',$explang)}}",
-                data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
-                type: 'POST',
-                success: function (response) {
-                    console.log(response)
-                    if (response.is_success) {
-                        show_toastr('success', response.success,'success');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                },
-                error: function (response) {
-
-                    response = response.responseJSON;
-                    if (response.is_success) {
-                        show_toastr('error', response.error, 'error');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                }
-            })
-        });
-        $('.summernote-simple3').on('summernote.blur', function () {
-            $.ajax({
-                url: "{{route('noc.update',$noclang)}}",
-                data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
-                type: 'POST',
-                success: function (response) {
-                    console.log(response)
-                    if (response.is_success) {
-                        show_toastr('success', response.success,'success');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                },
-                error: function (response) {
-
-                    response = response.responseJSON;
-                    if (response.is_success) {
-                        show_toastr('error', response.error, 'error');
-                    } else {
-                        show_toastr('error', response.error, 'error');
-                    }
-                }
-            })
-        });
+  
+     
         $(document).on("change", '#company_country', function () {
+            console.log("testong")
             var name=$(this).val();
             var settings = {
                     "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
@@ -270,7 +172,7 @@
 
         });
     </script>
-@endpush
+
 @push('script-page')
     <script>
         $(document).on("change", "select[name='invoice_template'], input[name='invoice_color']", function () {
@@ -361,7 +263,7 @@
 
 
 @endpush
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <div class="page-body">
   <div class="container-xl">
   <div id="multi-step-form-container">
@@ -426,7 +328,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         {{Form::label('site_currency_symbol',__('Currency Symbol *'),array('class' => 'form-label')) }}
-                                        <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol'
+                                        <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
                                                 placeholder="Select Currecy" required>
                                             <option value="">{{ __('Select Currency Symbol ...') }}</option>
                                             @isset($currency)
@@ -561,16 +463,7 @@
                                                             </span>
                                         @enderror
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        {{Form::label('footer_title',__('Invoice/Bill Footer Title'),array('class'=>'form-label')) }}
-                                        {{Form::text('footer_title',null,array('class'=>'form-control'))}}
-                                        @error('footer_title')
-                                        <span class="invalid-footer_title" role="alert">
-                                                                <strong class="text-danger">{{ $message }}</strong>
-                                                            </span>
-                                        @enderror
-                                    </div>
-
+                                  
                                     <div class="form-group col-md-6">
                                         {{Form::label('decimal_number',__('Decimal Number Format'),array('class'=>'form-label')) }}
                                         {{Form::number('decimal_number', null, ['class'=>'form-control'])}}
@@ -592,11 +485,11 @@
                                     </div>
 
 
-                                    <div class="form-group col-md-6">
+                                    <!-- <div class="form-group col-md-6">
                                         <label class="form-label mb-0">{{__('App Site URL')}}</label> <br>
                                         <small>{{__("App Site URL to login app.")}}</small>
                                         {{ Form::text('currency',URL::to('/'), ['class' => 'form-control', 'placeholder' => __('Enter Currency'),'disabled'=>'true']) }}
-                                    </div>
+                                    </div> -->
 
                                     <!-- <div class="form-group col-md-6">
                                         <label class="form-label mb-0">{{__('Tracking Interval')}}</label> <br>
@@ -620,8 +513,17 @@
                                         @enderror
                                     </div>
 
+                                    <div class="form-group col-md-6">
+                                        {{Form::label('footer_title',__('Invoice/Bill Footer Title'),array('class'=>'form-label')) }}
+                                        {{Form::text('footer_title',null,array('class'=>'form-control'))}}
+                                        @error('footer_title')
+                                        <span class="invalid-footer_title" role="alert">
+                                                                <strong class="text-danger">{{ $message }}</strong>
+                                                            </span>
+                                        @enderror
+                                    </div>
 
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-6">
                                         {{Form::label('footer_notes',__('Invoice/Bill Footer Notes'),array('class'=>'form-label')) }}
                                         {{Form::textarea('footer_notes', null, ['class'=>'form-control','rows'=>'3'])}}
                                         @error('footer_notes')
@@ -763,6 +665,46 @@
                                 </div>
 
 
+                              
+                               
+                                <div class="form-group col-md-6">
+                                    {{Form::label('company_start_time',__('Company Start Time *'),array('class' => 'form-label')) }}
+                                    {{Form::time('company_start_time',null,array('class'=>'form-control'))}}
+                                    @error('company_start_time')
+                                    <span class="invalid-company_start_time" role="alert">
+                                                        <strong class="text-danger">{{ $message }}</strong>
+                                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    {{Form::label('company_end_time',__('Company End Time *'),array('class' => 'form-label')) }}
+                                    {{Form::time('company_end_time',null,array('class'=>'form-control'))}}
+                                    @error('company_end_time')
+                                    <span class="invalid-company_end_time" role="alert">
+                                                                    <strong class="text-danger">{{ $message }}</strong>
+                                                                </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div class="row">
+                                        <label class="form-check-label" for="s">{{__('GSTVAT')}}
+                                        <div class="col-md-12">
+                                                <div class="form-check form-check-inline form-group mb-3">
+                                                    <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
+                                                    <label class="form-check-label" for="indiangst">{{__('Yes')}}</label>
+                                                </div>
+                                                    <div class="form-check form-check-inline form-group mb-3">
+                                                    <input type="radio" id="indiangst1" name="indiangst" value="0" class="form-check-input" {{($settings['indiangst'] == '0')?'checked':''}}>
+                                                    <label class="form-check-label" for="indiangst1">{{__('No')}}</label>
+                                                </div>
+                                        </div>
+                                        {{-- <div class="col-md-6">
+                                                
+                                            </div> --}}
+                                        </label>
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-6">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -788,44 +730,6 @@
                                             <option value="{{$k}}" {{(env('TIMEZONE')==$k)?'selected':''}}>{{$timezone}}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    {{Form::label('company_start_time',__('Company Start Time *'),array('class' => 'form-label')) }}
-                                    {{Form::time('company_start_time',null,array('class'=>'form-control'))}}
-                                    @error('company_start_time')
-                                    <span class="invalid-company_start_time" role="alert">
-                                                        <strong class="text-danger">{{ $message }}</strong>
-                                                    </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group col-md-6">
-                                    {{Form::label('company_end_time',__('Company End Time *'),array('class' => 'form-label')) }}
-                                    {{Form::time('company_end_time',null,array('class'=>'form-control'))}}
-                                    @error('company_end_time')
-                                    <span class="invalid-company_end_time" role="alert">
-                                                                    <strong class="text-danger">{{ $message }}</strong>
-                                                                </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-md-12">
-                                    <div class="row">
-                                        <label class="form-check-label" for="s">{{__('Indiangst')}}
-                                        <div class="col-md-12">
-                                                <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
-                                                    <label class="form-check-label" for="indiangst">{{__('Yes')}}</label>
-                                                </div>
-                                                    <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="indiangst1" name="indiangst" value="0" class="form-check-input" {{($settings['indiangst'] == '0')?'checked':''}}>
-                                                    <label class="form-check-label" for="indiangst1">{{__('No')}}</label>
-                                                </div>
-                                        </div>
-                                        {{-- <div class="col-md-6">
-
-                                            </div> --}}
-                                        </label>
-                                    </div>
                                 </div>
                                 {{-- <div class="form-group col-md-6">
                                     <div class="row">
@@ -872,6 +776,7 @@
         }
     });
     site_currency.addEventListener('change', (event) => {
+        site_currency_symbol.value=site_currency.value;
         if(site_currency.value=='' || site_currency_symbol.value==''){
             document.getElementById("nextbtn").disabled = true;
         }else{
