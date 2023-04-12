@@ -132,7 +132,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
             </div> -->
             <div class="mb-3">
                 <label for="company_name" class="form-label">{{__('Company Name')}}</label>
-                <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
+                <input value="{{ old('company_name') }}" id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
                 @error('company_name')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -145,10 +145,10 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
             </div>
             <div class="mb-3">
                 <label for="company_type" class="form-label">{{__('Company_type')}} <span class="error_class">*</span></label>
-                <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required name='company_type'>
+                <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required >
                     <option value=''>{{__('Select_Company_type')}}</option>
                     @foreach($companytype as $key => $value)
-                    <option value='{{$value->id}}'>{{__($value->name)}}</option>
+                    <option  value='{{$value->id}}' {{ (collect(old('company_type'))->contains($value->id)) ? 'selected':'' }}>{{__($value->name)}}</option>
                     @endforeach
 
                 </select>
