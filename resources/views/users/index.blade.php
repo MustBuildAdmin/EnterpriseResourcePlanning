@@ -14,17 +14,17 @@
 			<div class="row g-2 align-items-center">
 				<div class="col">
 					<h2 class="page-title">
-               
+
                 {{__('Manage User')}}
-         
+
             </h2>
-				
+
 				</div>
 				<!-- Page title actions -->
 				<div class="col-auto ms-auto d-print-none">
           <form action="{{ route('users.index') }}" method="GET">
           <div class="input-group">
-            
+
             <input type="search" name="search" value="{{ old('search') }}"  class="form-control d-inline-block w-9 me-3" placeholder="{{__('Search by Name')}}" />
             <div class="input-group-btn">
                 <button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -35,13 +35,13 @@
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M12 5l0 14" />
                     <path d="M5 12l14 0" />
-                  </svg>{{__('Create New User')}} 
+                  </svg>{{__('Create New User')}}
                 </a>
             </div>
-       
-           
+
+
         </div>
-					
+
 				</div>
 			</div>
 		</div>
@@ -49,32 +49,32 @@
 	<!-- Page body -->
 	<div class="page-body">
 		<div class="container-xl">
-			<div class="row row-cards"> 
+			<div class="row row-cards">
         @forelse($users as $user)
 				<div class="col-md-6 col-lg-3">
-					<div class="card"> 
+					<div class="card">
             @if(Gate::check('edit user') || Gate::check('delete user'))
 						<div class="card-header-right">
 							<div class="btn-group card-option float-end"> @if($user->is_active==1)
 								<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti ti-dots-vertical"></i> </button>
-								<div class="dropdown-menu dropdown-menu-end"> 
+								<div class="dropdown-menu dropdown-menu-end">
                   @can('edit user')
-									<a href="#!" data-size="lg" data-url="{{ route('users.edit',$user->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> <span>{{__('Edit')}}</span> </a> 
-                  @endcan 
-                  @can('delete user') 
-                  {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],'id'=>'delete-form-'.$user['id']]) !!}
-									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span> @if($user->delete_status!=0){{__('Delete')}} @else {{__('Restore')}}@endif</span> </a> 
-                  {!! Form::close() !!} 
+									<a href="#!" data-size="lg" data-url="{{ route('users.edit',$user->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> <span>{{__('Edit')}}</span> </a>
                   @endcan
-									<a href="#!" data-url="{{route('users.reset',\Crypt::encrypt($user->id))}}" data-ajax-popup="true" data-size="md" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}"> <i class="ti ti-adjustments"></i> 
-                    <span>  {{__('Reset Password')}}</span> 
+                  @can('delete user')
+                  {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],'id'=>'delete-form-'.$user['id']]) !!}
+									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span> @if($user->delete_status!=0){{__('Delete')}} @else {{__('Restore')}}@endif</span> </a>
+                  {!! Form::close() !!}
+                  @endcan
+									<a href="#!" data-url="{{route('users.reset',\Crypt::encrypt($user->id))}}" data-ajax-popup="true" data-size="md" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}"> <i class="ti ti-adjustments"></i>
+                    <span>  {{__('Reset Password')}}</span>
                   </a>
-								</div> 
-                @else 
-                <a href="#" class="action-item"><i class="ti ti-lock"></i></a> 
-                @endif 
+								</div>
+                @else
+                <a href="#" class="action-item"><i class="ti ti-lock"></i></a>
+                @endif
               </div>
-						</div> 
+						</div>
             @endif
 						<div class="card-body p-4 text-center"> <span class="avatar avatar-xl mb-3 rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
 							<?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
@@ -98,7 +98,7 @@
 								</svg> {{__('Call')}}</a>
 						</div>
 					</div>
-				</div> 
+				</div>
         @empty
         <div class="page-body">
           <div class="container-xl d-flex flex-column justify-content-center">
@@ -109,7 +109,7 @@
               <p class="empty-subtitle text-muted">
                 {{__('Try adjusting your search or filter to find what you are looking for')}}
               </p>
-              
+
             </div>
           </div>
         </div>
@@ -117,10 +117,10 @@
       </div>
 			<div class="d-flex mt-4">
 				<ul class="pagination ms-auto"> {!! $users->links() !!} </ul>
-			</div> 
+			</div>
 		</div>
 	</div>
-</div> 
+</div>
 
 
 @include('new_layouts.footer')

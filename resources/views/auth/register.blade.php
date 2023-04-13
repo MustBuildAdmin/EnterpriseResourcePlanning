@@ -16,8 +16,8 @@
         list-style: none;
     }
     .backgroundimge{
-        width: 150px;
-        height: 80;
+        width: 100px;
+        height: 60;
         object-fit: contain;
     }
     .navbar-brand-autodark,img.backgroundimge{
@@ -29,23 +29,6 @@
         display: flex;
         position: absolute;
         right: 10px;
-    }
-    .name_error{
-        display:none;
-        color:red;
-    }
-    .error_class{
-        color:red;
-        font-weight:bold;
-    }
-    option {
-    text-transform: capitalize;
-    }
-    .font_size{
-        font-size: 11px !important;
-    }
-    .form-control.is-invalid, .was-validated .form-control:invalid {
-        background-image: unset !important;
     }
 </style>
 @section('page-title')
@@ -68,20 +51,18 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
 
         </div>
         <li class="nav-item ">
-            <select class="btn btn-primary my-1 me-2 font_size" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
+            <select class="btn btn-primary my-1 me-2 " onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
                 @foreach(Utility::languages() as $language)
                     <option class="" @if($lang == $language) selected @endif value="{{ route('register',$language) }}">{{Str::upper($language)}}</option>
                 @endforeach
             </select>
         </li>
     </div>
-    <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
     <form class="card card-md" method="POST" action="{{ route('register') }}">
-        @csrf
       <div class="card-body">
-
-        <h2 class="card-title text-center mb-4">{{__('Sign Up')}}</h2>
-
+        @csrf
+        <h2 class="card-title text-center mb-4">{{__('Register')}}</h2>
+        <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
             <div class="mb-3">
                 <label for="name" class="form-label">{{__('Name')}}</label>
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -90,10 +71,9 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                <span class="name_error">Name Must be atleast 3 characters</span>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">{{__('Email')}} <span class="error_class">*</span></label>
+                <label for="email" class="form-label">{{__('Email')}}</label>
                 <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 @error('email')
                 <span class="invalid-feedback" role="alert">
@@ -132,7 +112,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
             </div> -->
             <div class="mb-3">
                 <label for="company_name" class="form-label">{{__('Company Name')}}</label>
-                <input value="{{ old('company_name') }}" id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
+                <input id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
                 @error('company_name')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -144,11 +124,11 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                 </div>
             </div>
             <div class="mb-3">
-                <label for="company_type" class="form-label">{{__('Company_type')}} <span class="error_class">*</span></label>
-                <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required >
+                <label for="company_type" class="form-label">{{__('Company_type')}}</label>
+                <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required name='company_type'>
                     <option value=''>{{__('Select_Company_type')}}</option>
                     @foreach($companytype as $key => $value)
-                    <option  value='{{$value->id}}' {{ (collect(old('company_type'))->contains($value->id)) ? 'selected':'' }}>{{__($value->name)}}</option>
+                    <option value='{{$value->id}}'>{{$value->name}}</option>
                     @endforeach
 
                 </select>
@@ -179,7 +159,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
       </div>
     </form>
     <div class="text-center text-muted mt-3">
-        {{__("Already have an account?")}}  <a href="{{ route('login',!empty(\Auth::user()->lang)?\Auth::user()->lang:'en') }}"  tabindex="-1">{{__('Login')}}</a>
+        {{__("Already' have an account?")}}  <a href="{{ route('login',!empty(\Auth::user()->lang)?\Auth::user()->lang:'en') }}"  tabindex="-1">{{__('Login')}}</a>
     </div>
 
   </div>
@@ -244,16 +224,4 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
         }
         });
     });
-
-$(document).on('keyup', function () {
-
-if ($("#name").val().length <= 2) {
-  $(".name_error").show();
-  $("#submit").prop('disabled', true);
-}else{
-   $(".name_error").hide();
-   $("#submit").prop('disabled', false);
-}
-
-});
 </script>

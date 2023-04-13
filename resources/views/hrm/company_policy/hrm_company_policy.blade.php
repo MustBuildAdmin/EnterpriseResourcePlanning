@@ -1,6 +1,6 @@
 @include('hrm.hrm_main')
 
-    
+
 
 <div class="page-body">
 	<div class="container-xl">
@@ -16,7 +16,7 @@
                         @endcan
 						<div class="row align-items-center">
 							<div id="personal_info" class="card">
-								<div class="card-body"> 
+								<div class="card-body">
                                     <div class="row">
                                         <div class="table-responsive">
                                             <table class="table card-table table-vcenter text-nowrap datatable">
@@ -97,5 +97,5 @@
 			</div>
 		</div>
 	</div>
-</div> 
+</div>
 @include('new_layouts.footer')

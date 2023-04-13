@@ -113,6 +113,7 @@ class RegisteredUserController extends Controller
             $user->userDefaultDataRegister($user->id);
             $user->userWarehouseRegister($user->id);
 
+
             $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
             event(new Registered($user));
             return redirect()->route('login')->with('success', __('Registered Successfully. Check you email for verfication'));
