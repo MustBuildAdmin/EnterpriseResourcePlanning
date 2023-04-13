@@ -2282,6 +2282,7 @@
     "System Setup": "System Setup",
     "System will consider last stage as a completed \/ done task for get progress on project.": "System will consider last stage as a completed \/ done task for get progress on project.",
     "Software":"Software",
+    "Name must be atleast 3 characters":"Name must be atleast 3 characters ",
     "Hotel":"Hotel",
     "Hospital":"Hospital",
     "Tag": "Tag",

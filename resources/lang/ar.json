@@ -2253,6 +2253,7 @@
   "System Setup" : "محددات النظام ",
   "System will consider last stage as a completed / done task for get progress on project." : "سيقوم النظام بدراسة المرحلة الأخيرة كمهمة تم استكمالها / اتمامها للحصول على تقدم بالمشروع. ",
   "Software":"برمجة",
+  "Name must be atleast 3 characters":"يجب ألا يقل الاسم عن 3 أحرف ",
   "Hotel":"الفندق",
   "Hospital":"مستشفى",
   "Tag" : "شارة ",

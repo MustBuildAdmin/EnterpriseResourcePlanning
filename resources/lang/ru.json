@@ -2115,6 +2115,7 @@
   "System Setup" : "Настройка системы ",
   "System will consider last stage as a completed / done task for get progress on project." : "Система будет рассматривать последний этап как выполненную/выполненную задачу для получения прогресса по проекту. ",
   "Software":"Больница ",
+  "Name must be atleast 3 characters":"Имя должно быть не менее 3 символов ",
   "Hotel":"Гостиница ",
   "Hospital":"Больница ",
   "Tag" : "Тег ",

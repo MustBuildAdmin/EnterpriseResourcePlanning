@@ -15,6 +15,9 @@
     li.nav-item {
         list-style: none;
     }
+    li{
+        font-weight:bold;
+    }
     .backgroundimge{
         width: 150px;
         height: 80;
@@ -90,7 +93,8 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                <span class="name_error">Name Must be atleast 3 characters</span>
+                <span class="message_display">({{__('Name must be atleast 3 characters')}})</span>
+                <span class="name_error">{{__('Name must be atleast 3 characters')}}</span>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">{{__('Email')}} <span class="error_class">*</span></label>
@@ -249,9 +253,11 @@ $(document).on('keyup', function () {
 
 if ($("#name").val().length <= 2) {
   $(".name_error").show();
+  $(".message_display").hide();
   $("#submit").prop('disabled', true);
 }else{
    $(".name_error").hide();
+   $(".message_display").show();
    $("#submit").prop('disabled', false);
 }
 
