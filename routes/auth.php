@@ -37,13 +37,15 @@ Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
                 ->name('password.reset');
                 
 Route::get('/set-password/{token}', [NewPasswordController::class, 'create'])->middleware('guest')->name('password.set');
+Route::get('/password-set/{token}', [NewPasswordController::class, 'setpassword'])->middleware('guest')->name('passwordset');
+
 
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
                 ->middleware('guest')
                 ->name('password.update');
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
+Route::post('/password-set', [NewPasswordController::class, 'storereset'])
                 ->middleware('guest')
-                ->name('password.update');
+                ->name('passwordupdate');
 
 Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->middleware('auth')

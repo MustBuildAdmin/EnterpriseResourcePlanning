@@ -1261,103 +1261,348 @@ class Utility extends Model
     public static function sendEmailTemplate($emailTemplate, $mailTo, $obj)
     {
         $usr = Auth::user();
+        if($usr!=null && !empty($usr)){
+            //Remove Current Login user Email don't send mail to them
+            unset($mailTo[$usr->id]);
 
-        //Remove Current Login user Email don't send mail to them
-        unset($mailTo[$usr->id]);
+            $mailTo = array_values($mailTo);
 
-        $mailTo = array_values($mailTo);
-
-        if($usr->type != 'Super Admin')
-        {
-
-            // find template is exist or not in our record
-            $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
-//            dd($template);
-
-
-            if(isset($template) && !empty($template))
+            if($usr->type != 'Super Admin')
             {
-//                dd($usr->creatorId());
 
-                // check template is active or not by company
-                if($usr->type != 'super admin')
+                // find template is exist or not in our record
+                $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+                if(isset($template) && !empty($template))
                 {
-                    $is_active = UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id', '=', $usr->creatorId())->first();
 
-                }
-                else{
-
-                    $is_active = (object) array('is_active' => 1);
-                }
-
-                if($is_active->is_active == 1)
-                {
-                    $settings = self::settings();
-
-                    // get email content language base
-                    $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
-
-                    $content->from = $template->from;
-                    if(!empty($content->content))
+                    // check template is active or not by company
+                    if($usr->type != 'super admin')
                     {
-                        $content->content = self::replaceVariable($content->content, $obj);
-//                        dd($obj);
+                        $is_active = UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id', '=', $usr->creatorId())->first();
 
+                    }
+                    else{
 
-                        // send email
-                        try
+                        $is_active = (object) array('is_active' => 1);
+                    }
+
+                    if($is_active->is_active == 1)
+                    {
+                        $settings = self::settings();
+
+                        // get email content language base
+                        $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
+
+                        $content->from = $template->from;
+                        if(!empty($content->content))
                         {
-//                            dd($mailTo,$content,$settings);
-                            Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+                            $content->content = self::replaceVariable($content->content, $obj);
 
-                        }
 
-                        catch(\Exception $e)
-                        {
-                            $error = $e->getMessage();
-                        }
+                            // send email
+                            try
+                            {
+                                Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
 
-                        if(isset($error))
-                        {
-                            $arReturn = [
-                                'is_success' => false,
-                                'error' => $error,
-                            ];
+                            }
+
+                            catch(\Exception $e)
+                            {
+                                $error = $e->getMessage();
+                            }
+
+                            if(isset($error))
+                            {
+                                $arReturn = [
+                                    'is_success' => false,
+                                    'error' => $error,
+                                ];
+                            }
+                            else
+                            {
+                                $arReturn = [
+                                    'is_success' => true,
+                                    'error' => false,
+                                ];
+                            }
                         }
                         else
                         {
                             $arReturn = [
-                                'is_success' => true,
-                                'error' => false,
+                                'is_success' => false,
+                                'error' => __('Mail not send, email is empty'),
                             ];
                         }
+
+                        return $arReturn;
                     }
                     else
                     {
-                        $arReturn = [
-                            'is_success' => false,
-                            'error' => __('Mail not send, email is empty'),
+                        return [
+                            'is_success' => true,
+                            'error' => false,
                         ];
                     }
-
-                    return $arReturn;
                 }
                 else
                 {
                     return [
-                        'is_success' => true,
-                        'error' => false,
+                        'is_success' => false,
+                        'error' => __('Mail not send, email not found'),
                     ];
                 }
             }
-            else
-            {
-                return [
-                    'is_success' => false,
-                    'error' => __('Mail not send, email not found'),
-                ];
-            }
+        }else{
+             // find template is exist or not in our record
+             $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+             if(isset($template) && !empty($template))
+             {
+
+               
+
+                $is_active = (object) array('is_active' => 1);
+
+                 if($is_active->is_active == 1)
+                 {
+                     $settings = self::settings();
+
+                     // get email content language base
+                     $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
+
+                     $content->from = $template->from;
+                     if(!empty($content->content))
+                     {
+                         $content->content = self::replaceVariable($content->content, $obj);
+
+
+                         // send email
+                         try
+                         {
+                             Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+
+                         }
+
+                         catch(\Exception $e)
+                         {
+                             $error = $e->getMessage();
+                         }
+
+                         if(isset($error))
+                         {
+                             $arReturn = [
+                                 'is_success' => false,
+                                 'error' => $error,
+                             ];
+                         }
+                         else
+                         {
+                             $arReturn = [
+                                 'is_success' => true,
+                                 'error' => false,
+                             ];
+                         }
+                     }
+                     else
+                     {
+                         $arReturn = [
+                             'is_success' => false,
+                             'error' => __('Mail not send, email is empty'),
+                         ];
+                     }
+
+                     return $arReturn;
+                 }
+                 else
+                 {
+                     return [
+                         'is_success' => true,
+                         'error' => false,
+                     ];
+                 }
+             }
+             else
+             {
+                 return [
+                     'is_success' => false,
+                     'error' => __('Mail not send, email not found'),
+                 ];
+             }
         }
+      
+       
+    }
+    public static function sendEmailTemplateHTML($emailTemplate, $mailTo, $obj)
+    {
+        $usr = Auth::user();
+        if($usr!=null && !empty($usr)){
+            //Remove Current Login user Email don't send mail to them
+            unset($mailTo[$usr->id]);
+
+            $mailTo = array_values($mailTo);
+
+            if($usr->type != 'Super Admin')
+            {
+
+                // find template is exist or not in our record
+                $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+                if(isset($template) && !empty($template))
+                {
+
+                    // check template is active or not by company
+                    if($usr->type != 'super admin')
+                    {
+                        $is_active = UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id', '=', $usr->creatorId())->first();
+
+                    }
+                    else{
+
+                        $is_active = (object) array('is_active' => 1);
+                    }
+
+                    if($is_active->is_active == 1)
+                    {
+                        $settings = self::settings();
+
+                        // get email content language base
+                        $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
+
+                        $content->from = $template->from;
+                        if(!empty($content->content))
+                        {
+                            $content->content = self::replaceVariable($content->content, $obj);
+                         
+                            // send email
+                            try
+                            {
+                                // Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+                                Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+
+                            }
+
+                            catch(\Exception $e)
+                            {
+                                $error = $e->getMessage();
+                            }
+
+                            if(isset($error))
+                            {
+                                $arReturn = [
+                                    'is_success' => false,
+                                    'error' => $error,
+                                ];
+                            }
+                            else
+                            {
+                                $arReturn = [
+                                    'is_success' => true,
+                                    'error' => false,
+                                ];
+                            }
+                        }
+                        else
+                        {
+                            $arReturn = [
+                                'is_success' => false,
+                                'error' => __('Mail not send, email is empty'),
+                            ];
+                        }
+
+                        return $arReturn;
+                    }
+                    else
+                    {
+                        return [
+                            'is_success' => true,
+                            'error' => false,
+                        ];
+                    }
+                }
+                else
+                {
+                    return [
+                        'is_success' => false,
+                        'error' => __('Mail not send, email not found'),
+                    ];
+                }
+            }
+        }else{
+             // find template is exist or not in our record
+             $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
+             if(isset($template) && !empty($template))
+             {
+
+               
+
+                $is_active = (object) array('is_active' => 1);
+
+                 if($is_active->is_active == 1)
+                 {
+                     $settings = self::settings();
+
+                     // get email content language base
+                     $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
+                    //  Common template 
+                    $general_template_starting='';
+                     $content->from = $template->from;
+                     if(!empty($content->content))
+                     {
+                         $content->content = self::replaceVariable($content->content, $obj);
+
+                         // send email
+                         try
+                         {
+                             Mail::to($mailTo)->send(new CommonEmailTemplate($content, $settings));
+
+                         }
+
+                         catch(\Exception $e)
+                         {
+                             $error = $e->getMessage();
+                         }
+
+                         if(isset($error))
+                         {
+                             $arReturn = [
+                                 'is_success' => false,
+                                 'error' => $error,
+                             ];
+                         }
+                         else
+                         {
+                             $arReturn = [
+                                 'is_success' => true,
+                                 'error' => false,
+                             ];
+                         }
+                     }
+                     else
+                     {
+                         $arReturn = [
+                             'is_success' => false,
+                             'error' => __('Mail not send, email is empty'),
+                         ];
+                     }
+
+                     return $arReturn;
+                 }
+                 else
+                 {
+                     return [
+                         'is_success' => true,
+                         'error' => false,
+                     ];
+                 }
+             }
+             else
+             {
+                 return [
+                     'is_success' => false,
+                     'error' => __('Mail not send, email not found'),
+                 ];
+             }
+        }
+      
+       
     }
     public static function replaceVariable($content, $obj)
     {
@@ -1463,7 +1708,7 @@ class Utility extends Model
             '{contract_subject}',
             '{contract_start_date}',
             '{contract_end_date}',
-
+            '{set_password_url}'
 
 
 //            '{payment_name}',
@@ -1612,6 +1857,7 @@ class Utility extends Model
             'contract_subject' => '-',
             'contract_start_date' => '-',
             'contract_end_date' => '-',
+            'set_password_url'=>'-'
 
 
 
@@ -1630,6 +1876,9 @@ class Utility extends Model
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
+       
+        // $arrValue['set_password_url']=  '<a class="btn bg-green border-green" href="' .$arrValue['set_password_url'] . '" target="_blank"><span class="btn-span">Set Password</span></a>';
+        $arrValue['set_password_url']='<tr><td class="content text-center pt-0 pb-xl"><table cellspacing="0" cellpadding="0"><tbody><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-green rounded w-auto"><tbody><tr><td align="center" valign="top" class="lh-1"><a href="'.$arrValue['set_password_url'].'" class="btn bg-green border-green"><span class="btn-span">Set Password</span></a></td></tr></tbody></table></td></tr></tbody></table></td></tr>';
 
 //        dd($arrVariable);
 //        dd(str_replace($arrVariable, array_values($arrValue), $content));

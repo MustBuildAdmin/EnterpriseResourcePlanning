@@ -23,10 +23,10 @@
 
                 @if($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on' )
                     <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
-                         alt="{{ config('app.name', 'ERPGo-SaaS') }}" class="logo logo-lg">
+                         alt="{{ config('app.name', 'Must BuildApp-SaaS') }}" class="logo logo-lg">
                 @else
                     <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
-                         alt="{{ config('app.name', 'ERPGo-SaaS') }}" class="logo logo-lg">
+                         alt="{{ config('app.name', 'Must BuildApp-SaaS') }}" class="logo logo-lg">
                 @endif
 
             </a>
@@ -669,7 +669,7 @@
                                             <a class="dash-link" href="{{route('construction_project.index')}}">{{__('Construction Setting')}}</a>
                                         </li>
                                 </ul>
-                            </li>  
+                            </li>
                             @endif --}}
                     {{-- ----------------construction Management END------------------------}}
                     <!--------------------- Start Project ----------------------------------->
@@ -909,7 +909,7 @@
                                 <ul class="dash-submenu">
                                     @if(Gate::check('manage company settings'))
                                         <li class="dash-item dash-hasmenu {{ (Request::segment(1) == 'companysetting') ? ' active' : '' }}">
-                                            <a href="{{ route('company.settings') }}" class="dash-link">{{__('System Settings')}}</a>
+                                            <a href="{{ route('systemsettings') }}" class="dash-link">{{__('System Settings')}}</a>
                                         </li>
                                     @endif
                                     @if(Gate::check('manage company plan'))

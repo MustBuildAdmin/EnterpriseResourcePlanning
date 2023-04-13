@@ -61,6 +61,22 @@ Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middl
     ]
 );
 
+// HRM Document Setup CRUD
+Route::resource('hrm_doc_setup', 'DucumentUploadController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+// HRM Company Policy CRUD
+Route::resource('hrm_company_policy', 'CompanyPolicyController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('/email-settings', 'SystemController@emailsettings')->name('emailsettings')->middleware(['XSS','revalidate',]);
 Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['XSS','revalidate',]);
 Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['XSS','revalidate',]);
@@ -148,6 +164,13 @@ Route::post('edit-profile', 'UserController@editprofile')->name('update.account'
         'revalidate',
     ]
 );
+Route::post('new_edit_profile', 'UserController@new_edit_profile')->name('new_edit_profile')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 Route::resource('users', 'UserController')->middleware(
     [
@@ -165,6 +188,7 @@ Route::get('view_change_password', 'UserController@view_change_password')->name(
     ]
 );
 Route::post('change-password', 'UserController@updatePassword')->name('update.password');
+Route::post('newpassword', 'UserController@newpassword')->name('newpassword');
 Route::any('user-reset-password/{id}', 'UserController@userPassword')->name('users.reset');
 Route::post('user-reset-password/{id}', 'UserController@userPasswordReset')->name('user.password.update');
 
@@ -184,6 +208,8 @@ Route::resource('roles', 'RoleController')->middleware(
         'revalidate',
     ]
 );
+Route::any('delete_multi_role','RoleController@delete_multi_role')->name('delete_multi_role')->middleware(['auth','XSS']);
+
 Route::resource('permissions', 'PermissionController')->middleware(
     [
         'auth',
@@ -3010,14 +3036,14 @@ Route::post('freeze_status', 'ProjectController@freeze_status_change')->name('pr
         'auth',
         'XSS',
     ]
-); 
+);
 
 Route::any('get_freeze_status', 'ProjectController@get_freeze_status')->name('projects.get_freeze_status')->middleware(
     [
         'auth',
         'XSS',
     ]
-); 
+);
 
 Route::resource('projects', 'ProjectController')->middleware(
     [
@@ -4269,7 +4295,6 @@ Route::get('report/pos', 'PosController@report')->name('pos.report')->middleware
 
 //Storage Setting
 Route::post('storage-settings',['as' => 'storage.setting.store','uses' =>'SystemController@storageSettingStore'])->middleware(['auth','XSS']);
-
 
 //appricalStar
 Route::post('/appraisals', 'AppraisalController@empByStar')->name('empByStar')->middleware(['auth','XSS']);

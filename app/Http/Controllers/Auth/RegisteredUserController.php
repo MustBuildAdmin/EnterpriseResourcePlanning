@@ -20,6 +20,10 @@ use Spatie\Permission\Models\Role;
 use App\Models\Company_type;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -51,6 +55,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
         //ReCpatcha
 
         if(env('RECAPTCHA_MODULE') == 'on')
@@ -86,11 +91,28 @@ class RegisteredUserController extends Controller
                'verfiy_email'=>1
         ]);
         if($user->id){
-            $status = Password::sendResetLink(
-                $request->only('email')
-            );
+        
+            //create a new token to be sent to the user. 
+            DB::table('password_resets')->insert([
+                'email' => $request->email,
+                'token' => Str::random(60), //change 60 to any length you want
+                'created_at' => Carbon::now()
+            ]);
+        
+            $tokenData = DB::table('password_resets')->where('email', $request->email)->first();
+        
+            $token = $tokenData->token;
+            $url=url('').'/password-set/'.$token.'?email='.$request->email;
+            $userArr = [
+                'email' => $request->email,
+                'set_password_url' => $url,
+            ];
+
+            $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
             event(new Registered($user));
-            return $status == Password::RESET_LINK_SENT ? back()->with('status', __($status)) : back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
+            return redirect()->route('login')->with('success', __('Registered Successfully. Check you email for verfication'));
+
+            // return \Redirect::to('login');
         }
        
    
