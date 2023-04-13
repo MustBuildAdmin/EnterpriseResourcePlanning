@@ -16,7 +16,7 @@
 <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
 <!-- Libs JS -->
 <script>
-feather.replace();
+// feather.replace();
 </script>
 <script>
 (function($) {
