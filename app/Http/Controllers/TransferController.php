@@ -28,7 +28,8 @@ class TransferController extends Controller
                 $transfers = Transfer::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('transfer.index', compact('transfers'));
+            return view('hrm.admin_setup.transfer.transfer', compact('transfers'));
+            // return view('transfer.index', compact('transfers'));
         }
         else
         {
@@ -44,7 +45,8 @@ class TransferController extends Controller
             $branches    = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $employees   = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('transfer.create', compact('employees', 'departments', 'branches'));
+            return view('hrm.admin_setup.transfer.transfer_create', compact('employees', 'departments', 'branches'));
+            // return view('transfer.create', compact('employees', 'departments', 'branches'));
         }
         else
         {
@@ -129,7 +131,8 @@ class TransferController extends Controller
             $employees   = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             if($transfer->created_by == \Auth::user()->creatorId())
             {
-                return view('transfer.edit', compact('transfer', 'employees', 'departments', 'branches'));
+                return view('hrm.admin_setup.transfer.transfer_edit', compact('transfer', 'employees', 'departments', 'branches'));
+                // return view('transfer.edit', compact('transfer', 'employees', 'departments', 'branches'));
             }
             else
             {

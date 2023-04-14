@@ -31,14 +31,25 @@ class ClientController extends Controller
         );
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if(\Auth::user()->can('manage client'))
         {
             $user    = \Auth::user();
-            $clients = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->get();
+            $clients =User::where([
+                ['name', '!=', Null],
+                [function ($query) use ($request) {
+                    if (($s = $request->search)) {
+                        $user = \Auth::user();
+                        $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                        ->orWhere('email', 'LIKE', '%' . $s . '%')
+                        ->get();
+                    }
+                }]
+            ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->paginate(6);
+            // $clients = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->paginate(1);
 
-            return view('clients.index', compact('clients'));
+            return view('client.index', compact('clients'));
         }
         else
         {

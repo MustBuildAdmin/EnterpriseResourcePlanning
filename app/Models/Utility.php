@@ -1358,7 +1358,7 @@ class Utility extends Model
              if(isset($template) && !empty($template))
              {
 
-               
+
 
                 $is_active = (object) array('is_active' => 1);
 
@@ -1428,8 +1428,8 @@ class Utility extends Model
                  ];
              }
         }
-      
-       
+
+
     }
     public static function sendEmailTemplateHTML($emailTemplate, $mailTo, $obj)
     {
@@ -1470,7 +1470,7 @@ class Utility extends Model
                         if(!empty($content->content))
                         {
                             $content->content = self::replaceVariable($content->content, $obj);
-                         
+
                             // send email
                             try
                             {
@@ -1531,7 +1531,7 @@ class Utility extends Model
              if(isset($template) && !empty($template))
              {
 
-               
+
 
                 $is_active = (object) array('is_active' => 1);
 
@@ -1541,7 +1541,7 @@ class Utility extends Model
 
                      // get email content language base
                      $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
-                    //  Common template 
+                    //  Common template
                     $general_template_starting='';
                      $content->from = $template->from;
                      if(!empty($content->content))
@@ -1601,8 +1601,8 @@ class Utility extends Model
                  ];
              }
         }
-      
-       
+
+
     }
     public static function replaceVariable($content, $obj)
     {
@@ -1876,7 +1876,7 @@ class Utility extends Model
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
-       
+
         // $arrValue['set_password_url']=  '<a class="btn bg-green border-green" href="' .$arrValue['set_password_url'] . '" target="_blank"><span class="btn-span">Set Password</span></a>';
         $arrValue['set_password_url']='<tr><td class="content text-center pt-0 pb-xl"><table cellspacing="0" cellpadding="0"><tbody><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-green rounded w-auto"><tbody><tr><td align="center" valign="top" class="lh-1"><a href="'.$arrValue['set_password_url'].'" class="btn bg-green border-green"><span class="btn-span">Set Password</span></a></td></tr></tbody></table></td></tr></tbody></table></td></tr>';
 
@@ -3021,7 +3021,7 @@ class Utility extends Model
                     }else if($settings['storage_setting'] == 's3'){
                         // print_r($name);
                         // dd($path);
-                        
+
                         if (! $path=Storage::disk('s3')->putFileAs($path, $file , $name)) {
                             // echo 'no';
                         }else{
@@ -3137,8 +3137,8 @@ class Utility extends Model
                     ];
                     return $res;
                 } else {
-                    
-                
+
+
                     if($settings['storage_setting']=='local'){
 
 
@@ -3272,11 +3272,11 @@ class Utility extends Model
 
     public static function getTargetrating($designationid, $competencyCount)
     {
-        
+
         $indicator = Indicator::where('designation', $designationid)->first();
         if (!empty($indicator->rating) && $indicator->rating!='null' && ($competencyCount != 0))
         {
-          
+
             $rating = json_decode($indicator->rating, true);
             $starsum = array_sum($rating);
 
@@ -3291,7 +3291,7 @@ class Utility extends Model
     public static function getcountry()
     {
             $curl = curl_init();
-            
+
             curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.countrystatecity.in/v1/countries',
             CURLOPT_RETURNTRANSFER => true,
@@ -3300,13 +3300,13 @@ class Utility extends Model
             ),
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-    
+
             $response = curl_exec($curl);
-          
- 
+
+
             curl_close($curl);
             return json_decode($response);
-       
+
     }
 
     public static function getstate($country_code)
@@ -3329,7 +3329,7 @@ class Utility extends Model
             }else{
                 return $data;
             }
-            
+
     }
     public static function getcity($country_code,$state_code)
     {
@@ -3343,9 +3343,9 @@ class Utility extends Model
             ),
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-            
+
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             return json_decode($response);
     }
@@ -3364,11 +3364,11 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             return json_decode($response);
         }
-        
+
         public static function getstate_details($country_code,$state_code)
         {
             $curl = curl_init();
@@ -3382,7 +3382,7 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             return json_decode($response);
         }
@@ -3399,7 +3399,7 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             $data=json_decode($response);
             if(isset($data->name)){
@@ -3407,9 +3407,9 @@ class Utility extends Model
             }else{
                 return '';
             }
-            
+
         }
-        
+
         public static function getstate_detailsonly_name($country_code,$state_code)
         {
             $curl = curl_init();
@@ -3423,7 +3423,7 @@ class Utility extends Model
             ));
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($curl);
-            
+
             curl_close($curl);
             $data=json_decode($response);
             if(isset($data->name)){
@@ -3434,7 +3434,7 @@ class Utility extends Model
         }
         // Date Convert
         public static function site_date_format($date,$user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_date_format','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3447,7 +3447,7 @@ class Utility extends Model
 
          // Time Convert
          public static function site_time_format($date,$user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_time_format','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3459,7 +3459,7 @@ class Utility extends Model
         }
          // Time Convert
          public static function site_decimal_number($myNumber,$user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'decimal_number','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3470,9 +3470,9 @@ class Utility extends Model
 
         }
 
-         // Site Currency 
+         // Site Currency
          public static function site_currency($user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_currency','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;
@@ -3483,9 +3483,9 @@ class Utility extends Model
 
         }
 
-         // Site Currency 
+         // Site Currency
          public static function site_currency_symbol($user_id){
-           
+
             $data =DB::table('settings')->where(['name'=>'site_currency_symbol','created_by'=>$user_id])->get();
             if(count($data)>0){
                 $convertor=$data[0]->value;

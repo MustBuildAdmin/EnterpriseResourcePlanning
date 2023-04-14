@@ -42,15 +42,18 @@
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
 
 	<!-- font css -->
+	<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
-	<script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script>
+	<script src="{{ asset('js/demo-theme.min.js?1674944402') }}"></script>
+	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
+	<script src="{{ asset('assets/js/datatables.min.js') }}"></script>
 
-
+	<script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -66,8 +69,18 @@
 		.fa-globe{
 			color:#616876 !important;
 		}
+		.swal2-confirm{
+			margin-left:10px !important;
+		}
     </style>
-
+<script>
+	var oTable = $('.datatable').dataTable( {
+    "aoColumnDefs": [
+        { "bSortable": false, "aTargets": [ 1, 2, 3 ] }, 
+        { "bSearchable": false, "aTargets": [ 0, 1, 2, 3 ] }
+    ]
+}); 
+</script>
 </head>
 <body class=" d-flex flex-column">
 	<div class="page">
