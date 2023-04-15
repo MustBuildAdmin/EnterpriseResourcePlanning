@@ -112,7 +112,7 @@
 
 @endphp
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
 
     <script>
   
@@ -263,7 +263,7 @@
 
 
 @endpush
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
 <div class="page-body">
   <div class="container-xl">
   <div id="multi-step-form-container">
