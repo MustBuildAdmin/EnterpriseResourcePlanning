@@ -3071,7 +3071,7 @@ Margins, paddings
                                                                 cellpadding="0">
                                                                 <tr>
                                                                     <td valign="middle" align="center">
-                                                                        <img src="./assets/icons-white-check.png"
+                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-white-check.png"
                                                                             class=" va-middle" width="40" height="40"
                                                                             alt="check" />
                                                                     </td>
@@ -3113,43 +3113,43 @@ Margins, paddings
                                                         <table class="w-auto" cellspacing="0" cellpadding="0">
                                                             <tr>
                                                                 <td class="px-sm">
-                                                                    <a href="https://tabler.io/emails?utm_source=demo">
-                                                                        <img src="./assets/icons-gray-social-facebook-square.png"
+                                                                    <a href="https://erp.mustbuildapp.com/">
+                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-facebook-square.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-facebook-square" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
-                                                                    <a href="https://tabler.io/emails?utm_source=demo">
-                                                                        <img src="./assets/icons-gray-social-twitter.png"
+                                                                    <a href="https://erp.mustbuildapp.com/">
+                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-twitter.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-twitter" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
-                                                                    <a href="https://tabler.io/emails?utm_source=demo">
-                                                                        <img src="./assets/icons-gray-social-github.png"
+                                                                    <a href="https://erp.mustbuildapp.com/">
+                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-github.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-github" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
-                                                                    <a href="https://tabler.io/emails?utm_source=demo">
-                                                                        <img src="./assets/icons-gray-social-youtube.png"
+                                                                    <a href="https://erp.mustbuildapp.com/">
+                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-youtube.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-youtube" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
-                                                                    <a href="https://tabler.io/emails?utm_source=demo">
-                                                                        <img src="./assets/icons-gray-social-pinterest.png"
+                                                                    <a href="https://erp.mustbuildapp.com/">
+                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-pinterest.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-pinterest" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
-                                                                    <a href="https://tabler.io/emails?utm_source=demo">
-                                                                        <img src="./assets/icons-gray-social-instagram.png"
+                                                                    <a href="https://erp.mustbuildapp.com/">
+                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-instagram.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-instagram" />
                                                                     </a>
