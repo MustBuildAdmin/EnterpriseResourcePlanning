@@ -541,7 +541,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    {{Form::label('site_currency_symbol',__('Currency Symbol *'),array('class' => 'form-label')) }}
+                                    {{Form::label('site_currency_symbol',__('Currency Symbol '),array('class' => 'form-label')) }}
                                     {{Form::text('site_currency_symbol',null,array('class'=>'form-control'))}}
                                     @error('site_currency_symbol')
                                     <span class="invalid-site_currency_symbol" role="alert">

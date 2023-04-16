@@ -678,7 +678,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                {{ Form::label('currency_symbol', __('Currency Symbol *'), ['class' => 'form-label']) }}
+                                                {{ Form::label('currency_symbol', __('Currency Symbol '), ['class' => 'form-label']) }}
                                                 {{ Form::text('currency_symbol', env('CURRENCY_SYMBOL'), ['class' => 'form-control', 'required', 'placeholder' => __('Enter Currency Symbol')]) }}
                                                 @error('currency_symbol')
                                                 <span class="invalid-currency_symbol" role="alert">
