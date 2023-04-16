@@ -27,6 +27,9 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
 Route::get('/forgot-password/{lang?}', [AuthenticatedSessionController::class, 'showLinkRequestForm'])
                 ->middleware('guest')
                 ->name('password.request');
+Route::get('/forgot-password', [AuthenticatedSessionController::class, 'showLinkRequestForm'])
+                ->middleware('guest')
+                ->name('password.request');
 
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
                 ->middleware('guest')

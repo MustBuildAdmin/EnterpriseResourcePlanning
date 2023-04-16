@@ -16,6 +16,11 @@
 
 
 @endphp
+<style>
+.card-footer.text-center {
+    background: none;
+}
+</style>
 @include('new_layouts.header')
     <div class="page-wrapper">
         <!-- Page header -->
@@ -66,14 +71,14 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        {{Form::label('site_currency_symbol',__('Currency Symbol *'),array('class' => 'form-label')) }}
+                                        {{Form::label('site_currency_symbol',__('Currency Symbol '),array('class' => 'form-label')) }}
                                         <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
                                                 placeholder="Select Currecy" required>
                                             <option value="">{{ __('Select Currency Symbol ...') }}</option>
                                             @isset($currency)
                                             @foreach($currency as $key => $value)
-                                                <option value="{{$value->id}}" @isset($settings['site_currency_symbol'])
-                                                    @if($settings['site_currency_symbol']==$value->id) Selected @endif
+                                                <option value="{{$value->id}}" @isset($settings['site_currency'])
+                                                    @if($settings['site_currency']==$value->id) Selected @endif
                                                 @endisset>{{$value->symbol}}</option>
                                             @endforeach
                                             @endif
@@ -273,7 +278,7 @@
 
                             </div>
                         </div>
-                        <div class="card-footer text-end">
+                        <div class="card-footer text-center">
                             <div class="form-group">
                                 <input class="btn btn-print-invoice btn-primary m-r-10" type="submit" value="{{__('Save Changes')}}">
                             </div>
