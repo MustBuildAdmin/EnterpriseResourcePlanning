@@ -14,7 +14,8 @@ class JobCategoryController extends Controller
         {
             $categories = JobCategory::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('jobCategory.index', compact('categories'));
+            return view('hrm.system_setup.job_category.job_category', compact('categories'));
+            // return view('jobCategory.index', compact('categories'));
         }
         else
         {
@@ -25,7 +26,8 @@ class JobCategoryController extends Controller
 
     public function create()
     {
-        return view('jobCategory.create');
+        return view('hrm.system_setup.job_category.job_category_create');
+        // return view('jobCategory.create');
     }
 
 
@@ -68,7 +70,8 @@ class JobCategoryController extends Controller
 
     public function edit(JobCategory $jobCategory)
     {
-        return view('jobCategory.edit', compact('jobCategory'));
+        return view('hrm.system_setup.job_category.job_category_edit', compact('jobCategory'));
+        // return view('jobCategory.edit', compact('jobCategory'));
     }
 
 

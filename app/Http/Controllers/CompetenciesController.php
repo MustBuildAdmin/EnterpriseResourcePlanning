@@ -15,7 +15,8 @@ class CompetenciesController extends Controller
         {
             $competencies = Competencies::where('created_by', \Auth::user()->creatorId())->get();
 
-            return view('competencies.index', compact('competencies'));
+            return view('hrm.system_setup.competencies.competencies', compact('competencies'));
+            // return view('competencies.index', compact('competencies'));
         }
         else
         {
@@ -27,7 +28,8 @@ class CompetenciesController extends Controller
     public function create()
     {
         $performance     = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            return view('competencies.create', compact('performance'));
+        return view('hrm.system_setup.competencies.competencies_create', compact('performance'));
+            // return view('competencies.create', compact('performance'));
 
     }
 
@@ -75,7 +77,8 @@ class CompetenciesController extends Controller
     {
         $competencies = Competencies::find($id);
         $performance     = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        return view('competencies.edit', compact('performance', 'competencies'));
+        return view('hrm.system_setup.competencies.competencies_edit', compact('performance', 'competencies'));
+        // return view('competencies.edit', compact('performance', 'competencies'));
 
     }
 

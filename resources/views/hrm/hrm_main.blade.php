@@ -163,39 +163,59 @@
                 <li>
                   <div class="dropend">
                     <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
-                      HR Admin Setup
+                      {{__('HR Admin Setup')}}
                     </a>
                     <div class="dropdown-menu">
-                      <a href="{{url('award')}}" class="dropdown-item">
-                        Award
-                      </a>
-                      <a href="{{url('transfer')}}" class="dropdown-item">
-                        Transfer
-                      </a>
-                      <a href="{{url('resignation')}}" class="dropdown-item">
-                        Resignation
-                      </a>
-                      <a href="{{url('travel')}}" class="dropdown-item">
-                        Trip
-                      </a>
-                      <a href="{{url('promotion')}}" class="dropdown-item">
-                        Promotion
-                      </a>
-                      <a href="{{url('complaint')}}" class="dropdown-item">
-                        Complaints
-                      </a>
-                      <a href="{{url('warning')}}" class="dropdown-item">
-                        Warning
-                      </a>
-                      <a href="{{url('termination')}}" class="dropdown-item">
-                        Termination
-                      </a>
-                      <a href="{{url('announcement')}}" class="dropdown-item">
-                        Announcement
-                      </a>
-                      <a href="{{url('holiday')}}" class="dropdown-item">
-                        Holidays
-                      </a>
+                      @can('manage award')
+                        <a href="{{url('award')}}" class="dropdown-item">
+                          {{__('Award')}}
+                        </a>
+                      @endcan
+                      @can('manage transfer')
+                        <a href="{{url('transfer')}}" class="dropdown-item">
+                          {{__('Transfer')}}
+                        </a>
+                      @endcan
+                      @can('manage resignation')
+                        <a href="{{url('resignation')}}" class="dropdown-item">
+                          {{__('Resignation')}}
+                        </a>
+                      @endcan
+                      @can('manage travel')
+                        <a href="{{url('travel')}}" class="dropdown-item">
+                          {{__('Trip')}}
+                        </a>
+                      @endcan
+                      @can('manage promotion')
+                        <a href="{{url('promotion')}}" class="dropdown-item">
+                          {{__('Promotion')}}
+                        </a>
+                      @endcan
+                      @can('manage complaint')
+                        <a href="{{url('complaint')}}" class="dropdown-item">
+                          {{__('Complaints')}}
+                        </a>
+                      @endcan
+                      @can('manage warning')
+                        <a href="{{url('warning')}}" class="dropdown-item">
+                          {{__('Warning')}}
+                        </a>
+                      @endcan
+                      @can('manage termination')
+                        <a href="{{url('termination')}}" class="dropdown-item">
+                          {{__('Termination')}}
+                        </a>
+                      @endcan
+                      @can('manage announcement')
+                        <a href="{{url('announcement')}}" class="dropdown-item">
+                          {{__('Announcement')}}
+                        </a>
+                      @endcan
+                      @can('manage holiday')
+                        <a href="{{url('holiday')}}" class="dropdown-item">
+                          {{__('Holidays')}}
+                        </a>
+                      @endcan
                     </div>
                   </div>
                 </li>
@@ -207,28 +227,92 @@
                     <span class="list">Event and Meetings</span>
                   </a>
                 </li>
-                <li>
+                @can('manage document')
+                  <li>
                     <a href="{{url('hrm_doc_setup')}}" class="">
                       <span class="icon"><i class="ti ti-certificate"></i>
                       </span>
-                      <span class="list">Document Setup</span>
+                      <span class="list">{{__('Document Setup')}}</span>
                     </a>
                   </li>
+                @endcan
+                @can('manage company policy')
                   <li>
                     <a href="{{url('hrm_company_policy')}}" class="">
                       <span class="icon">  <i class="ti ti-clipboard-text"></i>
                       </span>
-                      <span class="list">Company Policy</span>
+                      <span class="list">{{__('Company policy')}}</span>
                     </a>
                   </li>
-                  <li>
-                    <a href="#" class="">
-                      <span class="icon">  <i class="ti ti-tool"></i>
+                @endcan
+                <li>
+                  <a href="#" class="">
+                    <span class="icon">  <i class="ti ti-tool"></i>
 
-                      </span>
-                      <span class="list">Resource Settings</span>
+                    </span>
+                    <span class="list">Resource Settings</span>
+                  </a>
+                </li>
+                <li>
+                  <div class="dropend">
+                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
+                      {{__('HRM System Setup')}}
                     </a>
-                  </li>
+                    <div class="dropdown-menu">
+                        <a href="{{route('branch.index')}}" class="dropdown-item">
+                          {{__('Branch')}}
+                        </a>
+                        <a href="{{ route('department.index') }}" class="dropdown-item">
+                          {{__('Department')}}
+                        </a>
+                        <a href="{{ route('designation.index') }}" class="dropdown-item">
+                          {{__('Designation')}}
+                        </a>
+                        <a href="{{ route('leavetype.index') }}" class="dropdown-item">
+                          {{__('Leave Type')}}
+                        </a>
+                        <a href="{{ route('document.index') }}" class="dropdown-item">
+                          {{__('Document Type')}}
+                        </a>
+                        <a href="{{ route('paysliptype.index') }}" class="dropdown-item">
+                          {{__('Payslip Type')}}
+                        </a>
+                        <a href="{{ route('allowanceoption.index') }}" class="dropdown-item">
+                          {{__('Allowance Option')}}
+                        </a>
+                        <a href="{{ route('loanoption.index') }}" class="dropdown-item">
+                          {{__('Loan Option')}}
+                        </a>
+                        <a href="{{ route('deductionoption.index') }}" class="dropdown-item">
+                          {{__('Deduction Option')}}
+                        </a>
+                        <a href="{{ route('goaltype.index') }}" class="dropdown-item">
+                          {{__('Goal Type')}}
+                        </a>
+                        <a href="{{ route('trainingtype.index') }}" class="dropdown-item">
+                          {{__('Training Type')}}
+                        </a>
+                        <a href="{{ route('awardtype.index') }}" class="dropdown-item">
+                          {{__('Award Type')}}
+                        </a>
+                        <a href="{{ route('terminationtype.index') }}" class="dropdown-item">
+                          {{__('Termination Type')}}
+                        </a>
+                        <a href="{{ route('job-category.index') }}" class="dropdown-item">
+                          {{__('Job Category')}}
+                        </a>
+                        <a href="{{ route('job-stage.index') }}" class="dropdown-item">
+                          {{__('Job Stage')}}
+                        </a>
+                        <a href="{{ route('performanceType.index') }}" class="dropdown-item">
+                          {{__('Performance Type')}}
+                        </a>
+                        <a href="{{ route('competencies.index') }}" class="dropdown-item">
+                          {{__('Competencies')}}
+                        </a>
+                    </div>
+                  </div>
+                </li>
 
               </ul>
 

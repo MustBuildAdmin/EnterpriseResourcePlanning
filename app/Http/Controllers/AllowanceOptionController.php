@@ -13,7 +13,8 @@ class AllowanceOptionController extends Controller
         {
             $allowanceoptions = AllowanceOption::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('allowanceoption.index', compact('allowanceoptions'));
+            return view('hrm.system_setup.allowanceoption.allowanceoption', compact('allowanceoptions'));
+            // return view('allowanceoption.index', compact('allowanceoptions'));
         }
         else
         {
@@ -25,7 +26,8 @@ class AllowanceOptionController extends Controller
     {
         if(\Auth::user()->can('create allowance option'))
         {
-            return view('allowanceoption.create');
+            return view('hrm.system_setup.allowanceoption.allowanceoption_create');
+            // return view('allowanceoption.create');
         }
         else
         {
@@ -75,7 +77,8 @@ class AllowanceOptionController extends Controller
             if($allowanceoption->created_by == \Auth::user()->creatorId())
             {
 
-                return view('allowanceoption.edit', compact('allowanceoption'));
+                return view('hrm.system_setup.allowanceoption.allowanceoption_edit', compact('allowanceoption'));
+                // return view('allowanceoption.edit', compact('allowanceoption'));
             }
             else
             {
