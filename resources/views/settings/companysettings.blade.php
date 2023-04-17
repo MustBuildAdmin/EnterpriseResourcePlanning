@@ -112,7 +112,7 @@
 
 @endphp
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
 
     <script>
   
@@ -263,7 +263,7 @@
 
 
 @endpush
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
 <div class="page-body">
   <div class="container-xl">
   <div id="multi-step-form-container">
@@ -327,7 +327,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        {{Form::label('site_currency_symbol',__('Currency Symbol *'),array('class' => 'form-label')) }}
+                                        {{Form::label('site_currency_symbol',__('Currency Symbol '),array('class' => 'form-label')) }}
                                         <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
                                                 placeholder="Select Currecy" required>
                                             <option value="">{{ __('Select Currency Symbol ...') }}</option>

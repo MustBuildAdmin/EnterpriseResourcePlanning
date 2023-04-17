@@ -56,7 +56,7 @@
 @if (Session::has('success'))
     <div class="alert alert-success">
         <ul>
-            <li style="text-align: center;list-style: none;r";>{{ Session::get('success') }}</li>
+            <li style="text-align: center;list-style: none;font-weight:bold;">{{ Session::get('success') }}</li>
         </ul>
     </div>
 @endif

@@ -2,121 +2,111 @@
     <div class="page-wrapper">
         <!-- Page header -->
         <div class="page-header d-print-none">
-            <div class="container-xl">
+            <div class="container-x">
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
-                        {{ __('Admin Settings') }}
+                            Construction
                         </h2>
                     </div>
                 </div>
             </div>
         </div>
         <!-- Page body -->
-        <div class="page-body">
-            <div class="container-xl">
-                <div class="card">
-                    <div class="row g-0">
-                        <div class="col-3 d-none d-md-block border-end">
+@include('construction_project.side-menu')
+                        <div class="col d-flex flex-column">
                             <div class="card-body">
-                                <h4 class="subheader">Business settings</h4>
-                                <div class="list-group list-group-transparent">
-                                    <a href="./settings.html"
-                                        class="list-group-item list-group-item-action d-flex align-items-center active">My
-                                        Account</a>
-                                    <a href="#"
-                                        class="list-group-item list-group-item-action d-flex align-items-center">My
-                                        Notifications</a>
-                                    <a href="#"
-                                        class="list-group-item list-group-item-action d-flex align-items-center">Connected
-                                        Apps</a>
-                                    <a href="./settings-plan.html"
-                                        class="list-group-item list-group-item-action d-flex align-items-center">Plans</a>
-                                    <a href="#"
-                                        class="list-group-item list-group-item-action d-flex align-items-center">Billing &
-                                        Invoices</a>
-                                </div>
-                                <h4 class="subheader mt-4">Experience</h4>
-                                <div class="list-group list-group-transparent">
-                                    <a href="#" class="list-group-item list-group-item-action">Give Feedback</a>
+                                <h2 class="mb-4">Project</h2>
+                                @if(isset($projects) && !empty($projects) && count($projects) > 0)
+    <div class="row">
+        @foreach ($projects as $key => $project)
+            <div class="col-md-6 col-xxl-3">
+                <div class="card">
+                    <div class="card-header border-0 pb-0">
+                        <div class="d-flex align-items-center">
+                            <img {{ $project->img_image }} class="img-fluid wid-30 me-2" alt="">
+                            <h5 class="mb-0"><a class="text-dark" href="{{ route('projects.show',$project) }}">{{ $project->project_name }}</a></h5>
+                        </div>
+                        <div class="card-header-right">
+                            <div class="btn-group card-option">
+                                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ti ti-dots-vertical"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    @can('edit project')
+                                        <a href="#!" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
+                                            <i class="ti ti-pencil"></i>
+                                            <span>{{__('Edit')}}</span>
+                                        </a>
+                                    @endcan
+                                    @can('delete project')
+                                        {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy',$project->id]]) !!}
+                                        <a href="#!" class="dropdown-item bs-pass-para">
+                                            <i class="ti ti-archive"></i>
+                                            <span> {{__('Delete')}}</span>
+                                        </a>
+
+                                        {!! Form::close() !!}
+                                    @endcan
+                                    @can('edit project')
+                                        <a href="#!" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Invite User')}}">
+                                            <i class="ti ti-send"></i>
+                                            <span>{{__('Invite User')}}</span>
+                                        </a>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
-                        <div class="col d-flex flex-column">
-                            <div class="card-body">
-                                <h2 class="mb-4">My Account</h2>
-                                <h3 class="card-title">Profile Details</h3>
-                                <div class="row align-items-center">
-                                    <div class="col-auto"><span class="avatar avatar-xl"
-                                            style="background-image: url(./static/avatars/000m.jpg)"></span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-2 justify-content-between">
+                            <div class="col-auto"><span class="badge rounded-pill bg-{{\App\Models\Project::$status_color[$project->status]}}">{{ __(\App\Models\Project::$project_status[$project->status]) }}</span>
+                            </div>
+
+                        </div>
+                        <p class="text-muted text-sm mt-3">{{ $project->description }}</p>
+                        <small>{{__('MEMBERS')}}</small>
+                        <div class="user-group">
+                            @if(isset($project->users) && !empty($project->users) && count($project->users) > 0)
+                                @foreach($project->users as $key => $user)
+                                    @if($key < 3)
+                                        <a href="#" class="avatar rounded-circle avatar-sm">
+                                            <img @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif  alt="image" data-bs-toggle="tooltip" title="{{ $user->name }}">
+                                        </a>
+                                    @else
+                                        @break
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="card mb-0 mt-3">
+                            <div class="card-body p-3">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h6 class="mb-0 {{ (strtotime($project->start_date) < time()) ? 'text-danger' : '' }}">{{ Utility::getDateFormated($project->start_date) }}</h6>
+                                        <p class="text-muted text-sm mb-0">{{__('Start Date')}}</p>
                                     </div>
-                                    <div class="col-auto"><a href="#" class="btn">
-                                            Change avatar
-                                        </a></div>
-                                    <div class="col-auto"><a href="#" class="btn btn-ghost-danger">
-                                            Delete avatar
-                                        </a></div>
-                                </div>
-                                <h3 class="card-title mt-4">Business Profile</h3>
-                                <div class="row g-3">
-                                    <div class="col-md">
-                                        <div class="form-label">Business Name</div>
-                                        <input type="text" class="form-control" value="Tabler">
+                                    <div class="col-6 text-end">
+                                        <h6 class="mb-0">{{ Utility::getDateFormated($project->end_date) }}</h6>
+                                        <p class="text-muted text-sm mb-0">{{__('Due Date')}}</p>
                                     </div>
-                                    <div class="col-md">
-                                        <div class="form-label">Business ID</div>
-                                        <input type="text" class="form-control" value="560afc32">
-                                    </div>
-                                    <div class="col-md">
-                                        <div class="form-label">Location</div>
-                                        <input type="text" class="form-control" value="Peimei, China">
-                                    </div>
-                                </div>
-                                <h3 class="card-title mt-4">Email</h3>
-                                <p class="card-subtitle">This contact will be shown to others publicly, so choose it
-                                    carefully.</p>
-                                <div>
-                                    <div class="row g-2">
-                                        <div class="col-auto">
-                                            <input type="text" class="form-control w-auto"
-                                                value="paweluna@howstuffworks.com">
-                                        </div>
-                                        <div class="col-auto"><a href="#" class="btn">
-                                                Change
-                                            </a></div>
-                                    </div>
-                                </div>
-                                <h3 class="card-title mt-4">Password</h3>
-                                <p class="card-subtitle">You can set a permanent password if you don't want to use temporary
-                                    login codes.</p>
-                                <div>
-                                    <a href="#" class="btn">
-                                        Set new password
-                                    </a>
-                                </div>
-                                <h3 class="card-title mt-4">Public profile</h3>
-                                <p class="card-subtitle">Making your profile public means that anyone on the Dashkit network
-                                    will be able to find
-                                    you.</p>
-                                <div>
-                                    <label class="form-check form-switch form-switch-lg">
-                                        <input class="form-check-input" type="checkbox">
-                                        <span class="form-check-label form-check-label-on">You're currently visible</span>
-                                        <span class="form-check-label form-check-label-off">You're
-                                            currently invisible</span>
-                                    </label>
                                 </div>
                             </div>
-                            <div class="card-footer bg-transparent mt-auto">
-                                <div class="btn-list justify-content-end">
-                                    <a href="#" class="btn">
-                                        Cancel
-                                    </a>
-                                    <a href="#" class="btn btn-primary">
-                                        Submit
-                                    </a>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+@else
+    <div class="col-xl-12 col-lg-12 col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="text-center mb-0">{{__('No Projects Found.')}}</h6>
+            </div>
+        </div>
+    </div>
+@endif
                         </div>
                     </div>
                 </div>
