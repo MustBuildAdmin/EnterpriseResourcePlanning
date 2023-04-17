@@ -13,7 +13,8 @@ class LoanOptionController extends Controller
         {
             $loanoptions = LoanOption::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('loanoption.index', compact('loanoptions'));
+            return view('hrm.system_setup.loan.loan', compact('loanoptions'));
+            // return view('loanoption.index', compact('loanoptions'));
         }
         else
         {
@@ -25,7 +26,8 @@ class LoanOptionController extends Controller
     {
         if(\Auth::user()->can('create loan option'))
         {
-            return view('loanoption.create');
+            return view('hrm.system_setup.loan.loan_create');
+            // return view('loanoption.create');
         }
         else
         {
@@ -74,7 +76,8 @@ class LoanOptionController extends Controller
             if($loanoption->created_by == \Auth::user()->creatorId())
             {
 
-                return view('loanoption.edit', compact('loanoption'));
+                return view('hrm.system_setup.loan.loan_edit', compact('loanoption'));
+                // return view('loanoption.edit', compact('loanoption'));
             }
             else
             {

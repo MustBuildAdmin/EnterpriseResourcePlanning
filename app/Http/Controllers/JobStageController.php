@@ -13,7 +13,8 @@ class JobStageController extends Controller
         {
             $stages = JobStage::where('created_by', '=', \Auth::user()->creatorId())->orderBy('order', 'asc')->get();
 
-            return view('jobStage.index', compact('stages'));
+            return view('hrm.system_setup.job_stage.job_stage', compact('stages'));
+            // return view('jobStage.index', compact('stages'));
         }
         else
         {
@@ -24,7 +25,8 @@ class JobStageController extends Controller
 
     public function create()
     {
-        return view('jobStage.create');
+        return view('hrm.system_setup.job_stage.job_stage_create');
+        // return view('jobStage.create');
     }
 
 
@@ -68,7 +70,8 @@ class JobStageController extends Controller
 
     public function edit(JobStage $jobStage)
     {
-        return view('jobStage.edit', compact('jobStage'));
+        return view('hrm.system_setup.job_stage.job_stage_edit', compact('jobStage'));
+        // return view('jobStage.edit', compact('jobStage'));
     }
 
 
