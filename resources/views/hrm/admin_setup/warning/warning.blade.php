@@ -1,7 +1,5 @@
+@include('new_layouts.header')
 @include('hrm.hrm_main')
-
-    
-
 <div class="page-body">
 	<div class="container-xl">
 		<div class="card">
@@ -11,7 +9,7 @@
 						<h2 class="mb-4">{{ __('Warning') }}</h2>
                         @can('create warning')
                             <a href="#" data-url="{{ route('warning.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Warning')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
-                                <i class="ti ti-plus"></i>
+                                {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
                             </a>
                         @endcan
 						<div class="row align-items-center">

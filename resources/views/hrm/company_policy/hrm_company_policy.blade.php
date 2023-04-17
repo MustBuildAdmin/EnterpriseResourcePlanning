@@ -1,7 +1,5 @@
+@include('new_layouts.header')
 @include('hrm.hrm_main')
-
-    
-
 <div class="page-body">
 	<div class="container-xl">
 		<div class="card">
@@ -11,7 +9,7 @@
 						<h2 class="mb-4">{{__('Company Policy')}}</h2>
                         @can('create company policy')
                             <a class="btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('hrm_company_policy.create') }}" data-ajax-popup="true" data-title="{{__('Create New Company Policy')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
-                                ADD <i class="ti ti-plus"></i>
+                                {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
                             </a>
                         @endcan
 						<div class="row align-items-center">

@@ -1,7 +1,5 @@
+@include('new_layouts.header')
 @include('hrm.hrm_main')
-
-    
-
 <div class="page-body">
 	<div class="container-xl">
 		<div class="card">
@@ -11,7 +9,7 @@
 						<h2 class="mb-4">{{ __('Document Setup') }}</h2>
                         @can('create document')
                             <a class="btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('hrm_doc_setup.create') }}" data-ajax-popup="true" data-title="{{__('Create New Document Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
-                                ADD  <i class="ti ti-plus"></i>
+                                {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
                             </a>
                         @endcan
 						<div class="row align-items-center">
@@ -89,9 +87,3 @@
 	</div>
 </div> 
 @include('new_layouts.footer')
-
-<div class="ms-2" style="display:flex;gap:10px;">
-    
-btn btn-md bg-primary
-
-btn btn-md btn-danger bs-pass-para

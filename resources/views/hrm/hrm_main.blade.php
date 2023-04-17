@@ -1,4 +1,3 @@
-@include('new_layouts.header')
 <style>
 .wrapper {
     height: 100%;

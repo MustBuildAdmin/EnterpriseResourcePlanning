@@ -83,7 +83,7 @@
 						</div>
 						@endif
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{route('hrm_main')}}">
+							<a class="card card-link" href="{{url('hrm_doc_setup')}}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">

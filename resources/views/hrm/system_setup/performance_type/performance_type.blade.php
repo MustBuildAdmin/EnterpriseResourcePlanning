@@ -1,7 +1,5 @@
+@include('new_layouts.header')
 @include('hrm.hrm_main')
-
-    
-
 <div class="page-body">
 	<div class="container-xl">
 		<div class="card">
@@ -10,7 +8,7 @@
 					<div class="card-body"> 
 						<h2 class="mb-4">{{ __('Performance Type') }}</h2>
                         <a href="#" data-url="{{ route('performanceType.create') }}" data-ajax-popup="true" data-title="{{__('Create New Performance Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
-                            <i class="ti ti-plus"></i>
+                            {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
                         </a>
                         
 						<div class="row align-items-center">
