@@ -24,8 +24,7 @@
 				<div class="col-auto ms-auto d-print-none">
           <form action="{{ route('clients.index') }}" method="GET">
           <div class="input-group">
-            
-            <input type="search" name="search" value="{{ old('search') }}"  class="form-control d-inline-block w-9 me-3" placeholder="{{__('Search by Name or Email')}}" />
+            {{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3','id'=>'search','placeholder'=>__('Search by Name or Email'))) }}
             <div class="input-group-btn">
                 <button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
                 <a href="#" data-size="lg" data-url="{{ route('clients.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" id="create" class="btn btn-primary">
