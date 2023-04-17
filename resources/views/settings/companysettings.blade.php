@@ -327,7 +327,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        {{Form::label('site_currency_symbol',__('Currency Symbol *'),array('class' => 'form-label')) }}
+                                        {{Form::label('site_currency_symbol',__('Currency Symbol '),array('class' => 'form-label')) }}
                                         <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
                                                 placeholder="Select Currecy" required>
                                             <option value="">{{ __('Select Currency Symbol ...') }}</option>

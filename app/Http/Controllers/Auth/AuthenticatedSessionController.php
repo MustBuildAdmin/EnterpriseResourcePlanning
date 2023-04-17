@@ -291,10 +291,11 @@ class AuthenticatedSessionController extends Controller
             $lang = Utility::getValByName('default_language');
         }
 
-
         \App::setLocale($lang);
 
-        return view('auth.forgot-password', compact('lang'));
+        $settings = Utility::settings();
+
+        return view('auth.forgot-password', compact('lang','settings'));
     }
 
     public function showCustomerLoginLang($lang = '')
@@ -357,7 +358,7 @@ class AuthenticatedSessionController extends Controller
             'auth.customerVerify', ['token' => $token], function ($message) use ($request){
             $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
             $message->to($request->email);
-            $message->subject('Reset Password Notification');
+            $message->subject('Reset your password');
         }
         );
 
@@ -454,7 +455,7 @@ class AuthenticatedSessionController extends Controller
             'auth.vendorVerify', ['token' => $token], function ($message) use ($request){
             $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
             $message->to($request->email);
-            $message->subject('Reset Password Notification');
+            $message->subject('Reset your password');
         }
         );
 
