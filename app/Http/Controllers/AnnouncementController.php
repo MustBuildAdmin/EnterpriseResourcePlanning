@@ -33,7 +33,8 @@ class AnnouncementController extends Controller
                 $announcements    = Announcement::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('announcement.index', compact('announcements', 'current_employee'));
+            return view('hrm.admin_setup.announcement.announcement', compact('announcements', 'current_employee'));
+            // return view('announcement.index', compact('announcements', 'current_employee'));
         }
         else
         {
@@ -49,7 +50,8 @@ class AnnouncementController extends Controller
             $branch      = Branch::where('created_by', '=', Auth::user()->creatorId())->get();
             $departments = Department::where('created_by', '=', Auth::user()->creatorId())->get();
 
-            return view('announcement.create', compact('employees', 'branch', 'departments'));
+            return view('hrm.admin_setup.announcement.announcement_create', compact('employees', 'branch', 'departments'));
+            // return view('announcement.create', compact('employees', 'branch', 'departments'));
         }
         else
         {
@@ -150,7 +152,8 @@ class AnnouncementController extends Controller
                 $branch      = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
                 $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-                return view('announcement.edit', compact('announcement', 'branch', 'departments'));
+                return view('hrm.admin_setup.announcement.announcement_edit', compact('announcement', 'branch', 'departments'));
+                // return view('announcement.edit', compact('announcement', 'branch', 'departments'));
             }
             else
             {

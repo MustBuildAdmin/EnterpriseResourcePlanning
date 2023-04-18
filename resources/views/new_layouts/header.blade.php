@@ -26,7 +26,7 @@
     {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+
 
     <!-- Meta -->
     <meta charset="utf-8" />
@@ -42,13 +42,18 @@
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
 
 	<!-- font css -->
+	{{-- <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
-	<script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script>
+	
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css">
+
+	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
+	{{-- <script src="{{ asset('assets/js/datatables.min.js') }}"></script>--}}
 
 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -65,6 +70,9 @@
 		}
 		.fa-globe{
 			color:#616876 !important;
+		}
+		.swal2-confirm{
+			margin-left:10px !important;
 		}
     </style>
 

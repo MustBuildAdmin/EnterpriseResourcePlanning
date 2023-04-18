@@ -26,7 +26,8 @@ class PromotionController extends Controller
                 $promotions = Promotion::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('promotion.index', compact('promotions'));
+            return view('hrm.admin_setup.promotion.promotion', compact('promotions'));
+            // return view('promotion.index', compact('promotions'));
         }
         else
         {
@@ -41,7 +42,8 @@ class PromotionController extends Controller
             $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
             $employees    = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('promotion.create', compact('employees', 'designations'));
+            return view('hrm.admin_setup.promotion.promotion_create', compact('employees', 'designations'));
+            // return view('promotion.create', compact('employees', 'designations'));
         }
         else
         {
@@ -120,7 +122,8 @@ class PromotionController extends Controller
         {
             if($promotion->created_by == \Auth::user()->creatorId())
             {
-                return view('promotion.edit', compact('promotion', 'employees', 'designations'));
+                return view('hrm.admin_setup.promotion.promotion_edit', compact('promotion', 'employees', 'designations'));
+                // return view('promotion.edit', compact('promotion', 'employees', 'designations'));
             }
             else
             {

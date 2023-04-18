@@ -1,7 +1,5 @@
+@include('new_layouts.header')
 @include('hrm.hrm_main')
-
-    
-
 <div class="page-body">
 	<div class="container-xl">
 		<div class="card">
@@ -10,8 +8,8 @@
 					<div class="card-body">
 						<h2 class="mb-4">{{__('Company Policy')}}</h2>
                         @can('create company policy')
-                            <a class="btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('company-policy.create') }}" data-ajax-popup="true" data-title="{{__('Create New Company Policy')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
-                                ADD <i class="ti ti-plus"></i>
+                            <a class="btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('hrm_company_policy.create') }}" data-ajax-popup="true" data-title="{{__('Create New Company Policy')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+                                {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
                             </a>
                         @endcan
 						<div class="row align-items-center">
@@ -70,12 +68,12 @@
                                                                 <td>
                                                                     @can('edit company policy')
                                                                         <div class="action-btn bg-primary ms-2">
-                                                                            <a href="#" data-url="{{ route('company-policy.edit',$policy->id)}}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Company Policy')}}" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
+                                                                            <a href="#" data-url="{{ route('hrm_company_policy.edit',$policy->id)}}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Company Policy')}}" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
                                                                         </div>
                                                                     @endcan
                                                                     @can('delete company policy')
                                                                         <div class="action-btn bg-danger ms-2">
-                                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['company-policy.destroy', $policy->id],'id'=>'delete-form-'.$policy->id]) !!}
+                                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['hrm_company_policy.destroy', $policy->id],'id'=>'delete-form-'.$policy->id]) !!}
 
                                                                             <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$policy->id}}').submit();"><i class="ti ti-trash text-white"></i></a>
                                                                             {!! Form::close() !!}
