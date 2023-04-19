@@ -837,12 +837,13 @@ public function delete_new_profile(Request $request){
     try {
         $set_data=array('avatar'=>null);
         User::where('id',$request->user_id)->update($set_data);
+        return response()->json(['status'=>true]);
       } catch (Exception $e) {
       
           return $e->getMessage();
       
       }
-      
+
 }
 
 }

@@ -123,9 +123,11 @@ $profile=\App\Models\Utility::get_file('uploads/avatar/');
   						},
   						data: 'user_id=' + user_id,
   						success: function(data) {
-  							
+							if (data['status'] == true) {
   								location.reload();
-  								toastr.success(data.message);
+
+								  toastr.success('{{ __("Profile Picture Deleted Successfully!")}}');
+							}
   							
   						},
   						error: function(data) {
