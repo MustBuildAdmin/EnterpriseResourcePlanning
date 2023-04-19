@@ -18,12 +18,12 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
 <script>
-	var oTable = $('.datatable').dataTable( {
-    "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [ 1, 2, 3 ] }, 
-        { "bSearchable": false, "aTargets": [ 0, 1, 2, 3 ] }
-    ]
-}); 
+// 	var oTable = $('.datatable').dataTable( {
+//     "aoColumnDefs": [
+//         { "bSortable": false, "aTargets": [ 1, 2, 3 ] }, 
+//         { "bSearchable": false, "aTargets": [ 0, 1, 2, 3 ] }
+//     ]
+// }); 
 </script>
 <!-- Libs JS -->
 <script>
