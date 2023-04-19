@@ -157,6 +157,15 @@ Route::get('new_profile', 'UserController@new_profile')->name('new_profile')->mi
         'revalidate',
     ]
 );
+
+Route::any('delete_new_profile', 'UserController@delete_new_profile')->name('delete_new_profile')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::post('edit-profile', 'UserController@editprofile')->name('update.account')->middleware(
     [
         'auth',

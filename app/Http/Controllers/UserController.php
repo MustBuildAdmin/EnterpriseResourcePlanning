@@ -832,4 +832,17 @@ public function view_change_password(Request $request){
     return view('user_profile.change_password', compact('userDetail', 'customFields'));
 }
 
+public function delete_new_profile(Request $request){
+
+    try {
+        $set_data=array('avatar'=>null);
+        User::where('id',$request->user_id)->update($set_data);
+      } catch (Exception $e) {
+      
+          return $e->getMessage();
+      
+      }
+      
+}
+
 }

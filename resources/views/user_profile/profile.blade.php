@@ -35,7 +35,9 @@ $profile=\App\Models\Utility::get_file('uploads/avatar/');
 					<button type="button" class="btn" id='input_btn'>
 					Change avatar
 				  </button></div>
-				<div class="col-auto"><a href="#" class="btn btn-ghost-danger">
+				<div class="col-auto">
+					<input type="hidden" id="user_id" value="{{ $userDetail->id }}">
+					<a href="#" class="btn btn-ghost-danger" id="checkdelete">
 					Delete avatar
 				  </a>
 				</div>
@@ -86,5 +88,60 @@ $profile=\App\Models\Utility::get_file('uploads/avatar/');
 	document.getElementById("input_btn").addEventListener('click',function(){
 	document.getElementById("avatar").click();  
 	},false);
+
+	$('#checkdelete').on('click', function(e) {
+  		
+  		var user_id=$("#user_id").val();
+  			// if (confirm("Are you sure?")) {
+  			var form = $(this).closest("form");
+  			const swalWithBootstrapButtons = Swal.mixin({
+  				customClass: {
+  					confirmButton: 'btn btn-success',
+  					cancelButton: 'btn btn-danger'
+  				},
+  				buttonsStyling: false
+  			})
+  			swalWithBootstrapButtons.fire({
+  				title: 'Are you sure?',
+  				text: "It will delete if you take this action. Do you want to continue?",
+  				icon: 'warning',
+  				showCancelButton: true,
+  				confirmButtonText: 'Yes',
+  				cancelButtonText: 'No',
+  				reverseButtons: true
+  			}).then((result) => {
+
+  				if (result.isConfirmed) {
+
+  					
+
+  					$.ajax({
+  						url: "{{route('delete_new_profile')}}",
+  						method: 'POST',
+  						headers: {
+  							'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  						},
+  						data: 'user_id=' + user_id,
+  						success: function(data) {
+  							
+  								location.reload();
+  								toastr.success(data.message);
+  							
+  						},
+  						error: function(data) {
+  							alert(data.responseText);
+  						}
+  					});
+
+  				} else if (
+  					result.dismiss === Swal.DismissReason.cancel
+  				) {}
+  			})
+
+
+  		
+  	});
+
+
 </script>
   @include('new_layouts.footer')
