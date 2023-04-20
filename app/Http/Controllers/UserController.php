@@ -817,10 +817,12 @@ class UserController extends Controller
 public function new_profile(Request $request){
 
     $userDetail              = \Auth::user();
+   
     $userDetail->customField = CustomField::getData($userDetail, 'user');
+    $get_logo=User::select('avatar')->where('id', '=', Auth::id())->first();
     $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
 
-    return view('user_profile.profile', compact('userDetail', 'customFields'));
+    return view('user_profile.profile', compact('userDetail', 'customFields','get_logo'));
    
 
 }
@@ -830,6 +832,20 @@ public function view_change_password(Request $request){
     $userDetail->customField = CustomField::getData($userDetail, 'user');
     $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
     return view('user_profile.change_password', compact('userDetail', 'customFields'));
+}
+
+public function delete_new_profile(Request $request){
+
+    try {
+        $set_data=array('avatar'=>null);
+        User::where('id',$request->user_id)->update($set_data);
+        return response()->json(['status'=>true]);
+      } catch (Exception $e) {
+      
+          return $e->getMessage();
+      
+      }
+
 }
 
 }
