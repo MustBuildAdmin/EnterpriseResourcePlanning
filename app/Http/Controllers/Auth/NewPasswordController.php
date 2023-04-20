@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use App\Models\User;
 use DB;
+
+use Auth;
 use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
 use App\Models\JoiningLetter;
@@ -18,6 +20,8 @@ use  App\Models\Utility;
 use Spatie\Permission\Models\Role;
 use App\Models\NOC;
 use App\Models\Plan;
+use Illuminate\Auth\Events\Registered;
+
 class NewPasswordController extends Controller
 {
     /**
