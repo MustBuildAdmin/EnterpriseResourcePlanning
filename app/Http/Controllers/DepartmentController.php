@@ -14,7 +14,8 @@ class DepartmentController extends Controller
         {
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('department.index', compact('departments'));
+            return view('hrm.system_setup.department.department', compact('departments'));
+            // return view('department.index', compact('departments'));
         }
         else
         {
@@ -28,7 +29,8 @@ class DepartmentController extends Controller
         {
             $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('department.create', compact('branch'));
+            return view('hrm.system_setup.department.department_create', compact('branch'));
+            // return view('department.create', compact('branch'));
         }
         else
         {
@@ -81,7 +83,8 @@ class DepartmentController extends Controller
             {
                 $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-                return view('department.edit', compact('department', 'branch'));
+                return view('hrm.system_setup.department.department_edit', compact('department', 'branch'));
+                // return view('department.edit', compact('department', 'branch'));
             }
             else
             {

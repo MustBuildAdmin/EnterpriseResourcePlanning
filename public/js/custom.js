@@ -24,7 +24,18 @@ $(function () {
 
 $(document).ready(function () {
     if ($(".datatable").length > 0) {
-        new simpleDatatables.DataTable(".datatable");
+        $(document).ready(function() {
+            $('.datatable').dataTable({
+        
+                "language": {
+                    "paginate": {
+                        "previous": "<i class='fa fa-chevron-left custom'></i>",
+                        "next": "<i class='fa fa-chevron-right custom'></i>",
+                    }
+                }
+            });
+        });
+        // new simpleDatatables.DataTable(".datatable");
     }
 
     select2();

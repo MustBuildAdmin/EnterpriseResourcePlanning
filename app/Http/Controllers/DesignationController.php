@@ -15,7 +15,8 @@ class DesignationController extends Controller
         {
             $designations = Designation::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('designation.index', compact('designations'));
+            return view('hrm.system_setup.designation.designation', compact('designations'));
+            // return view('designation.index', compact('designations'));
         }
         else
         {
@@ -30,7 +31,8 @@ class DesignationController extends Controller
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get();
             $departments = $departments->pluck('name', 'id');
 
-            return view('designation.create', compact('departments'));
+            return view('hrm.system_setup.designation.designation_create', compact('departments'));
+            // return view('designation.create', compact('departments'));
         }
         else
         {
@@ -87,7 +89,8 @@ class DesignationController extends Controller
                 $departments = Department::where('id', $designation->department_id)->first();
                 $departments = $departments->pluck('name', 'id');
 
-                return view('designation.edit', compact('designation', 'departments'));
+                return view('hrm.system_setup.designation.designation_edit', compact('designation', 'departments'));
+                // return view('designation.edit', compact('designation', 'departments'));
             }
             else
             {

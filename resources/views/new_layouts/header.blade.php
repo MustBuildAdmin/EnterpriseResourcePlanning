@@ -26,7 +26,7 @@
     {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+
 
     <!-- Meta -->
     <meta charset="utf-8" />
@@ -42,18 +42,20 @@
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
 
 	<!-- font css -->
-	<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
+	{{-- <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
-	<script src="{{ asset('js/demo-theme.min.js?1674944402') }}"></script>
-	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
-	<script src="{{ asset('assets/js/datatables.min.js') }}"></script>
+	
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css">
 
-	<script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
+	{{-- <script src="{{ asset('assets/js/datatables.min.js') }}"></script>--}}
+
+
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -72,15 +74,150 @@
 		.swal2-confirm{
 			margin-left:10px !important;
 		}
+
+		/* pagination */
+		.pagination {
+			height: 36px;
+			margin: 18px 0;
+			color: #6c58bF;
+		}
+
+		.pagination ul {
+			display: inline-block;
+			*display: inline;
+			/* IE7 inline-block hack */
+			*zoom: 1;
+			margin-left: 0;
+			color: #ffffff;
+			margin-bottom: 0;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+			border-radius: 3px;
+			-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+			-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		}
+
+		.pagination li {
+			display: inline;
+			color: #6c58bF;
+		}
+
+		.pagination a {
+			float: left;
+			padding: 0 14px;
+			line-height: 34px;
+			color: #6c58bF;
+			text-decoration: none;
+			border: 1px solid #ddd;
+			border-left-width: 0;
+		}
+
+		.pagination a:hover,
+		.pagination .active a {
+			background-color: var(--tblr-pagination-active-bg);
+			color: #ffffff;
+		}
+
+		.pagination a:focus {
+			background-color: #ffffff;
+			color: #ffffff;
+		}
+
+
+		.pagination .active a {
+			color: #ffffff;
+			cursor: default;
+		}
+
+		.pagination .disabled span,
+		.pagination .disabled a,
+		.pagination .disabled a:hover {
+			color: #999999;
+			background-color: transparent;
+			cursor: default;
+		}
+
+		.pagination li:first-child a {
+			border-left-width: 1px;
+			-webkit-border-radius: 3px 0 0 3px;
+			-moz-border-radius: 3px 0 0 3px;
+			border-radius: 3px 0 0 3px;
+		}
+
+		.pagination li:last-child a {
+			-webkit-border-radius: 0 3px 3px 0;
+			-moz-border-radius: 0 3px 3px 0;
+			border-radius: 0 3px 3px 0;
+		}
+
+		.pagination-centered {
+			text-align: center;
+		}
+
+		.pagination-right {
+			text-align: right;
+		}
+
+		.pager {
+			margin-left: 0;
+			margin-bottom: 18px;
+			list-style: none;
+			text-align: center;
+			color: #6c58bF;
+			*zoom: 1;
+		}
+
+		.pager:before,
+		.pager:after {
+			display: table;
+			content: "";
+		}
+
+		.pager:after {
+			clear: both;
+		}
+
+		.pager li {
+			display: inline;
+			color: #6c58bF;
+		}
+
+		.pager a {
+			display: inline-block;
+			padding: 5px 14px;
+			color: #6c58bF;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			-webkit-border-radius: 15px;
+			-moz-border-radius: 15px;
+			border-radius: 15px;
+		}
+
+		.pager a:hover {
+			text-decoration: none;
+			background-color: #f5f5f5;
+		}
+
+		.pager .next a {
+			float: right;
+		}
+
+		.pager .previous a {
+			float: left;
+		}
+
+		.pager .disabled a,
+		.pager .disabled a:hover {
+			color: #999999;
+		}
+		.dataTables_wrapper .dataTables_paginate {
+			float: right;
+			text-align: right;
+			padding-top: 0.25em;
+		}
     </style>
-<script>
-	var oTable = $('.datatable').dataTable( {
-    "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [ 1, 2, 3 ] }, 
-        { "bSearchable": false, "aTargets": [ 0, 1, 2, 3 ] }
-    ]
-}); 
-</script>
+
 </head>
 <body class=" d-flex flex-column">
 	<div class="page">

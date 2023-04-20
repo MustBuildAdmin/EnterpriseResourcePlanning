@@ -13,7 +13,8 @@ class GoalTypeController extends Controller
         if(\Auth::user()->can('manage goal type'))
         {
             $goaltypes = GoalType::where('created_by', '=', \Auth::user()->creatorId())->get();
-            return view('goaltype.index', compact('goaltypes'));
+            return view('hrm.system_setup.goal.goal', compact('goaltypes'));
+            // return view('goaltype.index', compact('goaltypes'));
         }
         else
         {
@@ -26,7 +27,8 @@ class GoalTypeController extends Controller
     {
         if(\Auth::user()->can('create goal type'))
         {
-            return view('goaltype.create');
+            return view('hrm.system_setup.goal.goal_create');
+            // return view('goaltype.create');
         }
         else
         {
@@ -79,7 +81,8 @@ class GoalTypeController extends Controller
         {
             $goalType = GoalType::find($id);
 
-            return view('goaltype.edit', compact('goalType'));
+            return view('hrm.system_setup.goal.goal_edit', compact('goalType'));
+            // return view('goaltype.edit', compact('goalType'));
         }
         else
         {

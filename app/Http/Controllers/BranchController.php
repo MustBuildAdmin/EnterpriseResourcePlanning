@@ -14,7 +14,8 @@ class BranchController extends Controller
         {
             $branches = Branch::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('branch.index', compact('branches'));
+            return view('hrm.system_setup.branch.branch', compact('branches'));
+            // return view('branch.index', compact('branches'));
         }
         else
         {
@@ -26,7 +27,8 @@ class BranchController extends Controller
     {
         if(\Auth::user()->can('create branch'))
         {
-            return view('branch.create');
+            return view('hrm.system_setup.branch.branch_create');
+            // return view('branch.create');
         }
         else
         {

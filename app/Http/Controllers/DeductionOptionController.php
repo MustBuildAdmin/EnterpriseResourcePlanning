@@ -13,7 +13,8 @@ class DeductionOptionController extends Controller
         {
             $deductionoptions = DeductionOption::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('deductionoption.index', compact('deductionoptions'));
+            return view('hrm.system_setup.deduction.deduction', compact('deductionoptions'));
+            // return view('deductionoption.index', compact('deductionoptions'));
         }
         else
         {
@@ -25,7 +26,8 @@ class DeductionOptionController extends Controller
     {
         if(\Auth::user()->can('create deduction option'))
         {
-            return view('deductionoption.create');
+            return view('hrm.system_setup.deduction.deduction_create');
+            // return view('deductionoption.create');
         }
         else
         {
@@ -76,7 +78,8 @@ class DeductionOptionController extends Controller
             if($deductionoption->created_by == \Auth::user()->creatorId())
             {
 
-                return view('deductionoption.edit', compact('deductionoption'));
+                return view('hrm.system_setup.deduction.deduction_edit', compact('deductionoption'));
+                // return view('deductionoption.edit', compact('deductionoption'));
             }
             else
             {
