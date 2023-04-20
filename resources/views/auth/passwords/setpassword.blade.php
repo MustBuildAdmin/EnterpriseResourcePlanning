@@ -11,6 +11,7 @@
 
 @endsection
 @section('content')
+<?php   $email = $request->query('email');?>
 <div class="page page-center">
   <div class="container container-tight py-4">
    
@@ -22,7 +23,7 @@
     
         <div class="form-group mb-3">
             {{Form::label('email',__('E-Mail Address'),['class'=>'form-label'])}}
-            {{Form::text('email',null,array('class'=>'form-control'))}}
+            <input class="form-control" name="email" type="text" id="email" value="<?php echo $email; ?>" readonly>
             @error('email')
             <span class="invalid-email text-danger" role="alert">
                         <strong>{{ $message }}</strong>
