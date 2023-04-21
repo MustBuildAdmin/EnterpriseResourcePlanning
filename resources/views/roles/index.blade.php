@@ -4,14 +4,14 @@
 @if($roles_count==0)
 <div class="page-body">
 	<div class="container-xl">
-		<div class="card">
+	
 			<div class="row g-0">
 				<div class="col d-flex flex-column">
 					<div class="card-body">
 						<h2 class="mb-4">{{__('Manage Role')}}</h2>
 						<div class="container-xl d-flex flex-column justify-content-center">
 							<div class="empty">
-								<div class="empty-img"><img src="./static/illustrations/undraw_printing_invoices_5r4r.svg" height="128" alt=""> </div>
+								<div class="empty-img"><img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}" height="128" alt=""> </div>
 								<p class="empty-title">{{__('No results found')}}</p>
 								<div class="empty-action">
 									<a href="#" data-size="lg" data-url="{{ route('roles.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Role')}}" class="btn btn-primary">
@@ -26,7 +26,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		
 	</div>
 </div>
 @else
@@ -64,7 +64,7 @@
             <br><br><br>
             
             <div class="table-responsive">
-              <table class="table" id="example">
+              <table class="table datatable" >
                 <thead>
                   <tr>
                     <th class="w-1">
@@ -90,18 +90,20 @@
                     </td>
                     <td class="Action" data-orderable="false">
                       <span>
-                      @can('edit role') <div class="ms-2">
-                          <a href="#" class="btn btn-md bg-primary" data-url="{{ route('roles.edit',$role->id) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Role Edit')}}">
-                            <i class="ti ti-pencil text-white"></i>
-                          </a>
-                        </div>
-                        @endcan
+						@can('edit role') 
+							<div class="ms-2">
+							<a href="#" class="btn btn-md bg-primary" data-url="{{ route('roles.edit',$role->id) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Role Edit')}}">
+								<i class="ti ti-pencil text-white"></i>
+							</a>
+							</div>
+						@endcan
                         @can('delete role')
                         <div class="ms-2">
-                        {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id],'id'=>'delete-form-'.$role->id]) !!} <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                        {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id],'id'=>'delete-form-'.$role->id]) !!} 
+						<a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                             <i class="ti ti-trash text-white"></i>
-                          </a>
-                          {!! Form::close() !!}
+                        </a>
+                        {!! Form::close() !!}
                           </div>
                           @endcan
                         </span>
@@ -119,19 +121,6 @@
   </div>
 </div>
 @endif
-<script>
-$(document).ready(function() {
-	$('#example').dataTable({
-
-		"language": {
-			"paginate": {
-				"previous": "<i class='fas fa-arrow-left'></i>",
-				"next": "<i class='fas fa-arrow-right'></i>",
-			}
-		}
-	});
-});
-</script>
 <script type = "text/javascript" >
   $(document).ready(function() {
   	$('#checkboxesMain').on('click', function(e) {

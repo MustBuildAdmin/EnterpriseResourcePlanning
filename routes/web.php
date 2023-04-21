@@ -43,12 +43,14 @@ Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_ho
 
 Route::get('/', 'DashboardController@naccount_dashboard')->name('new_home')->middleware(
     [
+        'auth',
         'XSS',
         'revalidate',
     ]
 );
 Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home')->middleware(
     [
+        'auth',
         'XSS',
         'revalidate',
     ]
@@ -78,8 +80,8 @@ Route::resource('hrm_company_policy', 'CompanyPolicyController')->middleware(
 );
 
 Route::get('/email-settings', 'SystemController@emailsettings')->name('emailsettings')->middleware(['XSS','revalidate',]);
-Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['XSS','revalidate',]);
-Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['XSS','revalidate',]);
+Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['auth','XSS','revalidate',]);
+Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['auth','XSS','revalidate',]);
 
 
 Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
@@ -157,6 +159,15 @@ Route::get('new_profile', 'UserController@new_profile')->name('new_profile')->mi
         'revalidate',
     ]
 );
+
+Route::any('delete_new_profile', 'UserController@delete_new_profile')->name('delete_new_profile')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::post('edit-profile', 'UserController@editprofile')->name('update.account')->middleware(
     [
         'auth',
