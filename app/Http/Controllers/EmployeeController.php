@@ -44,7 +44,8 @@ class EmployeeController extends Controller
                 $employees = Employee::where('created_by', \Auth::user()->creatorId())->get();
             }
 
-            return view('employee.index', compact('employees'));
+            return view('hrm.employee_setup.employee', compact('employees'));
+            // return view('employee.index', compact('employees'));
         }
         else
         {
@@ -397,8 +398,8 @@ class EmployeeController extends Controller
 
             $employeesId  = \Auth::user()->employeeIdFormat(!empty($employee) ? $employee->employee_id : '');
 
-
-            return view('employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
+            return view('hrm.employee_setup.emp_details', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
+            // return view('employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
         }
         else
         {

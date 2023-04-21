@@ -1,339 +1,287 @@
 <style>
-.wrapper {
-    height: 100%;
-}
-.main_body{
-    height: 100%;
-}
- .sidebar_menu{
-  	background: #3421C0;
-  	width: 250px;
-  	height: 100%;
-  	transition: all 0.3s linear;
-}
- .sidebar_menu .inner__sidebar_menu{
-	position: relative;
-	padding-top: 60px;
-}
- .sidebar_menu ul li {
-    list-style-type: none;
-    padding: 5px;
-}
-.sidebar_menu ul li a{
-  color: #ffffff;
-  font-size: 14px;
-  padding: 10px;
-  display: block;
-  white-space: nowrap;
-}
-.sidebar_menu ul li a .icon{
-  margin-right: 8px;
-}
- .sidebar_menu ul li a span{
-  display: inline-block;
-}
- .sidebar_menu ul li a:hover{
-  background: #5343c7;
-  color: #fff;
-}
- .sidebar_menu ul li a.active{
-  background: #22119d;
-  color: #fff;
-}
- .sidebar_menu .hamburger{
-  position: absolute;
-  top: 5px;
-  right: -25px;
-  width: 50px;
-  height: 50px;
-  background: #e8edf5;
-  border-radius: 50%;
-  cursor: pointer;
-}
- .sidebar_menu .inner_hamburger,
-.sidebar_menu .hamburger .arrow{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-.sidebar_menu .inner_hamburger{
-  width: 40px;
-  border-radius: 50%;
-  height: 40px;
-  background: #3421C0;
-}
- .sidebar_menu .hamburger .arrow{
-  color: #fff;
-  font-size: 20px;
-}
- .sidebar_menu .hamburger  .fa-long-arrow-alt-right{
-  display: none;
-}
- .main-container{
-	width: calc(100% - 250px);
-	margin-top: 65px;
-	margin-left: 50px;
-	padding: 25px 40px;
-	transition: all 0.3s linear;
-}
-.main-container .item_wrap{
-	display: flex;
-	margin-bottom: 20px;
-}
- .main-container .item_wrap .item{
-	background: #fff;
-	border: 1px solid #e0e0e0;
-	padding: 25px;
-	font-size: 14px;
-	line-height: 22px;
-}
- .main-container .item_wrap .item:first-child{
-	margin-right: 20px;
-}
-/* after adding active class */
-.wrapper.active .sidebar_menu{
-  width: 70px;
-}
-.wrapper.active .hamburger .fa-long-arrow-alt-right{
-  display: block;
-}
-.wrapper.active .hamburger .fa-long-arrow-alt-left{
-  display: none;
-}
-.wrapper.active .sidebar_menu ul li a .list{
-  display: none;
-}
-.sidebar_menu .inner__sidebar_menu ul {
-    padding: 0px;
-}
+    /* pagination */
+    .pagination {
+        height: 36px;
+        margin: 18px 0;
+        color: #6c58bF;
+    }
 
-.dropdown-menu.show {
-    background-color: #3421c0;
-}
+    .pagination ul {
+        display: inline-block;
+        *display: inline;
+        /* IE7 inline-block hack */
+        *zoom: 1;
+        margin-left: 0;
+        color: #ffffff;
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .pagination li {
+        display: inline;
+        color: #6c58bF;
+    }
+
+    .pagination a {
+        float: left;
+        padding: 0 14px;
+        line-height: 34px;
+        color: #6c58bF;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        border-left-width: 0;
+    }
+
+    .pagination a:hover,
+    .pagination .active a {
+        background-color: var(--tblr-pagination-active-bg);
+        color: #ffffff;
+    }
+
+    .pagination a:focus {
+        background-color: #ffffff;
+        color: #ffffff;
+    }
+
+
+    .pagination .active a {
+        color: #ffffff;
+        cursor: default;
+    }
+
+    .pagination .disabled span,
+    .pagination .disabled a,
+    .pagination .disabled a:hover {
+        color: #999999;
+        background-color: transparent;
+        cursor: default;
+    }
+
+    .pagination li:first-child a {
+        border-left-width: 1px;
+        -webkit-border-radius: 3px 0 0 3px;
+        -moz-border-radius: 3px 0 0 3px;
+        border-radius: 3px 0 0 3px;
+    }
+
+    .pagination li:last-child a {
+        -webkit-border-radius: 0 3px 3px 0;
+        -moz-border-radius: 0 3px 3px 0;
+        border-radius: 0 3px 3px 0;
+    }
+
+    .pagination-centered {
+        text-align: center;
+    }
+
+    .pagination-right {
+        text-align: right;
+    }
+
+    .pager {
+        margin-left: 0;
+        margin-bottom: 18px;
+        list-style: none;
+        text-align: center;
+        color: #6c58bF;
+        *zoom: 1;
+    }
+
+    .pager:before,
+    .pager:after {
+        display: table;
+        content: "";
+    }
+
+    .pager:after {
+        clear: both;
+    }
+
+    .pager li {
+        display: inline;
+        color: #6c58bF;
+    }
+
+    .pager a {
+        display: inline-block;
+        padding: 5px 14px;
+        color: #6c58bF;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+    }
+
+    .pager a:hover {
+        text-decoration: none;
+        background-color: #f5f5f5;
+    }
+
+    .pager .next a {
+        float: right;
+    }
+
+    .pager .previous a {
+        float: left;
+    }
+
+    .pager .disabled a,
+    .pager .disabled a:hover {
+        color: #999999;
+    }
+    .dataTables_wrapper .dataTables_paginate {
+        float: right;
+        text-align: right;
+        padding-top: 0.25em;
+    }
 </style>
-<div class="wrapper container-fluid">
-<div class="row">
+<div class="wrapper">
+    <div class="row">
+        <div class="wrapper">
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+                <div class="sidebar">
+                    <ul class="list-unstyled components nav nav-sidebar">
+                        <li class="active">
+                            <a href="#homeSubmenu" ><span class="icon"><i class="ti ti-dashboard"></i></span><span class="list">Dashboard</span></a>
+                        </li>
 
-    <div class="sidebar_menu col-2 col-md-2 col-xs-2">
+                        <li>
+                            @if(\Auth::user()->type =='Employee')
+                                <li>
+                                    @php
+                                        $employee=App\Models\Employee::where('user_id',\Auth::user()->id)->first();
+                                    @endphp
+                                    <a href="{{route('employee.show',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}"><span class="icon"><i class="ti ti-users"></i>
+                                        </span><span class="list">{{__('Employee')}}</span>
+                                    </a>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="{{route('employee.index')}}"><span class="icon"><i class="ti ti-users"></i></span><span class="list">{{ __('Employee Setup') }}</span></a>
+                                </li>
+                            @endif
+                        </li>
 
-        <div class="inner__sidebar_menu">
-            <h4 class="p-2 text-center text-white">Human Resources</h4>
-            <ul>
-              <li>
-                <a href="#">
-                  <span class="icon">
-                    <i class="ti ti-activity-heartbeat"></i></span>
-                  <span class="list">Dashboard</span>
-                </a>
-              </li>
-              <li>
-                <a href="#" class="active">
-                  <span class="icon"><i class="ti ti-users"></i>
-                  </span>
-                  <span class="list">Employees</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="icon"><i class="ti ti-calendar-stats"></i>
-                  </span>
-                  <span class="list">Leave Management</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="icon"><i class="ti ti-file-dollar"></i>
-                  </span>
-                  <span class="list">Payslips</span>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <span class="icon"><i class="ti ti-chart-infographic"></i>
-                  </span>
-                  <span class="list">Reports</span>
-                </a>
-              </li>
-            </ul>
-            <h5 class="text-center text-white">Settings</h5>
+                        <li>
+                            <a href="#"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span class="list">Leave Management</span></a>
+                        </li>
 
-            <ul>
-                <li>
-                  <div class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
-                      {{__('HR Admin Setup')}}
-                    </a>
-                    <div class="dropdown-menu">
-                      @can('manage award')
-                        <a href="{{url('award')}}" class="dropdown-item">
-                          {{__('Award')}}
-                        </a>
-                      @endcan
-                      @can('manage transfer')
-                        <a href="{{url('transfer')}}" class="dropdown-item">
-                          {{__('Transfer')}}
-                        </a>
-                      @endcan
-                      @can('manage resignation')
-                        <a href="{{url('resignation')}}" class="dropdown-item">
-                          {{__('Resignation')}}
-                        </a>
-                      @endcan
-                      @can('manage travel')
-                        <a href="{{url('travel')}}" class="dropdown-item">
-                          {{__('Trip')}}
-                        </a>
-                      @endcan
-                      @can('manage promotion')
-                        <a href="{{url('promotion')}}" class="dropdown-item">
-                          {{__('Promotion')}}
-                        </a>
-                      @endcan
-                      @can('manage complaint')
-                        <a href="{{url('complaint')}}" class="dropdown-item">
-                          {{__('Complaints')}}
-                        </a>
-                      @endcan
-                      @can('manage warning')
-                        <a href="{{url('warning')}}" class="dropdown-item">
-                          {{__('Warning')}}
-                        </a>
-                      @endcan
-                      @can('manage termination')
-                        <a href="{{url('termination')}}" class="dropdown-item">
-                          {{__('Termination')}}
-                        </a>
-                      @endcan
-                      @can('manage announcement')
-                        <a href="{{url('announcement')}}" class="dropdown-item">
-                          {{__('Announcement')}}
-                        </a>
-                      @endcan
-                      @can('manage holiday')
-                        <a href="{{url('holiday')}}" class="dropdown-item">
-                          {{__('Holidays')}}
-                        </a>
-                      @endcan
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <a href="#" class="">
-                    <span class="icon"><i class="ti ti-calendar-event"></i>
+                        <li>
+                            <a href="#"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span class="list">Payslips</span></a>
+                        </li>
 
-                    </span>
-                    <span class="list">Event and Meetings</span>
-                  </a>
-                </li>
-                @can('manage document')
-                  <li>
-                    <a href="{{url('hrm_doc_setup')}}" class="">
-                      <span class="icon"><i class="ti ti-certificate"></i>
-                      </span>
-                      <span class="list">{{__('Document Setup')}}</span>
-                    </a>
-                  </li>
-                @endcan
-                @can('manage company policy')
-                  <li>
-                    <a href="{{url('hrm_company_policy')}}" class="">
-                      <span class="icon">  <i class="ti ti-clipboard-text"></i>
-                      </span>
-                      <span class="list">{{__('Company policy')}}</span>
-                    </a>
-                  </li>
-                @endcan
-                <li>
-                  <a href="#" class="">
-                    <span class="icon">  <i class="ti ti-tool"></i>
+                        <li>
+                            <a href="#"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span class="list">Reports</span></a>
+                        </li>
 
-                    </span>
-                    <span class="list">Resource Settings</span>
-                  </a>
-                </li>
-                <li>
-                  <div class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false" >
-                      {{__('HRM System Setup')}}
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="{{route('branch.index')}}" class="dropdown-item">
-                          {{__('Branch')}}
-                        </a>
-                        <a href="{{ route('department.index') }}" class="dropdown-item">
-                          {{__('Department')}}
-                        </a>
-                        <a href="{{ route('designation.index') }}" class="dropdown-item">
-                          {{__('Designation')}}
-                        </a>
-                        <a href="{{ route('leavetype.index') }}" class="dropdown-item">
-                          {{__('Leave Type')}}
-                        </a>
-                        <a href="{{ route('document.index') }}" class="dropdown-item">
-                          {{__('Document Type')}}
-                        </a>
-                        <a href="{{ route('paysliptype.index') }}" class="dropdown-item">
-                          {{__('Payslip Type')}}
-                        </a>
-                        <a href="{{ route('allowanceoption.index') }}" class="dropdown-item">
-                          {{__('Allowance Option')}}
-                        </a>
-                        <a href="{{ route('loanoption.index') }}" class="dropdown-item">
-                          {{__('Loan Option')}}
-                        </a>
-                        <a href="{{ route('deductionoption.index') }}" class="dropdown-item">
-                          {{__('Deduction Option')}}
-                        </a>
-                        <a href="{{ route('goaltype.index') }}" class="dropdown-item">
-                          {{__('Goal Type')}}
-                        </a>
-                        <a href="{{ route('trainingtype.index') }}" class="dropdown-item">
-                          {{__('Training Type')}}
-                        </a>
-                        <a href="{{ route('awardtype.index') }}" class="dropdown-item">
-                          {{__('Award Type')}}
-                        </a>
-                        <a href="{{ route('terminationtype.index') }}" class="dropdown-item">
-                          {{__('Termination Type')}}
-                        </a>
-                        <a href="{{ route('job-category.index') }}" class="dropdown-item">
-                          {{__('Job Category')}}
-                        </a>
-                        <a href="{{ route('job-stage.index') }}" class="dropdown-item">
-                          {{__('Job Stage')}}
-                        </a>
-                        <a href="{{ route('performanceType.index') }}" class="dropdown-item">
-                          {{__('Performance Type')}}
-                        </a>
-                        <a href="{{ route('competencies.index') }}" class="dropdown-item">
-                          {{__('Competencies')}}
-                        </a>
-                    </div>
-                  </div>
-                </li>
+                        <li>
+                            <a href="#pageSubmenu_admin_setup" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                                <span class="list">Settings</span>
+                            </a>
+                            <ul class="collapse list-unstyled" id="pageSubmenu_admin_setup">
+                                <li><a href="#">{{__('HR Admin Setup')}}</a></li>
+                                @can('manage award')
+                                    <li><a href="{{url('award')}}">{{__('Award')}}</a></li>
+                                @endcan
+                                @can('manage transfer')
+                                    <li><a href="{{url('transfer')}}">{{__('Transfer')}}</a></li>
+                                @endcan
+                                @can('manage resignation')
+                                    <li><a href="{{url('resignation')}}">{{__('Resignation')}}</a></li>
+                                @endcan
+                                @can('manage travel')
+                                    <li><a href="{{url('travel')}}">{{__('Trip')}}</a></li>
+                                @endcan
+                                @can('manage promotion')
+                                    <li><a href="{{url('promotion')}}" class="dropdown-item">{{__('Promotion')}}</a></li>
+                                @endcan
+                                @can('manage complaint')
+                                    <li><a href="{{url('complaint')}}" class="dropdown-item">{{__('Complaints')}}</a></li>
+                                @endcan
+                                @can('manage warning')
+                                    <li><a href="{{url('warning')}}" class="dropdown-item">{{__('Warning')}}</a></li>
+                                @endcan
+                                @can('manage termination')
+                                    <li><a href="{{url('termination')}}" class="dropdown-item">{{__('Termination')}}</a></li>
+                                @endcan
+                                @can('manage announcement')
+                                    <li><a href="{{url('announcement')}}" class="dropdown-item">{{__('Announcement')}}</a></li>
+                                @endcan
+                                @can('manage holiday')
+                                    <li><a href="{{url('holiday')}}" class="dropdown-item">{{__('Holidays')}}</a></li>
+                                @endcan
+                            </ul>
+                        </li>
 
-              </ul>
+                        <li>
+                            <a href="#"><span class="icon"><i class="ti ti-calendar-event"></i></span><span class="list">Event and Meetings</span></a>
+                        </li>
 
-            <div class="hamburger">
-                <div class="inner_hamburger">
-                    <span class="arrow">
-                        <i class="ti ti-arrow-narrow-left" id="toggle-icon"></i>
-                    </span>
+                        @can('manage document')
+                            <li>
+                                <a href="{{url('hrm_doc_setup')}}"><span class="icon"><i class="ti ti-certificate"></i></span><span class="list">{{__('Document Setup')}}</span></a>
+                            </li>
+                        @endcan
+
+                        @can('manage company policy')
+                            <li>
+                                <a href="{{url('hrm_company_policy')}}"><span class="icon"><i class="ti ti-certificate"></i></span><span class="list">{{__('Company policy')}}</span></a>
+                            </li>
+                        @endcan
+
+                        <li>
+                            <a href="#"><span class="icon">  <i class="ti ti-tool"></i></span><span class="list">Resource Settings</span></a>
+                        </li>
+
+                        <li>
+                            <a href="#pageSubmenu_system_setup" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                                <span class="list">{{__('HRM System Setup')}}</span>
+                            </a>
+                            <ul class="collapse list-unstyled" id="pageSubmenu_system_setup">
+                                <li><a href="{{ route('department.index') }}" class="dropdown-item">{{__('Department')}}</a></li>
+                                <li><a href="{{ route('designation.index') }}" class="dropdown-item">{{__('Designation')}}</a></li>
+                                <li><a href="{{ route('leavetype.index') }}" class="dropdown-item">{{__('Leave Type')}}</a></li>
+                                <li><a href="{{ route('document.index') }}" class="dropdown-item">{{__('Document Type')}}</a></li>
+                                <li><a href="{{ route('paysliptype.index') }}" class="dropdown-item">{{__('Payslip Type')}}</a></li>
+                                <li><a href="{{ route('allowanceoption.index') }}" class="dropdown-item">{{__('Allowance Option')}}</a></li>
+                                <li><a href="{{ route('loanoption.index') }}" class="dropdown-item">{{__('Loan Option')}}</a></li>
+                                <li><a href="{{ route('deductionoption.index') }}" class="dropdown-item">{{__('Deduction Option')}}</a></li>
+                                <li><a href="{{ route('goaltype.index') }}" class="dropdown-item">{{__('Goal Type')}}</a></li>
+                                <li><a href="{{ route('trainingtype.index') }}" class="dropdown-item">{{__('Training Type')}}</a></li>
+                                <li><a href="{{ route('awardtype.index') }}" class="dropdown-item">{{__('Award Type')}}</a></li>
+                                <li><a href="{{ route('terminationtype.index') }}" class="dropdown-item">{{__('Termination Type')}}</a></li>
+                                <li><a href="{{ route('job-category.index') }}" class="dropdown-item">{{__('Job Category')}}</a></li>
+                                <li><a href="{{ route('job-stage.index') }}" class="dropdown-item">{{__('Job Stage')}}</a></li>
+                                <li><a href="{{ route('performanceType.index') }}" class="dropdown-item">{{__('Performance Type')}}</a></li>
+                                <li><a href="{{ route('competencies.index') }}" class="dropdown-item">{{__('Competencies')}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-            </div>
+            </nav>
 
-        </div>
-    </div>
+            <!-- Page Content  -->
+            <div id="content" class="main">
+                <div class="collapseToggle">
+                    <span id="toggleIcon" class="fa fa-chevron-left"></span>
+                </div>
+                @isset($hrm_header)
+                    <h2 class="mb-4">{{ __($hrm_header) }}</h2>
+                @endisset
 
-    <div class="col-10 col-md-10 col-xs-10">
 
-<script>
-    $(document).ready(function(){
-        $(".hamburger").click(function(){
-          $(".wrapper").toggleClass("active")
-          $("#toggle-icon").toggleClass("ti-arrow-narrow-right")
-        })
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    $('.collapseToggle').on('click', function() {
+        $(".sidebar").toggleClass('sidebar--Collapse');
+        $('.main').toggleClass('main--slide');  $('#toggleIcon').toggleClass('rotate');
     });
 </script>
 {{-- @include('new_layouts.footer') --}}
