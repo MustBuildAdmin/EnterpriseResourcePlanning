@@ -87,9 +87,15 @@ class AuthenticatedSessionController extends Controller
 
         $update_lang=array('lang'=>$request->lang);
 
-        if($check_email->lang!=null){
+        if($check_email->lang!=null && $request->lang!='en'){
 
             DB::table('users')->where('id',Auth::id())->where('email',$request->email)->update($update_lang);
+
+        }else if($check_email->lang==null){
+
+            DB::table('users')->where('id',Auth::id())->where('email',$request->email)->update($update_lang);
+            
+        }else{
 
         }
 
