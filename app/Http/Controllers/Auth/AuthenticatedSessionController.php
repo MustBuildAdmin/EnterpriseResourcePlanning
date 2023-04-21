@@ -7,6 +7,7 @@ use App\Models\Plan;
 use App\Models\Vender;
 use  App\Models\Utility;
 use Carbon\Carbon;
+use Artisan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
@@ -69,7 +70,7 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
 
-        //ReCpatcha
+     //ReCpatcha
         if(env('RECAPTCHA_MODULE') == 'on')
         {
             $validation['g-recaptcha-response'] = 'required|captcha';
@@ -82,6 +83,15 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $user = Auth::user();
 
+        $check_email=DB::table('users')->where('id',Auth::id())->where('email',$request->email)->first();
+
+        $update_lang=array('lang'=>$request->lang);
+
+        if($check_email->lang!=null){
+
+            DB::table('users')->where('id',Auth::id())->where('email',$request->email)->update($update_lang);
+
+        }
 
         if($user->delete_status == 0)
         {
@@ -169,6 +179,11 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
+
+        header("cache-Control: no-store, no-cache, must-revalidate");
+        header("cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        Artisan::call('optimize:clear');
 
         $request->session()->invalidate();
 

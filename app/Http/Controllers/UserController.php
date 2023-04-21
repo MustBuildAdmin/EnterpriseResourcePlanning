@@ -214,8 +214,8 @@ class UserController extends Controller
                     'password' => $user->password,
                 ];
                 $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
-
-                return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger"></span>' : ''));
+                    
+                return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
             }
             return redirect()->route('users.index')->with('success', __('User successfully created.'));
 
