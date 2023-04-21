@@ -34,13 +34,16 @@ $profile=\App\Models\Utility::get_file('uploads/avatar/');
 					<input type="file" class="form-control file" name="profile" id="avatar" data-filename="profile_update" accept="image/png, image/jpg,image/jpeg,image/webp">
 					<button type="button" class="btn" id='input_btn'>
 						{{ __('Change Profile') }}
-				  </button></div>
+				  </button>
+				</div>
+				@if($get_logo->avatar!=null)
 				<div class="col-auto">
 					<input type="hidden" id="user_id" value="{{ $userDetail->id }}">
 					<a href="#" class="btn btn-ghost-danger" id="checkdelete">
 						{{ __('Delete Profile') }}
 				  </a>
 				</div>
+				@endif
 			  </div>
 			  <div class="col-lg-6 col-md-6">
 				<div class="form-group">
