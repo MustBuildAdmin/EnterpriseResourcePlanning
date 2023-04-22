@@ -150,7 +150,7 @@ class ProjectTaskController extends Controller
         if($view == 'list'){
 
             $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
-            return view('project_task.taskboard', compact('view','tasks','project_id','user_id','start_date','end_date','setting'));
+            return view('construction_project.taskboard', compact('view','tasks','project_id','user_id','start_date','end_date','setting'));
           }else{
               $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
             return view('project_task.grid', compact('tasks','view','project_id','user_id','start_date','end_date','setting'));
