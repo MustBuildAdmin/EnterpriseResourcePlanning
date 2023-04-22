@@ -94,7 +94,13 @@
         <div class="loader-fill"></div>
     </div>
 </div>
-
+@if (Session::has('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li style="text-align: center;list-style: none;font-weight:bold;">{{ Session::get('success') }}</li>
+        </ul>
+    </div>
+@endif
 @php
 
     // $logo=asset(Storage::url('uploads/logo/'));
@@ -337,8 +343,8 @@
                                             <!-- {{ __('Select Currency Symbol ...') }} -->
                                             @isset($currency)
                                             @foreach($currency as $key => $value)
-                                                <option value="{{$value->id}}" @isset($settings['site_currency_symbol'])
-                                                    @if($settings['site_currency_symbol']==$value->id) Selected @endif
+                                                <option value="{{$value->id}}" @isset($settings['site_currency'])
+                                                    @if($settings['site_currency']==$value->id) Selected @endif
                                                 @endisset>{{$value->symbol}}</option>
                                             @endforeach
                                             @endif
@@ -556,7 +562,8 @@
                             <!-- <small class="text-muted">{{ __('Edit details about your Company') }}</small> -->
                             <div class="card-actions">
                                 <button class="button btn-navigate-form-step" id="previous" type="button" step_number="1">Prev</button>
-                                <button class="button submit-btn" type="submit" id="savebtn">Save</button>
+                                <!-- <button class="button submit-btn" type="button" id="savebtndummy">Save</button> -->
+                                <button class="button submit-btn" type="submit"  id="savebtn">Save</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -693,7 +700,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <div class="row">
-                                        <label class="form-check-label" for="s">{{__('GSTVAT')}}
+                                        <label class="form-check-label" id="gstvat" for="s">{{__('GSTVAT')}}
                                         <div class="col-md-12">
                                                 <div class="form-check form-check-inline form-group mb-3">
                                                     <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
@@ -768,6 +775,7 @@
   </div>
 </div>
 <div>
+<script src="{{ asset('js/jquery.validate.js') }}"></script>
 
 <script>
 $('#nextbtn').click(function(){
@@ -780,6 +788,50 @@ $('#nextbtn').click(function(){
   }
   
 });
+
+$().ready(function() {
+$('#company_form').validate({
+    rules: {
+        company_name:{
+                required:true,
+        },
+        company_country:{
+            required:true,
+        },
+        company_state:{
+            required:true,
+        },
+        company_email:{
+            required:true,
+        },
+        company_email_from_name:{
+            required:true,
+        },
+        registration_number:{
+            required:true
+        },
+        timezone:{
+            required:true
+        }
+    },
+    messages: {
+        company_name: {
+            required: "Please enter Company Name",
+            
+        },
+        company_country: {
+            required: "Please choose company country",
+            
+        }
+
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+
+});
+
 
     window.addEventListener("DOMContentLoaded", (event) => {
     var site_currency=document.getElementById("site_currency");
@@ -1069,6 +1121,12 @@ $('#nextbtn').click(function(){
     }
     #site_currency-error{
         display:none;
+    }
+    label#gstvat {
+        font-weight: var(--tblr-font-weight-medium);
+    }
+    .col-md-12 {
+        font-weight: normal;
     }
 </style>
 <script>

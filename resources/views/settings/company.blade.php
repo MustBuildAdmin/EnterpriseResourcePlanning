@@ -705,7 +705,7 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <div class="row">
-                                        <label class="form-check-label" for="s">{{__('Indiangst')}}
+                                        <label class="form-check-label" id="gstvat" for="s">{{__('Indiangst')}}
                                         <div class="col-md-12">
                                                 <div class="form-check form-check-inline form-group mb-3">
                                                     <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
@@ -1006,5 +1006,28 @@
     .form-stepper a {
         cursor: default;
     }
+    label#gstvat {
+        font-weight: var(--tblr-font-weight-medium);
+    }
+    .col-md-12 {
+        font-weight: normal;
+    }
 </style>
 @endsection
+
+<script>
+$('#indiangst').change(function () {
+    $('#customRadio8').attr("disabled",false);
+    $('#customRadio7').attr("disabled",false);
+    $('#vat_number').attr("disabled",false);
+
+});
+$('#indiangst1').change(function () {
+    $('#customRadio8').attr("disabled",true);
+    $('#customRadio7').attr("disabled",true);
+    $('#vat_number').attr("disabled",true);
+    $('#customRadio8').prop("checked",false);
+    $('#customRadio7').prop("checked",false);
+    $('#vat_number').prop("value","");
+});
+</script>
