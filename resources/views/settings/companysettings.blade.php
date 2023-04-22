@@ -17,10 +17,12 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{$SITE_RTL == 'on' ? 'rtl' : '' }}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <head>
     <title>{{(Utility::getValByName('title_text')) ? Utility::getValByName('title_text') : config('app.name', 'Must BuildApp')}} -  {{__('Settings')}}</title>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <!-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> -->
+    <!-- <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> -->
 
     <!-- Meta -->
     <meta charset="utf-8"/>
@@ -550,7 +552,7 @@
                 <div id="useradd-3" class="card">
                         <div class="card-header">
                         <h3 class="card-title">{{ __('Company Setting') }}</h5>
-                            <small class="text-muted">{{ __('Edit details about your Company') }}</small>
+                            <!-- <small class="text-muted">{{ __('Edit details about your Company') }}</small> -->
                             <div class="card-actions">
                                 <button class="button btn-navigate-form-step" type="button" step_number="1">Prev</button>
                                 <button class="button submit-btn" type="submit" id="savebtn">Save</button>
@@ -827,6 +829,11 @@
     // });
 </script>
 <style>
+    .form-switch {
+    height: 0px !important;
+    padding-left: 2.5rem;
+    margin-top: -23px;
+}
     .bottombutton{
         text-align:center;
     }
@@ -1020,5 +1027,32 @@
 
     .form-stepper a {
         cursor: default;
+    }
+    @media screen and (max-width:767px) {
+        .form-step {
+            padding: 0.5rem;
+        }
+        .form-switch {
+            height: unset !important;
+            padding-left: 2.5rem;
+            margin-top: -16px;
+        }
+        #step-2 .card-actions {
+            width: 80%;
+        }
+        #step-2 .card-header {
+            display: block;
+        }
+        #step-2 .card-actions button {
+            margin: 3px;
+        }
+        #step-2 .card-actions {
+            /* width: 80%; */
+            margin-top: 10px;
+            align-items: flex-end;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
     }
 </style>
