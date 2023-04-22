@@ -368,6 +368,7 @@
                                     <select type="text" name="site_time_format" class="form-control selectric" id="site_time_format">
                                         <option value="h:i A" @if(@$settings['site_time_format'] == 'h:i A') selected="selected" @endif>h:i A</option>
                                         <option value="h:i a" @if(@$settings['site_time_format'] == 'h:i a') selected="selected" @endif>h:i a</option>
+
                                         <option value="H:i" @if(@$settings['site_time_format'] == 'H:i') selected="selected" @endif>H:i</option>
                                     </select>
                                 </div>
@@ -490,7 +491,13 @@
                                 <div class="form-group col-md-6">
                                     {{Form::label('shipping_display',__('Shipping Display in Proposal / Invoice / Bill ?'),array('class'=>'form-label')) }}
                                     <div class=" form-switch form-switch-left">
-                                        <input type="checkbox" class="form-check-input mt-4" name="shipping_display" id="email_tempalte_13" {{($settings['shipping_display']=='on')?'checked':''}} >
+                                        <input type="checkbox" class="form-check-input mt-4" name="shipping_display" id="
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        _tempalte_13" {{($settings['shipping_display']=='on')?'checked':''}} >
                                         <label class="form-check-label" for="email_tempalte_13"></label>
                                     </div>
 
@@ -533,7 +540,8 @@
                 </div>
             </section>
             <section id="step-2" class="form-step d-none">
-                <h2 class="font-normal">Personal Details</h2>
+                <h2 class="font-norm
+                al">Personal Details</h2>
                 <div id="useradd-3" class="card">
                         <div class="card-header">
                             <h5>{{ __('Company Setting') }}</h5>
