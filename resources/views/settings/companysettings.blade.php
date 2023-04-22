@@ -318,6 +318,7 @@
                                             @endforeach
                                             @endif
                                         </select>
+                                        <label id="site_currency-error" class="error" for="site_currency">Please choose Site Currency</label>
                                         <!-- {{ Form::text('site_currency', $settings['site_currency'], ['class' => 'form-control font-style', 'required', 'placeholder' => __('Enter Currency')]) }} -->
                                         <!-- <small> {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
                                             <a href="https://stripe.com/docs/currencies"
@@ -554,7 +555,7 @@
                         <h3 class="card-title">{{ __('Company Setting') }}</h5>
                             <!-- <small class="text-muted">{{ __('Edit details about your Company') }}</small> -->
                             <div class="card-actions">
-                                <button class="button btn-navigate-form-step" type="button" step_number="1">Prev</button>
+                                <button class="button btn-navigate-form-step" id="previous" type="button" step_number="1">Prev</button>
                                 <button class="button submit-btn" type="submit" id="savebtn">Save</button>
                             </div>
                         </div>
@@ -769,23 +770,34 @@
 <div>
 
 <script>
+$('#nextbtn').click(function(){
+//   alert("The paragraph was clicked.");
+  var site_currency=document.getElementById("site_currency");
+  if(site_currency.value==''){
+    $('#site_currency-error').css("display","block");
+  }else{
+    navigateToFormStep(2);
+  }
+  
+});
 
     window.addEventListener("DOMContentLoaded", (event) => {
     var site_currency=document.getElementById("site_currency");
     var site_currency_symbol=document.getElementById("site_currency_symbol");
-        if(site_currency.value=='' || site_currency_symbol.value==''){
-            document.getElementById("nextbtn").disabled = true;
-        }else{
-            document.getElementById("nextbtn").disabled = false;
-        }
+        // if(site_currency.value=='' || site_currency_symbol.value==''){
+        //     document.getElementById("nextbtn").disabled = true;
+        // }else{
+        //     document.getElementById("nextbtn").disabled = false;
+        // }
     });
     site_currency.addEventListener('change', (event) => {
+        $('#site_currency-error').css("display","none");
         site_currency_symbol.value=site_currency.value;
-        if(site_currency.value=='' || site_currency_symbol.value==''){
-            document.getElementById("nextbtn").disabled = true;
-        }else{
-            document.getElementById("nextbtn").disabled = false;
-        }
+        // if(site_currency.value=='' || site_currency_symbol.value==''){
+        //     document.getElementById("nextbtn").disabled = true;
+        // }else{
+        //     document.getElementById("nextbtn").disabled = false;
+        // }
     });
     site_currency_symbol.addEventListener('change', (event) => {
         if(site_currency.value=='' || site_currency_symbol.value==''){
@@ -815,7 +827,7 @@
             }
         }
     };
-    document.querySelectorAll(".btn-navigate-form-step").forEach((formNavigationBtn) => {
+    document.querySelectorAll("#previous").forEach((formNavigationBtn) => {
         formNavigationBtn.addEventListener("click", () => {
              const stepNumber = parseInt(formNavigationBtn.getAttribute("step_number"));
             navigateToFormStep(stepNumber);
@@ -1054,5 +1066,8 @@
             justify-content: flex-end;
         }
         
+    }
+    #site_currency-error{
+        display:none;
     }
 </style>
