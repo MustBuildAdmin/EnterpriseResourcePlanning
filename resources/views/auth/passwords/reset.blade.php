@@ -270,3 +270,54 @@
             });
         });
     </script>
+    <script>
+$().ready(function() {
+$('#loginForm').validate({
+    rules: {
+        password:{
+                required:true,
+                changepasss:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                minlength: 8,
+                maxlength: 36,
+            },
+            password_confirmation:{
+                required:true,
+                minlength: 8,
+                maxlength: 36,
+                equalTo: "#password"
+            },
+    },
+    messages: {
+        password: {
+                required: "Please enter password",
+                minlength:"Please enter atleast 8characters",
+                maxlength:"Please enter below 36 characters."
+            },
+            password_confirmation: {
+                required: "Please enter confirmation password",
+                minlength:"Please enter atleast 8characters",
+                maxlength:"Please enter below 36 characters.",
+                equalTo:"Password and confirm password must be same"
+            }
+
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+$.validator.addMethod(
+        "changepasss",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "The password must be Minimum eight characters, at least one uppercase letter, one lowercase letter and one number and one special character."
+);
+});
+
+</script>
+<style>
+.error {
+    color: red;
+}
+</style>
