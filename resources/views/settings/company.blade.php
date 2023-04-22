@@ -366,8 +366,9 @@
                                 <div class="form-group col-md-6">
                                     <label for="site_time_format" class="form-label">{{__('Time Format')}}</label>
                                     <select type="text" name="site_time_format" class="form-control selectric" id="site_time_format">
-                                        <option value="g:i A" @if(@$settings['site_time_format'] == 'g:i A') selected="selected" @endif>g:i A</option>
-                                        <option value="g:i a" @if(@$settings['site_time_format'] == 'g:i a') selected="selected" @endif>g:i a</option>
+                                        <option value="h:i A" @if(@$settings['site_time_format'] == 'h:i A') selected="selected" @endif>h:i A</option>
+                                        <option value="h:i a" @if(@$settings['site_time_format'] == 'h:i a') selected="selected" @endif>h:i a</option>
+
                                         <option value="H:i" @if(@$settings['site_time_format'] == 'H:i') selected="selected" @endif>H:i</option>
                                     </select>
                                 </div>
@@ -490,7 +491,13 @@
                                 <div class="form-group col-md-6">
                                     {{Form::label('shipping_display',__('Shipping Display in Proposal / Invoice / Bill ?'),array('class'=>'form-label')) }}
                                     <div class=" form-switch form-switch-left">
-                                        <input type="checkbox" class="form-check-input mt-4" name="shipping_display" id="email_tempalte_13" {{($settings['shipping_display']=='on')?'checked':''}} >
+                                        <input type="checkbox" class="form-check-input mt-4" name="shipping_display" id="
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        _tempalte_13" {{($settings['shipping_display']=='on')?'checked':''}} >
                                         <label class="form-check-label" for="email_tempalte_13"></label>
                                     </div>
 
@@ -533,7 +540,8 @@
                 </div>
             </section>
             <section id="step-2" class="form-step d-none">
-                <h2 class="font-normal">Personal Details</h2>
+                <h2 class="font-norm
+                al">Personal Details</h2>
                 <div id="useradd-3" class="card">
                         <div class="card-header">
                             <h5>{{ __('Company Setting') }}</h5>
@@ -697,7 +705,7 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <div class="row">
-                                        <label class="form-check-label" for="s">{{__('Indiangst')}}
+                                        <label class="form-check-label" id="gstvat" for="s">{{__('Indiangst')}}
                                         <div class="col-md-12">
                                                 <div class="form-check form-check-inline form-group mb-3">
                                                     <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
@@ -998,5 +1006,28 @@
     .form-stepper a {
         cursor: default;
     }
+    label#gstvat {
+        font-weight: var(--tblr-font-weight-medium);
+    }
+    .col-md-12 {
+        font-weight: normal;
+    }
 </style>
 @endsection
+
+<script>
+$('#indiangst').change(function () {
+    $('#customRadio8').attr("disabled",false);
+    $('#customRadio7').attr("disabled",false);
+    $('#vat_number').attr("disabled",false);
+
+});
+$('#indiangst1').change(function () {
+    $('#customRadio8').attr("disabled",true);
+    $('#customRadio7').attr("disabled",true);
+    $('#vat_number').attr("disabled",true);
+    $('#customRadio8').prop("checked",false);
+    $('#customRadio7').prop("checked",false);
+    $('#vat_number').prop("value","");
+});
+</script>

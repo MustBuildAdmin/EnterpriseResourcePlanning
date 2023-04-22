@@ -17,10 +17,12 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{$SITE_RTL == 'on' ? 'rtl' : '' }}">
 <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <head>
     <title>{{(Utility::getValByName('title_text')) ? Utility::getValByName('title_text') : config('app.name', 'Must BuildApp')}} -  {{__('Settings')}}</title>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <!-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> -->
+    <!-- <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> -->
 
     <!-- Meta -->
     <meta charset="utf-8"/>
@@ -92,7 +94,13 @@
         <div class="loader-fill"></div>
     </div>
 </div>
-
+@if (Session::has('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li style="text-align: center;list-style: none;font-weight:bold;">{{ Session::get('success') }}</li>
+        </ul>
+    </div>
+@endif
 @php
 
     // $logo=asset(Storage::url('uploads/logo/'));
@@ -316,6 +324,7 @@
                                             @endforeach
                                             @endif
                                         </select>
+                                        <label id="site_currency-error" class="error" for="site_currency">Please choose Site Currency</label>
                                         <!-- {{ Form::text('site_currency', $settings['site_currency'], ['class' => 'form-control font-style', 'required', 'placeholder' => __('Enter Currency')]) }} -->
                                         <!-- <small> {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
                                             <a href="https://stripe.com/docs/currencies"
@@ -330,11 +339,12 @@
                                         {{Form::label('site_currency_symbol',__('Currency Symbol '),array('class' => 'form-label')) }}
                                         <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
                                                 placeholder="Select Currecy" required>
-                                            <option value="">{{ __('Select Currency Symbol ...') }}</option>
+                                            <option value=""></option>
+                                            <!-- {{ __('Select Currency Symbol ...') }} -->
                                             @isset($currency)
                                             @foreach($currency as $key => $value)
-                                                <option value="{{$value->id}}" @isset($settings['site_currency_symbol'])
-                                                    @if($settings['site_currency_symbol']==$value->id) Selected @endif
+                                                <option value="{{$value->id}}" @isset($settings['site_currency'])
+                                                    @if($settings['site_currency']==$value->id) Selected @endif
                                                 @endisset>{{$value->symbol}}</option>
                                             @endforeach
                                             @endif
@@ -379,8 +389,9 @@
                                     <div class="form-group col-md-6">
                                         <label for="site_time_format" class="form-label">{{__('Time Format')}}</label>
                                         <select type="text" name="site_time_format" class="form-control selectric" id="site_time_format">
-                                            <option value="g:i A" @if(@$settings['site_time_format'] == 'g:i A') selected="selected" @endif>g:i A</option>
-                                            <option value="g:i a" @if(@$settings['site_time_format'] == 'g:i a') selected="selected" @endif>g:i a</option>
+                                            <option value="h:i A" @if(@$settings['site_time_format'] == 'h:i A') selected="selected" @endif>h:i A</option>
+                                            <option value="h:i a" @if(@$settings['site_time_format'] == 'h:i a') selected="selected" @endif>h:i a</option>
+
                                             <option value="H:i" @if(@$settings['site_time_format'] == 'H:i') selected="selected" @endif>H:i</option>
                                         </select>
                                     </div>
@@ -548,10 +559,11 @@
                 <div id="useradd-3" class="card">
                         <div class="card-header">
                         <h3 class="card-title">{{ __('Company Setting') }}</h5>
-                            <small class="text-muted">{{ __('Edit details about your Company') }}</small>
+                            <!-- <small class="text-muted">{{ __('Edit details about your Company') }}</small> -->
                             <div class="card-actions">
-                                <button class="button btn-navigate-form-step" type="button" step_number="1">Prev</button>
-                                <button class="button submit-btn" type="submit" id="savebtn">Save</button>
+                                <button class="button btn-navigate-form-step" id="previous" type="button" step_number="1">Prev</button>
+                                <!-- <button class="button submit-btn" type="button" id="savebtndummy">Save</button> -->
+                                <button class="button submit-btn" type="submit"  id="savebtn">Save</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -576,7 +588,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group  col-md-6">
-                                    {{Form::label('company_country',__('Country'),array('class' => 'form-label')) }}
+                                    {{Form::label('company_country',__('Country *'),array('class' => 'form-label')) }}
                                     <select class="form-control country" name="company_country" id='company_country'
                                                 placeholder="Select Country" required>
                                             <option value="">{{ __('Select Country ...') }}</option>
@@ -596,7 +608,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6">
-                                    {{Form::label('company_state',__('State'),array('class' => 'form-label')) }}
+                                    {{Form::label('company_state',__('State *'),array('class' => 'form-label')) }}
                                     <select class="form-control " name="company_state" id='company_state'
                                             placeholder="Select State"  required>
                                         <option value="">{{ __('Select State ...') }}</option>
@@ -619,7 +631,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_zipcode',__('Zip/Post Code'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_zipcode',null,array('class'=>'form-control'))}}
+                                    {{Form::number('company_zipcode',null,array('class'=>'form-control'))}}
                                     @error('company_zipcode')
                                     <span class="invalid-company_zipcode" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -688,7 +700,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <div class="row">
-                                        <label class="form-check-label" for="s">{{__('GSTVAT')}}
+                                        <label class="form-check-label" id="gstvat" for="s">{{__('GSTVAT')}}
                                         <div class="col-md-12">
                                                 <div class="form-check form-check-inline form-group mb-3">
                                                     <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
@@ -709,21 +721,21 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                                 <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="customRadio8" name="tax_type" value="VAT" class="form-check-input" {{($settings['tax_type'] == 'VAT')?'checked':''}} >
+                                                    <input type="radio" id="customRadio8" name="tax_type" disabled="$settings['indiangst'] == '1'?false:true" value="VAT" class="form-check-input" {{($settings['tax_type'] == 'VAT')?'checked':''}} >
                                                     <label class="form-check-label" for="customRadio8">{{__('VAT Number')}}</label>
                                                 </div>
                                             </div>
                                         <div class="col-md-6">
                                                 <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="customRadio7" name="tax_type" value="GST" class="form-check-input" {{($settings['tax_type'] == 'GST')?'checked':''}}>
+                                                    <input type="radio" id="customRadio7" name="tax_type" disabled="$settings['indiangst'] == '1'?false:true" value="GST" class="form-check-input" {{($settings['tax_type'] == 'GST')?'checked':''}}>
                                                     <label class="form-check-label" for="customRadio7">{{__('GST Number')}}</label>
                                                 </div>
                                             </div>
                                     </div>
-                                    {{Form::text('vat_number',null,array('class'=>'form-control','placeholder'=>__('Enter VAT / GST Number')))}}
+                                    {{Form::text('vat_number',null,array('id'=>'vat_number','class'=>'form-control','disabled'=>true,'placeholder'=>__('Enter VAT / GST Number')))}}
                                 </div>
                                 <div class="form-group col-md-6 mt-2">
-                                    {{Form::label('timezone',__('Timezone'),array('class' => 'form-label'))}}
+                                    {{Form::label('timezone',__('Timezone *'),array('class' => 'form-label'))}}
                                     <select type="text" name="timezone" class="form-control custom-select" id="timezone">
                                         <option value="">{{__('Select Timezone')}}</option>
                                         @foreach($timezones as $k=>$timezone)
@@ -763,25 +775,81 @@
   </div>
 </div>
 <div>
+<script src="{{ asset('js/jquery.validate.js') }}"></script>
 
 <script>
+$('#nextbtn').click(function(){
+//   alert("The paragraph was clicked.");
+  var site_currency=document.getElementById("site_currency");
+  if(site_currency.value==''){
+    $('#site_currency-error').css("display","block");
+  }else{
+    navigateToFormStep(2);
+  }
+  
+});
+
+$().ready(function() {
+$('#company_form').validate({
+    rules: {
+        company_name:{
+                required:true,
+        },
+        company_country:{
+            required:true,
+        },
+        company_state:{
+            required:true,
+        },
+        company_email:{
+            required:true,
+        },
+        company_email_from_name:{
+            required:true,
+        },
+        registration_number:{
+            required:true
+        },
+        timezone:{
+            required:true
+        }
+    },
+    messages: {
+        company_name: {
+            required: "Please enter Company Name",
+            
+        },
+        company_country: {
+            required: "Please choose company country",
+            
+        }
+
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+
+});
+
 
     window.addEventListener("DOMContentLoaded", (event) => {
     var site_currency=document.getElementById("site_currency");
     var site_currency_symbol=document.getElementById("site_currency_symbol");
-        if(site_currency.value=='' || site_currency_symbol.value==''){
-            document.getElementById("nextbtn").disabled = true;
-        }else{
-            document.getElementById("nextbtn").disabled = false;
-        }
+        // if(site_currency.value=='' || site_currency_symbol.value==''){
+        //     document.getElementById("nextbtn").disabled = true;
+        // }else{
+        //     document.getElementById("nextbtn").disabled = false;
+        // }
     });
     site_currency.addEventListener('change', (event) => {
+        $('#site_currency-error').css("display","none");
         site_currency_symbol.value=site_currency.value;
-        if(site_currency.value=='' || site_currency_symbol.value==''){
-            document.getElementById("nextbtn").disabled = true;
-        }else{
-            document.getElementById("nextbtn").disabled = false;
-        }
+        // if(site_currency.value=='' || site_currency_symbol.value==''){
+        //     document.getElementById("nextbtn").disabled = true;
+        // }else{
+        //     document.getElementById("nextbtn").disabled = false;
+        // }
     });
     site_currency_symbol.addEventListener('change', (event) => {
         if(site_currency.value=='' || site_currency_symbol.value==''){
@@ -811,7 +879,7 @@
             }
         }
     };
-    document.querySelectorAll(".btn-navigate-form-step").forEach((formNavigationBtn) => {
+    document.querySelectorAll("#previous").forEach((formNavigationBtn) => {
         formNavigationBtn.addEventListener("click", () => {
              const stepNumber = parseInt(formNavigationBtn.getAttribute("step_number"));
             navigateToFormStep(stepNumber);
@@ -825,6 +893,11 @@
     // });
 </script>
 <style>
+    .form-switch {
+    height: 0px !important;
+    padding-left: 2.5rem;
+    margin-top: -23px;
+}
     .bottombutton{
         text-align:center;
     }
@@ -1019,4 +1092,56 @@
     .form-stepper a {
         cursor: default;
     }
+    @media screen and (max-width:767px) {
+        .form-step {
+            padding: 0.5rem;
+        }
+        .form-switch {
+            height: unset !important;
+            padding-left: 2.5rem;
+            margin-top: -16px;
+        }
+        #step-2 .card-actions {
+            width: 80%;
+        }
+        #step-2 .card-header {
+            display: block;
+        }
+        #step-2 .card-actions button {
+            margin: 3px;
+        }
+        #step-2 .card-actions {
+            /* width: 80%; */
+            margin-top: 10px;
+            align-items: flex-end;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+    }
+    #site_currency-error{
+        display:none;
+    }
+    label#gstvat {
+        font-weight: var(--tblr-font-weight-medium);
+    }
+    .col-md-12 {
+        font-weight: normal;
+    }
 </style>
+<script>
+$('#indiangst').change(function () {
+    $('#customRadio8').attr("disabled",false);
+    $('#customRadio7').attr("disabled",false);
+    $('#vat_number').attr("disabled",false);
+
+});
+$('#indiangst1').change(function () {
+    $('#customRadio8').attr("disabled",true);
+    $('#customRadio7').attr("disabled",true);
+    $('#vat_number').attr("disabled",true);
+    $('#customRadio8').prop("checked",false);
+    $('#customRadio7').prop("checked",false);
+    $('#vat_number').prop("value","");
+});
+</script>
