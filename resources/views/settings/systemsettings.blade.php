@@ -74,7 +74,8 @@
                                         {{Form::label('site_currency_symbol',__('Currency Symbol '),array('class' => 'form-label')) }}
                                         <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
                                                 placeholder="Select Currecy" required>
-                                            <option value="">{{ __('Select Currency Symbol ...') }}</option>
+                                            <option value=""></option>
+                                            <!-- {{ __('Select Currency Symbol ...') }} -->
                                             @isset($currency)
                                             @foreach($currency as $key => $value)
                                                 <option value="{{$value->id}}" @isset($settings['site_currency'])
@@ -124,8 +125,8 @@
                                 <div class="form-group col-md-6">
                                     <label for="site_time_format" class="form-label">{{__('Time Format')}}</label>
                                     <select type="text" name="site_time_format" class="form-control selectric" id="site_time_format">
-                                        <option value="g:i A" @if(@$settings['site_time_format'] == 'g:i A') selected="selected" @endif>g:i A</option>
-                                        <option value="g:i a" @if(@$settings['site_time_format'] == 'g:i a') selected="selected" @endif>g:i a</option>
+                                        <option value="h:i A" @if(@$settings['site_time_format'] == 'h:i A') selected="selected" @endif>h:i A</option>
+                                        <option value="h:i a" @if(@$settings['site_time_format'] == 'h:i a') selected="selected" @endif>h:i a</option>
                                         <option value="H:i" @if(@$settings['site_time_format'] == 'H:i') selected="selected" @endif>H:i</option>
                                     </select>
                                 </div>
