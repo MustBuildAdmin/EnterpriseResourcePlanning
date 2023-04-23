@@ -245,6 +245,7 @@
                                 <span class="list">{{__('HRM System Setup')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="pageSubmenu_system_setup">
+                                <li><a href="{{ route('branch.index') }}" class="dropdown-item">{{__('Branch')}}</a></li>
                                 <li><a href="{{ route('department.index') }}" class="dropdown-item">{{__('Department')}}</a></li>
                                 <li><a href="{{ route('designation.index') }}" class="dropdown-item">{{__('Designation')}}</a></li>
                                 <li><a href="{{ route('leavetype.index') }}" class="dropdown-item">{{__('Leave Type')}}</a></li>
