@@ -15,7 +15,8 @@ class PerformanceTypeController extends Controller
             if(\Auth::user()->type == 'company')
             {
                 $types = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get();
-                return view('performanceType.index', compact('types'));
+                return view('hrm.system_setup.performance_type.performance_type', compact('types'));
+                // return view('performanceType.index', compact('types'));
             }
             else
             {
@@ -28,7 +29,8 @@ class PerformanceTypeController extends Controller
 
     public function create()
     {
-        return view('performanceType.create');
+        return view('hrm.system_setup.performance_type.performance_type_create');
+        // return view('performanceType.create');
     }
 
 
@@ -74,7 +76,8 @@ class PerformanceTypeController extends Controller
 
     public function edit(PerformanceType $performanceType)
     {
-        return view('performanceType.edit', compact('performanceType'));
+        return view('hrm.system_setup.performance_type.performance_type_edit', compact('performanceType'));
+        // return view('performanceType.edit', compact('performanceType'));
     }
 
 

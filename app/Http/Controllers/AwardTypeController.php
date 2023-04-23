@@ -13,7 +13,8 @@ class AwardTypeController extends Controller
         {
             $awardtypes = AwardType::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('awardtype.index', compact('awardtypes'));
+            return view('hrm.system_setup.awardtype.awardtype', compact('awardtypes'));
+            // return view('awardtype.index', compact('awardtypes'));
         }
         else
         {
@@ -25,7 +26,8 @@ class AwardTypeController extends Controller
     {
         if(\Auth::user()->can('create award type'))
         {
-            return view('awardtype.create');
+            return view('hrm.system_setup.awardtype.awardtype_create');
+            // return view('awardtype.create');
         }
         else
         {
@@ -76,6 +78,7 @@ class AwardTypeController extends Controller
             if($awardtype->created_by == \Auth::user()->creatorId())
             {
 
+                return view('hrm.system_setup.awardtype.awardtype_edit', compact('awardtype'));
                 return view('awardtype.edit', compact('awardtype'));
             }
             else

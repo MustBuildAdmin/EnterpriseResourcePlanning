@@ -21,7 +21,9 @@ class RoleController extends Controller
             $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get();
             Cache::put('roles', $roles, 200);
             // return view('role.index')->with('roles', $roles);
-            return view('roles.index')->with('roles', $roles);
+            $roles_count = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get()->count();
+          
+            return view('roles.index')->with('roles', $roles)->with('roles_count',$roles_count);
         }
         else
         {
@@ -209,9 +211,11 @@ class RoleController extends Controller
         if(\Auth::user()->can('delete role'))
         {
             
-            $role->whereIn('id',$request->id)->delete();
-
-            return redirect()->route('roles.index')->with('success', 'Role successfully deleted');
+          
+            $ids=$request->ids;
+          
+            $role->whereIn('id',explode(",",$ids))->delete();
+            return response()->json(['status'=>true,'message'=>"Role successfully deleted"]);
             
         }
         else

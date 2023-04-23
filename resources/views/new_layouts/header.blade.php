@@ -26,7 +26,7 @@
     {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
+
 
     <!-- Meta -->
     <meta charset="utf-8" />
@@ -42,18 +42,24 @@
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
 
 	<!-- font css -->
-	<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
+	{{-- <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/fontawesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/material.css') }}">
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
-	<script src="{{ asset('js/demo-theme.min.js?1674944402') }}"></script>
-	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
-	<script src="{{ asset('assets/js/datatables.min.js') }}"></script>
+	
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css">
 
-	<script type="text/javascript"  src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
+	{{-- <script src="{{ asset('assets/js/datatables.min.js') }}"></script>--}}
+
+	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+
+	{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
+
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -73,14 +79,7 @@
 			margin-left:10px !important;
 		}
     </style>
-<script>
-	var oTable = $('.datatable').dataTable( {
-    "aoColumnDefs": [
-        { "bSortable": false, "aTargets": [ 1, 2, 3 ] }, 
-        { "bSearchable": false, "aTargets": [ 0, 1, 2, 3 ] }
-    ]
-}); 
-</script>
+
 </head>
 <body class=" d-flex flex-column">
 	<div class="page">
