@@ -749,7 +749,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_name *',__('Company Name *'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_name',null,array('class'=>'form-control font-style'))}}
+                                    {{Form::text('company_name',null,array('class'=>'form-control font-style','maxlength'=>60,'minlength'=>3))}}
                                     @error('company_name')
                                     <span class="invalid-company_name" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
