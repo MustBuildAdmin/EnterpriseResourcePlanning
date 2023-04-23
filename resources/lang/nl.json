@@ -2252,6 +2252,7 @@
   "System Setup" : "Systeemconfiguratie ",
   "System will consider last stage as a completed / done task for get progress on project." : "Het systeem beschouwt de laatste fase als een voltooide/voltooide taak voor het verkrijgen van de voortgang van het project. ",
   "Software":"ソフトウェア ",
+  "Name must be atleast 3 characters":"De naam moet minimaal 3 tekens lang zijn ",
   "Hotel":"ホテル ",
   "Hospital":"Ziekenhuis ",
   "Tag" : "Label ",

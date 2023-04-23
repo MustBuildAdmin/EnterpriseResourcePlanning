@@ -2252,6 +2252,7 @@
   "System Setup" : "Konfiguracja systemu ",
   "System will consider last stage as a completed / done task for get progress on project." : "System będzie uwzględniał ostatni etap jako zakończony/wykonalne zadanie w celu uzyskania postępu w projekcie. ",
   "Software":"Programas ",
+  "Name must be atleast 3 characters":"Nazwa musi mieć co najmniej 3 znaki ",
   "Hotel":"Hotel ",
   "Home" : "Dom ",
   "Hospital":"Szpital ",
