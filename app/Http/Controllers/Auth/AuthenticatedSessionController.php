@@ -7,6 +7,7 @@ use App\Models\Plan;
 use App\Models\Vender;
 use  App\Models\Utility;
 use Carbon\Carbon;
+use Artisan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
@@ -69,7 +70,7 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
 
-        //ReCpatcha
+     //ReCpatcha
         if(env('RECAPTCHA_MODULE') == 'on')
         {
             $validation['g-recaptcha-response'] = 'required|captcha';
@@ -82,6 +83,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $user = Auth::user();
 
+       
 
         if($user->delete_status == 0)
         {
@@ -169,6 +171,11 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
+
+        header("cache-Control: no-store, no-cache, must-revalidate");
+        header("cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        Artisan::call('optimize:clear');
 
         $request->session()->invalidate();
 
@@ -291,10 +298,11 @@ class AuthenticatedSessionController extends Controller
             $lang = Utility::getValByName('default_language');
         }
 
-
         \App::setLocale($lang);
 
-        return view('auth.forgot-password', compact('lang'));
+        $settings = Utility::settings();
+
+        return view('auth.forgot-password', compact('lang','settings'));
     }
 
     public function showCustomerLoginLang($lang = '')
@@ -357,7 +365,7 @@ class AuthenticatedSessionController extends Controller
             'auth.customerVerify', ['token' => $token], function ($message) use ($request){
             $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
             $message->to($request->email);
-            $message->subject('Reset Password Notification');
+            $message->subject('Reset your password');
         }
         );
 
@@ -454,7 +462,7 @@ class AuthenticatedSessionController extends Controller
             'auth.vendorVerify', ['token' => $token], function ($message) use ($request){
             $message->from(env('MAIL_USERNAME'), env('MAIL_FROM_NAME'));
             $message->to($request->email);
-            $message->subject('Reset Password Notification');
+            $message->subject('Reset your password');
         }
         );
 

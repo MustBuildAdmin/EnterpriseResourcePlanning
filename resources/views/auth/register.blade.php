@@ -15,6 +15,9 @@
     li.nav-item {
         list-style: none;
     }
+    li{
+        font-weight:bold;
+    }
     .backgroundimge{
         width: 150px;
         height: 80;
@@ -84,13 +87,14 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
 
             <div class="mb-3">
                 <label for="name" class="form-label">{{__('Name')}}</label>
-                <input id="name" type="text" min="3" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                 @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
                 @enderror
-                <span class="name_error">Name Must be atleast 3 characters</span>
+                <span class="message_display">({{__('Name must be atleast 3 characters')}})</span>
+                <span class="name_error">{{__('Name must be atleast 3 characters')}}</span>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">{{__('Email')}} <span class="error_class">*</span></label>
@@ -132,7 +136,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
             </div> -->
             <div class="mb-3">
                 <label for="company_name" class="form-label">{{__('Company Name')}}</label>
-                <input id="company_name"  min="3" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
+                <input value="{{ old('company_name') }}" id="company_name" type="text" data-indicator="company_name" class="form-control pwstrength @error('company_name') is-invalid @enderror" name="company_name" required autocomplete="new-password">
                 @error('company_name')
                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -145,10 +149,10 @@ $logo=\App\Models\Utility::get_file('uploads/logo');
             </div>
             <div class="mb-3">
                 <label for="company_type" class="form-label">{{__('Company_type')}} <span class="error_class">*</span></label>
-                <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required name='company_type'>
+                <select class="form-control pwstrength @error('company_type') is-invalid @enderror" name="company_type" required >
                     <option value=''>{{__('Select_Company_type')}}</option>
                     @foreach($companytype as $key => $value)
-                    <option value='{{$value->id}}'>{{__($value->name)}}</option>
+                    <option  value='{{$value->id}}' {{ (collect(old('company_type'))->contains($value->id)) ? 'selected':'' }}>{{__($value->name)}}</option>
                     @endforeach
 
                 </select>
@@ -249,9 +253,11 @@ $(document).on('keyup', function () {
 
 if ($("#name").val().length <= 2) {
   $(".name_error").show();
+  $(".message_display").hide();
   $("#submit").prop('disabled', true);
 }else{
    $(".name_error").hide();
+   $(".message_display").show();
    $("#submit").prop('disabled', false);
 }
 

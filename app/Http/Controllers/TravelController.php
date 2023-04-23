@@ -26,7 +26,8 @@ class TravelController extends Controller
                 $travels = Travel::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('travel.index', compact('travels'));
+            return view('hrm.admin_setup.trip.trip', compact('travels'));
+            // return view('travel.index', compact('travels'));
         }
         else
         {
@@ -40,7 +41,8 @@ class TravelController extends Controller
         {
             $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('travel.create', compact('employees'));
+            return view('hrm.admin_setup.trip.trip_create', compact('employees'));
+            // return view('travel.create', compact('employees'));
         }
         else
         {
@@ -120,7 +122,8 @@ class TravelController extends Controller
             $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             if($travel->created_by == \Auth::user()->creatorId())
             {
-                return view('travel.edit', compact('travel', 'employees'));
+                return view('hrm.admin_setup.trip.trip_edit', compact('travel', 'employees'));
+                // return view('travel.edit', compact('travel', 'employees'));
             }
             else
             {

@@ -25,10 +25,31 @@
         height: 100px;
         object-fit: contain;
     }
+    span.invalid-feedback {
+    font-size: 14px;
+}
 </style>
+@if (Session::has('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li style="text-align: center;list-style: none;font-weight:bold;">{{ Session::get('success') }}</li>
+        </ul>
+    </div>
+@endif
 @section('content')
 <div class="page page-center">
   <div class="container container-tight py-4">
+  <div class="topheader">
+        <div class="">
+        </div>
+        <li class="nav-item ">
+        <select class="btn btn-primary my-1 me-2 font_size" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language">
+            @foreach(Utility::languages() as $language)
+                <option class="font_size" @if($lang == $language) selected @endif value="{{ route('password.request',$language) }}">{{Str::upper($language)}}</option>
+            @endforeach
+        </select>
+    </li>
+    </div>
     <div class="text-center mb-4">
     </div>
     <div class="">
@@ -42,6 +63,7 @@
         @csrf
         <div class="card-body">
      <h2 class="card-title text-center mb-4">{{__('Reset Password')}}</h2>
+     <p class="text-muted">{{__('Reset Password Subheader')}}</p>
      <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="36"  class="backgroundimge" alt=""></a>
 
             <div class="form-group mb-3">

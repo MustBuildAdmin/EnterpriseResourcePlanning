@@ -14,3 +14,6 @@
         <div class="list-group list-group-transparent">
             <a href="#" class="list-group-item list-group-item-action">Give Feedback</a>
         </div>
+
+        </div>
+    </div>

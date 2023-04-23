@@ -14,9 +14,20 @@
 <!-- Libs JS -->
 <script src="{{ asset('assets/dist/js/demo-theme.min.js?1674944402') }}"></script>
 <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
+<script>
+// 	var oTable = $('.datatable').dataTable( {
+//     "aoColumnDefs": [
+//         { "bSortable": false, "aTargets": [ 1, 2, 3 ] }, 
+//         { "bSearchable": false, "aTargets": [ 0, 1, 2, 3 ] }
+//     ]
+// }); 
+</script>
 <!-- Libs JS -->
 <script>
-feather.replace();
+// feather.replace();
 </script>
 <script>
 (function($) {
@@ -74,6 +85,7 @@ feather.replace();
             'noticeTextColor': '#fff',
             'linkColor': '#009fdd'
         };
+        
     </script>
     <script src="{{ asset('js/cookie.notice.js') }}"></script>
 @endif
@@ -100,7 +112,12 @@ feather.replace();
   }
   		toastr.error("{{ session('error') }}");
 </script>
-  @endif
+@endif
+<script>
+    toastr.options = {
+  "closeButton": true,
+  "progressBar": true,
+  };
+</script>
 </body>
-
 </html>

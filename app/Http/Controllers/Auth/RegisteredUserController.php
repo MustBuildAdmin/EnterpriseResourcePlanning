@@ -108,9 +108,14 @@ class RegisteredUserController extends Controller
                 'set_password_url' => $url,
             ];
 
+            $role_r = Role::findByName('company');
+            $user->assignRole($role_r);
+            $user->userDefaultDataRegister($user->id);
+            $user->userWarehouseRegister($user->id);
+
             $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
             event(new Registered($user));
-            return redirect()->route('login')->with('success', __('Registered Successfully. Check you email for verfication'));
+            return redirect()->route('login')->with('success', __('Registered Successfully. Check you email for verfication. Kindly find the below link. '.$userArr['set_password_url']));
 
             // return \Redirect::to('login');
         }

@@ -29,22 +29,44 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $user = \Auth::user();
         if(\Auth::user()->can('manage user'))
         {
             if(\Auth::user()->type == 'super admin')
             {
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get();
+                $users =User::where([
+                    ['name', '!=', Null],
+                    [function ($query) use ($request) {
+                        if (($s = $request->search)) {
+                            $user = \Auth::user();
+                            $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                            ->get();
+                        }
+                    }]
+                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->paginate(6);
+                $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get()->count();
+                // $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get();
             }
             else
             {
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
+                // $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
+                $users =User::where([
+                    ['name', '!=', Null],
+                    [function ($query) use ($request) {
+                        if (($s = $request->search)) {
+                            $user = \Auth::user();
+                            $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                            ->get();
+                        }
+                    }]
+                ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->paginate(6);
+                $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->count();
             }
 
             // return view('user.index')->with('users', $users);
-            return view('users.index')->with('users', $users);
+            return view('users.index')->with('users', $users)->with('user_count', $user_count);
         }
         else
         {
@@ -65,7 +87,8 @@ class UserController extends Controller
         {
             $country=Utility::getcountry();
 
-            return view('user.create', compact('roles','gender', 'customFields','country','company_type'));
+            // return view('user.create', compact('roles','gender', 'customFields','country','company_type'));
+            return view('users.create', compact('roles','gender', 'customFields','country','company_type'));
         }
         else
         {
@@ -191,8 +214,8 @@ class UserController extends Controller
                     'password' => $user->password,
                 ];
                 $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
-
-                return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger"></span>' : ''));
+                    
+                return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
             }
             return redirect()->route('users.index')->with('success', __('User successfully created.'));
 
@@ -218,7 +241,8 @@ class UserController extends Controller
             $user->customField = CustomField::getData($user, 'user');
             $customFields      = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
 
-            return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
+            // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
+            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
         }
         else
         {
@@ -757,7 +781,8 @@ class UserController extends Controller
         $eId        = \Crypt::decrypt($id);
         $user = User::find($eId);
 
-        return view('user.reset', compact('user'));
+        // return view('user.reset', compact('user'));
+        return view('users.reset', compact('user'));
 
     }
 
@@ -792,10 +817,12 @@ class UserController extends Controller
 public function new_profile(Request $request){
 
     $userDetail              = \Auth::user();
+   
     $userDetail->customField = CustomField::getData($userDetail, 'user');
+    $get_logo=User::select('avatar')->where('id', '=', Auth::id())->first();
     $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
 
-    return view('user_profile.profile', compact('userDetail', 'customFields'));
+    return view('user_profile.profile', compact('userDetail', 'customFields','get_logo'));
    
 
 }
@@ -805,6 +832,20 @@ public function view_change_password(Request $request){
     $userDetail->customField = CustomField::getData($userDetail, 'user');
     $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
     return view('user_profile.change_password', compact('userDetail', 'customFields'));
+}
+
+public function delete_new_profile(Request $request){
+
+    try {
+        $set_data=array('avatar'=>null);
+        User::where('id',$request->user_id)->update($set_data);
+        return response()->json(['status'=>true]);
+      } catch (Exception $e) {
+      
+          return $e->getMessage();
+      
+      }
+
 }
 
 }

@@ -26,7 +26,8 @@ class ResignationController extends Controller
                 $resignations = Resignation::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('resignation.index', compact('resignations'));
+            return view('hrm.admin_setup.resignation.resignation', compact('resignations'));
+            // return view('resignation.index', compact('resignations'));
         }
         else
         {
@@ -40,7 +41,8 @@ class ResignationController extends Controller
         {
             $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('resignation.create', compact('employees'));
+            return view('hrm.admin_setup.resignation.resignation_create', compact('employees'));
+            // return view('resignation.create', compact('employees'));
         }
         else
         {
@@ -130,7 +132,8 @@ class ResignationController extends Controller
             if($resignation->created_by == \Auth::user()->creatorId())
             {
 
-                return view('resignation.edit', compact('resignation', 'employees'));
+                return view('hrm.admin_setup.resignation.resignation_edit', compact('resignation', 'employees'));
+                // return view('resignation.edit', compact('resignation', 'employees'));
             }
             else
             {

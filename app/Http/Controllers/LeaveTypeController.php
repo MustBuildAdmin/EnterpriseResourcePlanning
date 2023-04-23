@@ -13,7 +13,8 @@ class LeaveTypeController extends Controller
         {
             $leavetypes = LeaveType::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('leavetype.index', compact('leavetypes'));
+            return view('hrm.system_setup.leave.leave', compact('leavetypes'));
+            // return view('leavetype.index', compact('leavetypes'));
         }
         else
         {
@@ -26,7 +27,8 @@ class LeaveTypeController extends Controller
 
         if(\Auth::user()->can('create leave type'))
         {
-            return view('leavetype.create');
+            return view('hrm.system_setup.leave.leave_create');
+            // return view('leavetype.create');
         }
         else
         {
@@ -80,7 +82,8 @@ class LeaveTypeController extends Controller
             if($leavetype->created_by == \Auth::user()->creatorId())
             {
 
-                return view('leavetype.edit', compact('leavetype'));
+                return view('hrm.system_setup.leave.leave_edit', compact('leavetype'));
+                // return view('leavetype.edit', compact('leavetype'));
             }
             else
             {

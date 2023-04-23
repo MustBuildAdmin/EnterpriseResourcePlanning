@@ -148,7 +148,7 @@ class ConstructionprojectController extends Controller
 
 
             //end
-            return redirect()->route('construction_project.index');
+            return redirect()->route('construction_main');
             
 
     }
@@ -210,7 +210,7 @@ class ConstructionprojectController extends Controller
         }
         $project ->save();
 
-        return redirect()->route('construction_project.index');
+        return redirect()->route('construction_main');
 
     }
     public function destroy($id)
@@ -218,7 +218,7 @@ class ConstructionprojectController extends Controller
 
             $project = Construction_project::find($id)->delete();
 
-            return redirect()->route('construction_project.index');
+            return redirect()->route('construction_main');
         
     }
     public function construction_name_presented(Request $request)

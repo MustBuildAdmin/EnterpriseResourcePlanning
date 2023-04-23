@@ -11,6 +11,7 @@
 
 @endsection
 @section('content')
+<?php   $email = $request->query('email');?>
 <div class="page page-center">
   <div class="container container-tight py-4">
    
@@ -22,7 +23,7 @@
     
         <div class="form-group mb-3">
             {{Form::label('email',__('E-Mail Address'),['class'=>'form-label'])}}
-            {{Form::text('email',null,array('class'=>'form-control'))}}
+            <input class="form-control" name="email" type="text" id="email" value="<?php echo $email; ?>" readonly>
             @error('email')
             <span class="invalid-email text-danger" role="alert">
                         <strong>{{ $message }}</strong>
@@ -57,3 +58,58 @@
 </div>
 </div>
 @endsection
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/jquery.form.js') }}"></script>
+<script src="{{ asset('js/jquery.validate.js') }}"></script>
+
+<script>
+$().ready(function() {
+$('#loginForm').validate({
+    rules: {
+        password:{
+                required:true,
+                changepasss:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                minlength: 8,
+                maxlength: 36,
+            },
+            password_confirmation:{
+                required:true,
+                minlength: 8,
+                maxlength: 36,
+                equalTo: "#password"
+            },
+    },
+    messages: {
+        password: {
+                required: "Please enter password",
+                minlength:"Please enter atleast 8characters",
+                maxlength:"Please enter below 36 characters."
+            },
+            password_confirmation: {
+                required: "Please enter confirmation password",
+                minlength:"Please enter atleast 8characters",
+                maxlength:"Please enter below 36 characters.",
+                equalTo:"Password and confirm password must be same"
+            }
+
+    },
+    submitHandler: function(form) {
+        form.submit();
+    }
+});
+$.validator.addMethod(
+        "changepasss",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "The password must be Minimum eight characters, at least one uppercase letter, one lowercase letter and one number and one special character."
+);
+});
+
+</script>
+<style>
+.error {
+    color: red;
+}
+</style>

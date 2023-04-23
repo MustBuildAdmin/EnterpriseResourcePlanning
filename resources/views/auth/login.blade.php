@@ -56,7 +56,7 @@
 @if (Session::has('success'))
     <div class="alert alert-success">
         <ul>
-            <li style="text-align: center;list-style: none;r";>{{ Session::get('success') }}</li>
+            <li style="text-align: center;list-style: none;font-weight:bold;">{{ Session::get('success') }}</li>
         </ul>
     </div>
 @endif
@@ -89,14 +89,15 @@
             <label for="email" class="form-label">{{__('Email')}}</label>
             <input class="form-control @error('email') is-invalid @enderror" id="email" type="email" placeholder="your@email.com" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
             @error('email')
-            <div class="invalid-feedback" role="alert">{{ $message }}</div>
+            <div class="invalid-feedback" role="alert">{{__($message)}}</div>
             @enderror
         </div>
+        {{-- <input type="hidden" id="lang" name="lang" value="{{ $lang }}"> --}}
         <div class="form-group mb-3">
             <label for="password" class="form-label">{{__('Password')}}</label>
             <input class="form-control @error('password') is-invalid @enderror" id="password" type="password" name="password" placeholder="Your password" required autocomplete="current-password">
             @error('password')
-            <div class="invalid-feedback" role="alert">{{ $message }}</div>
+            <div class="invalid-feedback" role="alert">{{__($message)}}</div>
             @enderror
 
         </div>
@@ -144,6 +145,5 @@
     setTimeout(function() {
         location.reload();
     }, 90000);
-
 </script>
 

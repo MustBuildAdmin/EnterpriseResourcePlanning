@@ -26,7 +26,8 @@ class HolidayController extends Controller
             }
             $holidays = $holidays->get();
 
-            return view('holiday.index', compact('holidays'));
+            return view('hrm.admin_setup.holidays.holidays', compact('holidays'));
+            // return view('holiday.index', compact('holidays'));
         }
         else
         {
@@ -41,7 +42,8 @@ class HolidayController extends Controller
     {
         if(\Auth::user()->can('create holiday'))
         {
-            return view('holiday.create');
+            return view('hrm.admin_setup.holidays.holidays_create');
+            // return view('holiday.create');
         }
         else
         {
@@ -114,7 +116,8 @@ class HolidayController extends Controller
     {
         if(\Auth::user()->can('edit holiday'))
         {
-            return view('holiday.edit', compact('holiday'));
+            return view('hrm.admin_setup.holidays.holidays_edit', compact('holiday'));
+            // return view('holiday.edit', compact('holiday'));
         }
         else
         {

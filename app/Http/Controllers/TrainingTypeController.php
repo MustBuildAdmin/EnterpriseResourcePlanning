@@ -14,7 +14,8 @@ class TrainingTypeController extends Controller
         {
             $trainingtypes = TrainingType::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('trainingtype.index', compact('trainingtypes'));
+            return view('hrm.system_setup.training.training', compact('trainingtypes'));
+            // return view('trainingtype.index', compact('trainingtypes'));
         }
         else
         {
@@ -27,7 +28,8 @@ class TrainingTypeController extends Controller
     {
         if(\Auth::user()->can('create training type'))
         {
-            return view('trainingtype.create');
+            return view('hrm.system_setup.training.training_create');
+            // return view('trainingtype.create');
         }
         else
         {
@@ -81,8 +83,8 @@ class TrainingTypeController extends Controller
             $trainingType = TrainingType::find($id);
             if($trainingType->created_by == \Auth::user()->creatorId())
             {
-
-                return view('trainingtype.edit', compact('trainingType'));
+                return view('hrm.system_setup.training.training_edit', compact('trainingType'));
+                // return view('trainingtype.edit', compact('trainingType'));
             }
             else
             {

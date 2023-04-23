@@ -13,7 +13,8 @@ class PayslipTypeController extends Controller
         {
             $paysliptypes = PayslipType::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('paysliptype.index', compact('paysliptypes'));
+            return view('hrm.system_setup.pay_slip.pay_slip', compact('paysliptypes'));
+            // return view('paysliptype.index', compact('paysliptypes'));
         }
         else
         {
@@ -25,7 +26,8 @@ class PayslipTypeController extends Controller
     {
         if(\Auth::user()->can('create payslip type'))
         {
-            return view('paysliptype.create');
+            return view('hrm.system_setup.pay_slip.pay_slip_create');
+            // return view('paysliptype.create');
         }
         else
         {
@@ -75,6 +77,7 @@ class PayslipTypeController extends Controller
             if($paysliptype->created_by == \Auth::user()->creatorId())
             {
 
+                return view('hrm.system_setup.pay_slip.pay_slip_edit', compact('paysliptype'));
                 return view('paysliptype.edit', compact('paysliptype'));
             }
             else

@@ -751,7 +751,37 @@ class DashboardController extends Controller
     }
 
     public function construction_main(Request $request){
-        return view('construction_project.construction_main');
+        
+        if(\Auth::user()->can('manage project'))
+        {
+            $usr           = Auth::user();
+            if(\Auth::user()->type == 'client'){
+              $user_projects = Project::where('client_id',\Auth::user()->id)->where('created_by',\Auth::user()->creatorId())->pluck('id','id')->toArray();;
+            }else{
+              $user_projects = $usr->projects()->pluck('project_id', 'project_id')->toArray();
+            }
+        
+                $sort     = explode('-', 'created_at-desc');
+                $projects = Project::whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
+
+                if(!empty($request->keyword))
+                {
+                    $projects->where('project_name', 'LIKE', $request->keyword . '%')->orWhereRaw('FIND_IN_SET("' . $request->keyword . '",tags)');
+                }
+                if(!empty($request->status))
+                {
+                    $projects->whereIn('status', $request->status);
+                }
+
+                $projects   = $projects->get();
+                return view('construction_project.construction_main',compact('projects', 'user_projects'));
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission Denied.'));
+        }
+        // return view('construction_project.construction_main',compact('projects', 'user_projects'));
+        // return view('construction_project.construction_main');
     }
 
 }
