@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_name *',__('Company Name *'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_name',null,array('class'=>'form-control font-style'))}}
+                                    {{Form::text('company_name',null,array('class'=>'form-control font-style','maxlength'=>60,'minlength'=>3))}}
                                     @error('company_name')
                                     <span class="invalid-company_name" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -95,7 +95,7 @@
 
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_city',__('City'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_city',null,array('class'=>'form-control font-style'))}}
+                                    {{Form::text('company_city',null,array('class'=>'form-control font-style','maxlength'=>60,'minlength'=>3))}}
                                     @error('company_city')
                                     <span class="invalid-company_city" role="alert">
                                                                     <strong class="text-danger">{{ $message }}</strong>
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_zipcode',__('Zip/Post Code'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_zipcode',null,array('class'=>'form-control'))}}
+                                    {{Form::number('company_zipcode',null,array('class'=>'form-control'))}}
                                     @error('company_zipcode')
                                     <span class="invalid-company_zipcode" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
