@@ -190,10 +190,9 @@
                 <li>
                     <a href="#pageSubmenu_admin_setup" data-toggle="collapse" aria-expanded="false"
                         class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
-                        <span class="list">Settings</span>
+                        <span class="list">{{ __('HR Admin Setup') }}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubmenu_admin_setup">
-                        <li><a href="#">{{ __('HR Admin Setup') }}</a></li>
                         @can('manage award')
                             <li><a href="{{ url('award') }}">{{ __('Award') }}</a></li>
                         @endcan
