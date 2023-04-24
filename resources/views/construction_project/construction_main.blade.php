@@ -16,8 +16,18 @@
 @include('construction_project.side-menu')
                         <div class="col d-flex flex-column">
                             <div class="card-body">
-                                <h2 class="mb-4">Project</h2>
+                                <h2 class="mb-4">Project
+                                    @can('create project')
+                                        <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Project')}}">
+                                            <input type="button" value='ADD' class="btn btn-outline-primary w-20" style="
+                                            float: right;">
+                                        </a>
+                                    @endcan
+                                 
+                                    </h2>
+                                
                                 @if(isset($projects) && !empty($projects) && count($projects) > 0)
+                                
     <div class="row">
         @foreach ($projects as $key => $project)
             <div class="col-md-6 col-xxl-3">
