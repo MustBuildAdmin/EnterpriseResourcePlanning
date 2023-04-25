@@ -447,8 +447,8 @@ class ProjectController extends Controller
 
                 // end chart
 
-
-                return view('projects.view',compact('project','project_data'));
+                return view('construction_project.dashboard',compact('project','project_data'));
+               // return view('projects.view',compact('project','project_data'));
             }
             else
             {
