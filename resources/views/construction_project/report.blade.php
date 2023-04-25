@@ -11,23 +11,10 @@
 }
 </style>
     <div class="page-wrapper">
-        <!-- Page header -->
-        <div class="page-header d-print-none">
-            <div class="container-x">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <h2 class="page-title">
-                            Construction
-                        </h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Page body -->
-@include('construction_project.side-menu')
+@include('construction_project.side-menu',['hrm_header' => "Project Report"])
                         <div class="col d-flex flex-column">
                             <div class="card-body">
-                                <h2 class="mb-4">Project</h2>
+                                {{-- <h2 class="mb-4">Project</h2> --}}
                                 {{-- ///############################## --}}
                                 @if(Auth::user()->type == 'company')
                                 <div class="row">
