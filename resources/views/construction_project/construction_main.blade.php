@@ -13,15 +13,15 @@
                                             float: right;">
                                         </a>
                                     @endcan
-                                 
+
                                     </h2>
 </div>
                         <div class="col d-flex flex-column">
                             <div class="card-body">
-                       
-                                
+
+
                                 @if(isset($projects) && !empty($projects) && count($projects) > 0)
-                                
+
     <div class="row">
         @foreach ($projects as $key => $project)
             <div class="col-md-3 col-xxl-3 divstyle">
