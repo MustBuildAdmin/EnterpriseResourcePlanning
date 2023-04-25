@@ -2,9 +2,11 @@
     <div class="page-wrapper">
 
 @include('construction_project.side-menu',['hrm_header' => "Project"])
-                        <div class="col d-flex flex-column">
-                            <div class="card-body">
-                                <h2 class="mb-4">
+
+
+
+<div class="row">
+<h2 class="mb-4">
                                     @can('create project')
                                         <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Project')}}">
                                             <input type="button" value='ADD' class="btn btn-outline-primary w-20" style="
@@ -13,12 +15,16 @@
                                     @endcan
                                  
                                     </h2>
+</div>
+                        <div class="col d-flex flex-column">
+                            <div class="card-body">
+                       
                                 
                                 @if(isset($projects) && !empty($projects) && count($projects) > 0)
                                 
     <div class="row">
         @foreach ($projects as $key => $project)
-            <div class="col-md-6 col-xxl-3">
+            <div class="col-md-3 col-xxl-3 divstyle">
                 <div class="card">
                     <div class="card-header border-0 pb-0">
                         <div class="d-flex align-items-center">
