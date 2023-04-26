@@ -1,120 +1,141 @@
 @include('new_layouts.header')
+{{-- @extends('layouts.admin') --}}
+<link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.css') }}">
     <div class="page-wrapper">
+        <!-- Page header -->
 
-@include('construction_project.side-menu',['hrm_header' => "Project"])
-
-
-
-<div class="row">
-<h2 class="mb-4">
-                                    @can('create project')
-                                        <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Project')}}">
-                                            <input type="button" value='ADD' class="btn btn-outline-primary w-20" style="
-                                            float: right;">
-                                        </a>
-                                    @endcan
-
-                                    </h2>
-</div>
+        <!-- Page body -->
+        @include('construction_project.side-menu',['hrm_header' => "Task"])
                         <div class="col d-flex flex-column">
-                            <div class="card-body">
+                                {{-- <h2 class="mb-4">Task</h2> --}}
+                                <div class="card-body">
+                                    <div class="float-end">
 
-
-                                @if(isset($projects) && !empty($projects) && count($projects) > 0)
-
-    <div class="row">
-        @foreach ($projects as $key => $project)
-            <div class="col-md-3 col-xxl-3 divstyle">
-                <div class="card">
-                    <div class="card-header border-0 pb-0">
-                        <div class="d-flex align-items-center">
-                            <img {{ $project->img_image }} class="img-fluid wid-30 me-2" alt="">
-                            <h5 class="mb-0"><a class="text-dark" href="{{ route('projects.show',$project) }}">{{ $project->project_name }}</a></h5>
-                        </div>
-                        <div class="card-header-right">
-                            <div class="btn-group card-option">
-                                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="ti ti-dots-vertical"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    @can('edit project')
-                                        <a href="#!" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
-                                            <i class="ti ti-pencil"></i>
-                                            <span>{{__('Edit')}}</span>
+                                        <a href="#" class="btn btn-primary btn-sm" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="btn-inner--icon"><i class="ti ti-filter"></i></span>
                                         </a>
-                                    @endcan
-                                    @can('delete project')
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy',$project->id]]) !!}
-                                        <a href="#!" class="dropdown-item bs-pass-para">
-                                            <i class="ti ti-archive"></i>
-                                            <span> {{__('Delete')}}</span>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-steady" id="task_sort">
+                                            <a class="dropdown-item active" href="#" data-val="created_at-desc">
+                                                <i class="ti ti-sort-amount-down"></i>{{__('Newest')}}
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-val="created_at-asc">
+                                                <i class="ti ti-sort-amount-up"></i>{{__('Oldest')}}
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-val="name-asc">
+                                                <i class="ti ti-sort-alpha-down"></i>{{__('From A-Z')}}
+                                            </a>
+                                            <a class="dropdown-item" href="#" data-val="name-desc">
+                                                <i class="ti ti-sort-alpha-up"></i>{{__('From Z-A')}}
+                                            </a>
+                                        </div>
+                                
+                                
+                                        <a href="#" class="btn btn-primary btn-sm" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="btn-inner--icon">{{__('Status')}}</span>
                                         </a>
-
-                                        {!! Form::close() !!}
-                                    @endcan
-                                    @can('edit project')
-                                        <a href="#!" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Invite User')}}">
-                                            <i class="ti ti-send"></i>
-                                            <span>{{__('Invite User')}}</span>
-                                        </a>
-                                    @endcan
+                                        <div class="dropdown-menu dropdown-menu-right task-filter-actions dropdown-steady" id="task_status">
+                                            <a class="dropdown-item filter-action filter-show-all pl-4" href="#">{{__('Show All')}}</a>
+                                            <hr class="my-0">
+                                            <a class="dropdown-item filter-action pl-4 active" href="#" data-val="see_my_tasks">{{ __('See My Tasks') }}</a>
+                                            <hr class="my-0">
+                                            @foreach(\App\Models\ProjectTask::$priority as $key => $val)
+                                                <a class="dropdown-item filter-action pl-4" href="#" data-val="{{ $key }}">{{__($val)}}</a>
+                                            @endforeach
+                                            <hr class="my-0">
+                                            <a class="dropdown-item filter-action filter-other pl-4" href="#" data-val="due_today">{{ __('Due Today') }}</a>
+                                            <a class="dropdown-item filter-action filter-other pl-4" href="#" data-val="over_due">{{ __('Over Due') }}</a>
+                                            <a class="dropdown-item filter-action filter-other pl-4" href="#" data-val="starred">{{ __('Starred') }}</a>
+                                        </div>
+                                        <div class="row min-750" id="taskboard_view"></div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-2 justify-content-between">
-                            <div class="col-auto"><span class="badge rounded-pill bg-{{\App\Models\Project::$status_color[$project->status]}}">{{ __(\App\Models\Project::$project_status[$project->status]) }}</span>
-                            </div>
-
-                        </div>
-                        <p class="text-muted text-sm mt-3">{{ $project->description }}</p>
-                        <small>{{__('MEMBERS')}}</small>
-                        <div class="user-group">
-                            @if(isset($project->users) && !empty($project->users) && count($project->users) > 0)
-                                @foreach($project->users as $key => $user)
-                                    @if($key < 3)
-                                        <a href="#" class="avatar rounded-circle avatar-sm">
-                                            <img @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif  alt="image" data-bs-toggle="tooltip" title="{{ $user->name }}">
-                                        </a>
-                                    @else
-                                        @break
-                                    @endif
-                                @endforeach
-                            @endif
-                        </div>
-                        <div class="card mb-0 mt-3">
-                            <div class="card-body p-3">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h6 class="mb-0 {{ (strtotime($project->start_date) < time()) ? 'text-danger' : '' }}">{{ Utility::getDateFormated($project->start_date) }}</h6>
-                                        <p class="text-muted text-sm mb-0">{{__('Start Date')}}</p>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <h6 class="mb-0">{{ Utility::getDateFormated($project->end_date) }}</h6>
-                                        <p class="text-muted text-sm mb-0">{{__('Due Date')}}</p>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-@else
-    <div class="col-xl-12 col-lg-12 col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <h6 class="text-center mb-0">{{__('No Projects Found.')}}</h6>
-            </div>
-        </div>
-    </div>
-@endif
-                        </div>
+                      
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+  
+
 @include('new_layouts.footer')
+
+    <script>
+        // ready
+        $(function () {
+            var sort = 'created_at-desc';
+            var status = '';
+            ajaxFilterTaskView('created_at-desc', '', ['see_my_tasks']);
+
+            // when change status
+            $(".task-filter-actions").on('click', '.filter-action', function (e) {
+                if ($(this).hasClass('filter-show-all')) {
+                    $('.filter-action').removeClass('active');
+                    $(this).addClass('active');
+                } else {
+
+                    $('.filter-show-all').removeClass('active');
+                    if ($(this).hasClass('filter-other')) {
+                        $('.filter-other').removeClass('active');
+                    }
+                    if ($(this).hasClass('active')) {
+                        $(this).removeClass('active');
+                        $(this).blur();
+                    } else {
+                        $(this).addClass('active');
+                    }
+                }
+
+                var filterArray = [];
+                var url = $(this).parents('.task-filter-actions').attr('data-url');
+                $('div.task-filter-actions').find('.active').each(function () {
+                    filterArray.push($(this).attr('data-val'));
+                });
+                status = filterArray;
+                ajaxFilterTaskView(sort, $('#task_keyword').val(), status);
+            });
+
+            // when change sorting order
+            $('#task_sort').on('click', 'a', function () {
+                sort = $(this).attr('data-val');
+                ajaxFilterTaskView(sort, $('#task_keyword').val(), status);
+                $('#task_sort a').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            // when searching by task name
+            $(document).on('keyup', '#task_keyword', function () {
+                ajaxFilterTaskView(sort, $(this).val(), status);
+            });
+        });
+
+        // For Filter
+
+        project_id = "<?php echo $project_id; ?>";
+        user_id    = "<?php echo $user_id; ?>";
+        start_date = "<?php echo $start_date; ?>";
+        end_date = "<?php echo $end_date; ?>";
+       
+        function ajaxFilterTaskView(task_sort, keyword = '', status = '') {
+            var mainEle = $('#taskboard_view');
+            var view = '{{$view}}';
+            var data = {
+                view: view,
+                sort: task_sort,
+                keyword: keyword,
+                status: status,
+                project_id: project_id,
+                user_id: user_id,
+                start_date: start_date,
+                end_date: end_date,
+            }
+
+            $.ajax({
+                url: '{{ route('project.taskboard.view') }}',
+                data: data,
+                success: function (data) {
+                    mainEle.html(data.html);
+                }
+            });
+        }
+    </script>
