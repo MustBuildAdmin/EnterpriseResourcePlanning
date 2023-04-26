@@ -1,226 +1,134 @@
-{{-- <div class="page-body">
-    <div class="container-l">
-        <div class="card">
-            <div class="row g-0">
-                <div class="col-3 d-none d-md-block border-end">
-                    <div class="card-body">
-                        <h4 class="subheader">Construction Menu</h4>
-                        <div class="list-group list-group-transparent">
-                            <a href="{{route('filter.project.view')}}"
-                                class="list-group-item list-group-item-action d-flex align-items-center {{ (request()->is('projects-view*') ? 'active' : '')}}">Productivity
-                                </a>
-                            <a href="#"
-                                class="list-group-item list-group-item-action d-flex align-items-center">Diary
-                                </a>
-                            <a href="{{ route('taskBoard.view',['list']) }}"
-                                class="list-group-item list-group-item-action d-flex align-items-center">Task
-                                </a>
-                            <a href="{{ route('task.newcalendar',['all']) }}"
-                                class="list-group-item list-group-item-action d-flex align-items-center {{ (request()->is('calendar*') ? 'active' : '')}}">Task Calender</a>
-                            <a href="{{route('project_report.index')}}"
-                                class="list-group-item list-group-item-action d-flex align-items-center {{ (request()->is('project_report*') ? 'active' : '')}}">Project Report
-                                </a>
-                        </div>
-                        <h4 class="subheader mt-4">Construction Setting</h4>
-                        <div class="list-group list-group-transparent">
-                            <a href="#" class="list-group-item list-group-item-action">Project Task Stages</a>
+@include('new_layouts.header')
+<div class="page-wrapper">
+
+    @include('construction_project.side-menu', ['hrm_header' => 'Project'])
+
+
+
+    <div class="row">
+        <h2 class="mb-4">
+            @can('create project')
+                <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
+                    data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
+                    <input type="button" value='ADD' class="btn btn-outline-primary w-20"
+                        style="
+                                            float: right;">
+                </a>
+            @endcan
+
+        </h2>
+    </div>
+    <div class="col d-flex flex-column">
+        <div class="card-body">
+
+
+            @if (isset($projects) && !empty($projects) && count($projects) > 0)
+
+                <div class="row">
+                    @foreach ($projects as $key => $project)
+                        <div class="col-md-3 col-xxl-3 divstyle">
+                            <div class="card">
+                                <div class="card-header border-0 pb-0">
+                                    <div class="d-flex align-items-center">
+                                        <img {{ $project->img_image }} class="img-fluid wid-30 me-2" alt="">
+                                        <h5 class="mb-0"><a class="text-dark"
+                                                href="{{ route('projects.show', $project) }}">{{ $project->project_name }}</a>
+                                        </h5>
+                                    </div>
+                                    <div class="card-header-right">
+                                        <div class="btn-group card-option">
+                                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <i class="ti ti-dots-vertical"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                @can('edit project')
+                                                    <a href="#!" data-size="lg"
+                                                        data-url="{{ route('projects.edit', $project->id) }}"
+                                                        data-ajax-popup="true" class="dropdown-item"
+                                                        data-bs-original-title="{{ __('Edit User') }}">
+                                                        <i class="ti ti-pencil"></i>
+                                                        <span>{{ __('Edit') }}</span>
+                                                    </a>
+                                                @endcan
+                                                @can('delete project')
+                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id]]) !!}
+                                                    <a href="#!" class="dropdown-item bs-pass-para">
+                                                        <i class="ti ti-archive"></i>
+                                                        <span> {{ __('Delete') }}</span>
+                                                    </a>
+
+                                                    {!! Form::close() !!}
+                                                @endcan
+                                                @can('edit project')
+                                                    <a href="#!" data-size="lg"
+                                                        data-url="{{ route('invite.project.member.view', $project->id) }}"
+                                                        data-ajax-popup="true" class="dropdown-item"
+                                                        data-bs-original-title="{{ __('Invite User') }}">
+                                                        <i class="ti ti-send"></i>
+                                                        <span>{{ __('Invite User') }}</span>
+                                                    </a>
+                                                @endcan
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-2 justify-content-between">
+                                        <div class="col-auto"><span
+                                                class="badge rounded-pill bg-{{ \App\Models\Project::$status_color[$project->status] }}">{{ __(\App\Models\Project::$project_status[$project->status]) }}</span>
+                                        </div>
+
+                                    </div>
+                                    <p class="text-muted text-sm mt-3">{{ $project->description }}</p>
+                                    <small>{{ __('MEMBERS') }}</small>
+                                    <div class="user-group">
+                                        @if (isset($project->users) && !empty($project->users) && count($project->users) > 0)
+                                            @foreach ($project->users as $key => $user)
+                                                @if ($key < 3)
+                                                    <a href="#" class="avatar rounded-circle avatar-sm">
+                                                        <img @if ($user->avatar) src="{{ asset('/storage/uploads/avatar/' . $user->avatar) }}" @else src="{{ asset('/storage/uploads/avatar/avatar.png') }}" @endif
+                                                            alt="image" data-bs-toggle="tooltip"
+                                                            title="{{ $user->name }}">
+                                                    </a>
+                                                @else
+                                                @break
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </div>
+                                <div class="card mb-0 mt-3">
+                                    <div class="card-body p-3">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h6
+                                                    class="mb-0 {{ strtotime($project->start_date) < time() ? 'text-danger' : '' }}">
+                                                    {{ Utility::getDateFormated($project->start_date) }}</h6>
+                                                <p class="text-muted text-sm mb-0">{{ __('Start Date') }}</p>
+                                            </div>
+                                            <div class="col-6 text-end">
+                                                <h6 class="mb-0">
+                                                    {{ Utility::getDateFormated($project->end_date) }}</h6>
+                                                <p class="text-muted text-sm mb-0">{{ __('Due Date') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div> --}}
-                <style>
-                    /* pagination */
-                    .pagination {
-                        height: 36px;
-                        margin: 18px 0;
-                        color: #6c58bF;
-                    }
-                
-                    .pagination ul {
-                        display: inline-block;
-                        *display: inline;
-                        /* IE7 inline-block hack */
-                        *zoom: 1;
-                        margin-left: 0;
-                        color: #ffffff;
-                        margin-bottom: 0;
-                        -webkit-border-radius: 3px;
-                        -moz-border-radius: 3px;
-                        border-radius: 3px;
-                        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-                    }
-                
-                    .pagination li {
-                        display: inline;
-                        color: #6c58bF;
-                    }
-                
-                    .pagination a {
-                        float: left;
-                        padding: 0 14px;
-                        line-height: 34px;
-                        color: #6c58bF;
-                        text-decoration: none;
-                        border: 1px solid #ddd;
-                        border-left-width: 0;
-                    }
-                
-                    .pagination a:hover,
-                    .pagination .active a {
-                        background-color: var(--tblr-pagination-active-bg);
-                        color: #ffffff;
-                    }
-                
-                    .pagination a:focus {
-                        background-color: #ffffff;
-                        color: #ffffff;
-                    }
-                
-                
-                    .pagination .active a {
-                        color: #ffffff;
-                        cursor: default;
-                    }
-                
-                    .pagination .disabled span,
-                    .pagination .disabled a,
-                    .pagination .disabled a:hover {
-                        color: #999999;
-                        background-color: transparent;
-                        cursor: default;
-                    }
-                
-                    .pagination li:first-child a {
-                        border-left-width: 1px;
-                        -webkit-border-radius: 3px 0 0 3px;
-                        -moz-border-radius: 3px 0 0 3px;
-                        border-radius: 3px 0 0 3px;
-                    }
-                
-                    .pagination li:last-child a {
-                        -webkit-border-radius: 0 3px 3px 0;
-                        -moz-border-radius: 0 3px 3px 0;
-                        border-radius: 0 3px 3px 0;
-                    }
-                
-                    .pagination-centered {
-                        text-align: center;
-                    }
-                
-                    .pagination-right {
-                        text-align: right;
-                    }
-                
-                    .pager {
-                        margin-left: 0;
-                        margin-bottom: 18px;
-                        list-style: none;
-                        text-align: center;
-                        color: #6c58bF;
-                        *zoom: 1;
-                    }
-                
-                    .pager:before,
-                    .pager:after {
-                        display: table;
-                        content: "";
-                    }
-                
-                    .pager:after {
-                        clear: both;
-                    }
-                
-                    .pager li {
-                        display: inline;
-                        color: #6c58bF;
-                    }
-                
-                    .pager a {
-                        display: inline-block;
-                        padding: 5px 14px;
-                        color: #6c58bF;
-                        background-color: #fff;
-                        border: 1px solid #ddd;
-                        -webkit-border-radius: 15px;
-                        -moz-border-radius: 15px;
-                        border-radius: 15px;
-                    }
-                
-                    .pager a:hover {
-                        text-decoration: none;
-                        background-color: #f5f5f5;
-                    }
-                
-                    .pager .next a {
-                        float: right;
-                    }
-                
-                    .pager .previous a {
-                        float: left;
-                    }
-                
-                    .pager .disabled a,
-                    .pager .disabled a:hover {
-                        color: #999999;
-                    }
-                
-                    .dataTables_wrapper .dataTables_paginate {
-                        float: right;
-                        text-align: right;
-                        padding-top: 0.25em;
-                    }
-                </style>
-                
-                <div class="wrapper">
-                    <!-- Sidebar  -->
-                    <nav id="sidebar">
-                        <div class="sidebar">
-                            <ul class="list-unstyled components nav nav-sidebar">
-                                <li class="{{ (request()->is('projects-view*') ? 'active' : '')}}">
-                                    <a href="{{route('filter.project.view')}}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
-                                            class="list">{{ __('Productivity') }}</span></a>
-                                </li>
-                
-                                <li class="">
-                                    <a href="#"><span
-                                            class="icon"><i class="ti ti-users"></i>
-                                        </span><span class="list">{{ __('Diary') }}</span>
-                                    </a>
-                                </li>
-                                <li class="{{ (request()->is('taskBoard.view*') ? 'active' : '')}}">
-                                    <a href="{{ route('taskBoard.view',['list']) }}"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                                            class="list">{{ __('Task') }}</span></a>
-                                </li>
-                
-                                <li class="{{ (request()->is('calendar_new*') ? 'active' : '')}}">
-                                    <a href="{{ route('task.newcalendar',['all']) }}"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                                            class="list">{{ __('Task Calender') }}</span></a>
-                                </li>
-                                <li class='{{ (request()->is('project_report*') ? 'active' : '')}}'>
-                                    <a href="{{route('project_report.index')}}"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span
-                                            class="list">{{ __('Project Report') }}</span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                
-                      <!-- Page Content  -->
-    <div id="content" class="main">
-        <div class="collapseToggle">
-            <span id="toggleIcon" class="fa fa-chevron-left"></span>
-        </div>
-        @isset($hrm_header)
-            <h2 class="mb-4">{{ __($hrm_header) }}</h2>
-        @endisset
-                
-                
-<script type="text/javascript">
-    $('.collapseToggle').on('click', function() {
-            $(".sidebar").toggleClass('sidebar--Collapse');
-            $('.main').toggleClass('main--slide');
-            $('#toggleIcon').toggleClass('rotate');
-    });
-</script>
-                {{-- @include('new_layouts.footer') --}}
-                
+                @endforeach
+            </div>
+        @else
+            <div class="col-xl-12 col-lg-12 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="text-center mb-0">{{ __('No Projects Found.') }}</h6>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+</div>
+
+@include('new_layouts.footer')
