@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_name *',__('Company Name *'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_name',null,array('class'=>'form-control font-style'))}}
+                                    {{Form::text('company_name',null,array('class'=>'form-control font-style','maxlength'=>60,'minlength'=>3))}}
                                     @error('company_name')
                                     <span class="invalid-company_name" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -95,7 +95,7 @@
 
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_city',__('City'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_city',null,array('class'=>'form-control font-style'))}}
+                                    {{Form::text('company_city',null,array('class'=>'form-control font-style','maxlength'=>60,'minlength'=>3))}}
                                     @error('company_city')
                                     <span class="invalid-company_city" role="alert">
                                                                     <strong class="text-danger">{{ $message }}</strong>
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_zipcode',__('Zip/Post Code'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_zipcode',null,array('class'=>'form-control'))}}
+                                    {{Form::number('company_zipcode',null,array('class'=>'form-control'))}}
                                     @error('company_zipcode')
                                     <span class="invalid-company_zipcode" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -173,7 +173,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <div class="row">
-                                        <label class="form-check-label" for="s">{{__('GSTVAT')}}
+                                        <label class="form-check-label" id="gstvat" for="s">{{__('GSTVAT')}}
                                         <div class="col-md-6">
                                                 <div class="form-check form-check-inline form-group mb-3">
                                                     <input type="radio" id="indiangst" name="indiangst" value="1" class="form-check-input" {{($settings['indiangst'] == '1')?'checked':''}} >
@@ -194,18 +194,18 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                                 <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="customRadio8" name="tax_type" value="VAT" class="form-check-input" {{($settings['tax_type'] == 'VAT')?'checked':''}} >
+                                                    <input type="radio" id="customRadio8" name="tax_type" disabled="$settings['indiangst'] == '1'?false:true" value="VAT" class="form-check-input" {{($settings['tax_type'] == 'VAT')?'checked':''}} >
                                                     <label class="form-check-label" for="customRadio8">{{__('VAT Number')}}</label>
                                                 </div>
                                             </div>
                                         <div class="col-md-6">
                                                 <div class="form-check form-check-inline form-group mb-3">
-                                                    <input type="radio" id="customRadio7" name="tax_type" value="GST" class="form-check-input" {{($settings['tax_type'] == 'GST')?'checked':''}}>
+                                                    <input type="radio" id="customRadio7" name="tax_type" disabled="$settings['indiangst'] == '1'?false:true" value="GST" class="form-check-input" {{($settings['tax_type'] == 'GST')?'checked':''}}>
                                                     <label class="form-check-label" for="customRadio7">{{__('GST Number')}}</label>
                                                 </div>
                                             </div>
                                     </div>
-                                    {{Form::text('vat_number',null,array('class'=>'form-control','placeholder'=>__('Enter VAT / GST Number')))}}
+                                    {{Form::text('vat_number',null,array('id'=>'vat_number','class'=>'form-control','disabled'=>true,'placeholder'=>__('Enter VAT / GST Number')))}}
                                 </div>
                                 {{-- <div class="form-group col-md-6">
                                     <div class="row">
@@ -317,4 +317,43 @@
 .col-md-6{
     margin-bottom:5px;
 }
+label#gstvat {
+        font-weight: var(--tblr-font-weight-medium);
+    }
+    .col-md-12 {
+        font-weight: normal;
+    }
 </style>
+
+<script>
+$('#indiangst').change(function () {
+
+    $('#customRadio8').attr("disabled",false);
+    $('#customRadio7').attr("disabled",false);
+    $('#vat_number').attr("disabled",false);
+
+});
+$('#indiangst1').change(function () {
+    $('#customRadio8').attr("disabled",true);
+    $('#customRadio7').attr("disabled",true);
+    $('#vat_number').attr("disabled",true);
+    $('#customRadio8').prop("checked",false);
+    $('#customRadio7').prop("checked",false);
+    $('#vat_number').prop("value","");
+});
+document.addEventListener("DOMContentLoaded", (event) => {
+    var value=$('input[name="indiangst"]:checked').val();
+    if(value=='1'){
+        $('#customRadio8').attr("disabled",false);
+        $('#customRadio7').attr("disabled",false);
+        $('#vat_number').attr("disabled",false);
+    }else{
+        $('#customRadio8').attr("disabled",true);
+        $('#customRadio7').attr("disabled",true);
+        $('#vat_number').attr("disabled",true);
+        $('#customRadio8').prop("checked",false);
+        $('#customRadio7').prop("checked",false);
+        $('#vat_number').prop("value","");
+    }
+});
+</script>

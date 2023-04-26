@@ -135,153 +135,242 @@
     .pager .disabled a:hover {
         color: #999999;
     }
+
     .dataTables_wrapper .dataTables_paginate {
         float: right;
         text-align: right;
         padding-top: 0.25em;
     }
 </style>
+
 <div class="wrapper">
-    <div class="row">
-        <div class="wrapper">
-            <!-- Sidebar  -->
-            <nav id="sidebar">
-                <div class="sidebar">
-                    <ul class="list-unstyled components nav nav-sidebar">
-                        <li class="active">
-                            <a href="#homeSubmenu" ><span class="icon"><i class="ti ti-dashboard"></i></span><span class="list">Dashboard</span></a>
-                        </li>
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar">
+            <ul class="list-unstyled components nav nav-sidebar">
+                {{-- <li>
+                    <a href="#homeSubmenu"><span class="icon"><i class="ti ti-dashboard"></i></span><span class="list">Dashboard</span></a>
+                </li> --}}
 
-                        <li>
-                            @if(\Auth::user()->type =='Employee')
-                                <li>
-                                    @php
-                                        $employee=App\Models\Employee::where('user_id',\Auth::user()->id)->first();
-                                    @endphp
-                                    <a href="{{route('employee.show',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}"><span class="icon"><i class="ti ti-users"></i>
-                                        </span><span class="list">{{__('Employee')}}</span>
-                                    </a>
-                                </li>
-                            @else
-                                <li>
-                                    <a href="{{route('employee.index')}}"><span class="icon"><i class="ti ti-users"></i></span><span class="list">{{ __('Employee Setup') }}</span></a>
-                                </li>
-                            @endif
-                        </li>
+                <li class="{{ Request::segment(1) == 'employee' ? 'active' : '' }}">
+                    @if (\Auth::user()->type == 'Employee')
+                        @php
+                            $employee = App\Models\Employee::where('user_id', \Auth::user()->id)->first();
+                        @endphp
+                        <a
+                            href="{{ route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}"><span
+                                class="icon"><i class="ti ti-users"></i>
+                            </span><span class="list">{{ __('Employee') }}</span>
+                        </a>
+                    @else
+                        <a href="{{ route('employee.index') }}"><span class="icon"><i
+                                    class="ti ti-users"></i></span><span
+                                class="list">{{ __('Employee Setup') }}</span></a>
+                    @endif
+                </li>
 
-                        <li>
-                            <a href="#"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span class="list">Leave Management</span></a>
-                        </li>
+                <li>
+                    <a href="#"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span
+                            class="list">Payslips</span></a>
+                </li>
 
-                        <li>
-                            <a href="#"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span class="list">Payslips</span></a>
-                        </li>
+                {{-- <li>
+                    <a href="#"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span class="list">Leave Management</span></a>
+                </li> --}}
 
-                        <li>
-                            <a href="#"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span class="list">Reports</span></a>
-                        </li>
+                {{-- <li>
+                    <a href="#"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span class="list">Reports</span></a>
+                </li> --}}
 
-                        <li>
-                            <a href="#pageSubmenu_admin_setup" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
-                                <span class="list">Settings</span>
-                            </a>
-                            <ul class="collapse list-unstyled" id="pageSubmenu_admin_setup">
-                                <li><a href="#">{{__('HR Admin Setup')}}</a></li>
-                                @can('manage award')
-                                    <li><a href="{{url('award')}}">{{__('Award')}}</a></li>
-                                @endcan
-                                @can('manage transfer')
-                                    <li><a href="{{url('transfer')}}">{{__('Transfer')}}</a></li>
-                                @endcan
-                                @can('manage resignation')
-                                    <li><a href="{{url('resignation')}}">{{__('Resignation')}}</a></li>
-                                @endcan
-                                @can('manage travel')
-                                    <li><a href="{{url('travel')}}">{{__('Trip')}}</a></li>
-                                @endcan
-                                @can('manage promotion')
-                                    <li><a href="{{url('promotion')}}" class="dropdown-item">{{__('Promotion')}}</a></li>
-                                @endcan
-                                @can('manage complaint')
-                                    <li><a href="{{url('complaint')}}" class="dropdown-item">{{__('Complaints')}}</a></li>
-                                @endcan
-                                @can('manage warning')
-                                    <li><a href="{{url('warning')}}" class="dropdown-item">{{__('Warning')}}</a></li>
-                                @endcan
-                                @can('manage termination')
-                                    <li><a href="{{url('termination')}}" class="dropdown-item">{{__('Termination')}}</a></li>
-                                @endcan
-                                @can('manage announcement')
-                                    <li><a href="{{url('announcement')}}" class="dropdown-item">{{__('Announcement')}}</a></li>
-                                @endcan
-                                @can('manage holiday')
-                                    <li><a href="{{url('holiday')}}" class="dropdown-item">{{__('Holidays')}}</a></li>
-                                @endcan
-                            </ul>
-                        </li>
+                <li
+                    class="{{ Request::segment(1) == 'holiday-calender' ||
+                    Request::segment(1) == 'holiday' ||
+                    Request::segment(1) == 'policies' ||
+                    Request::segment(1) == 'award' ||
+                    Request::segment(1) == 'transfer' ||
+                    Request::segment(1) == 'resignation' ||
+                    Request::segment(1) == 'travel' ||
+                    Request::segment(1) == 'promotion' ||
+                    Request::segment(1) == 'complaint' ||
+                    Request::segment(1) == 'warning' ||
+                    Request::segment(1) == 'termination' ||
+                    Request::segment(1) == 'announcement' ||
+                    Request::segment(1) == 'competencies'
+                        ? 'active'
+                        : '' }}">
 
-                        <li>
-                            <a href="#"><span class="icon"><i class="ti ti-calendar-event"></i></span><span class="list">Event and Meetings</span></a>
-                        </li>
-
-                        @can('manage document')
-                            <li>
-                                <a href="{{url('hrm_doc_setup')}}"><span class="icon"><i class="ti ti-certificate"></i></span><span class="list">{{__('Document Setup')}}</span></a>
+                    <a  data-bs-target="#pageSubmenu_admin_setup" data-bs-toggle="collapse" aria-expanded="false"
+                    class="accordion-collapse collapse list-unstyled"><span class="icon"><i class="ti ti-users"></i></span>
+                        <span class="list">{{ __('HR Admin Setup') }}</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu_admin_setup">
+                        @can('manage award')
+                            <li class="{{ Request::segment(1) == 'award' ? 'active' : '' }}"><a
+                                    href="{{ url('award') }}">{{ __('Award') }}</a></li>
+                        @endcan
+                        @can('manage transfer')
+                            <li class="{{ Request::segment(1) == 'transfer' ? 'active' : '' }}"><a
+                                    href="{{ url('transfer') }}">{{ __('Transfer') }}</a></li>
+                        @endcan
+                        @can('manage resignation')
+                            <li class="{{ Request::segment(1) == 'resignation' ? 'active' : '' }}"><a
+                                    href="{{ url('resignation') }}">{{ __('Resignation') }}</a></li>
+                        @endcan
+                        @can('manage travel')
+                            <li class="{{ Request::segment(1) == 'travel' ? 'active' : '' }}"><a
+                                    href="{{ url('travel') }}">{{ __('Trip') }}</a></li>
+                        @endcan
+                        @can('manage promotion')
+                            <li class="{{ Request::segment(1) == 'promotion' ? 'active' : '' }}"><a
+                                    href="{{ url('promotion') }}" class="dropdown-item">{{ __('Promotion') }}</a></li>
+                        @endcan
+                        @can('manage complaint')
+                            <li class="{{ Request::segment(1) == 'complaint' ? 'active' : '' }}"><a
+                                    href="{{ url('complaint') }}" class="dropdown-item">{{ __('Complaints') }}</a></li>
+                        @endcan
+                        @can('manage warning')
+                            <li class="{{ Request::segment(1) == 'warning' ? 'active' : '' }}"><a
+                                    href="{{ url('warning') }}" class="dropdown-item">{{ __('Warning') }}</a></li>
+                        @endcan
+                        @can('manage termination')
+                            <li class="{{ Request::segment(1) == 'termination' ? 'active' : '' }}"><a
+                                    href="{{ url('termination') }}" class="dropdown-item">{{ __('Termination') }}</a></li>
+                        @endcan
+                        @can('manage announcement')
+                            <li class="{{ Request::segment(1) == 'announcement' ? 'active' : '' }}"><a
+                                    href="{{ url('announcement') }}" class="dropdown-item">{{ __('Announcement') }}</a>
                             </li>
                         @endcan
-
-                        @can('manage company policy')
-                            <li>
-                                <a href="{{url('hrm_company_policy')}}"><span class="icon"><i class="ti ti-certificate"></i></span><span class="list">{{__('Company policy')}}</span></a>
-                            </li>
+                        @can('manage holiday')
+                            <li class="{{ Request::segment(1) == 'holiday' ? 'active' : '' }}"><a
+                                    href="{{ url('holiday') }}" class="dropdown-item">{{ __('Holidays') }}</a></li>
                         @endcan
-
-                        <li>
-                            <a href="#"><span class="icon">  <i class="ti ti-tool"></i></span><span class="list">Resource Settings</span></a>
-                        </li>
-
-                        <li>
-                            <a href="#pageSubmenu_system_setup" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
-                                <span class="list">{{__('HRM System Setup')}}</span>
-                            </a>
-                            <ul class="collapse list-unstyled" id="pageSubmenu_system_setup">
-                                <li><a href="{{ route('department.index') }}" class="dropdown-item">{{__('Department')}}</a></li>
-                                <li><a href="{{ route('designation.index') }}" class="dropdown-item">{{__('Designation')}}</a></li>
-                                <li><a href="{{ route('leavetype.index') }}" class="dropdown-item">{{__('Leave Type')}}</a></li>
-                                <li><a href="{{ route('document.index') }}" class="dropdown-item">{{__('Document Type')}}</a></li>
-                                <li><a href="{{ route('paysliptype.index') }}" class="dropdown-item">{{__('Payslip Type')}}</a></li>
-                                <li><a href="{{ route('allowanceoption.index') }}" class="dropdown-item">{{__('Allowance Option')}}</a></li>
-                                <li><a href="{{ route('loanoption.index') }}" class="dropdown-item">{{__('Loan Option')}}</a></li>
-                                <li><a href="{{ route('deductionoption.index') }}" class="dropdown-item">{{__('Deduction Option')}}</a></li>
-                                <li><a href="{{ route('goaltype.index') }}" class="dropdown-item">{{__('Goal Type')}}</a></li>
-                                <li><a href="{{ route('trainingtype.index') }}" class="dropdown-item">{{__('Training Type')}}</a></li>
-                                <li><a href="{{ route('awardtype.index') }}" class="dropdown-item">{{__('Award Type')}}</a></li>
-                                <li><a href="{{ route('terminationtype.index') }}" class="dropdown-item">{{__('Termination Type')}}</a></li>
-                                <li><a href="{{ route('job-category.index') }}" class="dropdown-item">{{__('Job Category')}}</a></li>
-                                <li><a href="{{ route('job-stage.index') }}" class="dropdown-item">{{__('Job Stage')}}</a></li>
-                                <li><a href="{{ route('performanceType.index') }}" class="dropdown-item">{{__('Performance Type')}}</a></li>
-                                <li><a href="{{ route('competencies.index') }}" class="dropdown-item">{{__('Competencies')}}</a></li>
-                            </ul>
-                        </li>
                     </ul>
-                </div>
-            </nav>
+                </li>
 
-            <!-- Page Content  -->
-            <div id="content" class="main">
-                <div class="collapseToggle">
-                    <span id="toggleIcon" class="fa fa-chevron-left"></span>
-                </div>
-                @isset($hrm_header)
-                    <h2 class="mb-4">{{ __($hrm_header) }}</h2>
-                @endisset
+                {{-- <li>
+                    <a href="#"><span class="icon"><i class="ti ti-calendar-event"></i></span><span class="list">Event and Meetings</span></a>
+                </li> --}}
+
+                @can('manage document')
+                    <li class="{{ Request::segment(1) == 'hrm_doc_setup' ? 'active' : '' }}">
+                        <a href="{{ url('hrm_doc_setup') }}"><span class="icon"><i
+                                    class="ti ti-certificate"></i></span><span
+                                class="list">{{ __('Document Setup') }}</span></a>
+                    </li>
+                @endcan
+
+                @can('manage company policy')
+                    <li class="{{ Request::segment(1) == 'hrm_company_policy' ? 'active' : '' }}">
+                        <a href="{{ url('hrm_company_policy') }}"><span class="icon"><i
+                                    class="ti ti-certificate"></i></span><span
+                                class="list">{{ __('Company policy') }}</span></a>
+                    </li>
+                @endcan
+
+                {{-- <li>
+                    <a href="#"><span class="icon"> <i class="ti ti-tool"></i></span><span
+                            class="list">Resource Settings</span></a>
+                </li> --}}
+
+                <li
+                    class="{{ Request::segment(1) == 'leavetype' ||
+                    Request::segment(1) == 'document' ||
+                    Request::segment(1) == 'performanceType' ||
+                    Request::segment(1) == 'branch' ||
+                    Request::segment(1) == 'department' ||
+                    Request::segment(1) == 'designation' ||
+                    Request::segment(1) == 'job-stage' ||
+                    Request::segment(1) == 'performanceType' ||
+                    Request::segment(1) == 'job-category' ||
+                    Request::segment(1) == 'terminationtype' ||
+                    Request::segment(1) == 'awardtype' ||
+                    Request::segment(1) == 'trainingtype' ||
+                    Request::segment(1) == 'goaltype' ||
+                    Request::segment(1) == 'paysliptype' ||
+                    Request::segment(1) == 'allowanceoption' ||
+                    Request::segment(1) == 'loanoption' ||
+                    Request::segment(1) == 'deductionoption'
+                        ? 'active'
+                        : '' }}">
+
+                    <a data-bs-toggle="collapse" data-bs-target="#pageSubmenusystemsetup" role="button" aria-expanded="false"
+                        aria-controls="pageSubmenusystemsetup"><span class="icon"><i class="ti ti-users"></i></span>
+                        <span class="list">{{ __('Resource Settings') }}</span>
+                    </a>
+                    <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenusystemsetup">
+                        <li class="{{ Request::segment(1) == 'branch' ? 'active' : '' }}"><a
+                                href="{{ route('branch.index') }}" class="dropdown-item">{{ __('Branch') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'department' ? 'active' : '' }}"><a
+                                href="{{ route('department.index') }}"
+                                class="dropdown-item">{{ __('Department') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'designation' ? 'active' : '' }}"><a
+                                href="{{ route('designation.index') }}"
+                                class="dropdown-item">{{ __('Designation') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'leavetype' ? 'active' : '' }}"><a
+                                href="{{ route('leavetype.index') }}" class="dropdown-item">{{ __('Leave Type') }}</a>
+                        </li>
+                        <li class="{{ Request::segment(1) == 'document' ? 'active' : '' }}"><a
+                                href="{{ route('document.index') }}"
+                                class="dropdown-item">{{ __('Document Type') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'paysliptype' ? 'active' : '' }}"><a
+                                href="{{ route('paysliptype.index') }}"
+                                class="dropdown-item">{{ __('Payslip Type') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'allowanceoption' ? 'active' : '' }}"><a
+                                href="{{ route('allowanceoption.index') }}"
+                                class="dropdown-item">{{ __('Allowance Option') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'loanoption' ? 'active' : '' }}"><a
+                                href="{{ route('loanoption.index') }}"
+                                class="dropdown-item">{{ __('Loan Option') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'deductionoption' ? 'active' : '' }}"><a
+                                href="{{ route('deductionoption.index') }}"
+                                class="dropdown-item">{{ __('Deduction Option') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'goaltype' ? 'active' : '' }}"><a
+                                href="{{ route('goaltype.index') }}" class="dropdown-item">{{ __('Goal Type') }}</a>
+                        </li>
+                        <li class="{{ Request::segment(1) == 'trainingtype' ? 'active' : '' }}"><a
+                                href="{{ route('trainingtype.index') }}"
+                                class="dropdown-item">{{ __('Training Type') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'awardtype' ? 'active' : '' }}"><a
+                                href="{{ route('awardtype.index') }}"
+                                class="dropdown-item">{{ __('Award Type') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'terminationtype' ? 'active' : '' }}"><a
+                                href="{{ route('terminationtype.index') }}"
+                                class="dropdown-item">{{ __('Termination Type') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'job-category' ? 'active' : '' }}"><a
+                                href="{{ route('job-category.index') }}"
+                                class="dropdown-item">{{ __('Job Category') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'job-stage' ? 'active' : '' }}"><a
+                                href="{{ route('job-stage.index') }}"
+                                class="dropdown-item">{{ __('Job Stage') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'performanceType' ? 'active' : '' }}"><a
+                                href="{{ route('performanceType.index') }}"
+                                class="dropdown-item">{{ __('Performance Type') }}</a></li>
+                        <li class="{{ Request::segment(1) == 'competencies' ? 'active' : '' }}"><a
+                                href="{{ route('competencies.index') }}"
+                                class="dropdown-item">{{ __('Competencies') }}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content" class="main">
+        <div class="collapseToggle">
+            <span id="toggleIcon" class="fa fa-chevron-left"></span>
+        </div>
+        @isset($hrm_header)
+            <h2 class="mb-4">{{ __($hrm_header) }}</h2>
+        @endisset
 
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<script type="text/javascript">
-    $('.collapseToggle').on('click', function() {
-        $(".sidebar").toggleClass('sidebar--Collapse');
-        $('.main').toggleClass('main--slide');  $('#toggleIcon').toggleClass('rotate');
-    });
-</script>
-{{-- @include('new_layouts.footer') --}}
+
+        <script type="text/javascript">
+            $('.collapseToggle').on('click', function() {
+                $(".sidebar").toggleClass('sidebar--Collapse');
+                $('.main').toggleClass('main--slide');
+                $('#toggleIcon').toggleClass('rotate');
+            });
+        </script>
+        {{-- @include('new_layouts.footer') --}}

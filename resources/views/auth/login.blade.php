@@ -92,7 +92,7 @@
             <div class="invalid-feedback" role="alert">{{__($message)}}</div>
             @enderror
         </div>
-        <input type="hidden" id="lang" name="lang" value="{{ $lang }}">
+        {{-- <input type="hidden" id="lang" name="lang" value="{{ $lang }}"> --}}
         <div class="form-group mb-3">
             <label for="password" class="form-label">{{__('Password')}}</label>
             <input class="form-control @error('password') is-invalid @enderror" id="password" type="password" name="password" placeholder="Your password" required autocomplete="current-password">

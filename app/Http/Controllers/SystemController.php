@@ -9,6 +9,7 @@ use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
 use App\Models\IpRestrict;
 use App\Models\JoiningLetter;
+use App\Models\User;
 use App\Models\NOC;
 use App\Models\Utility;
 use Illuminate\Http\Request;
@@ -665,6 +666,8 @@ class SystemController extends Controller
 
 
             $settings                = Utility::settings();
+            $get_user=User::where('id',\Auth::user()->id)->first();
+           
             $timezones               = config('timezones');
             $company_payment_setting = Utility::getCompanyPaymentSetting(\Auth::user()->creatorId());
 

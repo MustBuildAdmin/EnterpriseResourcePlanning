@@ -6,7 +6,7 @@
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan
-						
+
     <div class="table-responsive">
         <table class="table card-table table-vcenter text-nowrap datatable">
             <thead>

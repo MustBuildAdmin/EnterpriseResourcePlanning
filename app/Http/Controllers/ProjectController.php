@@ -288,7 +288,7 @@ class ProjectController extends Controller
                 Utility::send_telegram_msg($msg);
             }
 
-            return redirect()->route('projects.index')->with('success', __('Project Add Successfully'));
+            return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
         }
         else
         {
@@ -447,8 +447,8 @@ class ProjectController extends Controller
 
                 // end chart
 
-
-                return view('projects.view',compact('project','project_data'));
+                return view('construction_project.dashboard',compact('project','project_data'));
+               // return view('projects.view',compact('project','project_data'));
             }
             else
             {
@@ -536,7 +536,7 @@ class ProjectController extends Controller
             $project->estimated_hrs = $request->estimated_hrs;
             $project->tags = $request->tag;
             $project->save();
-            return redirect()->route('projects.index')->with('success', __('Project Updated Successfully'));
+            return redirect()->route('construction_main')->with('success', __('Project Updated Successfully'));
         }
         else
         {

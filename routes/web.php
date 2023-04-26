@@ -91,6 +91,8 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
     ]
 );
 
+
+
 Route::get('/paymentPage', 'Auth\RegisteredUserController@paymentPage');
 Route::get('/register/{lang?}', 'Auth\RegisteredUserController@showRegistrationForm')->name('register');
 //Route::get('/register/{lang?}', function () {
