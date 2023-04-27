@@ -34,6 +34,30 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $this->renderable(function (Throwable $e) {
+            if ($this->isHttpException($e)) {
+                switch ($e->getStatusCode()) {
+
+                    case '403':
+                        dd("403");
+                    break;
+    
+                    // not found
+                    case '404':
+                       return redirect('new_home');
+                    break;
+    
+                    // internal error
+                    case '500':
+                        // return \Response::view('errors.500',array(),500);
+                    break;
+    
+                    default:
+                        return $this->renderHttpException($e);
+                    break;
+                }
+            }
+        });
         $this->reportable(function (Throwable $e) {
             //
         });
