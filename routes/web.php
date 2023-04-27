@@ -2575,6 +2575,8 @@ Route::get(
         'XSS',
     ]
 );
+Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con'); 
+Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report'); 
 Route::get(
     'taskboard-edit', [
     'as' => 'project.taskboard.edit',
@@ -2586,7 +2588,7 @@ Route::get(
         'XSS',
     ]
 );
-Route::get(
+Route::any(
     'fetch_user_details', [
     'as' => 'project_report.fetch_user_details',
     'uses' => 'ProjectTaskController@taskboardEdit',
@@ -4347,3 +4349,16 @@ Route::post('/project_report_data','ProjectReportController@ajax_data')->name('p
 
 Route::post('/project_report/tasks/{id}',['as' => 'tasks.report.ajaxdata','uses' =>'ProjectReportController@ajax_tasks_report'])->middleware(['auth','XSS']);
 Route::get('export/task_report/{id}', 'ProjectReportController@export')->name('project_report.export');
+Route::post('api/fetch_user_details', 'ProjectReportController@fetch_user_details')->name('project_report.fetch_user_details2')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);  
+
+Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_details')->name('project_report.fetch_task_details')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 

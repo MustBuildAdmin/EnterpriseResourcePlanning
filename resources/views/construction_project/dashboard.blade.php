@@ -3,11 +3,60 @@
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
-    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
 <div class="page-wrapper dashboard">
 @include('construction_project.side-menu',['hrm_header' => "Project Dashboard"])
 
+
+    <div class="float-end">
+        @can('view grant chart')
+            <a href="{{ route('projects.gantt',$project->id) }}" class="btn btn-sm btn-primary">
+                {{__('Gantt Chart')}}
+            </a>
+        @endcan
+       
+        @can('view expense')
+            <a href="{{ route('projects.expenses.index',$project->id) }}" class="btn btn-sm btn-primary">
+                {{__('Expense')}}
+            </a>
+        @endcan
+        <a href="{{ route('project_report.view_task_report',$project->id) }}" class="btn btn-sm btn-primary">
+          {{__('Report')}}
+        </a>
+       
+        @if($setting['company_type']!=2)
+            @can('manage bug report')
+                <a href="{{ route('task.bug',$project->id) }}" class="btn btn-sm btn-primary">
+                    {{__('Bug Report')}}
+                </a>
+            @endcan
+            @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
+            <a href="{{ route('projecttime.tracker',$project->id) }}" class="btn btn-sm btn-primary">
+                {{__('Tracker')}}
+            </a>
+            @endif
+            @can('create project task')
+            <a href="{{ route('projects.tasks.index',$project->id) }}" class="btn btn-sm btn-primary">
+                {{__('Task')}}
+            </a>
+            @endcan
+            @if(\Auth::user()->type != 'client')
+            @can('view timesheet')
+                <a href="{{ route('timesheet.index',$project->id) }}" class="btn btn-sm btn-primary">
+                    {{__('Timesheet')}}
+                </a>
+            @endcan
+            @endif
+        @endif
+        
+        @can('edit project')
+            <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
+                <i class="ti ti-pencil"></i>
+            </a>
+        @endcan
+
+    </div>
 
 
 <div class="form-popup1-bg popupnew">
