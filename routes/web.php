@@ -4356,9 +4356,7 @@ Route::post('api/fetch_user_details', 'ProjectReportController@fetch_user_detail
     ]
 );  
 
-Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_details')->name('project_report.fetch_task_details')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
+
+Route::any('{any}', function() {
+   return view('error');
+})->where('any', '.*');
