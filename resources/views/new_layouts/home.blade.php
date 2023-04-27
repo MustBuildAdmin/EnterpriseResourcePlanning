@@ -36,6 +36,7 @@
 				<div class="container-fluid">
 					<div class="row row-cards">
 						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
+						@can('manage user')
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{ route('users.index') }}">
 								<div class="card-body">
@@ -58,8 +59,10 @@
 								</div>
 							</a>
 						</div>
+						@endcan
 						@endif
 						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
+						@can('manage role')
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{ route('roles.index') }}">
 								<div class="card-body">
@@ -81,7 +84,10 @@
 								</div>
 							</a>
 						</div>
+						@endcan
 						@endif
+						@if(\Auth::user()->show_hrm() == 1)
+						@can('show hrm dashboard')
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{url('hrm_doc_setup')}}">
 								<div class="card-body">
@@ -102,6 +108,10 @@
 								</div>
 							</a>
 						</div>
+						@endcan
+						@endif
+						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
+						@can('manage client')
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{ route('clients.index') }}">
 								<div class="card-body">
@@ -124,7 +134,10 @@
 								</div>
 							</a>
 						</div>
-						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
+						@endcan
+						@endif
+						@if(\Auth::user()->show_project() == 1)
+                        @if( Gate::check('manage project'))
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{route('construction_main')}}">
 								<div class="card-body">
@@ -152,8 +165,10 @@
 							</a>
 						</div>
 						@endif
+						@endif
+						@if(\Auth::user()->type!='super admin')
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="#">
+							<a class="card card-link" href="{{route('support.index')}}" >
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
@@ -174,6 +189,9 @@
 								</div>
 							</a>
 						</div>
+						@endif
+						@if((\Auth::user()->type != 'super admin'))
+                        @if( Gate::check('manage company plan') || Gate::check('manage order') || Gate::check('manage company settings'))
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{ route('systemsettings') }}">
 								<div class="card-body">
@@ -194,6 +212,8 @@
 								</div>
 							</a>
 						</div>
+						@endif
+						@endif
 					</div>
 				</div>
 			</div>
@@ -224,7 +244,7 @@
 														<div class="badge bg-primary"></div>
 													</div>
 												</div>
-											</div>
+										</div>
 											<div>
 												<div class="row">
 													<div class="col-auto"> <span class="avatar" style="background-image: url(./static/avatars/002m.jpg)"></span> </div>
