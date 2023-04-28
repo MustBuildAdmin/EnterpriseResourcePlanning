@@ -8,6 +8,10 @@
 	height: 35px !important;
 }
 </style>
+@php
+   // $profile=asset(Storage::url('uploads/avatar/'));
+    $profile=\App\Models\Utility::get_file('uploads/avatar');
+@endphp
 <div class="page-wrapper">
 	<!-- Page header -->
 	<div class="page-header d-print-none">
@@ -49,7 +53,8 @@
 					<div class="card">
 						@if(Gate::check('edit user') || Gate::check('delete user'))
 						<div class="card-header-right">
-							<div class="btn-group card-option float-end"> @if($user->is_active==1)
+							<div class="btn-group card-option float-end"> 
+								@if($user->is_active==1)
 								<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti ti-dots-vertical"></i> </button>
 								<div class="dropdown-menu dropdown-menu-end">
 									@can('edit user')
@@ -57,7 +62,8 @@
 									@endcan
 									@can('delete user')
 									{!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],'id'=>'delete-form-'.$user['id']]) !!}
-									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span> @if($user->delete_status!=0){{__('Delete')}}
+									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span> 
+										@if($user->delete_status!=0){{__('Delete')}}
 										@else {{__('Restore')}}
 										@endif
 									</span>
@@ -72,14 +78,19 @@
 							</div>
 						</div>
 						@endif
-						<div class="card-body p-4 text-center"> @if($user->gender !='female') <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> @else <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url(" uploads/avatar/avatarfemale.png "))}}" class="avatar avatar-xl mb-3 rounded"> @endif
+						<div class="card-body p-4 text-center">
+							 @if($user->gender !='female') <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
+							 @else 
+							 <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url(" uploads/avatar/avatarfemale.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
+							 @endif
 							<?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
 								<h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
 								<div class="text-muted text-center" data-bs-toggle="tooltip" title="{{__('Last Login')}}">{{ (!empty($user->last_login_at)) ? $user->last_login_at : '' }}</div>
 								<div class="mt-3"> <span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span> </div>
 						</div>
 						<div class="d-flex">
-							<a data-bs-toggle="tooltip" title="{{ $user->email }}" href="#" class="card-btn">
+							
+							<a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}" href="#" class="card-btn" onclick="copyToClipboard(this)">
 								<!-- Download SVG icon from http://tabler-icons.io/i/mail -->
 								<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 									<path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -88,7 +99,8 @@
 								</svg>
 								{{__('Email')}}
 							</a>
-							<a data-bs-toggle="tooltip" title="{{ $user->phone }}" class="card-btn">
+							
+							<a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}" class="card-btn" onclick="copyToClipboardphone(this)">
 								<!-- Download SVG icon from http://tabler-icons.io/i/phone -->
 								<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 									<path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -98,7 +110,8 @@
 							</a>
 						</div>
 					</div>
-				</div> @empty
+				</div> 
+				@empty
 				<div class="page-body">
 					<div class="container-xl d-flex flex-column justify-content-center">
 						<div class="empty">
@@ -106,10 +119,34 @@
 							<p class="empty-title"> {{__('No User Found')}}</p>
 						</div>
 					</div>
-				</div> @endforelse </div>
+				</div> 
+				@endforelse 
+			</div>
 			<div class="d-flex mt-4">
 				<ul class="pagination ms-auto"> {!! $users->links() !!} </ul>
 			</div>
 		</div>
 	</div>
-</div> @include('new_layouts.footer')
+</div> 
+
+@include('new_layouts.footer')
+<script>
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  copy_email = $(element).data('copy_email');
+  $temp.val(copy_email).select();
+  document.execCommand("copy");
+  $temp.remove();
+  toastr.info("Copying to clipboard was successful!");
+}
+function copyToClipboardphone(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  copy_phone = $(element).data('copy_phone');
+  $temp.val(copy_phone).select();
+  document.execCommand("copy");
+  $temp.remove();
+  toastr.success("Copying to clipboard was successful!");
+}
+</script>
