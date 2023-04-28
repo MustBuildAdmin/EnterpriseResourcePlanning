@@ -787,4 +787,8 @@ class DashboardController extends Controller
         // return view('construction_project.construction_main');
     }
 
+    public function hrm_dashboard(){
+        return view('hrm.hrm_dashboard');
+    }
+
 }

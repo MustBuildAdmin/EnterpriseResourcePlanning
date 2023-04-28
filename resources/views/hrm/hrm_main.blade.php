@@ -152,7 +152,14 @@
                     <a href="#homeSubmenu"><span class="icon"><i class="ti ti-dashboard"></i></span><span class="list">Dashboard</span></a>
                 </li> --}}
 
-                <li class="{{ Request::segment(1) == 'employee' ? 'active' : '' }}">
+                <li class="{{ (Request::segment(1) == 'employee' ? 'active' : '')}}">
+                    <a href="{{ route('hrm_dashboard') }}"><span
+                            class="icon"><i class="ti ti-users"></i>
+                        </span><span class="list">{{ __('Dashboard') }}</span>
+                    </a>
+                </li>
+
+                <li class="{{ (Request::segment(1) == 'employee' ? 'active' : '')}}">
                     @if (\Auth::user()->type == 'Employee')
                         @php
                             $employee = App\Models\Employee::where('user_id', \Auth::user()->id)->first();
@@ -169,10 +176,50 @@
                     @endif
                 </li>
 
-                <li>
-                    <a href="#"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                            class="list">Payslips</span></a>
-                </li>
+                @if( Gate::check('manage set salary') || Gate::check('manage pay slip'))
+                    <li class="{{ (Request::segment(1) == 'setsalary' || Request::segment(1) == 'payslip') ? 'active' : '' }}">
+                        <a href="#payslip_hrm_setup" data-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="list">{{ __('Payroll Setup') }}</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="payslip_hrm_setup">
+                            @can('manage set salary')
+                                <li class="{{ (request()->is('setsalary*') ? 'active' : '') }}"><a href="{{ route('setsalary.index') }}">{{ __('Set salary') }}</a></li>
+                            @endcan
+                            @can('manage pay slip')
+                                <li class="{{ (request()->is('payslip*') ? 'active' : '') }}"><a href="{{route('payslip.index')}}">{{ __('Payslip') }}</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
+
+                @if( Gate::check('manage leave') || Gate::check('manage attendance'))
+                    <li class="{{ (Request::segment(1) == 'leave' || Request::segment(1) == 'attendanceemployee') ? 'active' :'' }}">
+                        <a href="#hrm_leave_management_setup" data-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="list">{{ __('Leave Management') }}</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="hrm_leave_management_setup">
+                            @can('manage leave')
+                                <li class="{{ (Request::route()->getName() == 'leave.index') ?'active' :''}}"><a href="{{route('leave.index')}}">{{__('Manage Leave')}}</a></li>
+                            @endcan
+                            @can('manage attendance')
+                                <li class="{{ (Request::segment(1) == 'attendanceemployee') ? 'active' : '' }}">
+                                    <a href="#attendanbce_setup" data-toggle="collapse" aria-expanded="false"
+                                        class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                                        <span class="list">{{__('Attendance')}}</span>
+                                    </a>
+                                    <ul class="collapse list-unstyled" id="attendanbce_setup">
+                                        <li class="{{ (Request::route()->getName() == 'attendanceemployee.index' ? 'active' : '') }}"><a href="{{route('attendanceemployee.index')}}">{{__('Mark Attendance')}}</a></li>
+                                        @can('create attendance')
+                                            <li class="{{ (Request::route()->getName() == 'attendanceemployee.bulkattendance' ? 'active' : '') }}"><a href="{{ route('attendanceemployee.bulkattendance') }}">{{__('Bulk Attendance')}}</a></li>
+                                        @endcan
+                                    </ul>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
 
                 {{-- <li>
                     <a href="#"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span class="list">Leave Management</span></a>

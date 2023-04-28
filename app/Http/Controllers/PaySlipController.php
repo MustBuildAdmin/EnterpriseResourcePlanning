@@ -58,7 +58,8 @@ class PaySlipController extends Controller
                 '2030' => '2030',
             ];
 
-            return view('payslip.index', compact('employees', 'month', 'year'));
+            return view('hrm.payroll.payslip', compact('employees', 'month', 'year'));
+            // return view('payslip.index', compact('employees', 'month', 'year'));
         }
         else
         {
