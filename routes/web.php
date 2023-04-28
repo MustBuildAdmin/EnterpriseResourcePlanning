@@ -56,6 +56,13 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
+Route::get('hrm_dashboard', 'DashboardController@hrm_dashboard')->name('hrm_dashboard')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middleware(
     [
         'XSS',

@@ -153,6 +153,13 @@
                 </li> --}}
 
                 <li class="{{ (Request::segment(1) == 'employee' ? 'active' : '')}}">
+                    <a href="{{ route('hrm_dashboard') }}"><span
+                            class="icon"><i class="ti ti-users"></i>
+                        </span><span class="list">{{ __('Dashboard') }}</span>
+                    </a>
+                </li>
+
+                <li class="{{ (Request::segment(1) == 'employee' ? 'active' : '')}}">
                     @if (\Auth::user()->type == 'Employee')
                         @php
                             $employee = App\Models\Employee::where('user_id', \Auth::user()->id)->first();
