@@ -137,7 +137,7 @@ class NewPasswordController extends Controller
             // Auth::login($user);
             return redirect()->route('login')->with('success', __('Successfully updated your password.'));
 
-            return \Redirect::to('paymentPage');
+            // return \Redirect::to('paymentPage');
 
                 event(new PasswordReset($user));
             }
