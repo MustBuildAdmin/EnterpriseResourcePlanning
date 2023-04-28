@@ -98,6 +98,8 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
     ]
 );
 
+
+
 Route::get('/paymentPage', 'Auth\RegisteredUserController@paymentPage');
 Route::get('/register/{lang?}', 'Auth\RegisteredUserController@showRegistrationForm')->name('register');
 //Route::get('/register/{lang?}', function () {
@@ -4352,3 +4354,7 @@ Route::post('/project_report_data','ProjectReportController@ajax_data')->name('p
 
 Route::post('/project_report/tasks/{id}',['as' => 'tasks.report.ajaxdata','uses' =>'ProjectReportController@ajax_tasks_report'])->middleware(['auth','XSS']);
 Route::get('export/task_report/{id}', 'ProjectReportController@export')->name('project_report.export');
+
+Route::any('{any}', function() {
+   return view('error');
+})->where('any', '.*');

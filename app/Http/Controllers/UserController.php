@@ -64,7 +64,7 @@ class UserController extends Controller
                 ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->paginate(6);
                 $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->count();
             }
-
+            
             // return view('user.index')->with('users', $users);
             return view('users.index')->with('users', $users)->with('user_count', $user_count);
         }
@@ -214,7 +214,7 @@ class UserController extends Controller
                     'password' => $user->password,
                 ];
                 $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
-                    
+
                 return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
             }
             return redirect()->route('users.index')->with('success', __('User successfully created.'));
@@ -286,7 +286,7 @@ class UserController extends Controller
                     'value'=>$request->company_type,
                 );
                 $data =DB::table('settings')->where('created_by',$id)->update($insert2);
-                
+
                 $roles[] = $role->id;
                 $user->roles()->sync($roles);
 
@@ -397,20 +397,20 @@ class UserController extends Controller
             $userDetail = \Auth::user();
             echo $userDetail->id;
             $user  = User::findOrFail($userDetail->id);
-    
+
             $validator = \Validator::make(
                 $request->all(), [
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users,email,' . $userDetail->id,
                 ]
             );
-    
+
             if($validator->fails())
             {
                 $messages = $validator->getMessageBag();
                 return redirect()->back()->with('error', $messages->first());
             }
-    
+
             if($request->hasFile('profile'))
             {
                 // image restriction
@@ -419,18 +419,18 @@ class UserController extends Controller
                         'profile' => 'mimes:jpeg,jpg,png,gif,webp|required|max:20480',
                     ]
                 );
-    
+
                 if($validator->fails())
                 {
                     $messages = $validator->getMessageBag();
                     return redirect()->back()->with('error', $messages->first());
                 }
-                
+
                 $filenameWithExt = $request->file('profile')->getClientOriginalName();
                 $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                 $extension       = $request->file('profile')->getClientOriginalExtension();
                 $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        
+
                 // Storage::disk('s3')->put($filePath, file_get_contents($file));
                 // $s3client = S3Client::factory(
                 //     [
@@ -451,15 +451,15 @@ class UserController extends Controller
                 }else{
                     $dir = 'uploads/avatar';
                 }
-    
+
                 $image_path = $dir . $userDetail->avatar;
-    
+
                 if(File::exists($image_path))
                 {
                     File::delete($image_path);
                 }
-    
-    
+
+
                 $url = '';
                 $path = Utility::upload_file($request,'profile',$fileNameToStore,$dir,[]);
                 if($path['flag'] == 1)
@@ -470,7 +470,7 @@ class UserController extends Controller
                 }
                 //aws s3 part
             }
-    
+
             if(!empty($request->profile))
             {
                 $user->avatar = $fileNameToStore;
@@ -479,13 +479,13 @@ class UserController extends Controller
             $user['email'] = $request->email;
             $user->save();
             CustomField::saveData($user, $request->customField);
-    
+
             return redirect()->route('dashboard')->with('success', 'Profile successfully updated.');
-        } 
+        }
         catch (Exception $e) {
             return $e->getMessage();
         }
-    
+
     }
 
     public function new_edit_profile(Request $request)
@@ -494,20 +494,20 @@ class UserController extends Controller
             $userDetail = \Auth::user();
             echo $userDetail->id;
             $user  = User::findOrFail($userDetail->id);
-    
+
             $validator = \Validator::make(
                 $request->all(), [
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users,email,' . $userDetail->id,
                 ]
             );
-    
+
             if($validator->fails())
             {
                 $messages = $validator->getMessageBag();
                 return redirect()->back()->with('error', $messages->first());
             }
-    
+
             if($request->hasFile('profile'))
             {
                 // image restriction
@@ -516,18 +516,18 @@ class UserController extends Controller
                         'profile' => 'mimes:jpeg,jpg,png,gif,webp|required|max:20480',
                     ]
                 );
-    
+
                 if($validator->fails())
                 {
                     $messages = $validator->getMessageBag();
                     return redirect()->back()->with('error', $messages->first());
                 }
-                
+
                 $filenameWithExt = $request->file('profile')->getClientOriginalName();
                 $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                 $extension       = $request->file('profile')->getClientOriginalExtension();
                 $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        
+
                 // Storage::disk('s3')->put($filePath, file_get_contents($file));
                 // $s3client = S3Client::factory(
                 //     [
@@ -548,15 +548,15 @@ class UserController extends Controller
                 }else{
                     $dir = 'uploads/avatar';
                 }
-    
+
                 $image_path = $dir . $userDetail->avatar;
-    
+
                 if(File::exists($image_path))
                 {
                     File::delete($image_path);
                 }
-    
-    
+
+
                 $url = '';
                 $path = Utility::upload_file($request,'profile',$fileNameToStore,$dir,[]);
                 if($path['flag'] == 1)
@@ -567,7 +567,7 @@ class UserController extends Controller
                 }
                 //aws s3 part
             }
-    
+
             if(!empty($request->profile))
             {
                 $user->avatar = $fileNameToStore;
@@ -576,15 +576,15 @@ class UserController extends Controller
             $user['email'] = $request->email;
             $user->save();
             CustomField::saveData($user, $request->customField);
-    
+
             return redirect()->route('new_profile')->with('success', 'Profile successfully updated.');
-        } 
+        }
         catch (Exception $e) {
             return $e->getMessage();
         }
-    
+
     }
-    
+
 
     public function updatePassword(Request $request)
     {
@@ -626,7 +626,7 @@ class UserController extends Controller
         }
     }
 
-    
+
     public function newpassword(Request $request)
     {
 
@@ -817,13 +817,13 @@ class UserController extends Controller
 public function new_profile(Request $request){
 
     $userDetail              = \Auth::user();
-   
+
     $userDetail->customField = CustomField::getData($userDetail, 'user');
     $get_logo=User::select('avatar')->where('id', '=', Auth::id())->first();
     $customFields            = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
 
     return view('user_profile.profile', compact('userDetail', 'customFields','get_logo'));
-   
+
 
 }
 
@@ -841,9 +841,9 @@ public function delete_new_profile(Request $request){
         User::where('id',$request->user_id)->update($set_data);
         return response()->json(['status'=>true]);
       } catch (Exception $e) {
-      
+
           return $e->getMessage();
-      
+
       }
 
 }

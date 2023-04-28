@@ -252,7 +252,8 @@ class DashboardController extends Controller
 
                 $home_data['last_tasks'] = ProjectTask::whereIn('project_id', $user_projects)->orderBy('end_date', 'DESC')->limit(5)->get();
 
-                return view('dashboard.project-dashboard', compact('home_data'));
+                // return view('dashboard.project-dashboard', compact('home_data'));
+                return view('new_layouts.home');
             }
         }
         else
@@ -309,7 +310,8 @@ class DashboardController extends Controller
                     $officeTime['startTime'] = Utility::getValByName('company_start_time');
                     $officeTime['endTime']   = Utility::getValByName('company_end_time');
 
-                    return view('dashboard.dashboard', compact('arrEvents', 'announcements', 'employees', 'meetings', 'employeeAttendance', 'officeTime'));
+                    // return view('dashboard.dashboard', compact('arrEvents', 'announcements', 'employees', 'meetings', 'employeeAttendance', 'officeTime'));
+                    return view('new_layouts.home');
                 }
                 else if($user->type == 'super admin')
                 {
@@ -373,7 +375,8 @@ class DashboardController extends Controller
 
                     $meetings = Meeting::where('created_by', '=', \Auth::user()->creatorId())->limit(5)->get();
 
-                    return view('dashboard.dashboard', compact('arrEvents', 'onGoingTraining', 'activeJob', 'inActiveJOb', 'doneTraining', 'announcements', 'employees', 'meetings', 'countTrainer', 'countClient', 'countUser', 'notClockIns', 'countEmployee'));
+                    // return view('dashboard.dashboard', compact('arrEvents', 'onGoingTraining', 'activeJob', 'inActiveJOb', 'doneTraining', 'announcements', 'employees', 'meetings', 'countTrainer', 'countClient', 'countUser', 'notClockIns', 'countEmployee'));
+                    return view('new_layouts.home');
                 }
             }
             else

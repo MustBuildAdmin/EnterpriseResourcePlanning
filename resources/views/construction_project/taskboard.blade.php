@@ -7,7 +7,6 @@
         <!-- Page body -->
         @include('construction_project.side-menu',['hrm_header' => "Task"])
                         <div class="col d-flex flex-column">
-                            <div class="card-body">
                                 {{-- <h2 class="mb-4">Task</h2> --}}
                                 <div class="card-body">
                                     <div class="float-end">
@@ -50,7 +49,7 @@
                                         <div class="row min-750" id="taskboard_view"></div>
                                 </div>
                                 </div>
-                        </div>
+                      
                     </div>
                 </div>
             </div>
