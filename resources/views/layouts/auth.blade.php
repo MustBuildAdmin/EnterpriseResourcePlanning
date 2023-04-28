@@ -35,9 +35,10 @@
     <link href="{{asset('assets/dist/css/tabler-vendors.min.css?1674944402')}}" rel="stylesheet"/>
     <link href="{{asset('assets/dist/css/demo.min.css?1674944402')}}" rel="stylesheet"/>
     <style>
-      @import url('https://rsms.me/inter/inter.css');
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
       :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      	--tblr-font-sans-serif: 'Poppins', sans-serif;
       }
       body {
       	font-feature-settings: "cv03", "cv04", "cv11";

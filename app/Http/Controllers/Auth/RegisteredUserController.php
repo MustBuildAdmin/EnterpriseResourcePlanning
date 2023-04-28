@@ -112,6 +112,18 @@ class RegisteredUserController extends Controller
             $user->assignRole($role_r);
             $user->userDefaultDataRegister($user->id);
             $user->userWarehouseRegister($user->id);
+            Utility::chartOfAccountTypeData($user->id);
+            Utility::chartOfAccountData1($user->id);
+            Utility::pipeline_lead_deal_Stage($user->id);
+            Utility::project_task_stages($user->id);
+            Utility::labels($user->id);
+            Utility::sources($user->id);
+            Utility::jobStage($user->id);
+            GenerateOfferLetter::defaultOfferLetterRegister($user->id);
+            ExperienceCertificate::defaultExpCertificatRegister($user->id);
+            JoiningLetter::defaultJoiningLetterRegister($user->id);
+            NOC::defaultNocCertificateRegister($user->id);
+
 
             $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
             event(new Registered($user));

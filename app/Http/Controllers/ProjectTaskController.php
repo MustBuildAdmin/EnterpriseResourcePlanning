@@ -378,7 +378,7 @@ class ProjectTaskController extends Controller
 
             $usr = Auth::user();
             $user_projects = $usr->projects()->pluck('project_id','project_id')->toArray();
-
+           
             $project_id = $request->project_id;
 
             if($project_id != ""){
@@ -395,7 +395,6 @@ class ProjectTaskController extends Controller
                     ->groupBy('users.id')
                     ->get();
             }
-            
             return response()->json($data);
         }
         catch (Exception $e) {

@@ -56,6 +56,13 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
+Route::get('hrm_dashboard', 'DashboardController@hrm_dashboard')->name('hrm_dashboard')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middleware(
     [
         'XSS',
@@ -90,6 +97,8 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
         'revalidate',
     ]
 );
+
+
 
 Route::get('/paymentPage', 'Auth\RegisteredUserController@paymentPage');
 Route::get('/register/{lang?}', 'Auth\RegisteredUserController@showRegistrationForm')->name('register');
@@ -4345,3 +4354,7 @@ Route::post('/project_report_data','ProjectReportController@ajax_data')->name('p
 
 Route::post('/project_report/tasks/{id}',['as' => 'tasks.report.ajaxdata','uses' =>'ProjectReportController@ajax_tasks_report'])->middleware(['auth','XSS']);
 Route::get('export/task_report/{id}', 'ProjectReportController@export')->name('project_report.export');
+
+Route::any('{any}', function() {
+   return view('error');
+})->where('any', '.*');
