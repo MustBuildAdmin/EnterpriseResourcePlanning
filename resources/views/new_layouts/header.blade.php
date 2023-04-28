@@ -40,7 +40,7 @@
     <link href="{{ asset('assets/dist/css/tabler-payments.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/tabler-vendors.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
-
+	<link href="{{ asset('assets/js/chosenjquery/chosen.css') }}" rel="stylesheet"/>
 	<!-- font css -->
 	{{-- <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
