@@ -175,7 +175,7 @@
 							</a>
 						</div>
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{ route('systemsettings') }}">
+							<a class="card card-link" href="{{ route('systemsettings') }}" disabled>
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
