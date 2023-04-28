@@ -27,7 +27,8 @@ class SetSalaryController extends Controller
                 ]
             )->get();
 
-            return view('setsalary.index', compact('employees'));
+            return view('hrm.payroll.set_salary_view', compact('employees'));
+            // return view('setsalary.index', compact('employees'));
         }
         else
         {
@@ -140,8 +141,9 @@ class SetSalaryController extends Controller
                 }
             }
 
-            return view('setsalary.employee_salary', compact('employee', 'payslip_type', 'allowance_options', 'commissions', 'loan_options', 'overtimes', 'otherpayments', 'saturationdeductions', 'loans', 'deduction_options', 'allowances'));
-
+            return view('hrm.payroll.employee_salary', compact('employee', 'payslip_type', 'allowance_options', 'commissions', 'loan_options', 'overtimes', 'otherpayments', 'saturationdeductions', 'loans', 'deduction_options', 'allowances'));
+            // return view('setsalary.employee_salary', compact('employee', 'payslip_type', 'allowance_options', 'commissions', 'loan_options', 'overtimes', 'otherpayments', 'saturationdeductions', 'loans', 'deduction_options', 'allowances'));
+            
 
         }
         else
@@ -199,7 +201,8 @@ class SetSalaryController extends Controller
                 }
             }
 
-            return view('setsalary.employee_salary', compact('employee', 'payslip_type', 'allowance_options', 'commissions', 'loan_options', 'overtimes', 'otherpayments', 'saturationdeductions', 'loans', 'deduction_options', 'allowances'));
+            return view('hrm.payroll.employee_salary', compact('employee', 'payslip_type', 'allowance_options', 'commissions', 'loan_options', 'overtimes', 'otherpayments', 'saturationdeductions', 'loans', 'deduction_options', 'allowances'));
+            // return view('setsalary.employee_salary', compact('employee', 'payslip_type', 'allowance_options', 'commissions', 'loan_options', 'overtimes', 'otherpayments', 'saturationdeductions', 'loans', 'deduction_options', 'allowances'));
         }
 
     }
