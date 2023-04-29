@@ -28137,3 +28137,43 @@ select {
 textarea {
     margin: 5px 0 0 0;
 }
+
+.mainrow {
+    margin: 0 0 10px -7px;
+}
+
+.mainrow i.ti.ti-pencil {
+    color: #fff !important;
+    /* border: none !important; */
+    padding: 18%;
+}
+
+.topbtn {
+    background: green;
+    color: #fff;
+}
+
+table.dataTable td, table.dataTable th,table.dataTable span {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+    font-size: 12px;
+}
+
+#taskboard_view {
+    padding: 0;
+    margin: 0;
+}
+i.ti.ti-pencil {
+    font-size: 16px;
+}
+.btnalginment {
+    margin: 8px 0 0 0;
+}
+.backgroundnone {
+    background: none !important;
+    padding: 0;
+    font-size: 18px !important;
+}
+.btnmaindiv {
+    padding: 13px 0 0 0;
+}
