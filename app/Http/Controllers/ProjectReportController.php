@@ -345,8 +345,8 @@ class ProjectReportController extends Controller
                 // end
                 // $project=Con_task::where('id',Session::has('project_id'))->where('start_date', '>=',Carbon::now())->get();
                 
-                $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'))->setPaper('a4', 'landscape')->setWarnings(false);
-                return $pdf->download('Report.pdf');
+                // $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'))->setPaper('a4', 'landscape')->setWarnings(false);
+                // return $pdf->download('Report.pdf');
                 return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'));
 
                 
