@@ -7,6 +7,7 @@ use App\Models\TaskStage;
 use App\Models\User;
 use App\Models\Utility;
 use App\Models\ProjectTask;
+use App\Models\Con_task;
 use App\Models\ProjectStage;
 use App\Models\ProjectMilestone;
 use App\Models\Timesheet;
@@ -16,7 +17,10 @@ use App\Models\UserDefualtView;
 use App\Exports\task_reportExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Session;
+use DB;
 class ProjectReportController extends Controller
 {
     /**
@@ -243,5 +247,180 @@ class ProjectReportController extends Controller
             $data = Excel::download(new task_reportExport($id), $name . '.xlsx');
             return $data;
         }
+        public function send_report_con(Request $request){
+            
+            if(\Auth::user()->type == 'company' || \Auth::user()->type =='super admin' )
+            {
+                $project=Project::where('id',Session::get('project_id'))->first();
+                $project_task=Con_task::where('project_id',Session::get('project_id'))->whereIn('main_id', function($query){
+                    $query->select('task_id')
+                    ->from('task_progress')
+                    ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
+                })->get();
+                $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))->orderBy('id','ASC')->pluck('progress')->first();
+                //$todayprogress=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('created_at',Carbon::now())->get();
+                $actual_remaining_progress=100-$actual_current_progress;
+                // current progress amount
+                $taskdata=array();
+                foreach ($project_task as $key => $value) {
+                    $planned_start=date("d-m-Y", strtotime($value->start_date));
+                    $planned_end=date("d-m-Y", strtotime($value->end_date));
 
+                    $actual_start=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('task_id',$value->main_id)->max('created_at');
+                    $actual_end=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('task_id',$value->main_id)->min('created_at');
+                    $flag=0;
+                    if($actual_start){
+                        $flag=1;
+                        $actual_start=date("d-m-Y", strtotime($actual_start));
+                    }else{
+                        $actual_start='Task Not Started';
+                    }
+
+                    if($actual_end){
+                        $actual_end=date("d-m-Y", strtotime($actual_end));
+                    }else{
+                        $actual_end='Task Not Finish';
+                    }
+                   
+                    if($actual_end < $planned_end){
+                        $actual_end='Task Not Finish';
+                    }
+                    //finding planned percentage
+                    ############### days finding ####################################################
+                        $date1=date_create($value->start_date);
+                        $date2=date_create($value->end_date);
+                        $cur= date('Y-m-d');
+
+                        $diff=date_diff($date1,$date2);
+                        $no_working_days=$diff->format("%a");
+                        $no_working_days=$no_working_days+1;// include the last day
+                        ############### END ##############################
+
+                        ############### Remaining days ###################
+                        $date1=date_create($cur);
+                        $date2=date_create($value->end_date);
+
+                        $diff=date_diff($date1,$date2);
+                        $remaining_working_days=$diff->format("%a");
+                        $remaining_working_days=$remaining_working_days;// include the last day
+                        ############### Remaining days ##################
+
+                        $completed_days=$no_working_days-$remaining_working_days;
+
+                        // percentage calculator
+                        $perday=100/$no_working_days;
+
+
+                        $current_percentage=round($completed_days*$perday);
+                        $remaing_percenatge=round(100-$current_percentage);
+
+                    //####################################___END____#######################################
+                    
+                    // // actual duration finding
+                    //     $date1=date_create($actual_start);
+                    //     $date2=date_create($actual_end);
+                    //     $diff=date_diff($date1,$date2);
+                    //     $no_working_days=$diff->format("%a");
+                    //     $no_working_days=$no_working_days+1;// include the last day
+
+                    //  // actual duration finding
+                    $taskdata[]=array(
+                        'title'=>$value->text,
+                        'planed_start'=>$planned_start,
+                        'planed_end'=>$planned_end,
+                        'duration'=>$value->duration.' Days',
+                        'percentage_as_today'=>$current_percentage.'%',
+                        'actual_start'=>$actual_start,
+                        'actual_end'=>$actual_end,
+                        'actual_duration'=>$value->duration.' Days',
+                        'remain_duration'=>$value->duration.' Days',
+                        'actual_percent'=>$value->progress.'%',
+                    );
+                }
+            
+                //Planed progress finding
+
+
+                // end
+                // $project=Con_task::where('id',Session::has('project_id'))->where('start_date', '>=',Carbon::now())->get();
+
+                return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'));
+
+                
+
+            }else{
+                
+            }
+
+
+        }
+        public function fetch_user_details(Request $request){
+
+            try {
+
+                $usr = \Auth::user();
+
+                $user_projects = $usr->projects()->pluck('project_id','project_id')->toArray();
+
+                $country=$request->country_id;
+
+
+
+                if($country != ""){
+                    $data =  User::select("users.name", "users.id")
+                        ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
+                        ->where("project.project_id", $country)
+                        ->groupBy('users.id')
+                        ->get();
+                }
+                else{
+                    $data =  User::select("users.name", "users.id")
+                        ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
+                        ->whereIn('project.project_id',$user_projects)
+                        ->groupBy('users.id')
+                        ->get();
+                }
+            
+                $user=array();
+                foreach ($data as $key => $value) {
+                    $user[]=array('name'=>$value->name,'id'=>$value->id);
+                }
+                return response()->json($user);
+
+              } catch (Exception $e) {
+
+                  return $e->getMessage();
+
+              }
+
+
+        }
+
+        public function fetch_task_details(Request $request){
+
+            try {
+
+                $setting  = Utility::settings(\Auth::user()->creatorId());
+                if($setting['company_type']==2){
+                    $data=Con_task::whereRaw("find_in_set('" .$request->state_id . "',users)")
+                    ->select('main_id as id', 'text as name')
+                    ->where('project_id',$request->get_id)
+                    ->get();
+                }else{
+                    $data=ProjectTask::whereRaw("find_in_set('$request->state_id',project_tasks.assign_to)")
+                    ->where('project_tasks.project_id',$request->get_id)
+                    ->get();
+                }
+               
+
+                return response()->json($data);
+
+              } catch (Exception $e) {
+
+                  return $e->getMessage();
+
+              }
+
+
+            }
 }
