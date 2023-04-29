@@ -3,67 +3,69 @@
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
-    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'
 
 <div class="page-wrapper dashboard">
+
 @include('construction_project.side-menu')
-<div class="row mainrow">
-   <div class="col-md-6">
-     <h2>Project Dashboard</h2>
-   </div>
-   <div class="col-md-6">
 
-      <div class="float-end">
-        @can('view grant chart')
-            <a href="{{ route('projects.gantt',$project->id) }}" class="btn btn-sm btn-primary">
-                {{__('Gantt Chart')}}
-            </a>
-        @endcan
-      
-        @can('view expense')
-            <a href="{{ route('projects.expenses.index',$project->id) }}" class="btn btn-sm btn-primary">
-                {{__('Expense')}}
-            </a>
-        @endcan
-        <a href="{{ route('project_report.view_task_report',$project->id) }}" class="btn btn-sm btn-primary">
-          {{__('Report')}}
-        </a>
-      
-        @if($setting['company_type']!=2)
-            @can('manage bug report')
-                <a href="{{ route('task.bug',$project->id) }}" class="btn btn-sm btn-primary">
-                    {{__('Bug Report')}}
-                </a>
-            @endcan
-            @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
-            <a href="{{ route('projecttime.tracker',$project->id) }}" class="btn btn-sm btn-primary">
-                {{__('Tracker')}}
-            </a>
-            @endif
-            @can('create project task')
-            <a href="{{ route('projects.tasks.index',$project->id) }}" class="btn btn-sm btn-primary">
-                {{__('Task')}}
-            </a>
-            @endcan
-            @if(\Auth::user()->type != 'client')
-            @can('view timesheet')
-                <a href="{{ route('timesheet.index',$project->id) }}" class="btn btn-sm btn-primary">
-                    {{__('Timesheet')}}
-                </a>
-            @endcan
-            @endif
-        @endif
-        
-        @can('edit project')
-            <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
-                <i class="ti ti-pencil"></i>
-            </a>
-        @endcan
-
-      </div>
+<div class="row divmainrow">
+   <div class="col-md-6">
+      <h2>Project Dashboard</h2>
+   </div> 
+   <div class="col-md-6">
+    <div class="float-end icons">
+      @can('view grant chart')
+          <a href="{{ route('projects.gantt',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Gantt Chart')}}
+          </a>
+      @endcan
     
-   </div>
+      @can('view expense')
+          <a href="{{ route('projects.expenses.index',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Expense')}}
+          </a>
+      @endcan
+      <a href="{{ route('project_report.view_task_report',$project->id) }}" class="btn btn-sm btn-primary">
+        {{__('Report')}}
+      </a>
+    
+      @if($setting['company_type']!=2)
+          @can('manage bug report')
+              <a href="{{ route('task.bug',$project->id) }}" class="btn btn-sm btn-primary">
+                  {{__('Bug Report')}}
+              </a>
+          @endcan
+          @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
+          <a href="{{ route('projecttime.tracker',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Tracker')}}
+          </a>
+          @endif
+          @can('create project task')
+          <a href="{{ route('projects.tasks.index',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Task')}}
+          </a>
+          @endcan
+          @if(\Auth::user()->type != 'client')
+          @can('view timesheet')
+              <a href="{{ route('timesheet.index',$project->id) }}" class="btn btn-sm btn-primary">
+                  {{__('Timesheet')}}
+              </a>
+          @endcan
+          @endif
+      @endif
+      
+      @can('edit project')
+          <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
+              <i class="ti ti-pencil"></i>
+          </a>
+      @endcan
+
+     </div>
+   </div> 
+
 </div>
+
 
 
 
@@ -234,65 +236,60 @@
 
 
 
-<div class="row">
+   <section class="statistics">
+      <div class="row">
+        <div class="col-lg-4 bgwhite">
 
-
-<div class="col-lg-6 bgwhite">
-
-<div class="card" style="height: 354px;">
-    <div class="card-body">
-        <div class="d-flex align-items-center">
-            <div class="avatar me-3">
-                <img {{ $project->img_image }} alt="" class="img-user wid-45 rounded-circle">
-            </div>
-            <div class="d-block  align-items-center justify-content-between w-100">
-                <div class="mb-3 mb-sm-0">
-                    <h5 class="mb-1"> {{$project->project_name}}</h5>
-                    <p class="mb-0 text-sm">
-                    <div class="progress-wrapper">
-                        <span class="progress-percentage"><small class="font-weight-bold">{{__('Completed:')}} : </small>{{ $project->project_progress()['percentage'] }}</span>
-                        <div class="progress progress-xs mt-2">
-                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ $project->project_progress()['percentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $project->project_progress()['percentage'] }};"></div>
+            <div class="card" style="height: 352px;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <img {{ $project->img_image }} alt="" class="img-user wid-45 rounded-circle">
+                        </div>
+                        <div class="d-block  align-items-center justify-content-between w-100">
+                            <div class="mb-3 mb-sm-0">
+                                <h5 class="mb-1"> {{$project->project_name}}</h5>
+                                <p class="mb-0 text-sm">
+                                <div class="progress-wrapper">
+                                    <span class="progress-percentage"><small class="font-weight-bold">{{__('Completed:')}} : </small>{{ $project->project_progress()['percentage'] }}</span>
+                                    <div class="progress progress-xs mt-2">
+                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ $project->project_progress()['percentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $project->project_progress()['percentage'] }};"></div>
+                                    </div>
+                                </div>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-10">
-                <h4 class="mt-3 mb-1"></h4>
-                <p> {{ $project->description }}</p>
-            </div>
-        </div>
-        <div class="card bg-primary mb-0">
-            <div class="card-body">
-                <div class="d-block d-sm-flex align-items-center justify-content-between">
-                    <div class="row align-items-center">
-                        <span class="text-white text-sm">{{__('Start Date')}}</span>
-                        <h5 class="text-white text-nowrap">{{ Utility::getDateFormated($project->start_date) }}</h5>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <h4 class="mt-3 mb-1"></h4>
+                            <p> {{ $project->description }}</p>
+                        </div>
                     </div>
-                    <div class="row align-items-center">
-                        <span class="text-white text-sm">{{__('End Date')}}</span>
-                        <h5 class="text-white text-nowrap">{{ Utility::getDateFormated($project->end_date) }}</h5>
-                    </div>
+                    <div class="card bg-primary mb-0">
+                        <div class="card-body">
+                            <div class="d-block d-sm-flex align-items-center justify-content-between">
+                                <div class="row align-items-center">
+                                    <span class="text-white text-sm">{{__('Start Date')}}</span>
+                                    <h5 class="text-white text-nowrap">{{ Utility::getDateFormated($project->start_date) }}</h5>
+                                </div>
+                                <div class="row align-items-center">
+                                    <span class="text-white text-sm">{{__('End Date')}}</span>
+                                    <h5 class="text-white text-nowrap">{{ Utility::getDateFormated($project->end_date) }}</h5>
+                                </div>
 
-                </div>
-                <div class="row">
-                    <span class="text-white text-sm">{{__('Client')}}</span>
-                    <h5 class="text-white text-nowrap">{{ (!empty($project->client)?$project->client->name:'-') }}</h5>
+                            </div>
+                            <div class="row">
+                                <span class="text-white text-sm">{{__('Client')}}</span>
+                                <h5 class="text-white text-nowrap">{{ (!empty($project->client)?$project->client->name:'-') }}</h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
-</div>
-
-</div>
-
-
-
-   
-<div class="col-lg-6 bgwhite">
+        <div class="col-lg-4 bgwhite">
         <div class="card">
           <div class="card">
             <div class="card-body">
@@ -342,18 +339,8 @@
         </div>
   </div>
  </div>
-
-
-
-</div>
-
-
-
-   <section class="statistics">
-      <div class="row">
-
-        <div class="col-lg-6 bgwhite">
-          <div class="card">
+        <div class="col-lg-4 bgwhite">
+          <div class="card"  style="height: 352px;">
             <div class="card-body">
                 <div class="d-flex align-items-start">
                     <div class="theme-avtar bg-primary">
@@ -398,87 +385,78 @@
                 </div>
             </div>
         </div>
-
-
         </div>
-        
-
-        <div class="col-md-6">
-
-<div class="card" style="height: 328px;">
-  <div class="card-header">
-    <div class="headingnew align-items-center justify-content-between">
-      <h5>{{__('Members')}}</h5>
-                        @can('edit project')
-                            <div class="float-end">
-                                <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
-                                    <i class="ti ti-plus"></i>
-                                </a>
-                            </div>
-                        @endcan
-    </div>
-  </div>
-  <div class="card-body">
-    <ul class="list-group list-group-flush list" id="project_users">
-    </ul>
-</div>
-</div>
-</div>
-
-
-
       </div>
     </section>
 
 
-   <section class="statis  text-center main2">
-      <div class="row">
-        <div class="col-md-6 col-lg-6 mb-6 mb-lg-0">
-
-        </div>
-
-        <div class="col-md-6 col-lg-6 mb-6 mb-md-0">
-     
-        
-        </div>
-
-      </div>
-
 <div class="row">
 
-<div class="col-md-12 col-lg-12 mb-12 mb-lg-0">
-        @can('view activity')
- 
- <div class="card activity-scroll">
-     <div class="card-header">
-         <h5>{{__('Activity Log')}}</h5>
-         <small>{{__('Activity Log of this project')}}</small>
-     </div>
-     <div class="card-body vertical-scroll-cards">
-         @foreach($project->activities as $activity)
-             <div class="card p-2 mb-2">
-                 <div class="d-flex align-items-center justify-content-between">
-                     <div class="d-flex align-items-center">
-                         <div class="theme-avtar bg-primary">
-                             <i class="ti ti-{{$activity->logIcon($activity->log_type)}}"></i>
-                         </div>
-                         <div class="ms-3">
-                             <h6 class="mb-0">{{ __($activity->log_type) }}</h6>
-                             <p class="text-muted text-sm mb-0">{!! $activity->getRemark() !!}</p>
-                         </div>
-                     </div>
-                     <p class="text-muted text-sm mb-0">{{$activity->created_at->diffForHumans()}}</p>
-                 </div>
-             </div>
-         @endforeach
-     </div>
- </div>
-@endcan
-        </div>
+
+<div class="col-md-6 col-lg-6 mb-6 mb-lg-0">
+  <div class="card">
+    <div class="card-header">
+      <div class="headingnew align-items-center justify-content-between">
+        <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
+          <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
+            <i class="ti ti-plus"></i>
+          </a>
+        </div> @endcan
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush list" id="project_users"></ul>
+    </div>
+  </div>
 </div>
 
 
 
+<div class="col-md-6 col-lg-6 mb-6 mb-md-0">
+          @can('view activity')
+ 
+              <div class="card activity-scroll">
+                  <div class="card-header">
+                      <h5>{{__('Activity Log')}}</h5>
+                      <small>{{__('Activity Log of this project')}}</small>
+                  </div>
+                  <div class="card-body vertical-scroll-cards">
+                      @foreach($project->activities as $activity)
+                          <div class="card p-2 mb-2">
+                              <div class="d-flex align-items-center justify-content-between">
+                                  <div class="d-flex align-items-center">
+                                      <div class="theme-avtar bg-primary">
+                                          <i class="ti ti-{{$activity->logIcon($activity->log_type)}}"></i>
+                                      </div>
+                                      <div class="ms-3">
+                                          <h6 class="mb-0">{{ __($activity->log_type) }}</h6>
+                                          <p class="text-muted text-sm mb-0">{!! $activity->getRemark() !!}</p>
+                                      </div>
+                                  </div>
+                                  <p class="text-muted text-sm mb-0">{{$activity->created_at->diffForHumans()}}</p>
+                              </div>
+                          </div>
+                      @endforeach
+                  </div>
+              </div>
+      @endcan
+        
+        </div>
+
+
+
+</div>
+
+
+   <section class="statis  text-center main2">
+      <div class="row">
+
+        <div class="col-md-6 col-lg-6 mb-6 mb-lg-0">
+
+        </div>
+
+
+      </div>
     </section>
     
 
@@ -488,7 +466,12 @@
 </section>  
 
 
-
+<div class="row">
+   <div class="col-md-6">
+   </div>
+   <div class="col-md-6">
+   </div>
+</div>
 
 
 

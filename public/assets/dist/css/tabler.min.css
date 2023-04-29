@@ -27381,7 +27381,6 @@ a.btn.btn-sm {
     font-size: 20px;
     flex-shrink: 0;
 }
-
 body.theme-3 .bg-primary {
     background: linear-gradient(141.55deg, #6fd943 3.46%, #6fd943 99.86%), #6fd943 !important;
 }
@@ -28176,4 +28175,30 @@ i.ti.ti-pencil {
 }
 .btnmaindiv {
     padding: 13px 0 0 0;
+}
+
+.divmainrow {
+    margin: 0 0 2% 0;
+}
+
+.icons .ti-pencil:before {
+    content: "\eb04";
+    color: #fff;
+    padding: 8px 5px;
+    /* height: 16px !important; */
+}
+
+.icons i.ti.ti-pencil {
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.btnrightalg {
+    margin: 20px 0 0 0;
+}
+.floatleft {
+   float: left;
+}
+.iconsexp i.ti.ti-plus {
+    color: #000 !important;
 }

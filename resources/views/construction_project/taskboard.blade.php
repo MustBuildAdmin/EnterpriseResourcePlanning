@@ -4,17 +4,15 @@
     <div class="page-wrapper">
         <!-- Page header -->
 
-        @include('construction_project.side-menu')
-
-<div class="row mainrow">
+@include('construction_project.side-menu')
+<div class="row">
    <div class="col-md-6">
-     <h2>Task</h2>
+       <h2 class="mb-4">Task</h2>
    </div>
+
    <div class="col-md-6">
-
-       <div class="float-end">
-
-                                        <a href="#" class="btn btn-primary btn-sm" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <div class="float-end">
+   <a href="#" class="btn btn-primary btn-sm" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <span class="btn-inner--icon"><i class="ti ti-filter"></i></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-steady" id="task_sort">
@@ -49,23 +47,27 @@
                                             <a class="dropdown-item filter-action filter-other pl-4" href="#" data-val="over_due">{{ __('Over Due') }}</a>
                                             <a class="dropdown-item filter-action filter-other pl-4" href="#" data-val="starred">{{ __('Starred') }}</a>
                                         </div>
-                                   
-                                </div>
-    
    </div>
+</div>
+
 </div>
 
 
 <div class="row">
-    <div class="row min-750" id="taskboard_view"></div>
+   <div class="row min-750" id="taskboard_view"></div>
 </div>
 
+
         <!-- Page body -->
-      
+       
                         <div class="col d-flex flex-column">
                                 {{-- <h2 class="mb-4">Task</h2> --}}
                                 <div class="card-body">
-                             
+                                  
+
+                            
+                                    
+                                </div>
                                 </div>
                       
                     </div>

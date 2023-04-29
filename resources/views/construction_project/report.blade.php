@@ -11,6 +11,10 @@
 }
 </style>
     <div class="page-wrapper">
+
+
+
+
 @include('construction_project.side-menu',['hrm_header' => "Project Report"])
                         <div class="col d-flex flex-column">
                             <div class="card-body">
@@ -54,25 +58,24 @@
                         
                                                         </div>
                                                     </div>
-                                                         <div class="col-xl-1 col-lg-3 col-md-6 col-sm-12 col-12 mr-2 btnapp">
-                                                                <a href="#" class="btn btn-outline-success w-100"
-                                                                onclick="document.getElementById('project_report_submit').submit(); return false;"
-                                                                data-toggle="tooltip" data-original-title="{{ __('apply') }}">
-                                                                    <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
-                                                                    {{ __('apply') }}
-                                                                </a> 
-                                                            </div>
-                                                            <div class="col-xl-1 col-lg-3 col-md-6 col-sm-12 col-12 mr-2 btnapp">
-                                                                    <a href="{{ route('project_report.index') }}" class="btn btn-outline-primary w-100" data-toggle="tooltip"
-                                                                    data-original-title="{{ __('Reset') }}">
-                                                                        <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off"></i></span>
-                                                                        {{ __('Reset') }}
-                                                                    </a>
-                                                            </div>
 
+                                                    <div class="col-xl-1 col-lg-1 col-md-6 col-sm-12 col-12 mr-2">
+                                                       <a href="#" class="btn btn-outline-success w-100 btnrightalg"
+                                                           onclick="document.getElementById('project_report_submit').submit(); return false;"
+                                                           data-toggle="tooltip" data-original-title="{{ __('apply') }}">
+                                                            <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
+                                                            {{ __('apply') }}
+                                                        </a>
+                                                    </div>
 
-
-
+                                                    <div class="col-xl-1 col-lg-1 col-md-6 col-sm-12 col-12 mr-2">
+                                                            <a href="{{ route('project_report.index') }}" class="btn btn-outline-primary w-100 btnrightalg" data-toggle="tooltip"
+                                                               data-original-title="{{ __('Reset') }}">
+                                                                <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off"></i></span>
+                                                                {{ __('Reset') }}
+                                                            </a>
+                                                    </div>
+                        
                         
                                                 </div>
                                                 {{ Form::close() }}
@@ -86,9 +89,6 @@
                                 <div class="col-12">
                                     <div class="card">
                                       <div class="table-responsive">
-
-                                      <h2 class="mb-4 datatabletitle">Project</h2> 
-
                                         <table class="table card-table table-vcenter text-nowrap datatable">
                                           <thead>
                                             <tr>
@@ -168,13 +168,7 @@
                                         @endif
                 
                                         </tbody>
-
-
-                                      </table>
-
-
-                                      @include('new_layouts.footer')
-                                      
+                                                    </table>
                                     </div>
                                     
                         </div>
@@ -182,7 +176,5 @@
                 </div>
             </div>
         </div>
- 
-
-
-
+    </div>
+@include('new_layouts.footer')

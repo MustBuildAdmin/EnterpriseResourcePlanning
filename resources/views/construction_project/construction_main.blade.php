@@ -4,29 +4,32 @@
     @include('construction_project.side-menu')
 
 
-<div class="row mainrow">
-   <div class="col-md-6">
-     <h2>Project</h2>
-   </div>
-   <div class="col-md-6">
 
-      <div class="float-end">
-            <div class="float-right ">
-                    @can('create project')
-                        <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
-                            data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
-                            <input type="button" value='ADD' class="btn btn-outline-primary w-20"
-                                style="
-                                                    float: right;">
-                        </a>
-                    @endcan
-            </div>
+  <div class="row">
+      <div class="col-md-6">
+         <h2>Project</h2>
+      </div> 
+      <div class="col-md-6">
 
-      </div>
+      @can('create project')
+                <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
+                    data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
+                    <input type="button" value='ADD' class="btn btn-outline-primary w-20"
+                        style="
+                                            float: right;">
+                </a>
+            @endcan
+
+            
+      </div> 
+
+  </div>
+
+    <div class="row">
+        <h2 class="mb-4">
     
-   </div>
-</div>
-
+        </h2>
+    </div>
     <div class="col d-flex flex-column">
         <div class="card-body">
 
