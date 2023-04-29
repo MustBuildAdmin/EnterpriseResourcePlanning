@@ -21,6 +21,12 @@
     justify-content: end;
 ">
         @can('create expense')
+            <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
+        data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
+        <input type="button" value='ADD' class="btn btn-outline-primary w-20"
+            style="
+                                float: right;">
+            </a>
             <a href="#" class="btn btn-outline-primary w-20" data-url="{{ route('projects.expenses.create',$project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-size="lg" data-title="{{__('Create Expense')}}">
                 <span class="btn-inner--icon"><i class="ti ti-plus"></i></span>
             </a>
@@ -112,4 +118,3 @@
 </div>
 </div>
 </div>
-@include('new_layouts.footer')

@@ -869,7 +869,8 @@ class ProjectController extends Controller
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if($setting['company_type']==2){
 
-                    return view('projects.congantt', compact('project', 'tasks', 'duration'));
+                    return view('construction_project.gantt', compact('project', 'tasks', 'duration'));
+                    //return view('projects.congantt', compact('project', 'tasks', 'duration'));
                 }else{
                     $tasksobj = $project->tasks;
                     foreach($tasksobj as $task)
@@ -961,9 +962,7 @@ class ProjectController extends Controller
         try {
             
     
-                $result=Project::select('freeze_status')->where('id',$request->project_id)->first();
-
-
+                $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
                 return $result;
 
 
