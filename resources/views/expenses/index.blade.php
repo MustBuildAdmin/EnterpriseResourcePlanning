@@ -13,13 +13,16 @@
     <li class="breadcrumb-item">{{ucwords($project->project_name).__("'s Expenses")}}</li>
 
 @endsection --}}
-@include('construction_project.side-menu',['hrm_header' => "Expenses"])
-<div class="col d-flex flex-column">
-    <div class="float-right" style="
-    float: unset;
-    display: flex;
-    justify-content: end;
-">
+@include('construction_project.side-menu')
+
+
+<div class="row divmainrow">
+     <div class="col-md-6">
+         <h2>Expenses</h2>
+     </div>
+     <div class="col-md-6">
+
+     <div class="float-right float-end iconsexp">
         @can('create expense')
             <a href="#" class="btn btn-outline-primary w-20" data-url="{{ route('projects.expenses.create',$project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-size="lg" data-title="{{__('Create Expense')}}">
                 <span class="btn-inner--icon"><i class="ti ti-plus"></i></span>
@@ -29,6 +32,13 @@
             <span class="btn-inner--icon"><i class="ti ti-arrow-left"></i></span>
         </a>
     </div>
+
+
+     </div>
+</div>
+
+<div class="col d-flex flex-column">
+
 
 
     <div class="row">
@@ -73,22 +83,31 @@
                                         @if(Gate::check('edit expense') || Gate::check('delete expense'))
                                             <td class="text-end w-15">
                                                 <div class="actions">
+                                                      {!! Form::open(['method' => 'DELETE', 'route' => ['projects.expenses.destroy',$expense->id],'id'=>'delete-expense-'.$expense->id]) !!}
+                                                   
+                                                    <div class="col-md-6 floatleft">
+
                                                     @can('edit expense')
-                                                        <div class="action-btn bg-primary ms-2">
-                                                        <a href="#" class="mx-3 btn btn-sm align-items-center" data-url="{{ route('projects.expenses.edit',[$project->id,$expense->id]) }}" data-ajax-popup="true" data-size="lg" data-title="{{__('Edit ').$expense->name}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="Edit">
-                                                            <span class="btn-inner--icon"><i class="ti ti-pencil text-white"></i></span>
+                                                        <div class="action-btn ms-2">
+                                                        <a href="#" class="" data-url="{{ route('projects.expenses.edit',[$project->id,$expense->id]) }}" data-ajax-popup="true" data-size="lg" data-title="{{__('Edit ').$expense->name}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="Edit">
+                                                            <span class="btn-inner--icon"><i class="ti ti-pencil text-white backgroundnone"></i></span>
                                                         </a>
                                                         </div>
                                                     @endcan
+
+                                                    </div>
+
+                                                  <div class="col-md-4 floatleft">
                                                     @can('delete expense')
-                                                            <div class="action-btn bg-danger ms-2">
-                                                                {!! Form::open(['method' => 'DELETE', 'route' => ['projects.expenses.destroy',$expense->id],'id'=>'delete-expense-'.$expense->id]) !!}
+                                                            <div class="action-btn  ms-2">
+                                                                
 
                                                                 <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?')}}|{{__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-expense-{{$expense->id}}').submit();">
                                                                     <i class="ti ti-trash text-white"></i>
                                                                 </a>
                                                             </div>
                                                     @endcan
+                                                  </div>
 
                                                 </div>
                                                 {!! Form::close() !!}
