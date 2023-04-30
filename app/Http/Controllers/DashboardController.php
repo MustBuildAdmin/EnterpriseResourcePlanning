@@ -381,7 +381,8 @@ class DashboardController extends Controller
             }
             else
             {
-                return $this->project_dashboard_index();
+                // return $this->project_dashboard_index();
+                return view('new_layouts.home');
             }
         }
         else
