@@ -368,6 +368,21 @@
                                 class="dropdown-item">{{ __('Competencies') }}</a></li>
                     </ul>
                 </li>
+
+                @can('manage report')
+                    <li class="{{ (Request::segment(1) == 'reports-monthly-attendance' || Request::segment(1) == 'reports-leave' || 
+                        Request::segment(1) == 'reports-payroll') ? 'active dash-trigger' : ''}}">
+                        <a data-bs-target="#hrm_reports" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                            <span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="list">{{ __('Reports') }}</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="hrm_reports">
+                            <li class="{{ request()->is('reports-payroll') ? 'active' : '' }}"><a href="{{ route('report.payroll') }}">{{ __('Payroll') }}</a></li>
+                            <li class="{{ request()->is('reports-leave') ? 'active' : '' }}"><a href="{{ route('report.leave') }}">{{ __('Leave') }}</a></li>
+                            <li class="{{ request()->is('reports-monthly-attendance') ? 'active' : '' }}"><a href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a></li>
+                        </ul>
+                    </li>
+                @endcan
             </ul>
         </div>
     </nav>
