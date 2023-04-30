@@ -193,7 +193,7 @@
 						@if((\Auth::user()->type != 'super admin'))
                         @if( Gate::check('manage company plan') || Gate::check('manage order') || Gate::check('manage company settings'))
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{ route('systemsettings') }}">
+							<a class="card card-link" href="{{ route('systemsettings') }}" disabled>
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">

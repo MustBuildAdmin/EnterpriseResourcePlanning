@@ -26,6 +26,11 @@
 .display-none {
     display: none !important;
 }
+
+.justify-content-end {
+    justify-content: flex-end !important;
+    justify-content: flex-start !important;
+}
 </style>
 @endpush
 
@@ -37,7 +42,7 @@
                 <div class="card">
                     <div class="card-body">
                         {{ Form::open(['route' => ['project_report.index'], 'method' => 'GET', 'id' => 'project_report_submit']) }}
-                            <div class="row d-flex align-items-center justify-content-end">
+                            <div class="row d-flex align-items-center">
                             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                 <div class="btn-box">
                                     {{ Form::label('users', __('Users'),['class'=>'form-label'])}}
