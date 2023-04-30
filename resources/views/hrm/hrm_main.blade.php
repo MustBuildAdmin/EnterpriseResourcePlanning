@@ -178,8 +178,8 @@
 
                 @if( Gate::check('manage set salary') || Gate::check('manage pay slip'))
                     <li class="{{ (Request::segment(1) == 'setsalary' || Request::segment(1) == 'payslip') ? 'active' : '' }}">
-                        <a href="#payslip_hrm_setup" data-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                        <a data-bs-target="#payslip_hrm_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                            <span class="icon"><i class="ti ti-users"></i></span>
                             <span class="list">{{ __('Payroll Setup') }}</span>
                         </a>
                         <ul class="collapse list-unstyled" id="payslip_hrm_setup">
@@ -195,8 +195,8 @@
 
                 @if( Gate::check('manage leave') || Gate::check('manage attendance'))
                     <li class="{{ (Request::segment(1) == 'leave' || Request::segment(1) == 'attendanceemployee') ? 'active' :'' }}">
-                        <a href="#hrm_leave_management_setup" data-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                        <a data-bs-target="#hrm_leave_management_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                            <span class="icon"><i class="ti ti-users"></i></span>
                             <span class="list">{{ __('Leave Management') }}</span>
                         </a>
                         <ul class="collapse list-unstyled" id="hrm_leave_management_setup">
@@ -205,8 +205,8 @@
                             @endcan
                             @can('manage attendance')
                                 <li class="{{ (Request::segment(1) == 'attendanceemployee') ? 'active' : '' }}">
-                                    <a href="#attendanbce_setup" data-toggle="collapse" aria-expanded="false"
-                                        class="dropdown-toggle"><span class="icon"><i class="ti ti-users"></i></span>
+                                    <a data-bs-target="#attendanbce_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                                        <span class="icon"><i class="ti ti-users"></i></span>
                                         <span class="list">{{__('Attendance')}}</span>
                                     </a>
                                     <ul class="collapse list-unstyled" id="attendanbce_setup">
@@ -221,76 +221,46 @@
                     </li>
                 @endif
 
-                {{-- <li>
-                    <a href="#"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span class="list">Leave Management</span></a>
-                </li> --}}
+                <li class="{{ Request::segment(1) == 'holiday-calender' || Request::segment(1) == 'holiday' || Request::segment(1) == 'policies' ||
+                    Request::segment(1) == 'award' || Request::segment(1) == 'transfer' || Request::segment(1) == 'resignation' || Request::segment(1) == 'travel' ||
+                    Request::segment(1) == 'promotion' || Request::segment(1) == 'complaint' || Request::segment(1) == 'warning' || Request::segment(1) == 'termination' ||
+                    Request::segment(1) == 'announcement' || Request::segment(1) == 'competencies' ? 'active' : '' }}">
 
-                {{-- <li>
-                    <a href="#"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span class="list">Reports</span></a>
-                </li> --}}
-
-                <li
-                    class="{{ Request::segment(1) == 'holiday-calender' ||
-                    Request::segment(1) == 'holiday' ||
-                    Request::segment(1) == 'policies' ||
-                    Request::segment(1) == 'award' ||
-                    Request::segment(1) == 'transfer' ||
-                    Request::segment(1) == 'resignation' ||
-                    Request::segment(1) == 'travel' ||
-                    Request::segment(1) == 'promotion' ||
-                    Request::segment(1) == 'complaint' ||
-                    Request::segment(1) == 'warning' ||
-                    Request::segment(1) == 'termination' ||
-                    Request::segment(1) == 'announcement' ||
-                    Request::segment(1) == 'competencies'
-                        ? 'active'
-                        : '' }}">
-
-                    <a  data-bs-target="#pageSubmenu_admin_setup" data-bs-toggle="collapse" aria-expanded="false"
-                    class="accordion-collapse collapse list-unstyled"><span class="icon"><i class="ti ti-users"></i></span>
+                    <a data-bs-target="#pageSubmenu_admin_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                        <span class="icon"><i class="ti ti-users"></i></span>
                         <span class="list">{{ __('HR Admin Setup') }}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubmenu_admin_setup">
                         @can('manage award')
-                            <li class="{{ Request::segment(1) == 'award' ? 'active' : '' }}"><a
-                                    href="{{ url('award') }}">{{ __('Award') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'award' ? 'active' : '' }}"><a href="{{ url('award') }}">{{ __('Award') }}</a></li>
                         @endcan
                         @can('manage transfer')
-                            <li class="{{ Request::segment(1) == 'transfer' ? 'active' : '' }}"><a
-                                    href="{{ url('transfer') }}">{{ __('Transfer') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'transfer' ? 'active' : '' }}"><a href="{{ url('transfer') }}">{{ __('Transfer') }}</a></li>
                         @endcan
                         @can('manage resignation')
-                            <li class="{{ Request::segment(1) == 'resignation' ? 'active' : '' }}"><a
-                                    href="{{ url('resignation') }}">{{ __('Resignation') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'resignation' ? 'active' : '' }}"><a href="{{ url('resignation') }}">{{ __('Resignation') }}</a></li>
                         @endcan
                         @can('manage travel')
-                            <li class="{{ Request::segment(1) == 'travel' ? 'active' : '' }}"><a
-                                    href="{{ url('travel') }}">{{ __('Trip') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'travel' ? 'active' : '' }}"><a href="{{ url('travel') }}">{{ __('Trip') }}</a></li>
                         @endcan
                         @can('manage promotion')
-                            <li class="{{ Request::segment(1) == 'promotion' ? 'active' : '' }}"><a
-                                    href="{{ url('promotion') }}" class="dropdown-item">{{ __('Promotion') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'promotion' ? 'active' : '' }}"><a href="{{ url('promotion') }}" class="dropdown-item">{{ __('Promotion') }}</a></li>
                         @endcan
                         @can('manage complaint')
-                            <li class="{{ Request::segment(1) == 'complaint' ? 'active' : '' }}"><a
-                                    href="{{ url('complaint') }}" class="dropdown-item">{{ __('Complaints') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'complaint' ? 'active' : '' }}"><a href="{{ url('complaint') }}" class="dropdown-item">{{ __('Complaints') }}</a></li>
                         @endcan
                         @can('manage warning')
-                            <li class="{{ Request::segment(1) == 'warning' ? 'active' : '' }}"><a
-                                    href="{{ url('warning') }}" class="dropdown-item">{{ __('Warning') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'warning' ? 'active' : '' }}"><a href="{{ url('warning') }}" class="dropdown-item">{{ __('Warning') }}</a></li>
                         @endcan
                         @can('manage termination')
-                            <li class="{{ Request::segment(1) == 'termination' ? 'active' : '' }}"><a
-                                    href="{{ url('termination') }}" class="dropdown-item">{{ __('Termination') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'termination' ? 'active' : '' }}"><a href="{{ url('termination') }}" class="dropdown-item">{{ __('Termination') }}</a></li>
                         @endcan
                         @can('manage announcement')
-                            <li class="{{ Request::segment(1) == 'announcement' ? 'active' : '' }}"><a
-                                    href="{{ url('announcement') }}" class="dropdown-item">{{ __('Announcement') }}</a>
+                            <li class="{{ Request::segment(1) == 'announcement' ? 'active' : '' }}"><a href="{{ url('announcement') }}" class="dropdown-item">{{ __('Announcement') }}</a>
                             </li>
                         @endcan
                         @can('manage holiday')
-                            <li class="{{ Request::segment(1) == 'holiday' ? 'active' : '' }}"><a
-                                    href="{{ url('holiday') }}" class="dropdown-item">{{ __('Holidays') }}</a></li>
+                            <li class="{{ Request::segment(1) == 'holiday' ? 'active' : '' }}"><a href="{{ url('holiday') }}" class="dropdown-item">{{ __('Holidays') }}</a></li>
                         @endcan
                     </ul>
                 </li>
