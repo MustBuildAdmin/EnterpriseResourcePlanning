@@ -2147,6 +2147,12 @@ Route::post('payslip/bulkpayment/{date}', 'PaySlipController@bulkpayment')->name
         'XSS',
     ]
 );
+Route::post('payslip/search_json1', 'PaySlipController@search_json1')->name('payslip.search_json1')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::post('payslip/search_json', 'PaySlipController@search_json')->name('payslip.search_json')->middleware(
     [
         'auth',
