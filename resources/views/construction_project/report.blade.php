@@ -11,6 +11,10 @@
 }
 </style>
     <div class="page-wrapper">
+
+
+
+
 @include('construction_project.side-menu',['hrm_header' => "Project Report"])
                         <div class="col d-flex flex-column">
                             <div class="card-body">
@@ -23,7 +27,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 {{ Form::open(['route' => ['project_report.index'], 'method' => 'GET', 'id' => 'project_report_submit']) }}
-                                                    <div class="row d-flex align-items-center justify-content-end">
+                                                    <div class="row d-flex align-items-center">
                                                     <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                                         <div class="btn-box">
                                                             {{ Form::label('users', __('Users'),['class'=>'form-label'])}}
@@ -54,20 +58,24 @@
                         
                                                         </div>
                                                     </div>
-                        
-                                                    <div class="col-auto float-end ms-2 mt-4">
-                                                        <a href="#" class="btn btn-outline-success w-100"
+
+                                                    <div class="col-xl-1 col-lg-1 col-md-6 col-sm-12 col-12 mr-2">
+                                                       <a href="#" class="btn btn-outline-success w-100 btnrightalg"
                                                            onclick="document.getElementById('project_report_submit').submit(); return false;"
                                                            data-toggle="tooltip" data-original-title="{{ __('apply') }}">
                                                             <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
                                                             {{ __('apply') }}
                                                         </a>
-                                                        <a href="{{ route('project_report.index') }}" class="btn btn-outline-primary w-100" data-toggle="tooltip"
+                                                    </div>
+
+                                                    <div class="col-xl-1 col-lg-1 col-md-6 col-sm-12 col-12 mr-2">
+                                                            <a href="{{ route('project_report.index') }}" class="btn btn-outline-primary w-100 btnrightalg" data-toggle="tooltip"
                                                                data-original-title="{{ __('Reset') }}">
                                                                 <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off"></i></span>
                                                                 {{ __('Reset') }}
                                                             </a>
                                                     </div>
+                        
                         
                                                 </div>
                                                 {{ Form::close() }}
@@ -160,7 +168,7 @@
                                         @endif
                 
                                         </tbody>
-                                      
+                                                    </table>
                                     </div>
                                     
                         </div>

@@ -1734,8 +1734,8 @@ class ReportController extends Controller
             $filter['totalReject']   = $totalReject;
             $filter['totalPending']  = $totalPending;
 
-
-            return view('report.leave', compact('department', 'branch', 'leaves', 'filterYear', 'filter'));
+            return view('hrm.reports.leave_report', compact('department', 'branch', 'leaves', 'filterYear', 'filter'));
+            // return view('report.leave', compact('department', 'branch', 'leaves', 'filterYear', 'filter'));
         }
         else
         {
@@ -1921,7 +1921,8 @@ class ReportController extends Controller
             $data['totalLeave']      = $totalLeave;
             $data['curMonth']        = $curMonth;
 
-            return view('report.monthlyAttendance', compact('employeesAttendance', 'branch', 'department', 'dates', 'data'));
+            return view('hrm.reports.monthly_attendance_report', compact('employeesAttendance', 'branch', 'department', 'dates', 'data'));
+            // return view('report.monthlyAttendance', compact('employeesAttendance', 'branch', 'department', 'dates', 'data'));
         }
         else
         {
@@ -2062,7 +2063,8 @@ class ReportController extends Controller
             $filterYear['starting_year'] = $starting_year;
             $filterYear['ending_year']   = $ending_year;
 
-            return view('report.payroll', compact('payslips', 'filterData', 'branch', 'department', 'filterYear'));
+            return view('hrm.reports.payroll_report', compact('payslips', 'filterData', 'branch', 'department', 'filterYear'));
+            // return view('report.payroll', compact('payslips', 'filterData', 'branch', 'department', 'filterYear'));
         }
         else
         {

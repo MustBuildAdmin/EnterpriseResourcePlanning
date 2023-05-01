@@ -6,7 +6,23 @@
     <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
 
-@include('construction_project.side-menu',['hrm_header' => "Project Dashboard"])
+@include('construction_project.side-menu')
+
+
+<div class="row mainrow">
+   <div class="col-md-6">
+     <h2>Project Dashboard</h2>
+   </div>
+   <div class="col-md-6">
+
+      <div class="float-end">
+            <div class="float-right ">
+              
+            </div>
+      </div>
+
+   </div>
+</div>
 
 <div class="page-wrapper dashboard">
 
@@ -17,7 +33,7 @@
             <div class="card">
                 <div class="card-body">
                     {{ Form::open(['route' => ['project_report.view_task_report',$user_project_id], 'method' => 'GET', 'id' => 'project_report_submit']) }}
-                        <div class="row d-flex align-items-center justify-content-end">
+                        <div class="row d-flex align-items-center">
                             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                             <div class="btn-box">
                                 {{ Form::label('project', __('Project'),['class'=>'form-label'])}}
@@ -77,23 +93,23 @@
                             </div>
                         </div>
 
-                        <div class="col-auto float-end ms-2 mt-4">
-                            <a href="#" class="btn btn-sm btn-primary"
+                        <div class="col-auto float-end ms-2 mt-4 btnmaindiv">
+                            <a href="#" class="btn btn-sm btn-primary btnalginment"
                                onclick="document.getElementById('project_report_submit').submit(); return false;"
                                data-toggle="tooltip" data-original-title="{{ __('apply') }}">
                                 <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
                             </a>
-                            <a href="{{ route('project_report.index') }}" class="btn btn-sm btn-danger" data-toggle="tooltip"
+                            <a href="{{ route('project_report.index') }}" class="btn btn-sm btn-danger btnalginment" data-toggle="tooltip"
                                    data-original-title="{{ __('Reset') }}">
                                     <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off"></i></span>
                             </a>
+                            <a href="{{route('send_report_con')}}"><input type='button' class='btnalginment form-control btn-primary' name='send_report' value='Send Report' style='width: 60%;float: right;background: green;color: #fff;'></a>
                         </div>
-
                     </div>
                     {{ Form::close() }}
                 </div>
                 <div>
-                <a href="{{route('send_report_con')}}"><input type='button' class='form-control btn-primary' name='send_report' value='Send Report' style='width:10%;float: right;'></a>
+              
                 </div>
             </div>
         </div>
@@ -103,7 +119,7 @@
 
 <div class="col-xl-12 mt-3">
   <div class="card table-card">
-      <div class="card-header card-body table-border-style">
+      <div class="">
           <div class="table-responsive">
               <table class="table datatable" id="example">
                   <thead class="">
