@@ -1,11 +1,4 @@
-/*!
-* Tabler v1.0.0-beta17 (https://tabler.io)
-* @version 1.0.0-beta17
-* @link https://tabler.io
-* Copyright 2018-2023 The Tabler Authors
-* Copyright 2018-2023 codecalm.net Paweł Kuna
-* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
-*/
+
 @charset "UTF-8";
 
 :root,
@@ -28318,6 +28311,11 @@ i.ti.ti-pencil {
     padding-left: 0;
     padding-right: 0;
 }
+.team-msg .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 
 
 .table-responsive {
