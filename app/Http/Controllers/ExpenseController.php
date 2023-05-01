@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use App\Models\Project;
+use App\Models\Con_task;
 use App\Models\Utility;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
@@ -32,8 +33,10 @@ class ExpenseController extends Controller
         if(\Auth::user()->can('create expense'))
         {
             $project = Project::find($project_id);
-
-            return view('expenses.create', compact('project'));
+            $tasks=Con_task::select('main_id as id', 'text as name')
+            ->where('project_id',$project_id)
+            ->get();
+            return view('expenses.create', compact('project','tasks'));
         }
         else
         {
@@ -96,8 +99,10 @@ class ExpenseController extends Controller
         {
             $project = Project::find($project_id);
             $expense = Expense::find($expense_id);
-
-            return view('expenses.edit', compact('project', 'expense'));
+            $tasks=Con_task::select('main_id as id', 'text as name')
+            ->where('project_id',$project_id)
+            ->get();
+            return view('expenses.edit', compact('project', 'expense','tasks'));
         }
         else
         {

@@ -29,7 +29,8 @@ class LeaveController extends Controller
                 $leaves = Leave::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('leave.index', compact('leaves'));
+            return view('hrm.leave.leave', compact('leaves'));
+            // return view('leave.index', compact('leaves'));
         }
         else
         {
@@ -52,7 +53,8 @@ class LeaveController extends Controller
             $leavetypes      = LeaveType::where('created_by', '=', \Auth::user()->creatorId())->get();
             $leavetypes_days = LeaveType::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('leave.create', compact('employees', 'leavetypes', 'leavetypes_days'));
+            return view('hrm.leave.leave_add', compact('employees', 'leavetypes', 'leavetypes_days'));
+            // return view('leave.create', compact('employees', 'leavetypes', 'leavetypes_days'));
         }
         else
         {
@@ -126,7 +128,8 @@ class LeaveController extends Controller
                 $employees  = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
                 $leavetypes = LeaveType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('title', 'id');
 
-                return view('leave.edit', compact('leave', 'employees', 'leavetypes'));
+                return view('hrm.leave.leave_edit', compact('leave', 'employees', 'leavetypes'));
+                // return view('leave.edit', compact('leave', 'employees', 'leavetypes'));
             }
             else
             {

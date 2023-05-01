@@ -19,3 +19,4 @@ vendor
 vendor/*
 vendor/
 .env
+.gitignore
