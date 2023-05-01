@@ -28324,6 +28324,6 @@ i.ti.ti-pencil {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     background: #fff;
-    max-width: 1072px;
+    /* max-width: 1072px; */
     overflow: auto;
 }
