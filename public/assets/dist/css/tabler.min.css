@@ -28318,3 +28318,12 @@ i.ti.ti-pencil {
     padding-left: 0;
     padding-right: 0;
 }
+
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    max-width: 1072px;
+    overflow: auto;
+}

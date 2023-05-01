@@ -244,10 +244,12 @@ h5.sm {
         <th scope="col">Planned Finish</th>
         <th scope="col">Duration</th>
         <th scope="col">Planned % as of today</th>
+        <th scope="col">Planned Value</th>
         <th scope="col">Actual Start Date</th>
         <th scope="col">Actual Finish</th>
         <th scope="col">Actual Duration</th>
         <th scope="col">Actual % as of Today</th>
+        <th scope="col">Earned Value</th>
       </tr>
     </thead>
     <tbody>
@@ -263,10 +265,12 @@ h5.sm {
         <td>{{$value['planed_end']}}</td>
         <td>{{$value['duration']}}</td>
         <td>{{$value['percentage_as_today']}}</td>
+        <td>Planned Value</td>
         <td>{{$value['actual_start']}}</td>
         <td>{{$value['actual_end']}}</td>
         <td>{{$value['actual_duration']}}</td>
         <td>{{$value['actual_percent']}}</td>
+        <td>Earned Value</td>
       </tr>
      @empty
       <tr>
