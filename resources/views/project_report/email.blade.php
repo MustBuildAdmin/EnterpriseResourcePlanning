@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" href="{{ asset('landing/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/main.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/datepicker-bs5.min.css') }}">
@@ -236,13 +235,13 @@ h5.sm {
 
 
 
-<table class="table" style="margin: 0 auto;">
+<table class="table" style="margin: 0 auto;width: 1213px;">
     <thead class="thead-dark">
       <tr style="background: #000;color: #fff;padding: 0%;float: left;">
-        <th scope="col"  style="background: #000;color: #fff; padding: 5px;">Title</th>
+        <th scope="col"  style="background: #000;color: #fff; padding: 5px;vertical-align: top;">Title</th>
         <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned Start Date</th>
         <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned Finish</th>
-        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Duration</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;vertical-align: top;">Duration</th>
         <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned % as of today</th>
         <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned Value</th>
         <th scope="col" style="background: #000;color: #fff; padding: 5px;">Actual Start Date</th>
