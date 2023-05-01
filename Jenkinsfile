@@ -25,7 +25,7 @@ pipeline{
         }
         stage('Deploy to Staging') {
             steps{
-                sh 'sudo cd var/www/html/mkdir erpstage'
+                sh 'sudo  /var/www/html/mkdir erpstage'
                 sh 'sudo rm -rf /var/www/html/erpstage/*'
                 sh 'scp -r /var/lib/jenkins/workspace/TestEnv/* /var/www/html/erpstage/'
                 sh 'cd /var/www/html/erpstage/'
