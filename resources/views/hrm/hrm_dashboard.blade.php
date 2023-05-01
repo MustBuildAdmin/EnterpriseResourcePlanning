@@ -877,5 +877,4 @@
   </div>
 </div>
 
-
 @include('new_layouts.footer')

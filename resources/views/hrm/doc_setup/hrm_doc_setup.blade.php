@@ -71,8 +71,8 @@
 
 @include('new_layouts.footer')
 
-<div class="ms-2" style="display:flex;gap:10px;">
+{{-- <div class="ms-2" style="display:flex;gap:10px;">
 
-btn btn-md bg-primary
+btn btn-md bg-primary 
 
-btn btn-md btn-danger bs-pass-para
+btn btn-md btn-danger bs-pass-para --}}
