@@ -23,7 +23,7 @@ pipeline{
                 sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
-        stage('Deploy to test') {
+        stage('Deploy to Staging') {
             steps{
                 sh 'sudo cd var/www/html/mkdir erpstage'
                 sh 'sudo rm -rf /var/www/html/erpstage/*'
