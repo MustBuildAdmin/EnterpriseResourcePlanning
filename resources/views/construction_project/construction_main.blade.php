@@ -8,7 +8,7 @@
   <div class="row">
       <div class="col-md-6">
          <h2>Project</h2>
-      </div> 
+      </div>
       <div class="col-md-6">
 
       @can('create project')
@@ -20,14 +20,14 @@
                 </a>
             @endcan
 
-            
-      </div> 
+
+      </div>
 
   </div>
 
     <div class="row">
         <h2 class="mb-4">
-    
+
         </h2>
     </div>
     <div class="col d-flex flex-column">
