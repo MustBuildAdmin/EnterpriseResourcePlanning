@@ -381,7 +381,8 @@ class DashboardController extends Controller
             }
             else
             {
-                return $this->project_dashboard_index();
+                // return $this->project_dashboard_index();
+                return view('new_layouts.home');
             }
         }
         else
@@ -785,6 +786,10 @@ class DashboardController extends Controller
         }
         // return view('construction_project.construction_main',compact('projects', 'user_projects'));
         // return view('construction_project.construction_main');
+    }
+
+    public function hrm_dashboard(){
+        return view('hrm.hrm_dashboard');
     }
 
 }

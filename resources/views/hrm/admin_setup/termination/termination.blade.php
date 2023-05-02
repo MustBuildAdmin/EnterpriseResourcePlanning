@@ -1,11 +1,22 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main',['hrm_header' => 'Termination'])
+@include('hrm.hrm_main')
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Termination</h2>
+  </div>
+  <div class="col-md-6 float-end">
 
     @can('create termination')
-        <a href="#" data-url="{{ route('termination.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Termination')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
+        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('termination.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Termination')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan
+
+  </div>
+</div>
+
+
     <div class="table-responsive">
         <table class="table card-table table-vcenter text-nowrap datatable">
             <thead>

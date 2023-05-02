@@ -23,7 +23,8 @@ class FormBuilderController extends Controller
         {
             $forms = FormBuilder::where('created_by', '=', $usr->creatorId())->get();
 
-            return view('form_builder.index', compact('forms'));
+            // return view('form_builder.index', compact('forms'));
+            return view('crm.form_builder.index', compact('forms'));
         }
         else
         {

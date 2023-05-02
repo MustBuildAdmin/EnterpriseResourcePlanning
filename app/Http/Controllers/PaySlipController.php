@@ -58,7 +58,8 @@ class PaySlipController extends Controller
                 '2030' => '2030',
             ];
 
-            return view('payslip.index', compact('employees', 'month', 'year'));
+            return view('hrm.payroll.payslip', compact('employees', 'month', 'year'));
+            // return view('payslip.index', compact('employees', 'month', 'year'));
         }
         else
         {
@@ -93,9 +94,11 @@ class PaySlipController extends Controller
 
 
         $formate_month_year = $year . '-' . $month;
+       
         $validatePaysilp    = PaySlip::where('salary_month', '=', $formate_month_year)->where('created_by', \Auth::user()->creatorId())->pluck('employee_id');
         $payslip_employee   = Employee::where('created_by', \Auth::user()->creatorId())->where('company_doj', '<=', date($year . '-' . $month . '-t'))->count();
-        if($payslip_employee > count($validatePaysilp))
+       
+        if($payslip_employee >= count($validatePaysilp) )
         {
             $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('company_doj', '<=', date($year . '-' . $month . '-t'))->whereNotIn('employee_id', $validatePaysilp)->get();
 
@@ -123,7 +126,7 @@ class PaySlipController extends Controller
                 $payslipEmployee->overtime             = Employee::overtime($employee->id);
                 $payslipEmployee->created_by           = \Auth::user()->creatorId();
                 $payslipEmployee->save();
-
+               
                 //Slack Notification
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if(isset($setting['payslip_notification']) && $setting['payslip_notification'] ==1){
@@ -237,10 +240,90 @@ class PaySlipController extends Controller
                     $data[] = $tmp;
                 }
             }
+          
 
             return $data;
         }
     }
+    public function search_json1(Request $request)
+    {
+
+        $formate_month_year = $request->datePicker;
+        $validatePaysilp    = PaySlip::where('salary_month', '=', $formate_month_year)->where('created_by', \Auth::user()->creatorId())->get()->toarray();
+
+        $data=[];
+        if (empty($validatePaysilp))
+        {
+            $data=[];
+            return;
+        } else {
+            $paylip_employee = PaySlip::select(
+                [
+                    'employees.id',
+                    'employees.employee_id',
+                    'employees.name',
+                    'payslip_types.name as payroll_type',
+                    'pay_slips.basic_salary',
+                    'pay_slips.net_payble',
+                    'pay_slips.id as pay_slip_id',
+                    'pay_slips.status',
+                    'employees.user_id',
+                ]
+            )->leftjoin(
+                'employees',
+                function ($join) use ($formate_month_year) {
+                    $join->on('employees.id', '=', 'pay_slips.employee_id');
+                    $join->on('pay_slips.salary_month', '=', \DB::raw("'" . $formate_month_year . "'"));
+                    $join->leftjoin('payslip_types', 'payslip_types.id', '=', 'employees.salary_type');
+                }
+            )->where('employees.created_by', \Auth::user()->creatorId())->get();
+
+
+            foreach ($paylip_employee as $employee) {
+
+                if (Auth::user()->type == 'employee') {
+                    if (Auth::user()->id == $employee->user_id) {
+                        $tmp   = [];
+                        $tmp[] = $employee->id;
+                        $tmp[] = $employee->name;
+                        $tmp[] = $employee->payroll_type;
+                        $tmp[] = $employee->pay_slip_id;
+                        $tmp[] = !empty($employee->basic_salary) ? \Auth::user()->priceFormat($employee->basic_salary) : '-';
+                        $tmp[] = !empty($employee->net_payble) ? \Auth::user()->priceFormat($employee->net_payble) : '-';
+                        if ($employee->status == 1) {
+                            $tmp[] = 'paid';
+                        } else {
+                            $tmp[] = 'unpaid';
+                        }
+                        $tmp[]  = !empty($employee->pay_slip_id) ? $employee->pay_slip_id : 0;
+                        $tmp['url']  = route('employee.show', Crypt::encrypt($employee->id));
+                        $data[] = $tmp;
+                    }
+                } else {
+
+                    $tmp   = [];
+                    $tmp[] = $employee->id;
+                    $tmp[] = \Auth::user()->employeeIdFormat($employee->employee_id);
+                    $tmp[] = $employee->name;
+                    $tmp[] = $employee->payroll_type;
+                    $tmp[] = !empty($employee->basic_salary) ? \Auth::user()->priceFormat($employee->basic_salary) : '-';
+                    $tmp[] = !empty($employee->net_payble) ? \Auth::user()->priceFormat($employee->net_payble) : '-';
+                    if ($employee->status == 1) {
+                        $tmp[] = 'Paid';
+                    } else {
+                        $tmp[] = 'UnPaid';
+                    }
+                    $tmp[]  = !empty($employee->pay_slip_id) ? $employee->pay_slip_id : 0;
+                    $tmp['url']  = route('employee.show', Crypt::encrypt($employee->id));
+                    $data[] = $tmp;
+                }
+            }
+          
+
+            return $data;
+        }
+    }
+
 
     public function paysalary($id, $date)
     {

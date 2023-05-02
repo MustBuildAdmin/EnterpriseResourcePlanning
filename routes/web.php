@@ -56,6 +56,13 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
+Route::get('hrm_dashboard', 'DashboardController@hrm_dashboard')->name('hrm_dashboard')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middleware(
     [
         'XSS',
@@ -2135,6 +2142,12 @@ Route::get('payslip/bulk_pay_create/{date}', 'PaySlipController@bulk_pay_create'
     ]
 );
 Route::post('payslip/bulkpayment/{date}', 'PaySlipController@bulkpayment')->name('payslip.bulkpayment')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::post('payslip/search_json1', 'PaySlipController@search_json1')->name('payslip.search_json1')->middleware(
     [
         'auth',
         'XSS',

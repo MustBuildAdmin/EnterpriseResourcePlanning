@@ -1,13 +1,17 @@
 @include('new_layouts.header')
 <div class="page-wrapper">
 
-    @include('construction_project.side-menu', ['hrm_header' => 'Project'])
+    @include('construction_project.side-menu')
 
 
 
-    <div class="row">
-        <h2 class="mb-4">
-            @can('create project')
+  <div class="row">
+      <div class="col-md-6">
+         <h2>Project</h2>
+      </div>
+      <div class="col-md-6">
+
+      @can('create project')
                 <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
                     data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
                     <input type="button" value='ADD' class="btn btn-outline-primary w-20"
@@ -15,6 +19,14 @@
                                             float: right;">
                 </a>
             @endcan
+
+
+      </div>
+
+  </div>
+
+    <div class="row">
+        <h2 class="mb-4">
 
         </h2>
     </div>

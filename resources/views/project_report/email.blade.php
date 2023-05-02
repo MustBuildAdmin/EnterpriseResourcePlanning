@@ -99,82 +99,94 @@ h5.sm {
 </head>
 <body>
     <section id="project">
-        <div class="container">
+        <div style="max-width: 1210px;margin: 0 auto;">
     <h5 class="sm">PROJECT OVERALL PROGRAM STATUS</h5>
-    <div class="progress mb-3">
+    <div class="mb-3" style="margin: 1% 5%;display: -ms-flexbox;
+    display: flex;height: 1rem;overflow: hidden;font-size: .75rem;background-color: green;border-radius: 0.25rem;color:#fff;text-align: center;">
       <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$no_working_days}} Days</div>
       {{-- <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">15 Days</div> --}}
       <!-- <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div> -->
     </div>
-    <div class="progress mb-3" style="background-color: transparent;">
-    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: transparent;color: #000;    text-align: end;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Base Program End Date ({{ date("d-m-Y", strtotime($end)) }})</div>
+   
+
+    <div class="mb-3" style="margin: 1% 5%;background-color: transparent;display: -ms-flexbox;
+    display: flex;height: 1rem;overflow: hidden;font-size: .75rem;background-color: #e9ecef;border-radius: 0.25rem;">
+    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: blue;color: #fff;    text-align: start;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Program Start Date ({{ date("d-m-Y", strtotime($end)) }})</div>
     {{-- <div class="progress-bar" role="progressbar" style="width: 30%; background-color: transparent;color: #000;    text-align: end;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Rev-1 Program End Date (30-9-2021)</div> --}}
 </div>
 
-    <hr class="my-5" />
-<div class="two-div">
-    <div class="row">
-        <div class="col-md-6 b1">
-            <h5 class="sm">BASE PROGRAM STATUS</h5>
-            <div class="progress mb-3">
-            <div class="progress-bar bg-success" role="progressbar" style="width:100%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$no_working_days}} Days</div>
-            {{-- <div class="progress-bar bg-warning" role="progressbar" style="width: {{$remaing_percenatge}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$remaining_working_days}}</div> --}}
-            </div>
-            <div class="row">
-                <div class="col-md-6 tx row right-txt" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">WORKING DAYS</p><div class="line"></div></div>
-                <div class="col-md-6 tx row lef" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p><div class="line"></div></div>
-                </div>
-        </div>
 
-        <div class="col-md-6 b1">
-            <h5 class="sm">DURATION IN NO OF DAYS</h5>
-            <div class="progress mb-3">
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{$current_percentage}}%" aria-valuenow="{{$current_percentage}}" aria-valuemin="0" aria-valuemax="100">{{$completed_days}} Days</div>
-                <div class="progress-bar bg-warning" role="progressbar" style="width: {{$remaing_percenatge}}%" aria-valuenow="{{$remaing_percenatge}}" aria-valuemin="0" aria-valuemax="100">{{$remaining_working_days}} Days</div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-6 tx row right-txt" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">WORKING DAYS</p><div class="line"></div></div>
-                    <div class="col-md-6 tx row lef" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p><div class="line"></div></div>
-                    </div>
-        </div>
-    </div>
+    <div class="mb-3" style="margin: 1% 5%;background-color: transparent;display: -ms-flexbox;
+    display: flex;height: 1rem;overflow: hidden;font-size: .75rem;background-color: #e9ecef;border-radius: 0.25rem;">
+    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: blue;color: #fff;    text-align: end;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Program End Date ({{ date("d-m-Y", strtotime($end)) }})</div>
+    {{-- <div class="progress-bar" role="progressbar" style="width: 30%; background-color: transparent;color: #000;    text-align: end;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Rev-1 Program End Date (30-9-2021)</div> --}}
 </div>
 
-<div class="two-div">
-    <div class="row">
-        {{-- <div class="col-md-6 b1">
-            <h5 class="sm">DURATION IN PERCENTAGE</h5>
-            <div class="progress mb-3">
-          
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{$actual_current_progress}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$actual_current_progress}}%</div>
-            @if($actual_remaining_progress>0)
-            <div class="progress-bar bg-warning" role="progressbar" style="width: {{$actual_remaining_progress}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$actual_remaining_progress}}%</div>
-            @endif
-          </div>
-            <div class="row">
-                <div class="col-md-6 tx row right-txt" style="align-items: center;justify-content: center;"><p class="t1" style="margin-bottom: 0;">WORKING DAYS</p></div>
-                <div class="col-md-6 tx row lef" style="align-items: center;justify-content: center;"><p class="t1" style="margin-bottom: 0;">REAMINING DAYS</p></div>
+
+<div class="row">
+
+<div class="col-md-12 b1">
+            <h5 class="sm">DURATION IN NO OF DAYS</h5>
+            <div class="mb-3" style="margin: 1% 5%;display: -ms-flexbox; display: flex;height: 1rem;overflow: hidden;font-size: .75rem;background-color: #e9ecef;border-radius: 0.25rem;">
+            <div class="bg-success" role="progressbar" style="width:100%;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;color: #fff;
+    text-align: center;white-space: nowrap;background-color: green;transition: width .6s ease;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$no_working_days}} Days</div>
+            {{-- <div class="progress-bar bg-warning" role="progressbar" style="width: {{$remaing_percenatge}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$remaining_working_days}}</div> --}}
+            </div>
+            <div class="" style="margin: 1% 5%;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;lex-wrap: wrap;">
+                <div class="col-md-6 tx row right-txt" style="width: 50%;margin: 0 5%;align-items: center;max-width: 50%;    margin-right: 1px;
+    "><div class="" style=""></div><p class="t1" style="width: 50%;margin-bottom: 0;">WORKING DAYS</p><div class="" style=""></div></div>
+                <div class="col-md-6 tx row lef" style="width: 50%;margin: 0 5%;align-items: center;max-width: 50%;"><div class="" style=""></div><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p><div class=""></div></div>
                 </div>
-        </div> --}}
+        </div>
+
+
+</div>
+
+    <hr  />
+    <br/>
+
+<div class="col-md-12 b1">
+            <h5 class="sm">DURATION IN PERCENTAGE</h5>
+            <div class="mb-3" style="margin: 1% 5%;display: -ms-flexbox; display: flex;height: 1rem;overflow: hidden;font-size: .75rem;background-color: #e9ecef;border-radius: 0.25rem;">
+            <div class="bg-success" role="progressbar" style="width:100%;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;color: #fff;
+    text-align: center;white-space: nowrap;background-color: green;transition: width .6s ease;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$no_working_days}} Days</div>
+            {{-- <div class="progress-bar bg-warning" role="progressbar" style="width: {{$remaing_percenatge}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$remaining_working_days}}</div> --}}
+            </div>
+            <div class="" style="margin: 1% 5%;display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;lex-wrap: wrap;">
+                <div class="col-md-6 tx row right-txt" style="    width: 50%;margin: 0 5%;align-items: center;max-width: 50%;    margin-right: 1px;
+    "><div class="" ></div><p class="t1" style="width: 50%;margin-bottom: 0;">WORKING DAYS</p><div class="" ></div></div>
+                <div class="col-md-6 tx row lef" style="width: 50%;margin: 0 5%;align-items: center;max-width: 50%;"><div class="" ></div><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p><div class=""></div></div>
+                </div>
+        </div>
+        <hr  />
+
+        <br/>
 
         <div class="col-md-12 b1">
             <h5 class="sm">PLANNED PROGRESS IN PERCENTAGE</h5>
-            <div class="progress mb-3">
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{$current_percentage}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$current_percentage}}%</div>
-                <div class="progress-bar bg-warning" role="progressbar" style="width: {{$remaing_percenatge}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$remaing_percenatge}}%</div>
+            <div class=" mb-3" style="margin: 1% 5%;display: -ms-flexbox;display: flex;height: 1rem;overflow: hidden;font-size: .75rem; background-color: #e9ecef;border-radius: 0.25rem;">
+                <div class="" role="progressbar" style="width: {{$current_percentage}}%;    display: -ms-flexbox;
+    display: flex; -ms-flex-direction: column;flex-direction: column; -ms-flex-pack: center;justify-content: center;
+    color: #fff; text-align: center; white-space: nowrap;background-color: #007bff;transition: width .6s ease;background-color: #28a745!important;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$current_percentage}}%</div>
+                <div class="" role="progressbar" style="width: {{$remaing_percenatge}}% ;display: -ms-flexbox;
+    display: flex; -ms-flex-direction: column;flex-direction: column; -ms-flex-pack: center;justify-content: center;
+    color: #fff; text-align: center; white-space: nowrap;background-color: #007bff;transition: width .6s ease;background-color: #ffc107!important;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$remaing_percenatge}}%</div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 tx row right-txt" style="align-items: center;justify-content: center;"><p class="t1" style="margin-bottom: 0;">WORKING DAYS</p></div>
-                    <div class="col-md-6 tx row lef" style="align-items: center;justify-content: center;"><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p></div>
+                <div class="row" style="margin: 1% 5%;">
+                    <div class="col-md-6 tx row right-txt" style="     float: left;   width: 50%;align-items: center;justify-content: center;"><p class="t1" style="margin-bottom: 0;">WORKING DAYS</p></div>
+                    <div class="col-md-6 tx row lef" style="       float: left; width: 50%;align-items: center;justify-content: center;"><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p></div>
                     </div>
         </div>
-    </div>
-</div>
-<div class="div-thre">
+
+        <br/>
+
+  <div class="div-thre">
     <h5 class="sm">ACTUAL PROGRESS IN PERCENTAGE</h5>
-    <div class="progress mb-3">
-    <div class="progress-bar bg-success" role="progressbar" style="width: {{$actual_current_progress}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">ACTUAL PROGRESS {{$actual_current_progress}}%</div>
+    <div class="mb-3" style="margin: 1% 5%;display: -ms-flexbox;
+    display: flex;height: 1rem;overflow: hidden;font-size: .75rem; background-color: #e9ecef;border-radius: 0.25rem;">
+    <div style="display: -ms-flexbox;
+    display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;color: #fff;
+    text-align: center; white-space: nowrap;background-color: green;transition: width .6s ease;" class="progress-bar bg-success" role="progressbar" style="width: {{$actual_current_progress}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">ACTUAL PROGRESS {{$actual_current_progress}}%</div>
     @php
     $delay=0;
     @endphp
@@ -182,30 +194,41 @@ h5.sm {
       @php 
         $delay=round($current_percentage-$actual_current_progress);
       @endphp
-      <div class="progress-bar bg-danger" role="progressbar" style="width: {{$delay}}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">DELAY {{$delay}}%</div>
+      <div style="width:100%;display: -ms-flexbox;
+    display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;color: #fff;
+    text-align: center; white-space: nowrap;background-color: red;transition: width .6s ease;" class="progress-bar bg-danger" role="progressbar" style="width: {{$delay}}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">DELAY {{$delay}}%</div>
     @endif
     
-      <div class="progress-bar bg-warning" role="progressbar" style="width: {{$actual_remaining_progress-$delay}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">REMAINING PROGRESS {{$actual_remaining_progress-$delay}}%</div>
+      <div style="width:100%;display: -ms-flexbox;
+    display: flex;-ms-flex-direction: column;flex-direction: column;-ms-flex-pack: center;justify-content: center;color: #fff;
+    text-align: center; white-space: nowrap;background-color: #ffc107!important;transition: width .6s ease;" class=" bg-warning" role="progressbar" style="width: {{$actual_remaining_progress-$delay}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">REMAINING PROGRESS {{$actual_remaining_progress-$delay}}%</div>
 
     <!-- <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div> -->
   </div>
-  <div class="progress mb-3" style="background-color: transparent;">
-    <div class="progress-bar" role="progressbar" style="width: 35%; background-color: transparent;color: #000;    text-align: center;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">ACTUAL PROGRESS</div>
-    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: transparent;color: #000;    text-align: center;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">ACTUAL REMAINING PROGRESS ({{$actual_current_progress}})+delay({{$delay}})={{$actual_remaining_progress+$delay}}%</div>
+<br/><br/>
 </div>
 </div>
-<table class="table">
+
+
+
+</div>
+
+
+
+<table class="table" style="margin: 0 auto;width: 1213px;">
     <thead class="thead-dark">
-      <tr>
-        <th scope="col">Title</th>
-        <th scope="col">Planned Start Date</th>
-        <th scope="col">Planned Finish</th>
-        <th scope="col">Duration</th>
-        <th scope="col">Planned % as of today</th>
-        <th scope="col">Actual Start Date</th>
-        <th scope="col">Actual Finish</th>
-        <th scope="col">Actual Duration</th>
-        <th scope="col">Actual % as of Today</th>
+      <tr style="background: #000;color: #fff;padding: 0%;float: left;">
+        <th scope="col"  style="background: #000;color: #fff; padding: 5px;vertical-align: top;">Title</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned Start Date</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned Finish</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;vertical-align: top;">Duration</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned % as of today</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Planned Value</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Actual Start Date</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Actual Finish</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Actual Duration</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Actual % as of Today</th>
+        <th scope="col" style="background: #000;color: #fff; padding: 5px;">Earned Value</th>
       </tr>
     </thead>
     <tbody>
@@ -221,10 +244,12 @@ h5.sm {
         <td>{{$value['planed_end']}}</td>
         <td>{{$value['duration']}}</td>
         <td>{{$value['percentage_as_today']}}</td>
+        <td>Planned Value</td>
         <td>{{$value['actual_start']}}</td>
         <td>{{$value['actual_end']}}</td>
         <td>{{$value['actual_duration']}}</td>
         <td>{{$value['actual_percent']}}</td>
+        <td>Earned Value</td>
       </tr>
      @empty
       <tr>

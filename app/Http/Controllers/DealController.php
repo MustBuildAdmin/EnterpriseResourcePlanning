@@ -78,7 +78,8 @@ class DealController extends Controller
             $cnt_deal['this_week']   = Deal::getDealSummary($curr_week);
             $cnt_deal['last_30days'] = Deal::getDealSummary($last_30days);
 
-            return view('deals.index', compact('pipelines', 'pipeline', 'cnt_deal'));
+            // return view('deals.index', compact('pipelines', 'pipeline', 'cnt_deal'));
+            return view('crm.deals.index', compact('pipelines', 'pipeline', 'cnt_deal'));
         }
         else
         {
