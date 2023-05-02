@@ -11,7 +11,10 @@ class LinkController extends Controller
 {
 
     public function store(Request $request){
-        $max_id=Link::max('id');
+        $max_id=Link::where(['project_id'=>Session::get('project_id')])->max('id');
+        if($max_id==null){
+            $max_id=0;
+        }
         $link = new Link();
         $link->id = $max_id+1;
         $link->type = $request->type;
@@ -20,7 +23,7 @@ class LinkController extends Controller
         $link->instance_id = Session::get('project_instance');
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['main_id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
  
         return response()->json([
             "action"=> "inserted",
@@ -35,18 +38,18 @@ class LinkController extends Controller
         $link->source = $request->source;
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['main_id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
         return response()->json([
             "action"=> "updated"
         ]);
     }
  
     public function destroy($id){
-        $project=Session::get('project_id');
         $link = Link::find($id);
         $link->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $link->delete();
- 
+
+        Con_task::where(['id'=>$link->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>0]);
         return response()->json([
             "action"=> "deleted"
         ]);
