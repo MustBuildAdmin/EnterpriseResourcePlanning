@@ -190,6 +190,30 @@
 							</a>
 						</div>
 						@endif
+						@if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company' && \Auth::user()->type != 'super admin')
+						
+						<div class="col-md-6 col-xl-2">
+							<a class="card card-link" href="{{route('my-info')}}" >
+								<div class="card-body">
+									<div class="row">
+										<div class="col-auto">
+                                            <span class="bg-success text-white avatar">
+											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+												<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+												<path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+												<path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"> </path>
+											</svg>
+                                            </span>
+										</div>
+										<div class="col">
+											<div class="font-weight-medium mt-2">{{__('My Details')}}</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						@endif
 						@if((\Auth::user()->type != 'super admin'))
                         @if( Gate::check('manage company plan') || Gate::check('manage order') || Gate::check('manage company settings'))
 						<div class="col-md-6 col-xl-2">
