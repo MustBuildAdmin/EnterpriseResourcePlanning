@@ -5,7 +5,11 @@
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
     <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
-
+<style>
+    .table-responsive {
+        max-width: none !important;
+    }
+</style>
 @include('construction_project.side-menu')
 
 

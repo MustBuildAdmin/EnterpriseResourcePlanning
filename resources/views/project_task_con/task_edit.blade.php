@@ -4,7 +4,7 @@
         <div class="col-12">
             <div class="form-group">
                 {{ Form::label('name', __('Percentage'),['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::text('percentage', $data['percentage'], ['class' => 'form-control','required'=>'required','max'=>'100','min'=>'1']) }}
+                {{ Form::number('percentage', $data['percentage'], ['class' => 'form-control','required'=>'required','max'=>'100','min'=>'1']) }}
                 {{ Form::hidden('task_id', $task_id, ['class' => 'form-control']) }}
                 {{ Form::hidden('user_id', \Auth::user()->id, ['class' => 'form-control']) }}
                 {{ Form::hidden('get_date', $data['get_date'], ['class' => 'form-control']) }}

@@ -3,7 +3,7 @@
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
-    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
 <div class="page-wrapper dashboard">
 
@@ -326,7 +326,7 @@
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['open_task']['percentage'] }}%"></div>
                 </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
+                {{-- <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
                         <span class="text-muted">{{__('Completed Milestone')}}</span>
                     </div>
@@ -334,57 +334,26 @@
                 </div>
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['milestone']['percentage'] }}%"></div>
-                </div>
+                </div> --}}
             </div>
         </div>
   </div>
  </div>
         <div class="col-lg-4 bgwhite">
-          <div class="card"  style="height: 352px;">
-            <div class="card-body">
-                <div class="d-flex align-items-start">
-                    <div class="theme-avtar bg-primary">
-                        <i class="ti ti-clipboard-list"></i>
-                    </div>
-                    <div class="ms-3">
-                        <p class="text-muted mb-0">{{__('Last 7 days hours spent')}}</p>
-                        <h4 class="mb-0">{{ $project_data['timesheet_chart']['total'] }}</h4>
-
-                    </div>
-                </div>
-                <div id="timesheet_chart"></div>
+          <div class="card">
+            <div class="card-header">
+              <div class="headingnew align-items-center justify-content-between">
+                <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
+                  <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
+                    <i class="ti ti-plus"></i>
+                  </a>
+                </div> @endcan
+              </div>
             </div>
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('Total project time spent')}}</span>
-                    </div>
-                    <span>{{ $project_data['time_spent']['total'] }}</span>
-                </div>
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['time_spent']['percentage'] }}%"></div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-
-                        <span class="text-muted">{{__('Allocated hours on task')}}</span>
-                    </div>
-                    <span>{{ $project_data['task_allocated_hrs']['hrs'] }}</span>
-                </div>
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['task_allocated_hrs']['percentage'] }}%"></div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('User Assigned')}}</span>
-                    </div>
-                    <span>{{ $project_data['user_assigned']['total'] }}</span>
-                </div>
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['user_assigned']['percentage'] }}%"></div>
-                </div>
+              <ul class="list-group list-group-flush list" id="project_users"></ul>
             </div>
-        </div>
+          </div>
         </div>
       </div>
     </section>
@@ -393,8 +362,8 @@
 <div class="row">
 
 
-<div class="col-md-6 col-lg-6 mb-6 mb-lg-0">
-  <div class="card">
+{{-- <div class="col-md-6 col-lg-6 mb-6 mb-lg-0"> --}}
+  {{-- <div class="card">
     <div class="card-header">
       <div class="headingnew align-items-center justify-content-between">
         <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
@@ -407,12 +376,12 @@
     <div class="card-body">
       <ul class="list-group list-group-flush list" id="project_users"></ul>
     </div>
-  </div>
-</div>
+  </div> --}}
+{{-- </div> --}}
 
 
 
-<div class="col-md-6 col-lg-6 mb-6 mb-md-0">
+<div class="col-md-12 col-lg-6 mb-6 mb-md-0">
           @can('view activity')
  
               <div class="card activity-scroll">
@@ -441,7 +410,7 @@
               </div>
       @endcan
         
-        </div>
+      </div>
 
 
 

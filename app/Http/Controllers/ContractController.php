@@ -43,7 +43,8 @@ class ContractController extends Controller
                 $cnt_contract['this_week']   = \App\Models\Contract::getContractSummary($curr_week);
                 $cnt_contract['last_30days'] = \App\Models\Contract::getContractSummary($last_30days);
 
-                return view('contract.index', compact('contracts', 'cnt_contract'));
+                // return view('contract.index', compact('contracts', 'cnt_contract'));
+                return view('crm.contract.index', compact('contracts', 'cnt_contract'));
             }
             elseif(\Auth::user()->type=='client')
             {
@@ -64,7 +65,8 @@ class ContractController extends Controller
                 $cnt_contract['this_week']   = \App\Models\Contract::getContractSummary($curr_week);
                 $cnt_contract['last_30days'] = \App\Models\Contract::getContractSummary($last_30days);
 
-                return view('contract.index', compact('contracts', 'cnt_contract'));
+                // return view('contract.index', compact('contracts', 'cnt_contract'));
+                return view('crm.contract.index', compact('contracts', 'cnt_contract'));
             }
 
             $defualtView         = new UserDefualtView();
@@ -72,7 +74,8 @@ class ContractController extends Controller
             $defualtView->module = 'contract';
             $defualtView->view   = 'list';
             User::userDefualtView($defualtView);
-            return view('contract.index', compact('contracts'));
+            // return view('contract.index', compact('contracts'));
+            return view('crm.contract.index', compact('contracts'));
         }
         else
         {

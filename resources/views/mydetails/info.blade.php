@@ -1,114 +1,256 @@
 @include('new_layouts.header')
-    <div class="page-wrapper">
-        <!-- Page header -->
-        <div class="page-header d-print-none">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <h2 class="page-title">
-                        {{ __('My Details') }}
-                        </h2>
-                    </div>
-                </div>
+@include('new_layouts.usersidebar')
+
+    @if(!empty($employee))
+        <div class="float-end m-2 mb-3">
+            @can('edit employee')
+                <a href="{{route('employee.edit',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}" data-bs-toggle="tooltip" title="{{__('Edit')}}"class="btn btn-sm btn-primary">
+                    <i class="ti ti-pencil"></i>
+                </a>
+            @endcan
+        </div>
+
+        <div class="text-end">
+            <div class="d-flex justify-content-end drp-languages mb-3">
+                <ul class="list-unstyled mb-0 m-2">
+                    <li class="dropdown dash-h-item status-drp">
+                        <a style="text-decoration: none;" data-bs-toggle="dropdown" href="#"
+                           role="button" aria-haspopup="false" aria-expanded="false">
+                            <span class="drp-text hide-mob text-primary"> {{__('Joining Letter')}}</span>
+                            <i class="ti ti-chevron-down drp-arrow nocolor hide-mob"></i>
+                        </a>
+                        <div class="dropdown-menu dash-h-dropdown">
+                            <a href="{{route('joiningletter.download.pdf',$employee->id)}}" class=" btn-icon dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top"  target="_blanks"><i class="ti ti-download ">&nbsp;</i>{{__('PDF')}}</a>
+
+                            <a href="{{route('joininglatter.download.doc',$employee->id)}}" class=" btn-icon dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top"  target="_blanks"><i class="ti ti-download ">&nbsp;</i>{{__('DOC')}}</a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-unstyled mb-0 m-2">
+                    <li class="dropdown dash-h-item status-drp">
+                        <a style="text-decoration: none;" data-bs-toggle="dropdown" href="#"
+                           role="button" aria-haspopup="false" aria-expanded="false">
+                            <span class="drp-text hide-mob text-primary"> {{__('Experience Certificate')}}</span>
+                            <i class="ti ti-chevron-down drp-arrow nocolor hide-mob"></i>
+                        </a>
+                        <div class="dropdown-menu dash-h-dropdown">
+                            <a href="{{route('exp.download.pdf',$employee->id)}}" class=" btn-icon dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top"  target="_blanks"><i class="ti ti-download ">&nbsp;</i>{{__('PDF')}}</a>
+
+                            <a href="{{route('exp.download.doc',$employee->id)}}" class=" btn-icon dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top"  target="_blanks"><i class="ti ti-download ">&nbsp;</i>{{__('DOC')}}</a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-unstyled mb-0 m-2">
+                    <li class="dropdown dash-h-item status-drp">
+                        <a style="text-decoration: none;" data-bs-toggle="dropdown" href="#"
+                           role="button" aria-haspopup="false" aria-expanded="false">
+                            <span class="drp-text hide-mob text-primary"> {{__('NOC')}}</span>
+                            <i class="ti ti-chevron-down drp-arrow nocolor hide-mob"></i>
+                        </a>
+                        <div class="dropdown-menu dash-h-dropdown">
+                            <a href="{{route('noc.download.pdf',$employee->id)}}" class=" btn-icon dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top"  target="_blanks"><i class="ti ti-download ">&nbsp;</i>{{__('PDF')}}</a>
+                            <a href="{{route('noc.download.doc',$employee->id)}}" class=" btn-icon dropdown-item" data-bs-toggle="tooltip" data-bs-placement="top"  target="_blanks"><i class="ti ti-download ">&nbsp;</i>{{__('DOC')}}</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
-        <!-- Page body -->
-        <div class="page-body">
-            <div class="container-xl">
-                <div class="card">
-                    <div class="row g-0">
-                    @include('new_layouts.usersidebar')
-                        <div class="col d-flex flex-column">
-                        <div class="card-header">
-                <h3 class="card-title">Base info</h3>
-              </div>
-              <div class="card-body">
-                <div class="datagrid">
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Registrar</div>
-                    <div class="datagrid-content">Third Party</div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Nameservers</div>
-                    <div class="datagrid-content">Third Party</div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Port number</div>
-                    <div class="datagrid-content">3306</div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Expiration date</div>
-                    <div class="datagrid-content">–</div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Creator</div>
-                    <div class="datagrid-content">
-                      <div class="d-flex align-items-center">
-                        <span class="avatar avatar-xs me-2 rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                        Paweł Kuna
-                      </div>
+    @endif
+
+    @if(!empty($employee))
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card ">
+                            <div class="card-body employee-detail-body fulls-card">
+                                <h5>{{__('Personal Detail')}}</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('EmployeeId')}} : </strong>
+                                            <span>{{$employeesId}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm font-style">
+                                            <strong class="font-bold">{{__('Name')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->name:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm font-style">
+                                            <strong class="font-bold">{{__('Email')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->email:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Date of Birth')}} :</strong>
+                                            <span>{{\Auth::user()->dateFormat(!empty($employee)?$employee->dob:'')}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Phone')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->phone:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Address')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->address:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Salary Type')}} :</strong>
+                                            <span>{{!empty($employee->salaryType)?$employee->salaryType->name:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Basic Salary')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->salary:''}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Age</div>
-                    <div class="datagrid-content">15 days</div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Edge network</div>
-                    <div class="datagrid-content">
-                      <span class="status status-green">
-                        Active
-                      </span>
+
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card ">
+                            <div class="card-body employee-detail-body fulls-card">
+                                <h5>{{__('Company Detail')}}</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Branch')}} : </strong>
+                                            <span>{{!empty($employee->branch)?$employee->branch->name:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm font-style">
+                                            <strong class="font-bold">{{__('Department')}} :</strong>
+                                            <span>{{!empty($employee->department)?$employee->department->name:''}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Designation')}} :</strong>
+                                            <span>{{!empty($employee->designation)?$employee->designation->name:''}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Date Of Joining')}} :</strong>
+                                            <span>{{\Auth::user()->dateFormat(!empty($employee)?$employee->company_doj:'')}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Avatars list</div>
-                    <div class="datagrid-content">
-                      <div class="avatar-list avatar-list-stacked">
-                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                        <span class="avatar avatar-xs rounded">JL</span>
-                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                        <span class="avatar avatar-xs rounded">+3</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Checkbox</div>
-                    <div class="datagrid-content">
-                      <label class="form-check">
-                        <input class="form-check-input" type="checkbox" checked>
-                        <span class="form-check-label">Click me</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Icon</div>
-                    <div class="datagrid-content">
-                      <!-- Download SVG icon from http://tabler-icons.io/i/check -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
-                      Checked
-                    </div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Form control</div>
-                    <div class="datagrid-content">
-                      <input type="text" class="form-control form-control-flush" placeholder="Input placeholder">
-                    </div>
-                  </div>
-                  <div class="datagrid-item">
-                    <div class="datagrid-title">Longer description</div>
-                    <div class="datagrid-content">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    </div>
-                  </div>
                 </div>
-              </div>
+
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card ">
+                            <div class="card-body employee-detail-body fulls-card">
+                                <h5>{{__('Document Detail')}}</h5>
+                                <hr>
+                                <div class="row">
+                                    @php
+
+                                        $employeedoc = !empty($employee)?$employee->documents()->pluck('document_value',__('document_id')):[];
+                                    @endphp
+                                    @if(!$documents->isEmpty())
+                                        @foreach($documents as $key=>$document)
+                                            <div class="col-md-6">
+                                                <div class="info text-sm">
+                                                    <strong class="font-bold">{{$document->name }} : </strong>
+                                                    <span><a href="{{ (!empty($employeedoc[$document->id])?asset(Storage::url('uploads/document')).'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="text-center">
+                                            No Document Type Added.!
+                                        </div>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card ">
+                            <div class="card-body employee-detail-body fulls-card">
+                                <h5>{{__('Bank Account Detail')}}</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Account Holder Name')}} : </strong>
+                                            <span>{{!empty($employee)?$employee->account_holder_name:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm font-style">
+                                            <strong class="font-bold">{{__('Account Number')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->account_number:''}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Bank Name')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->bank_name:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Bank Identifier Code')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->bank_identifier_code:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Branch Location')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->branch_location:''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info text-sm">
+                                            <strong class="font-bold">{{__('Tax Payer Id')}} :</strong>
+                                            <span>{{!empty($employee)?$employee->tax_payer_id:''}}</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
+
+</div>
+</div>
 @include('new_layouts.footer')
+<style>
+.row {
+    margin-top: 10px;
+}
+#sidebar ul li a.active {
+    color: #3421c0;
+    background: #ffffff;
+    text-decoration: none;
+}
+</style>

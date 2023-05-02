@@ -149,30 +149,39 @@
     <nav id="sidebar">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
-                <li class="{{ (request()->is('projects-view*') ? 'active' : '')}}">
-                    <a href="{{route('filter.project.view')}}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
-                            class="list">{{ __('Productivity') }}</span></a>
+                @can('manage lead')
+                <li class="{{ (Request::route()->getName() == 'leads.list' || Request::route()->getName() == 'leads.index' || Request::route()->getName() == 'leads.show') ? ' active' : '' }}">
+                    <a href="{{ route('leads.index') }}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
+                            class="list">{{__('Leads')}}</span></a>
                 </li>
-
-                <li class="">
-                    <a href="#"><span
+                @endcan
+                @can('manage deal')
+                <li class="{{ (Request::route()->getName() == 'deals.list' || Request::route()->getName() == 'deals.index' || Request::route()->getName() == 'deals.show') ? ' active' : '' }}">
+                    <a href="{{ route('deals.index') }}"><span
                             class="icon"><i class="ti ti-users"></i>
-                        </span><span class="list">{{ __('Diary') }}</span>
+                        </span><span class="list">{{__('Deals')}}</span>
                     </a>
                 </li>
-                <li class="{{ (request()->is('taskBoard.view*') ? 'active' : '')}}">
-                    <a href="{{ route('taskBoard.view',['list']) }}"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                            class="list">{{ __('Task') }}</span></a>
+                @endcan
+                @can('manage form builder')
+                <li class="{{ (Request::segment(1) == 'form_builder' || Request::segment(1) == 'form_response')?'active open':''}}">
+                    <a href="{{route('form_builder.index')}}"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span
+                            class="list">{{__('Form Builder')}}</span></a>
                 </li>
+                @endcan
+                @if(\Auth::user()->type=='company')
+                <li class="{{ (Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show')?'active':''}}">
+                    <a href="{{route('contract.index')}}"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span
+                            class="list">{{__('Contract')}}</span></a>
+                </li>
+                @endif
+                @if(Gate::check('manage lead stage') || Gate::check('manage pipeline') ||Gate::check('manage source') ||Gate::check('manage label') || Gate::check('manage stage'))
+                <li class='{{(Request::segment(1) == 'stages' || Request::segment(1) == 'labels' || Request::segment(1) == 'sources' || Request::segment(1) == 'lead_stages' || Request::segment(1) == 'pipelines' || Request::segment(1) == 'product-category' || Request::segment(1) == 'product-unit' || Request::segment(1) == 'payment-method' || Request::segment(1) == 'custom-field' || Request::segment(1) == 'chart-of-account-type')? 'active dash-trigger' :''}}'>
+                    <a href="{{ route('pipelines.index') }}"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span
+                            class="list">{{__('CRM System Setup')}}</span></a>
+                </li>
+                @endif
 
-                <li class="{{ (request()->is('calendar_new*') ? 'active' : '')}}">
-                    <a href="{{ route('task.newcalendar',['all']) }}"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                            class="list">{{ __('Task Calender') }}</span></a>
-                </li>
-                <li class='{{ (request()->is('project_report*') ? 'active' : '')}}'>
-                    <a href="{{route('project_report.index')}}"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span
-                            class="list">{{ __('Project Report') }}</span></a>
-                </li>
             </ul>
         </div>
     </nav>

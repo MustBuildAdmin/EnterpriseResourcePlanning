@@ -274,7 +274,7 @@
 
                     $('#pc-dt-render-column-cells tbody').html(tr);
                     var table = document.querySelector("#pc-dt-render-column-cells");
-                    var datatable = new simpleDatatables.DataTable(table);
+                    // var datatable = new simpleDatatables.DataTable(table);
 
                     // if (data.length > 0) {
                     //     var dataTable = new simpleDatatables.DataTable(

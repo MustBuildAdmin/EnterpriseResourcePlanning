@@ -1,13 +1,4 @@
-/*!
-* Tabler v1.0.0-beta17 (https://tabler.io)
-* @version 1.0.0-beta17
-* @link https://tabler.io
-* Copyright 2018-2023 The Tabler Authors
-* Copyright 2018-2023 codecalm.net Paweł Kuna
-* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
-*/
 @charset "UTF-8";
-
 :root,
 [data-bs-theme=light] {
     --tblr-blue: #206bc4;
@@ -28201,4 +28192,146 @@ i.ti.ti-pencil {
 }
 .iconsexp i.ti.ti-plus {
     color: #000 !important;
+}
+
+
+.horizontal-scroll-cards p {
+    width: 120px;
+}
+.horizontal-scroll-cards  img {
+    border: 2px solid #51459d;
+    padding: 3px;
+}
+.full-circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.card-body.project_table {
+    height: 400px;
+    overflow-y: auto;
+}
+.project_table::-webkit-scrollbar {
+    width: 3px;
+}
+.project_table::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 3px #f2f2f2;
+}
+
+.project_table::-webkit-scrollbar-thumb {
+    background-color: #bababa;
+}
+
+.round-img {
+    width: 80px;
+    height: 80px;
+    object: cover !important;
+}
+
+
+.big-logo {
+    width: 150px;
+    height: 60px;
+}
+.full-card{
+    min-height: 236px;
+}
+.fulls-card{
+    min-height: 180px;
+}
+
+.kanban-card img {
+    position: relative;
+    width: 39px;
+    height: 38px;
+    border-radius: 50% !important;
+    z-index: 2;
+    transition: all 0.1s ease-in-out;
+    border: 2px solid #ffffff;
+}
+
+
+.grid_user_image img {
+    margin-left: -10px;
+    border: 2px solid #dbdbdb;
+}
+
+.dataTable-table > thead > tr > th {
+    padding: 15px 40px 15px 0;
+}
+.dataTable-sorter::before, .dataTable-sorter::after {
+    right: -20px;
+}
+.status_badge {
+    min-width: 87px;
+}
+
+.team-lists > div p {
+    padding: 0 5px;
+    margin-bottom: 0;
+}
+
+.team-lists img {
+    margin: 0 auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #51459d;
+    padding: 5px;
+}
+
+.user-group img {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    z-index: 2;
+    transition: all 0.1s ease-in-out;
+    border: 2px solid #ffffff;
+}
+
+.user-group img + img {
+    margin-left: -14px;
+}
+
+.user-group img:hover {
+    z-index: 5;
+}
+
+.team-msg .img-user {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+}
+
+.team-msg .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+}
+.team-msg .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    /* max-width: 1072px; */
+    overflow: auto;
+}
+
+#content {
+    width: 100% !important;
+    display: table-row;
+    float: left;
+}
+
+.calendarrght {
+    height: 34px;
+    margin: 0 3px;
+}
+.floatrght {
+    float: right;
 }

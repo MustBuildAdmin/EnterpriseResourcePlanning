@@ -1,11 +1,23 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main',['hrm_header' => 'Promotion'])
+@include('hrm.hrm_main',['hrm_header' => ''])
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Promotion</h2>
+  </div>
+  <div class="col-md-6 float-end">
 
     @can('create promotion')
-        <a href="#" data-url="{{ route('promotion.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Promotion')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
+        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('promotion.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Promotion')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan
+
+  </div>
+</div>
+
+
+
     <div class="table-responsive">
         <table class="table card-table table-vcenter text-nowrap datatable">
             <thead>

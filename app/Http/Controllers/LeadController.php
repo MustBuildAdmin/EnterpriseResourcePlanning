@@ -55,7 +55,8 @@ class LeadController extends Controller
 
             $pipelines = Pipeline::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            return view('leads.index', compact('pipelines', 'pipeline'));
+            // return view('leads.index', compact('pipelines', 'pipeline'));
+            return view('crm.index', compact('pipelines', 'pipeline'));
         }
         else
         {
