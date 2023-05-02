@@ -174,9 +174,7 @@ ul.collapse li{
 
 .collapseToggle {
     display: block;
-    cursor: pointer;
-    padding-right: 5px;
-    padding-top: 27px;
+    cursor: pointer;s
 }
 
 #toggleIcon {
@@ -235,18 +233,17 @@ ul.collapse li{
   font-size: 0px;
 }
 #toggleIcon{
-  background: #3421c0;
+ background: #3421c0;
     color: #fff;
-    width: 50px;
-    height: 50px;
-    text-align: center;
-    line-height: 48px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-    margin-left: -75px;
+    width: 30px;
+    height: 30px;
+    margin-left: -21px;
     z-index: 9999999;
     position: absolute;
-        margin-top: -50px;
+    margin-top: -30px;
+    top: 10.5%;
+    line-height: 30px;
+    text-align: center;
 }
 .sidebar--Collapse ul li a.dropdown-toggle::after{
   opacity: 0;
