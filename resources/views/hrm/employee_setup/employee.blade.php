@@ -12,7 +12,9 @@
                     <th>{{__('Designation') }}</th>
                     <th>{{__('Date Of Joining') }}</th>
                     <th> {{__('Last Login')}}</th>
-                    <th width="200px">{{__('Action')}}</th>
+                    @if(Gate::check('edit employee') || Gate::check('delete employee'))
+                        <th width="200px">{{__('Action')}}</th>
+                    @endif
                 </tr>
             </thead>
             <tbody class="font-style">
