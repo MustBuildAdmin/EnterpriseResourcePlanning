@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Session;
 use DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 class ProjectReportController extends Controller
 {
     /**
@@ -258,8 +259,10 @@ class ProjectReportController extends Controller
                     ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
                 })->get();
                 $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))->orderBy('id','ASC')->pluck('progress')->first();
+                $actual_current_progress=round($actual_current_progress);
                 //$todayprogress=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('created_at',Carbon::now())->get();
                 $actual_remaining_progress=100-$actual_current_progress;
+                $actual_remaining_progress=round($actual_remaining_progress);
                 // current progress amount
                 $taskdata=array();
                 foreach ($project_task as $key => $value) {
@@ -329,12 +332,12 @@ class ProjectReportController extends Controller
                         'planed_start'=>$planned_start,
                         'planed_end'=>$planned_end,
                         'duration'=>$value->duration.' Days',
-                        'percentage_as_today'=>$current_percentage.'%',
+                        'percentage_as_today'=>round($current_percentage).'%',
                         'actual_start'=>$actual_start,
                         'actual_end'=>$actual_end,
                         'actual_duration'=>$value->duration.' Days',
                         'remain_duration'=>$value->duration.' Days',
-                        'actual_percent'=>$value->progress.'%',
+                        'actual_percent'=>round($value->progress).'%',
                     );
                 }
             
@@ -343,7 +346,9 @@ class ProjectReportController extends Controller
 
                 // end
                 // $project=Con_task::where('id',Session::has('project_id'))->where('start_date', '>=',Carbon::now())->get();
-
+                
+                // $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'))->setPaper('a4', 'landscape')->setWarnings(false);
+                // return $pdf->download('Report.pdf');
                 return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'));
 
                 

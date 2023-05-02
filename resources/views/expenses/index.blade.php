@@ -3,7 +3,11 @@
 {{-- @section('page-title')
     {{ucwords($project->project_name).__("'s Expenses")}}
 @endsection --}}
-
+<style>
+.table-responsive {
+    max-width: none !important;
+}
+</style>
 
 {{-- @section('breadcrumb')
 
