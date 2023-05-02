@@ -89,7 +89,7 @@
 						@if(\Auth::user()->show_hrm() == 1)
 						@can('show hrm dashboard')
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{url('hrm_doc_setup')}}">
+							<a class="card card-link" href="{{url('hrm_dashboard')}}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">

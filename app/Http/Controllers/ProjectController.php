@@ -327,9 +327,9 @@ class ProjectController extends Controller
             {
                 $project_data = [];
                 // Task Count
-                $tasks = ProjectTask::where('project_id',$project->id)->get();
+                $tasks = Con_task::where('project_id',$project->id)->get();
                 $project_task         = $tasks->count();
-                $completedTask = ProjectTask::where('project_id',$project->id)->where('is_complete',1)->get();
+                $completedTask = Con_task::where('project_id',$project->id)->where('progress',100)->get();
 
                 $project_done_task    = $completedTask->count();
 
@@ -376,8 +376,12 @@ class ProjectController extends Controller
                 // end Day left
 
                 // Open Task
-                    $remaining_task = ProjectTask::where('project_id', '=', $project->id)->where('is_complete', '=', 0)->where('created_by',\Auth::user()->creatorId())->count();
-                    $total_task     = $project->tasks->count();
+                    //$remaining_task = Con_task::where('project_id', '=', $project->id)->where('progress', '=', 100)->where('created_by',\Auth::user()->creatorId())->count();
+                    // $remaining_task = Con_task::where('project_id', '=', $project->id)->where('progress', '=', 100)->count();
+                    // $total_task     = $project->tasks->count();
+                    $remaining_task = Con_task::where('project_id', '=', $project->id)->where('progress', '=', 100)->count();
+                    $total_task     = $project_data['task']['total'];
+                    
 
                 $project_data['open_task'] = [
                     'tasks' => number_format($remaining_task) . '/' . number_format($total_task),
@@ -1470,6 +1474,7 @@ class ProjectController extends Controller
             
         $total_pecentage=Task_progress::where('task_id',$task_id)->sum('percentage');
         $per_percentage=$total_pecentage/$no_working_days;
+        $per_percentage=round($per_percentage);
       
         Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
         // update the  gantt
@@ -1484,6 +1489,7 @@ class ProjectController extends Controller
         foreach ($alltask as $key => $value) {
                 $task_id=$value->main_id;
                 $total_percentage=Con_task::where('project_id',$project_id)->where('parent',$value->id)->avg('progress');
+                $total_percentage=round($total_percentage);
                 if($total_percentage!=NUll){
                     Con_task::where('main_id',$task_id)->update(['progress'=>$total_percentage]);
                 }
