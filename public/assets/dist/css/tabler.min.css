@@ -1,13 +1,4 @@
-/*!
-* Tabler v1.0.0-beta17 (https://tabler.io)
-* @version 1.0.0-beta17
-* @link https://tabler.io
-* Copyright 2018-2023 The Tabler Authors
-* Copyright 2018-2023 codecalm.net Paweł Kuna
-* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
-*/
 @charset "UTF-8";
-
 :root,
 [data-bs-theme=light] {
     --tblr-blue: #206bc4;
@@ -28318,12 +28309,17 @@ i.ti.ti-pencil {
     padding-left: 0;
     padding-right: 0;
 }
+.team-msg .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 
 
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     background: #fff;
-    max-width: 1072px;
+    /* max-width: 1072px; */
     overflow: auto;
 }
