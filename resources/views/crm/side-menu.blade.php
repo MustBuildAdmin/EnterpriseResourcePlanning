@@ -149,6 +149,12 @@
     <nav id="sidebar">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
+                @can('manage client')
+                <li class="{{ (Request::route()->getName() == 'clients.index' || Request::segment(1) == 'clients' || Request::route()->getName() == 'clients.edit') ? ' active' : '' }}">
+                    <a href="{{ route('clients.index') }}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
+                            class="list">{{__('Clients')}}</span></a>
+                </li>
+                @endcan
                 @can('manage lead')
                 <li class="{{ (Request::route()->getName() == 'leads.list' || Request::route()->getName() == 'leads.index' || Request::route()->getName() == 'leads.show') ? ' active' : '' }}">
                     <a href="{{ route('leads.index') }}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
