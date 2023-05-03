@@ -24066,8 +24066,7 @@ a.step-item:hover {
     position: absolute;
     top: 0;
     left: 50%;
-    z-index: 1;
-    box-sizing: content-box;
+    z-index: 1;ard
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28371,4 +28370,18 @@ i.ti.ti-pencil {
     --tblr-bg-opacity: 1;
     background-color: rgba(var(--tblr-primary-rgb), var(--tblr-bg-opacity)) !important;
     background: none !important;
+}
+
+
+.constructionboard .card-body {
+    position: relative;
+    min-height: 172px;
+    overflow-y: scroll;
+}
+
+.constructionboard small.text-muted {
+    text-align: revert;
+    float: left;
+    word-wrap: break-word;
+    width: 140px;
 }
