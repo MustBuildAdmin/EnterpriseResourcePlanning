@@ -132,7 +132,6 @@ h5.sm {
       {{-- <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">15 Days</div> --}}
       <!-- <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div> -->
     </div>
-
     <div class="progress mb-3" style="background-color: transparent;">
     <div class="progress-bar" role="progressbar" style="width: 100%; background-color: transparent;color: #000;    text-align: end;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Base Program End Date ({{ date("d-m-Y", strtotime($end)) }})</div>
     {{-- <div class="progress-bar" role="progressbar" style="width: 30%; background-color: transparent;color: #000;    text-align: end;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Rev-1 Program End Date (30-9-2021)</div> --}}
@@ -173,7 +172,6 @@ h5.sm {
         {{-- <div class="col-md-6 b1">
             <h5 class="sm">DURATION IN PERCENTAGE</h5>
             <div class="progress mb-3">
-
             <div class="progress-bar bg-success" role="progressbar" style="width: {{$actual_current_progress}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$actual_current_progress}}%</div>
             @if($actual_remaining_progress>0)
             <div class="progress-bar bg-warning" role="progressbar" style="width: {{$actual_remaining_progress}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$actual_remaining_progress}}%</div>
@@ -211,7 +209,6 @@ h5.sm {
       @endphp
       <div class="progress-bar bg-danger" role="progressbar" style="width: {{$delay}}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">DELAY {{$delay}}%</div>
     @endif
-
       <div class="progress-bar bg-warning" role="progressbar" style="width: {{$actual_remaining_progress-$delay}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">REMAINING PROGRESS {{$actual_remaining_progress-$delay}}%</div>
 
     <!-- <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div> -->

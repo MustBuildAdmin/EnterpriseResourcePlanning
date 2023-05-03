@@ -24066,8 +24066,7 @@ a.step-item:hover {
     position: absolute;
     top: 0;
     left: 50%;
-    z-index: 1;
-    box-sizing: content-box;
+    z-index: 1;ard
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27354,7 +27353,7 @@ a.mx-3.btn.btn-sm.align-items-center.bs-pass-para {
 }
 
 a.btn.btn-sm {
-    background: green;
+    background: #3421c0;
     min-width: 31px;
     font-size: 16px;
     border: none;
@@ -28334,4 +28333,55 @@ i.ti.ti-pencil {
 }
 .floatrght {
     float: right;
+}
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    display: flex;
+    /* align-items: center; */
+    justify-content: start;
+    line-height: 33px;
+    background: #3421c0;
+}
+#sidebar ul li a.active {
+    color: #ffffff;
+    /* background: #ffffff; */
+    text-decoration: none;
+}
+#sidebar ul li a:hover {
+    color: #ffffff;
+    background: #ffffff;
+    text-decoration: none;
+}
+
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: start; */
+    line-height: 33px;
+    border: none;
+}
+
+.table-responsive .bg-primary {
+    --tblr-bg-opacity: 1;
+    background-color: rgba(var(--tblr-primary-rgb), var(--tblr-bg-opacity)) !important;
+    background: none !important;
+}
+
+
+.constructionboard .card-body {
+    position: relative;
+    min-height: 172px;
+    overflow-y: scroll;
+}
+
+.constructionboard small.text-muted {
+    text-align: revert;
+    float: left;
+    word-wrap: break-word;
+    width: 140px;
 }

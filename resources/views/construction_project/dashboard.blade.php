@@ -236,7 +236,7 @@
 
 
 
-   <section class="statistics">
+   <section class="statistics constructionboard">
       <div class="row">
         <div class="col-lg-4 bgwhite">
 

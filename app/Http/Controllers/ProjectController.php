@@ -471,7 +471,6 @@ class ProjectController extends Controller
                     $remaining_task = Con_task::where('project_id', '=', $project->id)->where('progress', '=', 100)->count();
                     $total_task     = $project_data['task']['total'];
 
-
                 $project_data['open_task'] = [
                     'tasks' => number_format($remaining_task) . '/' . number_format($total_task),
                     'percentage' => Utility::getPercentage($remaining_task, $total_task),
@@ -1564,7 +1563,6 @@ class ProjectController extends Controller
         $total_pecentage=Task_progress::where('task_id',$task_id)->sum('percentage');
         $per_percentage=$total_pecentage/$no_working_days;
         $per_percentage=round($per_percentage);
-
         Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
         // update the  gantt
         $this->taskpersentage_update($task->project_id);
