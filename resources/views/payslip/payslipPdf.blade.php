@@ -7,6 +7,10 @@
     {{__('Payslip')}}
 @endsection
 
+
+
+
+
 @section('content')
     <div class="main-content">
         <div class="text-md-right mb-2">

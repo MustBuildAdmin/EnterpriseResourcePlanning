@@ -1,11 +1,24 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main',['hrm_header' => 'Award'])
+@include('hrm.hrm_main')
 
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Award</h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
     @can('create award')
-        <a href="#" data-size="lg" data-url="{{ route('award.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Award')}}" class="mb-3 btn btn-sm btn-primary">
+        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-size="lg" data-url="{{ route('award.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Award')}}" class="">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan
+  </div>
+</div>
+
+
+
+
     <div class="table-responsive">
         <table class="table card-table table-vcenter text-nowrap datatable">
             <thead>

@@ -8,12 +8,16 @@ use Session;
 class TaskController extends Controller
 {
     public function store(Request $request){
- 
-        $max_id=Con_task::max('id');
+
+        $max_id=Con_task::where(['project_id'=>Session::get('project_id')])->max('id');
+        if($max_id==null){
+            $max_id=0;
+        }
         $task = new Con_task();
  
         $task->text = $request->text;
         $task->id = $max_id+1;
+        $row_id=$max_id+1;
         $task->project_id = Session::get('project_id');
         $task->instance_id = Session::get('project_instance');
         $task->start_date = date('Y-m-d h:i',strtotime($request->start_date));
@@ -30,7 +34,7 @@ class TaskController extends Controller
  
         return response()->json([
             "action"=> "inserted",
-            "tid" => $task->id
+            "tid" => $row_id
         ]);
     }
  

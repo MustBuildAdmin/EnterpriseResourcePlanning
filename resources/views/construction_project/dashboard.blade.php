@@ -3,10 +3,71 @@
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
-    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
 <div class="page-wrapper dashboard">
-@include('construction_project.side-menu',['hrm_header' => "Project Dashboard"])
+
+@include('construction_project.side-menu')
+
+<div class="row divmainrow">
+   <div class="col-md-6">
+      <h2>Project Dashboard</h2>
+   </div> 
+   <div class="col-md-6">
+    <div class="float-end icons">
+      @can('view grant chart')
+          <a href="{{ route('projects.gantt',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Gantt Chart')}}
+          </a>
+      @endcan
+    
+      @can('view expense')
+          <a href="{{ route('projects.expenses.index',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Expense')}}
+          </a>
+      @endcan
+      <a href="{{ route('project_report.view_task_report',$project->id) }}" class="btn btn-sm btn-primary">
+        {{__('Report')}}
+      </a>
+    
+      @if($setting['company_type']!=2)
+          @can('manage bug report')
+              <a href="{{ route('task.bug',$project->id) }}" class="btn btn-sm btn-primary">
+                  {{__('Bug Report')}}
+              </a>
+          @endcan
+          @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
+          <a href="{{ route('projecttime.tracker',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Tracker')}}
+          </a>
+          @endif
+          @can('create project task')
+          <a href="{{ route('projects.tasks.index',$project->id) }}" class="btn btn-sm btn-primary">
+              {{__('Task')}}
+          </a>
+          @endcan
+          @if(\Auth::user()->type != 'client')
+          @can('view timesheet')
+              <a href="{{ route('timesheet.index',$project->id) }}" class="btn btn-sm btn-primary">
+                  {{__('Timesheet')}}
+              </a>
+          @endcan
+          @endif
+      @endif
+      
+      @can('edit project')
+          <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
+              <i class="ti ti-pencil"></i>
+          </a>
+      @endcan
+
+     </div>
+   </div> 
+
+</div>
+
+
+
 
 
 
@@ -175,11 +236,11 @@
 
 
 
-   <section class="statistics">
+   <section class="statistics constructionboard">
       <div class="row">
         <div class="col-lg-4 bgwhite">
 
-            <div class="card">
+            <div class="card" style="height: 352px;">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="avatar me-3">
@@ -265,7 +326,7 @@
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['open_task']['percentage'] }}%"></div>
                 </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
+                {{-- <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
                         <span class="text-muted">{{__('Completed Milestone')}}</span>
                     </div>
@@ -273,88 +334,54 @@
                 </div>
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['milestone']['percentage'] }}%"></div>
-                </div>
+                </div> --}}
             </div>
         </div>
   </div>
  </div>
         <div class="col-lg-4 bgwhite">
           <div class="card">
-            <div class="card-body">
-                <div class="d-flex align-items-start">
-                    <div class="theme-avtar bg-primary">
-                        <i class="ti ti-clipboard-list"></i>
-                    </div>
-                    <div class="ms-3">
-                        <p class="text-muted mb-0">{{__('Last 7 days hours spent')}}</p>
-                        <h4 class="mb-0">{{ $project_data['timesheet_chart']['total'] }}</h4>
-
-                    </div>
-                </div>
-                <div id="timesheet_chart"></div>
+            <div class="card-header">
+              <div class="headingnew align-items-center justify-content-between">
+                <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
+                  <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
+                    <i class="ti ti-plus"></i>
+                  </a>
+                </div> @endcan
+              </div>
             </div>
             <div class="card-body">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('Total project time spent')}}</span>
-                    </div>
-                    <span>{{ $project_data['time_spent']['total'] }}</span>
-                </div>
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['time_spent']['percentage'] }}%"></div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-
-                        <span class="text-muted">{{__('Allocated hours on task')}}</span>
-                    </div>
-                    <span>{{ $project_data['task_allocated_hrs']['hrs'] }}</span>
-                </div>
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['task_allocated_hrs']['percentage'] }}%"></div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('User Assigned')}}</span>
-                    </div>
-                    <span>{{ $project_data['user_assigned']['total'] }}</span>
-                </div>
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['user_assigned']['percentage'] }}%"></div>
-                </div>
+              <ul class="list-group list-group-flush list" id="project_users"></ul>
             </div>
-        </div>
+          </div>
         </div>
       </div>
     </section>
 
 
-   <section class="statis  text-center main2">
-      <div class="row">
-        <div class="col-md-6 col-lg-6 mb-6 mb-lg-0">
-        <div class="card">
-  <div class="card-header">
-    <div class="headingnew align-items-center justify-content-between">
-      <h5>{{__('Members')}}</h5>
-                        @can('edit project')
-                            <div class="float-end">
-                                <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
-                                    <i class="ti ti-plus"></i>
-                                </a>
-                            </div>
-                        @endcan
-    </div>
-  </div>
-  <div class="card-body">
-    <ul class="list-group list-group-flush list" id="project_users">
-    </ul>
-</div>
-</div>
-        </div>
-        <div class="col-md-6 col-lg-6 mb-6 mb-lg-0">
+<div class="row">
 
-        </div>
-        <div class="col-md-6 col-lg-6 mb-6 mb-md-0">
+
+{{-- <div class="col-md-6 col-lg-6 mb-6 mb-lg-0"> --}}
+  {{-- <div class="card">
+    <div class="card-header">
+      <div class="headingnew align-items-center justify-content-between">
+        <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
+          <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
+            <i class="ti ti-plus"></i>
+          </a>
+        </div> @endcan
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush list" id="project_users"></ul>
+    </div>
+  </div> --}}
+{{-- </div> --}}
+
+
+
+<div class="col-md-12 col-lg-6 mb-6 mb-md-0">
           @can('view activity')
  
               <div class="card activity-scroll">
@@ -383,7 +410,20 @@
               </div>
       @endcan
         
+      </div>
+
+
+
+</div>
+
+
+   <section class="statis  text-center main2">
+      <div class="row">
+
+        <div class="col-md-6 col-lg-6 mb-6 mb-lg-0">
+
         </div>
+
 
       </div>
     </section>
@@ -395,7 +435,12 @@
 </section>  
 
 
-
+<div class="row">
+   <div class="col-md-6">
+   </div>
+   <div class="col-md-6">
+   </div>
+</div>
 
 
 

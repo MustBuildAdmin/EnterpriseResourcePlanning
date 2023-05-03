@@ -131,7 +131,8 @@ class AttendanceEmployeeController extends Controller
 
             }
 
-            return view('attendance.index', compact('attendanceEmployee', 'branch', 'department'));
+            return view('hrm.leave.manage_attendance_list', compact('attendanceEmployee', 'branch', 'department'));
+            // return view('attendance.index', compact('attendanceEmployee', 'branch', 'department'));
         }
         else
         {
@@ -479,8 +480,8 @@ class AttendanceEmployeeController extends Controller
                 $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('branch_id', 1)->where('department_id',1)->get();
             }
 
-
-            return view('attendance.bulk', compact('employees', 'branch', 'department'));
+            return view('hrm.leave.manage_bulk_attendance', compact('employees', 'branch', 'department'));
+            // return view('attendance.bulk', compact('employees', 'branch', 'department'));
         }
         else
         {

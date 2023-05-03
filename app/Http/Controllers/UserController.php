@@ -45,7 +45,7 @@ class UserController extends Controller
                             ->get();
                         }
                     }]
-                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->paginate(6);
+                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->paginate(8);
                 $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get()->count();
                 // $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get();
             }
@@ -61,7 +61,7 @@ class UserController extends Controller
                             ->get();
                         }
                     }]
-                ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->paginate(6);
+                ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->paginate(8);
                 $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->count();
             }
             

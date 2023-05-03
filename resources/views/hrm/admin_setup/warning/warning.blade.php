@@ -1,11 +1,22 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main',['hrm_header' => 'Warning'])
+@include('hrm.hrm_main')
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Warning</h2>
+  </div>
+  <div class="col-md-6 float-end">
 
     @can('create warning')
-        <a href="#" data-url="{{ route('warning.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Warning')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
+        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('warning.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Warning')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan
+
+  </div>
+</div>
+
+
     <div class="table-responsive">
         <table class="table card-table table-vcenter text-nowrap datatable">
             <thead>
