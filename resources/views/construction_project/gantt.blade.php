@@ -89,10 +89,17 @@
 @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"])
                         <div class="col d-flex flex-column">
                             <div class="align">
-                                {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
+                                {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;']) }}
+                                {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
+                                    <a href="#" class="btn btn-outline-primary w-20 freeze_button" data-bs-toggle="tooltip" title="{{ __('Click to change freeze status') }}" data-original-title="{{ __('Delete') }}"
+                                        data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
+                                        <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze
+                                    </a>
+                                {!! Form::close() !!}
+                                {{-- {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
                                 {{ Form::hidden('project_id',$project->id, ['class' => 'form-control']) }}
                                 <a href="#" class="btn btn-outline-primary w-20 freezebtn" data-bs-toggle="tooltip" title="{{__('Click to change freeze status')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id}}').submit();">
-                                  <i class="fa fa-lock" aria-hidden="true" style='margin-right:8%'></i>     Freeze </a> {!! Form::close() !!}
+                                  <i class="fa fa-lock" aria-hidden="true" style='margin-right:8%'></i>     Freeze </a> {!! Form::close() !!} --}}
                                 <div>
                                 <input type='button'  class="btn btn-outline-primary w-20" id='default' onclick="toggleChart()" value="Toggle Main Timeline">
                                 <button class="zoom_toggle btn btn-outline-primary w-20" onclick="toggleMode(this)">Zoom to Fit</button>

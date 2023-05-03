@@ -1,13 +1,4 @@
-/*!
-* Tabler v1.0.0-beta17 (https://tabler.io)
-* @version 1.0.0-beta17
-* @link https://tabler.io
-* Copyright 2018-2023 The Tabler Authors
-* Copyright 2018-2023 codecalm.net Paweł Kuna
-* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
-*/
 @charset "UTF-8";
-
 :root,
 [data-bs-theme=light] {
     --tblr-blue: #206bc4;
@@ -27363,7 +27354,7 @@ a.mx-3.btn.btn-sm.align-items-center.bs-pass-para {
 }
 
 a.btn.btn-sm {
-    background: green;
+    background: #3421c0;
     min-width: 31px;
     font-size: 16px;
     border: none;
@@ -28318,12 +28309,66 @@ i.ti.ti-pencil {
     padding-left: 0;
     padding-right: 0;
 }
-
+.team-msg .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+}
 
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     background: #fff;
-    max-width: 1072px;
+    /* max-width: 1072px; */
     overflow: auto;
+}
+
+#content {
+    width: 100% !important;
+    display: table-row;
+    float: left;
+}
+
+.calendarrght {
+    height: 34px;
+    margin: 0 3px;
+}
+.floatrght {
+    float: right;
+}
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    display: flex;
+    /* align-items: center; */
+    justify-content: start;
+    line-height: 33px;
+    background: #3421c0;
+}
+#sidebar ul li a.active {
+    color: #ffffff;
+    /* background: #ffffff; */
+    text-decoration: none;
+}
+#sidebar ul li a:hover {
+    color: #ffffff;
+    background: #ffffff;
+    text-decoration: none;
+}
+
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: start; */
+    line-height: 33px;
+    border: none;
+}
+
+.table-responsive .bg-primary {
+    --tblr-bg-opacity: 1;
+    background-color: rgba(var(--tblr-primary-rgb), var(--tblr-bg-opacity)) !important;
+    background: none !important;
 }
