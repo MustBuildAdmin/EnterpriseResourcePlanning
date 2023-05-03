@@ -24,6 +24,8 @@ use App\Models\EmployeeDocument;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Designation;
+use App\Models\Leave;
+
 class MyDetailsController extends Controller
 {
 
@@ -47,8 +49,22 @@ class MyDetailsController extends Controller
     }
     public function leave()
     {
+        // echo "<pre>"; 
+        // print_r(\Auth::user()->type);
+        // exit;
+        if(\Auth::user()->type == 'employee')
+        {
+            $user     = \Auth::user();
+            $employee = Employee::where('user_id', '=', $user->id)->first();
+            $leaves   = Leave::where('employee_id', '=', $employee->id)->get();
+        }
+        else
+        {
+            $leaves = Leave::where('created_by', '=', \Auth::user()->creatorId())->get();
+        }
 
-        return view('mydetails.leave');
+        // return view('leave.index', compact('leaves'));
+        return view('mydetails.leave', compact('leaves'));
     }
     public function payslip()
     {
