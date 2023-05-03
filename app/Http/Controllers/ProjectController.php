@@ -109,7 +109,7 @@ class ProjectController extends Controller
             if(isset($request->non_working_days)){
                 $project->non_working_days=implode(',',$request->non_working_days);
             }
-            
+
             $project->client_id = $request->client;
             $project->budget = !empty($request->budget) ? $request->budget : 0;
             $project->description = $request->description;
@@ -138,13 +138,13 @@ class ProjectController extends Controller
                 $filename =$_FILES["file"]["name"];
                 $name = $project->id.'.'.pathinfo($filename, PATHINFO_EXTENSION);
                 $pathname='projectfiles/'.$name;
-                $link=env('APP_URL').'/storage/'.$path.$name;
-                if (file_exists(storage_path($pathname))){
-                    unlink(storage_path($pathname));
+                $link=env('APP_URL').'/public/'.$path.$name;
+                if (file_exists(public_path($pathname))){
+                    unlink(public_path($pathname));
                 }
-             
-                $request->file->move(storage_path($path), $name);
-              
+
+                $request->file->move(public_path($path), $name);
+
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
                   CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
@@ -157,11 +157,11 @@ class ProjectController extends Controller
                   CURLOPT_CUSTOMREQUEST => 'POST',
                   CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                 ));
-                
+
                 $responseBody = curl_exec($curl);
                 curl_close($curl);
-                if (file_exists(storage_path($pathname))){
-                    unlink(storage_path($pathname));
+                if (file_exists(public_path($pathname))){
+                    unlink(public_path($pathname));
                 }
                 $responseBody = json_decode($responseBody, true);
                 if(isset($responseBody['data']['data'])){
@@ -194,7 +194,7 @@ class ProjectController extends Controller
                             }
                             $task->custom=json_encode($value['$raw']);
                         }
-                        
+
                         $task->save();
                     }
 
@@ -202,13 +202,13 @@ class ProjectController extends Controller
                         $link= new Link();
                         $link->project_id=$project->id;
                         $link->instance_id=$instance_id;
-                        Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);                       
+                        Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
                         $link->id=$value['id'];
                         if(isset($value['type'])){
                             $link->type=$value['type'];
                         }
                         if(isset($value['source'])){
-                            
+
                             $link->source=$value['source'];
                         }
                         if(isset($value['target'])){
@@ -219,10 +219,99 @@ class ProjectController extends Controller
                 }
 
                 // $project->project_json=json_encode($responseBody);
+               }else{
+                    /// primaverra
+                    $path='projectfiles/';
+                    $filename =$_FILES["file"]["name"];
+                    $name = $project->id.'.'.pathinfo($filename, PATHINFO_EXTENSION);
+                    $pathname='projectfiles/'.$name;
+                    $link=env('APP_URL').'/public/'.$path.$name;
+                    if (file_exists(public_path($pathname))){
+                        unlink(public_path($pathname));
+                    }
+
+                    $request->file->move(public_path($path), $name);
+
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                      CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                      CURLOPT_RETURNTRANSFER => true,
+                      CURLOPT_ENCODING => '',
+                      CURLOPT_MAXREDIRS => 10,
+                      CURLOPT_TIMEOUT => 0,
+                      CURLOPT_FOLLOWLOCATION => true,
+                      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                      CURLOPT_CUSTOMREQUEST => 'POST',
+                      CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
+                    ));
+
+                    $responseBody = curl_exec($curl);
+                    curl_close($curl);
+                    if (file_exists(public_path($pathname))){
+                        unlink(public_path($pathname));
+                    }
+                    $responseBody = json_decode($responseBody, true);
+                    if(isset($responseBody['data']['data'])){
+                        foreach($responseBody['data']['data'] as $key=>$value){
+                            $task= new Con_task();
+                            $task->project_id=$project->id;
+                            $task->instance_id=$instance_id;
+                            if(isset($value['text'])){
+                                $task->text=$value['text'];
+                            }
+                            if(isset($value['id'])){
+                                $task->id=$value['id'];
+                            }
+                            if(isset($value['start_date'])){
+                                $task->start_date=$value['start_date'];
+                            }
+                            if(isset($value['duration'])){
+                                $task->duration=$value['duration'];
+                            }
+                            if(isset($value['progress'])){
+                                $task->progress=$value['progress'];
+                            }
+                            if(isset($value['parent'])){
+                                $task->parent=$value['parent'];
+                            }
+                            if(isset($value['$raw'])){
+                                $raw=$value['$raw'];
+                                if(isset($raw['Finish'])){
+                                    $task->end_date=$raw['Finish'];
+                                }
+                                $task->custom=json_encode($value['$raw']);
+                            }
+
+                            $task->save();
+                        }
+
+                        foreach($responseBody['data']['links'] as $key=>$value){
+                            $link= new Link();
+                            $link->project_id=$project->id;
+                            $link->instance_id=$instance_id;
+                            Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
+                            $link->id=$value['id'];
+                            if(isset($value['type'])){
+                                $link->type=$value['type'];
+                            }
+                            if(isset($value['source'])){
+
+                                $link->source=$value['source'];
+                            }
+                            if(isset($value['target'])){
+                                $link->target=$value['target'];
+                            }
+                            $link->save();
+                        }
+                    }
+
+                    // end
+
+
                }
             }
-           
-          
+
+
 
             if(\Auth::user()->type=='company'){
 
@@ -296,7 +385,7 @@ class ProjectController extends Controller
         }
     }
 
-    
+
 
     public function loadproject(Project $project)
     {
@@ -381,7 +470,6 @@ class ProjectController extends Controller
                     // $total_task     = $project->tasks->count();
                     $remaining_task = Con_task::where('project_id', '=', $project->id)->where('progress', '=', 100)->count();
                     $total_task     = $project_data['task']['total'];
-                    
 
                 $project_data['open_task'] = [
                     'tasks' => number_format($remaining_task) . '/' . number_format($total_task),
@@ -532,7 +620,7 @@ class ProjectController extends Controller
             if(isset($request->non_working_days)){
                 $project->non_working_days=implode(',',$request->non_working_days);
             }
-           
+
             $project->budget = $request->budget;
             $project->client_id = $request->client;
             $project->description = $request->description;
@@ -652,7 +740,7 @@ class ProjectController extends Controller
             );
         }
     }
-    
+
     public function get_member(Request $request){
         if($request->ajax())
         {
@@ -669,14 +757,14 @@ class ProjectController extends Controller
             }
 
             $returnHTML = view('projects.get_member', compact('project'))->render();
-            
+
             $total_data = array(
                 $user_array,
                 $returnHTML
             );
 
             return $total_data;
-            
+
             return response()->json(
                 [
                     'success' => true,
@@ -829,7 +917,7 @@ class ProjectController extends Controller
 
     public function filterProjectView(Request $request)
     {
-       
+
         if(\Auth::user()->can('manage project'))
         {
             $usr           = Auth::user();
@@ -838,7 +926,7 @@ class ProjectController extends Controller
             }else{
               $user_projects = $usr->projects()->pluck('project_id', 'project_id')->toArray();
             }
-        
+
                 $sort     = explode('-', 'created_at-desc');
                 $projects = Project::whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
 
@@ -867,7 +955,7 @@ class ProjectController extends Controller
         {
             $project = Project::find($projectID);
             $tasks   = [];
-    
+
             if($project)
             {
                 $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -894,7 +982,7 @@ class ProjectController extends Controller
                         $tasks[]             = $tmp;
                     }
                 }
-               
+
             }
 
             return view('projects.gantt', compact('project', 'tasks', 'duration'));
@@ -905,7 +993,7 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
-    
+
     public function gantt_data($projectID, Request $request)
     {
         $project = Project::find($projectID);
@@ -924,12 +1012,12 @@ class ProjectController extends Controller
             //     $project=array();
             //     return json_encode($project);
             // }
-            
+
         }else{
 
             return '';
         }
-       
+
 
     }
 
@@ -942,18 +1030,18 @@ class ProjectController extends Controller
     public function freeze_status_change(Request $request)
     {
         try {
-               
+
                 $data = array('freeze_status'=>1);
 
                 Project::where('id',$request->project_id)->update($data);
-                
+
                 return redirect()->back()->with('success', __('Freezed Status successfully changed.'));
-                
-                
+
+
         } catch (Exception $e) {
-          
+
                 return $e->getMessage();
-    
+
         }
     }
     /**
@@ -964,17 +1052,17 @@ class ProjectController extends Controller
      */
     public function get_freeze_status(Request $request){
         try {
-            
-    
+
+
                 $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
                 return $result;
 
 
 
         } catch (Exception $e) {
-          
+
                 return $e->getMessage();
-          
+
         }
     }
 
@@ -1426,7 +1514,7 @@ class ProjectController extends Controller
         return $arrTask;
     }
 
-    
+
     public function taskupdate(Request $request)
     {
         $validator = \Validator::make(
@@ -1452,7 +1540,7 @@ class ProjectController extends Controller
         $no_working_days=$diff->format("%a");
         $no_working_days=$no_working_days+1;// include the last day
 
-        
+
         // insert details
         $array=array(
             'task_id'=>$task_id,
@@ -1463,7 +1551,7 @@ class ProjectController extends Controller
             'created_at'=>$request->get_date,
             'record_date'=>date('Y-m-d H:m:s')
         );
-        
+
         $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
         if($check_data == null){
             Task_progress::insert($array);
@@ -1471,11 +1559,10 @@ class ProjectController extends Controller
         else{
             Task_progress::where('task_id',$task_id)->where('user_id',$request->user_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
         }
-            
+
         $total_pecentage=Task_progress::where('task_id',$task_id)->sum('percentage');
         $per_percentage=$total_pecentage/$no_working_days;
         $per_percentage=round($per_percentage);
-      
         Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
         // update the  gantt
         $this->taskpersentage_update($task->project_id);
