@@ -78,6 +78,11 @@
 		.swal2-confirm{
 			margin-left:10px !important;
 		}
+		.error{
+			color: red !important;
+		}
+		
+
     </style>
 
 </head>
