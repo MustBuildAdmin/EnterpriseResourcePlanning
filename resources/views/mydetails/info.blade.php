@@ -65,7 +65,7 @@
                         <div class="card ">
                             <div class="card-body employee-detail-body fulls-card">
                                 <h5>{{__('Personal Detail')}}</h5>
-                                <hr>
+                               
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="info text-sm">
@@ -124,7 +124,7 @@
                         <div class="card ">
                             <div class="card-body employee-detail-body fulls-card">
                                 <h5>{{__('Company Detail')}}</h5>
-                                <hr>
+                               
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="info text-sm">
@@ -163,7 +163,7 @@
                         <div class="card ">
                             <div class="card-body employee-detail-body fulls-card">
                                 <h5>{{__('Document Detail')}}</h5>
-                                <hr>
+                               
                                 <div class="row">
                                     @php
 
@@ -192,7 +192,7 @@
                         <div class="card ">
                             <div class="card-body employee-detail-body fulls-card">
                                 <h5>{{__('Bank Account Detail')}}</h5>
-                                <hr>
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="info text-sm">
