@@ -138,7 +138,7 @@ class ProjectController extends Controller
                 $filename =$_FILES["file"]["name"];
                 $name = $project->id.'.'.pathinfo($filename, PATHINFO_EXTENSION);
                 $pathname='projectfiles/'.$name;
-                $link=env('APP_URL').'/public/'.$path.$name;
+                $link=env('APP_URL').'/'.$path.$name;
                 if (file_exists(public_path($pathname))){
                     unlink(public_path($pathname));
                 }
@@ -225,7 +225,7 @@ class ProjectController extends Controller
                     $filename =$_FILES["file"]["name"];
                     $name = $project->id.'.'.pathinfo($filename, PATHINFO_EXTENSION);
                     $pathname='projectfiles/'.$name;
-                    $link=env('APP_URL').'/public/'.$path.$name;
+                    $link=env('APP_URL').'/'.$path.$name;
                     if (file_exists(public_path($pathname))){
                         unlink(public_path($pathname));
                     }
