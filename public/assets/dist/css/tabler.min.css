@@ -24066,7 +24066,8 @@ a.step-item:hover {
     position: absolute;
     top: 0;
     left: 50%;
-    z-index: 1;ard
+    z-index: 1;
+    box-sizing: content-box;
     display: flex;
     align-items: center;
     justify-content: center;
