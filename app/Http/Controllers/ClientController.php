@@ -46,7 +46,7 @@ class ClientController extends Controller
                         ->get();
                     }
                 }]
-            ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->paginate(6);
+            ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->paginate(8);
             // $clients = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->paginate(1);
 
             return view('client.index', compact('clients'));

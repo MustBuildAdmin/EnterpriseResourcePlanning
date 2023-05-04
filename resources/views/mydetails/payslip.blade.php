@@ -1,8 +1,7 @@
 @include('new_layouts.header')
-    <div class="page-wrapper">
-        <!-- Page header -->
+    <!-- <div class="page-wrapper">
         <div class="page-header d-print-none">
-            <div class="container-xl">
+            <div >
                 <div class="row g-2 align-items-center">
                     <div class="col">
                         <h2 class="page-title">
@@ -12,10 +11,9 @@
                 </div>
             </div>
         </div>
-        <!-- Page body -->
         <div class="page-body">
-            <div class="container-xl">
-                <div class="card">
+            <div >
+                <div class="card"> -->
                     <div class="row g-0">
                     @include('new_layouts.usersidebar')
                         <div class="col d-flex flex-column">
@@ -75,14 +73,14 @@
     </div>
     </div>
     </div>
-
+<!-- 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 @include('new_layouts.footer')
 
 <script>
