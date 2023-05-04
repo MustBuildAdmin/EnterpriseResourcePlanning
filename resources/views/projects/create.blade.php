@@ -16,22 +16,22 @@
     <div class="row">
         <div class="col-sm-6 col-md-6">
             <div class="form-group">
-                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
-                {{ Form::date('start_date', null, ['class' => 'form-control']) }}
+                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::date('start_date', null, ['class' => 'form-control','required'=>'required']) }}
             </div>
         </div>
         <div class="col-sm-6 col-md-6">
             <div class="form-group">
-                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
-                {{ Form::date('end_date', null, ['class' => 'form-control']) }}
+                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::date('end_date', null, ['class' => 'form-control','required'=>'required']) }}
             </div>
         </div>
     </div>
     <div class="row">
         <div class="form-group col-sm-12 col-md-12">
-            {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+            {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
             <div class="form-file mb-3">
-                <input type="file" class="form-control" id="project_image"  name="project_image" required="">
+                <input type="file" class="form-control" id="project_image"  name="project_image">
             </div>
             <span id="project_image_error" class="error" for="project_image"></span>
         </div>
@@ -93,43 +93,43 @@
     <br>
     <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="1" name='non_working_days[]' id='monday'>
+        <input class="form-check-input" type="checkbox" value="1" name='non_working_days[]' id='monday' required>
         <label class="form-check-label" for="monday">
         Monday
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="2" name='non_working_days[]' id='tuesday'>
+        <input class="form-check-input" type="checkbox" value="2" name='non_working_days[]' id='tuesday' required>
         <label class="form-check-label" for="tuesday">
         Tuesday
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="3" name='non_working_days[]' id='wednesday'>
+        <input class="form-check-input" type="checkbox" value="3" name='non_working_days[]' id='wednesday' required>
         <label class="form-check-label" for="wednesday">
             Wednesday
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="4" name='non_working_days[]' id='thursday'>
+        <input class="form-check-input" type="checkbox" value="4" name='non_working_days[]' id='thursday' required>
         <label class="form-check-label" for="thursday">
             Thursday
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="5" name='non_working_days[]' id='friday'>
+        <input class="form-check-input" type="checkbox" value="5" name='non_working_days[]' id='friday' required>
         <label class="form-check-label" for="friday">
             Friday
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="6" name='non_working_days[]' id='saturday'>
+        <input class="form-check-input" type="checkbox" value="6" name='non_working_days[]' id='saturday' required>
         <label class="form-check-label" for="saturday">
             Saturday
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday'>
+        <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday' required>
         <label class="form-check-label" for="sunday">
             Sunday
         </label>
@@ -139,7 +139,7 @@
 {{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}<span class="text-danger">*</span>
 <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='monday'>
+        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='monday' required>
         <label class="form-check-label" for="monday">
             {{__('holidays')}}
         </label>
@@ -147,8 +147,9 @@
 </div>
 <br>
 @if($setting['company_type']==2)
-    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }}
     <select name="file_status" id="file_status" class="form-control main-element" >
+        <option value=''>Choose File Type</option>
         <option value='MP'>Microsoft Project</option>
         <option value='P'>Primavera</option>
     </select>
@@ -164,6 +165,14 @@
 {{Form::close()}}
 
 <script>
+$(document).on("click", '#file_status', function () {
+    var status=$(this).val();
+    if(status=='MP'){
+        $('#file').attr('accept','.mpp');
+    }else{
+        $('#file').attr('accept','.xer');
+    }
+});
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
         var fileName=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.') + 1);
