@@ -1,5 +1,225 @@
 
-{!! Html::style(asset('landing/css/bootstrap.min.css')) !!}
+  <div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
+
+    <h4>PROJECT OVERALL PROGRAM STATUS</h4>
+
+    <div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
+     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
+    <div style="position: relative;flex: 1 1 auto;">
+        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
+      <div class="progress progress-separated mb-3" style="position: relative;
+          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
+      </div>
+      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
+          <span>&nbsp;Regular</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
+          <span>&nbsp;System</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
+          <span>&nbsp;Shared</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
+          <span>&nbsp;Free</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
+
+    <h4>BASE PROGRAM STATUS</h4>
+
+    <div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
+     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
+    <div style="position: relative;flex: 1 1 auto;">
+        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
+      <div class="progress progress-separated mb-3" style="position: relative;
+          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
+      </div>
+      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
+          <span>&nbsp;Regular</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
+          <span>&nbsp;System</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
+          <span>&nbsp;Shared</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
+          <span>&nbsp;Free</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
+
+<h4>DURATION IN NO OF DAYS</h4>
+
+<div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
+     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
+    <div style="position: relative;flex: 1 1 auto;">
+        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
+      <div class="progress progress-separated mb-3" style="position: relative;
+          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
+      </div>
+      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
+          <span>&nbsp;Regular</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
+          <span>&nbsp;System</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
+          <span>&nbsp;Shared</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
+          <span>&nbsp;Free</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
+
+<h4>PLANNED PROGRESS IN PERCENTAGE</h4>
+
+<div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
+     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
+    <div style="position: relative;flex: 1 1 auto;">
+        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
+      <div class="progress progress-separated mb-3" style="position: relative;
+          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
+      </div>
+      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
+          <span>&nbsp;Regular</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
+          <span>&nbsp;System</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
+          <span>&nbsp;Shared</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
+          <span>&nbsp;Free</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
+
+<h4>ACTUAL PROGRESS IN PERCENTAGE</h4>
+
+<div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
+     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
+    <div style="position: relative;flex: 1 1 auto;">
+        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
+      <div class="progress progress-separated mb-3" style="position: relative;
+          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
+        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
+         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;ftransition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
+      </div>
+      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
+          <span>&nbsp;Regular</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
+          <span>&nbsp;System</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
+          <span>&nbsp;Shared</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
+        </div>
+        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
+        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
+          <span>&nbsp;Free</span>
+          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- {!! Html::style(asset('landing/css/bootstrap.min.css')) !!} -->
 
 <style>
 

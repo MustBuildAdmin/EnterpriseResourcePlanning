@@ -28397,6 +28397,7 @@ i.ti.ti-pencil {
 }
 
 .floatleft {
+    margin: 0 0 5px 0;
     float: left;
 }
 
