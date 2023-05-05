@@ -28,7 +28,8 @@ class SourceController extends Controller
         {
             $sources = Source::where('created_by', '=', \Auth::user()->ownerId())->get();
 
-            return view('sources.index')->with('sources', $sources);
+            return view('crm.crm_system_setup.sources.sources')->with('sources', $sources);
+            // return view('sources.index')->with('sources', $sources);
         }
         else
         {
