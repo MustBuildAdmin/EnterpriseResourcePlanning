@@ -5,7 +5,7 @@
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <link rel="stylesheet" href="{{asset('assets/js/gantt/codebase/skins/dhtmlxgantt_material.css?v=7.0.11')}}">
 <link rel="stylesheet" href="{{asset('assets/js/gantt/common/controls_styles.css?v=7.0.11')}}">
-    
+
 <style>
     .gantt_control {
         display: flex;
@@ -59,7 +59,7 @@
     }
 
     .align{
-    display: flex; 
+    display: flex;
     justify-content: flex-end;
     }
 .freezebtn{
@@ -104,7 +104,7 @@
                                 <input type='button'  class="btn btn-outline-primary w-20" id='default' onclick="toggleChart()" value="Toggle Main Timeline">
                                 <button class="zoom_toggle btn btn-outline-primary w-20" onclick="toggleMode(this)">Zoom to Fit</button>
                                 <input type=button value="Zoom In" class="btn btn-outline-primary w-20" onclick="gantt.ext.zoom.zoomIn();">
-                                <input type=button value="Zoom Out"  class="btn btn-outline-primary w-20" onclick="gantt.ext.zoom.zoomOut();">	
+                                <input type=button value="Zoom Out"  class="btn btn-outline-primary w-20" onclick="gantt.ext.zoom.zoomOut();">
                                 <button id="toggle_fullscreen"  class="btn btn-outline-primary w-20" onclick="gantt.ext.fullscreen.toggle();">Toggle Full Screen</button>
                                 <button onclick="updateCriticalPath(this)" class="btn btn-outline-primary w-20">Expand critical tasks</button>
                                 </div>
@@ -113,30 +113,30 @@
                               </div>
                               <div class="row">
                                 <div class="col-12">
-                                  <div class="card card-stats border-0" id="myCover"> 
-                                    @if($project) 
+                                  <div class="card card-stats border-0" id="myCover">
+                                    @if($project)
                                     <input type='hidden' value='0' id='project_id'>
                                     <div class="card-body">
                                       <div id="gantt_here" style='width:100%; height:677px;' onload="script();"></div>
-                                    </div> 
-                                    @else 
+                                    </div>
+                                    @else
                                     <h1>404</h1>
                                     <div class="page-description">
                                       {{ __('Page Not Found') }}
-                            
+
                                 <div class="row" >
                                     <div class="col-12">
                                         <div class="card card-stats border-0">
-                                           
+
                                             @if($project)
                                             <input type='hidden' value='0' id='project_id'>
                                             <div class="card-body">
                                             <div class="gantt_control" >
-                                           
+
                                             </div>
                                                 <div id="gantt_here" style='width:100%; height:677px;'onload="script();" ></div>
                                             </div>
-                                            
+
                                             @else
                                                 <h1>404</h1>
                                                 <div class="page-description">
@@ -150,7 +150,7 @@
                                                 </div>
                                             @endif
                                         </div>
-                            
+
                                     </div>
                                     <div class="page-search">
                                       <p class="text-muted mt-3">{{ __("It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
@@ -159,19 +159,19 @@
                                           <i class="ti ti-reply"></i> {{ __('Return Home')}}
                                         </a>
                                       </div>
-                                    </div> 
+                                    </div>
                                     @endif
                                   </div>
                                 </div>
-                              </div> 
-                      
+                              </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-  
+
 
 @include('new_layouts.footer')
 
@@ -181,7 +181,7 @@
             var tempcsrf = '{!! csrf_token() !!}';
             $.post("{{route('projects.get_freeze_status')}}", {_token: tempcsrf,project_id: {{$project->id}}},
             function (resp, textStatus, jqXHR) {
-              
+
                if(resp=='1'){
                 gantt.config.readonly = true;
                 $('.freeze_button').addClass('disabled');
@@ -189,11 +189,11 @@
                 gantt.config.readonly = false;
                 $('.freeze_button').removeClass('disabled');
                }
-    
+
             });
         });
-    // check freeze status 
-    
+    // check freeze status
+
     // success toater alert
 
         @if(Session::has('message'))
@@ -205,7 +205,7 @@
         toastr.success("{{ session('message') }}");
         @endif
     // success toater alert
-        
+
     gantt.plugins({
             critical_path: true,
             auto_scheduling: true,
@@ -238,7 +238,7 @@
             }
             gantt.render();
         }
-    
+
         gantt.config.work_time = true;
         gantt.config.details_on_create = false;
         gantt.config.scale_unit = "day";
@@ -258,16 +258,16 @@
                 saveConfig();
                 zoomToFit();
             } else {
-    
+
                 toggle.innerHTML = "Zoom to Fit";
                 //Restore previous scale state
                 restoreConfig();
                 gantt.render();
             }
         }
-    
+
         var cachedSettings = {};
-    
+
         function saveConfig() {
             var config = gantt.config;
             cachedSettings = {};
@@ -276,15 +276,15 @@
             cachedSettings.end_date = config.end_date;
             cachedSettings.scroll_position = gantt.getScrollState();
         }
-    
+
         function restoreConfig() {
             applyConfig(cachedSettings);
         }
-    
+
         function applyConfig(config, dates) {
-    
+
             gantt.config.scales = config.scales;
-    
+
             // restore the previous scroll position
             if (config.scroll_position) {
                 setTimeout(function(){
@@ -292,29 +292,29 @@
                 },4)
             }
         }
-    
-    
+
+
         function zoomToFit() {
             var project = gantt.getSubtaskDates(),
                 areaWidth = gantt.$task.offsetWidth,
                 scaleConfigs = zoomConfig.levels;
-    
+
             for (var i = 0; i < scaleConfigs.length; i++) {
                 var columnCount = getUnitsBetween(project.start_date, project.end_date, scaleConfigs[i].scales[scaleConfigs[i].scales.length-1].unit, scaleConfigs[i].scales[0].step);
                 if ((columnCount + 2) * gantt.config.min_column_width <= areaWidth) {
                     break;
                 }
             }
-    
-    
+
+
             if (i == scaleConfigs.length) {
                 i--;
             }
-    
+
             gantt.ext.zoom.setLevel(scaleConfigs[i].name);
             applyConfig(scaleConfigs[i], project);
         }
-    
+
         // get number of columns in timeline
         function getUnitsBetween(from, to, unit, step) {
             var start = new Date(from),
@@ -396,30 +396,30 @@
                 }
             ]
         };
-    
+
         gantt.ext.zoom.init(zoomConfig);
         gantt.ext.zoom.setLevel("week");
-    
+
         function zoomIn() {
             gantt.ext.zoom.zoomIn();
         }
         function zoomOut() {
             gantt.ext.zoom.zoomOut()
         }
-    
-    
+
+
         window.addEventListener("load", () => {
             var tempcsrf = '{!! csrf_token() !!}';
             let main = document.getElementById("gantt_here");
             // gantt.config.order_branch = true;
             // gantt.config.order_branch_free = true;
-    
+
             gantt.init(main);
-            // For Full Screen 
+            // For Full Screen
             // gantt.plugins({
             //     fullscreen: true
             // });
-    
+
             // gantt.attachEvent("onTemplatesReady", function () {
             //     var toggle = document.createElement("i");
             //     toggle.className = "fa fa-expand gantt-fullscreen";
@@ -434,7 +434,7 @@
             //     if (icon) {
             //         icon.className = icon.className.replace("fa-expand", "fa-compress");
             //     }
-    
+
             // });
             // gantt.attachEvent("onCollapse", function () {
             //     var icon = gantt.toggleIcon;
@@ -442,7 +442,7 @@
             //         icon.className = icon.className.replace("fa-compress", "fa-expand");
             //     }
             // });
-            gantt.templates.parse_date = function(date) { 
+            gantt.templates.parse_date = function(date) {
             return new Date(date);
             };
             gantt.templates.progress_text = function (start, end, task) {
@@ -452,10 +452,10 @@
                     grouping: true
             });
             gantt.init(main);
-    
-    
+
+
             set_data = "";
-    
+
             gantt.form_blocks["my_editor"] = {
                 render: function (sns) {
                     $.ajax({
@@ -465,7 +465,7 @@
                         data : {
                             'project_id' : "<?php echo $project->id; ?>"
                         },
-                        success : function(data) {      
+                        success : function(data) {
                             set_data += data['1'];
                         }
                     });
@@ -483,7 +483,7 @@
                     a.focus();
                 }
             };
-    
+
             gantt.form_blocks["multiselect"] = {
                 render: function (sns) {
                     var height = (sns.height || "23") + "px";
@@ -496,8 +496,8 @@
                             data : {
                                 'project_id' : "<?php echo $project->id; ?>"
                             },
-                            success : function(multi_data) {     
-                                $.each(multi_data['0'], function(multi_key, multi_value) { 
+                            success : function(multi_data) {
+                                $.each(multi_data['0'], function(multi_key, multi_value) {
                                     html += "<option value='" + multi_value.key + "'>" + multi_value.label + "</option>";
                                 });
                             }
@@ -511,16 +511,16 @@
                     node.parentNode.style.overflow = "visible";
                     node.style.display = "inline-block";
                     var select = $(node.firstChild);
-                    
+
                     if (value) {
                         value = (value + "").split(",");
-                        
+
                         select.val(value);
                     }
                     else {
                         select.val([]);
                     }
-    
+
                     select.chosen();
                     if(sns.onchange){
                         select.change(function(){
@@ -538,9 +538,9 @@
                     $(node.firstChild).focus();
                 }
             };
-    
+
             gantt.locale.labels.section_users = "Users";
-    
+
             function findUser(id){
                 var list = gantt.serverList("people");
                 for(var i = 0; i < list.length; i++){
@@ -550,7 +550,7 @@
                 }
                 return null;
             }
-    
+
             gantt.config.columns = [
                 {name: "id", label: "Id", tree: true, width: 200, resize: true},
                 {name: "text", label: "Name", tree: true, width: 500, resize: true},
@@ -561,16 +561,16 @@
                 {name: "float", label: "float", width:80, align: "center", resize: true},
                 {name: "add", width: 44}
             ];
-    
+
             gantt.load("{{route('projects.gantt_data',[$project->id])}}");
-    
+
             gantt.config.lightbox.sections = [
                 { name:"description", height:200, map_to:"text", type:"my_editor", focus:true},
                 { name:"users",height:60, type:"multiselect", options:gantt.serverList("people"), map_to:"users"},
                 { name:"time", height:72, type:"duration", map_to:"auto"}
             ];
-    
-            var dp = new gantt.dataProcessor("/erpnew/public/");
+
+            var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",

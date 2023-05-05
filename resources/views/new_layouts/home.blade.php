@@ -110,36 +110,12 @@
 						</div>
 						@endcan
 						@endif
-						@if(\Auth::user()->show_crm() == 1)
-                        @if( Gate::check('manage lead') || Gate::check('manage deal') || Gate::check('manage form builder')  || Gate::check('manage contract'))
-						@can('manage lead')
-						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{ route('leads.index') }}">
-								<div class="card-body">
-									<div class="row">
-										<div class="col-auto">
-                                            <span class="bg-red text-white avatar">
-											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tower" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-												<path d="M5 3h1a1 1 0 0 1 1 1v2h3v-2a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v2h3v-2a1 1 0 0 1 1 -1h1a1 1 0 0 1 1 1v4.394a2 2 0 0 1 -.336 1.11l-1.328 1.992a2 2 0 0 0 -.336 1.11v7.394a1 1 0 0 1 -1 1h-10a1 1 0 0 1 -1 -1v-7.394a2 2 0 0 0 -.336 -1.11l-1.328 -1.992a2 2 0 0 1 -.336 -1.11v-4.394a1 1 0 0 1 1 -1z"> </path>
-												<path d="M10 21v-5a2 2 0 1 1 4 0v5"></path>
-											</svg>
-                                        </span>
-										</div>
-										<div class="col">
-											<div class="font-weight-medium mt-2">{{__('CRM System')}}</div>
-										</div>
-									</div>
-								</div>
-							</a>
-						</div>
-						@endcan
-						@endif
-						@endif
+						
 						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
 						@can('manage client')
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{ route('clients.index') }}">
+							{{-- <a class="card card-link" href="{{ route('clients.index') }}"> --}}
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">
@@ -210,6 +186,30 @@
 										</div>
 										<div class="col">
 											<div class="font-weight-medium mt-2">{{__('Support System')}}</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						@endif
+						@if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company' && \Auth::user()->type != 'super admin')
+						
+						<div class="col-md-6 col-xl-2">
+							<a class="card card-link" href="{{route('my-info')}}" >
+								<div class="card-body">
+									<div class="row">
+										<div class="col-auto">
+                                            <span class="bg-success text-white avatar">
+											<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+												<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+												<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+												<path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+												<path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"> </path>
+											</svg>
+                                            </span>
+										</div>
+										<div class="col">
+											<div class="font-weight-medium mt-2">{{__('My Details')}}</div>
 										</div>
 									</div>
 								</div>

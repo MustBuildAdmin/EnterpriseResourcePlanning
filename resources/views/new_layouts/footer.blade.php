@@ -18,6 +18,7 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js"></script>
 <script src="{{ asset('assets/js/chosenjquery/chosen.jquery.js') }}"></script>
+<script src="{{ asset('js/jquery.validate.js') }}"></script>
 
 <script>
 // 	var oTable = $('.datatable').dataTable( {
@@ -120,6 +121,61 @@
   "closeButton": true,
   "progressBar": true,
   };
+
+
+  jQuery.validator.addMethod("validate_email", function(value, element) {
+
+if (/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value)) {
+    return true;
+} else {
+    return false;
+}
+
+}, "Please enter a valid Email.");
+
+jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+phone_number = phone_number.replace(/\s+/g, "");
+return this.optional(element) || phone_number.length > 9 ;
+}, "Please specify a valid phone number");
+
+$(document).on("click", 'input[type=submit]', function () {
+
+$(this).closest('form').validate({
+rules: {
+    email: {
+        validate_email: true
+    },
+    company_email: {
+        validate_email: true
+    },
+    contact: {
+            phoneUS: true
+    },
+    phone: {
+            phoneUS: true
+    },
+}
+});
+});
+
+$(document).on("keyup", 'input[type=date]', function () {
+var tt= $(this).val().length;
+if(tt>10){
+        $(this).val('');
+        show_toastr('error', 'Please enter valid date');
+        // Swal.fire({
+        //     position: 'top-end',
+        //     icon: 'error',
+        //     title: 'Oops...',
+        //     text: 'Please enter a valid date!'
+        // })
+}
+setTimeout(
+    function()
+    {
+            $('#error').text('');
+    }, 8000);
+});
 </script>
 </body>
 </html>

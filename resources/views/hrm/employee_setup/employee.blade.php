@@ -1,7 +1,8 @@
 @include('new_layouts.header')
 @include('hrm.hrm_main',['hrm_header' => 'Employee'])
-    <div class="table-responsive">
-        <table class="table card-table table-vcenter text-nowrap datatable">
+<div class="row">
+   <div class="table-responsive employee">
+       <table class="datatable table">
             <thead>
                 <tr>
                     <th>{{__('Employee ID')}}</th>
@@ -76,7 +77,6 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
-    </div>
-    </div>
+        </div>
+</div>
 @include('new_layouts.footer')

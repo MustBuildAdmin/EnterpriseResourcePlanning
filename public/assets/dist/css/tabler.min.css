@@ -27354,7 +27354,7 @@ a.mx-3.btn.btn-sm.align-items-center.bs-pass-para {
 }
 
 a.btn.btn-sm {
-    background: green;
+    background: #206bc4;
     min-width: 31px;
     font-size: 16px;
     border: none;
@@ -28335,3 +28335,89 @@ i.ti.ti-pencil {
 .floatrght {
     float: right;
 }
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    display: flex;
+    /* align-items: center; */
+    justify-content: start;
+    line-height: 33px;
+    background: #3421c0;
+}
+#sidebar ul li a.active {
+    color: #ffffff;
+    /* background: #ffffff; */
+    text-decoration: none;
+}
+#sidebar ul li a:hover {
+    color: #ffffff;
+    background: #ffffff;
+    text-decoration: none;
+}
+
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: start; */
+    line-height: 33px;
+    border: none;
+}
+
+.table-responsive .bg-primary {
+    --tblr-bg-opacity: 1;
+    background-color: rgba(var(--tblr-primary-rgb), var(--tblr-bg-opacity)) !important;
+    background: none !important;
+}
+
+
+.constructionboard .card-body {
+    position: relative;
+    min-height: 172px;
+    overflow-y: scroll;
+}
+
+.constructionboard small.text-muted {
+    text-align: revert;
+    float: left;
+    word-wrap: break-word;
+    width: 140px;
+}
+
+.employee-detail-body .hr, hr {
+    margin: 2rem 0;
+    margin: 0 0 10px 0;
+}
+
+.fulls-card {
+    min-height: 228px !important;
+}
+
+.floatleft {
+    margin: 0 0 5px 0;
+    float: left;
+}
+
+.fulls-card .h5, h5 {
+    font-size: var(--tblr-font-size-h5);
+    line-height: var(--tblr-line-height-h5);
+    font-size: 15px !important;
+    font-weight: 400;
+}
+
+.employeebtn a.btn.btn-sm {
+    background: none !important;
+    min-width: 31px;
+    font-size: 16px;
+    border: none;
+    padding: 5px 5px 5px 5px;
+}
+
+i.ti.ti-pencil {
+    font-size: 16px;
+    color: #2181d3 !important;
+}
+

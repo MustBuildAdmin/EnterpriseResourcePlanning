@@ -1,13 +1,24 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main',['hrm_header' => 'Document Setup'])
+@include('hrm.hrm_main')
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Document Setup</h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
+
     @can('create document')
-        <a class="btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('hrm_doc_setup.create') }}" data-ajax-popup="true" data-title="{{__('Create New Document Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+        <a class="floatrght btn btn-sm btn-primary mb-3" href="#" data-url="{{ route('hrm_doc_setup.create') }}" data-ajax-popup="true" data-title="{{__('Create New Document Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan
+  </div>
+</div>
 
-    <div class="table-responsive">
-        <table class="table card-table table-vcenter text-nowrap datatable">
+
+    <div class="table-responsive hrmdoc">
+        <table class="table datatable">
             <thead>
                 <tr>
                     <th>{{__('Name')}}</th>
@@ -30,7 +41,7 @@
                         <td>
                             @if (!empty($document->document))
                                 <div class="action-btn bg-primary ms-2">
-                                    <a class="mx-3 btn btn-sm align-items-center" download
+                                    <a class="mx-3 btn btn-sm align-items-center down" download
                                         href="{{ $documentPath . '/' . $document->document }}" >
                                         <i class="ti ti-download text-white"></i>
                                     </a>

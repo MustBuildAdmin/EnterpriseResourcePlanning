@@ -50,7 +50,7 @@
     <div class="row">
         <div class="col-xl-12">
             <div class="card">
-                <div class="card-header card-body table-border-style">
+                <div class="card-body table-border-style">
                     <h5></h5>
                     {{ Form::open(['route' => ['attendanceemployee.bulkattendance'], 'method' => 'post']) }}
                     <div class="table-responsive">
