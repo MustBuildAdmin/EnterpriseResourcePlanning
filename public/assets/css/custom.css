@@ -233,18 +233,57 @@ ul.collapse li{
   font-size: 0px;
 }
 #toggleIcon{
- background: #3421c0;
-    color: #fff;
-    width: 30px;
-    height: 30px;
-    margin-left: -21px;
-    z-index: 9999999;
-    position: absolute;
-    margin-top: -30px;
-    top: 10.5%;
-    line-height: 30px;
-    text-align: center;
+  background: #3421c0;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  margin-left: -59px;
+  z-index: 9999999;
+  position: absolute;
+  margin-top: -30px;
+  top: 2.5%;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid;
 }
 .sidebar--Collapse ul li a.dropdown-toggle::after{
   opacity: 0;
+}
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  position: relative !important;
+}
+
+#toggleIcon {
+  background: #3421c0;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  margin-left: -59px;
+  z-index: 9999999;
+  position: absolute;
+  margin-top: -30px;
+  top: 2.5%;
+  line-height: 30px;
+  text-align: center;
+}
+
+.employee table.dataTable td, table.dataTable th {
+  -webkit-box-sizing: content-box;
+  box-sizing: border-box;
+  word-break: break-word;
+  text-transform: lowercase;
+}
+
+.down {
+  margin: 0 0 5% 0;
+}
+
+.hrmdoc .ti.ti-pencil {
+  font-size: 16px;
+  color: #000000 !important;
 }

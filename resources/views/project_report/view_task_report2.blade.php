@@ -107,7 +107,7 @@
                                    data-original-title="{{ __('Reset') }}">
                                     <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off"></i></span>
                             </a>
-                            <a href="{{route('send_report_con')}}"><input type='button' class='btnalginment form-control btn-primary' name='send_report' value='Send Report' style='width: 60%;float: right;background: green;color: #fff;'></a>
+                            <a href="{{route('send_report_con')}}"><input type='button' class='btnalginment form-control btn-primary' name='send_report' value='Send Report' style='width: 60%;float: right;background: #206bc4;color: #fff;'></a>
                         </div>
                     </div>
                     {{ Form::close() }}

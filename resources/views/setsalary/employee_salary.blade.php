@@ -21,7 +21,7 @@
                                 </div>
                                 @can('create set salary')
                                     <div class="col text-end">
-                                        <a href="#" data-url="{{ route('employee.basic.salary',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Set Basic Sallary')}}" data-toggle="tooltip" data-original-title="{{__('Basic Salary')}}" class="btn btn-sm btn-primary">
+                                        <a class="Floatrght btn btn-primary" href="#" data-url="{{ route('employee.basic.salary',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Set Basic Sallary')}}" data-toggle="tooltip" data-original-title="{{__('Basic Salary')}}" >
                                             <i class="ti ti-plus"></i>
                                         </a>
                                     </div>
@@ -52,7 +52,7 @@
                                 </div>
                                 @can('create allowance')
                                     <div class="col text-end">
-                                        <a href="#" data-url="{{ route('allowances.create',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Create Allowance')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" data-original-title="{{__('Create Allowance')}}" class="apply-btn btn btn-sm btn-primary">
+                                        <a class="Floatrght btn btn-primary" href="#" data-url="{{ route('allowances.create',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Create Allowance')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" data-original-title="{{__('Create Allowance')}}">
                                             <i class="ti ti-plus"></i>
                                         </a>
                                     </div>

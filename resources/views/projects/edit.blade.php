@@ -16,14 +16,14 @@
     <div class="row">
         <div class="col-sm-6 col-md-6">
             <div class="form-group">
-                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
-                {{ Form::date('start_date', null, ['class' => 'form-control']) }}
+                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::date('start_date', null, ['class' => 'form-control','required'=>'required']) }}
             </div>
         </div>
         <div class="col-sm-6 col-md-6">
             <div class="form-group">
-                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
-                {{ Form::date('end_date', null, ['class' => 'form-control']) }}
+                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::date('end_date', null, ['class' => 'form-control','required'=>'required']) }}
             </div>
         </div>
 
@@ -84,43 +84,43 @@
                 <br>
                 <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1" name='non_working_days[]' id='monday' @if(str_contains($project->non_working_days, '1')) checked @endif>
+                    <input class="form-check-input" type="checkbox" value="1" name='non_working_days[]' id='monday' @if(str_contains($project->non_working_days, '1')) checked @endif required> 
                     <label class="form-check-label" for="monday">
                     Monday
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="2" name='non_working_days[]' id='tuesday' @if(str_contains($project->non_working_days, '2')) checked @endif>
+                    <input class="form-check-input" type="checkbox" value="2" name='non_working_days[]' id='tuesday' @if(str_contains($project->non_working_days, '2')) checked @endif required>
                     <label class="form-check-label" for="tuesday">
                     Tuesday
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="3" name='non_working_days[]' id='wednesday' @if(str_contains($project->non_working_days, '3')) checked @endif>
+                    <input class="form-check-input" type="checkbox" value="3" name='non_working_days[]' id='wednesday' @if(str_contains($project->non_working_days, '3')) checked @endif required>
                     <label class="form-check-label" for="wednesday">
                         Wednesday
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="4" name='non_working_days[]' id='thursday' @if(str_contains($project->non_working_days, '4')) checked @endif>
+                    <input class="form-check-input" type="checkbox" value="4" name='non_working_days[]' id='thursday' @if(str_contains($project->non_working_days, '4')) checked @endif required>
                     <label class="form-check-label" for="thursday">
                         Thursday
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="5" name='non_working_days[]' id='friday' @if(str_contains($project->non_working_days, '5')) checked @endif>
+                    <input class="form-check-input" type="checkbox" value="5" name='non_working_days[]' id='friday' @if(str_contains($project->non_working_days, '5')) checked @endif required>
                     <label class="form-check-label" for="friday">
                         Friday
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="6" name='non_working_days[]' id='saturday' @if(str_contains($project->non_working_days, '6')) checked @endif>
+                    <input class="form-check-input" type="checkbox" value="6" name='non_working_days[]' id='saturday' @if(str_contains($project->non_working_days, '6')) checked @endif required>
                     <label class="form-check-label" for="saturday">
                         Saturday
                     </label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday' @if(str_contains($project->non_working_days, '7')) checked @endif>
+                    <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday' @if(str_contains($project->non_working_days, '7')) checked @endif required>
                     <label class="form-check-label" for="sunday">
                         Sunday
                     </label>

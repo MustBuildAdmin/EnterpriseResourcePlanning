@@ -24066,7 +24066,8 @@ a.step-item:hover {
     position: absolute;
     top: 0;
     left: 50%;
-    z-index: 1;ard
+    z-index: 1;
+    box-sizing: content-box;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27353,7 +27354,7 @@ a.mx-3.btn.btn-sm.align-items-center.bs-pass-para {
 }
 
 a.btn.btn-sm {
-    background: #3421c0;
+    background: #206bc4;
     min-width: 31px;
     font-size: 16px;
     border: none;
@@ -28385,3 +28386,38 @@ i.ti.ti-pencil {
     word-wrap: break-word;
     width: 140px;
 }
+
+.employee-detail-body .hr, hr {
+    margin: 2rem 0;
+    margin: 0 0 10px 0;
+}
+
+.fulls-card {
+    min-height: 228px !important;
+}
+
+.floatleft {
+    margin: 0 0 5px 0;
+    float: left;
+}
+
+.fulls-card .h5, h5 {
+    font-size: var(--tblr-font-size-h5);
+    line-height: var(--tblr-line-height-h5);
+    font-size: 15px !important;
+    font-weight: 400;
+}
+
+.employeebtn a.btn.btn-sm {
+    background: none !important;
+    min-width: 31px;
+    font-size: 16px;
+    border: none;
+    padding: 5px 5px 5px 5px;
+}
+
+i.ti.ti-pencil {
+    font-size: 16px;
+    color: #2181d3 !important;
+}
+
