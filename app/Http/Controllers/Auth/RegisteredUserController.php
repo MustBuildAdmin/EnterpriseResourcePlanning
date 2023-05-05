@@ -127,7 +127,7 @@ class RegisteredUserController extends Controller
 
             $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
             event(new Registered($user));
-            return redirect()->route('login')->with('success', __('Registered Successfully. Check you email for verfication. Kindly find the below link. '.$userArr['set_password_url']));
+            return redirect()->route('login')->with('success_register', __($userArr['set_password_url']));
 
             // return \Redirect::to('login');
         }
