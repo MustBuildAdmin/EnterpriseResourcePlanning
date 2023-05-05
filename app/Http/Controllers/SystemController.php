@@ -279,8 +279,10 @@ class SystemController extends Controller
             ];
 
             Utility::setEnvironmentValue($arrEnv);
+            return redirect()->route('new_home');
 
-            return redirect()->back()->with('success', __('Setting successfully updated.'));
+            // return redirect()->back()->with('success', __('Setting successfully updated.'));
+
         }
         else
         {
