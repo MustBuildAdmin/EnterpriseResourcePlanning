@@ -692,7 +692,10 @@ class SystemController extends Controller
             $currnocLang = NOC::where('created_by',  \Auth::user()->id)->where('lang', $noclang)->first();
             $country=Utility::getcountry();
             $currency = DB::table('currency')->get();
-
+            if($settings['company_email']==null || $settings['company_email']=='')
+            {
+                $settings['company_email']=$get_user['email'];
+            }
 
             return view('settings.companysettings', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang','currency'));
         }
