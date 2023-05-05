@@ -219,7 +219,7 @@
 </div>
 
 
-<!-- {!! Html::style(asset('landing/css/bootstrap.min.css')) !!} -->
+{!! Html::style(asset('landing/css/bootstrap.min.css')) !!}
 
 <style>
 
