@@ -30,7 +30,8 @@ class ChartOfAccountController extends Controller
                 $chartAccounts[$type->name] = $accounts;
 
             }
-            return view('chartOfAccount.index', compact('chartAccounts', 'types'));
+            return view('accounting.chartOfAccount.index', compact('chartAccounts', 'types'));
+            // return view('chartOfAccount.index', compact('chartAccounts', 'types'));
         }
         else
         {

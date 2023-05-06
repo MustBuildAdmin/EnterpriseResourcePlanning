@@ -35,8 +35,8 @@ class PipelineController extends Controller
         {
             $pipelines = Pipeline::where('created_by', '=', \Auth::user()->creatorId())->get();
 
+            return view('crm.crm_system_setup.pipelines.index')->with('pipelines', $pipelines);
             // return view('pipelines.index')->with('pipelines', $pipelines);
-            return view('crm.pipelines.index')->with('pipelines', $pipelines);
         }
         else
         {

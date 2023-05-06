@@ -27,7 +27,9 @@ class BudgetController extends Controller
         {
             $budgets = Budget::where('created_by', '=', \Auth::user()->creatorId())->get();
             $periods = Budget::$period;
-            return view('budget.index', compact('budgets', 'periods'));
+
+            return view('accounting.budget.index', compact('budgets', 'periods'));
+            // return view('budget.index', compact('budgets', 'periods'));
         }
         else
         {

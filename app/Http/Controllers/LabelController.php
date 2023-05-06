@@ -42,7 +42,8 @@ class LabelController extends Controller
                 $pipelines[$label->pipeline_id]['labels'][] = $label;
             }
 
-            return view('labels.index')->with('pipelines', $pipelines);
+            return view('crm.crm_system_setup.labels.labels')->with('pipelines', $pipelines);
+            // return view('labels.index')->with('pipelines', $pipelines);
         }
         else
         {

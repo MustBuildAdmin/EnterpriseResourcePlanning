@@ -141,6 +141,9 @@
         text-align: right;
         padding-top: 0.25em;
     }
+    .table-responsive .bg-primary {
+        background: #206bc4 !important;
+    }
 </style>
 @if($roles_count==0)
 <div class="page-body">

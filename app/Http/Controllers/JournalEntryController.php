@@ -16,8 +16,8 @@ class JournalEntryController extends Controller
         if(\Auth::user()->can('manage journal entry'))
         {
             $journalEntries = JournalEntry::where('created_by', '=', \Auth::user()->creatorId())->get();
-
-            return view('journalEntry.index', compact('journalEntries'));
+            return view('accounting.journalEntry.index', compact('journalEntries'));
+            // return view('journalEntry.index', compact('journalEntries'));
         }
         else
         {
