@@ -35,7 +35,8 @@ class VenderController extends Controller
         {
             $venders = Vender::where('created_by', \Auth::user()->creatorId())->get();
 
-            return view('vender.index', compact('venders'));
+            return view('accounting.vender.index', compact('venders'));
+            // return view('vender.index', compact('venders'));
         }
         else
         {

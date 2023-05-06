@@ -19,8 +19,8 @@ class CreditNoteController extends Controller
         if(\Auth::user()->can('manage credit note'))
         {
             $invoices = Invoice::where('created_by', \Auth::user()->creatorId())->get();
-
-            return view('creditNote.index', compact('invoices'));
+            return view('accounting.creditNote.index', compact('invoices'));
+            // return view('creditNote.index', compact('invoices'));
         }
         else
         {

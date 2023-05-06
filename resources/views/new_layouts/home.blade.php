@@ -110,6 +110,31 @@
 						</div>
 						@endcan
 						@endif
+
+						@if(\Auth::user()->show_account() == 1)
+						@if( Gate::check('manage customer') || Gate::check('manage vender') || Gate::check('manage customer') || Gate::check('manage vender') ||
+							 Gate::check('manage proposal') ||  Gate::check('manage bank account') ||  Gate::check('manage bank transfer') ||  Gate::check('manage invoice')
+							 ||  Gate::check('manage revenue') ||  Gate::check('manage credit note') ||  Gate::check('manage bill')  ||  Gate::check('manage payment') ||
+							  Gate::check('manage debit note') || Gate::check('manage chart of account') ||  Gate::check('manage journal entry') ||   Gate::check('balance sheet report')
+							  || Gate::check('ledger report') ||  Gate::check('trial balance report')  )
+						<div class="col-md-6 col-xl-2">
+							<a class="card card-link" href="{{ route('customer.index') }}">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-auto">
+                                            <span class="bg-dark text-white avatar">
+												<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 18v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M7 14l3 -3l2 2l3 -3l2 2"></path></svg>
+                                        </span>
+										</div>
+										<div class="col">
+											<div class="font-weight-medium mt-2">{{__('Accounting System ')}}</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						@endcan
+						@endif
 						
 						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
 						@can('manage client')
