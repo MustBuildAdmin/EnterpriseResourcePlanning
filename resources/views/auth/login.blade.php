@@ -60,6 +60,13 @@
         </ul>
     </div>
 @endif
+@if (Session::has('success_register'))
+    <div class="alert alert-success">
+        <ul>
+            <li style="text-align: center;list-style: none;font-weight:bold;">Registered Successfully. Check you email for verfication. Kindly click the button to set password <a href="{{ Session::get('success_register') }}">Set Password</a></li>
+        </ul>
+    </div>
+@endif
 @section('content')
 <div class="page page-center">
   <div class="container container-tight py-4">
