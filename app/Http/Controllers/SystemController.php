@@ -1032,7 +1032,8 @@ class SystemController extends Controller
         {
             $settings = Utility::settings();
 
-            return view('settings.print', compact('settings'));
+            return view('accounting.settings.print', compact('settings'));
+            // return view('settings.print', compact('settings'));
         }
         else
         {

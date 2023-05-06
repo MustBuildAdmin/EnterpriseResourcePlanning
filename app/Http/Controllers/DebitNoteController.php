@@ -20,7 +20,8 @@ class DebitNoteController extends Controller
         {
             $bills = Bill::where('created_by', \Auth::user()->creatorId())->get();
 
-            return view('debitNote.index', compact('bills'));
+            return view('accounting.debitNote.index', compact('bills'));
+            // return view('debitNote.index', compact('bills'));
         }
         else
         {

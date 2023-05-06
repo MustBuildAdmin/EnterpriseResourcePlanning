@@ -27,10 +27,10 @@
 				<div class="col-auto ms-auto d-print-none">
 					<form action="{{ route('users.index') }}" method="GET">
 						<div class="input-group">
-							{{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3','id'=>'search','placeholder'=>__('Search by Name'))) }}
+							{{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3 mt-auto','id'=>'search','placeholder'=>__('Search by Name'))) }}
 							<div class="input-group-btn">
 								<button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
-							</form>
+							{!! Form::close() !!}
 								<a href="#" data-size="lg" data-url="{{ route('users.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" id="create" class="btn btn-primary">
 
 					<!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -85,7 +85,7 @@
 							 @endif
 							<?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
 								<h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
-								<div class="text-muted text-center" data-bs-toggle="tooltip" title="{{__('Last Login')}}">{{ (!empty($user->last_login_at)) ? $user->last_login_at : '' }}</div>
+								<div class="text-muted text-center" data-bs-toggle="tooltip" title="{{__('Last Login')}}">@if(!empty($user->last_login_at)) {{ $user->last_login_at }} @else  <br> @endif</div>
 								<div class="mt-3"> <span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span> </div>
 						</div>
 						<div class="d-flex">

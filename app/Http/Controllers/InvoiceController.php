@@ -59,7 +59,8 @@ class InvoiceController extends Controller
             }
             $invoices = $query->get();
 
-            return view('invoice.index', compact('invoices', 'customer', 'status'));
+            return view('accounting.invoice.index', compact('invoices', 'customer', 'status'));
+            // return view('invoice.index', compact('invoices', 'customer', 'status'));
         }
         else
         {

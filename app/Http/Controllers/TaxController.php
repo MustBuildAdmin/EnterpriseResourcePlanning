@@ -19,7 +19,8 @@ class TaxController extends Controller
         {
             $taxes = Tax::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('taxes.index')->with('taxes', $taxes);
+            return view('accounting.taxes.index')->with('taxes', $taxes);
+            // return view('taxes.index')->with('taxes', $taxes);
         }
         else
         {

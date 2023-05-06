@@ -1513,8 +1513,8 @@ class ReportController extends Controller
             $filter['startDateRange'] = $start;
             $filter['endDateRange']   = $end;
 
-
-            return view('report.balance_sheet', compact('filter', 'chartAccounts'));
+            return view('accounting.report.balance_sheet', compact('filter', 'chartAccounts'));
+            // return view('report.balance_sheet', compact('filter', 'chartAccounts'));
         }
         else
         {
@@ -1580,8 +1580,8 @@ class ReportController extends Controller
             $filter['startDateRange'] = $start;
             $filter['endDateRange']   = $end;
 
-
-            return view('report.ledger_summary', compact('filter', 'journalItems', 'account', 'accounts'));
+            return view('accounting.report.ledger_summary', compact('filter', 'journalItems', 'account', 'accounts'));
+            // return view('report.ledger_summary', compact('filter', 'journalItems', 'account', 'accounts'));
         }
         else
         {
@@ -1618,7 +1618,8 @@ class ReportController extends Controller
             $filter['startDateRange'] = $start;
             $filter['endDateRange']   = $end;
 
-            return view('report.trial_balance', compact('filter', 'journalItem'));
+            return view('accounting.report.trial_balance', compact('filter', 'journalItem'));
+            // return view('report.trial_balance', compact('filter', 'journalItem'));
         }
         else
         {
