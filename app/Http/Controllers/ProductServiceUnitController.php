@@ -13,8 +13,9 @@ class ProductServiceUnitController extends Controller
         if(\Auth::user()->can('manage constant unit'))
         {
             $units = ProductServiceUnit::where('created_by', '=', \Auth::user()->creatorId())->get();
-
-            return view('productServiceUnit.index', compact('units'));
+            
+            return view('accounting.productServiceUnit.index', compact('units'));
+            // return view('productServiceUnit.index', compact('units'));
         }
         else
         {
