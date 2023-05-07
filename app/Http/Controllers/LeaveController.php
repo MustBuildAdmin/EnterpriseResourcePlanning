@@ -105,8 +105,12 @@ class LeaveController extends Controller
             $leave->created_by       = \Auth::user()->creatorId();
 
             $leave->save();
-
-            return redirect()->route('leave.index')->with('success', __('Leave  successfully created.'));
+            if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company' && \Auth::user()->type != 'super admin'){
+                return redirect()->route('my-leave')->with('success', __('Leave  successfully created.'));
+            }
+            else{
+                return redirect()->route('leave.index')->with('success', __('Leave  successfully created.'));
+            }
         }
         else
         {
