@@ -28421,3 +28421,12 @@ i.ti.ti-pencil {
     color: #2181d3 !important;
 }
 
+.myinfo .list-group-item:last-child {
+    border-bottom-right-radius: inherit;
+    border-bottom-left-radius: inherit;
+    min-height: 40px;
+}
+
+.myinfo #sidebar ul li {
+    margin: 0 0 10px;
+}
