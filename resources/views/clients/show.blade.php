@@ -1,4 +1,5 @@
-@extends('layouts.admin')
+@include('new_layouts.header')
+@include('crm.side-menu')
 @php
     //$profile=asset(Storage::url('uploads/avatar/'));
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
@@ -6,18 +7,7 @@
 @section('page-title')
     {{__('Manage Client')}}
 @endsection
-@push('script-page')
-@endpush
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('clients.index')}}">{{__('Client')}}</a></li>
-    <li class="breadcrumb-item">  {{ ucwords($client->name).__("'s Detail") }}</li>
-@endsection
-@section('action-btn')
 
-@endsection
-
-@section('content')
 
     <div class="row">
         <div class="col-sm-3">
@@ -159,4 +149,4 @@
             </div>
         </div>
     </div>
-@endsection
+    @include('new_layouts.footer')
