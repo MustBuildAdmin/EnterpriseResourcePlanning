@@ -18,7 +18,8 @@ class CustomFieldController extends Controller
         {
             $custom_fields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('customFields.index', compact('custom_fields'));
+            return view('accounting.customFields.index', compact('custom_fields'));
+            // return view('customFields.index', compact('custom_fields'));
         }
         else
         {
