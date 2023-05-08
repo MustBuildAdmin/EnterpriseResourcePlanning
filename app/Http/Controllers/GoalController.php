@@ -14,7 +14,8 @@ class GoalController extends Controller
         {
             $golas = Goal::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('goal.index', compact('golas'));
+            return view('accounting.goal.index', compact('golas'));
+            // return view('goal.index', compact('golas'));
         }
         else
         {

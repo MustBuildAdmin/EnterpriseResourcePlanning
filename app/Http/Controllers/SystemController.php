@@ -279,8 +279,10 @@ class SystemController extends Controller
             ];
 
             Utility::setEnvironmentValue($arrEnv);
+            return redirect()->route('new_home');
 
-            return redirect()->back()->with('success', __('Setting successfully updated.'));
+            // return redirect()->back()->with('success', __('Setting successfully updated.'));
+
         }
         else
         {
@@ -692,7 +694,10 @@ class SystemController extends Controller
             $currnocLang = NOC::where('created_by',  \Auth::user()->id)->where('lang', $noclang)->first();
             $country=Utility::getcountry();
             $currency = DB::table('currency')->get();
-
+            if($settings['company_email']==null || $settings['company_email']=='')
+            {
+                $settings['company_email']=$get_user['email'];
+            }
 
             return view('settings.companysettings', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang','currency'));
         }
@@ -1032,7 +1037,8 @@ class SystemController extends Controller
         {
             $settings = Utility::settings();
 
-            return view('settings.print', compact('settings'));
+            return view('accounting.settings.print', compact('settings'));
+            // return view('settings.print', compact('settings'));
         }
         else
         {

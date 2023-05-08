@@ -52,7 +52,8 @@ class BillController extends Controller
             }
             $bills = $query->get();
 
-            return view('bill.index', compact('bills', 'vender', 'status'));
+            return view('accounting.bill.index', compact('bills', 'vender', 'status'));
+            // return view('bill.index', compact('bills', 'vender', 'status'));
         }
         else
         {

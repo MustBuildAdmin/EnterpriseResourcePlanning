@@ -36,7 +36,8 @@ class BankTransferController extends Controller
             }
             $transfers = $query->get();
 
-            return view('bank-transfer.index', compact('transfers', 'account'));
+            // return view('bank-transfer.index', compact('transfers', 'account'));
+            return view('accounting.bank-transfer.index', compact('transfers', 'account'));
         }
         else
         {

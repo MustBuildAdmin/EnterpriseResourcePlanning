@@ -54,8 +54,8 @@ class PaymentController extends Controller
 
             $payments = $query->get();
 
-
-            return view('payment.index', compact('payments', 'account', 'category', 'vender'));
+            return view('accounting.payment.index', compact('payments', 'account', 'category', 'vender'));
+            // return view('payment.index', compact('payments', 'account', 'category', 'vender'));
         }
         else
         {

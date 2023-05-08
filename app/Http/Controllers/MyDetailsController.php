@@ -25,6 +25,7 @@ use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Leave;
+use App\Models\AttendanceEmployee;
 
 class MyDetailsController extends Controller
 {
@@ -46,6 +47,16 @@ class MyDetailsController extends Controller
             return view('mydetails.info', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
             // return view('employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
       
+    }
+    public function markattendance(){
+        $officeTime['startTime'] = Utility::getValByName('company_start_time');
+        $officeTime['endTime']   = Utility::getValByName('company_end_time');
+        $date               = date("Y-m-d");
+        $time               = date("H:i:s");
+        $employeeAttendance = AttendanceEmployee::orderBy('id', 'desc')->where('employee_id', '=', !empty(\Auth::user()->employee) ? \Auth::user()->employee->id : 0)->where('date', '=', $date)->first();
+
+        return view('mydetails.attendance',compact( 'employeeAttendance','officeTime'));
+
     }
     public function leave()
     {

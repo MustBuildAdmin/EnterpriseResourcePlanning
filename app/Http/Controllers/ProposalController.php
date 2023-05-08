@@ -61,7 +61,8 @@ class ProposalController extends Controller
             }
             $proposals = $query->get();
 
-            return view('proposal.index', compact('proposals', 'customer', 'status'));
+            return view('accounting.proposal.index', compact('proposals', 'customer', 'status'));
+            // return view('proposal.index', compact('proposals', 'customer', 'status'));
         }
         else
         {

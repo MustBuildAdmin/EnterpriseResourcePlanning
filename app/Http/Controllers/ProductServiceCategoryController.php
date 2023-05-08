@@ -21,8 +21,9 @@ class ProductServiceCategoryController extends Controller
         if(\Auth::user()->can('manage constant category'))
         {
             $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->get();
-
-            return view('productServiceCategory.index', compact('categories'));
+            
+            return view('accounting.productServiceCategory.index', compact('categories'));
+            // return view('productServiceCategory.index', compact('categories'));
         }
         else
         {
