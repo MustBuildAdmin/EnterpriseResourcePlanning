@@ -28338,12 +28338,12 @@ i.ti.ti-pencil {
 #sidebar ul li a {
     padding: 10px 20px;
     font-size: 1em;
-    color: #fff;
+    color: #000 !important;
     display: flex;
     /* align-items: center; */
     justify-content: start;
     line-height: 33px;
-    background: #3421c0;
+    background: #fafbfc;
 }
 #sidebar ul li a.active {
     color: #ffffff;
@@ -28419,5 +28419,15 @@ i.ti.ti-pencil {
 i.ti.ti-pencil {
     font-size: 16px;
     color: #2181d3 !important;
+}
+
+.myinfo .list-group-item:last-child {
+    border-bottom-right-radius: inherit;
+    border-bottom-left-radius: inherit;
+    min-height: 40px;
+}
+
+.myinfo #sidebar ul li {
+    margin: 0 0 10px;
 }
 

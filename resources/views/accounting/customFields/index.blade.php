@@ -1,17 +1,22 @@
 
 @include('new_layouts.header')
 @include('accounting.side-menu')
+
 <div class="row">
-    <div class="col-md-6">
-       <h2>{{__('Manage Custom Field')}}</h2>
-    </div>
-    <div class="float-end">
+  <div class="col-md-6">
+      <h2>{{__('Manage Custom Field')}}</h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
+
         @can('create constant custom field')
-            <a href="#" data-url="{{ route('custom-field.create') }}" data-bs-toggle="tooltip" title="{{__('Create')}}" data-ajax-popup="true" data-title="{{__('Create New Custom Field')}}" class="btn btn-sm btn-primary">
+            <a class="btn btn-sm btn-primary floatrght" href="#" data-url="{{ route('custom-field.create') }}" data-bs-toggle="tooltip" title="{{__('Create')}}" data-ajax-popup="true" data-title="{{__('Create New Custom Field')}}">
                 <i class="ti ti-plus"></i>
             </a>
         @endcan
-    </div>
+
+  </div>
+</div>
+
 
 
     <div class="row">
@@ -39,16 +44,23 @@
                                     <td>{{ $field->module}}</td>
                                     @if(Gate::check('edit constant custom field') || Gate::check('delete constant custom field'))
                                         <td class="Action">
-                                            <span>
-                                            @can('edit constant custom field')
-                                                    <div class="action-btn bg-primary ms-2">
-                                                        <a href="#" class="mx-3 btn btn-sm align-items-center" data-url="{{ route('custom-field.edit',$field->id) }}" data-ajax-popup="true" data-title="{{__('Edit Custom Field')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
+
+
+                                        <div class="col-md-6 floatleft ">
+
+                                               @can('edit constant custom field')
+                                                    <div class="action-btn ms-2">
+                                                <a href="#" class="mx-3 btn btn-sm align-items-center backgroundnone" data-url="{{ route('custom-field.edit',$field->id) }}" data-ajax-popup="true" data-title="{{__('Edit Custom Field')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
                                                     <i class="ti ti-pencil text-white"></i>
                                                 </a>
                                                     </div>
                                                 @endcan
-                                                @can('delete constant custom field')
-                                                    <div class="action-btn bg-danger ms-2">
+
+                                            </div>
+
+                                            <div class="col-md-6 floatleft">
+                                            @can('delete constant custom field')
+                                                    <div class="action-btn  ms-2">
                                                         {!! Form::open(['method' => 'DELETE', 'route' => ['custom-field.destroy', $field->id],'id'=>'delete-form-'.$field->id]) !!}
                                                         <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$field->id}}').submit();">
                                                         <i class="ti ti-trash text-white"></i>
@@ -56,7 +68,8 @@
                                                         {!! Form::close() !!}
                                                     </div>
                                                 @endcan
-                                            </span>
+                                            </div>
+
                                         </td>
 
                                     @endif
@@ -70,5 +83,5 @@
             </div>
         </div>
     </div>
-</div>
+
     @include('new_layouts.footer')
