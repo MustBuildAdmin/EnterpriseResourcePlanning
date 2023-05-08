@@ -23,8 +23,8 @@ class FormBuilderController extends Controller
         {
             $forms = FormBuilder::where('created_by', '=', $usr->creatorId())->get();
 
-            // return view('form_builder.index', compact('forms'));
             return view('crm.form_builder.index', compact('forms'));
+            // return view('form_builder.index', compact('forms'));
         }
         else
         {
@@ -77,7 +77,8 @@ class FormBuilderController extends Controller
         {
             if($formBuilder->created_by == \Auth::user()->creatorId())
             {
-                return view('form_builder.show', compact('formBuilder'));
+                return view('crm.form_builder.form_builder', compact('formBuilder'));
+                // return view('form_builder.show', compact('formBuilder'));
             }
             else
             {
@@ -360,7 +361,8 @@ class FormBuilderController extends Controller
             $form = FormBuilder::find($form_id);
             if($form->created_by == \Auth::user()->creatorId())
             {
-                return view('form_builder.response', compact('form'));
+                return view('crm.form_builder.form_builder_response', compact('form'));
+                // return view('form_builder.response', compact('form'));
             }
             else
             {
