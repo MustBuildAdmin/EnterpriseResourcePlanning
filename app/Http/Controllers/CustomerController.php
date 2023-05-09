@@ -35,7 +35,8 @@ class CustomerController extends Controller
         {
             $customers = Customer::where('created_by', \Auth::user()->creatorId())->get();
 
-            return view('customer.index', compact('customers'));
+            return view('accounting.customer.index', compact('customers'));
+            // return view('customer.index', compact('customers'));
         }
         else
         {

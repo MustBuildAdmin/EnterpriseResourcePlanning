@@ -42,7 +42,8 @@ class LeadStageController extends Controller
                 $pipelines[$lead_stage->pipeline_id]['lead_stages'][] = $lead_stage;
             }
 
-            return view('lead_stages.index')->with('pipelines', $pipelines);
+            return view('crm.crm_system_setup.lead_stages.lead_stages')->with('pipelines', $pipelines);
+            // return view('lead_stages.index')->with('pipelines', $pipelines);
         }
         else
         {

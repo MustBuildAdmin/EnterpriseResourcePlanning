@@ -19,8 +19,9 @@ class BankAccountController extends Controller
         if(\Auth::user()->can('create bank account'))
         {
             $accounts = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get();
-
-            return view('bankAccount.index', compact('accounts'));
+            
+            return view('accounting.bankAccount.index', compact('accounts'));
+            // return view('bankAccount.index', compact('accounts'));
         }
         else
         {

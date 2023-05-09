@@ -57,8 +57,8 @@ class RevenueController extends Controller
             }
 
             $revenues = $query->get();
-
-            return view('revenue.index', compact('revenues', 'customer', 'account', 'category'));
+            return view('accounting.revenue.index', compact('revenues', 'customer', 'account', 'category'));
+            // return view('revenue.index', compact('revenues', 'customer', 'account', 'category'));
         }
         else
         {

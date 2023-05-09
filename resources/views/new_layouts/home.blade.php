@@ -110,6 +110,31 @@
 						</div>
 						@endcan
 						@endif
+
+						@if(\Auth::user()->show_account() == 1)
+						@if( Gate::check('manage customer') || Gate::check('manage vender') || Gate::check('manage customer') || Gate::check('manage vender') ||
+							 Gate::check('manage proposal') ||  Gate::check('manage bank account') ||  Gate::check('manage bank transfer') ||  Gate::check('manage invoice')
+							 ||  Gate::check('manage revenue') ||  Gate::check('manage credit note') ||  Gate::check('manage bill')  ||  Gate::check('manage payment') ||
+							  Gate::check('manage debit note') || Gate::check('manage chart of account') ||  Gate::check('manage journal entry') ||   Gate::check('balance sheet report')
+							  || Gate::check('ledger report') ||  Gate::check('trial balance report')  )
+						<div class="col-md-6 col-xl-2">
+							<a class="card card-link" href="{{ route('customer.index') }}">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-auto">
+                                            <span class="bg-dark text-white avatar">
+												<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 18v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M7 14l3 -3l2 2l3 -3l2 2"></path></svg>
+                                        </span>
+										</div>
+										<div class="col">
+											<div class="font-weight-medium mt-2">{{__('Accounting System ')}}</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						@endcan
+						@endif
 						
 						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
 						@can('manage client')
@@ -210,6 +235,22 @@
 										</div>
 										<div class="col">
 											<div class="font-weight-medium mt-2">{{__('My Details')}}</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						<div class="col-md-6 col-xl-2">
+							<a class="card card-link" href="{{route('mark-attendance')}}" >
+								<div class="card-body">
+									<div class="row">
+										<div class="col-auto">
+                                            <span class="bg-success text-white avatar">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/> </svg>
+                                            </span>
+										</div>
+										<div class="col">
+											<div class="font-weight-medium mt-2">{{__('Mark Attendance')}}</div>
 										</div>
 									</div>
 								</div>

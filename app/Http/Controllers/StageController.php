@@ -42,7 +42,8 @@ class StageController extends Controller
                 $pipelines[$stage->pipeline_id]['stages'][] = $stage;
             }
 
-            return view('stages.index')->with('pipelines', $pipelines);
+            return view('crm.crm_system_setup.deal_stages.deal_stages')->with('pipelines', $pipelines);
+            // return view('stages.index')->with('pipelines', $pipelines);
         }
         else
         {

@@ -179,7 +179,6 @@ $holidays=implode(':',$holidays);
                                         <a class="btn-return-home badge-blue" href="{{route('home')}}">
                                           <i class="ti ti-reply"></i> {{ __('Return Home')}}
                                         </a>
-
                                       </div>
                                     </div>
                                     @endif
@@ -195,7 +194,6 @@ $holidays=implode(':',$holidays);
 
     <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
-
 
 @include('new_layouts.footer')
 

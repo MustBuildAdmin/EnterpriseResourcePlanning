@@ -16,7 +16,8 @@ class ContractTypeController extends Controller
             if(\Auth::user()->type == 'company')
             {
                 $types = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get();
-                return view('contractType.index', compact('types'));
+                return view('crm.crm_system_setup.contract_type.contract_type', compact('types'));
+                // return view('contractType.index', compact('types'));
             }
             else
             {

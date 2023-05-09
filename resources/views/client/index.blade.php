@@ -19,7 +19,7 @@
         <div class="col-auto ms-auto d-print-none">
           <form action="{{ route('clients.index') }}" method="GET">
             <div class="input-group"> 
-              {{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3','id'=>'search','placeholder'=>__('Search by Name or Email'))) }}
+              {{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3 mt-auto','id'=>'search','placeholder'=>__('Search by Name or Email'))) }}
               <div class="input-group-btn">
                 <button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
           </form>
@@ -50,22 +50,24 @@
 								<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti ti-dots-vertical"></i> </button>
 								<div class="dropdown-menu dropdown-menu-end">
 									<a href="{{ route('clients.show',$client->id) }}" class="dropdown-item" data-bs-original-title="{{__('View')}}"> <i class="ti ti-eye"></i> <span>{{__('Show')}}</span> </a> 
-                  @can('edit client')
-									<a href="#!" data-size="md" data-url="{{ route('clients.edit',$client->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> 
-                    <span>{{__('Edit')}}</span> </a> 
-                    @endcan 
-                    @can('delete client') 
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['clients.destroy', $client['id']],'id'=>'delete-form-'.$client['id']]) !!}
-									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span> 
-                    @if($client->delete_status!=0)
-                    {{__('Delete')}} 
-                    @else 
-                    {{__('Restore')}}
-                    @endif
-                  </span> 
-                 </a> 
-                  {!! Form::close() !!} 
-                  @endcan
+										@can('edit client')
+											<a href="#!" data-size="md" data-url="{{ route('clients.edit',$client->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> 
+												<span>{{__('Edit')}}</span> 
+											</a> 
+										@endcan 
+										@can('delete client') 
+										{!! Form::open(['method' => 'DELETE', 'route' => ['clients.destroy', $client['id']],'id'=>'delete-form-'.$client['id']]) !!}
+										<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> 
+										<span> 
+											@if($client->delete_status!=0)
+											{{__('Delete')}} 
+											@else 
+											{{__('Restore')}}
+											@endif
+										</span> 
+										</a> 
+										{!! Form::close() !!} 
+    								    @endcan
 									<a href="#!" data-url="{{route('clients.reset',\Crypt::encrypt($client->id))}}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}"> <i class="ti ti-adjustments"></i> <span>  {{__('Reset Password')}}</span> </a>
 								</div>
 							</div>

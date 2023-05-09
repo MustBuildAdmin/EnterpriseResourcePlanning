@@ -335,6 +335,7 @@ Route::group(
         ],
     ], function (){
 
+    Route::get('mark-attendance', 'MyDetailsController@markattendance')->name('mark-attendance');
     Route::get('my-info', 'MyDetailsController@info')->name('my-info');
     Route::get('my-leave', 'MyDetailsController@leave')->name('my-leave');
     Route::get('my-payslip', 'MyDetailsController@payslip')->name('my-payslip');

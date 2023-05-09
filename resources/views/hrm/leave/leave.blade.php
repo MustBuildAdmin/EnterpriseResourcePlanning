@@ -1,20 +1,17 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main')
-
-
-
-<div class="row">
-  <div class="col-md-6">
-     <h2>Manage Leave</h2>
-  </div>
-  <div class="col-md-6 float-end">
-     @can('create leave')
-        <a href="#" class="btn btn-sm btn-primary mb-3 floatrght" data-size="lg" data-url="{{ route('leave.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Leave')}}" >
-            <i class="ti ti-plus"></i>
-        </a>
-     @endcan
-  </div>
-</div>
+@include('hrm.hrm_main',['hrm_header' => 'Manage Leave'])
+    <div class="row">
+        <div class="col-md-6">
+           <h2>Manage Leave</h2>
+        </div>
+        <div class="col-md-6 float-end">
+           @can('create leave')
+              <a href="#" class="btn btn-sm btn-primary mb-3 floatrght" data-size="lg" data-url="{{ route('leave.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Leave')}}" >
+                  <i class="ti ti-plus"></i>
+              </a>
+           @endcan
+        </div>
+    </div>
 
     <div class="table-responsive">
         <table class="table card-table table-vcenter text-nowrap datatable">

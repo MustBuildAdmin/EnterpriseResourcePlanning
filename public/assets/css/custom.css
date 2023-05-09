@@ -38,9 +38,10 @@
 
 #sidebar {
 
-  background: #3421C0;
+  background: #fafbfc;
   color: #6b6b6b;
   transition: all 0.3s;
+  box-shadow: 0px 0px 1px 1px #ccc;
 }
 
 
@@ -62,8 +63,8 @@
 }
 
 #sidebar ul li a {
-padding: 10px 20px;
-    font-size: 1em;
+padding: 20px;
+    font-size: 0.94em;
      color: #fff;
     display: flex;
     /* align-items: center; */
@@ -71,21 +72,21 @@ padding: 10px 20px;
     line-height: 33px;
 }
 #sidebar ul li{
-    margin: 21px 0 10px;
+    margin: 0 0 0px;
 }
 #sidebar ul li .icon{
-  font-size: 28px;
-      margin-right: 30px;
+    font-size: 2em;
+    margin-right: 30px;
 }
 #sidebar ul li a:hover {
-    color: #3421c0;
-    background: #ffffff;
+    color: #000;
+    background: #fff;
     text-decoration: none;
 }
 
 #sidebar ul li.active > a, a[aria-expanded=true] {
-color: #3421c0 !important;
-    background: #ffffff;
+color: #000 !important;
+    background: #fff;
 }
 
 a[data-toggle=collapse] {
@@ -174,7 +175,7 @@ ul.collapse li{
 
 .collapseToggle {
     display: block;
-    cursor: pointer;s
+    cursor: pointer;
 }
 
 #toggleIcon {
@@ -233,18 +234,58 @@ ul.collapse li{
   font-size: 0px;
 }
 #toggleIcon{
- background: #3421c0;
-    color: #fff;
-    width: 30px;
-    height: 30px;
-    margin-left: -21px;
-    z-index: 9999999;
-    position: absolute;
-    margin-top: -30px;
-    top: 10.5%;
-    line-height: 30px;
-    text-align: center;
+  background: #3421c0;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  margin-left: -59px;
+  z-index: 9999999;
+  position: absolute;
+  margin-top: -30px;
+  top: 2.5%;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid;
 }
 .sidebar--Collapse ul li a.dropdown-toggle::after{
   opacity: 0;
 }
+
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  position: relative !important;
+}
+
+#toggleIcon {
+  background: #fafbfc;
+    color: #7c7a7a;
+    width: 30px;
+    height: 30px;
+    margin-left: -80px;
+    z-index: 9999999;
+    position: absolute;
+    margin-top: -30px;
+    top: 4%;
+    line-height: 30px;
+    text-align: center;
+}
+
+.employee table.dataTable td, table.dataTable th {
+  -webkit-box-sizing: content-box;
+  box-sizing: border-box;
+  word-break: break-word;
+  text-transform: lowercase;
+}
+
+.down {
+  margin: 0 0 5% 0;
+}
+
+.hrmdoc .ti.ti-pencil {
+  font-size: 16px;
+  color: #000000 !important;
+}
+
