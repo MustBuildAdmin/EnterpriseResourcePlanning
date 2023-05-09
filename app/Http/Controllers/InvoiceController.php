@@ -83,8 +83,9 @@ class InvoiceController extends Controller
             $product_services->prepend('--', '');
             //gst calucluation
             $settings  = Utility::settings(\Auth::user()->creatorId());
+            //return view('accounting.invoice.index', compact('invoices', 'customer', 'status'));
 
-            return view('invoice.create', compact('customers', 'invoice_number', 'product_services', 'category', 'customFields', 'customerId','settings'));
+            return view('accounting.invoice.create', compact('customers', 'invoice_number', 'product_services', 'category', 'customFields', 'customerId','settings'));
         }
         else
         {
@@ -106,7 +107,7 @@ class InvoiceController extends Controller
         }else{
             $taxestype='0';
         }
-        return view('invoice.customer_detail', compact('customer','country','state','shipcountry','shipstate','taxestype','setting'));
+        return view('accounting.invoice.customer_detail', compact('customer','country','state','shipcountry','shipstate','taxestype','setting'));
     }
 
     public function product(Request $request)
@@ -222,7 +223,7 @@ class InvoiceController extends Controller
             Utility::addProductStock( $invoiceProduct->product_id,$invoiceProduct->quantity,$type,$description,$type_id);
 
 
-            return redirect()->route('invoice.index', $invoice->id)->with('success', __('Invoice successfully created.'));
+            return redirect()->route('accounting.invoice.index', $invoice->id)->with('success', __('Invoice successfully created.'));
         }
         else
         {
@@ -245,7 +246,7 @@ class InvoiceController extends Controller
             $invoice->customField = CustomField::getData($invoice, 'invoice');
             $customFields         = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
             $settings  = Utility::settings(\Auth::user()->creatorId());
-            return view('invoice.edit', compact('customers', 'product_services', 'invoice', 'invoice_number', 'category', 'customFields','settings'));
+            return view('accounting.invoice.edit', compact('customers', 'product_services', 'invoice', 'invoice_number', 'category', 'customFields','settings'));
         }
         else
         {
@@ -271,7 +272,7 @@ class InvoiceController extends Controller
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
 
-                    return redirect()->route('invoice.index')->with('error', $messages->first());
+                    return redirect()->route('accounting.invoice.index')->with('error', $messages->first());
                 }
                 $invoice->customer_id    = $request->customer_id;
                 $invoice->issue_date     = $request->issue_date;
@@ -333,7 +334,7 @@ class InvoiceController extends Controller
 
                 }
 
-                return redirect()->route('invoice.index')->with('success', __('Invoice successfully updated.'));
+                return redirect()->route('accounting.invoice.index')->with('success', __('Invoice successfully updated.'));
             } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
@@ -383,7 +384,7 @@ class InvoiceController extends Controller
                     $products= ProductService::find($value->product_id);
                     $hsc[$value->id]=$products->hsc;
                 }
-                return view('invoice.view', compact('invoice', 'customer', 'iteams', 'invoicePayment', 'customFields', 'user','gstflag','setting','hsc'));
+                return view('accounting.invoice.view', compact('invoice', 'customer', 'iteams', 'invoicePayment', 'customFields', 'user','gstflag','setting','hsc'));
             }
             else
             {
@@ -417,7 +418,7 @@ class InvoiceController extends Controller
 
                 InvoiceProduct::where('invoice_id', '=', $invoice->id)->delete();
 
-                return redirect()->route('invoice.index')->with('success', __('Invoice successfully deleted.'));
+                return redirect()->route('accounting.invoice.index')->with('success', __('Invoice successfully deleted.'));
             }
             else
             {
@@ -466,7 +467,7 @@ class InvoiceController extends Controller
             }
             $invoices = $query->get();
 
-            return view('invoice.index', compact('invoices', 'status'));
+            return view('accounting.invoice.index', compact('invoices', 'status'));
         }
         else
         {
@@ -484,11 +485,11 @@ class InvoiceController extends Controller
             $iteams   = $invoice->items;
             if($user->type == 'super admin')
             {
-                return view('invoice.view', compact('invoice', 'customer', 'iteams', 'user'));
+                return view('accounting.invoice.view', compact('invoice', 'customer', 'iteams', 'user'));
             }
             elseif($user->type == 'company')
             {
-                return view('invoice.customer_invoice', compact('invoice', 'customer', 'iteams', 'user'));
+                return view('accounting.invoice.customer_invoice', compact('invoice', 'customer', 'iteams', 'user'));
             }
         }
         else
@@ -988,7 +989,7 @@ class InvoiceController extends Controller
 
 
 
-        return view('invoice.templates.' . $template, compact('invoice', 'preview', 'color', 'img', 'settings', 'customer', 'font_color', 'customFields','gstflag'));
+        return view('accounting.invoice.templates.' . $template, compact('invoice', 'preview', 'color', 'img', 'settings', 'customer', 'font_color', 'customFields','gstflag'));
     }
 
     public function invoice($invoice_id)
@@ -1108,7 +1109,7 @@ class InvoiceController extends Controller
             $color      = '#' . $settings['invoice_color'];
             $font_color = Utility::getFontColor($color);
 
-            return view('invoice.templates.' . $settings['invoice_template'], compact('invoice','hsc', 'color', 'settings', 'customer', 'img', 'font_color', 'customFields','setting','gstflag'));
+            return view('accounting.invoice.templates.' . $settings['invoice_template'], compact('invoice','hsc', 'color', 'settings', 'customer', 'img', 'font_color', 'customFields','setting','gstflag'));
         }
         else
         {
@@ -1186,7 +1187,7 @@ class InvoiceController extends Controller
 
         $company_payment_setting = Utility::getCompanyPaymentSetting($user_id);
 
-        return view('invoice.customer_invoice', compact('invoice', 'customer', 'iteams', 'invoicePayment', 'customFields', 'user','company_payment_setting'));
+        return view('accounting.invoice.customer_invoice', compact('invoice', 'customer', 'iteams', 'invoicePayment', 'customFields', 'user','company_payment_setting'));
     }
 
     public function export()
