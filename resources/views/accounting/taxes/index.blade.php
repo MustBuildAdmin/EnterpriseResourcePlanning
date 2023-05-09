@@ -1,18 +1,21 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
 
+
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Manage Tax Rate')}}</h2>
+      <h2>{{__('Manage Tax Rate')}}</h2>
   </div>
- 
-  <div class="float-end">
+  <div class="col-md-6 float-end floatrght">
+
       @can('create constant tax')
-          <a href="#" data-url="{{ route('taxes.create') }}" data-ajax-popup="true" data-title="{{__('Create Tax Rate')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
+          <a class="btn btn-sm btn-primary floatrght"  href="#" data-url="{{ route('taxes.create') }}" data-ajax-popup="true" data-title="{{__('Create Tax Rate')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
               <i class="ti ti-plus"></i>
           </a>
       @endcan
+
   </div>
+</div>
 
 
 
@@ -39,24 +42,33 @@
                                   <td>{{ $taxe->name }}</td>
                                   <td>{{ $taxe->rate }}</td>
                                   <td class="Action">
-                                      <span>
-                                      @can('edit constant tax')
-                                              <div class="action-btn bg-primary ms-2">
-                                                  <a href="#" class="mx-3 btn btn-sm align-items-center" data-url="{{ route('taxes.edit',$taxe->id) }}" data-ajax-popup="true" data-title="{{__('Edit Tax Rate')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
-                                                  <i class="ti ti-pencil text-white"></i>
-                                              </a>
-                                              </div>
-                                          @endcan
-                                          @can('delete constant tax')
-                                              <div class="action-btn bg-danger ms-2">
-                                                  {!! Form::open(['method' => 'DELETE', 'route' => ['taxes.destroy', $taxe->id],'id'=>'delete-form-'.$taxe->id]) !!}
-                                                      <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$taxe->id}}').submit();">
-                                              <i class="ti ti-trash text-white"></i>
-                                          </a>
-                                                  {!! Form::close() !!}
-                                              </div>
-                                          @endcan
-                                      </span>
+
+
+                                      <div class="col-md-6 floatleft ">
+
+                                            @can('edit constant tax')
+                                                <div class="action-btn ms-2">
+                                                <a href="#" class="mx-3 btn btn-sm align-items-center backgroundnone" data-url="{{ route('taxes.edit',$taxe->id) }}" data-ajax-popup="true" data-title="{{__('Edit Tax Rate')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
+                                                    <span class="btn-inner--icon"><i class="ti ti-pencil text-white "></i></span>
+                                                </a>
+                                                </div>
+                                            @endcan
+
+                                            </div>
+
+                                            <div class="col-md-6 floatleft">
+                                            @can('delete constant tax')
+                                                    <div class="action-btn  ms-2">
+                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['taxes.destroy', $taxe->id],'id'=>'delete-form-'.$taxe->id]) !!}
+                                                          <a href="#" class="mx-3 btn btn-sm align-items-center backgroundnone" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$taxe->id}}').submit();">
+                                                            <i class="ti ti-trash text-white"></i>
+                                                        </a>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                            @endcan
+                                            </div>
+
+
                                   </td>
                               </tr>
                           @endforeach
@@ -69,5 +81,4 @@
   </div>
 
 
-</div>
 @include('new_layouts.footer')
