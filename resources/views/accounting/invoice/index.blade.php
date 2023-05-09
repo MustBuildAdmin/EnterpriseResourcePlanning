@@ -245,7 +245,7 @@
         </a>
 
         @can('create invoice')
-            <a href="{{ route('invoice.create', 0) }}" class="btn btn-sm btn-primary floatrght" data-bs-toggle="tooltip" title="{{__('Create')}}">
+            <a href="{{ route('invoice.create', 0) }}" class="btn btn-sm btn-primary floatrght gapbtn" data-bs-toggle="tooltip" title="{{__('Create')}}">
                 <i class="ti ti-plus"></i>
             </a>
         @endcan

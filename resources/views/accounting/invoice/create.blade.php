@@ -1,14 +1,7 @@
-@extends('layouts.admin')
-@section('page-title')
-    {{__('Invoice Create')}}
-@endsection
+@include('new_layouts.header')
+@include('accounting.side-menu')
 
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('invoice.index')}}">{{__('Invoice')}}</a></li>
-    <li class="breadcrumb-item">{{__('Invoice Create')}}</li>
-@endsection
-@push('script-page')
+
     <script src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
     <script>
@@ -384,8 +377,8 @@
         
         }
     </script>
-@endpush
-@section('content')
+
+
     <div class="row">
         {{ Form::open(array('url' => 'invoice','class'=>'w-100')) }}
         <div class="col-12">
@@ -638,6 +631,6 @@
         {{ Form::close() }}
 
     </div>
-@endsection
+
 
 

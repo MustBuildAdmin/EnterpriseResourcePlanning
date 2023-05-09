@@ -1889,7 +1889,7 @@ Route::resource('project_holiday', 'Project_holiday_Controller')->middleware(
         'auth',
         'XSS',
     ]
-);
+    );
 Route::resource('construction_asign', 'Construction_asign_Controller')->middleware(
     [
         'auth',
