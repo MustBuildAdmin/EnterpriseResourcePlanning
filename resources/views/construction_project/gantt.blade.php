@@ -86,6 +86,15 @@
 			opacity: 1;
 		}
 </style>
+@php 
+$holidays=array();
+
+foreach ($project_holidays as $key => $value) {
+    $time = strtotime($value->date);
+    $holidays[]= date("Y,m,d", strtotime("-1 month", $time));
+}
+$holidays=implode(':',$holidays);
+@endphp
 @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"])
                         <div class="col d-flex flex-column">
                             <div class="align">
@@ -158,6 +167,7 @@
                                         <a class="btn-return-home badge-blue" href="{{route('home')}}">
                                           <i class="ti ti-reply"></i> {{ __('Return Home')}}
                                         </a>
+                                       
                                       </div>
                                     </div>
                                     @endif
@@ -171,7 +181,9 @@
         </div>
     </div>
 
-
+    <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
+    <input type='hidden' id='holidays' value='{{$holidays}}'>
+    
 
 @include('new_layouts.footer')
 
@@ -245,11 +257,30 @@
         gantt.config.duration_unit = "day";
         gantt.config.row_height = 30;
         gantt.config.min_column_width = 40;
-        gantt.templates.timeline_cell_class = function (task, date) {
-            if (!gantt.isWorkTime(date))
-                return "week_end";
-            return "";
-        };
+
+        gantt.setWorkTime({ day:2, hours:false });
+
+        // var work=$('#weekends').val();
+        // var holidays=$('#holidays').val();
+        // console.log(holidays);
+        // var result =work.split(',');
+        // var result2 =holidays.split(':');
+        // result.forEach(element => {
+        //     gantt.setWorkTime({ day:element, hours:false });
+        // });
+        
+        // result2.forEach(element => {
+        //     console.log(element,'date');
+        //     gantt.setWorkTime({date:new Date(element), hours:false})
+        // });
+        
+
+
+        // gantt.templates.timeline_cell_class = function (task, date) {
+        //     if (!gantt.isWorkTime(date))
+        //         return "week_end";
+        //     return "";
+        // };
         function toggleMode(toggle) {
             gantt.$zoomToFit = !gantt.$zoomToFit;
             if (gantt.$zoomToFit) {
@@ -570,7 +601,8 @@
                 { name:"time", height:72, type:"duration", map_to:"auto"}
             ];
 
-            var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+            // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+            var dp = new gantt.dataProcessor("erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
