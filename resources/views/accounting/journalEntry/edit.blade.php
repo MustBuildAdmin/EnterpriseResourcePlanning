@@ -1,131 +1,8 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-@push('script-page')
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
-    <script>
-        var selector = "body";
-        if ($(selector + " .repeater").length) {
-            // var $dragAndDrop = $("body .repeater tbody").sortable({
-            //     handle: '.sort-handler'
-            // });
-            var $repeater = $(selector + ' .repeater').repeater({
-                initEmpty: false,
-                defaultValues: {
-                    'status': 1
-                },
-                show: function () {
-                    $(this).slideDown();
-                    var file_uploads = $(this).find('input.multi');
-                    if (file_uploads.length) {
-                        $(this).find('input.multi').MultiFile({
-                            max: 3,
-                            accept: 'png|jpg|jpeg',
-                            max_size: 2048
-                        });
-                    }
-                    if($('.select2').length) {
-                        $('.select2').select2();
-                    }
-                },
-                hide: function (deleteElement) {
-                    if (confirm('Are you sure you want to delete this element?')) {
-                        $(this).slideUp(deleteElement);
-                        $(this).remove();
-
-
-                        var inputs = $(".debit");
-                        var totalDebit = 0;
-                        for (var i = 0; i < inputs.length; i++) {
-                            totalDebit = parseFloat(totalDebit) + parseFloat($(inputs[i]).val());
-                        }
-                        $('.totalDebit').html(totalDebit.toFixed(2));
-
-
-                        var inputs = $(".credit");
-                        var totalCredit = 0;
-                        for (var i = 0; i < inputs.length; i++) {
-                            totalCredit = parseFloat(totalCredit) + parseFloat($(inputs[i]).val());
-                        }
-                        $('.totalCredit').html(totalCredit.toFixed(2));
-
-                        var id = $(this).find('.id').val();
-
-                        $.ajax({
-                            url: '{{route('journal.account.destroy')}}',
-                            type: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': jQuery('#token').val()
-                            },
-                            data: {
-                                'id': id
-                            },
-                            cache: false,
-                            success: function (data) {
-
-                            },
-                        });
-
-
-                    }
-                },
-                // ready: function (setIndexes) {
-                //     $dragAndDrop.on('drop', setIndexes);
-                // },
-                isFirstItemUndeletable: true
-            });
-            var value = $(selector + " .repeater").attr('data-value');
-            if (typeof value != 'undefined' && value.length != 0) {
-                value = JSON.parse(value);
-                $repeater.setList(value);
-            }
-
-        }
-
-        $(document).on('keyup', '.debit', function () {
-            var el = $(this).parent().parent().parent().parent();
-            var debit = $(this).val();
-            var credit = 0;
-            el.find('.credit').val(credit);
-            el.find('.amount').html(debit);
-
-
-            var inputs = $(".debit");
-            var totalDebit = 0;
-            for (var i = 0; i < inputs.length; i++) {
-                totalDebit = parseFloat(totalDebit) + parseFloat($(inputs[i]).val());
-            }
-            $('.totalDebit').html(totalDebit.toFixed(2));
-
-            el.find('.credit').attr("disabled", true);
-            if (debit == '') {
-                el.find('.credit').attr("disabled", false);
-            }
-        })
-
-        $(document).on('keyup', '.credit', function () {
-            var el = $(this).parent().parent().parent().parent();
-            var credit = $(this).val();
-            var debit = 0;
-            el.find('.debit').val(debit);
-            el.find('.amount').html(credit);
-
-            var inputs = $(".credit");
-            var totalCredit = 0;
-            for (var i = 0; i < inputs.length; i++) {
-                totalCredit = parseFloat(totalCredit) + parseFloat($(inputs[i]).val());
-            }
-            $('.totalCredit').html(totalCredit.toFixed(2));
-
-            el.find('.debit').attr("disabled", true);
-            if (credit == '') {
-                el.find('.debit').attr("disabled", false);
-            }
-        })
-
-
-    </script>
-@endpush
+{{-- @push('script-page') --}}
+   
+{{-- @endpush --}}
 {{-- @section('content') --}}
 
     {{ Form::model($journalEntry, array('route' => array('journal-entry.update', $journalEntry->id), 'method' => 'PUT','class'=>'w-100')) }}
@@ -257,5 +134,129 @@
         <input type="submit" value="{{__('Update')}}" class="btn btn-primary">
     </div>
     {{ Form::close() }}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
+    <script>
+        var selector = "body";
+        if ($(selector + " .repeater").length) {
+            // var $dragAndDrop = $("body .repeater tbody").sortable({
+            //     handle: '.sort-handler'
+            // });
+            var $repeater = $(selector + ' .repeater').repeater({
+                initEmpty: false,
+                defaultValues: {
+                    'status': 1
+                },
+                show: function () {
+                    $(this).slideDown();
+                    var file_uploads = $(this).find('input.multi');
+                    if (file_uploads.length) {
+                        $(this).find('input.multi').MultiFile({
+                            max: 3,
+                            accept: 'png|jpg|jpeg',
+                            max_size: 2048
+                        });
+                    }
+                    if($('.select2').length) {
+                        $('.select2').select2();
+                    }
+                },
+                hide: function (deleteElement) {
+                    if (confirm('Are you sure you want to delete this element?')) {
+                        $(this).slideUp(deleteElement);
+                        $(this).remove();
+
+
+                        var inputs = $(".debit");
+                        var totalDebit = 0;
+                        for (var i = 0; i < inputs.length; i++) {
+                            totalDebit = parseFloat(totalDebit) + parseFloat($(inputs[i]).val());
+                        }
+                        $('.totalDebit').html(totalDebit.toFixed(2));
+
+
+                        var inputs = $(".credit");
+                        var totalCredit = 0;
+                        for (var i = 0; i < inputs.length; i++) {
+                            totalCredit = parseFloat(totalCredit) + parseFloat($(inputs[i]).val());
+                        }
+                        $('.totalCredit').html(totalCredit.toFixed(2));
+
+                        var id = $(this).find('.id').val();
+
+                        $.ajax({
+                            url: '{{route('journal.account.destroy')}}',
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': jQuery('#token').val()
+                            },
+                            data: {
+                                'id': id
+                            },
+                            cache: false,
+                            success: function (data) {
+
+                            },
+                        });
+
+
+                    }
+                },
+                // ready: function (setIndexes) {
+                //     $dragAndDrop.on('drop', setIndexes);
+                // },
+                isFirstItemUndeletable: true
+            });
+            var value = $(selector + " .repeater").attr('data-value');
+            if (typeof value != 'undefined' && value.length != 0) {
+                value = JSON.parse(value);
+                $repeater.setList(value);
+            }
+
+        }
+
+        $(document).on('keyup', '.debit', function () {
+            var el = $(this).parent().parent().parent().parent();
+            var debit = $(this).val();
+            var credit = 0;
+            el.find('.credit').val(credit);
+            el.find('.amount').html(debit);
+
+
+            var inputs = $(".debit");
+            var totalDebit = 0;
+            for (var i = 0; i < inputs.length; i++) {
+                totalDebit = parseFloat(totalDebit) + parseFloat($(inputs[i]).val());
+            }
+            $('.totalDebit').html(totalDebit.toFixed(2));
+
+            el.find('.credit').attr("disabled", true);
+            if (debit == '') {
+                el.find('.credit').attr("disabled", false);
+            }
+        })
+
+        $(document).on('keyup', '.credit', function () {
+            var el = $(this).parent().parent().parent().parent();
+            var credit = $(this).val();
+            var debit = 0;
+            el.find('.debit').val(debit);
+            el.find('.amount').html(credit);
+
+            var inputs = $(".credit");
+            var totalCredit = 0;
+            for (var i = 0; i < inputs.length; i++) {
+                totalCredit = parseFloat(totalCredit) + parseFloat($(inputs[i]).val());
+            }
+            $('.totalCredit').html(totalCredit.toFixed(2));
+
+            el.find('.debit').attr("disabled", true);
+            if (credit == '') {
+                el.find('.debit').attr("disabled", false);
+            }
+        })
+
+
+    </script>
 @include('new_layouts.footer')
 {{-- @endsection --}}
