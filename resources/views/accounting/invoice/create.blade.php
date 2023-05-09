@@ -467,7 +467,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" id='productparts' style='display:none;'>
+        <div class="col-12" id='productparts'>
             <h5 class=" d-inline-block mb-4">{{__('Product & Services')}}</h5>
             <div class="card repeater">
                 <div class="item-section py-2">
