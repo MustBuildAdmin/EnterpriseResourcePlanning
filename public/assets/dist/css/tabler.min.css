@@ -10466,8 +10466,8 @@ fieldset:disabled .btn {
 }
 
 .mx-3 {
-    margin-right: 1rem !important;
-    margin-left: 1rem !important
+    margin-right: 0 !important;
+    margin-left: 0!important
 }
 
 .mx-4 {
@@ -27349,7 +27349,7 @@ img {
 
 a.mx-3.btn.btn-sm.align-items-center.bs-pass-para {
     background: none;
-    padding: 0 0 4px 0;
+    padding: 5px 0 4px 0;
     min-width: 10px;
 }
 
@@ -27987,7 +27987,7 @@ button.mx-3.btn.btn-sm.align-items-center {
 .list-group-item:last-child {
     border-bottom-right-radius: inherit;
     border-bottom-left-radius: inherit;
-    min-height: 110px;
+    min-height: 0;
 }
 
 .main .ti-plus {
@@ -28005,11 +28005,6 @@ button.mx-3.btn.btn-sm.align-items-center {
 
 a.btn.btn-md.btn-danger.bs-pass-para {
     background: none;
-}
-
-i.ti.ti-pencil {
-    color: #000 !important;
-    /* border: none !important; */
 }
 
 i.ti.ti-trash {
@@ -28431,7 +28426,11 @@ i.ti.ti-pencil {
     margin: 0 0 10px;
 }
 
-
 .gapbtn {
     margin: 0 5px 0 0;
+}
+
+i.ti.ti-pencil {
+    color: #000 !important;
+    /* border: none !important; */
 }
