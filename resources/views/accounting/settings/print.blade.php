@@ -156,7 +156,7 @@
                                                 @foreach(Utility::templateData()['colors'] as $key => $color)
                                                     <div class="col-auto">
                                                         <label class="colorinput">
-                                                            <input name="invoice_color" type="radio" value="{{$color}}" class="colorinput-input" {{(isset($settings['invoice_color']) && $settings['invoice_color'] == $color) ? 'checked' : ''}}>
+                                                            <input style="visibility: hidden;" name="invoice_color" type="radio" value="{{$color}}" class="colorinput-input" {{(isset($settings['invoice_color']) && $settings['invoice_color'] == $color) ? 'checked' : ''}}>
                                                             <span class="colorinput-color" style="background: #{{$color}}"></span>
                                                         </label>
                                                     </div>

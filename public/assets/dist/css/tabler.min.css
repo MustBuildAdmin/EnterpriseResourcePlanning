@@ -28430,7 +28430,53 @@ i.ti.ti-pencil {
     margin: 0 5px 0 0;
 }
 
+i.ti.ti-eye.text-white.text-white {
+    color: #000 !important;
+}
+
 i.ti.ti-pencil {
     color: #000 !important;
     /* border: none !important; */
+}
+
+.colorinput-color {
+    background-color: #fdfdff;
+    border-color: #e4e6fc;
+    border-width: 1px;
+    border-style: solid;
+    display: inline-block;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 3px;
+    color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+input.colorinput-input {
+    position: absolute;
+    z-index: -1;
+    background-color: none !important;
+}
+
+.bg-primary.proposal_logo_update {
+    padding: 4% 3%;
+    color: #fff;
+    border-radius: 5px;
+}
+
+a#pills-proposal-tab {
+    background: #206bc4;
+    color: #fff;
+}
+
+.bg-primary invoice_logo_update {
+    padding: 4% 3%;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.bg-primary bill_logo_update {
+    padding: 4% 3%;
+    color: #fff;
+    border-radius: 5px;
 }

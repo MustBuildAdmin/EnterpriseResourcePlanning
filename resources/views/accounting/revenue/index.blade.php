@@ -145,7 +145,7 @@
 
                                     </td>
                                     @if(Gate::check('edit revenue') || Gate::check('delete revenue'))
-
+                                    
 
                                     <td class="Action text-end">
                                         <div class="ms-2" style="display:flex;">
