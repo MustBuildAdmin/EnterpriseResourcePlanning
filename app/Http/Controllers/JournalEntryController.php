@@ -35,7 +35,8 @@ class JournalEntryController extends Controller
 
             $journalId = $this->journalNumber();
 
-            return view('journalEntry.create', compact('accounts', 'journalId'));
+            return view('accounting.journalEntry.create', compact('accounts', 'journalId'));
+            // return view('journalEntry.create', compact('accounts', 'journalId'));
         }
         else
         {
@@ -117,7 +118,8 @@ class JournalEntryController extends Controller
                 $accounts = $journalEntry->accounts;
                 $settings = Utility::settings();
 
-                return view('journalEntry.view', compact('journalEntry', 'accounts', 'settings'));
+                // return view('journalEntry.view', compact('journalEntry', 'accounts', 'settings'));
+                return view('accounting.journalEntry.view', compact('journalEntry', 'accounts', 'settings'));
             }
             else
             {
@@ -138,7 +140,8 @@ class JournalEntryController extends Controller
             $accounts = ChartOfAccount::select(\DB::raw('CONCAT(code, " - ", name) AS code_name, id'))->where('created_by', \Auth::user()->creatorId())->get()->pluck('code_name', 'id');
             $accounts->prepend('--', '');
 
-            return view('journalEntry.edit', compact('accounts', 'journalEntry'));
+            // return view('journalEntry.edit', compact('accounts', 'journalEntry'));
+            return view('accounting.journalEntry.edit', compact('accounts', 'journalEntry'));
         }
         else
         {
