@@ -470,7 +470,8 @@
         <div class="col-12" id='productparts'>
             <h5 class=" d-inline-block mb-4">{{__('Product & Services')}}</h5>
             <div class="card repeater">
-                <div class="item-section py-2">
+                
+                <div class="item-section py-2" style="display:none">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
                             <div class="all-button-box me-2">
@@ -481,6 +482,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body table-border-style mt-2">
                     <div class="table-responsive">
                         <table class="table  mb-0 table-custom-style" data-repeater-list="items" id="sortable-table">
