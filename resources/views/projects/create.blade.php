@@ -129,18 +129,18 @@
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday' required>
+        <input class="form-check-input" type="checkbox" value="0" name='non_working_days[]' id='sunday' required>
         <label class="form-check-label" for="sunday">
             Sunday
         </label>
     </div>
 </div>
 <br>
-{{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+{{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}
 <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='monday' required>
-        <label class="form-check-label" for="monday">
+        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='holidays'>
+        <label class="form-check-label" for="holidays">
             {{__('holidays')}}
         </label>
     </div>
