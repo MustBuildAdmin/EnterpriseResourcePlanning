@@ -55,8 +55,8 @@ class LeadController extends Controller
 
             $pipelines = Pipeline::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
+            return view('crm.leads.leads', compact('pipelines', 'pipeline'));
             // return view('leads.index', compact('pipelines', 'pipeline'));
-            return view('crm.index', compact('pipelines', 'pipeline'));
         }
         else
         {
@@ -86,7 +86,8 @@ class LeadController extends Controller
             $pipelines = Pipeline::where('created_by', '=', $usr->creatorId())->get()->pluck('name', 'id');
             $leads     = Lead::select('leads.*')->join('user_leads', 'user_leads.lead_id', '=', 'leads.id')->where('user_leads.user_id', '=', $usr->id)->where('leads.pipeline_id', '=', $pipeline->id)->orderBy('leads.order')->get();
 
-            return view('leads.list', compact('pipelines', 'pipeline', 'leads'));
+            return view('crm.leads.leads_list', compact('pipelines', 'pipeline', 'leads'));
+            // return view('leads.list', compact('pipelines', 'pipeline', 'leads'));
         }
         else
         {
@@ -293,7 +294,8 @@ class LeadController extends Controller
             }
             $precentage = number_format(($i * 100) / count($stageCnt));
 
-            return view('leads.show', compact('lead', 'calenderTasks', 'deal', 'precentage'));
+            return view('crm.leads.leads_show', compact('lead', 'calenderTasks', 'deal', 'precentage'));
+            // return view('leads.show', compact('lead', 'calenderTasks', 'deal', 'precentage'));
         }
         else
         {

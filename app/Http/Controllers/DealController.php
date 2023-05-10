@@ -78,8 +78,8 @@ class DealController extends Controller
             $cnt_deal['this_week']   = Deal::getDealSummary($curr_week);
             $cnt_deal['last_30days'] = Deal::getDealSummary($last_30days);
 
-            // return view('deals.index', compact('pipelines', 'pipeline', 'cnt_deal'));
             return view('crm.deals.index', compact('pipelines', 'pipeline', 'cnt_deal'));
+            // return view('deals.index', compact('pipelines', 'pipeline', 'cnt_deal'));
         }
         else
         {
@@ -143,7 +143,8 @@ class DealController extends Controller
                 $deals = Deal::select('deals.*')->join('user_deals', 'user_deals.deal_id', '=', 'deals.id')->where('user_deals.user_id', '=', $usr->id)->where('deals.pipeline_id', '=', $pipeline->id)->orderBy('deals.order')->get();
             }
 
-            return view('deals.list', compact('pipelines', 'pipeline', 'deals', 'cnt_deal'));
+            return view('crm.deals.deals_list', compact('pipelines', 'pipeline', 'deals', 'cnt_deal'));
+            // return view('deals.list', compact('pipelines', 'pipeline', 'deals', 'cnt_deal'));
         }
         else
         {
@@ -365,7 +366,8 @@ class DealController extends Controller
             $customFields      = CustomField::where('module', '=', 'deal')->get();
             $deal->customField = CustomField::getData($deal, 'deal')->toArray();
 
-            return view('deals.show', compact('deal', 'customFields', 'calenderTasks', 'permission'));
+            return view('crm.deals.deals_show', compact('deal', 'customFields', 'calenderTasks', 'permission'));
+            // return view('deals.show', compact('deal', 'customFields', 'calenderTasks', 'permission'));
         }
         else
         {
