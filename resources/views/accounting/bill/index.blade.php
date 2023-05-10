@@ -2,6 +2,26 @@
 @include('accounting.side-menu')
 
 <div class="row">
+  <div class="col-md-6">
+     <h2>Bill</h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
+
+        <a href="{{ route('bill.export') }}" class="floatrght btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Export')}}">
+            <i class="ti ti-file-export"></i> 
+        </a>
+
+        @can('create bill')
+            <a href="{{ route('bill.create',0) }}" class="floatrght btn btn-sm btn-primary gapbtn" data-bs-toggle="tooltip" title="{{__('Create')}}">
+                <i class="ti ti-plus"></i>
+            </a>
+        @endcan
+
+  </div>
+</div>
+
+
+<div class="row">
         <div class="col-sm-12">
             <div class=" mt-2 " id="multiCollapseExample1">
                 <div class="card">
