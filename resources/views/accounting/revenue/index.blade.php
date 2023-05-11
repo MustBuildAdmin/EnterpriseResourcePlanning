@@ -21,7 +21,7 @@
 
 <div class="row">
         <div class="col-sm-12">
-            <div class="mt-2 " id="multiCollapseExample1">
+            <div class="mt-2 new" id="multiCollapseExample1">
                 <div class="card">
                     <div class="card-body">
                         {{ Form::open(array('route' => array('revenue.index'),'method' => 'GET','id'=>'revenue_form')) }}

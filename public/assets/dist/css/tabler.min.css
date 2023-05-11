@@ -28480,3 +28480,21 @@ a#pills-proposal-tab {
     color: #fff;
     border-radius: 5px;
 }
+
+.btnheight {
+    background: #206bc4;
+    min-width: 31px;
+    font-size: 16px;
+    border: none;
+    padding: 5px 5px 5px 5px;
+    height: 29px;
+}
+
+.btnheight .ti.ti-pencil {
+    color: #fff !important;
+    /* border: none !important; */
+}
+
+.btnheight .ti.ti-trash {
+    color: #fff !important;
+}

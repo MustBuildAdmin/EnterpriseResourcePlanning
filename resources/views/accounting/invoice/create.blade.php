@@ -467,11 +467,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" id='productparts'>
+        <div class="col-12" id='productparts' style="display:none">
             <h5 class=" d-inline-block mb-4">{{__('Product & Services')}}</h5>
             <div class="card repeater">
                 
-                <div class="item-section py-2" style="display:none">
+                <div class="item-section py-2">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
                             <div class="all-button-box me-2">
