@@ -257,7 +257,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="mt-2 " id="multiCollapseExample1">
+            <div class="mt-2 " id="multiCollapseExample1"  style="display:none;">
                 <div class="card">
                     <div class="card-body">
                         @if (!\Auth::guard('customer')->check())

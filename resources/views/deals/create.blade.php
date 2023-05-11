@@ -1,3 +1,8 @@
+<style>
+    div#choices_multiple1_chosen, div#choices_multiple2_chosen {
+        width: 100% !important;
+    }
+</style>
 {{ Form::open(array('url' => 'deals')) }}
 <div class="modal-body">
     <div class="row">
@@ -15,7 +20,7 @@
         </div>
         <div class="col-6 form-group">
             {{ Form::label('clients', __('Clients'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('clients[]', $clients,null, array('class' => 'form-control select2','multiple'=>'','id'=>'choices-multiple1','required'=>'required')) }}
+            {{ Form::select('clients[]', $clients,null, array('class' => 'form-control chosen-select','multiple'=>'','id'=>'choices-multiple1','required'=>'required')) }}
             @if(count($clients) <= 0 && Auth::user()->type == 'Owner')
                 <div class="text-muted text-xs">
                     {{__('Please create new clients')}} <a href="{{route('clients.index')}}">{{__('here')}}</a>.
@@ -29,3 +34,9 @@
     <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
 {{Form::close()}}
+
+<script>
+    $(document).ready(function() {
+        $(".chosen-select").chosen();
+    });
+</script>

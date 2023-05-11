@@ -80,7 +80,7 @@ class BillController extends Controller
             //gst calucluation
             $settings  = Utility::settings(\Auth::user()->creatorId());
 
-            return view('bill.create', compact('venders', 'bill_number', 'product_services', 'category', 'customFields', 'vendorId','settings'));
+            return view('accounting.bill.create', compact('venders', 'bill_number', 'product_services', 'category', 'customFields', 'vendorId','settings'));
         }
         else
         {
