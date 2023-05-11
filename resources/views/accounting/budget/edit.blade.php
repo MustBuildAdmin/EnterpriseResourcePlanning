@@ -7,7 +7,7 @@
 {{-- @section('content') --}}
 <div class="row">
     <div class="col-md-6">
-       <h2>{{__('Edit Budget Planner')}}</h2>
+       <h2>{{__('Manage Budget Planner')}}</h2>
     </div>
     <div class="card bg-none card-box mt-3">
         <div class="card-body">
