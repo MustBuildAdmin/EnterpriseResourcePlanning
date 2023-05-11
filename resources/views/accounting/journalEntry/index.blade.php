@@ -3,18 +3,30 @@
 
 <div class="row">
     <div class="col-md-6">
-      <h2>{{__('Manage Journal Entry')}}</h2>
+      
     </div>
   
     {{-- @section('action-btn') --}}
     <div class="float-end">
-        @can('create journal entry')
-            <a href="{{ route('journal-entry.create') }}" data-title="{{__('Create New Journal')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" class="btn btn-sm btn-primary">
+
+    </div>
+    {{-- @endsection --}}
+
+<div class="row">
+  <div class="col-md-6">
+     <h2><h2>{{__('Manage Journal Entry')}}</h2></h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
+       @can('create journal entry')
+            <a  class="floatrght mb-3 btn btn-sm btn-primary href="{{ route('journal-entry.create') }}" data-title="{{__('Create New Journal')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" >
                 <i class="ti ti-plus"></i>
             </a>
         @endcan
-    </div>
-    {{-- @endsection --}}
+  </div>
+</div>
+
+
+
 
 {{-- @section('content') --}}
 
@@ -44,16 +56,18 @@
                                         {{ \Auth::user()->priceFormat($journalEntry->totalCredit())}}
                                     </td>
                                     <td>{{!empty($journalEntry->description)?$journalEntry->description:'-'}}</td>
+
                                     <td>
-                                        @can('edit journal entry')
-                                            <div class="action-btn bg-primary ms-2">
-                                                <a data-title="{{__('Edit Journal')}}" href="{{ route('journal-entry.edit',[$journalEntry->id]) }}" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
+                                      <div class="ms-2" style="display:flex;gap:10px;">
+                                      @can('edit journal entry')
+                                            <div class="action-btn  ms-2">
+                                                <a class="mx-3 btn btn-sm align-items-center backgroundnone" data-title="{{__('Edit Journal')}}" href="{{ route('journal-entry.edit',[$journalEntry->id]) }}"  data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
                                                     <i class="ti ti-pencil text-white"></i>
                                                 </a>
                                             </div>
                                         @endcan
                                         @can('delete journal entry')
-                                                <div class="action-btn bg-danger ms-2">
+                                                <div class="action-btn ms-2">
                                                     {!! Form::open(['method' => 'DELETE', 'route' => array('journal-entry.destroy', $journalEntry->id),'id'=>'delete-form-'.$journalEntry->id]) !!}
 
                                                     <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$journalEntry->id}}').submit();">
@@ -62,7 +76,9 @@
                                                     {!! Form::close() !!}
                                                 </div>
                                         @endcan
-                                    </td>
+                                      </div>
+                                  </td>
+
                                 </tr>
                             @endforeach
                             </tbody>

@@ -1,34 +1,27 @@
-@extends('layouts.admin')
-@push('script-page')
-@endpush
-@section('page-title')
-    {{__('Manage Customer-Detail')}}
-@endsection
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('customer.index')}}">{{__('Customer')}}</a></li>
-    <?php  if(strlen($customer['name'])>50){
-        echo '<li class="breadcrumb-item customer_name" style="width: 85%;word-break: break-all;">'.$customer['name'].'</li>';
-    }else{
-        echo '<li class="breadcrumb-item">'.$customer['name'].'</li>';
-    } ?>@endsection
+@include('new_layouts.header')
+@include('accounting.side-menu')
 
-@section('action-btn')
-    <div class="float-end">
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Customer</h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
+
         @can('create invoice')
-            <a href="{{ route('invoice.create',$customer->id) }}" class="btn btn-sm btn-primary">
+            <a href="{{ route('invoice.create',$customer->id) }}" class="btn btn-sm btn-primary floatrght gapbtn btnheight">
                 {{__('Create Invoice')}}
             </a>
         @endcan
         @can('create proposal')
-            <a href="{{ route('proposal.create',$customer->id) }}" class="btn btn-sm btn-primary">
+            <a href="{{ route('proposal.create',$customer->id) }}" class="btn btn-sm btn-primary floatrght gapbtn btnheight">
                 {{__('Create Proposal')}}
             </a>
 
         @endcan
 
         @can('edit customer')
-            <a href="#" data-size="lg" data-url="{{ route('customer.edit',$customer['id']) }}" data-ajax-popup="true" title="{{__('Edit Customer')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}" class="btn btn-sm btn-primary">
+            <a href="#" data-size="lg" data-url="{{ route('customer.edit',$customer['id']) }}" data-ajax-popup="true" title="{{__('Edit Customer')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}" class="btn btn-sm btn-primary floatrght gapbtn btnheight">
                 <i class="ti ti-pencil"></i>
             </a>
         @endcan
@@ -37,16 +30,23 @@
         @can('delete customer')
             {!! Form::open(['method' => 'DELETE','class' => 'delete-form-btn', 'route' => ['customer.destroy', $customer['id']]]) !!}
 
-            <a href="#" data-bs-toggle="tooltip" title="{{__('Delete Customer')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{ $customer['id']}}').submit();" class="btn btn-sm btn-danger bs-pass-para">
+            <a href="#" data-bs-toggle="tooltip" title="{{__('Delete Customer')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{ $customer['id']}}').submit();" class="btn btn-sm btn-danger bs-pass-para floatrght gapbtn btnheight">
                 <i class="ti ti-trash text-white"></i>
             </a>
             {!! Form::close() !!}
 
         @endcan
-    </div>
-@endsection
 
-@section('content')
+
+  </div>
+</div>
+
+    <div class="float-end">
+
+    </div>
+
+
+
     <div class="row">
         <div class="col-md-4 col-lg-4 col-xl-4">
             <div class="card customer-detail-box customer_card">
@@ -394,4 +394,4 @@
             </div>
         </div>
     </div>
-@endsection
+

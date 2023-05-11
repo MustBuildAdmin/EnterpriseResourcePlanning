@@ -5,7 +5,7 @@
 {{-- @endpush --}}
 <div class="row">
     <div class="col-md-6">
-       <h2>{{__('Budget Vs Actual')}}</h2>
+       <h2>{{__('Manage Budget Planner')}}</h2>
     </div>
 
 {{-- @section('content') --}}

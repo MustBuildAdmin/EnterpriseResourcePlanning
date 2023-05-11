@@ -1,3 +1,4 @@
+
 {{Form::open(array('url'=>'customer','method'=>'post','id'=>'customerform'))}}
 <div class="modal-body">
 

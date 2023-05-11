@@ -5,6 +5,18 @@
   <div class="col-md-6">
      <h2>{{__('Balance Sheet')}}</h2>
   </div>
+  <div class="col-md-6 float-end floatrght">
+        <a href="#" class="floatrght btn btn-sm btn-primary" onclick="saveAsPDF()"data-bs-toggle="tooltip" title="{{__('Download')}}" data-original-title="{{__('Download')}}">
+            <span class="btn-inner--icon"><i class="ti ti-download"></i></span>
+        </a>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-md-6">
+     
+  </div>
   {{-- @push('script-page') --}}
   <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
   <script>
@@ -25,16 +37,7 @@
   </script>
 {{-- @endpush --}}
 
-{{-- @section('action-btn') --}}
-    <div class="float-end">
 
-
-        <a href="#" class="btn btn-sm btn-primary" onclick="saveAsPDF()"data-bs-toggle="tooltip" title="{{__('Download')}}" data-original-title="{{__('Download')}}">
-            <span class="btn-inner--icon"><i class="ti ti-download"></i></span>
-        </a>
-
-    </div>
-{{-- @endsection --}}
 
 
 {{-- @section('content') --}}
