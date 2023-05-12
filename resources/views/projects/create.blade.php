@@ -29,9 +29,9 @@
     </div>
     <div class="row">
         <div class="form-group col-sm-12 col-md-12">
-            {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
+            {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
             <div class="form-file mb-3">
-                <input type="file" class="form-control" id="project_image"  name="project_image">
+                <input type="file" class="form-control" id="project_image"  name="project_image" required>
             </div>
             <span id="project_image_error" class="error" for="project_image"></span>
         </div>
