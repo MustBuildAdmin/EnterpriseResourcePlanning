@@ -91,11 +91,11 @@
 		}
 
         .gantt_task_cell.week_end {
-			background-color: #f78265;
+			background-color: #d6d6d6;
 		}
 
 		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
-			background-color: #f78265;
+			background-color: #d6d6d6;
 		}
 </style>
 @php
@@ -263,32 +263,38 @@ $holidays=implode(':',$holidays);
         // ## holidays  ######
         var holidays = [];
         var holidays_list=$('#holidays').val();
-        var result2 =holidays_list.split(':');
-        result2.forEach(element => {
-            holidays.push(new Date(element));
-        });
+        if(holidays_list!=''){
+            var result2 =holidays_list.split(':');
+            result2.forEach(element => {
+                holidays.push(new Date(element));
+            });
+            for (var i = 0; i < holidays.length; i++) {
+                gantt.setWorkTime({
+                    date: holidays[i],
+                    hours: false
+                });
+            }
+
+            var dateToStr = gantt.date.date_to_str("%d %F");
+	        gantt.message("Following holidays are excluded from working time:");
+            for (var i = 0; i < holidays.length; i++) {
+                setTimeout(
+                    (function (i) {
+                        return function () {
+                            gantt.message(dateToStr(holidays[i]))
+                        }
+                    })(i)
+                    ,
+                    (i + 1) * 600
+                );
+            }
+        }
 
 
-	for (var i = 0; i < holidays.length; i++) {
-		gantt.setWorkTime({
-			date: holidays[i],
-			hours: false
-		});
-	}
 
-	var dateToStr = gantt.date.date_to_str("%d %F");
-	gantt.message("Following holidays are excluded from working time:");
-	for (var i = 0; i < holidays.length; i++) {
-		setTimeout(
-			(function (i) {
-				return function () {
-					gantt.message(dateToStr(holidays[i]))
-				}
-			})(i)
-			,
-			(i + 1) * 600
-		);
-	}
+
+
+
 
 
         gantt.config.work_time = true;
@@ -656,7 +662,7 @@ $holidays=implode(':',$holidays);
             ];
 
             var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-            // var dp = new gantt.dataProcessor("erpnew/public/");
+            //var dp = new gantt.dataProcessor("/erpnew/public");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
