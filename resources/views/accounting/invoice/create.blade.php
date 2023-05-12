@@ -1,14 +1,7 @@
-@extends('layouts.admin')
-@section('page-title')
-    {{__('Invoice Create')}}
-@endsection
+@include('new_layouts.header')
+@include('accounting.side-menu')
 
-@section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('invoice.index')}}">{{__('Invoice')}}</a></li>
-    <li class="breadcrumb-item">{{__('Invoice Create')}}</li>
-@endsection
-@push('script-page')
+
     <script src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
     <script>
@@ -384,8 +377,8 @@
         
         }
     </script>
-@endpush
-@section('content')
+
+
     <div class="row">
         {{ Form::open(array('url' => 'invoice','class'=>'w-100')) }}
         <div class="col-12">
@@ -474,9 +467,10 @@
                 </div>
             </div>
         </div>
-        <div class="col-12" id='productparts' style='display:none;'>
+        <div class="col-12" id='productparts' style="display:none">
             <h5 class=" d-inline-block mb-4">{{__('Product & Services')}}</h5>
             <div class="card repeater">
+                
                 <div class="item-section py-2">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
@@ -488,6 +482,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body table-border-style mt-2">
                     <div class="table-responsive">
                         <table class="table  mb-0 table-custom-style" data-repeater-list="items" id="sortable-table">
@@ -638,6 +633,6 @@
         {{ Form::close() }}
 
     </div>
-@endsection
+
 
 

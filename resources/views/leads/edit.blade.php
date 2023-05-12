@@ -1,3 +1,9 @@
+<style>
+    div#choices_multiple1_chosen, div#choices_multiple2_chosen {
+        width: 100% !important;
+    }
+</style>
+
 {{ Form::model($lead, array('route' => array('leads.update', $lead->id), 'method' => 'PUT')) }}
 <div class="modal-body">
     <div class="row">
@@ -31,11 +37,11 @@
         </div>
         <div class="col-12 form-group">
             {{ Form::label('sources', __('Sources'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('sources[]', $sources,null, array('class' => 'form-control select2','id'=>'choices-multiple1','multiple'=>'','required'=>'required')) }}
+            {{ Form::select('sources[]', $sources,null, array('class' => 'form-control chosen-select','id'=>'choices-multiple1','multiple'=>'','required'=>'required')) }}
         </div>
         <div class="col-12 form-group">
             {{ Form::label('products', __('Products'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('products[]', $products,null, array('class' => 'form-control select2','id'=>'choices-multiple2','multiple'=>'','required'=>'required')) }}
+            {{ Form::select('products[]', $products,null, array('class' => 'form-control chosen-select','id'=>'choices-multiple2','multiple'=>'','required'=>'required')) }}
         </div>
         <div class="col-12 form-group">
             {{ Form::label('notes', __('Notes'),['class'=>'form-label']) }}
@@ -54,6 +60,9 @@
 
 
 <script>
+    $(document).ready(function() {
+        $(".chosen-select").chosen();
+    });
     var stage_id = '{{$lead->stage_id}}';
 
     $(document).ready(function () {
@@ -85,9 +94,9 @@
                     });
                 }
                 $("#stage_id").val(stage_id);
-                $('#stage_id').select2({
-                    placeholder: "{{__('Select Stage')}}"
-                });
+                // $('#stage_id').select2({
+                //     placeholder: "{{__('Select Stage')}}"
+                // });
             }
         })
     }

@@ -109,7 +109,7 @@
                                             <div class="choose-files mt-5 ">
                                                 <label for="proposal_logo">
                                                     <div class=" bg-primary proposal_logo_update"> <i class="ti ti-upload px-1"></i>{{__('Choose file here')}}</div>
-                                                    <input type="file" class="form-control file" name="proposal_logo" id="proposal_logo" data-filename="proposal_logo_update">
+                                                    <input style="visibility: hidden;" type="file" class="form-control file" name="proposal_logo" id="proposal_logo" data-filename="proposal_logo_update">
                                                     <img id="proposal_image" class="mt-2" style="width:25%;"/>
                                                 </label>
                                             </div>
@@ -156,7 +156,7 @@
                                                 @foreach(Utility::templateData()['colors'] as $key => $color)
                                                     <div class="col-auto">
                                                         <label class="colorinput">
-                                                            <input name="invoice_color" type="radio" value="{{$color}}" class="colorinput-input" {{(isset($settings['invoice_color']) && $settings['invoice_color'] == $color) ? 'checked' : ''}}>
+                                                            <input style="visibility: hidden;" name="invoice_color" type="radio" value="{{$color}}" class="colorinput-input" {{(isset($settings['invoice_color']) && $settings['invoice_color'] == $color) ? 'checked' : ''}}>
                                                             <span class="colorinput-color" style="background: #{{$color}}"></span>
                                                         </label>
                                                     </div>
@@ -168,7 +168,7 @@
                                             <div class="choose-files mt-5 ">
                                                 <label for="invoice_logo">
                                                     <div class=" bg-primary invoice_logo_update"> <i class="ti ti-upload px-1"></i>{{__('Choose file here')}}</div>
-                                                    <input type="file" class="form-control file" name="invoice_logo" id="invoice_logo" data-filename="invoice_logo_update">
+                                                    <input type="file" style="visibility: hidden;" class="form-control file" name="invoice_logo" id="invoice_logo" data-filename="invoice_logo_update">
                                                     <img id="invoice_image" class="mt-2" style="width:25%;"/>
 
                                                 </label>
@@ -229,7 +229,7 @@
                                             <div class="choose-files mt-5 ">
                                                 <label for="bill_logo">
                                                     <div class=" bg-primary bill_logo_update"> <i class="ti ti-upload px-1"></i>{{__('Choose file here')}}</div>
-                                                    <input type="file" class="form-control file" name="bill_logo" id="bill_logo" data-filename="bill_logo_update">
+                                                    <input type="file" style="visibility: hidden;" class="form-control file" name="bill_logo" id="bill_logo" data-filename="bill_logo_update">
                                                     <img id="bill_image" class="mt-2" style="width:25%;"/>
 
                                                 </label>

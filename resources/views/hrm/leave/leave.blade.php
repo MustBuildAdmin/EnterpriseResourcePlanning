@@ -1,5 +1,5 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main',['hrm_header' => 'Manage Leave'])
+@include('hrm.hrm_main')
     <div class="row">
         <div class="col-md-6">
            <h2>Manage Leave</h2>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table card-table table-vcenter text-nowrap datatable">
+        <table class="table datatable">
             <thead>
                 <tr>
                     @if(\Auth::user()->type!='employee')

@@ -108,6 +108,22 @@ class RegisteredUserController extends Controller
                 'set_password_url' => $url,
             ];
 
+            $insert_array=array(
+                'name'=>'company_name',
+                'value'=>$request->company_name,
+                'created_by'=>$user->id,
+            );
+
+            $data =DB::table('settings')->insert($insert_array);
+    
+            $insert2=array(
+                'name'=>'company_type',
+                'value'=>$request->company_type,
+                'created_by'=>$user->id,
+            );
+            
+            $data =DB::table('settings')->insert($insert2);
+
             $role_r = Role::findByName('company');
             $user->assignRole($role_r);
             $user->userDefaultDataRegister($user->id);

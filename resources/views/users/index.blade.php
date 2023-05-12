@@ -88,6 +88,7 @@
 								<div class="text-muted text-center" data-bs-toggle="tooltip" title="{{__('Last Login')}}">@if(!empty($user->last_login_at)) {{ $user->last_login_at }} @else  <br> @endif</div>
 								<div class="mt-3"> <span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span> </div>
 						</div>
+						@if(\Auth::user()->type != 'super admin')
 						<div class="d-flex">
 							
 							<a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}" href="#" class="card-btn" onclick="copyToClipboard(this)">
@@ -109,6 +110,30 @@
 									{{__('Mobile')}}
 							</a>
 						</div>
+						@else
+						<div class="row justify-content-between align-items-center">
+							<div class="col-6 text-center"> 
+								<span class="d-block font-bold mb-0">{{!empty($user->currentPlan)?$user->currentPlan->name:''}}</span> 
+							</div>
+							<div class="col-6 text-center Id "> 
+								<a href="#" data-url="{{ route('plan.upgrade',$user->id) }}" data-size="lg" data-ajax-popup="true" class="btn btn-outline-primary" data-title="{{__('Upgrade Plan')}}">{{__('Upgrade Plan')}}</a> 
+							</div>
+							<div class="col-12">
+								<hr class="my-3"> 
+							</div>
+							<div class="col-12 text-center pb-2"> 
+								<span class="text-dark text-xs">{{__('Plan Expired : ') }} {{!empty($user->plan_expire_date) ? \Auth::user()->dateFormat($user->plan_expire_date): __('Unlimited')}}</span> 
+							</div>
+						</div>
+						<div class="d-flex">
+							<a href="#" class="card-btn" title="{{__('Users')}}">
+								<!-- Download SVG icon from http://tabler-icons.io/i/mail --><i class="ti ti-users card-icon-text-space"></i> {{$user->totalCompanyUser($user->id)}}</a>
+							<a href="#" class="card-btn" title="{{__('Customers')}}">
+								<!-- Download SVG icon from http://tabler-icons.io/i/mail --><i class="ti ti-users card-icon-text-space"></i> {{$user->totalCompanyCustomer($user->id)}}</a>
+							<a href="#" class="card-btn" title="{{__('Vendors')}}">
+								<!-- Download SVG icon from http://tabler-icons.io/i/phone --><i class="ti ti-users card-icon-text-space"></i> {{$user->totalCompanyVender($user->id)}}</a>
+						</div>
+						@endif
 					</div>
 				</div> 
 				@empty

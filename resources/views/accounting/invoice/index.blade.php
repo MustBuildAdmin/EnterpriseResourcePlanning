@@ -245,7 +245,7 @@
         </a>
 
         @can('create invoice')
-            <a href="{{ route('invoice.create', 0) }}" class="btn btn-sm btn-primary floatrght" data-bs-toggle="tooltip" title="{{__('Create')}}">
+            <a href="{{ route('invoice.create', 0) }}" class="btn btn-sm btn-primary floatrght gapbtn" data-bs-toggle="tooltip" title="{{__('Create')}}">
                 <i class="ti ti-plus"></i>
             </a>
         @endcan
@@ -257,7 +257,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="mt-2 " id="multiCollapseExample1">
+            <div class="mt-2 " id="multiCollapseExample1"  style="display:none;">
                 <div class="card">
                     <div class="card-body">
                         @if (!\Auth::guard('customer')->check())
