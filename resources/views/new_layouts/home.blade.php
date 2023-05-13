@@ -217,6 +217,18 @@
 							</a>
 						</div>
 						@endif
+						<?php $check_user_leave_permission=\App\Models\User::where('name', '!=', Null)->where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->where('id', '!=', \Auth::user()->id)->get()->pluck('reporting_to', 'id'); 
+						$login_user=\Auth::user()->id;
+						$enable_menu=0;
+						foreach($check_user_leave_permission as $value){
+							$reporting_user=explode(",",$value);
+							if(in_array($login_user,$reporting_user)){
+								$enable_menu=1;
+							}
+							
+						}
+						
+						?>
 						@if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company' && \Auth::user()->type != 'super admin')
 						
 						<div class="col-md-6 col-xl-2">
@@ -240,6 +252,24 @@
 								</div>
 							</a>
 						</div>
+						@if($enable_menu==1)
+						<div class="col-md-6 col-xl-2">
+							<a class="card card-link" href="{{route('leave.index')}}" >
+								<div class="card-body">
+									<div class="row">
+										<div class="col-auto">
+                                            <span class="bg-success text-white avatar">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16"> <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/> <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/> </svg>
+                                            </span>
+										</div>
+										<div class="col">
+											<div class="font-weight-medium mt-2">{{__('Manage Leave')}}</div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+						@endif
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{route('mark-attendance')}}" >
 								<div class="card-body">

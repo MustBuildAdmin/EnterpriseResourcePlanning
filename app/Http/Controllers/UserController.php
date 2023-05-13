@@ -75,7 +75,7 @@ class UserController extends Controller
 
     }
 
-    public function create()
+    public function create(Request $request)
     {
 
         $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
@@ -83,12 +83,22 @@ class UserController extends Controller
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
         $company_type=Company_type::get()->pluck('name', 'id');
+        $users =User::where([
+            ['name', '!=', Null],
+            [function ($query) use ($request) {
+                if (($s = $request->search)) {
+                    $user = \Auth::user();
+                    $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                    ->get();
+                }
+            }]
+        ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
         if(\Auth::user()->can('create user'))
         {
             $country=Utility::getcountry();
 
             // return view('user.create', compact('roles','gender', 'customFields','country','company_type'));
-            return view('users.create', compact('roles','gender', 'customFields','country','company_type'));
+            return view('users.create', compact('roles','gender', 'customFields','country','company_type','users'));
         }
         else
         {
@@ -99,6 +109,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
+        $string_version = implode(',', $request->reporting_to);
+       
 
         if(\Auth::user()->can('create user'))
         {
@@ -139,6 +151,7 @@ class UserController extends Controller
                 $user['zip']=$request->zip;
                 $user['address']=$request->address;
                 $user['company_type']       = $request->company_type;
+                $user['reporting_to']=$string_version;
                 $user['company_name']       = $request->company_name;
 
                 $user->save();
@@ -192,6 +205,7 @@ class UserController extends Controller
                     $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
                     $request['created_by'] = \Auth::user()->creatorId();
                     $request['gender']      = $request->gender;
+                    $request['reporting_to']=$string_version;
                     $user = User::create($request->all());
                     $user->assignRole($role_r);
                     if($request['type'] != 'client')
@@ -227,7 +241,7 @@ class UserController extends Controller
 
     }
 
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $user  = \Auth::user();
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
@@ -236,13 +250,23 @@ class UserController extends Controller
         if(\Auth::user()->can('edit user'))
         {
             $user              = User::findOrFail($id);
+          
             $countrylist=Utility::getcountry();
             $statelist=Utility::getstate($user->country);
             $user->customField = CustomField::getData($user, 'user');
             $customFields      = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
-
+            $users =User::where([
+                ['name', '!=', Null],
+                [function ($query) use ($request) {
+                    if (($s = $request->search)) {
+                        $user = \Auth::user();
+                        $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                        ->get();
+                    }
+                }]
+            ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('id', '!=', $id)->get()->pluck('name', 'id');
             // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
-            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
+            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users'));
         }
         else
         {
@@ -254,6 +278,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $string_version = implode(',', $request->reporting_to);
         if(\Auth::user()->can('edit user'))
         {
             if(\Auth::user()->type == 'super admin')
@@ -276,6 +301,7 @@ class UserController extends Controller
                 $role = Role::findByName('company');
                 $input = $request->all();
                 $input['type'] = $role->name;
+                $input['reporting_to']=$string_version;
 
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);
@@ -314,6 +340,7 @@ class UserController extends Controller
                 $role          = Role::findById($request->role);
                 $input         = $request->all();
                 $input['type'] = $role->name;
+                $input['reporting_to']=$string_version;
                 $user->fill($input)->save();
                 Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                 CustomField::saveData($user, $request->customField);

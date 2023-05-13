@@ -17,6 +17,7 @@ class LeaveController extends Controller
 
         if(\Auth::user()->can('manage leave'))
         {
+            $showedit=0;
             $leaves = Leave::where('created_by', '=', \Auth::user()->creatorId())->get();
             if(\Auth::user()->type == 'employee')
             {
@@ -27,9 +28,25 @@ class LeaveController extends Controller
             else
             {
                 $leaves = Leave::where('created_by', '=', \Auth::user()->creatorId())->get();
+                if(count($leaves)<=0){
+                    $login_user=\Auth::user()->id;
+                    $employee_ids=[];
+                    $check_user_leave_permission=\App\Models\User::where('name', '!=', Null)->where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->where('id', '!=', \Auth::user()->id)->get()->pluck('reporting_to', 'id'); 
+                    $enable_menu=0;
+                    foreach($check_user_leave_permission as $key=>$value){
+                        $reporting_user=explode(",",$value);
+                        if(in_array($login_user,$reporting_user)){
+                            array_push($employee_ids,$key);
+                        }
+                    }
+                    $emp_ids=implode(",",$employee_ids);
+                    $leaves= Leave::whereIn('employee_id',[$emp_ids])->get();
+                    $showedit=1;
+                }
             }
+        
 
-            return view('hrm.leave.leave', compact('leaves'));
+            return view('hrm.leave.leave', compact('leaves','showedit'));
             // return view('leave.index', compact('leaves'));
         }
         else
@@ -40,6 +57,7 @@ class LeaveController extends Controller
 
     public function create()
     {
+      
         if(\Auth::user()->can('create leave'))
         {
             if(Auth::user()->type == 'employee')
@@ -105,8 +123,12 @@ class LeaveController extends Controller
             $leave->created_by       = \Auth::user()->creatorId();
 
             $leave->save();
-
-            return redirect()->route('leave.index')->with('success', __('Leave  successfully created.'));
+            if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company' && \Auth::user()->type != 'super admin'){
+                return redirect()->route('my-leave')->with('success', __('Leave  successfully created.'));
+            }
+            else{
+                return redirect()->route('leave.index')->with('success', __('Leave  successfully created.'));
+            }
         }
         else
         {

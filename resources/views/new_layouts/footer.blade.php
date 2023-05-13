@@ -177,5 +177,11 @@ setTimeout(
     }, 8000);
 });
 </script>
+
+<style>
+li.select2-search.select2-search--inline {
+    display: none;
+}
+</style>
 </body>
 </html>
