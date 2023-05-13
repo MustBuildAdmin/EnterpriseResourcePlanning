@@ -28539,15 +28539,6 @@ table.dataTable>tbody>tr {
     color: #000000;
 }
 
-.form-inline {
-    display: -ms-flexbox !important;
-    display: inline-block !important;
-    -ms-flex-flow: row wrap !important;
-    flex-flow: row wrap !important;
-    -ms-flex-align: center !important;
-    align-items: center !important;
-    width: 96% !important;
-}
 
 #DataTables_Table_0_length {
     float: left;
