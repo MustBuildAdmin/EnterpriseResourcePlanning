@@ -84,7 +84,8 @@ class ProposalController extends Controller
             $product_services->prepend('--', '');
             //gst calucluation
             $settings  = Utility::settings(\Auth::user()->creatorId());
-            return view('proposal.create', compact('customers', 'proposal_number', 'product_services', 'category', 'customFields', 'customerId','settings'));
+            // return view('proposal.create', compact('customers', 'proposal_number', 'product_services', 'category', 'customFields', 'customerId','settings'));
+            return view('accounting.proposal.create', compact('customers', 'proposal_number', 'product_services', 'category', 'customFields', 'customerId','settings'));
         }
         else
         {
@@ -209,7 +210,8 @@ class ProposalController extends Controller
                 $items[]                  = $proposalItem;
             }
 
-            return view('proposal.edit', compact('customers', 'product_services', 'proposal', 'proposal_number', 'category', 'customFields', 'items'));
+            return view('accounting.proposal.edit', compact('customers', 'product_services', 'proposal', 'proposal_number', 'category', 'customFields', 'items'));
+            // return view('proposal.edit', compact('customers', 'product_services', 'proposal', 'proposal_number', 'category', 'customFields', 'items'));
         }
         else
         {
@@ -310,7 +312,8 @@ class ProposalController extends Controller
                 $proposal->customField = CustomField::getData($proposal, 'proposal');
                 $customFields          = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
 
-                return view('proposal.view', compact('proposal', 'customer', 'iteams', 'status', 'customFields'));
+                return view('accounting.proposal.view', compact('proposal', 'customer', 'iteams', 'status', 'customFields'));
+                // return view('proposal.view', compact('proposal', 'customer', 'iteams', 'status', 'customFields'));
             }
             else
             {
