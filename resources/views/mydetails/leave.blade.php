@@ -16,10 +16,19 @@
         <!-- <div class="page-body">
             <div class=""> -->
                 <!-- <div class="card"> -->
+                    
                     <div class="row g-0">
                     @include('new_layouts.usersidebar')
+                    
                         <div class="col d-flex flex-column">
                             <div class="card-body">
+                            <div class="float-end">
+                        @can('create leave')
+                            <a href="#" class="btn btn-sm btn-primary mb-3 floatrght" data-size="lg" data-url="{{ route('leave.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Leave')}}" >
+                                <i class="ti ti-plus"></i>
+                            </a>
+                        @endcan
+                    </div>
                             <div class="table-responsive">
                         <table class="table datatable">
                             <thead>

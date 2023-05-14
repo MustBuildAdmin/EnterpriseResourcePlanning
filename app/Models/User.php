@@ -45,6 +45,7 @@ class User extends Authenticatable
         'phone',
         'zip',
         'address',
+        'reporting_to'
     ];
 
     protected $hidden = [

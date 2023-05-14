@@ -34,7 +34,8 @@
                 @foreach ($leaves as $leave)
                     <tr>
                         @if(\Auth::user()->type!='employee')
-                            <td>{{ !empty(\Auth::user()->getEmployee($leave->employee_id))?\Auth::user()->getEmployee($leave->employee_id)->name:'' }}</td>
+                        <?php $user_name=\App\Models\User::where(['id'=>$leave->employee_id])->first(); ?>
+                            <td><?php echo $user_name->name; ?></td>
                         @endif
                         <td>{{ !empty(\Auth::user()->getLeaveType($leave->leave_type_id))?\Auth::user()->getLeaveType($leave->leave_type_id)->title:'' }}</td>
                         <td>{{ \Auth::user()->dateFormat($leave->applied_on )}}</td>
@@ -62,26 +63,32 @@
                                 @if(\Auth::user()->type == 'employee')
                                     @if($leave->status == "Pending")
                                         @can('edit leave')
+                                        @if($showedit==0)
                                             <a href="#" data-url="{{ URL::to('leave/'.$leave->id.'/edit') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Leave')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
-                                        @endcan
+                                       @endif
+                                            @endcan
                                     @endif
                                 @else
                                     <a href="#" data-url="{{ URL::to('leave/'.$leave->id.'/action') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Leave Action')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Leave Action')}}" data-original-title="{{__('Leave Action')}}">
                                             <i class="ti ti-caret-right text-white"></i> 
                                     </a>
                                     @can('edit leave')
+                                    @if($showedit==0)
                                             <a href="#" data-url="{{ URL::to('leave/'.$leave->id.'/edit') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Leave')}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
                                                 <i class="ti ti-pencil text-white"></i>
                                             </a>
+                                            @endif
                                     @endcan
                                 @endif
 
                                 @can('delete leave')
+                                @if($showedit==0)
                                     {!! Form::open(['method' => 'DELETE', 'route' => ['leave.destroy', $leave->id],'id'=>'delete-form-'.$leave->id]) !!}
                                         <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$leave->id}}').submit();">
                                             <i class="ti ti-trash text-white"></i>
                                         </a>
                                     {!! Form::close() !!}
+                                    @endif
                                 @endif
                             </div>
                         </td>
@@ -122,3 +129,8 @@
         });
     });
 </script>
+<style>
+    .ms-2 {
+    background: blue;
+}
+</style>
