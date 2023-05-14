@@ -277,7 +277,7 @@ ul.collapse li{
   -webkit-box-sizing: content-box;
   box-sizing: border-box;
   word-break: break-word;
-  text-transform: lowercase;
+  /* text-transform: lowercase; */
 }
 
 .down {

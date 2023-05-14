@@ -56,6 +56,15 @@ class DepartmentController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            $get_check = Department::where('branch_id',$request->branch_id)->where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            $get_check_dept = Department::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_check != null){
+                return redirect()->back()->with('error', "Branch and Deptarment already exists!");
+            }
+            if($get_check_dept != null){
+                return redirect()->back()->with('error', "Deptarment already exists!");
+            }
+
             $department             = new Department();
             $department->branch_id  = $request->branch_id;
             $department->name       = $request->name;

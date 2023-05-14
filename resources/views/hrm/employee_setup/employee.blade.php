@@ -77,6 +77,9 @@
                 @endforeach
             </tbody>
         </table>
-        </div>
+    </div>
 </div>
+</div>
+</div>
+
 @include('new_layouts.footer')
