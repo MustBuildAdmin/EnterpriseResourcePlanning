@@ -1574,13 +1574,13 @@ class ProjectController extends Controller
 
         $task_id=$request->task_id;
         $task =Con_task::where('main_id',$task_id)->first();
-        $date1=date_create($task->start_date);
-        $date2=date_create($task->end_date);
+        // $date1=date_create($task->start_date);
+        // $date2=date_create($task->end_date);
 
-        $diff=date_diff($date1,$date2);
-        $no_working_days=$diff->format("%a");
-        $no_working_days=$no_working_days+1;// include the last day
-
+        // $diff=date_diff($date1,$date2);
+        // $no_working_days=$diff->format("%a");
+        // $no_working_days=$no_working_days+1;// include the last day
+        $no_working_days=$task->duration;
 
         // insert details
         $array=array(

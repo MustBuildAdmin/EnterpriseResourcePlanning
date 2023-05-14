@@ -1,222 +1,4 @@
 
-  <div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
-
-    <h4>PROJECT OVERALL PROGRAM STATUS</h4>
-
-    <div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
-     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
-    <div style="position: relative;flex: 1 1 auto;">
-        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
-      <div class="progress progress-separated mb-3" style="position: relative;
-          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
-      </div>
-      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
-          <span>&nbsp;Regular</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
-          <span>&nbsp;System</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
-          <span>&nbsp;Shared</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
-          <span>&nbsp;Free</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-  <div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
-
-    <h4>BASE PROGRAM STATUS</h4>
-
-    <div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
-     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
-    <div style="position: relative;flex: 1 1 auto;">
-        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
-      <div class="progress progress-separated mb-3" style="position: relative;
-          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
-      </div>
-      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
-          <span>&nbsp;Regular</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
-          <span>&nbsp;System</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
-          <span>&nbsp;Shared</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
-          <span>&nbsp;Free</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
-
-<h4>DURATION IN NO OF DAYS</h4>
-
-<div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
-     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
-    <div style="position: relative;flex: 1 1 auto;">
-        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
-      <div class="progress progress-separated mb-3" style="position: relative;
-          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
-      </div>
-      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
-          <span>&nbsp;Regular</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
-          <span>&nbsp;System</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
-          <span>&nbsp;Shared</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
-          <span>&nbsp;Free</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
-
-<h4>PLANNED PROGRESS IN PERCENTAGE</h4>
-
-<div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
-     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
-    <div style="position: relative;flex: 1 1 auto;">
-        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
-      <div class="progress progress-separated mb-3" style="position: relative;
-          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;transition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
-      </div>
-      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
-          <span>&nbsp;Regular</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
-          <span>&nbsp;System</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
-          <span>&nbsp;Shared</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
-          <span>&nbsp;Free</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div style="max-width: 100%;margin: 1% 2%;padding: 1% 1%;">
-
-<h4>ACTUAL PROGRESS IN PERCENTAGE</h4>
-
-<div style="position: relative;display: -ms-flexbox;display: flex;-ms-flex-direction: column;flex-direction: column;padding: 1% 1%;
-     min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0,0,0,.125); border-radius: 0.25rem;">
-    <div style="position: relative;flex: 1 1 auto;">
-        <p style="margin-bottom: 1rem!important;">Using Storage <strong>6854.45 MB </strong>of 8 GB </p>
-      <div class="progress progress-separated mb-3" style="position: relative;
-          width: 100%;line-height:.5rem;webkit-appearance: none;moz-appearance: none;appearance: none;margin-bottom: 1rem!important;">
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #007bff !important;height: 12px;float: left;transition: width .6s ease;width: 44%;" role="progressbar" style="width: 44%" aria-label="Regular"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #17a2b8 !important;height: 12px;float: left;transition: width .6s ease;width: 19%;" role="progressbar" style="width: 19%" aria-label="System"></div>
-        <div style="display:-ms-flexbox;display: flex;ms-flex-direction: column;flex-direction: column;
-         -ms-flex-pack: center;justify-content: center;color: #fff;text-align: center;white-space: nowrap;background-color: #28a745 !important;height: 12px;ftransition: width .6s ease;width: 37%;" role="progressbar" style="width: 9%" aria-label="Shared"></div>
-      </div>
-      <div style="display:-ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-right: 0;margin-left: 0;">
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-          <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #1d60b0;" ></div>
-          <span>&nbsp;Regular</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #206bc4;" ></div
-          <span>&nbsp;System</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #2fb344;" ></div
-          <span>&nbsp;Shared</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
-        </div>
-        <div style="-ms-flex: 0 0 auto;flex: 0 0 auto;width: auto;max-width: 100%;display: flex!important;display: -ms-flexbox!important;padding: 0 1%;">
-        <div style="height: 15px;width: 15px;margin-bottom: 15px; border: 1px solid black;  background-color: #dfe1e3;" ></div
-          <span>&nbsp;Free</span>
-          <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 {!! Html::style(asset('landing/css/bootstrap.min.css')) !!}
@@ -249,7 +31,7 @@ $date2=date_create($end);
 
 $diff=date_diff($date1,$date2);
 $no_working_days=$diff->format("%a");
-$no_working_days=$no_working_days+1;// include the last day
+// $no_working_days=$no_working_days;// include the last day
 ############### END ##############################
 
 ############### Remaining days ###################
@@ -258,7 +40,7 @@ $date2=date_create($end);
 
 $diff=date_diff($date1,$date2);
 $remaining_working_days=$diff->format("%a");
-$remaining_working_days=$remaining_working_days;// include the last day
+// $remaining_working_days=$remaining_working_days;// include the last day
 ############### Remaining days ##################
 
 $completed_days=$no_working_days-$remaining_working_days;
@@ -344,101 +126,12 @@ h5.sm {
 </head>
 <body>
 
-    <section id="project">
-        <div class="container">
-    <h5 class="sm">PROJECT OVERALL PROGRAM STATUS</h5>
-    <div class="progress mb-3">
-      <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$no_working_days}} Days</div>
-      {{-- <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">15 Days</div> --}}
-      <!-- <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div> -->
-    </div>
-    <div class="progress mb-3" style="background-color: transparent;">
-    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: transparent;color: #000;    text-align: end;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">Base Program End Date ({{ date("d-m-Y", strtotime($end)) }})</div>
-    {{-- <div class="progress-bar" role="progressbar" style="width: 30%; background-color: transparent;color: #000;    text-align: end;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">Rev-1 Program End Date (30-9-2021)</div> --}}
-</div>
 
-    <hr class="my-5" />
-<div class="two-div">
-    <div class="row">
-        <div class="col-md-6 b1">
-            <h5 class="sm">BASE PROGRAM STATUS</h5>
-            <div class="progress mb-3">
-            <div class="progress-bar bg-success" role="progressbar" style="width:100%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$no_working_days}} Days</div>
-            {{-- <div class="progress-bar bg-warning" role="progressbar" style="width: {{$remaing_percenatge}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$remaining_working_days}}</div> --}}
-            </div>
-            <div class="row">
-                {{-- <div class="col-md-6 tx row right-txt" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">WORKING DAYS</p><div class="line"></div></div>
-                <div class="col-md-6 tx row lef" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p><div class="line"></div></div> --}}
-                </div>
-        </div>
-
-        <div class="col-md-6 b1">
-            <h5 class="sm">DURATION IN NO OF DAYS</h5>
-            <div class="progress mb-3">
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{$current_percentage}}%" aria-valuenow="{{$current_percentage}}" aria-valuemin="0" aria-valuemax="100">{{$completed_days}} Days</div>
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{$remaing_percenatge}}% ;background-color: #ffc107!important;" aria-valuenow="{{$remaing_percenatge}}" aria-valuemin="0" aria-valuemax="100">{{$remaining_working_days}} Days</div>
-
-                </div>
-                <div class="row">
-                    {{-- <div class="col-md-6 tx row right-txt" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">WORKING DAYS</p><div class="line"></div></div>
-                    <div class="col-md-6 tx row lef" style="align-items: center;"><div class="line"></div><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p><div class="line"></div></div> --}}
-                    </div>
-        </div>
-    </div>
-</div>
-
-<div class="two-div">
-    <div class="row">
-        {{-- <div class="col-md-6 b1">
-            <h5 class="sm">DURATION IN PERCENTAGE</h5>
-            <div class="progress mb-3">
-            <div class="progress-bar bg-success" role="progressbar" style="width: {{$actual_current_progress}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$actual_current_progress}}%</div>
-            @if($actual_remaining_progress>0)
-            <div class="progress-bar bg-warning" role="progressbar" style="width: {{$actual_remaining_progress}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$actual_remaining_progress}}%</div>
-            @endif
-          </div>
-            <div class="row">
-                <div class="col-md-6 tx row right-txt" style="align-items: center;justify-content: center;"><p class="t1" style="margin-bottom: 0;">WORKING DAYS</p></div>
-                <div class="col-md-6 tx row lef" style="align-items: center;justify-content: center;"><p class="t1" style="margin-bottom: 0;">REAMINING DAYS</p></div>
-                </div>
-        </div> --}}
-
-        <div class="col-md-12 b1">
-            <h5 class="sm">PLANNED PROGRESS IN PERCENTAGE</h5>
-            <div class="progress mb-3">
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{$current_percentage}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{$current_percentage}}%</div>
-                <div class="progress-bar bg-warning" role="progressbar" style="width: {{$remaing_percenatge}}%;background-color: #ffc107!important;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">{{$remaing_percenatge}}%</div>
-                </div>
-                <div class="row">
-                    {{-- <div class="col-md-6 tx row right-txt" style="align-items: center;justify-content: center;"><p class="t1" style="margin-bottom: 0;">WORKING DAYS</p></div>
-                    <div class="col-md-6 tx row lef" style="align-items: center;justify-content: center;"><p class="t1" style="width: 50%;margin-bottom: 0;">REAMINING DAYS</p></div> --}}
-                    </div>
-        </div>
-    </div>
-</div>
-<div class="div-thre">
-    <h5 class="sm">ACTUAL PROGRESS IN PERCENTAGE</h5>
-    <div class="progress mb-3">
-    <div class="progress-bar bg-success" role="progressbar" style="width: {{$actual_current_progress}}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">ACTUAL PROGRESS {{$actual_current_progress}}%</div>
-    @php
-    $delay=0;
-    @endphp
-    @if(round($actual_current_progress)!=$current_percentage)
-      @php
-        $delay=round($current_percentage-$actual_current_progress);
-      @endphp
-      <div class="progress-bar bg-danger" role="progressbar" style="width: {{$delay}}%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">DELAY {{$delay}}%</div>
-    @endif
-      <div class="progress-bar bg-warning" role="progressbar" style="width: {{$actual_remaining_progress-$delay}}%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">REMAINING PROGRESS {{$actual_remaining_progress-$delay}}%</div>
-
-    <!-- <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div> -->
-  </div>
-  <div class="progress mb-3" style="background-color: transparent;">
-    <div class="progress-bar" role="progressbar" style="width: 35%; background-color: transparent;color: #000;    text-align: center;" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">ACTUAL PROGRESS</div>
-    <div class="progress-bar" role="progressbar" style="width: 75%; background-color: transparent;color: #000;    text-align: center;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">ACTUAL REMAINING PROGRESS ({{$actual_current_progress}})+delay({{$delay}})={{$actual_remaining_progress+$delay}}%</div>
-</div>
-</div>
-<div class="page-break"></div>
+<h3 style="
+text-align: center;
+padding: 2px 2px;
+background-color: #cfcfcf;
+"> Main Task List</h3>
 <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -483,7 +176,48 @@ h5.sm {
 
     </tbody>
   </table>
-</div>
+  <div class="page-break"></div>
+  <h3 style="
+text-align: center;
+padding: 2px 2px;
+background-color: #cfcfcf;
+"> Today Updated Task List</h3>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Planned Start Date</th>
+        <th scope="col">Planned Finish</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Percentage</th>
+        <th scope="col">Progress Updated Date</th>
+        <th scope="col">Description</th>
+        <th scope="col">User Name</th>
+        <th scope="col">user Email</th>
+      </tr>
+    </thead>
+    <tbody>
+     @forelse($taskdata2 as $key => $value)
+      <tr>
+        <td>{{$value['title']}}</td>
+        <td>{{$value['planed_start']}}</td>
+        <td>{{$value['planed_end']}}</td>
+        <td>{{$value['duration']}}</td>
+        <td>{{$value['percentage']}}</td>
+        <td>{{$value['progress_updated_date']}}</td>
+        <td>{{$value['description']}}</td>
+        <td>{{$value['user']}}</td>
+        <td>{{$value['email']}}</td>
+      </tr>
+     @empty
+      <tr>
+        <td colspan="10" style='text-align: center;'>No Record</td>
+      </tr>
+     @endforelse
+
+    </tbody>
+  </table>
+
 </section>
 </body>
 </html>

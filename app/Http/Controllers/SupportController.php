@@ -22,7 +22,7 @@ class SupportController extends Controller
             $countOpenTicket  = Support::where('status', '=', 'open')->where('created_by', '=', \Auth::user()->creatorId())->count();
             $countonholdTicket  = Support::where('status', '=', 'on hold')->where('created_by', '=', \Auth::user()->creatorId())->count();
             $countCloseTicket = Support::where('status', '=', 'close')->where('created_by', '=', \Auth::user()->creatorId())->count();
-            return view('support.index', compact('supports','countTicket','countOpenTicket','countonholdTicket','countCloseTicket'));
+            return view('support.new_index', compact('supports','countTicket','countOpenTicket','countonholdTicket','countCloseTicket'));
         }
         elseif(\Auth::user()->type == 'client')
         {
@@ -31,7 +31,7 @@ class SupportController extends Controller
             $countOpenTicket  = Support::where('status', '=', 'open')->where('created_by', '=', \Auth::user()->creatorId())->count();
             $countonholdTicket  = Support::where('status', '=', 'on hold')->where('created_by', '=', \Auth::user()->creatorId())->count();
             $countCloseTicket = Support::where('status', '=', 'close')->where('created_by', '=', \Auth::user()->creatorId())->count();
-            return view('support.index', compact('supports','countTicket','countOpenTicket','countonholdTicket','countCloseTicket'));
+            return view('support.new_index', compact('supports','countTicket','countOpenTicket','countonholdTicket','countCloseTicket'));
         }
         else
         {
@@ -41,9 +41,8 @@ class SupportController extends Controller
             $countOpenTicket  = Support::where('status', '=', 'open')->where('created_by', '=', \Auth::user()->creatorId())->count();
             $countonholdTicket  = Support::where('status', '=', 'on hold')->where('created_by', '=', \Auth::user()->creatorId())->count();
             $countCloseTicket = Support::where('status', '=', 'close')->where('created_by', '=', \Auth::user()->creatorId())->count();
-            return view('support.index', compact('supports','countTicket','countOpenTicket','countonholdTicket','countCloseTicket'));
+            return view('support.new_index', compact('supports','countTicket','countOpenTicket','countonholdTicket','countCloseTicket'));
         }
-
     }
 
 

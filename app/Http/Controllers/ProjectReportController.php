@@ -296,7 +296,7 @@ class ProjectReportController extends Controller
 
                         $diff=date_diff($date1,$date2);
                         $no_working_days=$diff->format("%a");
-                        $no_working_days=$no_working_days+1;// include the last day
+                        $no_working_days=$value->duration;// include the last day
                         ############### END ##############################
 
                         ############### Remaining days ###################
@@ -305,7 +305,7 @@ class ProjectReportController extends Controller
 
                         $diff=date_diff($date1,$date2);
                         $remaining_working_days=$diff->format("%a");
-                        $remaining_working_days=$remaining_working_days;// include the last day
+                        $remaining_working_days=$remaining_working_days-1;// include the last day
                         ############### Remaining days ##################
 
                         $completed_days=$no_working_days-$remaining_working_days;
@@ -340,16 +340,40 @@ class ProjectReportController extends Controller
                         'actual_percent'=>round($value->progress).'%',
                     );
                 }
-            
-                //Planed progress finding
+                $taskdata2=array();
+                $today_task_update=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
+                foreach ($today_task_update as $key => $value) {
+                    $main_task=Con_task::where('main_id',$value->task_id)->first();
+                    $user=User::find($value->user_id);
+                    if($user){
+                        $user_name=$user->name;
+                        $user_email=$user->email;
+                    }else{
+                        $user_name='';
+                        $user_email='';
+                    }
+
+                    $taskdata2[]=array(
+                        'title'=>$main_task->text,
+                        'planed_start'=>date("d-m-Y", strtotime($main_task->start_date)),
+                        'planed_end'=>date("d-m-Y", strtotime($main_task->start_date)),
+                        'duration'=>$main_task->duration.' Days',
+                        'percentage'=>$value->percentage.'%',
+                        'progress_updated_date'=>date("d-m-Y", strtotime($value->record_date)),
+                        'description'=>$value->description,
+                        'user'=>$user_name,
+                        'email'=>$user_email,
+                      
+                    );
+                }
 
 
                 // end
                 // $project=Con_task::where('id',Session::has('project_id'))->where('start_date', '>=',Carbon::now())->get();
                 
-                // $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'))->setPaper('a4', 'landscape')->setWarnings(false);
-                // return $pdf->download('Report.pdf');
-                return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress'));
+                $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
+                return $pdf->download('Report.pdf');
+                return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'));
 
                 
 

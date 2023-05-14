@@ -28498,3 +28498,59 @@ a#pills-proposal-tab {
 .btnheight .ti.ti-trash {
     color: #fff !important;
 }
+
+/* #pills-invoice-tab {
+    background: #206bc4;
+    color: #fff;
+} */
+
+.nav-link active {
+    background: #206bc4;
+    color: #fff;
+}
+
+.nav-item .active{
+    background: #206bc4 !important;
+    color: #fff !important;
+}
+a#pills-proposal-tab {
+    background: #206bc4;
+    color: #fff;
+    margin: 0 4px 0 0;
+}
+
+.bill_logo_update {
+    padding: 4% 3%;
+    color: #fff;
+    border-radius: 5px;
+}
+.invoice_logo_update {
+    padding: 4% 3%;
+    color: #fff;
+    border-radius: 5px;
+}
+
+table.dataTable>tbody>tr {
+    background-color: white;
+    color: #000;
+}
+
+.theme-dark .list-group-item:not(.disabled):not(:disabled) {
+    color: #000000;
+}
+
+
+#DataTables_Table_0_length {
+    float: left;
+}
+
+.dataTables_wrapper div.dataTables_filter {
+    text-align: right;
+    float: right;
+}
+
+.form-check-input:checked {
+    background-color: var(--tblr-primary);
+    border-color: var(--tblr-border-color-translucent);
+    z-index: 111;
+}
