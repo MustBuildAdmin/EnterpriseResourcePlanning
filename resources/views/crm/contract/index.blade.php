@@ -1,19 +1,27 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
-<div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Contract'])
+ 
+@include('crm.side-menu')
 
-	<div class="float-end">
-        <a href="{{ route('contract.grid') }}"  data-bs-toggle="tooltip" title="{{__('Grid View')}}" class="btn btn-sm btn-primary">
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Contract</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+       
+        <a href="{{ route('contract.grid') }}"  data-bs-toggle="tooltip" title="{{__('Grid View')}}" class="floatrght btn btn-sm btn-primary">
             <i class="ti ti-layout-grid"></i>
         </a>
         @if(\Auth::user()->type == 'company')
-            <a href="#" data-size="md" data-url="{{ route('contract.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Contract')}}" class="btn btn-sm btn-primary">
+            <a href="#" data-size="md" data-url="{{ route('contract.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Contract')}}" class="floatrght btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
             </a>
         @endif
-    </div>
-    <br><br><br>
+
+  </div>
+</div>
+
 
 	<div class="row">
         <div class="col-xl-12">
@@ -98,7 +106,9 @@
                 </div>
             </div>
         </div>
+
+        @include('new_layouts.footer')
     </div>
-	</div>
+
 	
-@include('new_layouts.footer')
+

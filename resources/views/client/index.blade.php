@@ -6,41 +6,43 @@
 	
 	#search_button {
 		height: 35px !important;
+		margin: 0 5px 0 0;
+		display: none !important;
 	}
 </style>
-@include('crm.side-menu', ['hrm_header' =>"Manage Client"])
-<div class="page-wrapper">
-  <!-- Page header -->
-  <div class="page-header d-print-none">
-    <div class="container-xl">
-      <div class="row g-2 align-items-center">
-        
-        <!-- Page title actions -->
-        <div class="col-auto ms-auto d-print-none">
-          <form action="{{ route('clients.index') }}" method="GET">
+@include('crm.side-menu')
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Client</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+
+        <form action="{{ route('clients.index') }}" method="GET">
             <div class="input-group"> 
               {{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3 mt-auto','id'=>'search','placeholder'=>__('Search by Name or Email'))) }}
               <div class="input-group-btn">
-                <button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
-          </form>
-          <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-          <a href="#" data-size="lg" data-url="{{ route('clients.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" id="create" class="btn btn-primary"> 
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        </form>
+
+        <a href="#"  class="floatrght btn btn-primary" data-size="lg" data-url="{{ route('clients.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" id="create" > 
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon gapbtn" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M12 5l0 14" />
               <path d="M5 12l14 0" /> 
             </svg>
             {{__('New Client')}} 
-          </a>
-        </div>
-      </div>
-    </div>
+        </a>
+
   </div>
 </div>
+</div>
+
+
 	<!-- Page body -->
 	<div class="page-body">
 		<div class="container-xl">
-			<div class="row row-cards"> 
+			<div class="row row-cards clients"> 
         @forelse($clients as $client)
 				<div class="col-md-6 col-lg-3">
 					<div class="card"> 

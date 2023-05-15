@@ -2,24 +2,29 @@
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/dragula.min.css') }}" id="main-style-link">
 
-<div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
 
-	<div class="float-end">
-        <div class="col-auto">
-            <a href="{{ route('deals.list') }}" data-size="lg" data-bs-toggle="tooltip" title="{{__('List View')}}" class="btn btn-sm btn-primary">
+@include('crm.side-menu')
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Leads</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+
+  <a href="{{ route('deals.list') }}" data-size="lg" data-bs-toggle="tooltip" title="{{__('List View')}}" class="floatrght btn btn-sm btn-primary">
                 <i class="ti ti-list"></i>
             </a>
             @can('create deal')
-            <a href="#" data-size="lg" data-url="{{ route('deals.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Deal')}}" class="btn btn-sm btn-primary">
+            <a href="#" data-size="lg" data-url="{{ route('deals.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Deal')}}" class="floatrght btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
             </a>
             @endcan
-        </div>
-    </div>
-    <br><br><br>
+  </div>
+</div>
 
-	<div class="row">
+
+<div class="row">
         <div class="col-sm-3">
             <div class="card">
                 <div class="card-body">
@@ -89,6 +94,8 @@
             </div>
         </div>
     </div>
+
+
     <div class="row">
         <div class="col-sm-12">
             @php
@@ -204,9 +211,13 @@
             </div>
         </div>
     </div>
-	</div>
+
+    @include('new_layouts.footer')
+
+</div>
+
 	
-@include('new_layouts.footer')
+
 <script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
 <script src="{{ asset('assets/js/plugins/dragula.min.js') }}"></script>
 <script>
