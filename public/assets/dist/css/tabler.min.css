@@ -28554,3 +28554,22 @@ table.dataTable>tbody>tr {
     border-color: var(--tblr-border-color-translucent);
     z-index: 111;
 }
+
+.clients .ti-dots-vertical:before {
+    content: "\ea94";
+}
+
+
+
+.clients .dropdown-toggle::after {
+    display: block;
+    display: none !important;
+    top: 50%;
+    right: 20px;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+    word-wrap: break-word;
+    margin: 0 0 0 10px;
+}

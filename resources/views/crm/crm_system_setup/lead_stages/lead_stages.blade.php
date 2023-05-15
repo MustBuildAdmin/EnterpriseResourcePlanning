@@ -1,12 +1,29 @@
 @include('new_layouts.header')
+
+<style>
+.nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
+    width: 13%;
+    float: right;
+}
+</style>
+
 <div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Lead Stages'])
-	<div class="float-end">
-        <a href="#" data-size="md" data-url="{{ route('lead_stages.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create Lead Stage')}}" class="btn btn-sm btn-primary">
+    @include('crm.side-menu')
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Lead Stages</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+       
+  <a class="floatrght btn btn-sm btn-primary" href="#" data-size="md" data-url="{{ route('lead_stages.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create Lead Stage')}}" >
             <i class="ti ti-plus"></i>
         </a>
-    </div>
-	<br>
+  </div>
+</div>
+
+
 
     <div class="row">
         <div class="col-3">
@@ -40,7 +57,7 @@
                                                 <span class="float-end">
                                                     <div class="ms-2" style="display:flex;gap:10px;">
                                                         @can('edit lead stage')
-                                                            <a href="#" class="btn btn-md bg-primary" data-url="{{ URL::to('lead_stages/'.$lead_stages->id.'/edit') }}" data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Lead Stages')}}">
+                                                            <a href="#" class="btn btn-md" data-url="{{ URL::to('lead_stages/'.$lead_stages->id.'/edit') }}" data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Lead Stages')}}">
                                                                 <i class="ti ti-pencil text-white"></i>
                                                             </a>
                                                         @endcan
