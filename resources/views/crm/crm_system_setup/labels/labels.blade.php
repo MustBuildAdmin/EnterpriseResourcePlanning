@@ -1,14 +1,33 @@
 @include('new_layouts.header')
+
+<style>
+.nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
+    width: 13%;
+    float: right;
+}
+</style>    
+
 <div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Labels'])
-	@can('create label')
+    @include('crm.side-menu')
+
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Labels</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+    @can('create label')
         <div class="float-end">
             <a href="#" data-size="md" data-url="{{ route('labels.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create Labels')}}" class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
             </a>
         </div>
     @endcan
-	<br>
+  </div>
+</div>
+
+
 
     <div class="row">
         <div class="col-3">

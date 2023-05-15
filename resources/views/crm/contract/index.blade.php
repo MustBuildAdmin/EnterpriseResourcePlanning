@@ -1,6 +1,11 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
- 
+<style>
+.nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
+    width: 13%;
+    float: right;
+}
+</style>
 @include('crm.side-menu')
 
 
