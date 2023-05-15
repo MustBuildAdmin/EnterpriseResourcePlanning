@@ -53,6 +53,11 @@ class AwardTypeController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            $get_check = AwardType::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_check != null){
+            return redirect()->back()->with('error', "AwardType Already Exist!");
+            }
+
             $awardtype             = new AwardType();
             $awardtype->name       = $request->name;
             $awardtype->created_by = \Auth::user()->creatorId();

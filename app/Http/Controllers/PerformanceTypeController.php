@@ -52,6 +52,11 @@ class PerformanceTypeController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
 
+                $get_check = PerformanceType::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+                if($get_check != null){
+                return redirect()->back()->with('error', "PerformanceType Already Exist!");
+                }
+
                 $types             = new PerformanceType();
                 $types->name       = $request->name;
                 $types->created_by = \Auth::user()->creatorId();
