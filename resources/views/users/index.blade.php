@@ -7,6 +7,14 @@
 #search_button {
 	height: 35px !important;
 }
+
+.dropdown-toggle::after {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+}
+
 </style>
 @php
    // $profile=asset(Storage::url('uploads/avatar/'));
@@ -14,11 +22,14 @@
 @endphp
 <div class="page-wrapper">
 	<!-- Page header -->
+
+
+
 	<div class="page-header d-print-none">
 		<div class="container-xl">
 			<div class="row g-2 align-items-center">
 				<div class="col">
-					<h2 class="page-title">
+				<h2 class="page-title">
                 {{__('Manage User')}}
 
             </h2>
