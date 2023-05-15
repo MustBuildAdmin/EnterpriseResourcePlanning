@@ -28529,3 +28529,47 @@ a#pills-proposal-tab {
     color: #fff;
     border-radius: 5px;
 }
+
+table.dataTable>tbody>tr {
+    background-color: white;
+    color: #000;
+}
+
+.theme-dark .list-group-item:not(.disabled):not(:disabled) {
+    color: #000000;
+}
+
+
+#DataTables_Table_0_length {
+    float: left;
+}
+
+.dataTables_wrapper div.dataTables_filter {
+    text-align: right;
+    float: right;
+}
+
+.form-check-input:checked {
+    background-color: var(--tblr-primary);
+    border-color: var(--tblr-border-color-translucent);
+    z-index: 111;
+}
+
+.clients .ti-dots-vertical:before {
+    content: "\ea94";
+}
+
+
+
+.clients .dropdown-toggle::after {
+    display: block;
+    display: none !important;
+    top: 50%;
+    right: 20px;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+    word-wrap: break-word;
+    margin: 0 0 0 10px;
+}

@@ -1,5 +1,13 @@
+
+
+
+
+
 {{Form::open(array('url'=>'users','method'=>'post'))}}
+
 <div class="modal-body">
+
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -25,6 +33,7 @@
             </div>
         </div>
     <div class="row">
+   
    <div class="form-group col-md-6">
                 {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
                 {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
@@ -33,6 +42,20 @@
                     <strong class="text-danger">{{ $message }}</strong>
                 </small>
                 @enderror
+            </div>
+
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                <div class="form-icon-user">
+                    <select  name="reporting_to[]" id='reporting_to' required multiple>
+                        <option value="">{{ __('Select Reporting to ...') }}</option>
+                        @foreach($users as $key => $value)
+                              <option value="{{$key}}">{{$value}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             </div>
        <div class="form-group col-md-6">
             <div class="form-group">
@@ -176,4 +199,9 @@ $(document).on("change", '#country', function () {
                         });
         });
     });
+</script>
+<script>
+    new Choices('#reporting_to', {
+                removeItemButton: true,
+            });
 </script>

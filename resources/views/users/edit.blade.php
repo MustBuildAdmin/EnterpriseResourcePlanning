@@ -33,6 +33,25 @@
                 </small>
                 @enderror
             </div>
+            <?php $reporting_to=explode(",",$user->reporting_to); ?>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                <div class="form-icon-user">
+                    <select  name="reporting_to[]" id='reporting_to' required multiple>
+                        <option value="">{{ __('Select Reporting to ...') }}</option>
+                        @foreach($users as $key => $value)
+                            @if(in_array($key,$reporting_to)) 
+                                <option value="{{$key}}" selected>{{$value}}</option>
+                            @else
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endif
+                            
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+</div>
        <div class="form-group col-md-6">
             <div class="form-group">
                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
@@ -155,4 +174,9 @@
                             });
             });
         });
+</script>
+<script>
+    new Choices('#reporting_to', {
+                removeItemButton: true,
+            });
 </script>
