@@ -1,10 +1,28 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 
-<div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
 
-	<div class="float-end">
+
+
+
+<div class="page-wrapper"> 
+
+
+    @include('crm.side-menu')
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Leads</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+
+        <form action="{{ route('clients.index') }}" method="GET">
+            <div class="input-group"> 
+              {{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3 mt-auto','id'=>'search','placeholder'=>__('Search by Name or Email'))) }}
+              <div class="input-group-btn">
+        </form>
+
         {{ Form::open(array('route' => 'deals.change.pipeline','id'=>'change-pipeline','class'=>'btn btn-sm ')) }}
         {{ Form::select('default_pipeline_id', $pipelines,$pipeline->id, array('class' => 'form-control select','id'=>'default_pipeline_id')) }}
         {{ Form::close() }}
@@ -14,6 +32,15 @@
         <a href="#" data-size="lg" data-url="{{ route('leads.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Lead')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
         </a>
+
+  </div>
+</div>
+</div>
+
+
+
+	<div class="float-end">
+
     </div>
     <br><br><br>
 

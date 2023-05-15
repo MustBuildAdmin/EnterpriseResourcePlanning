@@ -1,17 +1,25 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 <div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
+    @include('crm.side-menu')
 
-	<div class="float-end">
-        <a href="{{ route('leads.index') }}" data-bs-toggle="tooltip" title="{{__('Kanban View')}}" class="btn btn-sm btn-primary">
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Leads</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+       
+       <a href="{{ route('leads.index') }}" data-bs-toggle="tooltip" title="{{__('Kanban View')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-layout-grid"></i>
         </a>
         <a href="#" data-size="lg" data-url="{{ route('leads.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New User')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
         </a>
-    </div>
-    <br><br><br>
+
+  </div>
+</div>
+
+
 
 	@if($pipeline)
         <div class="row">

@@ -28480,3 +28480,96 @@ a#pills-proposal-tab {
     color: #fff;
     border-radius: 5px;
 }
+
+.btnheight {
+    background: #206bc4;
+    min-width: 31px;
+    font-size: 16px;
+    border: none;
+    padding: 5px 5px 5px 5px;
+    height: 29px;
+}
+
+.btnheight .ti.ti-pencil {
+    color: #fff !important;
+    /* border: none !important; */
+}
+
+.btnheight .ti.ti-trash {
+    color: #fff !important;
+}
+
+/* #pills-invoice-tab {
+    background: #206bc4;
+    color: #fff;
+} */
+
+.nav-link active {
+    background: #206bc4;
+    color: #fff;
+}
+
+.nav-item .active{
+    background: #206bc4 !important;
+    color: #fff !important;
+}
+a#pills-proposal-tab {
+    background: #206bc4;
+    color: #fff;
+    margin: 0 4px 0 0;
+}
+
+.bill_logo_update {
+    padding: 4% 3%;
+    color: #fff;
+    border-radius: 5px;
+}
+.invoice_logo_update {
+    padding: 4% 3%;
+    color: #fff;
+    border-radius: 5px;
+}
+
+table.dataTable>tbody>tr {
+    background-color: white;
+    color: #000;
+}
+
+.theme-dark .list-group-item:not(.disabled):not(:disabled) {
+    color: #000000;
+}
+
+
+#DataTables_Table_0_length {
+    float: left;
+}
+
+.dataTables_wrapper div.dataTables_filter {
+    text-align: right;
+    float: right;
+}
+
+.form-check-input:checked {
+    background-color: var(--tblr-primary);
+    border-color: var(--tblr-border-color-translucent);
+    z-index: 111;
+}
+
+.clients .ti-dots-vertical:before {
+    content: "\ea94";
+}
+
+
+
+.clients .dropdown-toggle::after {
+    display: block;
+    display: none !important;
+    top: 50%;
+    right: 20px;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+    word-wrap: break-word;
+    margin: 0 0 0 10px;
+}
