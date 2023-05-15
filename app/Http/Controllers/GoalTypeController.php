@@ -54,6 +54,11 @@ class GoalTypeController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            $get_check = GoalType::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_check != null){
+                return redirect()->back()->with('error', "GoalType Already Exist!");
+            }
+
             $goaltype             = new GoalType();
             $goaltype->name       = $request->name;
             $goaltype->created_by = \Auth::user()->creatorId();

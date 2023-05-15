@@ -55,6 +55,11 @@ class TrainingTypeController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            $get_check = TrainingType::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_check != null){
+                return redirect()->back()->with('error', "TrainingType Already Exist!");
+            }
+
             $trainingtype             = new TrainingType();
             $trainingtype->name       = $request->name;
             $trainingtype->created_by = \Auth::user()->creatorId();
