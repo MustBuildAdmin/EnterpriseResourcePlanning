@@ -14,7 +14,7 @@ class TaskController extends Controller
             $max_id=0;
         }
         $task = new Con_task();
- 
+
         $task->text = $request->text;
         $task->id = $max_id+1;
         $row_id=$max_id+1;
@@ -26,20 +26,25 @@ class TaskController extends Controller
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         if(isset($request->users)){
-            $implode_users = implode(',', json_decode($request->users));
-            $task->users = $implode_users;
+            if(is_array($request->users)){
+                $implode_users = implode(',', json_decode($request->users));
+                $task->users = $implode_users;
+            }else{
+                $task->users = $request->users;
+            }
+
         }
- 
+
         $task->save();
- 
+
         return response()->json([
             "action"=> "inserted",
             "tid" => $row_id
         ]);
     }
- 
+
     public function update($id, Request $request){
-        
+
         $task = Con_task::find($id);
         $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->text = $request->text;
@@ -49,22 +54,26 @@ class TaskController extends Controller
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         if(isset($request->users)){
-            $implode_users = implode(',', json_decode($request->users));
-            $task->users = $implode_users;
+            if(is_array($request->users)){
+                $implode_users = implode(',', json_decode($request->users));
+                $task->users = $implode_users;
+            }else{
+                $task->users = $request->users;
+            }
         }
         $task->save();
- 
+
         return response()->json([
             "action"=> "updated"
         ]);
     }
- 
+
     public function destroy($id){
         $project=Session::get('project_id');
         $task = Con_task::find($id);
         $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->delete();
- 
+
         return response()->json([
             "action"=> "deleted"
         ]);
