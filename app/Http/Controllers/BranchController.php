@@ -53,11 +53,6 @@ class BranchController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $get_branch = Branch::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
-            if($get_branch != null){
-                return redirect()->back()->with('error', "Branch Name Already Exists!");
-            }
-
             $branch             = new Branch();
             $branch->name       = $request->name;
             $branch->created_by = \Auth::user()->creatorId();
@@ -178,5 +173,21 @@ class BranchController extends Controller
         }
 
         return response()->json($employees);
+    }
+
+    public function checkDuplicateRS_HRM(Request $request){
+        $form_name  = $request->form_name;
+        $check_name = $request->get_name;
+
+        if($form_name == "Branch"){
+            $get_check_val = Branch::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+        }
+        
+        if($get_check_val == null){
+            return 1; //Success
+        }
+        else{
+            return 0; //Error
+        }
     }
 }
