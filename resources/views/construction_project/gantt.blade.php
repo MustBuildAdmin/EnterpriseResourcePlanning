@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="{{asset('assets/js/gantt/common/controls_styles.css?v=7.0.11')}}">
 
 <style>
+    #gantt_here{
+        overflow-x: scroll !important;
+        overflow-y: scroll !important;
+    }
     .gantt_control {
         display: flex;
         flex-direction: row;
@@ -85,7 +89,24 @@
 			background: rgba(150, 150, 150, 0.5);
 			opacity: 1;
 		}
+
+        .gantt_task_cell.week_end {
+			background-color: #d6d6d6;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #d6d6d6;
+		}
 </style>
+@php
+$holidays=array();
+
+foreach ($project_holidays as $key => $value) {
+    // $time = strtotime($value->date);
+    $holidays[]= date("Y,m,d", strtotime($value->date));
+}
+$holidays=implode(':',$holidays);
+@endphp
 @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"])
                         <div class="col d-flex flex-column">
                             <div class="align">
@@ -171,7 +192,8 @@
         </div>
     </div>
 
-
+    <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
+    <input type='hidden' id='holidays' value='{{$holidays}}'>
 
 @include('new_layouts.footer')
 
@@ -238,6 +260,42 @@
             }
             gantt.render();
         }
+        // ## holidays  ######
+        var holidays = [];
+        var holidays_list=$('#holidays').val();
+        if(holidays_list!=''){
+            var result2 =holidays_list.split(':');
+            result2.forEach(element => {
+                holidays.push(new Date(element));
+            });
+            for (var i = 0; i < holidays.length; i++) {
+                gantt.setWorkTime({
+                    date: holidays[i],
+                    hours: false
+                });
+            }
+
+            var dateToStr = gantt.date.date_to_str("%d %F");
+	        gantt.message("Following holidays are excluded from working time:");
+            for (var i = 0; i < holidays.length; i++) {
+                setTimeout(
+                    (function (i) {
+                        return function () {
+                            gantt.message(dateToStr(holidays[i]))
+                        }
+                    })(i)
+                    ,
+                    (i + 1) * 600
+                );
+            }
+        }
+
+
+
+
+
+
+
 
         gantt.config.work_time = true;
         gantt.config.details_on_create = false;
@@ -245,11 +303,44 @@
         gantt.config.duration_unit = "day";
         gantt.config.row_height = 30;
         gantt.config.min_column_width = 40;
-        gantt.templates.timeline_cell_class = function (task, date) {
-            if (!gantt.isWorkTime(date))
-                return "week_end";
-            return "";
-        };
+
+            // weekdays appending
+            var weekend_list=$('#weekends').val();
+            var result=[0,1,2,3,4,5,6];
+            result.forEach(element => {
+                if(weekend_list.includes(element)){
+                    gantt.setWorkTime({ day:element, hours:false });
+                }else{
+                    gantt.setWorkTime({ day:element, hours: ["8:00-17:00"] });
+                }
+
+            });
+
+    // ###############################################
+            var weekScaleTemplate = function (date) {
+		var dateToStr = gantt.date.date_to_str("%d %M");
+		var weekNum = gantt.date.date_to_str("(week %W)");
+		var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
+		return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
+	};
+
+	gantt.config.scales = [
+		{unit: "month", step: 1, format: "%F, %Y"},
+		{unit: "week", step: 1, format: weekScaleTemplate},
+		{unit: "day", step: 1, format: "%D, %d"}
+	];
+
+	gantt.templates.timeline_cell_class = function (task, date) {
+		if (!gantt.isWorkTime(date))
+			return "week_end";
+		return "";
+	};
+
+
+
+    // ####################################################
+
+
         function toggleMode(toggle) {
             gantt.$zoomToFit = !gantt.$zoomToFit;
             if (gantt.$zoomToFit) {
@@ -571,6 +662,7 @@
             ];
 
             var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+            //var dp = new gantt.dataProcessor("/erpnew/public");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",

@@ -147,7 +147,7 @@ class CustomerController extends Controller
         $shipstate=Utility::getstate_details($customer->shipping_country,$customer->shipping_state);
         $shipcountry=Utility::getcountry_details($customer->shipping_country);
 
-        return view('customer.show', compact('customer','shipstate','shipcountry','state','country'));
+        return view('accounting.customer.show', compact('customer','shipstate','shipcountry','state','country'));
     }
 
 
@@ -165,7 +165,7 @@ class CustomerController extends Controller
             // $sellercitylist=Utility::getcity($customer->shipping_country,$customer->shipping_state);
             $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
 
-            return view('customer.edit', compact('customer', 'customFields','countrylist','statelist','sellerstatelist'));
+            return view('accounting.customer.edit', compact('customer', 'customFields','countrylist','statelist','sellerstatelist'));
         }
         else
         {
@@ -191,7 +191,7 @@ class CustomerController extends Controller
             {
                 $messages = $validator->getMessageBag();
 
-                return redirect()->route('customer.index')->with('error', $messages->first());
+                return redirect()->route('accounting.customer.index')->with('error', $messages->first());
             }
 
             $customer->name             = $request->name;
@@ -217,7 +217,7 @@ class CustomerController extends Controller
 
             CustomField::saveData($customer, $request->customField);
 
-            return redirect()->route('customer.index')->with('success', __('Customer successfully updated.'));
+            return redirect()->route('accounting.customer.index')->with('success', __('Customer successfully updated.'));
         }
         else
         {
@@ -234,7 +234,7 @@ class CustomerController extends Controller
             {
                 $customer->delete();
 
-                return redirect()->route('customer.index')->with('success', __('Customer successfully deleted.'));
+                return redirect()->route('accounting.customer.index')->with('success', __('Customer successfully deleted.'));
             }
             else
             {
@@ -291,7 +291,7 @@ class CustomerController extends Controller
             }
             $payments = $query->get();
 
-            return view('customer.payment', compact('payments', 'category'));
+            return view('accounting.customer.payment', compact('payments', 'category'));
         }
         else
         {
@@ -323,7 +323,7 @@ class CustomerController extends Controller
             }
             $transactions = $query->get();
 
-            return view('customer.transaction', compact('transactions', 'category'));
+            return view('accounting.customer.transaction', compact('transactions', 'category'));
         }
         else
         {
@@ -461,7 +461,7 @@ class CustomerController extends Controller
 
     public function importFile()
     {
-        return view('customer.import');
+        return view('accounting.customer.import');
     }
 
     public function import(Request $request)

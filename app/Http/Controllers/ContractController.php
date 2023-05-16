@@ -43,8 +43,8 @@ class ContractController extends Controller
                 $cnt_contract['this_week']   = \App\Models\Contract::getContractSummary($curr_week);
                 $cnt_contract['last_30days'] = \App\Models\Contract::getContractSummary($last_30days);
 
-                // return view('contract.index', compact('contracts', 'cnt_contract'));
                 return view('crm.contract.index', compact('contracts', 'cnt_contract'));
+                // return view('contract.index', compact('contracts', 'cnt_contract'));
             }
             elseif(\Auth::user()->type=='client')
             {
@@ -74,8 +74,9 @@ class ContractController extends Controller
             $defualtView->module = 'contract';
             $defualtView->view   = 'list';
             User::userDefualtView($defualtView);
-            // return view('contract.index', compact('contracts'));
+            
             return view('crm.contract.index', compact('contracts'));
+            // return view('contract.index', compact('contracts'));
         }
         else
         {
@@ -182,7 +183,9 @@ class ContractController extends Controller
             if($contract->created_by == \Auth::user()->creatorId())
             {
                 $client   = $contract->client;
-                return view('contract.show', compact('contract', 'client'));
+
+                return view('crm.contract.contract_show', compact('contract', 'client'));
+                // return view('contract.show', compact('contract', 'client'));
             }
             else
             {
@@ -288,7 +291,8 @@ class ContractController extends Controller
             $defualtView->module = 'contract';
             $defualtView->view   = 'grid';
             User::userDefualtView($defualtView);*/
-            return view('contract.grid', compact('contracts'));
+            return view('crm.contract.contract_grid', compact('contracts'));
+            // return view('contract.grid', compact('contracts'));
         }
         else
         {

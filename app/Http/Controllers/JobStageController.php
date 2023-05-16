@@ -48,6 +48,12 @@ class JobStageController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            $get_check = JobStage::where('title',$request->title)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_check != null){
+                return redirect()->back()->with('error', "JobStage Already Exist!");
+            }
+
+
             $jobStage             = new JobStage();
             $jobStage->title      = $request->title;
             $jobStage->created_by = \Auth::user()->creatorId();

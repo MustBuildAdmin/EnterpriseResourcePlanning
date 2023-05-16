@@ -29,9 +29,9 @@
     </div>
     <div class="row">
         <div class="form-group col-sm-12 col-md-12">
-            {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
+            {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
             <div class="form-file mb-3">
-                <input type="file" class="form-control" id="project_image"  name="project_image">
+                <input type="file" class="form-control" id="project_image"  name="project_image" required>
             </div>
             <span id="project_image_error" class="error" for="project_image"></span>
         </div>
@@ -129,18 +129,18 @@
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="7" name='non_working_days[]' id='sunday' required>
+        <input class="form-check-input" type="checkbox" value="0" name='non_working_days[]' id='sunday' required>
         <label class="form-check-label" for="sunday">
             Sunday
         </label>
     </div>
 </div>
 <br>
-{{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+{{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}
 <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='monday' required>
-        <label class="form-check-label" for="monday">
+        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='holidays'>
+        <label class="form-check-label" for="holidays">
             {{__('holidays')}}
         </label>
     </div>

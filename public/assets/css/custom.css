@@ -260,25 +260,33 @@ ul.collapse li{
 }
 
 #toggleIcon {
-  background: #3421c0;
-  color: #fff;
-  width: 30px;
-  height: 30px;
-  margin-left: -59px;
-  z-index: 9999999;
-  position: absolute;
-  margin-top: -30px;
-  top: 2.5%;
-  line-height: 30px;
-  text-align: center;
+  background: #fafbfc;
+    color: #7c7a7a;
+    width: 30px;
+    height: 30px;
+    margin-left: -80px;
+    z-index: 9999999;
+    position: absolute;
+    margin-top: -30px;
+    top: 4%;
+    line-height: 30px;
+    text-align: center;
 }
 
 .employee table.dataTable td, table.dataTable th {
   -webkit-box-sizing: content-box;
   box-sizing: border-box;
-  word-break: break-word;
-  text-transform: lowercase;
+  /* word-break: break-word; */
+  text-transform: capitalize;
 }
+
+
+.employee  .dataTables_wrapper {
+  margin: 1% 2%;
+  width: 1180px;
+  overflow: scroll;
+}
+
 
 .down {
   margin: 0 0 5% 0;
@@ -288,4 +296,3 @@ ul.collapse li{
   font-size: 16px;
   color: #000000 !important;
 }
-

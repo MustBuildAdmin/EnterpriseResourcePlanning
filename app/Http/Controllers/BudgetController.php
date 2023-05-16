@@ -74,8 +74,8 @@ class BudgetController extends Controller
             $incomeproduct  = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 1)->get();
             $expenseproduct = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 2)->get();
 
-
-            return view('budget.create', compact('periods', 'incomeproduct', 'expenseproduct'), $data);
+            return view('accounting.budget.create', compact('periods', 'incomeproduct', 'expenseproduct'), $data);
+            // return view('budget.create', compact('periods', 'incomeproduct', 'expenseproduct'), $data);
         }
         else
         {
@@ -505,9 +505,10 @@ class BudgetController extends Controller
 
             }
 
-
-            return view('budget.show', compact('id', 'budget', 'incomeproduct', 'expenseproduct', 'incomeArr', 'expenseArr', 'incomeTotalArr','expenseTotalArr','budgetTotal','budgetExpenseTotal'
+            return view('accounting.budget.show', compact('id', 'budget', 'incomeproduct', 'expenseproduct', 'incomeArr', 'expenseArr', 'incomeTotalArr','expenseTotalArr','budgetTotal','budgetExpenseTotal'
             ), $data);
+            // return view('budget.show', compact('id', 'budget', 'incomeproduct', 'expenseproduct', 'incomeArr', 'expenseArr', 'incomeTotalArr','expenseTotalArr','budgetTotal','budgetExpenseTotal'
+            // ), $data);
 
         }
         else
@@ -564,8 +565,9 @@ class BudgetController extends Controller
             $incomeproduct  = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 1)->get();
             $expenseproduct = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 2)->get();
 
+            return view('accounting.budget.edit', compact('periods', 'budget', 'incomeproduct', 'expenseproduct'), $data);
+            // return view('budget.edit', compact('periods', 'budget', 'incomeproduct', 'expenseproduct'), $data);
 
-            return view('budget.edit', compact('periods', 'budget', 'incomeproduct', 'expenseproduct'), $data);
         }
 
         else

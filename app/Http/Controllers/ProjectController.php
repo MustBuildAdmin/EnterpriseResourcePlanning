@@ -12,6 +12,8 @@ use App\Models\Bug;
 use App\Models\BugStatus;
 use App\Models\BugFile;
 use App\Models\BugComment;
+use App\Models\Project_holiday;
+use App\Models\Holiday;
 use App\Models\Con_task;
 use App\Models\Link;
 use App\Models\Milestone;
@@ -132,6 +134,19 @@ class ProjectController extends Controller
                 'project_id'=>$project->id,
             );
             Instance::insert($insert_data);
+            if($request->holidays==0){
+                $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
+                foreach ($holidays_list as $key => $value) {
+                    $insert=array(
+                        'project_id'=>$project->id,
+                        'date'=>$value->date,
+                        'description'=>$value->occasion,
+                        'created_by'=>\Auth::user()->creatorId()
+                    );
+                    Project_holiday::insert($insert);
+                }
+
+            }
             if(isset($request->file)){
                if($request->file_status=='MP'){
                 $path='projectfiles/';
@@ -186,6 +201,7 @@ class ProjectController extends Controller
                         }
                         if(isset($value['parent'])){
                             $task->parent=$value['parent'];
+                            $task->predecessors=$value['parent'];
                         }
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
@@ -202,8 +218,8 @@ class ProjectController extends Controller
                         $link= new Link();
                         $link->project_id=$project->id;
                         $link->instance_id=$instance_id;
-                        Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
                         $link->id=$value['id'];
+                        // Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
                         if(isset($value['type'])){
                             $link->type=$value['type'];
                         }
@@ -273,6 +289,7 @@ class ProjectController extends Controller
                             }
                             if(isset($value['parent'])){
                                 $task->parent=$value['parent'];
+                                $task->predecessors=$value['parent'];
                             }
                             if(isset($value['$raw'])){
                                 $raw=$value['$raw'];
@@ -289,7 +306,7 @@ class ProjectController extends Controller
                             $link= new Link();
                             $link->project_id=$project->id;
                             $link->instance_id=$instance_id;
-                            Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
+                            // Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
                             $link->id=$value['id'];
                             if(isset($value['type'])){
                                 $link->type=$value['type'];
@@ -406,7 +423,7 @@ class ProjectController extends Controller
 
             $usr           = Auth::user();
             if(\Auth::user()->type == 'client'){
-              $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();;
+              $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
             }else{
               $user_projects = $usr->projects->pluck('id')->toArray();
             }
@@ -414,6 +431,16 @@ class ProjectController extends Controller
             Session::put('project_instance',$project->instance_id);
             if(in_array($project->id, $user_projects))
             {
+                // test the holidays
+                    if($project->holidays==0){
+                        $holidays=Project_holiday::where('project_id',$project->id)->first();
+                        if(!$holidays){
+                            return redirect()->back()->with('error', __('No holidays are listed.'));
+                        }
+                    }
+
+
+                // end
                 $project_data = [];
                 // Task Count
                 $tasks = Con_task::where('project_id',$project->id)->get();
@@ -581,6 +608,7 @@ class ProjectController extends Controller
         }
     }
 
+    
     /**
      * Update the specified resource in storage.
      *
@@ -628,6 +656,19 @@ class ProjectController extends Controller
             $project->estimated_hrs = $request->estimated_hrs;
             $project->tags = $request->tag;
             $project->save();
+            if($project->holidays==0){
+                $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
+                foreach ($holidays_list as $key => $value) {
+                    $insert=array(
+                        'project_id'=>$project->id,
+                        'date'=>$value->date,
+                        'description'=>$value->occasion,
+                        'created_by'=>\Auth::user()->creatorId()
+                    );
+                    Project_holiday::insert($insert);
+                }
+
+            }
             return redirect()->route('construction_main')->with('success', __('Project Updated Successfully'));
         }
         else
@@ -960,8 +1001,8 @@ class ProjectController extends Controller
             {
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if($setting['company_type']==2){
-
-                    return view('construction_project.gantt', compact('project', 'tasks', 'duration'));
+                    $project_holidays=Project_holiday::select('date')->where('project_id',$projectID)->get();
+                    return view('construction_project.gantt', compact('project', 'tasks', 'duration','project_holidays'));
                     //return view('projects.congantt', compact('project', 'tasks', 'duration'));
                 }else{
                     $tasksobj = $project->tasks;
@@ -1533,13 +1574,13 @@ class ProjectController extends Controller
 
         $task_id=$request->task_id;
         $task =Con_task::where('main_id',$task_id)->first();
-        $date1=date_create($task->start_date);
-        $date2=date_create($task->end_date);
+        // $date1=date_create($task->start_date);
+        // $date2=date_create($task->end_date);
 
-        $diff=date_diff($date1,$date2);
-        $no_working_days=$diff->format("%a");
-        $no_working_days=$no_working_days+1;// include the last day
-
+        // $diff=date_diff($date1,$date2);
+        // $no_working_days=$diff->format("%a");
+        // $no_working_days=$no_working_days+1;// include the last day
+        $no_working_days=$task->duration;
 
         // insert details
         $array=array(

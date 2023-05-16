@@ -58,6 +58,11 @@ class DesignationController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            $get_designation = Designation::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_designation != null){
+                return redirect()->back()->with('error', "Designation Already Exists!");
+            }
+
             $designation                = new Designation();
             $designation->department_id = $request->department_id;
             $designation->name          = $request->name;
@@ -87,7 +92,7 @@ class DesignationController extends Controller
             {
 
                 $departments = Department::where('id', $designation->department_id)->first();
-                $departments = $departments->pluck('name', 'id');
+                $departments = $departments->where('created_by', '=', \Auth::user()->creatorId())->pluck('name', 'id');
 
                 return view('hrm.system_setup.designation.designation_edit', compact('designation', 'departments'));
                 // return view('designation.edit', compact('designation', 'departments'));

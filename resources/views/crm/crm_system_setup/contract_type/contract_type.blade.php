@@ -3,15 +3,30 @@
     .list-group-item:last-child {
         min-height: 52px !important;
     }
+
+    .nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
+    width: 13%;
+    float: right;
+}
 </style>
+
 <div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Contract Type'])
-	<div class="float-end">
-        <a href="#" data-size="md" data-url="{{ route('contractType.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Contract Type')}}" class="btn btn-sm btn-primary">
+    @include('crm.side-menu')
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Contract Type</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+        <a class="floatrght btn btn-sm btn-primary" href="#" data-size="md" data-url="{{ route('contractType.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Contract Type')}}" >
             <i class="ti ti-plus"></i>
         </a>
-    </div>
-	<br>
+  </div>
+</div>
+
+
+
 
     <div class="row">
         <div class="col-3">
