@@ -9,9 +9,6 @@
   transition: box-shadow 0.2s ease-in-out;
   min-height: 270px;
 }
-.fulls-card {
-    min-height: 296px !important;
-}
 </style>
 
     <div class="row">
