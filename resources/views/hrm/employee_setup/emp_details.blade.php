@@ -5,6 +5,15 @@
 .employee-detail-bod .fulls-card {
     min-height: 233px !important; 
 }
+
+.card {
+  box-shadow: 0 6px 30px rgba(182, 186, 203, 0.3);
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s ease-in-out;
+  min-height: 270px;
+}
+
+
 </style>
 
     @if(!empty($employee))
