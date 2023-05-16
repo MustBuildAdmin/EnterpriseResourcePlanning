@@ -51,6 +51,12 @@ class LoanOptionController extends Controller
 
                 return redirect()->back()->with('error', $messages->first());
             }
+
+            $get_check = LoanOption::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_check != null){
+                return redirect()->back()->with('error', "LoanOption Already Exist!");
+            }
+
             $loanoption             = new LoanOption();
             $loanoption->name       = $request->name;
             $loanoption->created_by = \Auth::user()->creatorId();
