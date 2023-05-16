@@ -47,14 +47,9 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                 {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <select  name="reporting_to[]" id='reporting_to' required multiple>
-                        <option value="">{{ __('Select Reporting to ...') }}</option>
-                        @foreach($users as $key => $value)
-                              <option value="{{$key}}">{{$value}}</option>
-                        @endforeach
-                    </select>
-                </div>
+                {{ Form::select('reporting_to[]', $users,null, array('class' => 'form-control select2','multiple'=>'','id'=>'choices-multiple1','required'=>'required')) }}
+
+                
             </div>
             </div>
        <div class="form-group col-md-6">
@@ -200,6 +195,11 @@ $(document).on("change", '#country', function () {
         });
     });
 </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
 <script>
     new Choices('#reporting_to', {
                 removeItemButton: true,
