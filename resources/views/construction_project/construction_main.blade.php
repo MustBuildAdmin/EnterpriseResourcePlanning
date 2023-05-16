@@ -1,4 +1,10 @@
 @include('new_layouts.header')
+<style>
+.img-fluid {
+    max-width: 26% !important;
+    height: auto;
+}
+</style>
 <div class="page-wrapper">
 
     @include('construction_project.side-menu')

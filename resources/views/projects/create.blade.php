@@ -173,6 +173,11 @@ $(document).on("click", '#file_status', function () {
         $('#file').attr('accept','.xer');
     }
 });
+$(document).on("change", '#start_date', function () {
+    var start=$('#start_date').val();
+    $('#end_date').val('');
+    $('#end_date').attr('min',start);
+});
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
         var fileName=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.') + 1);

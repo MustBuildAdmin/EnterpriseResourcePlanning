@@ -143,7 +143,7 @@
             </div>
             <span id="project_image_error" class="error" for="project_image"></span>
 
-            <img id="image"  {{$project->img_image}} class="avatar avatar-xl" alt="">
+            <img id="image"  src="{{asset(Storage::url($project->project_image))}}" class="avatar avatar-xl" alt="">
         </div>
 
     </div>
@@ -162,7 +162,6 @@
         if(fileName=='jpeg' || fileName=='png' || fileName=='jpg' || fileName=='txt'){
             document.getElementById('project_image').classList="form-control valid";
             document.getElementById('project_image_error').innerHTML='';
-            document.getElementById('upload_customer').disabled=false;
         }
         else if(fileInput.files[0] && fileInput.files[0].size>2097152){
             document.getElementById('project_image').classList="form-control error";
