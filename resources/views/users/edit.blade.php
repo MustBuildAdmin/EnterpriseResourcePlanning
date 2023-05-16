@@ -37,8 +37,19 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                 {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{ Form::select('reporting_to[]', $users,$reporting_to, array('class' => 'form-control select2','multiple'=>'','id'=>'choices-multiple1','required'=>'required')) }}
-                
+                <div class="form-icon-user">
+                    <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select' required multiple>
+                        <option value="">{{ __('Select Reporting to ...') }}</option>
+                        @foreach($users as $key => $value)
+                            @if(in_array($key,$reporting_to)) 
+                                <option value="{{$key}}" selected>{{$value}}</option>
+                            @else
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endif
+                            
+                        @endforeach
+                    </select>
+                </div>
             </div>
 </div>
        <div class="form-group col-md-6">
@@ -164,14 +175,13 @@
             });
         });
 </script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
-<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet"/>
 <script>
-    new Choices('#reporting_to', {
-                removeItemButton: true,
-            });
+    $(document).ready(function() {
+        $(".chosen-select").chosen();
+    });
 </script>
+<style>
+div#choices_multiple1_chosen {
+    width: 100% !important;
+}
+</style>
