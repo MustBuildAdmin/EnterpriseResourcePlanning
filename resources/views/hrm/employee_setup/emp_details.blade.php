@@ -13,7 +13,9 @@
   min-height: 270px;
 }
 
-
+.fulls-card {
+    min-height: 296px !important;
+}
 </style>
 
     @if(!empty($employee))
