@@ -1,5 +1,16 @@
 @include('new_layouts.header')
 @include('hrm.hrm_main',['hrm_header' => 'Employee Edit'])
+<style>
+
+
+.card {
+  box-shadow: 0 6px 30px rgba(182, 186, 203, 0.3);
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s ease-in-out;
+  min-height: 270px;
+}
+
+</style>
 
     <div class="row">
         <div class="col-12">
