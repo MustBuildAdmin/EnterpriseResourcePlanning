@@ -52,6 +52,11 @@ class CompetenciesController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
+            $get_check = Competencies::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
+            if($get_check != null){
+            return redirect()->back()->with('error', "Competencies Already Exist!");
+            }
+
             $competencies             = new Competencies();
             $competencies->name       = $request->name;
             $competencies->type       = $request->type;

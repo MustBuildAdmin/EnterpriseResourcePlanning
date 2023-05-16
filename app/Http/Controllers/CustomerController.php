@@ -50,7 +50,7 @@ class CustomerController extends Controller
         {
             $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'customer')->get();
             $country=Utility::getcountry();
-            return view('accounting.customer.create', compact('customFields','country'));
+            return view('customer.create', compact('customFields','country'));
         }
         else
         {
@@ -128,7 +128,7 @@ class CustomerController extends Controller
                 Utility::send_twilio_msg($request->contact,$msg);
             }
 
-            return redirect()->route('accounting.customer.index')->with('success', __('Customer successfully created.'));
+            return redirect()->route('customer.index')->with('success', __('Customer successfully created.'));
         }
         else
         {

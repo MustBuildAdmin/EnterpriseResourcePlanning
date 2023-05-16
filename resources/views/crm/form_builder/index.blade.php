@@ -1,12 +1,27 @@
 @include('new_layouts.header')
-<div class="page-wrapper"> 
-    @include('crm.side-menu', ['hrm_header' => 'Manage Form Builder'])
 
-	<div class="float-end">
-        <a href="#" data-size="md" data-url="{{ route('form_builder.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Form')}}" class="btn btn-sm btn-primary">
+
+
+
+@include('crm.side-menu')
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Form Builder</h2>
+  </div>
+  <div class="col-md-6 float-end ">
+
+  
+        <a href="#" data-size="md" data-url="{{ route('form_builder.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Form')}}" class="floatrght btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
         </a>
-    </div>
+
+  </div>
+</div>
+
+
+
 
 	<div class="table-responsive">
         <table class="table card-table table-vcenter text-nowrap datatable">
@@ -58,9 +73,11 @@
             </tbody>
         </table>
     </div>
-	</div>
+
+	@include('new_layouts.footer')
 	
-@include('new_layouts.footer')
+
+
 
 <script>
 	$(document).ready(function () {
