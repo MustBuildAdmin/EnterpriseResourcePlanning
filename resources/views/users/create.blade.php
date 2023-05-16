@@ -48,7 +48,7 @@
                 <div class="form-group">
                 {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <select  name="reporting_to[]" id='reporting_to' required multiple>
+                    <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select' required multiple>
                         <option value="">{{ __('Select Reporting to ...') }}</option>
                         @foreach($users as $key => $value)
                               <option value="{{$key}}">{{$value}}</option>
@@ -200,8 +200,14 @@ $(document).on("change", '#country', function () {
         });
     });
 </script>
+
 <script>
-    new Choices('#reporting_to', {
-                removeItemButton: true,
-            });
+    $(document).ready(function() {
+        $(".chosen-select").chosen();
+    });
 </script>
+<style>
+div#choices_multiple1_chosen {
+    width: 100% !important;
+}
+</style>
