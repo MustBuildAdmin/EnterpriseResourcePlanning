@@ -9,7 +9,6 @@
   transition: box-shadow 0.2s ease-in-out;
   min-height: 270px;
 }
-
 </style>
 
     <div class="row">
