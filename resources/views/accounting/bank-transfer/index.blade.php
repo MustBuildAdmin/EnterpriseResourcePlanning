@@ -1,6 +1,6 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
+<link rel="stylesheet" href="{{ asset('assets/css/plugins/flatpickr.min.css') }}">
 <div class="row">
   <div class="col-md-6">
      <h2>Bank Transfer</h2>
@@ -13,8 +13,6 @@
         @endcan
   </div>
 </div>
-
-
 
 <div class="row">
         <div class="col-sm-12">
@@ -143,3 +141,4 @@
         </div>
     </div>
 @include('new_layouts.footer')
+<script src="{{ asset('assets/js/plugins/flatpickr.min.js') }}"></script>

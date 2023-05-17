@@ -1,6 +1,6 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
+<link rel="stylesheet" href="{{ asset('assets/css/plugins/flatpickr.min.css') }}">
 <div class="row">
   <div class="col-md-6">
      <h2>{{__('Manage Proposals')}}</h2>
@@ -34,7 +34,7 @@
                             @if(!\Auth::guard('customer')->check())
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 me-2">
                                     <div class="btn-box">
-                                        {{ Form::label('customer', __('Customer'),['class'=>'form-label']) }}
+                                        {{ Form::label('customer', __('Client'),['class'=>'form-label']) }}
                                         {{ Form::select('customer',$customer,isset($_GET['customer'])?$_GET['customer']:'', array('class' => 'form-control select')) }}
                                     </div>
                                 </div>
@@ -206,3 +206,4 @@
     
 </div>
 @include('new_layouts.footer')
+<script src="{{ asset('assets/js/plugins/flatpickr.min.js') }}"></script>

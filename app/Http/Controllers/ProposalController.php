@@ -38,7 +38,8 @@ class ProposalController extends Controller
         if(\Auth::user()->can('manage proposal'))
         {
 
-            $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            // $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customer = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
             $customer->prepend('All', '');
 
             $status = Proposal::$statues;
@@ -76,8 +77,9 @@ class ProposalController extends Controller
         {
             $customFields    = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'proposal')->get();
             $proposal_number = \Auth::user()->proposalNumberFormat($this->proposalNumber());
-            $customers       = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $customers->prepend('Select Customer', '');
+            // $customers       = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customers = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+            $customers->prepend('Select Client', '');
             $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
             $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -95,7 +97,7 @@ class ProposalController extends Controller
 
     public function customer(Request $request)
     {
-        $customer = Customer::where('id', '=', $request->id)->first();
+        $customer = User::where('id', '=', $request->id)->first();
         $country=Utility::getcountry_details($customer->billing_country);
         $state=Utility::getstate_details($customer->billing_country,$customer->billing_state);
         $shipcountry=Utility::getcountry_details($customer->shipping_country);
@@ -194,7 +196,8 @@ class ProposalController extends Controller
             $id              = Crypt::decrypt($ids);
             $proposal        = Proposal::find($id);
             $proposal_number = \Auth::user()->proposalNumberFormat($proposal->proposal_id);
-            $customers       = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            // $customers       = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customers = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
             $category        = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
             $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');

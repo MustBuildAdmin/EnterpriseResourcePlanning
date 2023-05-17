@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group" id="customer-box">
-                                    {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                                    {{ Form::label('customer_id', __('Client'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
                                     {{ Form::select('customer_id', $customers,null, array('class' => 'form-control select ','id'=>'customer','data-url'=>route('proposal.customer'),'required'=>'required')) }}
                             </div>
                             <div id="customer_detail" class="d-none">
