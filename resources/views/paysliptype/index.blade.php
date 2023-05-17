@@ -9,16 +9,24 @@
     <li class="breadcrumb-item">{{__('Payslip Type')}}</li>
 @endsection
 
-@section('action-btn')
-    <div class="float-end">
-        @can('create payslip type')
-            <a href="#" data-url="{{ route('paysliptype.create') }}" data-ajax-popup="true" data-title="{{__('Create New Payslip Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
+
+
+<div class="row">
+  <div class="col-md-6">
+     <h2>Manage Payslip Type</h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
+
+
+    @can('create payslip type')
+            <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('paysliptype.create') }}" data-ajax-popup="true" data-title="{{__('Create New Payslip Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  >
                 <i class="ti ti-plus"></i>
             </a>
 
         @endcan
-    </div>
-@endsection
+
+  </div>
+</div>
 
 
 
