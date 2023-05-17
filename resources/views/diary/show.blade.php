@@ -1,4 +1,6 @@
-@extends('layouts.admin')
+@include('new_layouts.header')
+
+@include('construction_project.side-menu')
 @section('page-title')
     {{__('Project Diary')}}
 @endsection
@@ -38,6 +40,12 @@ h3, .h3 {
     font-size: 1rem !important;
 }
 
+.card-header {
+    color: inherit;
+    display: inline-block;
+    align-items: center;
+    background: 0 0;
+}
 </style>
 @push('script-page')
 @endpush
@@ -47,26 +55,24 @@ h3, .h3 {
     <li class="breadcrumb-item">{{__('Dairy')}}</li>
 @endsection
 
-@section('action-btn')
+<div class="row">
 <div class="float-end">
     <div class="diary_template_select">
       <input type="hidden" id="project_id" value="{{$project_id}}">
-      <select id="diary_template_select"  class="form-control float-end">
+      <select id="diary_template_select"  class="form-control float-end dropdowncon">
         @foreach ($dairy_list as $list)
             <option value="{{$list->id}}">{{$list->diary_name}}</option>
         @endforeach
       </select>
     </div>
 </div>  
-@endsection
+</div>
 
-
-@section('content')
 <div id="content_id">
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
           <div class="col-auto float-end ms-4 mt-4">
-            <a href="#" data-size="xl" data-url="{{ route('dairy.dairy_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
+            <a class="floatrght conbtn btn btn-sm btn-primary" href="#" data-size="xl" data-url="{{ route('dairy.dairy_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" >
               <i class="ti ti-plus"></i>
             </a>
           </div>
@@ -132,9 +138,7 @@ h3, .h3 {
         </div>
       </div>
 </div>
-@endsection
 
-@push('script-page')
 {{-- <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -214,4 +218,3 @@ $(document).ready(function() {
     });
   });
 </script>
-@endpush

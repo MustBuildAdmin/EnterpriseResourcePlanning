@@ -305,3 +305,5 @@
 				</div>
 			</div>
 		</div>
+
+		       @include('Chatify::layouts.footerLinks')

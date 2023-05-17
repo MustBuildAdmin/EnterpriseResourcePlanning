@@ -1,20 +1,19 @@
 @include('new_layouts.header')
+
+@include('construction_project.side-menu')
+
 @section('page-title')
     {{__('Manage Diary')}}
 @endsection
+
 @push('script-page')
 @endpush
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item">{{__('Diary')}}</li>
 @endsection
-
-
-@section('content')
     <div class="row min-750" id="project_view"></div>
-@endsection
 
-@push('script-page')
     <script>
         $(document).ready(function () {
             var sort = 'created_at-desc';
@@ -112,4 +111,3 @@
             });
         }
     </script>
-@endpush
