@@ -97,7 +97,8 @@ class InvoiceController extends Controller
 
     public function customer(Request $request)
     {
-        $customer = Customer::where('id', '=', $request->id)->first();
+        $customer = User::where('id', '=', $request->id)->first();
+        // $customer = Customer::where('id', '=', $request->id)->first();
         $country=Utility::getcountry_details($customer->billing_country);
         $state=Utility::getstate_details($customer->billing_country,$customer->billing_state);
         $shipcountry=Utility::getcountry_details($customer->shipping_country);
