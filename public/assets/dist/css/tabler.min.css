@@ -28574,3 +28574,10 @@ table.dataTable>tbody>tr {
     margin: 0 0 0 10px;
 }
 
+.dropdowncon {
+    width: 27%;
+}
+
+.conbtn {
+    margin: 10px 10px 0 1% !important;
+}
