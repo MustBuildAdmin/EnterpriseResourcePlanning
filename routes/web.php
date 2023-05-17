@@ -1994,6 +1994,12 @@ Route::resource('branch', 'BranchController')->middleware(
     ]
 );
 
+Route::get('checkDuplicateRS_HRM', 'BranchController@checkDuplicateRS_HRM')->name('checkDuplicateRS_HRM')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 // Hrm EmployeeController
 
