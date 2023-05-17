@@ -60,6 +60,20 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('Reportto', __('Report To'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {!! Form::select('reportto', $users, $project->report_to,array('class' => 'form-control','required'=>'required')) !!}
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12 col-md-12">
             <div class="form-group">
                 {{ Form::label('tag', __('Tag'), ['class' => 'form-label']) }}
@@ -156,6 +170,11 @@
 
 
 <script>
+    $(document).on("change", '#start_date', function () {
+    var start=$('#start_date').val();
+    $('#end_date').val('');
+    $('#end_date').attr('min',start);
+});
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
         var fileName=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.') + 1);

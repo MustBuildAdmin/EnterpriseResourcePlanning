@@ -69,6 +69,20 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('Reportto', __('Report To'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {!! Form::select('reportto', $users, null,array('class' => 'form-control','required'=>'required')) !!}
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12 col-md-12">
             <div class="form-group">
                 {{ Form::label('tag', __('Tag'), ['class' => 'form-label']) }}

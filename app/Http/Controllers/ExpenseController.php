@@ -17,7 +17,12 @@ class ExpenseController extends Controller
         if(\Auth::user()->can('manage expense'))
         {
             $project     = Project::find($project_id);
-            $amount      = $project->expense->sum('amount');
+            if(isset($project->expense)){
+                $amount= $project->expense->sum('amount');
+            }else{
+                $amount= 0;
+            }
+           
             $expense_cnt = Utility::projectCurrencyFormat($project_id, $amount) . '/' . Utility::projectCurrencyFormat($project_id, $project->budget);
 
             return view('expenses.index', compact('project', 'expense_cnt'));
@@ -157,7 +162,10 @@ class ExpenseController extends Controller
         if(\Auth::user()->can('delete expense'))
         {
             $expense = Expense::find($expense_id);
-            Utility::checkFileExistsnDelete([$expense->attachment]);
+            if(isset($expense->attachment)){
+                Utility::checkFileExistsnDelete([$expense->attachment]);
+            }
+           
             $expense->delete();
 
             return redirect()->back()->with('success', __('Expense Deleted successfully.'));
