@@ -24,7 +24,7 @@
                             @if (!\Auth::guard('customer')->check())
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
                                     <div class="btn-box">
-                                        {{ Form::label('customer', __('Customer'),['class'=>'form-label'])}}
+                                        {{ Form::label('customer', __('Client'),['class'=>'form-label'])}}
                                         {{ Form::select('customer', $customer, isset($_GET['customer']) ? $_GET['customer'] : '', ['class' => 'form-control select']) }}
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                             <tr>
                                 <th> {{ __('Invoice') }}</th>
                                 @if (!\Auth::guard('customer')->check())
-                                    <th>{{ __('Customer') }}</th>
+                                    <th>{{ __('Client') }}</th>
                                 @endif
                                 <th>{{ __('Issue Date') }}</th>
                                 <th>{{ __('Due Date') }}</th>
@@ -277,7 +277,7 @@
                             @if (!\Auth::guard('customer')->check())
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
                                     <div class="btn-box">
-                                        {{ Form::label('customer', __('Customer'),['class'=>'form-label'])}}
+                                        {{ Form::label('customer', __('Client'),['class'=>'form-label'])}}
                                         {{ Form::select('customer', $customer, isset($_GET['customer']) ? $_GET['customer'] : '', ['class' => 'form-control select']) }}
                                     </div>
                                 </div>
@@ -329,7 +329,7 @@
                             <tr>
                                 <th> {{ __('Invoice') }}</th>
                                 @if (!\Auth::guard('customer')->check())
-                                    <th>{{ __('Customer') }}</th>
+                                    <th>{{ __('Client') }}</th>
                                 @endif
                                 <th>{{ __('Issue Date') }}</th>
                                 <th>{{ __('Due Date') }}</th>

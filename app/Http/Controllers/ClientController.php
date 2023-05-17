@@ -83,8 +83,22 @@ class ClientController extends Controller
         }
     }
 
+    function customerNumber()
+    {
+        $latest = User::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        if(!$latest)
+        {
+                return 1;
+        }else{
+          
+                return $latest->customer_id + 1;
+        }
+
+    }
+
     public function store(Request $request)
     {
+       
         if(\Auth::user()->can('create client'))
                 {
                     $user      = \Auth::user();
@@ -113,6 +127,7 @@ class ClientController extends Controller
                     $total_client = User::where('type','client')->count();
                     // dd($total_client);
                     $plan           = Plan::find($creator->plan);
+                    $user_value=$this->customerNumber();
                     if($total_client < $plan->max_clients || $plan->max_clients == -1)
                     {
                         $role = Role::findByName('client');
@@ -131,10 +146,26 @@ class ClientController extends Controller
                                 'phone'=>$request->phone,
                                 'zip'=>$request->zip,
                                 'address'=>$request->address,
+                                'customer_id'=>$user_value,
+                                'tax_number'=>$request->tax_number,
+                                'billing_name'=>$request->billing_name,
+                                'billing_country'=>$request->billing_country,
+                                'billing_state'=>$request->billing_state,
+                                'billing_city'=>$request->billing_city,
+                                'billing_phone'=>$request->billing_phone,
+                                'billing_zip'=>$request->billing_zip,
+                                'billing_address'=>$request->billing_address,
+                                'shipping_name'=>$request->shipping_name,
+                                'shipping_country'=>$request->shipping_country,
+                                'shipping_state'=>$request->shipping_state,
+                                'shipping_city'=>$request->shipping_city,
+                                'shipping_phone'=>$request->shipping_phone,
+                                'shipping_zip'=>$request->shipping_zip,
+                                'shipping_address'=>$request->shipping_address
                             ]
                         );
 
-
+                          
                         //Send Email
 
                         $role_r = Role::findByName('client');
@@ -291,6 +322,22 @@ class ClientController extends Controller
                 $post['phone']=$request->phone;
                 $post['zip']=$request->zip;
                 $post['address']=$request->address;
+                $post['tax_number']=$request->tax_number;
+                $post['billing_name']=$request->billing_name;
+                $post['billing_country']=$request->billing_country;
+                $post['billing_state']=$request->billing_state;
+                $post['billing_city']=$request->billing_city;
+                $post['billing_phone']=$request->billing_phone;
+                $post['billing_zip']=$request->billing_zip;
+                $post['billing_address']=$request->billing_address;
+                $post['shipping_name']=$request->shipping_name;
+                $post['shipping_country']=$request->shipping_country;
+                $post['shipping_state']=$request->shipping_state;
+                $post['shipping_city']=$request->shipping_city;
+                $post['shipping_phone']=$request->shipping_phone;
+                $post['shipping_zip']=$request->shipping_zip;
+                $post['shipping_address']=$request->shipping_address;
+               
                 $client->update($post);
 
                 CustomField::saveData($client, $request->customField);
@@ -376,5 +423,6 @@ class ClientController extends Controller
 
     }
 
+   
 
 }
