@@ -52,11 +52,6 @@ class DeductionOptionController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $get_check = DeductionOption::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
-            if($get_check != null){
-            return redirect()->back()->with('error', "DeductionOption Already Exist!");
-            }
-
             $deductionoption             = new DeductionOption();
             $deductionoption->name       = $request->name;
             $deductionoption->created_by = \Auth::user()->creatorId();

@@ -56,11 +56,6 @@ class LeaveTypeController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $get_check = LeaveType::where('title',$request->title)->where('created_by',\Auth::user()->creatorId())->first();
-            if($get_check != null){
-                return redirect()->back()->with('error', "LeaveType Already Exist!");
-            }
-
             $leavetype             = new LeaveType();
             $leavetype->title      = $request->title;
             $leavetype->days       = $request->days;
