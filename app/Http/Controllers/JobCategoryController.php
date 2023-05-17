@@ -49,11 +49,6 @@ class JobCategoryController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $get_check = JobCategory::where('title',$request->title)->where('created_by',\Auth::user()->creatorId())->first();
-            if($get_check != null){
-                return redirect()->back()->with('error', "JobCategory Already Exist!");
-            }
-
             $jobCategory             = new JobCategory();
             $jobCategory->title      = $request->title;
             $jobCategory->created_by = \Auth::user()->creatorId();

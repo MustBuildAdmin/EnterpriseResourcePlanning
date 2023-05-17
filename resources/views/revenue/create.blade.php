@@ -14,7 +14,7 @@
             {{ Form::select('account_id',$accounts,null, array('class' => 'form-control select','required'=>'required')) }}
         </div>
         <div class="form-group col-md-6"
-            {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+            {{ Form::label('customer_id', __('Client'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
             {{ Form::select('customer_id', $customers,null, array('class' => 'form-control select','required'=>'required')) }}
         </div>
         <div class="form-group  col-md-12">

@@ -52,11 +52,6 @@ class AllowanceOptionController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $get_check = AllowanceOption::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
-            if($get_check != null){
-            return redirect()->back()->with('error', "AllowanceOption Already Exist!");
-            }
-
             $allowanceoption             = new AllowanceOption();
             $allowanceoption->name       = $request->name;
             $allowanceoption->created_by = \Auth::user()->creatorId();

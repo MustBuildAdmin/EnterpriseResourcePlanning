@@ -151,7 +151,7 @@
                 {{-- <li>
                     <a href="#homeSubmenu"><span class="icon"><i class="ti ti-dashboard"></i></span><span class="list">Dashboard</span></a>
                 </li> --}}
-                @if(Gate::check('manage customer'))
+                {{-- @if(Gate::check('manage customer'))
                 <li class="{{ (Request::segment(1) == 'customer')?'active':''}}">
                     <a href="{{route('customer.index')}}"><span
                             class="icon"><i class="ti ti-users"></i>
@@ -159,9 +159,9 @@
                        
                     </a>
                 </li>
-                @endif
+                @endif --}}
 
-                @if(Gate::check('manage vender'))
+                {{-- @if(Gate::check('manage vender'))
                 <li class="{{ (Request::segment(1) == 'vender')?'active':''}}">
                     <a href="{{ route('vender.index') }}"><span
                             class="icon"><i class="ti ti-users"></i>
@@ -169,7 +169,7 @@
                        
                     </a>
                 </li>
-                @endif
+                @endif --}}
 
                 @if(Gate::check('manage proposal'))
                 <li class="{{ (Request::segment(1) == 'proposal')?'active':''}}">

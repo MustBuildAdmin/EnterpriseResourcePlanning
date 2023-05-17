@@ -27,8 +27,7 @@
 
 <script>
     $(document).ready(function(){
-        $(".get_name").keyup(function(){
-            $(".submit_button").prop('disabled',false);
+        $(document).on("keyup", '.get_name', function () {
             $(".show_duplicate_error").css('display','none');
             $.ajax({
                 url : '{{ route("checkDuplicateRS_HRM") }}',

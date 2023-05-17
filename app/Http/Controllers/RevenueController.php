@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\InvoicePayment;
 use App\Models\ProductServiceCategory;
 use App\Models\Revenue;
+use App\Models\User;
 use App\Models\Transaction;
 use App\Models\Utility;
 use Illuminate\Http\Request;
@@ -20,8 +21,9 @@ class RevenueController extends Controller
 
         if(\Auth::user()->can('manage revenue'))
         {
-            $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $customer->prepend('Select Customer', '');
+            // $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customer = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+            $customer->prepend('Select Client', '');
 
             $account = BankAccount::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('holder_name', 'id');
             $account->prepend('Select Account', '');
@@ -72,7 +74,8 @@ class RevenueController extends Controller
 
         if(\Auth::user()->can('create revenue'))
         {
-            $customers = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            // $customers = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customers = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
             $customers->prepend('--', 0);
             $categories = ProductServiceCategory::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 1)->get()->pluck('name', 'id');
             $accounts   = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');

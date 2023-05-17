@@ -37,8 +37,9 @@ class InvoiceController extends Controller
 
         if(\Auth::user()->can('manage invoice'))
         {
-            $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $customer->prepend('Select Customer', '');
+            // $customer = Customer::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customer = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+            $customer->prepend('Select Client', '');
             $status = Invoice::$statues;
 
             $query = Invoice::where('created_by', '=', \Auth::user()->creatorId());
@@ -75,8 +76,9 @@ class InvoiceController extends Controller
         {
             $customFields   = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
             $invoice_number = \Auth::user()->invoiceNumberFormat($this->invoiceNumber());
-            $customers      = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $customers->prepend('Select Customer', '');
+            // $customers      = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customers = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+            $customers->prepend('Select Client', '');
             $category = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
             $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -238,7 +240,8 @@ class InvoiceController extends Controller
             $id      = Crypt::decrypt($ids);
             $invoice = Invoice::find($id);
             $invoice_number = \Auth::user()->invoiceNumberFormat($invoice->invoice_id);
-            $customers      = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $customers = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+            // $customers      = Customer::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $category       = ProductServiceCategory::where('created_by', \Auth::user()->creatorId())->where('type', 1)->get()->pluck('name', 'id');
             $category->prepend('Select Category', '');
             $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
@@ -247,6 +250,7 @@ class InvoiceController extends Controller
             $customFields         = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
             $settings  = Utility::settings(\Auth::user()->creatorId());
             return view('accounting.invoice.edit', compact('customers', 'product_services', 'invoice', 'invoice_number', 'category', 'customFields','settings'));
+            // return view('accounting.invoice.edit', compact('customers', 'product_services', 'invoice', 'invoice_number', 'category', 'customFields','settings'));
         }
         else
         {

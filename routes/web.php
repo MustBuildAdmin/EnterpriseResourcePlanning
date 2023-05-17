@@ -157,7 +157,7 @@ Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_ho
     ]
 );
 
-Route::get('/', 'DashboardController@naccount_dashboard')->name('new_home')->middleware(
+Route::get('/', 'DashboardController@account_dashboard')->name('new_home')->middleware(
     [
         'auth',
         'XSS',
