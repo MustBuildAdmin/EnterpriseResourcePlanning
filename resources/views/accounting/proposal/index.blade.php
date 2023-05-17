@@ -79,7 +79,7 @@
                             <tr>
                                 <th> {{__('Proposal')}}</th>
                                 @if(!\Auth::guard('customer')->check())
-                                    <th> {{__('Customer')}}</th>
+                                    <th> {{__('Client')}}</th>
                                 @endif
                                 <th> {{__('Category')}}</th>
                                 <th> {{__('Issue Date')}}</th>

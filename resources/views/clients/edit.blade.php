@@ -87,11 +87,19 @@
            
         </div>
         <div class="row">
-            <div class="col-lg-12 col-md-4 col-sm-6">
+            <div class="col-lg-6 col-md-4 col-sm-6">
                 <div class="form-group">
                     {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="">
                         {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-4 col-sm-6">
+                <div class="form-group">
+                    {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                    <div class="form-icon-user">
+                        {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
                     </div>
                 </div>
             </div>
@@ -100,8 +108,9 @@
         @if(!$customFields->isEmpty())
             @include('custom_fields.formBuilder')
         @endif
-        
+     
         <h5 class="sub-title"><strong>{{__('Billing Address')}}</strong></h5>
+        <hr>
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group">
@@ -174,12 +183,16 @@
                 </div>
             </div>
         </div>
-    
+        <div class="custom-control custom-checkbox mt-n1">
+            <input type="checkbox" class="custom-control-input checkbox1" id="checkbox1">
+            <label class="custom-control-label" for="checkbox1">  <h6 class="sub-title"><strong>Do you copy a billing address<strong></h6></label>
+        </div>
         @if(App\Models\Utility::getValByName('shipping_display')=='on')
             <div class="col-md-12 text-end">
                 {{-- <input type="button" id="billing_data" value="{{__('Shipping Same As Billing')}}" class="btn btn-primary"> --}}
             </div>
             <h5 class="sub-title"><strong>{{__('Shipping Address')}}</strong></h5>
+            <hr>
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
@@ -285,4 +298,90 @@
                             });
             });
         });
+
+        $(document).on("change", '#billing_country', function () {
+    var name=$(this).val();
+    var settings = {
+            "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
+            "method": "GET",
+            "headers": {
+                "X-CSCAPI-KEY": '{{ env('Locationapi_key') }}'
+            },
+            };
+    
+            $.ajax(settings).done(function (response) {
+                    $('#billing_state').empty();
+                    $('#billing_state').append('<option value="">{{__('Select State ...')}}</option>');
+                        $.each(response, function (key, value) {
+                            $('#billing_state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+                        });
+        });
+    });
+
+    $(document).on("change", '#shipping_country', function () {
+    var name=$(this).val();
+    var settings = {
+            "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
+            "method": "GET",
+            "headers": {
+                "X-CSCAPI-KEY": '{{ env('Locationapi_key') }}'
+            },
+            };
+    
+            $.ajax(settings).done(function (response) {
+                    $('#shipping_state').empty();
+                    $('#shipping_state').append('<option value="">{{__('Select State ...')}}</option>');
+                        $.each(response, function (key, value) {
+                            $('#shipping_state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+                        });
+        });
+    });
+
+    $(document).ready(function() {
+
+    $(document).on("change", ".checkbox1", function () {
+    var $this = $(this).parent().parent();
+    if (this.checked) {
+
+      $this.find('#shipping_name').val($this.find('#billing_name').val());
+      $this.find('#shipping_city').val($this.find('#billing_city').val());
+      $this.find('#shipping_phone').val($this.find('#billing_phone').val());
+      $this.find('#shipping_zip').val($this.find('#billing_zip').val());
+      $this.find('#shipping_address').val($this.find('#billing_address').val());
+      $this.find('#shipping_country').val($this.find('#billing_country').val());
+      var name=$this.find('#shipping_country').val();
+    var settings = {
+            "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
+            "method": "GET",
+            "headers": {
+                "X-CSCAPI-KEY": '{{ env('Locationapi_key') }}'
+            },
+            };
+    
+            $.ajax(settings).done(function (response) {
+                    $('#shipping_state').empty();
+                    $('#shipping_state').append('<option value="">{{__('Select State ...')}}</option>');
+                        $.each(response, function (key, value) {
+                            $('#shipping_state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+                        });
+        });
+        setTimeout(function(){   $this.find('#shipping_state').val($this.find('#billing_state').val()); }, 1000);
+     
+     
+      
+    } else {
+      $this.find('#shipping_name').val("");
+      $this.find('#shipping_city').val("");
+      $this.find('#shipping_phone').val("");
+      $this.find('#shipping_zip').val("");
+      $this.find('#shipping_address').val("");
+      $this.find('#shipping_country').val("");
+      setTimeout(function() {     $this.find('#shipping_state').val(""); }, 100);
+     
+
+    }
+
+  });
+
+});
 </script>
