@@ -1,4 +1,4 @@
-@include('new_layouts.header')
+@extends('layouts.admin')
 @section('page-title')
     {{__('Manage Diary')}}
 @endsection

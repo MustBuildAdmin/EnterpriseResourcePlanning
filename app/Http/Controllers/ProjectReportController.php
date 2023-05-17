@@ -367,13 +367,31 @@ class ProjectReportController extends Controller
                     );
                 }
 
-
-                // end
-                // $project=Con_task::where('id',Session::has('project_id'))->where('start_date', '>=',Carbon::now())->get();
-                
                 $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
-                return $pdf->download('Report.pdf');
-                return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'));
+               // return $pdf->download('Report.pdf');
+                //file put in public path
+                $path='projectfiles/';
+                $filename ='reportfile'.rand(555555,888888).'.pdf';
+                $pathname='projectfiles/'.$filename;
+                $link=env('APP_URL').'/'.$path.$filename;
+                if (file_exists(public_path($pathname))){
+                    unlink(public_path($pathname));
+                }
+                $file_to_save =$pathname;
+                //save the pdf file on the server
+                file_put_contents($file_to_save, $pdf->output()); 
+                //print the pdf file to the screen for saving
+                header('Content-type: application/pdf');
+                header('Content-Disposition: inline; filename="file.pdf"');
+                header('Content-Transfer-Encoding: binary');
+                header('Content-Length: ' . filesize($file_to_save));
+                header('Accept-Ranges: bytes');
+                // return $pdf->download($filename);
+              
+                echo'done';
+                // end
+
+                // return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'));
 
                 
 

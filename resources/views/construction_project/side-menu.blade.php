@@ -51,7 +51,7 @@
 
 
     .pagination .active a {
-        color: #ffffff;
+        color: #242121 !important;
         cursor: default;
     }
 
@@ -142,6 +142,7 @@
         text-align: right;
         padding-top: 0.25em;
     }
+
 </style>
 
 <div class="wrapper">
@@ -149,7 +150,7 @@
     <nav id="sidebar">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
-                <li class="{{ (request()->is('projects-view*') ? 'active' : '')}}">
+                <li class="{{ Request::segment(1) == 'projects-view' || Request::segment(1) == 'construction_main'  ? 'active' : '' }}">
                     <a href="{{route('filter.project.view')}}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
                             class="list">{{ __('Productivity') }}</span></a>
                 </li>
@@ -160,7 +161,7 @@
                         </span><span class="list">{{ __('Diary') }}</span>
                     </a>
                 </li>
-                <li class="{{ (request()->is('taskBoard.view*') ? 'active' : '')}}">
+                <li class="{{ (request()->is('taskboard*') ? 'active' : '')}}">
                     <a href="{{ route('taskBoard.view',['list']) }}"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span
                             class="list">{{ __('Task') }}</span></a>
                 </li>

@@ -42,7 +42,13 @@ class LeaveController extends Controller
 
                 $user     = \Auth::user();
                 $employee = Employee::where('user_id', '=', $user->id)->first();
-                $leaves   = Leave::where('employee_id', '=', $employee->id)->get();
+                if($employee != null){
+                    $leaves   = Leave::where('employee_id', '=', $employee->id)->get();
+                }
+                else{
+                    $leaves = array();
+                }
+                
                
             }
         

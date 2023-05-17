@@ -4,19 +4,19 @@
     <div class="row">
         <div class="col-12 col-md-12">
             <div class="form-group">
-                {{ Form::label('name', __('Name'),['class' => 'form-label']) }}
+                {{ Form::label('name', __('Name'),['class' => 'form-label']) }}<span class="text-danger">*</span>
                 {{ Form::text('name', null, ['class' => 'form-control','required'=>'required']) }}
             </div>
         </div>
         <div class="col-12 col-md-4">
             <div class="form-group">
-                {{ Form::label('date', __('Date'),['class' => 'form-label']) }}
-                {{ Form::date('date', null, ['class' => 'form-control ']) }}
+                {{ Form::label('date', __('Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::date('date', null, ['class' => 'form-control ','required' => 'required']) }}
             </div>
         </div>
         <div class="col-12 col-md-4">
             <div class="form-group">
-                {{Form::label('amount',__('Amount'),['class'=>'form-label'])}}
+                {{Form::label('amount',__('Amount'),['class'=>'form-label'])}}<span class="text-danger">*</span>
                 <div class="form-group price-input input-group search-form">
                     <span class="input-group-text bg-transparent">{{\Auth::user()->currencySymbol()}}</span>
                     {{Form::number('amount',null,array('class'=>'form-control','required' => 'required','min' => '0'))}}
@@ -26,7 +26,7 @@
         <div class="col-12 col-md-4">
             <div class="form-group">
                 {{ Form::label('task_id', __('Task'),['class' => 'form-label']) }}
-                <select class="form-control select" name="task_id" id="task_id">
+                <select class="form-control select" name="task_id" id="task_id" required><span class="text-danger">*</span>
                     <option class="text-muted" value="0" disabled selected> Choose Task </option>
                     @foreach($tasks as $task)
                         <option value="{{ $task->id }}" {{ ($task->id == $expense->task_id) ? 'selected' : '' }}>{{ $task->name }}</option>
