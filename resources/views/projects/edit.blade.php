@@ -60,6 +60,20 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('Reportto', __('Report To'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {!! Form::select('reportto', $users, $project->report_to,array('class' => 'form-control','required'=>'required')) !!}
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12 col-md-12">
             <div class="form-group">
                 {{ Form::label('tag', __('Tag'), ['class' => 'form-label']) }}
@@ -143,7 +157,7 @@
             </div>
             <span id="project_image_error" class="error" for="project_image"></span>
 
-            <img id="image"  {{$project->img_image}} class="avatar avatar-xl" alt="">
+            <img id="image"  src="{{asset(Storage::url($project->project_image))}}" class="avatar avatar-xl" alt="">
         </div>
 
     </div>
@@ -156,13 +170,17 @@
 
 
 <script>
+    $(document).on("change", '#start_date', function () {
+    var start=$('#start_date').val();
+    $('#end_date').val('');
+    $('#end_date').attr('min',start);
+});
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
         var fileName=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.') + 1);
         if(fileName=='jpeg' || fileName=='png' || fileName=='jpg' || fileName=='txt'){
             document.getElementById('project_image').classList="form-control valid";
             document.getElementById('project_image_error').innerHTML='';
-            document.getElementById('upload_customer').disabled=false;
         }
         else if(fileInput.files[0] && fileInput.files[0].size>2097152){
             document.getElementById('project_image').classList="form-control error";
