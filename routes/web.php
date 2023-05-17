@@ -34,6 +34,122 @@ Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middlewar
 //         'revalidate',
 //     ]
 // );
+
+
+//diary
+
+
+Route::get('diary','DiaryController@index')->name('diary')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('diary_data','DiaryController@diary_display_table')->name('diary_data')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::get('diary/{id}','DiaryController@show')->name('diary.show')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::get(
+    'diary-view', [
+    'as' => 'filter.diary.view',
+    'uses' => 'DiaryController@filterDiaryView',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::post('save_concrete_pouring','DiaryController@save_concrete_pouring')->name('diary.save_concrete_pouring')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::post('update_concrete_pouring','DiaryController@update_concrete_pouring')->name('diary.update_concrete_pouring')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::post('diary/diary_destroy/{id}','DiaryController@destroy')->name('diary_destroy')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 
+
+Route::post('diary/delete_concrete/{id}','DiaryController@delete_concrete')->name('delete_concrete')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 
+
+Route::any('save_consultant_direction','DiaryController@save_consultant_direction')->name('save_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_consultant_direction','DiaryController@update_consultant_direction')->name('update_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::get('dairy_create','DiaryController@dairy_create')->name('dairy.dairy_create')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::get('dairy_update','DiaryController@dairy_update')->name('dairy.dairy_update')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('consultant_direction','DiaryController@show_consultant_direction')->name('consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('edit_consultant_direction','DiaryController@edit_consultant_direction')->name('edit_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
+
 Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
     [
         'XSS',

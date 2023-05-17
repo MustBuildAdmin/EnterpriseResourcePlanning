@@ -117,6 +117,8 @@ class ProjectController extends Controller
             $project->description = $request->description;
             $project->status = $request->status;
             $project->estimated_hrs = $request->estimated_hrs;
+            $project->report_to = $request->reportto;
+            $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->created_by = \Auth::user()->creatorId();
             // instance creation------------------------
@@ -591,16 +593,19 @@ class ProjectController extends Controller
         if(\Auth::user()->can('edit project'))
         {
           $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+          $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+          $users->prepend('Select User', '');
+          
           $project = Project::findOrfail($project->id);
           if($project->created_by == \Auth::user()->creatorId())
           {
-              return view('projects.edit', compact('project', 'clients'));
+              return view('projects.edit', compact('project', 'clients','users'));
           }
           else
           {
               return response()->json(['error' => __('Permission denied.')], 401);
           }
-            return view('projects.edit',compact('project'));
+            return view('projects.edit',compact('project','users'));
         }
         else
         {
@@ -654,6 +659,8 @@ class ProjectController extends Controller
             $project->description = $request->description;
             $project->status = $request->status;
             $project->estimated_hrs = $request->estimated_hrs;
+            $project->report_to = $request->reportto;
+            $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->save();
             if($project->holidays==0){

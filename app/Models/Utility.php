@@ -176,6 +176,8 @@ class Utility extends Model
         return $settings;
     }
 
+   
+
     public static function settingsById($user_id)
     {
 
