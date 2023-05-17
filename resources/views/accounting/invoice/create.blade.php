@@ -257,6 +257,7 @@
 
     <script src="{{asset('js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
+    <script src="{{ asset('assets/js/plugins/sweetalert2.all.min.js') }}"></script>
     <script>
             var selector = "body";
             if ($(selector + " .repeater").length) {
