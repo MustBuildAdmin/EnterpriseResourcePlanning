@@ -58,11 +58,6 @@ class DesignationController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $get_designation = Designation::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
-            if($get_designation != null){
-                return redirect()->back()->with('error', "Designation Already Exists!");
-            }
-
             $designation                = new Designation();
             $designation->department_id = $request->department_id;
             $designation->name          = $request->name;
