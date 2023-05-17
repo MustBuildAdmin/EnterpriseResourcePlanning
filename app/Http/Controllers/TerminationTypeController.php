@@ -52,11 +52,6 @@ class TerminationTypeController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $get_check = TerminationType::where('name',$request->name)->where('created_by',\Auth::user()->creatorId())->first();
-            if($get_check != null){
-                return redirect()->back()->with('error', "TerminationType Already Exist!");
-            }
-
             $terminationtype             = new TerminationType();
             $terminationtype->name       = $request->name;
             $terminationtype->created_by = \Auth::user()->creatorId();
