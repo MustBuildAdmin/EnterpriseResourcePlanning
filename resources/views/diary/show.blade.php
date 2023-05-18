@@ -1,6 +1,9 @@
+
 @include('new_layouts.header')
 
 @include('construction_project.side-menu')
+
+
 @section('page-title')
     {{__('Project Diary')}}
 @endsection
@@ -40,12 +43,6 @@ h3, .h3 {
     font-size: 1rem !important;
 }
 
-.card-header {
-    color: inherit;
-    display: inline-block;
-    align-items: center;
-    background: 0 0;
-}
 </style>
 @push('script-page')
 @endpush
@@ -55,11 +52,13 @@ h3, .h3 {
     <li class="breadcrumb-item">{{__('Dairy')}}</li>
 @endsection
 
+
+
 <div class="row">
 <div class="float-end">
     <div class="diary_template_select">
       <input type="hidden" id="project_id" value="{{$project_id}}">
-      <select id="diary_template_select"  class="form-control float-end dropdowncon">
+      <select id="diary_template_select"  class="form-control float-end">
         @foreach ($dairy_list as $list)
             <option value="{{$list->id}}">{{$list->diary_name}}</option>
         @endforeach
@@ -68,11 +67,12 @@ h3, .h3 {
 </div>  
 </div>
 
+
 <div id="content_id">
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
           <div class="col-auto float-end ms-4 mt-4">
-            <a class="floatrght conbtn btn btn-sm btn-primary" href="#" data-size="xl" data-url="{{ route('dairy.dairy_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" >
+          <a class="floatrght conbtn btn btn-sm btn-primary" href="#" data-size="xl" data-url="{{ route('diary.diary_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" >
               <i class="ti ti-plus"></i>
             </a>
           </div>
@@ -115,11 +115,11 @@ h3, .h3 {
                     <td>{{$bulk_data->remarks}}</td>
                     <td>
                       <div class="action-btn bg-primary ms-2">
-                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('dairy.dairy_update',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
+                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('diary.diary_update',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
                           <i class="ti ti-pencil text-white"></i>
                         </a>
                       </div>
-                      <div class="action-btn bg-danger ms-2"> {!! Form::open(['method' => 'POST', 'route' => ['diary_destroy', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                      <div class="action-btn bg-danger ms-2"> {!! Form::open(['method' => 'POST', 'route' => ['dairy_destroy', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                         <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                           <i class="ti ti-trash text-white mt-1"></i>
                         </a> {!! Form::close() !!} 
@@ -218,3 +218,4 @@ $(document).ready(function() {
     });
   });
 </script>
+

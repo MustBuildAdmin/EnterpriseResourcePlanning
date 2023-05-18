@@ -87,7 +87,7 @@ class DiaryController extends Controller
         }
     }
 
-    public function dairy_create(Request $request)
+    public function diary_create(Request $request)
     {
         try {
 
@@ -102,7 +102,7 @@ class DiaryController extends Controller
 
           
 
-            return view("diary.create",compact("project", "id","project_name"));
+            return view("diary.create");
 
         } catch (Exception $e) {
             return $e->getMessage();

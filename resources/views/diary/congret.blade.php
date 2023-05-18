@@ -1,7 +1,7 @@
 <div class="col-xl-12 mt-3">
     <div class="card table-card">
       <div class="col-auto float-end ms-4 mt-4">
-        <a href="#" data-size="xl" data-url="{{ route('dairy.dairy_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
+        <a href="#" data-size="xl" data-url="{{ route('diary.diary_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
           <i class="ti ti-plus"></i>
         </a>
       </div>

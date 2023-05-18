@@ -1,18 +1,22 @@
 @include('new_layouts.header')
 
 @include('construction_project.side-menu')
-
 @section('page-title')
     {{__('Manage Diary')}}
 @endsection
-
 @push('script-page')
 @endpush
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item">{{__('Diary')}}</li>
 @endsection
+
+
+
     <div class="row min-750" id="project_view"></div>
+
+
+
 
     <script>
         $(document).ready(function () {
@@ -111,3 +115,4 @@
             });
         }
     </script>
+
