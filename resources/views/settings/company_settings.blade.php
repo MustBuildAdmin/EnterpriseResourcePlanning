@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_address',__('Address'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_address',null,array('class'=>'form-control font-style'))}}
+                                    {{Form::text('company_address',null,array('class'=>'form-control font-style','readonly'))}}
                                     @error('company_address')
                                     <span class="invalid-company_address" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -114,7 +114,7 @@
                             
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_telephone',__('Telephone'),array('class' => 'form-label')) }}
-                                    {{Form::number('company_telephone',null,array('class'=>'form-control'))}}
+                                    {{Form::number('company_telephone',null,array('class'=>'form-control','readonly'))}}
                                     @error('company_telephone')
                                     <span class="invalid-company_telephone" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_email',__('System Email *'),array('class' => 'form-label')) }}
-                                    {{Form::email('company_email',null,array('class'=>'form-control','required'=>'required'))}}
+                                    {{Form::email('company_email',null,array('class'=>'form-control','required'=>'required','readonly'))}}
                                     @error('company_email')
                                     <span class="invalid-company_email" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -132,7 +132,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_email_from_name',__('Email (From Name) *'),array('class' => 'form-label')) }}
-                                    {{Form::text('company_email_from_name',null,array('class'=>'form-control font-style'))}}
+                                    {{Form::text('company_email_from_name',null,array('class'=>'form-control font-style','readonly'))}}
                                     @error('company_email_from_name')
                                     <span class="invalid-company_email_from_name" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>
@@ -219,7 +219,7 @@
                                 </div> --}}
                                 <div class="form-group col-md-6 mt-2">
                                     {{Form::label('timezone',__('Timezone'),array('class' => 'form-label'))}}
-                                    <select type="text" name="timezone" class="form-control custom-select" id="timezone">
+                                    <select type="text" name="timezone" class="form-control custom-select" id="timezone" disabled>
                                         <option value="">{{__('Select Timezone')}}</option>
                                         @foreach($timezones as $k=>$timezone)
                                             <option value="{{$k}}" {{(env('TIMEZONE')==$k)?'selected':''}}>{{$timezone}}</option>
