@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Milestone;
 use App\Models\Projectstages;
 use App\Models\TaskStage;
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Models\Utility;
 use App\Models\ProjectTask;
@@ -249,7 +250,7 @@ class ProjectReportController extends Controller
             return $data;
         }
         public function send_report_con(Request $request){
-            
+
             if(\Auth::user()->type == 'company' || \Auth::user()->type =='super admin' )
             {
                 $project=Project::where('id',Session::get('project_id'))->first();
@@ -284,7 +285,7 @@ class ProjectReportController extends Controller
                     }else{
                         $actual_end='Task Not Finish';
                     }
-                   
+
                     if($actual_end < $planned_end){
                         $actual_end='Task Not Finish';
                     }
@@ -318,7 +319,7 @@ class ProjectReportController extends Controller
                         $remaing_percenatge=round(100-$current_percentage);
 
                     //####################################___END____#######################################
-                    
+
                     // // actual duration finding
                     //     $date1=date_create($actual_start);
                     //     $date2=date_create($actual_end);
@@ -363,40 +364,57 @@ class ProjectReportController extends Controller
                         'description'=>$value->description,
                         'user'=>$user_name,
                         'email'=>$user_email,
-                      
+
                     );
+                }
+                $to=DB::table('users')->where('id',$project->report_to)->pluck('email')->first();
+                if(!$to){
+                    return redirect()->back()->with('error', __('Not Assign a Report person'));
                 }
 
                 $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
                // return $pdf->download('Report.pdf');
                 //file put in public path
-                $path='projectfiles/';
-                $filename ='reportfile'.rand(555555,888888).'.pdf';
-                $pathname='projectfiles/'.$filename;
-                $link=env('APP_URL').'/'.$path.$filename;
-                if (file_exists(public_path($pathname))){
-                    unlink(public_path($pathname));
-                }
-                $file_to_save =$pathname;
+                // $path='projectfiles/';
+                // $filename ='reportfile'.rand(555555,888888).'.pdf';
+                // $pathname='projectfiles/'.$filename;
+                // $link=env('APP_URL').'/'.$path.$filename;
+                // if (file_exists(public_path($pathname))){
+                //     unlink(public_path($pathname));
+                // }
+                // $file_to_save =$pathname;
                 //save the pdf file on the server
-                file_put_contents($file_to_save, $pdf->output()); 
+                // file_put_contents($file_to_save, $pdf->output());
                 //print the pdf file to the screen for saving
-                header('Content-type: application/pdf');
-                header('Content-Disposition: inline; filename="file.pdf"');
-                header('Content-Transfer-Encoding: binary');
-                header('Content-Length: ' . filesize($file_to_save));
-                header('Accept-Ranges: bytes');
+                // header('Content-type: application/pdf');
+                // header('Content-Disposition: inline; filename="file.pdf"');
+                // header('Content-Transfer-Encoding: binary');
+                // header('Content-Length: ' . filesize($file_to_save));
+                // header('Accept-Ranges: bytes');
                 // return $pdf->download($filename);
-              
-                echo'done';
-                // end
+                $data["email"] = $to;
+                $data["title"] = "Daily Prodcutivity Report";
+                $data["body"] = "Please find the attachment of the Today Productivity report";
+                try
+                {
+                    Mail::send('construction_project.mail',$data, function($message)use($data, $pdf) {
+                        $message->to($data["email"], $data["email"])
+                                ->subject($data["title"])
+                                ->attachData($pdf->output(),'Report.pdf');
 
-                // return view('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'));
+                    });
 
-                
+                }catch(\Exception $e)
+                {
+                    $error = $e->getMessage();
+                }
+                return redirect()->back()->with('success', __('Email send Successfully'));
+
+
+
 
             }else{
-                
+
             }
 
 
@@ -427,7 +445,7 @@ class ProjectReportController extends Controller
                         ->groupBy('users.id')
                         ->get();
                 }
-            
+
                 $user=array();
                 foreach ($data as $key => $value) {
                     $user[]=array('name'=>$value->name,'id'=>$value->id);
@@ -458,7 +476,7 @@ class ProjectReportController extends Controller
                     ->where('project_tasks.project_id',$request->get_id)
                     ->get();
                 }
-               
+
 
                 return response()->json($data);
 
