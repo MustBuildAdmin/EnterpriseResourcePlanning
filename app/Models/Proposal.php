@@ -36,9 +36,14 @@ class Proposal extends Model
         return $this->hasMany('App\Models\ProposalProduct', 'proposal_id', 'id');
     }
 
+    // public function customer()
+    // {
+    //     return $this->hasOne('App\Models\Customer', 'id', 'customer_id');
+    // }
+
     public function customer()
     {
-        return $this->hasOne('App\Models\Customer', 'id', 'customer_id');
+        return $this->hasOne('App\Models\User', 'id', 'customer_id');
     }
 
     public function getSubTotal()

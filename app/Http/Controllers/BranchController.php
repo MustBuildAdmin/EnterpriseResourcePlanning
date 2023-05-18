@@ -4,6 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Department;
+use App\Models\Designation;
+use App\Models\LeaveType;
+use App\Models\Document;
+use App\Models\PayslipType;
+use App\Models\AllowanceOption;
+use App\Models\LoanOption;
+use App\Models\DeductionOption;
+use App\Models\GoalType;
+use App\Models\TrainingType;
+use App\Models\AwardType;
+use App\Models\TerminationType;
+use App\Models\JobCategory;
+use App\Models\JobStage;
+use App\Models\PerformanceType;
+use App\Models\Competencies;
 use Illuminate\Http\Request;
 
 class BranchController extends Controller
@@ -173,5 +188,158 @@ class BranchController extends Controller
         }
 
         return response()->json($employees);
+    }
+
+    public function checkDuplicateRS_HRM(Request $request){
+        $form_name  = $request->form_name;
+        $check_name = $request->get_name;
+        $get_id     = $request->get_id;
+
+        if($form_name == "Branch"){
+            if($get_id == null){
+                $get_check_val = Branch::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = Branch::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "Department"){
+            if($get_id == null){
+                $get_check_val = Department::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = Department::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "Designation"){
+            if($get_id == null){
+                $get_check_val = Designation::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = Designation::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "LeaveType"){
+            if($get_id == null){
+                $get_check_val = LeaveType::where('title',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = LeaveType::where('title',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "Document"){
+            if($get_id == null){
+                $get_check_val = Document::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = Document::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "PayslipType"){
+            if($get_id == null){
+                $get_check_val = PayslipType::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = PayslipType::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "AllowanceOption"){
+            if($get_id == null){
+                $get_check_val = AllowanceOption::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = AllowanceOption::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "LoanOption"){
+            if($get_id == null){
+                $get_check_val = LoanOption::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = LoanOption::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "DeductionOption"){
+            if($get_id == null){
+                $get_check_val = DeductionOption::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = DeductionOption::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "GoalType"){
+            if($get_id == null){
+                $get_check_val = GoalType::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = GoalType::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "TrainingType"){
+            if($get_id == null){
+                $get_check_val = TrainingType::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = TrainingType::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "AwardType"){
+            if($get_id == null){
+                $get_check_val = AwardType::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = AwardType::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "TerminationType"){
+            if($get_id == null){
+                $get_check_val = TerminationType::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = TerminationType::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "JobCategory"){
+            if($get_id == null){
+                $get_check_val = JobCategory::where('title',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = JobCategory::where('title',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "JobStage"){
+            if($get_id == null){
+                $get_check_val = JobStage::where('title',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = JobStage::where('title',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "PerformanceType"){
+            if($get_id == null){
+                $get_check_val = PerformanceType::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = PerformanceType::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        elseif($form_name == "Competencies"){
+            if($get_id == null){
+                $get_check_val = Competencies::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = Competencies::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
+        else{
+            $get_check_val = "Not Empty";
+        }
+        
+        if($get_check_val == null){
+            return 1; //Success
+        }
+        else{
+            return 0; //Error
+        }
     }
 }

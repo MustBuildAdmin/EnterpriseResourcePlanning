@@ -19,14 +19,7 @@ class LeaveController extends Controller
         {
             $showedit=0;
             $leaves = Leave::where('created_by', '=', \Auth::user()->creatorId())->get();
-            if(\Auth::user()->type == 'employee')
-            {
-                $user     = \Auth::user();
-                $employee = Employee::where('user_id', '=', $user->id)->first();
-                $leaves   = Leave::where('employee_id', '=', $employee->id)->get();
-            }
-            else
-            {
+            if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company' && \Auth::user()->type != 'super admin'){
                 $leaves = Leave::where('created_by', '=', \Auth::user()->creatorId())->get();
                 if(count($leaves)<=0){
                     $login_user=\Auth::user()->id;
@@ -44,6 +37,20 @@ class LeaveController extends Controller
                     $showedit=1;
                 }
             }
+            else
+            {
+
+                $user     = \Auth::user();
+                $employee = Employee::where('user_id', '=', $user->id)->first();
+                if($employee != null){
+                    $leaves   = Leave::where('employee_id', '=', $employee->id)->get();
+                }
+                else{
+                    $leaves = array();
+                }
+                
+               
+            }
         
 
             return view('hrm.leave.leave', compact('leaves','showedit'));
@@ -60,8 +67,7 @@ class LeaveController extends Controller
       
         if(\Auth::user()->can('create leave'))
         {
-            if(Auth::user()->type == 'employee')
-            {
+            if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company' && \Auth::user()->type != 'super admin'){
                 $employees = Employee::where('user_id', '=', \Auth::user()->id)->get()->pluck('name', 'id');
             }
             else

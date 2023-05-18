@@ -1,4 +1,17 @@
 @include('new_layouts.header')
+
+<style>
+.ms-2 {
+    background: #fff  !important;
+}
+
+.ti.ti-caret-right.text-white {
+    color: #000 !important;
+    font-size: 18px;
+}
+
+</style>
+
 @include('hrm.hrm_main')
     <div class="row">
         <div class="col-md-6">
@@ -17,9 +30,7 @@
         <table class="table datatable">
             <thead>
                 <tr>
-                    @if(\Auth::user()->type!='employee')
-                        <th>{{__('Employee')}}</th>
-                    @endif
+              
                     <th>{{__('Leave Type')}}</th>
                     <th>{{__('Applied On')}}</th>
                     <th>{{__('Start Date')}}</th>
@@ -33,10 +44,6 @@
             <tbody class="font-style">
                 @foreach ($leaves as $leave)
                     <tr>
-                        @if(\Auth::user()->type!='employee')
-                        <?php $user_name=\App\Models\User::where(['id'=>$leave->employee_id])->first(); ?>
-                            <td><?php echo $user_name->name; ?></td>
-                        @endif
                         <td>{{ !empty(\Auth::user()->getLeaveType($leave->leave_type_id))?\Auth::user()->getLeaveType($leave->leave_type_id)->title:'' }}</td>
                         <td>{{ \Auth::user()->dateFormat($leave->applied_on )}}</td>
                         <td>{{ \Auth::user()->dateFormat($leave->start_date ) }}</td>

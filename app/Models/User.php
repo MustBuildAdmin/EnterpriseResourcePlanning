@@ -45,7 +45,24 @@ class User extends Authenticatable
         'phone',
         'zip',
         'address',
-        'reporting_to'
+        'reporting_to',
+        'customer_id',
+        'tax_number',
+        'billing_name',
+        'billing_country',
+        'billing_state',
+        'billing_city',
+        'billing_phone',
+        'billing_zip',
+        'billing_address',
+        'shipping_name',
+        'shipping_country',
+        'shipping_state',
+        'shipping_city',
+        'shipping_phone',
+        'shipping_zip',
+        'shipping_address',
+        'copy_status',
     ];
 
     protected $hidden = [

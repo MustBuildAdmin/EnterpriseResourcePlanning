@@ -79,7 +79,7 @@ class AwardTypeController extends Controller
             {
 
                 return view('hrm.system_setup.awardtype.awardtype_edit', compact('awardtype'));
-                return view('awardtype.edit', compact('awardtype'));
+                // return view('awardtype.edit', compact('awardtype'));
             }
             else
             {

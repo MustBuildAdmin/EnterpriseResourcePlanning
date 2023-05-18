@@ -1,384 +1,5 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
-
-    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
-    <script>
-        var selector = "body";
-        if ($(selector + " .repeater").length) {
-            var $dragAndDrop = $("body .repeater tbody").sortable({
-                handle: '.sort-handler'
-            });
-            var $repeater = $(selector + ' .repeater').repeater({
-                initEmpty: false,
-                defaultValues: {
-                    'status': 1
-                },
-                show: function () {
-                    $(this).slideDown();
-                    var file_uploads = $(this).find('input.multi');
-                    if (file_uploads.length) {
-                        $(this).find('input.multi').MultiFile({
-                            max: 3,
-                            accept: 'png|jpg|jpeg',
-                            max_size: 2048
-                        });
-                    }
-                    if($('.select2').length) {
-                        $('.select2').select2();
-                    }
-
-                },
-                hide: function (deleteElement) {
-                    if (confirm('Are you sure you want to delete this element?')) {
-                        $(this).slideUp(deleteElement);
-                        $(this).remove();
-
-                        var inputs = $(".amount");
-                        var subTotal = 0;
-                        for (var i = 0; i < inputs.length; i++) {
-                            subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
-                        }
-                        $('.subTotal').html(subTotal.toFixed(2));
-                        $('.totalAmount').html(subTotal.toFixed(2));
-                    }
-                },
-                ready: function (setIndexes) {
-                    $dragAndDrop.on('drop', setIndexes);
-                },
-                isFirstItemUndeletable: true
-            });
-            var value = $(selector + " .repeater").attr('data-value');
-            if (typeof value != 'undefined' && value.length != 0) {
-                value = JSON.parse(value);
-                $repeater.setList(value);
-            }
-
-        }
-
-        $(document).on('change', '#customer', function () {
-            $('#customer_detail').removeClass('d-none');
-            $('#customer_detail').addClass('d-block');
-            $('#customer-box').removeClass('d-block');
-            $('#customer-box').addClass('d-none');
-            var id = $(this).val();
-            var url = $(this).data('url');
-
-            // loader
-                let timerInterval
-                Swal.fire({
-                title: 'Fetching Details!',
-                html: "Loading ....<b></b>.",
-                timer: 6000,
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading()
-                    const b = Swal.getHtmlContainer().querySelector('b')
-                    timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                    }, 100)
-                },
-                willClose: () => {
-                    clearInterval(timerInterval)
-                }
-                }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    console.log('I was closed by the timer')
-                }
-                })
-
-            //
-            $.ajax({
-                url: url,
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('#token').val()
-                },
-                data: {
-                    'id': id
-                },
-                cache: false,
-                success: function (data) {
-                    if (data != '') {
-                        $('#customer_detail').html(data);
-                        $('#productparts').show();
-                        $('#user_id').val(id);
-                       
-                    } else {
-                        $('#productparts').hide();
-                        $('#customer-box').removeClass('d-none');
-                        $('#customer-box').addClass('d-block');
-                        $('#customer_detail').removeClass('d-block');
-                        $('#customer_detail').addClass('d-none');
-                    }
-
-                },
-
-            });
-        });
-
-        $(document).on('click', '#remove', function () {
-            $('#customer-box').removeClass('d-none');
-            $('#productparts').hide();
-            $('#customer').val('')
-            $('#customer-box').addClass('d-block');
-            $('#customer_detail').removeClass('d-block');
-            $('#customer_detail').addClass('d-none');
-        })
-
-        $(document).on('change', '.item', function () {
-
-            var iteams_id = $(this).val();
-            var url = $(this).data('url');
-            var user_id= $('#user_id').val();
-            var el = $(this);
-            $.ajax({
-                url: url,
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('#token').val()
-                },
-                data: {
-                    'product_id': iteams_id,
-                    'user_id':user_id
-                },
-                cache: false,
-                success: function (data) {
-                    var item = JSON.parse(data);
-                    console.log(item)
-                    $(el.parent().parent().find('.quantity')).val(1);
-                    $(el.parent().parent().find('.price')).val(item.product.sale_price);
-                    $('.pro_description').text(item.product.description);
-
-                    var taxes = '';
-                    var tax = [];
-
-                    var totalItemTaxRate = 0;
-
-                    if (item.taxes == 0) {
-                        taxes += '-';
-                    } else {
-                        for (var i = 0; i < item.taxes.length; i++) {
-                            taxes += '<span class="badge bg-primary mt-1 mr-2">' + item.taxes[i].name + ' ' + '(' + item.taxes[i].rate + '%)' + '</span>';
-                            tax.push(item.taxes[i].id);
-                            totalItemTaxRate += parseFloat(item.taxes[i].rate);
-                        }
-                    }
-                    var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (item.product.sale_price * 1));
-                    $(el.parent().parent().find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
-                    $(el.parent().parent().find('.itemTaxRate')).val(totalItemTaxRate.toFixed(2));
-                    $(el.parent().parent().find('.taxes')).html(taxes);
-                    $(el.parent().parent().find('.tax')).val(tax);
-                    $(el.parent().parent().find('.unit')).html(item.unit);
-                    $(el.parent().parent().find('.discount')).val(0);
-                    $(el.parent().parent().find('.amount')).html(item.totalAmount);
-
-
-                    var inputs = $(".amount");
-                    var subTotal = 0;
-                    for (var i = 0; i < inputs.length; i++) {
-                        subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
-                    }
-                    $('.subTotal').html(subTotal.toFixed(2));
-
-
-                    var totalItemPrice = 0;
-                    var priceInput = $('.price');
-                    for (var j = 0; j < priceInput.length; j++) {
-                        totalItemPrice += parseFloat(priceInput[j].value);
-                    }
-
-                    var totalItemTaxPrice = 0;
-                    var itemTaxPriceInput = $('.itemTaxPrice');
-                    for (var j = 0; j < itemTaxPriceInput.length; j++) {
-                        totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
-                    }
-                    // gst calculation-------
-                    $('#indiangst').val(item.setting.indiangst);
-                    $('#stategst').val(item.taxestype);
-                    if(item.taxestype==1){
-                        $('.samestate').show();
-                        if(item.utgst==1){
-                            $('.union').text('UTGST');
-                        }
-                        $('.otherstate').hide();
-                    }else{
-                        $('.samestate').hide();
-                        $('.otherstate').show();
-                    }
-                    //------
-                    var indiangst=item.setting.indiangst;
-                    var stategst=item.taxestype;
-                    if(indiangst==1){
-                        if(stategst==1){
-                            let amount=totalItemTaxPrice.toFixed(2)/2;
-                            $('.statetax').html(amount);
-                        }else{
-                            $('.centraltax').html(totalItemTaxPrice.toFixed(2));
-                        }
-                    }else{
-                        $('.totalTax').html(totalItemTaxPrice.toFixed(2));
-                    }
-                    $('.totalAmount').html((parseFloat(subTotal) + parseFloat(totalItemTaxPrice)).toFixed(2));
-
-                },
-            });
-        });
-
-        $(document).on('keyup', '.quantity', function () {
-            var quntityTotalTaxPrice = 0;
-
-            var el = $(this).parent().parent().parent().parent();
-            var quantity = $(this).val();
-            var price = $(el.find('.price')).val();
-            var discount = $(el.find('.discount')).val();
-
-            var totalItemPrice = (quantity * price);
-            var amount = (totalItemPrice);
-            $(el.find('.amount')).html(amount);
-
-            var totalItemTaxRate = $(el.find('.itemTaxRate')).val();
-            var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (totalItemPrice));
-            $(el.find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
-
-
-            var totalItemTaxPrice = 0;
-            var itemTaxPriceInput = $('.itemTaxPrice');
-            for (var j = 0; j < itemTaxPriceInput.length; j++) {
-                totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
-            }
-
-
-            var inputs = $(".amount");
-            var subTotal = 0;
-            for (var i = 0; i < inputs.length; i++) {
-                subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
-            }
-            $('.subTotal').html(subTotal.toFixed(2));
-            var indiangst=$('#indiangst').val();
-            var stategst=$('#stategst').val();
-            if(indiangst==1){
-                if(stategst==1){
-                    let amount=totalItemTaxPrice.toFixed(2)/2;
-                    $('.statetax').html(amount);
-                }else{
-                    $('.centraltax').html(totalItemTaxPrice.toFixed(2));
-                }
-            }else{
-                $('.totalTax').html(totalItemTaxPrice.toFixed(2));
-            }
-        
-            $('.totalAmount').html((parseFloat(subTotal) + parseFloat(totalItemTaxPrice)).toFixed(2));
-
-        })
-        $(document).on('keyup', '.price', function () {
-            var el = $(this).parent().parent().parent().parent();
-            var price = $(this).val();
-            var quantity = $(el.find('.quantity')).val();
-            var discount = $(el.find('.discount')).val();
-            var totalItemPrice = (quantity * price);
-
-            var amount = (totalItemPrice);
-            $(el.find('.amount')).html(amount);
-
-
-            var totalItemTaxRate = $(el.find('.itemTaxRate')).val();
-            var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (totalItemPrice));
-            $(el.find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
-
-
-            var totalItemTaxPrice = 0;
-            var itemTaxPriceInput = $('.itemTaxPrice');
-            for (var j = 0; j < itemTaxPriceInput.length; j++) {
-                totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
-            }
-
-
-            var inputs = $(".amount");
-            var subTotal = 0;
-            for (var i = 0; i < inputs.length; i++) {
-                subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
-            }
-            if(indiangst==1){
-                if(stategst==1){
-                    let amount=totalItemTaxPrice.toFixed(2)/2;
-                    $('.statetax').html(amount);
-                }else{
-                    $('.centraltax').html(totalItemTaxPrice.toFixed(2));
-                }
-            }else{
-                $('.totalTax').html(totalItemTaxPrice.toFixed(2));
-            }
-          
-
-            $('.subTotal').html(subTotal.toFixed(2));
-            $('.totalAmount').html((parseFloat(subTotal) + parseFloat(totalItemTaxPrice)).toFixed(2));
-
-        })
-
-        $(document).on('keyup', '.discount', function () {
-            var el = $(this).parent().parent().parent().parent();
-            var discount = $(this).val();
-            var price = $(el.find('.price')).val();
-
-            var quantity = $(el.find('.quantity')).val();
-            var totalItemPrice = (quantity * price);
-
-            var totalItemTaxRate = $(el.find('.itemTaxRate')).val();
-            var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (totalItemPrice));
-            $(el.find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
-
-
-            var totalItemTaxPrice = 0;
-            var itemTaxPriceInput = $('.itemTaxPrice');
-            for (var j = 0; j < itemTaxPriceInput.length; j++) {
-                totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
-            }
-
-
-            var totalItemDiscountPrice = 0;
-            var itemDiscountPriceInput = $('.discount');
-
-            for (var k = 0; k < itemDiscountPriceInput.length; k++) {
-
-                totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
-            }
-
-            var amount = (totalItemPrice);
-            $(el.find('.amount')).html(amount);
-
-            var inputs = $(".amount");
-            var subTotal = 0;
-            for (var i = 0; i < inputs.length; i++) {
-                subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
-            }
-            $('.subTotal').html(subTotal.toFixed(2));
-            $('.totalDiscount').html(totalItemDiscountPrice.toFixed(2));
-            if(indiangst==1){
-                if(stategst==1){
-                    let amount=totalItemTaxPrice.toFixed(2)/2;
-                    $('.statetax').html(amount);
-                }else{
-                    $('.centraltax').html(totalItemTaxPrice.toFixed(2));
-                }
-            }else{
-                $('.totalTax').html(totalItemTaxPrice.toFixed(2));
-            }
-        
-
-            $('.totalAmount').html((parseFloat(subTotal) - parseFloat(totalItemDiscountPrice) + parseFloat(totalItemTaxPrice)).toFixed(2));
-        })
-
-        var customerId = '{{$customerId}}';
-        if (customerId > 0) {
-            $('#customer').val(customerId).change();
-        
-        }
-    </script>
-
-
     <div class="row">
         {{ Form::open(array('url' => 'invoice','class'=>'w-100')) }}
         <div class="col-12">
@@ -388,7 +9,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group" id="customer-box">
-                                {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                                {{ Form::label('customer_id', __('Client'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
                                 {{ Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>route('invoice.customer'),'required'=>'required')) }}
 
                             </div>
@@ -634,5 +255,382 @@
 
     </div>
 
-
+    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('js/jquery.repeater.min.js')}}"></script>
+    <script src="{{ asset('assets/js/plugins/sweetalert2.all.min.js') }}"></script>
+    <script>
+            var selector = "body";
+            if ($(selector + " .repeater").length) {
+                var $dragAndDrop = $("body .repeater tbody").sortable({
+                    handle: '.sort-handler'
+                });
+                var $repeater = $(selector + ' .repeater').repeater({
+                    initEmpty: false,
+                    defaultValues: {
+                        'status': 1
+                    },
+                    show: function () {
+                        $(this).slideDown();
+                        var file_uploads = $(this).find('input.multi');
+                        if (file_uploads.length) {
+                            $(this).find('input.multi').MultiFile({
+                                max: 3,
+                                accept: 'png|jpg|jpeg',
+                                max_size: 2048
+                            });
+                        }
+                        if($('.select2').length) {
+                            $('.select2').select2();
+                        }
+    
+                    },
+                    hide: function (deleteElement) {
+                        if (confirm('Are you sure you want to delete this element?')) {
+                            $(this).slideUp(deleteElement);
+                            $(this).remove();
+    
+                            var inputs = $(".amount");
+                            var subTotal = 0;
+                            for (var i = 0; i < inputs.length; i++) {
+                                subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                            }
+                            $('.subTotal').html(subTotal.toFixed(2));
+                            $('.totalAmount').html(subTotal.toFixed(2));
+                        }
+                    },
+                    ready: function (setIndexes) {
+                        $dragAndDrop.on('drop', setIndexes);
+                    },
+                    isFirstItemUndeletable: true
+                });
+                var value = $(selector + " .repeater").attr('data-value');
+                if (typeof value != 'undefined' && value.length != 0) {
+                    value = JSON.parse(value);
+                    $repeater.setList(value);
+                }
+    
+            }
+    
+            $(document).on('change', '#customer', function () {
+                $('#customer_detail').removeClass('d-none');
+                $('#customer_detail').addClass('d-block');
+                $('#customer-box').removeClass('d-block');
+                $('#customer-box').addClass('d-none');
+                var id = $(this).val();
+                var url = $(this).data('url');
+    
+                // loader
+                    let timerInterval
+                    Swal.fire({
+                    title: 'Fetching Details!',
+                    html: "Loading ....<b></b>.",
+                    timer: 6000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                        const b = Swal.getHtmlContainer().querySelector('b')
+                        timerInterval = setInterval(() => {
+                        b.textContent = Swal.getTimerLeft()
+                        }, 100)
+                    },
+                    willClose: () => {
+                        clearInterval(timerInterval)
+                    }
+                    }).then((result) => {
+                    /* Read more about handling dismissals below */
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        console.log('I was closed by the timer')
+                    }
+                    })
+    
+                //
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': jQuery('#token').val()
+                    },
+                    data: {
+                        'id': id
+                    },
+                    cache: false,
+                    success: function (data) {
+                        if (data != '') {
+                            $('#customer_detail').html(data);
+                            $('#productparts').show();
+                            $('#user_id').val(id);
+                           
+                        } else {
+                            $('#productparts').hide();
+                            $('#customer-box').removeClass('d-none');
+                            $('#customer-box').addClass('d-block');
+                            $('#customer_detail').removeClass('d-block');
+                            $('#customer_detail').addClass('d-none');
+                        }
+    
+                    },
+    
+                });
+            });
+    
+            $(document).on('click', '#remove', function () {
+                $('#customer-box').removeClass('d-none');
+                $('#productparts').hide();
+                $('#customer').val('')
+                $('#customer-box').addClass('d-block');
+                $('#customer_detail').removeClass('d-block');
+                $('#customer_detail').addClass('d-none');
+            })
+    
+            $(document).on('change', '.item', function () {
+    
+                var iteams_id = $(this).val();
+                var url = $(this).data('url');
+                var user_id= $('#user_id').val();
+                var el = $(this);
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': jQuery('#token').val()
+                    },
+                    data: {
+                        'product_id': iteams_id,
+                        'user_id':user_id
+                    },
+                    cache: false,
+                    success: function (data) {
+                        var item = JSON.parse(data);
+                        console.log(item)
+                        $(el.parent().parent().find('.quantity')).val(1);
+                        $(el.parent().parent().find('.price')).val(item.product.sale_price);
+                        $('.pro_description').text(item.product.description);
+    
+                        var taxes = '';
+                        var tax = [];
+    
+                        var totalItemTaxRate = 0;
+    
+                        if (item.taxes == 0) {
+                            taxes += '-';
+                        } else {
+                            for (var i = 0; i < item.taxes.length; i++) {
+                                taxes += '<span class="badge bg-primary mt-1 mr-2">' + item.taxes[i].name + ' ' + '(' + item.taxes[i].rate + '%)' + '</span>';
+                                tax.push(item.taxes[i].id);
+                                totalItemTaxRate += parseFloat(item.taxes[i].rate);
+                            }
+                        }
+                        var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (item.product.sale_price * 1));
+                        $(el.parent().parent().find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
+                        $(el.parent().parent().find('.itemTaxRate')).val(totalItemTaxRate.toFixed(2));
+                        $(el.parent().parent().find('.taxes')).html(taxes);
+                        $(el.parent().parent().find('.tax')).val(tax);
+                        $(el.parent().parent().find('.unit')).html(item.unit);
+                        $(el.parent().parent().find('.discount')).val(0);
+                        $(el.parent().parent().find('.amount')).html(item.totalAmount);
+    
+    
+                        var inputs = $(".amount");
+                        var subTotal = 0;
+                        for (var i = 0; i < inputs.length; i++) {
+                            subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                        }
+                        $('.subTotal').html(subTotal.toFixed(2));
+    
+    
+                        var totalItemPrice = 0;
+                        var priceInput = $('.price');
+                        for (var j = 0; j < priceInput.length; j++) {
+                            totalItemPrice += parseFloat(priceInput[j].value);
+                        }
+    
+                        var totalItemTaxPrice = 0;
+                        var itemTaxPriceInput = $('.itemTaxPrice');
+                        for (var j = 0; j < itemTaxPriceInput.length; j++) {
+                            totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
+                        }
+                        // gst calculation-------
+                        $('#indiangst').val(item.setting.indiangst);
+                        $('#stategst').val(item.taxestype);
+                        if(item.taxestype==1){
+                            $('.samestate').show();
+                            if(item.utgst==1){
+                                $('.union').text('UTGST');
+                            }
+                            $('.otherstate').hide();
+                        }else{
+                            $('.samestate').hide();
+                            $('.otherstate').show();
+                        }
+                        //------
+                        var indiangst=item.setting.indiangst;
+                        var stategst=item.taxestype;
+                        if(indiangst==1){
+                            if(stategst==1){
+                                let amount=totalItemTaxPrice.toFixed(2)/2;
+                                $('.statetax').html(amount);
+                            }else{
+                                $('.centraltax').html(totalItemTaxPrice.toFixed(2));
+                            }
+                        }else{
+                            $('.totalTax').html(totalItemTaxPrice.toFixed(2));
+                        }
+                        $('.totalAmount').html((parseFloat(subTotal) + parseFloat(totalItemTaxPrice)).toFixed(2));
+    
+                    },
+                });
+            });
+    
+            $(document).on('keyup', '.quantity', function () {
+                var quntityTotalTaxPrice = 0;
+    
+                var el = $(this).parent().parent().parent().parent();
+                var quantity = $(this).val();
+                var price = $(el.find('.price')).val();
+                var discount = $(el.find('.discount')).val();
+    
+                var totalItemPrice = (quantity * price);
+                var amount = (totalItemPrice);
+                $(el.find('.amount')).html(amount);
+    
+                var totalItemTaxRate = $(el.find('.itemTaxRate')).val();
+                var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (totalItemPrice));
+                $(el.find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
+    
+    
+                var totalItemTaxPrice = 0;
+                var itemTaxPriceInput = $('.itemTaxPrice');
+                for (var j = 0; j < itemTaxPriceInput.length; j++) {
+                    totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
+                }
+    
+    
+                var inputs = $(".amount");
+                var subTotal = 0;
+                for (var i = 0; i < inputs.length; i++) {
+                    subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                }
+                $('.subTotal').html(subTotal.toFixed(2));
+                var indiangst=$('#indiangst').val();
+                var stategst=$('#stategst').val();
+                if(indiangst==1){
+                    if(stategst==1){
+                        let amount=totalItemTaxPrice.toFixed(2)/2;
+                        $('.statetax').html(amount);
+                    }else{
+                        $('.centraltax').html(totalItemTaxPrice.toFixed(2));
+                    }
+                }else{
+                    $('.totalTax').html(totalItemTaxPrice.toFixed(2));
+                }
+            
+                $('.totalAmount').html((parseFloat(subTotal) + parseFloat(totalItemTaxPrice)).toFixed(2));
+    
+            })
+            $(document).on('keyup', '.price', function () {
+                var el = $(this).parent().parent().parent().parent();
+                var price = $(this).val();
+                var quantity = $(el.find('.quantity')).val();
+                var discount = $(el.find('.discount')).val();
+                var totalItemPrice = (quantity * price);
+    
+                var amount = (totalItemPrice);
+                $(el.find('.amount')).html(amount);
+    
+    
+                var totalItemTaxRate = $(el.find('.itemTaxRate')).val();
+                var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (totalItemPrice));
+                $(el.find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
+    
+    
+                var totalItemTaxPrice = 0;
+                var itemTaxPriceInput = $('.itemTaxPrice');
+                for (var j = 0; j < itemTaxPriceInput.length; j++) {
+                    totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
+                }
+    
+    
+                var inputs = $(".amount");
+                var subTotal = 0;
+                for (var i = 0; i < inputs.length; i++) {
+                    subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                }
+                if(indiangst==1){
+                    if(stategst==1){
+                        let amount=totalItemTaxPrice.toFixed(2)/2;
+                        $('.statetax').html(amount);
+                    }else{
+                        $('.centraltax').html(totalItemTaxPrice.toFixed(2));
+                    }
+                }else{
+                    $('.totalTax').html(totalItemTaxPrice.toFixed(2));
+                }
+              
+    
+                $('.subTotal').html(subTotal.toFixed(2));
+                $('.totalAmount').html((parseFloat(subTotal) + parseFloat(totalItemTaxPrice)).toFixed(2));
+    
+            })
+    
+            $(document).on('keyup', '.discount', function () {
+                var el = $(this).parent().parent().parent().parent();
+                var discount = $(this).val();
+                var price = $(el.find('.price')).val();
+    
+                var quantity = $(el.find('.quantity')).val();
+                var totalItemPrice = (quantity * price);
+    
+                var totalItemTaxRate = $(el.find('.itemTaxRate')).val();
+                var itemTaxPrice = parseFloat((totalItemTaxRate / 100) * (totalItemPrice));
+                $(el.find('.itemTaxPrice')).val(itemTaxPrice.toFixed(2));
+    
+    
+                var totalItemTaxPrice = 0;
+                var itemTaxPriceInput = $('.itemTaxPrice');
+                for (var j = 0; j < itemTaxPriceInput.length; j++) {
+                    totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
+                }
+    
+    
+                var totalItemDiscountPrice = 0;
+                var itemDiscountPriceInput = $('.discount');
+    
+                for (var k = 0; k < itemDiscountPriceInput.length; k++) {
+    
+                    totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                }
+    
+                var amount = (totalItemPrice);
+                $(el.find('.amount')).html(amount);
+    
+                var inputs = $(".amount");
+                var subTotal = 0;
+                for (var i = 0; i < inputs.length; i++) {
+                    subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                }
+                $('.subTotal').html(subTotal.toFixed(2));
+                $('.totalDiscount').html(totalItemDiscountPrice.toFixed(2));
+                if(indiangst==1){
+                    if(stategst==1){
+                        let amount=totalItemTaxPrice.toFixed(2)/2;
+                        $('.statetax').html(amount);
+                    }else{
+                        $('.centraltax').html(totalItemTaxPrice.toFixed(2));
+                    }
+                }else{
+                    $('.totalTax').html(totalItemTaxPrice.toFixed(2));
+                }
+            
+    
+                $('.totalAmount').html((parseFloat(subTotal) - parseFloat(totalItemDiscountPrice) + parseFloat(totalItemTaxPrice)).toFixed(2));
+            })
+    
+            var customerId = '{{$customerId}}';
+            if (customerId > 0) {
+                $('#customer').val(customerId).change();
+            
+            }
+    </script>
+    
+    
 

@@ -112,13 +112,12 @@
 						@endif
 
 						@if(\Auth::user()->show_account() == 1)
-						@if( Gate::check('manage customer') || Gate::check('manage vender') || Gate::check('manage customer') || Gate::check('manage vender') ||
-							 Gate::check('manage proposal') ||  Gate::check('manage bank account') ||  Gate::check('manage bank transfer') ||  Gate::check('manage invoice')
+						@if(Gate::check('manage proposal') ||  Gate::check('manage bank account') ||  Gate::check('manage bank transfer') ||  Gate::check('manage invoice')
 							 ||  Gate::check('manage revenue') ||  Gate::check('manage credit note') ||  Gate::check('manage bill')  ||  Gate::check('manage payment') ||
 							  Gate::check('manage debit note') || Gate::check('manage chart of account') ||  Gate::check('manage journal entry') ||   Gate::check('balance sheet report')
 							  || Gate::check('ledger report') ||  Gate::check('trial balance report')  )
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{ route('customer.index') }}">
+							<a class="card card-link" href="{{ route('proposal.index') }}">
 								<div class="card-body">
 									<div class="row">
 										<div class="col-auto">

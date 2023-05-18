@@ -250,7 +250,7 @@ class ProjectReportController extends Controller
             return $data;
         }
         public function send_report_con(Request $request){
-            
+
             if(\Auth::user()->type == 'company' || \Auth::user()->type =='super admin' )
             {
                 $project=Project::where('id',Session::get('project_id'))->first();
@@ -285,7 +285,7 @@ class ProjectReportController extends Controller
                     }else{
                         $actual_end='Task Not Finish';
                     }
-                   
+
                     if($actual_end < $planned_end){
                         $actual_end='Task Not Finish';
                     }
@@ -319,7 +319,7 @@ class ProjectReportController extends Controller
                         $remaing_percenatge=round(100-$current_percentage);
 
                     //####################################___END____#######################################
-                    
+
                     // // actual duration finding
                     //     $date1=date_create($actual_start);
                     //     $date2=date_create($actual_end);
@@ -364,7 +364,7 @@ class ProjectReportController extends Controller
                         'description'=>$value->description,
                         'user'=>$user_name,
                         'email'=>$user_email,
-                      
+
                     );
                 }
                 $to=DB::table('users')->where('id',$project->report_to)->pluck('email')->first();
@@ -384,7 +384,7 @@ class ProjectReportController extends Controller
                 // }
                 // $file_to_save =$pathname;
                 //save the pdf file on the server
-                // file_put_contents($file_to_save, $pdf->output()); 
+                // file_put_contents($file_to_save, $pdf->output());
                 //print the pdf file to the screen for saving
                 // header('Content-type: application/pdf');
                 // header('Content-Disposition: inline; filename="file.pdf"');
@@ -394,14 +394,14 @@ class ProjectReportController extends Controller
                 // return $pdf->download($filename);
                 $data["email"] = $to;
                 $data["title"] = "Daily Prodcutivity Report";
-                $data["body"] = "Please find the attachment of the Today Productivity report";        
+                $data["body"] = "Please find the attachment of the Today Productivity report";
                 try
                 {
                     Mail::send('construction_project.mail',$data, function($message)use($data, $pdf) {
                         $message->to($data["email"], $data["email"])
                                 ->subject($data["title"])
                                 ->attachData($pdf->output(),'Report.pdf');
-                        
+
                     });
 
                 }catch(\Exception $e)
@@ -409,12 +409,12 @@ class ProjectReportController extends Controller
                     $error = $e->getMessage();
                 }
                 return redirect()->back()->with('success', __('Email send Successfully'));
-            
 
-                
+
+
 
             }else{
-                
+
             }
 
 
@@ -445,7 +445,7 @@ class ProjectReportController extends Controller
                         ->groupBy('users.id')
                         ->get();
                 }
-            
+
                 $user=array();
                 foreach ($data as $key => $value) {
                     $user[]=array('name'=>$value->name,'id'=>$value->id);
@@ -476,7 +476,7 @@ class ProjectReportController extends Controller
                     ->where('project_tasks.project_id',$request->get_id)
                     ->get();
                 }
-               
+
 
                 return response()->json($data);
 

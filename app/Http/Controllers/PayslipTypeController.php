@@ -52,6 +52,7 @@ class PayslipTypeController extends Controller
 
                 return redirect()->back()->with('error', $messages->first());
             }
+
             $paysliptype             = new PayslipType();
             $paysliptype->name       = $request->name;
             $paysliptype->created_by = \Auth::user()->creatorId();
@@ -78,7 +79,7 @@ class PayslipTypeController extends Controller
             {
 
                 return view('hrm.system_setup.pay_slip.pay_slip_edit', compact('paysliptype'));
-                return view('paysliptype.edit', compact('paysliptype'));
+                // return view('paysliptype.edit', compact('paysliptype'));
             }
             else
             {

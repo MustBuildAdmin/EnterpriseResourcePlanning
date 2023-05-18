@@ -51,7 +51,7 @@
 
 
     .pagination .active a {
-        color: #242121;
+        color: #242121 !important;
         cursor: default;
     }
 
@@ -142,6 +142,7 @@
         text-align: right;
         padding-top: 0.25em;
     }
+
 </style>
 
 <div class="wrapper">

@@ -130,8 +130,8 @@ class DashboardController extends Controller
                 $data['weeklyBill']        = \Auth::user()->weeklyBill();
                 $data['monthlyBill']       = \Auth::user()->monthlyBill();
                 $data['goals']             = Goal::where('created_by', '=', \Auth::user()->creatorId())->where('is_display', 1)->get();
-
-                    return view('dashboard.account-dashboard', $data);
+                    return view('new_layouts.home', $data);
+                    // return view('dashboard.account-dashboard', $data);
                 }
                 else
                 {

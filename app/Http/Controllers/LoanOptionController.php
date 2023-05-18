@@ -51,6 +51,7 @@ class LoanOptionController extends Controller
 
                 return redirect()->back()->with('error', $messages->first());
             }
+
             $loanoption             = new LoanOption();
             $loanoption->name       = $request->name;
             $loanoption->created_by = \Auth::user()->creatorId();

@@ -276,9 +276,17 @@ ul.collapse li{
 .employee table.dataTable td, table.dataTable th {
   -webkit-box-sizing: content-box;
   box-sizing: border-box;
-  word-break: break-word;
-  text-transform: lowercase;
+  /* word-break: break-word; */
+  text-transform: capitalize;
 }
+
+
+.employee  .dataTables_wrapper {
+  margin: 1% 2%;
+  width: 1180px;
+  overflow: scroll;
+}
+
 
 .down {
   margin: 0 0 5% 0;
@@ -288,4 +296,3 @@ ul.collapse li{
   font-size: 16px;
   color: #000000 !important;
 }
-
