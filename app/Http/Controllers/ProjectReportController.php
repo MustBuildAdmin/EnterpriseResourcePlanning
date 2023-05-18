@@ -407,6 +407,8 @@ class ProjectReportController extends Controller
                 }catch(\Exception $e)
                 {
                     $error = $e->getMessage();
+                    dd($error);
+
                 }
                 return redirect()->back()->with('success', __('Email send Successfully'));
 
