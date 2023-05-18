@@ -61,7 +61,8 @@ class User extends Authenticatable
         'shipping_city',
         'shipping_phone',
         'shipping_zip',
-        'shipping_address'
+        'shipping_address',
+        'copy_status',
     ];
 
     protected $hidden = [

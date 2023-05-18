@@ -128,6 +128,13 @@ class ClientController extends Controller
                     // dd($total_client);
                     $plan           = Plan::find($creator->plan);
                     $user_value=$this->customerNumber();
+
+                    if($request->copy_status!=null){
+                        $copy_status=$request->copy_status;
+                    }else{
+                        $copy_status=0;
+                    }
+
                     if($total_client < $plan->max_clients || $plan->max_clients == -1)
                     {
                         $role = Role::findByName('client');
@@ -161,7 +168,8 @@ class ClientController extends Controller
                                 'shipping_city'=>$request->shipping_city,
                                 'shipping_phone'=>$request->shipping_phone,
                                 'shipping_zip'=>$request->shipping_zip,
-                                'shipping_address'=>$request->shipping_address
+                                'shipping_address'=>$request->shipping_address,
+                                'copy_status'=>$copy_status
                             ]
                         );
 
@@ -315,6 +323,14 @@ class ClientController extends Controller
 
                     return redirect()->back()->with('error', $messages->first());
                 }
+
+                
+                if($request->copy_status!=null){
+                    $copy_status=$request->copy_status;
+                }else{
+                    $copy_status=0;
+                }
+
                 $post['email'] = $request->email;
                 $post['country']=$request->country;
                 $post['state']=$request->state;
@@ -337,6 +353,7 @@ class ClientController extends Controller
                 $post['shipping_phone']=$request->shipping_phone;
                 $post['shipping_zip']=$request->shipping_zip;
                 $post['shipping_address']=$request->shipping_address;
+                $post['copy_status']=$copy_status;
                
                 $client->update($post);
 
