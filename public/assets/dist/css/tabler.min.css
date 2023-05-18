@@ -28465,8 +28465,8 @@ input.colorinput-input {
 }
 
 a#pills-proposal-tab {
-    background: #206bc4;
-    color: #fff;
+    /* background: #206bc4;
+    color: #fff; */
 }
 
 .bg-primary invoice_logo_update {
@@ -28514,9 +28514,9 @@ a#pills-proposal-tab {
     color: #fff !important;
 }
 a#pills-proposal-tab {
-    background: #206bc4;
+    /* background: #206bc4;
     color: #fff;
-    margin: 0 4px 0 0;
+    margin: 0 4px 0 0; */
 }
 
 .bill_logo_update {
