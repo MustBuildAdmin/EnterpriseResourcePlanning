@@ -1433,6 +1433,49 @@ class Utility extends Model
 
 
     }
+
+    public static function sendEmailwithattahcments($to,$filename)
+    {
+        $data["email"] = $to;
+        $data["title"] = "Daily Prodcutivity Report";
+        $data["body"] = "Please find the attachment of the Today Productivity report";
+
+        $files = [
+            public_path($pathname),
+        ];
+
+        try
+        {
+            Mail::send($data, function($message)use($data, $files) {
+                $message->to($data["email"], $data["email"])
+                        ->subject($data["title"]);
+    
+                foreach ($files as $file){
+                    $message->attach($file);
+                }
+                
+            });
+
+        }
+
+        catch(\Exception $e)
+        {
+            $error = $e->getMessage();
+        }
+        if(isset($error))
+        {
+            $arReturn = [
+                'is_success' => false,
+                'error' => $error,
+            ];
+        }else{
+            $arReturn = [
+                'is_success' => true,
+                'error' => false,
+            ];
+        }
+        return $arReturn;
+    }
     public static function sendEmailTemplateHTML($emailTemplate, $mailTo, $obj)
     {
         $usr = Auth::user();

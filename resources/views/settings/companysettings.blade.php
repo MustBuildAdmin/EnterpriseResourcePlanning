@@ -324,7 +324,7 @@
                                             @endforeach
                                             @endif
                                         </select>
-                                        <label id="site_currency-error" class="error" for="site_currency">Please choose Site Currency</label>
+                                        <label id="site_currency-error" class="error" for="site_currency">This field is required.</label>
                                         <!-- {{ Form::text('site_currency', $settings['site_currency'], ['class' => 'form-control font-style', 'required', 'placeholder' => __('Enter Currency')]) }} -->
                                         <!-- <small> {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
                                             <a href="https://stripe.com/docs/currencies"
@@ -814,17 +814,7 @@ $('#company_form').validate({
             required:true
         }
     },
-    messages: {
-        company_name: {
-            required: "Please enter Company Name",
-
-        },
-        company_country: {
-            required: "Please choose company country",
-
-        }
-
-    },
+   
     submitHandler: function(form) {
         form.submit();
     }
