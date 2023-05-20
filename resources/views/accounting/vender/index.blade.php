@@ -3,9 +3,40 @@
 @php
 $profile = asset(Storage::url('uploads/avatar/'));
 @endphp
+
+
+
+
 <div class="row">
+
+
+
+
+<div class="row">
+  <div class="col-md-6">
+      <h2>{{__('Manage Vendor')}}</h2>
+  </div>
+  <div class="col-md-6 float-end floatrght">
+      
+        <a class="floatrght btn btn-sm btn-primary gapbtn" href="#"  data-url="{{ route('vender.file.import') }}" data-ajax-popup="true" data-bs-toggle="tooltip"
+           title="{{ __('Import') }}">
+            <i class="ti ti-file-import"></i>
+        </a>
+
+        <a class="floatrght btn btn-sm btn-primary gapbtn" href="{{ route('vender.export') }}"  data-bs-toggle="tooltip" title="{{ __('Export') }}">
+            <i class="ti ti-file-export"></i>
+        </a>
+        @can('create vender')
+            <a class="floatrght btn btn-sm btn-primary gapbtn" href="#" data-size="lg" data-url="{{ route('vender.create') }}" data-ajax-popup="true" data-title="{{__('Create New Vendor')}}" data-bs-toggle="tooltip" title="{{ __('Create') }}">
+                <i class="ti ti-plus"></i>
+            </a>
+        @endcan
+  </div>
+</div>
+
+
     <div class="col-md-6">
-       <h2>{{ __('Manage Vendors') }}</h2>
+       
     </div>
 
     <script>
@@ -20,30 +51,13 @@ $profile = asset(Storage::url('uploads/avatar/'));
         })
     </script>
 
-    <div class="float-end">
-        <a href="#" class="btn btn-sm btn-primary" data-url="{{ route('vender.file.import') }}" data-ajax-popup="true" data-bs-toggle="tooltip"
-           title="{{ __('Import') }}">
-            <i class="ti ti-file-import"></i>
-        </a>
-
-        <a href="{{ route('vender.export') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{ __('Export') }}">
-            <i class="ti ti-file-export"></i>
-        </a>
-        @can('create vender')
-            <a href="#" data-size="lg" data-url="{{ route('vender.create') }}" data-ajax-popup="true" data-title="{{__('Create New Vendor')}}" data-bs-toggle="tooltip" title="{{ __('Create') }}" class="btn btn-sm btn-primary">
-                <i class="ti ti-plus"></i>
-            </a>
-        @endcan
-
-    </div>
-
 
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body table-border-style">
                     <div class="table-responsive">
-                        <table class="table datatable">
+                        <table class="table datatable bill">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -75,23 +89,23 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                         <td>
                                             {{ !empty($Vender->last_login_at) ? $Vender->last_login_at : '-' }}
                                         </td>
-                                        <td class="Action">
+                                        <td>
                                             <span>
                                                 @if ($Vender['is_active'] == 0)
                                                     <i class="fa fa-lock" title="Inactive"></i>
                                                 @else
                                                     @can('show vender')
-                                                        <div class="action-btn bg-info ms-2">
+                                                        <div class="ms-2">
                                                             <a href="{{ route('vender.show', \Crypt::encrypt($Vender['id'])) }}"
-                                                                class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip"
+                                                                class="mx-3 btn btn-sm align-items-center backgroundnone" data-bs-toggle="tooltip"
                                                                 title="{{ __('View') }}">
                                                                 <i class="ti ti-eye text-white text-white"></i>
                                                             </a>
                                                         </div>
                                                     @endcan
                                                     @can('edit vender')
-                                                            <div class="action-btn bg-primary ms-2">
-                                                                <a href="#" class="mx-3 btn btn-sm align-items-center" data-size="lg"
+                                                            <div class="ms-2">
+                                                                <a href="#" class="mx-3 btn btn-sm align-items-center backgroundnone" data-size="lg"
                                                                 data-title="{{__('Edit Vendor')}}"
                                                                     data-url="{{ route('vender.edit', $Vender['id']) }}"
                                                                     data-ajax-popup="true" title="{{ __('Edit') }}"
@@ -101,10 +115,10 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                                             </div>
                                                     @endcan
                                                     @can('delete vender')
-                                                            <div class="action-btn bg-danger ms-2">
+                                                            <div class="ms-2">
                                                             {!! Form::open(['method' => 'DELETE', 'route' => ['vender.destroy', $Vender['id']], 'id' => 'delete-form-' . $Vender['id']]) !!}
 
-                                                            <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip"
+                                                            <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para backgroundnone" data-bs-toggle="tooltip"
                                                                    data-original-title="{{ __('Delete') }}" title="{{ __('Delete') }}"
                                                                    data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
                                                                    data-confirm-yes="document.getElementById('delete-form-{{ $Vender['id'] }}').submit();">

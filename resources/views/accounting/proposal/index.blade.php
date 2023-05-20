@@ -10,12 +10,12 @@
   </div>
   <div class="col-md-6 float-end floatrght">
 
-              <a class="floatrght mb-3 btn btn-sm btn-primary" href="{{route('proposal.export')}}"  data-bs-toggle="tooltip" title="{{__('Export')}}">
+              <a class="gapbtn floatrght mb-3 btn btn-sm btn-primary" href="{{route('proposal.export')}}"  data-bs-toggle="tooltip" title="{{__('Export')}}">
                   <i class="ti ti-file-export"></i>
               </a>
       
               @can('create proposal')
-                  <a class="floatrght mb-3 btn btn-sm btn-primary" href="{{ route('proposal.create',0) }}"  data-bs-toggle="tooltip" title="{{__('Create')}}">
+                  <a class="gapbtn floatrght mb-3 btn btn-sm btn-primary" href="{{ route('proposal.create',0) }}"  data-bs-toggle="tooltip" title="{{__('Create')}}">
                       <i class="ti ti-plus"></i>
                   </a>
               @endcan
@@ -67,10 +67,10 @@
                             </div>
                             <div class="col-auto float-end ms-2 mt-4">
 
-                                <a href="#" class="btn btn-sm btn-primary" onclick="document.getElementById('frm_submit').submit(); return false;" data-bs-toggle="tooltip" data-original-title="{{__('apply')}}">
+                                <a href="#" class="gapbtn btn btn-sm btn-primary" onclick="document.getElementById('frm_submit').submit(); return false;" data-bs-toggle="tooltip" data-original-title="{{__('apply')}}">
                                     <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
                                 </a>
-                                <a href="{{ route('productservice.index') }}" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
+                                <a href="{{ route('productservice.index') }}" class="gapbtn btn btn-sm btn-danger" data-bs-toggle="tooltip"
                                    title="{{ __('Reset') }}">
                                     <span class="btn-inner--icon"><i class="ti ti-trash-off text-white "></i></span>
                                 </a>

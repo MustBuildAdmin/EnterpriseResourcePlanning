@@ -28595,3 +28595,12 @@ table.dataTable>tbody>tr {
 .colorblack{
  color: #000 !important;
 }
+
+.timeline-icons {
+    font-size: 34px;
+}
+ 
+.timeline-wrapper .ti.ti-pencil {
+    color: #fff !important;
+    /* border: none !important; */
+}
