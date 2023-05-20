@@ -156,7 +156,7 @@
                 </li>
 
                 <li class="">
-                    <a href="#"><span
+                    <a href="#{{route('filter.project.view')}}"><span
                             class="icon"><i class="ti ti-users"></i>
                         </span><span class="list">{{ __('Diary') }}</span>
                     </a>
