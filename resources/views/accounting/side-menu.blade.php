@@ -164,7 +164,7 @@
                 @if(Gate::check('manage product & service'))
                 <li class="{{ (Request::segment(1) == 'productservice')?'active':''}}" >
                     <a data-bs-target="#expense" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                        <span class="icon"><i class="ti ti-users"></i></span>
+                        <span class="icon"><img src="assets/images/icons/order.png"/></span>
                         <span class="list">{{__('Product & Services')}}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="expense">
@@ -183,7 +183,7 @@
                 @if(Gate::check('manage vender'))
                 <li class="{{ (Request::segment(1) == 'vender')?'active':''}}">
                     <a href="{{ route('vender.index') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
+                            class="icon"><img src="assets/images/icons/vendor.png"/>
                         </span><span class="list">{{__('Vendor')}}</span>
                        
                     </a>
