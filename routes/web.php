@@ -119,14 +119,14 @@ Route::any('update_consultant_direction','DiaryController@update_consultant_dire
 );
 
 
-Route::get('dairy_create','DiaryController@dairy_create')->name('dairy.dairy_create')->middleware(
+Route::get('diary_create','DiaryController@diary_create')->name('diary.diary_create')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::get('dairy_update','DiaryController@dairy_update')->name('dairy.dairy_update')->middleware(
+Route::get('diary_update','DiaryController@diary_update')->name('diary.diary_update')->middleware(
     [
         'auth',
         'XSS',
