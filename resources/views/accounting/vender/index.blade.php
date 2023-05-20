@@ -1,65 +1,123 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
-
-
+@php
+$profile = asset(Storage::url('uploads/avatar/'));
+@endphp
 <div class="row">
-  <div class="col-md-6">
-     <h2>Vendor</h2>
-  </div>
-  <div class="col-md-6 float-end floatrght">
+    <div class="col-md-6">
+       <h2>{{ __('Manage Vendors') }}</h2>
+    </div>
 
-    @can('create transfer')
-        <a class="floatrght mb-3 btn btn-sm btn-primary"  href="#" data-size="lg" data-url="{{ route('transfer.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Transfer')}}">
-            {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
-    </a>
-    @endcan
+    <script>
+        $(document).on('click', '#billing_data', function() {
+            $("[name='shipping_name']").val($("[name='billing_name']").val());
+            $("[name='shipping_country']").val($("[name='billing_country']").val());
+            $("[name='shipping_state']").val($("[name='billing_state']").val());
+            $("[name='shipping_city']").val($("[name='billing_city']").val());
+            $("[name='shipping_phone']").val($("[name='billing_phone']").val());
+            $("[name='shipping_zip']").val($("[name='billing_zip']").val());
+            $("[name='shipping_address']").val($("[name='billing_address']").val());
+        })
+    </script>
 
-  </div>
-</div>
+    <div class="float-end">
+        <a href="#" class="btn btn-sm btn-primary" data-url="{{ route('vender.file.import') }}" data-ajax-popup="true" data-bs-toggle="tooltip"
+           title="{{ __('Import') }}">
+            <i class="ti ti-file-import"></i>
+        </a>
+
+        <a href="{{ route('vender.export') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{ __('Export') }}">
+            <i class="ti ti-file-export"></i>
+        </a>
+        @can('create vender')
+            <a href="#" data-size="lg" data-url="{{ route('vender.create') }}" data-ajax-popup="true" data-title="{{__('Create New Vendor')}}" data-bs-toggle="tooltip" title="{{ __('Create') }}" class="btn btn-sm btn-primary">
+                <i class="ti ti-plus"></i>
+            </a>
+        @endcan
+
+    </div>
 
 
     <div class="row">
-   
         <div class="col-md-12">
             <div class="card">
-            <div class="card-body table-border-style">
+                <div class="card-body table-border-style">
                     <div class="table-responsive">
-                    <table class="table datatable">
+                        <table class="table datatable">
                             <thead>
-                            <tr>
-                                <th>{{__('Name')}}</th>
-                                <th>{{__('Contact')}}</th>
-                                <th>{{__('Email')}}</th>
-                                <th>{{__('balance')}}</th>
-                                <th>{{__('Last_login')}}</th>
-                                <th width="200px">{{__('Action')}}</th>
-                            </tr>
-                            </thead>
-                            <tbody class="font-style">
-                           
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                      <div class="ms-2" style="display:flex;gap:10px;">
-                                        <a href="http://localhost/musterpnew/public/employee/eyJpdiI6IkJ3dGYxOW1rUnhsV1ZKdjhFOUdscUE9PSIsInZhbHVlIjoiSUNVZUtYQitNTzZaZDVIRmp3SzlHZz09IiwibWFjIjoiMzliNmIwODM5NTdhYjEwMzk3YWIzZWE5ZjFhYWY4ODk4YWFkNDgxZmZmZmQxODUxNjFlNTI2YjkzM2YyMDg5NSIsInRhZyI6IiJ9/edit" class="btn btn-md bg-primary" data-bs-toggle="tooltip" data-original-title="Edit" aria-label="Edit" data-bs-original-title="Edit">
-                                          <i class="ti ti-pencil text-white"></i>
-                                        </a>
-                                        <form method="POST" action="http://localhost/musterpnew/public/employee/129" accept-charset="UTF-8" id="delete-form-129">
-                                          <input name="_method" type="hidden" value="DELETE">
-                                          <input name="_token" type="hidden" value="tETQcqzxpcfwciWVlZTuvTuLhj9IEudc3K08xH5Z">
-                                          <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" data-original-title="Delete" data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?" data-confirm-yes="document.getElementById('delete-form-129').submit();" aria-label="Delete" data-bs-original-title="Delete">
-                                            <i class="ti ti-trash text-white"></i>
-                                          </a>
-                                        </form>
-                                      </div>
-                                    </td>
+                                    <th>#</th>
+                                    <th>{{ __('Name') }}</th>
+                                    <th>{{ __('Contact') }}</th>
+                                    <th>{{ __('Email') }}</th>
+                                    <th>{{ __('Balance') }}</th>
+                                    <th>{{ __('Last Login At') }}</th>
+                                    <th>{{ __('Action') }}</th>
                                 </tr>
-                           
+                            </thead>
+                            <tbody>
+                                @foreach ($venders as $k => $Vender)
+                                    <tr class="cust_tr" id="vend_detail">
+                                        <td class="Id">
+                                            @can('show vender')
+                                                <a href="{{ route('vender.show', \Crypt::encrypt($Vender['id'])) }}" class="btn btn-outline-primary">
+                                                    {{ AUth::user()->venderNumberFormat($Vender['vender_id']) }}
+                                                </a>
+                                            @else
+                                                <a href="#" class="btn btn-outline-primary"> {{ AUth::user()->venderNumberFormat($Vender['vender_id']) }}
+                                                </a>
+                                            @endcan
+                                        </td>
+                                        <td>{{ $Vender['name'] }}</td>
+                                        <td>{{ $Vender['contact'] }}</td>
+                                        <td>{{ $Vender['email'] }}</td>
+                                        <td>{{ \Auth::user()->priceFormat($Vender['balance']) }}</td>
+                                        <td>
+                                            {{ !empty($Vender->last_login_at) ? $Vender->last_login_at : '-' }}
+                                        </td>
+                                        <td class="Action">
+                                            <span>
+                                                @if ($Vender['is_active'] == 0)
+                                                    <i class="fa fa-lock" title="Inactive"></i>
+                                                @else
+                                                    @can('show vender')
+                                                        <div class="action-btn bg-info ms-2">
+                                                            <a href="{{ route('vender.show', \Crypt::encrypt($Vender['id'])) }}"
+                                                                class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip"
+                                                                title="{{ __('View') }}">
+                                                                <i class="ti ti-eye text-white text-white"></i>
+                                                            </a>
+                                                        </div>
+                                                    @endcan
+                                                    @can('edit vender')
+                                                            <div class="action-btn bg-primary ms-2">
+                                                                <a href="#" class="mx-3 btn btn-sm align-items-center" data-size="lg"
+                                                                data-title="{{__('Edit Vendor')}}"
+                                                                    data-url="{{ route('vender.edit', $Vender['id']) }}"
+                                                                    data-ajax-popup="true" title="{{ __('Edit') }}"
+                                                                    data-bs-toggle="tooltip" data-original-title="{{ __('Edit') }}">
+                                                                    <i class="ti ti-pencil text-white"></i>
+                                                                </a>
+                                                            </div>
+                                                    @endcan
+                                                    @can('delete vender')
+                                                            <div class="action-btn bg-danger ms-2">
+                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['vender.destroy', $Vender['id']], 'id' => 'delete-form-' . $Vender['id']]) !!}
+
+                                                            <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip"
+                                                                   data-original-title="{{ __('Delete') }}" title="{{ __('Delete') }}"
+                                                                   data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
+                                                                   data-confirm-yes="document.getElementById('delete-form-{{ $Vender['id'] }}').submit();">
+                                                                <i class="ti ti-trash text-white text-white"></i>
+                                                                </a>
+                                                                {!! Form::close() !!}
+                                                            </div>
+                                                    @endcan
+                                                @endif
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -67,9 +125,5 @@
             </div>
         </div>
     </div>
-
-
-
-
-
+</div>
 @include('new_layouts.footer')
