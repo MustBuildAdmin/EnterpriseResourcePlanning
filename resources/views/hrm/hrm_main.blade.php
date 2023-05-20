@@ -154,7 +154,7 @@
 
                 <li class="{{ (Request::segment(1) == 'employee' ? 'active' : '')}}">
                     <a href="{{ route('hrm_dashboard') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
+                            class="icon"><img src="assets/images/icons/dashboard.png"/>
                         </span><span class="list">{{ __('Dashboard') }}</span>
                     </a>
                 </li>
@@ -170,8 +170,7 @@
                             </span><span class="list">{{ __('Employee') }}</span>
                         </a>
                     @else
-                        <a href="{{ route('employee.index') }}"><span class="icon"><i
-                                    class="ti ti-users"></i></span><span
+                        <a href="{{ route('employee.index') }}"><span class="icon"><img src="assets/images/icons/employee.png"/></span><span
                                 class="list">{{ __('Employee Setup') }}</span></a>
                     @endif
                 </li>
@@ -179,7 +178,7 @@
                 @if( Gate::check('manage set salary') || Gate::check('manage pay slip'))
                     <li class="{{ (Request::segment(1) == 'setsalary' || Request::segment(1) == 'payslip') ? 'active' : '' }}">
                         <a data-bs-target="#payslip_hrm_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                            <span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="icon"><img src="assets/images/icons/money.png"/></span>
                             <span class="list">{{ __('Payroll Setup') }}</span>
                         </a>
                         <ul class="collapse list-unstyled" id="payslip_hrm_setup">
@@ -196,7 +195,7 @@
                 @if( Gate::check('manage leave') || Gate::check('manage attendance'))
                     <li class="{{ (Request::segment(1) == 'leave' || Request::segment(1) == 'attendanceemployee') ? 'active' :'' }}">
                         <a data-bs-target="#hrm_leave_management_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                            <span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="icon"><img src="assets/images/icons/leave.png"/></span>
                             <span class="list">{{ __('Leave Management') }}</span>
                         </a>
                         <ul class="collapse list-unstyled" id="hrm_leave_management_setup">
@@ -227,7 +226,7 @@
                     Request::segment(1) == 'announcement' || Request::segment(1) == 'competencies' ? 'active' : '' }}">
 
                     <a data-bs-target="#pageSubmenu_admin_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                        <span class="icon"><i class="ti ti-users"></i></span>
+                        <span class="icon"><img src="assets/images/icons/hr-manager.png"/></span>
                         <span class="list">{{ __('HR Admin Setup') }}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="pageSubmenu_admin_setup">
@@ -286,7 +285,7 @@
                 @endcan
 
                 {{-- <li>
-                    <a href="#"><span class="icon"> <i class="ti ti-tool"></i></span><span
+                    <a href="#"><span class="icon"> <img src="assets/images/icons/support.png"/></span><span
                             class="list">Resource Settings</span></a>
                 </li> --}}
 
@@ -312,7 +311,7 @@
                         : '' }}">
 
                     <a data-bs-toggle="collapse" data-bs-target="#pageSubmenusystemsetup" role="button" aria-expanded="false"
-                        aria-controls="pageSubmenusystemsetup"><span class="icon"><i class="ti ti-users"></i></span>
+                        aria-controls="pageSubmenusystemsetup"><span class="icon"><img src="assets/images/icons/support.png"/></span>
                         <span class="list">{{ __('Resource Settings') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenusystemsetup">
@@ -373,7 +372,7 @@
                     <li class="{{ (Request::segment(1) == 'reports-monthly-attendance' || Request::segment(1) == 'reports-leave' || 
                         Request::segment(1) == 'reports-payroll') ? 'active dash-trigger' : ''}}">
                         <a data-bs-target="#hrm_reports" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                            <span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="icon"><img src="assets/images/icons/support.png"/></span>
                             <span class="list">{{ __('Reports') }}</span>
                         </a>
                         <ul class="collapse list-unstyled" id="hrm_reports">
