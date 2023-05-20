@@ -97,7 +97,8 @@ class InvoiceController extends Controller
 
     public function customer(Request $request)
     {
-        $customer = Customer::where('id', '=', $request->id)->first();
+        $customer = User::where('id', '=', $request->id)->first();
+        // $customer = Customer::where('id', '=', $request->id)->first();
         $country=Utility::getcountry_details($customer->billing_country);
         $state=Utility::getstate_details($customer->billing_country,$customer->billing_state);
         $shipcountry=Utility::getcountry_details($customer->shipping_country);
@@ -225,7 +226,7 @@ class InvoiceController extends Controller
             Utility::addProductStock( $invoiceProduct->product_id,$invoiceProduct->quantity,$type,$description,$type_id);
 
 
-            return redirect()->route('accounting.invoice.index', $invoice->id)->with('success', __('Invoice successfully created.'));
+            return redirect()->route('invoice.index', $invoice->id)->with('success', __('Invoice successfully created.'));
         }
         else
         {
@@ -276,7 +277,7 @@ class InvoiceController extends Controller
                 if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
 
-                    return redirect()->route('accounting.invoice.index')->with('error', $messages->first());
+                    return redirect()->route('invoice.index')->with('error', $messages->first());
                 }
                 $invoice->customer_id    = $request->customer_id;
                 $invoice->issue_date     = $request->issue_date;
@@ -338,7 +339,7 @@ class InvoiceController extends Controller
 
                 }
 
-                return redirect()->route('accounting.invoice.index')->with('success', __('Invoice successfully updated.'));
+                return redirect()->route('invoice.index')->with('success', __('Invoice successfully updated.'));
             } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
@@ -376,7 +377,8 @@ class InvoiceController extends Controller
                 $customFields         = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'invoice')->get();
                 //gst calulation------------------
                 $setting  = Utility::settings(\Auth::user()->creatorId());
-                $customer = Customer::find($invoice->customer_id);
+                $customer = User::find($invoice->customer_id);
+                // $customer = Customer::find($invoice->customer_id);
                 $gstflag=0;
                 if($customer->billing_state==$setting['company_state']){
                     $gstflag=1;
@@ -422,7 +424,7 @@ class InvoiceController extends Controller
 
                 InvoiceProduct::where('invoice_id', '=', $invoice->id)->delete();
 
-                return redirect()->route('accounting.invoice.index')->with('success', __('Invoice successfully deleted.'));
+                return redirect()->route('invoice.index')->with('success', __('Invoice successfully deleted.'));
             }
             else
             {

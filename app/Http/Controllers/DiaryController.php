@@ -87,7 +87,7 @@ class DiaryController extends Controller
         }
     }
 
-    public function dairy_create(Request $request)
+    public function diary_create(Request $request)
     {
         try {
 

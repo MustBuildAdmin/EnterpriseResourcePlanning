@@ -59,7 +59,7 @@
 
                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="pills-proposal-tab" data-bs-toggle="pill" href="#pills-proposal" role="tab" aria-controls="pills-proposal" aria-selected="true">{{ __('Proposal Print Setting') }}</a>
+                        <a class="nav-link" id="pills-proposal-tab" data-bs-toggle="pill" href="#pills-proposal" role="tab" aria-controls="pills-proposal" aria-selected="true">{{ __('Proposal Print Setting') }}</a>
 
                     </li>
                     <li class="nav-item">

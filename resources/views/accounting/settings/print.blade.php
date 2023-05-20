@@ -7,44 +7,6 @@
     $lang=Utility::getValByName('default_language');
 @endphp
 
-    <script>
-        var scrollSpy = new bootstrap.ScrollSpy(document.body, {
-            target: '#useradd-sidenav',
-            offset: 300
-        })
-    </script>
-    <script>
-        $(document).on("change", "select[name='invoice_template'], input[name='invoice_color']", function () {
-            var template = $("select[name='invoice_template']").val();
-            var color = $("input[name='invoice_color']:checked").val();
-            $('#invoice_frame').attr('src', '{{url('/invoices/preview')}}/' + template + '/' + color);
-        });
-
-        $(document).on("change", "select[name='proposal_template'], input[name='proposal_color']", function () {
-            var template = $("select[name='proposal_template']").val();
-            var color = $("input[name='proposal_color']:checked").val();
-            $('#proposal_frame').attr('src', '{{url('/proposal/preview')}}/' + template + '/' + color);
-        });
-
-        $(document).on("change", "select[name='bill_template'], input[name='bill_color']", function () {
-            var template = $("select[name='bill_template']").val();
-            var color = $("input[name='bill_color']:checked").val();
-            $('#bill_frame').attr('src', '{{url('/bill/preview')}}/' + template + '/' + color);
-        });
-
-        document.getElementById('proposal_logo').onchange = function () {
-            var src = URL.createObjectURL(this.files[0])
-            document.getElementById('proposal_image').src = src
-        }
-        document.getElementById('invoice_logo').onchange = function () {
-            var src = URL.createObjectURL(this.files[0])
-            document.getElementById('invoice_image').src = src
-        }
-        document.getElementById('bill_logo').onchange = function () {
-            var src = URL.createObjectURL(this.files[0])
-            document.getElementById('bill_image').src = src
-        }
-    </script>
 
 <div class="row">
   <div class="col-md-6">
@@ -85,7 +47,7 @@
                                         @csrf
                                         <div class="form-group">
                                             <label for="address" class="col-form-label">{{__('Proposal Template')}}</label>
-                                            <select class="form-control select2" name="proposal_template">
+                                            <select class="form-control chosen-select" name="proposal_template">
                                                 @foreach(App\Models\Utility::templateData()['templates'] as $key => $template)
                                                     <option value="{{$key}}" {{(isset($settings['proposal_template']) && $settings['proposal_template'] == $key) ? 'selected' : ''}}>{{$template}}</option>
                                                 @endforeach
@@ -250,20 +212,55 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
             </div>
-
-
-
-
         </div>
-
     </div>
-
 </div>
 
 </div>
 @include('new_layouts.footer')
+<script>
+$(document).ready(function() {
+    $(".chosen-select").chosen();
+});
+</script>
+
+<script>
+    var scrollSpy = new bootstrap.ScrollSpy(document.body, {
+        target: '#useradd-sidenav',
+        offset: 300
+    })
+</script>
+<script>
+    $(document).on("change", "select[name='invoice_template'], input[name='invoice_color']", function () {
+        var template = $("select[name='invoice_template']").val();
+        var color = $("input[name='invoice_color']:checked").val();
+        $('#invoice_frame').attr('src', '{{url('/invoices/preview')}}/' + template + '/' + color);
+    });
+
+    $(document).on("change", "select[name='proposal_template'], input[name='proposal_color']", function () {
+        var template = $("select[name='proposal_template']").val();
+        var color = $("input[name='proposal_color']:checked").val();
+        $('#proposal_frame').attr('src', '{{url('/proposal/preview')}}/' + template + '/' + color);
+    });
+
+    $(document).on("change", "select[name='bill_template'], input[name='bill_color']", function () {
+        var template = $("select[name='bill_template']").val();
+        var color = $("input[name='bill_color']:checked").val();
+        $('#bill_frame').attr('src', '{{url('/bill/preview')}}/' + template + '/' + color);
+    });
+
+    document.getElementById('proposal_logo').onchange = function () {
+        var src = URL.createObjectURL(this.files[0])
+        document.getElementById('proposal_image').src = src
+    }
+    document.getElementById('invoice_logo').onchange = function () {
+        var src = URL.createObjectURL(this.files[0])
+        document.getElementById('invoice_image').src = src
+    }
+    document.getElementById('bill_logo').onchange = function () {
+        var src = URL.createObjectURL(this.files[0])
+        document.getElementById('bill_image').src = src
+    }
+</script>

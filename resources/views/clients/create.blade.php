@@ -190,7 +190,7 @@
         </div>
     </div>
     <div class="custom-control custom-checkbox mt-n1">
-        <input type="checkbox" class="custom-control-input checkbox1" id="checkbox1">
+        <input type="checkbox" name="copy_status" class="custom-control-input checkbox1" id="checkbox1" value="1">
         <label class="custom-control-label" for="checkbox1">  <h6 class="sub-title"><strong>Do you copy a billing address<strong></h6></label>
     </div>
    <hr>
@@ -370,7 +370,7 @@ $(document).on("change", '#country', function () {
                             $('#shipping_state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
                         });
         });
-        setTimeout(function(){   $this.find('#shipping_state').val($this.find('#billing_state').val()); }, 1000);
+        setTimeout(function(){   $this.find('#shipping_state').val($this.find('#billing_state').val()); }, 1700);
      
      
       

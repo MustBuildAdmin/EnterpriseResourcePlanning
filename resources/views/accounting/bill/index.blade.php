@@ -97,7 +97,7 @@
             <div class="card">
                 <div class="card-body table-border-style">
                     <div class="table-responsive">
-                        <table class="table datatable">
+                        <table class="table datatable bill">
                             <thead>
                             <tr>
                                 <th> {{__('Bill')}}</th>
@@ -109,7 +109,7 @@
                                 <th> {{__('Due Date')}}</th>
                                 <th>{{__('Status')}}</th>
                                 @if(Gate::check('edit bill') || Gate::check('delete bill') || Gate::check('show bill'))
-                                    <th width="10%"> {{__('Action')}}</th>
+                                    <th width="15%"> {{__('Action')}}</th>
                                 @endif
                                 {{-- <th>
                                     <td class="barcode">
@@ -149,15 +149,15 @@
                                         @endif
                                     </td>
                                     @if(Gate::check('edit bill') || Gate::check('delete bill') || Gate::check('show bill'))
-                                        <td class="Action">
+                                        <td >
                                             <span>
                                             @can('duplicate bill')
-                                                    <div class="action-btn bg-success">
+                                                    <div class="ms-2">
                                                         {!! Form::open(['method' => 'get', 'route' => ['bill.duplicate', $bill->id],'id'=>'duplicate-form-'.$bill->id]) !!}
 
-                                                        <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para-duplicate " data-bs-toggle="tooltip" data-original-title="{{__('Duplicate')}}" data-bs-toggle="tooltip"
+                                                        <a href="#" class="backgroundnone mx-3 btn btn-sm align-items-center bs-pass-para-duplicate " data-bs-toggle="tooltip" data-original-title="{{__('Duplicate')}}" data-bs-toggle="tooltip"
                                                            title="{{__('Duplicate Bill')}}" data-original-title="{{__('Duplicate Bill')}}" data-confirm="You want to confirm this action. Press Yes to continue or Cancel to go back" data-confirm-yes="document.getElementById('duplicate-form-{{$bill->id}}').submit();">
-                                                        <i class="ti ti-copy text-white"></i>
+                                                        <i class="ti ti-copy"></i>
                                                             {!! Form::close() !!}
                                                         </a>
                                                     </div>
@@ -166,28 +166,28 @@
                                                 @endcan
                                                 @can('show bill')
                                                     @if(\Auth::guard('vender')->check())
-                                                        <div class="action-btn bg-info ms-2">
-                                                            <a href="{{ route('vender.bill.show',\Crypt::encrypt($bill->id)) }}" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Show')}}" data-original-title="{{__('Detail')}}">
+                                                        <div class="ms-2">
+                                                            <a href="{{ route('vender.bill.show',\Crypt::encrypt($bill->id)) }}" class="backgroundnone mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Show')}}" data-original-title="{{__('Detail')}}">
                                                              <i class="ti ti-eye text-white"></i>
                                                             </a>
                                                         </div>
                                                     @else
-                                                        <div class="action-btn bg-info ms-2">
-                                                            <a href="{{ route('bill.show',\Crypt::encrypt($bill->id)) }}" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Show')}}" data-original-title="{{__('Detail')}}">
+                                                        <div class="ms-2">
+                                                            <a href="{{ route('bill.show',\Crypt::encrypt($bill->id)) }}" class="backgroundnone mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Show')}}" data-original-title="{{__('Detail')}}">
                                                                 <i class="ti ti-eye text-white"></i>
                                                             </a>
                                                         </div>
                                                     @endif
                                                 @endcan
                                                 @can('edit bill')
-                                                    <div class="action-btn bg-primary ms-2">
-                                                        <a href="{{ route('bill.edit',\Crypt::encrypt($bill->id)) }}" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="Edit" data-original-title="{{__('Edit')}}">
+                                                    <div class="ms-2">
+                                                        <a href="{{ route('bill.edit',\Crypt::encrypt($bill->id)) }}" class="backgroundnone mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="Edit" data-original-title="{{__('Edit')}}">
                                                             <i class="ti ti-pencil text-white"></i>
                                                         </a>
                                                     </div>
                                                 @endcan
                                                 @can('delete bill')
-                                                    <div class="action-btn bg-danger ms-2">
+                                                    <div class="ms-2">
                                                         {!! Form::open(['method' => 'DELETE', 'route' => ['bill.destroy', $bill->id],'class'=>'delete-form-btn','id'=>'delete-form-'.$bill->id]) !!}
                                                         <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$bill->id}}').submit();">
                                                             <i class="ti ti-trash text-white"></i>
