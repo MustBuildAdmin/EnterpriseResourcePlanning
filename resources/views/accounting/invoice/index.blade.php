@@ -83,7 +83,7 @@
                                 <th>{{ __('Due Amount') }}</th>
                                 <th>{{ __('Status') }}</th>
                                 @if (Gate::check('edit invoice') || Gate::check('delete invoice') || Gate::check('show invoice'))
-                                    <th>{{ __('Action') }}</th>
+                                    <th width="15%">{{ __('Action') }}</th>
                                 @endif
                                 {{-- <th>
                                 <td class="barcode">
@@ -138,17 +138,17 @@
                                         @endif
                                     </td>
                                     @if (Gate::check('edit invoice') || Gate::check('delete invoice') || Gate::check('show invoice'))
-                                        <td class="Action">
+                                        <td >
                                                 <span>
                                                 @php $invoiceID= Crypt::encrypt($invoice->id); @endphp
 
                                                     @can('copy invoice')
-                                                        <div class="action-btn bg-warning ms-2">
+                                                        <div class="ms-2">
                                                             <a href="#" id="{{ route('invoice.link.copy',[$invoiceID]) }}" class="mx-3 btn btn-sm align-items-center"   onclick="copyToClipboard(this)" data-bs-toggle="tooltip" data-original-title="{{__('Click to copy')}}"><i class="ti ti-link text-white"></i></a>
                                                         </div>
                                                     @endcan
                                                     @can('duplicate invoice')
-                                                        <div class="action-btn bg-success ms-2">
+                                                        <div class="ms-2">
                                                            {!! Form::open(['method' => 'get', 'route' => ['invoice.duplicate', $invoice->id], 'id' => 'duplicate-form-' . $invoice->id]) !!}
                                                            {!! Form::open(['method' => 'get', 'route' => ['invoice.duplicate', $invoice->id], 'id' => 'duplicate-form-' . $invoice->id]) !!}
 
@@ -165,7 +165,7 @@
                                                     @endcan
                                                     @can('show invoice')
                                                         @if (\Auth::guard('customer')->check())
-                                                            <div class="action-btn bg-info ms-2">
+                                                            <div class="ms-2">
                                                                     <a href="{{ route('customer.invoice.show', \Crypt::encrypt($invoice->id)) }}"
                                                                        class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="Show "
                                                                        data-original-title="{{ __('Detail') }}">
@@ -173,7 +173,7 @@
                                                                     </a>
                                                                 </div>
                                                         @else
-                                                            <div class="action-btn bg-info ms-2">
+                                                            <div class="ms-2">
                                                                     <a href="{{ route('invoice.show', \Crypt::encrypt($invoice->id)) }}"
                                                                        class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="Show "
                                                                        data-original-title="{{ __('Detail') }}">
@@ -183,7 +183,7 @@
                                                         @endif
                                                     @endcan
                                                     @can('edit invoice')
-                                                        <div class="action-btn bg-primary ms-2">
+                                                        <div class="ms-2">
                                                                 <a href="{{ route('invoice.edit', \Crypt::encrypt($invoice->id)) }}"
                                                                    class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="Edit "
                                                                    data-original-title="{{ __('Edit') }}">
@@ -192,7 +192,7 @@
                                                             </div>
                                                     @endcan
                                                     @can('delete invoice')
-                                                        <div class="action-btn bg-danger ms-2">
+                                                        <div class="ms-2">
                                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['invoice.destroy', $invoice->id], 'id' => 'delete-form-' . $invoice->id]) !!}
                                                                     <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para " data-bs-toggle="tooltip" title="{{__('Delete')}}"
                                                                        data-original-title="{{ __('Delete') }}"
