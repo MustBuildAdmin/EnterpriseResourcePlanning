@@ -42,7 +42,8 @@ class ProductServiceController extends Controller
                 $productServices = ProductService::where('created_by', '=', \Auth::user()->creatorId())->get();
             }
 
-            return view('productservice.index', compact('productServices', 'category'));
+            return view('accounting.productservice.index', compact('productServices', 'category'));
+            // return view('productservice.index', compact('productServices', 'category'));
         }
         else
         {

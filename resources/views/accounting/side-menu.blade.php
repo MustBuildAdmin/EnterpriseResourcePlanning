@@ -161,7 +161,26 @@
                 </li>
                 @endif --}}
 
-                {{-- @if(Gate::check('manage vender'))
+                @if(Gate::check('manage product & service'))
+                <li class="{{ (Request::segment(1) == 'productservice')?'active':''}}" >
+                    <a data-bs-target="#expense" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                        <span class="icon"><i class="ti ti-users"></i></span>
+                        <span class="list">{{__('Product & Services')}}</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="expense">
+                      
+                            <li class="{{ (Request::route()->getName() == 'bill.index' || Request::route()->getName() == 'bill.create' || Request::route()->getName() == 'bill.edit' || Request::route()->getName() == 'bill.show') ? ' active' : '' }}"><a href="{{ route('productservice.index') }}">{{__('Product & Services')}}</a></li>
+                     
+                       
+                            <li class="{{ (Request::segment(1) == 'productstock')?'active':''}}"><a href="{{ route('productstock.index') }}" >{{__('Product Stock')}}</a></li>
+
+                            
+                       
+                    </ul>
+                </li>
+                @endif
+
+                @if(Gate::check('manage vender'))
                 <li class="{{ (Request::segment(1) == 'vender')?'active':''}}">
                     <a href="{{ route('vender.index') }}"><span
                             class="icon"><i class="ti ti-users"></i>
@@ -169,7 +188,7 @@
                        
                     </a>
                 </li>
-                @endif --}}
+                @endif
 
                 @if(Gate::check('manage proposal'))
                 <li class="{{ (Request::segment(1) == 'proposal')?'active':''}}">
@@ -269,6 +288,7 @@
                     </a>
                 </li>
                 @endif
+
                 @if(Gate::check('manage goal'))
                 <li class="{{ (Request::segment(1) == 'goal')?'active':''}}">
                     <a href="{{ route('goal.index') }}"><span
@@ -278,6 +298,7 @@
                     </a>
                 </li>
                 @endif
+
                 @if(Gate::check('manage constant tax') || Gate::check('manage constant category') ||Gate::check('manage constant unit') ||Gate::check('manage constant payment method') ||Gate::check('manage constant custom field') )
                 <li class="{{(Request::segment(1) == 'taxes' || Request::segment(1) == 'product-category' || Request::segment(1) == 'product-unit' || Request::segment(1) == 'payment-method' || Request::segment(1) == 'custom-field' || Request::segment(1) == 'chart-of-account-type')? 'active dash-trigger' :''}}">
                     <a href="{{ route('taxes.index') }}"><span
@@ -287,6 +308,7 @@
                     </a>
                 </li>
                 @endif
+
                 @if(Gate::check('manage print settings'))
                 <li class="{{ (Request::route()->getName() == 'print-setting') ? ' active' : '' }}">
                     <a href="{{ route('print.setting') }}"><span
