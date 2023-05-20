@@ -174,7 +174,7 @@
                 @if(Gate::check('manage proposal'))
                 <li class="{{ (Request::segment(1) == 'proposal')?'active':''}}">
                     <a href="{{ route('proposal.index') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
+                            class="icon"><img src="assets/images/icons/sticky-note.png"/>
                         </span><span class="list">{{__('Proposal')}}</span>
                        
                     </a>
@@ -185,7 +185,7 @@
                 @if( Gate::check('manage bank account') ||  Gate::check('manage bank transfer'))
                     <li class="{{(Request::segment(1) == 'bank-account' || Request::segment(1) == 'bank-transfer')? 'active dash-trigger' :''}}">
                         <a data-bs-target="#banking" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                            <span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="icon"><img src="assets/images/icons/bank.png"/></span>
                             <span class="list">{{ __('Banking') }}</span>
                         </a>
                         <ul class="collapse list-unstyled" id="banking">
@@ -203,7 +203,7 @@
                 @if( Gate::check('manage invoice') ||  Gate::check('manage revenue') ||  Gate::check('manage credit note'))
                     <li class="{{(Request::segment(1) == 'invoice' || Request::segment(1) == 'revenue' || Request::segment(1) == 'credit-note')? 'active dash-trigger' :''}}">
                         <a data-bs-target="#income" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                            <span class="icon"><i class="ti ti-users"></i></span>
+                            <span class="icon"><img src="assets/images/icons/salary.png"/></span>
                             <span class="list">{{ __('Income') }}</span>
                         </a>
                         <ul class="collapse list-unstyled" id="income">
@@ -222,7 +222,7 @@
                 @if( Gate::check('manage bill')  ||  Gate::check('manage payment') ||  Gate::check('manage debit note'))
                 <li class="{{(Request::segment(1) == 'bill' || Request::segment(1) == 'payment' || Request::segment(1) == 'debit-note')? 'active dash-trigger' :''}}">
                     <a data-bs-target="#expense" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                        <span class="icon"><i class="ti ti-users"></i></span>
+                        <span class="icon"><img src="assets/images/icons/expenses.png"/></span>
                         <span class="list">{{ __('Expense') }}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="expense">
@@ -241,7 +241,7 @@
                 @if( Gate::check('manage chart of account') ||  Gate::check('manage journal entry') ||   Gate::check('balance sheet report') ||  Gate::check('ledger report') ||  Gate::check('trial balance report'))
                 <li class="{{(Request::segment(1) == 'chart-of-account' || Request::segment(1) == 'journal-entry' || Request::segment(2) == 'ledger' ||  Request::segment(2) == 'balance-sheet' ||  Request::segment(2) == 'trial-balance')? 'active dash-trigger' :''}}">
                     <a data-bs-target="#double" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                        <span class="icon"><i class="ti ti-users"></i></span>
+                        <span class="icon"><img src="assets/images/icons/bookkeeping.png"/></span>
                         <span class="list">{{__('Double Entry')}}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="double">
@@ -263,7 +263,7 @@
                 @if(\Auth::user()->type =='company')
                 <li class="{{ (Request::segment(1) == 'budget')?'active':''}}">
                     <a href="{{ route('budget.index') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
+                            class="icon"><img src="assets/images/icons/budget.png"/>
                         </span><span class="list"> {{__('Budget Planner')}}</span>
                        
                     </a>
@@ -272,7 +272,7 @@
                 @if(Gate::check('manage goal'))
                 <li class="{{ (Request::segment(1) == 'goal')?'active':''}}">
                     <a href="{{ route('goal.index') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
+                            class="icon"><img src="assets/images/icons/target.png"/>
                         </span><span class="list">{{__('Financial Goal')}}</span>
                        
                     </a>
@@ -281,7 +281,7 @@
                 @if(Gate::check('manage constant tax') || Gate::check('manage constant category') ||Gate::check('manage constant unit') ||Gate::check('manage constant payment method') ||Gate::check('manage constant custom field') )
                 <li class="{{(Request::segment(1) == 'taxes' || Request::segment(1) == 'product-category' || Request::segment(1) == 'product-unit' || Request::segment(1) == 'payment-method' || Request::segment(1) == 'custom-field' || Request::segment(1) == 'chart-of-account-type')? 'active dash-trigger' :''}}">
                     <a href="{{ route('taxes.index') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
+                            class="icon"><img src="assets/images/icons/settings.png"/>
                         </span><span class="list">{{__('Accounting Setup')}}</span>
                        
                     </a>
@@ -290,7 +290,7 @@
                 @if(Gate::check('manage print settings'))
                 <li class="{{ (Request::route()->getName() == 'print-setting') ? ' active' : '' }}">
                     <a href="{{ route('print.setting') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
+                            class="icon"><img src="assets/images/icons/printer.png"/>
                         </span><span class="list">{{__('Print Settings')}}</span>
                        
                     </a>
