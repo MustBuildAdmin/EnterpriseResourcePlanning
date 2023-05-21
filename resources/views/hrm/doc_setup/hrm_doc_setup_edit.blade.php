@@ -1,4 +1,4 @@
-{{Form::model($ducumentUpload,array('route' => array('document-upload.update', $ducumentUpload->id), 'method' => 'PUT','enctype' => "multipart/form-data")) }}
+{{Form::model($ducumentUpload,array('route' => array('document-upload.update', $ducumentUpload->id), 'class'=>'forms_doc','method' => 'PUT','enctype' => "multipart/form-data")) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
@@ -28,7 +28,7 @@
             <label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label>
             <div class="choose-file">
                 <label for="document" class="form-label">
-                    <input type="file" class="form-control" name="document" id="document" data-filename="document_create" >
+                    <input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" >
                     {{-- <img id="image" src="{{asset(Storage::url('uploads/documentUpload')).'/'.$ducumentUpload->document}}" class="mt-3" style="width:25%;"/> --}}
                     <br>
                     <span class="show_document_file" style="color:green;">{{ $ducumentUpload->document }}</span>
@@ -69,9 +69,41 @@
     });
 
     document.getElementById('document').onchange = function () {
-        $(".show_document_file").hide();
-        var src = URL.createObjectURL(this.files[0])
-        document.getElementById('image').src = src
+        $(".show_document_file").show();
+        $(".show_document_file").html(this.files[0].name);
+        // var src = URL.createObjectURL(this.files[0])
+        // document.getElementById('image').src = src
     }
+
+    $('.forms_doc').validate({
+        rules: { inputimage: { required: true, accept: "png|jpeg|jpg|doc|pdf|exls", filesize: 100000  }},
+    });
+
+    jQuery.validator.addMethod("filesize", function(value, element, param) {
+
+        var fileSize = element.files[0].size;
+        var size = Math.round((fileSize / 1024));
+
+        /* checking for less than or equals to 20MB file size */
+        if (size <= 20*1024) {
+            return true;
+        } else {
+            $(".show_document_file").hide();
+            return false;
+        }   
+    }, "Invalid file size, please select a file less than or equal to 20mb size");
+
+    jQuery.validator.addMethod("accept", function(value, element, param) {
+        var extension = value.substr(value.lastIndexOf("."));
+        var allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.doc|\.pdf|\.exls)$/i;
+        var isAllowed = allowedExtensionsRegx.test(extension);
+
+        if(isAllowed){
+            return true;
+        }else{
+            $(".show_document_file").hide();
+            return false;
+        }
+    }, "File must be png|jpeg|jpg|doc|pdf|exls");
 </script>
 
