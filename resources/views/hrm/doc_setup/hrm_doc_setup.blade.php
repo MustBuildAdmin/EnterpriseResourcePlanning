@@ -82,6 +82,20 @@
 
 @include('new_layouts.footer')
 
+<script>
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            swal.closeModal();
+        }
+    });
+
+    $('.download_file').click(function(e) {
+        e.preventDefault();  //stop the browser from following
+        file_path = $(this).data('url_download');
+        window.location.href = 'uploads/file.doc';
+    });
+</script>
+
 {{-- <div class="ms-2" style="display:flex;gap:10px;">
 
 btn btn-md bg-primary 
