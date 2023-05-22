@@ -85,7 +85,7 @@ class LabelController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20',
+                                   'name' => 'required|max:20|unique:labels',
                                    'pipeline_id' => 'required',
                                    'color' => 'required',
                                ]
@@ -172,7 +172,7 @@ class LabelController extends Controller
 
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20',
+                                       'name' => 'required|max:20|unique:labels',
                                        'pipeline_id' => 'required',
                                        'color' => 'required',
                                    ]
@@ -182,7 +182,7 @@ class LabelController extends Controller
                 {
                     $messages = $validator->getMessageBag();
 
-                    return redirect()->route('users')->with('error', $messages->first());
+                    return redirect()->route('labels.index')->with('error', $messages->first());
                 }
 
                 $label->name        = $request->name;
