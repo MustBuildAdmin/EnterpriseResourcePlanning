@@ -194,6 +194,8 @@ Route::resource('hrm_doc_setup', 'DucumentUploadController')->middleware(
     ]
 );
 
+Route::get('/hrm_download_file/{id}', 'DucumentUploadController@hrm_download_file')->name('hrm_download_file')->middleware(['XSS','revalidate',]);
+
 // HRM Company Policy CRUD
 Route::resource('hrm_company_policy', 'CompanyPolicyController')->middleware(
     [

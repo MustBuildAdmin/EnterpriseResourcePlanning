@@ -209,5 +209,24 @@ class DucumentUploadController extends Controller
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
+
+    public function hrm_download_file(Request $request){
+        $id = $request->id;
+        $ducumentUpload = DucumentUpload::find($id);
+        $documentPath=\App\Models\Utility::get_file('uploads/documentUpload');
+
+        $ducumentUpload = DucumentUpload::find($id);
+        if($ducumentUpload != null)
+        {
+            $file_path = $documentPath . '/' . $ducumentUpload->document ;
+            $filename  = $ducumentUpload->document;
+
+            return \Response::download($file_path, $filename, ['Content-Length: ' . $file_path]);
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('File is not exist.'));
+        }
+    }
 }
 
