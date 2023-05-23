@@ -100,7 +100,7 @@
         </div>
        <div class="form-group col-md-6">
             <div class="form-group">
-                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}
+                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}
                 <div class="form-icon-user">
                     {{Form::text('zip',null,array('class'=>'form-control'))}}
                 </div>
@@ -109,7 +109,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
-                <div class="input-group">
+                <div class="form-icon-user">
                     {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3))}}
                 </div>
             </div>
@@ -179,6 +179,8 @@
     $(document).ready(function() {
         $(".chosen-select").chosen();
     });
+
+   
 </script>
 <style>
 div#choices_multiple1_chosen {

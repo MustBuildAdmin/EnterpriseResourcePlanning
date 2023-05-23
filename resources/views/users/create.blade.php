@@ -1,8 +1,3 @@
-
-
-
-
-
 {{Form::open(array('url'=>'users','method'=>'post'))}}
 
 <div class="modal-body">
@@ -112,7 +107,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="input-group">
+                <div class="form-icon-user">
                     {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
                 </div>
             </div>
