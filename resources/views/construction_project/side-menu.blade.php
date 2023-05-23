@@ -237,19 +237,31 @@
                                 <span class="list">{{__('Tender')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTender">
-                                <li class=""><a href="">{{__('BOQ_Claims/Payment Certificate')}}</a></li>
-                                <li class="">
-                                    <a data-bs-target="#submenuMaterial" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                                <li class=""><a href="">{{__('BOQ')}}</a></li>
+                               
+                            </ul>
+                        </li>
+                        <li class="">
+                            <a data-bs-target="#submenuTender1" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                                <span class="icon"><i class="ti ti-users"></i></span>
+                                <span class="list">{{__('Claims/Payment Certificate')}}</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a data-bs-target="#submenuMaterial" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
                                         <span class="icon"><i class="ti ti-users"></i></span>
                                         <span class="list">{{__('Material ')}}</span>
-                                    </a>
+                            </a>
+                            <ul class="collapse list-unstyled" id="submenuTender">
+                            <li class="">
                                     <ul class="collapse list-unstyled" id="submenuMaterial">
                                         <li class=""><a href="">{{__('Reports')}}</a></li>
                                         <li class=""><a href="">{{__('Reconcilation')}}</a></li>
-                                        <li class=""><a href="">{{__('EOT-Extension')}}</a></li>
+                                        <li class=""><a href="">{{__('EOT-Extension of time')}}</a></li>
                                     </ul>
                                 </li>
                             </ul>
+                           
                         </li>
                     </ul>
                 </li>
