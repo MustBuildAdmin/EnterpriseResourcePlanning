@@ -158,3 +158,32 @@
 </div>
 
 @include('new_layouts.footer')
+
+<script>
+         $(document).ready(function () {
+            $(document).on('click', '.invite_usr', function () {
+                var project_id = $('#project_id').val();
+                var user_id = $(this).attr('data-id');
+
+                $.ajax({
+                    url: '{{ route('invite.project.user.member') }}',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'project_id': project_id,
+                        'user_id': user_id,
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function (data) {
+                        if (data.code == '200') {
+                            show_toastr(data.status, data.success, 'success')
+                            location.reload();
+                            loadProjectUser();
+                        } else if (data.code == '404') {
+                            show_toastr(data.status, data.errors, 'error')
+                        }
+                    }
+                });
+            });
+        });
+</script>
