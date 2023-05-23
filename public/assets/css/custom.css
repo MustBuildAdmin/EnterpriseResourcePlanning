@@ -74,9 +74,9 @@ padding: 20px;
 #sidebar ul li{
     margin: 0 0 0px;
 }
-#sidebar ul li .icon{
-    font-size: 2em;
-    margin-right: 30px;
+#sidebar ul li .icon {
+  font-size: 20px;
+  margin-right: 5px;
 }
 #sidebar ul li a:hover {
     color: #000;
@@ -239,7 +239,7 @@ ul.collapse li{
   width: 30px;
   height: 30px;
   margin-left: -59px;
-  z-index: 9999999;
+  z-index: 99;
   position: absolute;
   margin-top: -30px;
   top: 2.5%;
@@ -265,7 +265,7 @@ ul.collapse li{
     width: 30px;
     height: 30px;
     margin-left: -80px;
-    z-index: 9999999;
+    z-index: 99;
     position: absolute;
     margin-top: -30px;
     top: 4%;

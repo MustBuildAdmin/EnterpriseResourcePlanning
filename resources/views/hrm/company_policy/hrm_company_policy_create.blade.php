@@ -1,4 +1,4 @@
-{{Form::open(array('url'=>'company-policy','method'=>'post', 'enctype' => "multipart/form-data"))}}
+{{Form::open(array('url'=>'company-policy','class'=>'forms_doc','method'=>'post', 'enctype' => "multipart/form-data"))}}
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
@@ -24,7 +24,9 @@
             <div class="choose-file form-group">
                 <label for="attachment" class="form-label">
                     <input required type="file" class="form-control" name="attachment" id="attachment" data-filename="attachment_create" accept=".jpeg,.png,.jpg,.pdf,.doc">
-                    <img id="image" class="mt-3" style="width:25%;"/>
+                    {{-- <img id="image" class="mt-3" style="width:25%;"/> --}}
+                    <br>
+                    <span class="show_document_file" style="color:green;"></span>
                 </label>
             </div>
         </div>
@@ -41,8 +43,40 @@
 
 <script>
     document.getElementById('attachment').onchange = function () {
-        var src = URL.createObjectURL(this.files[0])
-        document.getElementById('image').src = src
+        $(".show_document_file").show();
+        $(".show_document_file").html(this.files[0].name);
+        // var src = URL.createObjectURL(this.files[0])
+        // document.getElementById('image').src = src
     }
+
+    $('.forms_doc').validate({
+        rules: { attachment: { required: true, accept: "png|jpeg|jpg|doc|pdf|exls", filesize: 100000  }},
+    });
+
+    jQuery.validator.addMethod("filesize", function(value, element, param) {
+        var fileSize = element.files[0].size;
+        var size = Math.round((fileSize / 1024));
+
+        /* checking for less than or equals to 20MB file size */
+        if (size <= 20*1024) {
+            return true;
+        } else {
+            $(".show_document_file").hide();
+            return false;
+        }   
+    }, "Invalid file size, please select a file less than or equal to 20mb size");
+
+    jQuery.validator.addMethod("accept", function(value, element, param) {
+        var extension = value.substr(value.lastIndexOf("."));
+        var allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.doc|\.pdf|\.exls)$/i;
+        var isAllowed = allowedExtensionsRegx.test(extension);
+
+        if(isAllowed){
+            return true;
+        }else{
+            $(".show_document_file").hide();
+            return false;
+        }
+    }, "File must be png|jpeg|jpg|doc|pdf|exls");
 </script>
 

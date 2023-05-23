@@ -1,4 +1,4 @@
-{{Form::model($companyPolicy,array('route' => array('company-policy.update', $companyPolicy->id), 'method' => 'PUT','enctype' => "multipart/form-data")) }}
+{{Form::model($companyPolicy,array('route' => array('company-policy.update', $companyPolicy->id), 'method' => 'PUT','class'=>'forms_doc','enctype' => "multipart/form-data")) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
@@ -29,7 +29,9 @@
                     @endphp
                     {{-- <input type="file" class="form-control" name="attachment" id="attachment" data-filename="attachment_create"> --}}
                     <input type="file" class="form-control " name="attachment" id="attachment" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" accept=".jpeg,.png,.jpg,.pdf,.doc">
-                    <img id="image"  width="25%;" class="mt-3" src="@if($companyPolicy->attachment){{$policyPath.$companyPolicy->attachment}}@else{{$logo.'user-2_1654779769.jpg'}}@endif" />
+                    {{-- <img id="image"  width="25%;" class="mt-3" src="@if($companyPolicy->attachment){{$policyPath.$companyPolicy->attachment}}@else{{$logo.'user-2_1654779769.jpg'}}@endif" /> --}}
+                    <br>
+                    <span class="show_document_file" style="color:green;">{{$companyPolicy->file}}</span>
                 </label>
             </div>
         </div>
@@ -44,9 +46,41 @@
 
 <script>
     document.getElementById('attachment').onchange = function () {
-        var src = URL.createObjectURL(this.files[0])
-        document.getElementById('image').src = src
+        $(".show_document_file").show();
+        $(".show_document_file").html(this.files[0].name);
+        // var src = URL.createObjectURL(this.files[0])
+        // document.getElementById('image').src = src
     }
+
+    $('.forms_doc').validate({
+        rules: { attachment: { required: true, accept: "png|jpeg|jpg|doc|pdf|exls", filesize: 100000  }},
+    });
+
+    jQuery.validator.addMethod("filesize", function(value, element, param) {
+        var fileSize = element.files[0].size;
+        var size = Math.round((fileSize / 1024));
+
+        /* checking for less than or equals to 20MB file size */
+        if (size <= 20*1024) {
+            return true;
+        } else {
+            $(".show_document_file").hide();
+            return false;
+        }   
+    }, "Invalid file size, please select a file less than or equal to 20mb size");
+
+    jQuery.validator.addMethod("accept", function(value, element, param) {
+        var extension = value.substr(value.lastIndexOf("."));
+        var allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.doc|\.pdf|\.exls)$/i;
+        var isAllowed = allowedExtensionsRegx.test(extension);
+
+        if(isAllowed){
+            return true;
+        }else{
+            $(".show_document_file").hide();
+            return false;
+        }
+    }, "File must be png|jpeg|jpg|doc|pdf|exls");
 </script>
 
 

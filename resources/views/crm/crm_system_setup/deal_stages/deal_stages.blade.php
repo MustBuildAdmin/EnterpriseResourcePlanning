@@ -2,7 +2,6 @@
 
 <style>
 .nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
-    width: 13%;
     float: right;
 }
 </style>

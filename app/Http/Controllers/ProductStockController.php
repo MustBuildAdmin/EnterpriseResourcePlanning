@@ -21,7 +21,8 @@ class ProductStockController extends Controller
         {
             $productServices = ProductService::where('created_by', '=', \Auth::user()->creatorId())->get();
 
-            return view('productstock.index', compact('productServices'));
+            return view('accounting.productstock.index', compact('productServices'));
+            // return view('productstock.index', compact('productServices'));
         }
         else
         {

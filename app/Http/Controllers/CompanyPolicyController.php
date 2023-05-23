@@ -131,13 +131,14 @@ class CompanyPolicyController extends Controller
     }
 
 
-    public function edit(CompanyPolicy $companyPolicy)
+    public function edit($id)
     {
 
         if(\Auth::user()->can('edit company policy'))
         {
             $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $branch->prepend('Select Branch','');
+            $companyPolicy = CompanyPolicy::find($id);
 
             return view('hrm.company_policy.hrm_company_policy_edit', compact('branch', 'companyPolicy'));
             // return view('companyPolicy.edit', compact('branch', 'companyPolicy'));
