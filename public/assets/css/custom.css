@@ -74,9 +74,9 @@ padding: 20px;
 #sidebar ul li{
     margin: 0 0 0px;
 }
-#sidebar ul li .icon{
-    font-size: 2em;
-    margin-right: 30px;
+#sidebar ul li .icon {
+  font-size: 20px;
+  margin-right: 5px;
 }
 #sidebar ul li a:hover {
     color: #000;
