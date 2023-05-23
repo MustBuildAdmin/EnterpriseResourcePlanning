@@ -59,7 +59,7 @@
                             <th scope="col">{{__('Date')}}</th>
                             <th scope="col">{{__('Amount')}}</th>
                             @if(Gate::check('edit expense') || Gate::check('delete expense'))
-                                <th scope="col"></th>
+                                <th scope="col">{{__('action')}}</th>
                             @endif
                         </tr>
                         </thead>
@@ -67,7 +67,7 @@
                             @if(isset($project->expense) && !empty($project->expense) && count($project->expense) > 0)
                                 @foreach($project->expense as $expense)
                                     <tr>
-                                        <th scope="row">
+                                        <td scope="row">
                                             @if(!empty($expense->attachment))
                                                 <a href="{{ asset(Storage::url($expense->attachment)) }}" class="btn btn-sm btn-primary btn-icon rounded-pill" data-bs-toggle="tooltip" title="{{__('Download')}}" download>
                                                     <span class="btn-inner--icon"><i class="ti ti-download"></i></span>
@@ -77,7 +77,7 @@
                                                     <span class="btn-inner--icon"><i class="ti ti-times-circle"></i></span>
                                                 </a>
                                             @endif
-                                        </th>
+                                        </td>
                                         <td>
                                             <span class="h6 text-sm font-weight-bold mb-0">{{ $expense->name }}</span>
                                             @if(!empty($expense->task))<span class="d-block text-sm text-muted">{{ $expense->task->name }}</span>@endif
@@ -120,9 +120,13 @@
                                     </tr>
                                 @endforeach
                             @else
-                                <tr>
-                                    <th scope="col" colspan="5"><h6 class="text-center">{{__('No Expense Found.')}}</h6></th>
-                                </tr>
+                                {{-- <tr>
+                                    @if(Gate::check('edit expense') || Gate::check('delete expense'))
+                                    <td scope="col" colspan="5"><h6 class="text-center">{{__('No Expense Found.')}}</h6></td>
+                                    @else
+                                    <td scope="col" colspan="4"><h6 class="text-center">{{__('No Expense Found.')}}</h6></td>
+                                    @endif
+                                </tr> --}}
                             @endif
 
                         </tbody>

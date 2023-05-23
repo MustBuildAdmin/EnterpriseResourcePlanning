@@ -38,8 +38,7 @@
     <div class="col-12 col-md-12">
         <div class="form-group">
             {{ Form::label('description', __('Description'),['class' => 'form-label']) }}<br>
-            <small class="form-text text-muted mb-2 mt-0">{{__('This textarea will autosize while you type')}}</small>
-            {{ Form::textarea('description', null, ['class' => 'form-control','rows' => '1','data-toggle' => 'autosize']) }}
+            {{ Form::textarea('description', null, ['class' => 'form-control','rows' => '1','data-toggle' => 'autosize','Placeholder'=>__('This textarea will autosize while you type')]) }}
         </div>
     </div>
 
@@ -48,10 +47,9 @@
         {{Form::label('attachment',__('Attachment'),['class'=>'form-label'])}}
         <div class="choose-file form-group">
             <label for="attachment" class="form-label">
-                <div>{{__('Choose file here')}}</div>
                 <input type="file" class="form-control" name="attachment" id="attachment" data-filename="attachment_create">
             </label>
-            <p class="attachment_create"></p>
+            {{-- <p class="attachment_create"></p> --}}
         </div>
     </div>
 

@@ -6,21 +6,48 @@
 <link rel="stylesheet" href="{{asset('assets/js/gantt/codebase/skins/dhtmlxgantt_material.css?v=7.0.11')}}">
 <link rel="stylesheet" href="{{asset('assets/js/gantt/common/controls_styles.css?v=7.0.11')}}">
 
+
 <style>
-    #gantt_here{
-        overflow-x: scroll !important;
-        overflow-y: scroll !important;
-    }
-    .gantt_control {
+
+
+.important {
+	border: 2px solid red;
+	color: red;
+	background: red;
+}
+.important .gantt_task_progress {
+	background: #ff5956;
+}
+.completed{
+    border: 2px solid green;
+	color: green;
+	background: green;
+}
+.completed .gantt_task_progress {
+	background: green;
+}
+.normal {
+	border: 2px solid green;
+}
+
+.low {
+	border: 2px solid yellow;
+}
+
+.custom_row {
+	background: rgb(245, 248, 245);
+}
+
+.gantt_control {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-    }
-    .gantt_control input ,.gantt_control button{
+}
+.gantt_control input ,.gantt_control button{
         background: white;
         border-radius: 2px;
         border: none;
-    }
+ }
     html,
     body {
         height: 100%;
@@ -107,7 +134,7 @@ foreach ($project_holidays as $key => $value) {
 }
 $holidays=implode(':',$holidays);
 @endphp
-@include('construction_project.side-menu',['hrm_header' => "Gantt Chart"])
+{{-- @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"]) --}}
                         <div class="col d-flex flex-column">
                             <div class="align">
                                 {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;']) }}
@@ -126,7 +153,7 @@ $holidays=implode(':',$holidays);
                                 <button class="zoom_toggle btn btn-outline-primary w-20" onclick="toggleMode(this)">Zoom to Fit</button>
                                 <input type=button value="Zoom In" class="btn btn-outline-primary w-20" onclick="gantt.ext.zoom.zoomIn();">
                                 <input type=button value="Zoom Out"  class="btn btn-outline-primary w-20" onclick="gantt.ext.zoom.zoomOut();">
-                                <button id="toggle_fullscreen"  class="btn btn-outline-primary w-20" onclick="gantt.ext.fullscreen.toggle();">Toggle Full Screen</button>
+                                {{-- <button id="toggle_fullscreen"  class="btn btn-outline-primary w-20" onclick="gantt.ext.fullscreen.toggle();">Toggle Full Screen</button> --}}
                                 <button onclick="updateCriticalPath(this)" class="btn btn-outline-primary w-20">Expand critical tasks</button>
                                 </div>
                                 <!-- <input value="Undo" type="button" onclick='gantt.undo()'>
@@ -661,6 +688,24 @@ $holidays=implode(':',$holidays);
                 { name:"time", height:72, type:"duration", map_to:"auto"}
             ];
 
+
+		//defines the text inside the tak bars
+		// gantt.templates.task_text = function (start, end, task) {
+		// 	return "<b>Text:</b> " + task.text + ",<b> Holders:</b> " + task.users;
+		// };
+
+		// //defines the style of task bars
+		// gantt.templates.grid_row_class = gantt.templates.task_row_class = function (start, end, task) {
+		// 	return "custom_row";
+		// };
+
+		gantt.templates.task_class = function (start, end, task) {
+			if (task.progress == 100) {
+				return "completed";
+			} else {
+				return "important";
+			}
+		};
             var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
             //var dp = new gantt.dataProcessor("/erpnew/public");
             dp.init(gantt);
