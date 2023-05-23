@@ -1,4 +1,3 @@
-
 <style>
     /* pagination */
     .pagination {
@@ -51,7 +50,7 @@
 
 
     .pagination .active a {
-        color: #242121 !important;
+        color: #ffffff;
         cursor: default;
     }
 
@@ -142,7 +141,6 @@
         text-align: right;
         padding-top: 0.25em;
     }
-
 </style>
 
 <div class="wrapper">
@@ -150,49 +148,131 @@
     <nav id="sidebar">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
-                <li class="{{ Request::segment(1) == 'projects-view' || Request::segment(1) == 'construction_main'  ? 'active' : '' }}">
-                    <a href="{{route('filter.project.view')}}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
-                            class="list">{{ __('Productivity') }}</span></a>
-                </li>
-
+                {{-- Planning --}}
                 <li class="">
-                    <a href="#"><span
-                            class="icon"><i class="ti ti-users"></i>
-                        </span><span class="list">{{ __('Diary') }}</span>
+                    <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuplanning" role="button" aria-expanded="false"
+                        aria-controls="pageSubmenuplanning"><span class="icon"><img src="assets/images/icons/support.png"/></span>
+                        <span class="list">{{ __('Planning') }}</span>
                     </a>
-                </li>
-                <li class="{{ (request()->is('taskboard*') ? 'active' : '')}}">
-                    <a href="{{ route('taskBoard.view',['list']) }}"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                            class="list">{{ __('Task') }}</span></a>
+                    <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuplanning">
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Productivity') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Task') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Task Calendar') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Project Reports') }}</a>
+                        </li>
+                    </ul>
                 </li>
 
-                <li class="{{ (request()->is('calendar_new*') ? 'active' : '')}}">
-                    <a href="{{ route('task.newcalendar',['all']) }}"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                            class="list">{{ __('Task Calender') }}</span></a>
+                {{-- Dairy --}}
+                <li class="">
+                    <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
+                        aria-controls="pageSubmenuDairy"><span class="icon"><img src="assets/images/icons/support.png"/></span>
+                        <span class="list">{{ __('Dairy') }}</span>
+                    </a>
+                    <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuDairy">
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Drawing') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Site Reports') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('VO/Change Order') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Directions') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('RFI') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
+                        </li>
+                        <li class="">
+                            <a href="#" class="dropdown-item">{{ __('Procurement Material Supply Log') }}</a>
+                        </li>
+                    </ul>
                 </li>
-                <li class='{{ (request()->is('project_report*') ? 'active' : '')}}'>
-                    <a href="{{route('project_report.index')}}"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span
-                            class="list">{{ __('Project Report') }}</span></a>
+
+                {{-- QA and QC --}}
+                <li class="">
+                    <a data-bs-target="#submenuQaAndQc" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                        <span class="icon"><img src="assets/images/icons/leave.png"/></span>
+                        <span class="list">{{ __('QA and QC') }}</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="submenuQaAndQc">
+                        <li class="">
+                            <a data-bs-target="#submenuTesting" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                                <span class="icon"><i class="ti ti-users"></i></span>
+                                <span class="list">{{__('Testing ')}}</span>
+                            </a>
+                            <ul class="collapse list-unstyled" id="submenuTesting">
+                                <li class=""><a href="">{{__('Concrete')}}</a></li>
+                                <li class=""><a href="">{{__('Bricks')}}</a></li>
+                                <li class=""><a href="">{{__('Cement')}}</a></li>
+                                <li class=""><a href="">{{__('Sand')}}</a></li>
+                                <li class=""><a href="">{{__('Steel')}}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                {{-- Contracts --}}
+                <li class="">
+                    <a data-bs-target="#submenuContracts" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                        <span class="icon"><img src="assets/images/icons/leave.png"/></span>
+                        <span class="list">{{ __('Contracts') }}</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="submenuContracts">
+                        <li class="">
+                            <a data-bs-target="#submenuTender" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                                <span class="icon"><i class="ti ti-users"></i></span>
+                                <span class="list">{{__('Tender')}}</span>
+                            </a>
+                            <ul class="collapse list-unstyled" id="submenuTender">
+                                <li class=""><a href="">{{__('BOQ_Claims/Payment Certificate')}}</a></li>
+                                <li class="">
+                                    <a data-bs-target="#submenuMaterial" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                                        <span class="icon"><i class="ti ti-users"></i></span>
+                                        <span class="list">{{__('Material ')}}</span>
+                                    </a>
+                                    <ul class="collapse list-unstyled" id="submenuMaterial">
+                                        <li class=""><a href="">{{__('Reports')}}</a></li>
+                                        <li class=""><a href="">{{__('Reconcilation')}}</a></li>
+                                        <li class=""><a href="">{{__('EOT-Extension')}}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
     </nav>
 
-      <!-- Page Content  -->
-<div id="content" class="main">
-<div class="collapseToggle">
-<span id="toggleIcon" class="fa fa-chevron-left"></span>
-</div>
-@isset($hrm_header)
-<h2 class="mb-4">{{ __($hrm_header) }}</h2>
-@endisset
+    <!-- Page Content  -->
+    <div id="content" class="main">
+        <div class="collapseToggle">
+            <span id="toggleIcon" class="fa fa-chevron-left"></span>
+        </div>
+        @isset($hrm_header)
+            <h2 class="mb-4">{{ __($hrm_header) }}</h2>
+        @endisset
 
 
-<script type="text/javascript">
-$('.collapseToggle').on('click', function() {
-$(".sidebar").toggleClass('sidebar--Collapse');
-$('.main').toggleClass('main--slide');
-$('#toggleIcon').toggleClass('rotate');
-});
-</script>
-{{-- @include('new_layouts.footer') --}}
+
+        <script type="text/javascript">
+            $('.collapseToggle').on('click', function() {
+                $(".sidebar").toggleClass('sidebar--Collapse');
+                $('.main').toggleClass('main--slide');
+                $('#toggleIcon').toggleClass('rotate');
+            });
+        </script>
+        {{-- @include('new_layouts.footer') --}}
