@@ -1,3 +1,8 @@
+<style>
+    div#choices_multiple1_chosen {
+        width: 100% !important;
+    }
+</style>
 {{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT')) }}
 <div class="modal-body">
     <div class="row">
@@ -15,7 +20,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}
-                {{Form::email('email',null,array('class'=>'form-control','placeholder'=>__('Enter User Email')))}}
+                {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
+                <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
+                    <span class="text-danger">Email Already Exist!</span>
+                </span> 
                 @error('email')
                 <small class="invalid-email" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
@@ -50,22 +58,22 @@
                         @endforeach
                     </select>
                 </div>
-            </div>
-</div>
-       <div class="form-group col-md-6">
-            <div class="form-group">
-                {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
-                <div class="form-icon-user">
-                    <select class="form-control country" name="country" id='country'
-                                placeholder="Select Country" >
-                                <option value="">{{ __('Select Country ...') }}</option>
-                                @foreach($countrylist as $key => $value)
-                                    <option value="{{$value->iso2}}" @if($user->country==$value->iso2) selected @endif>{{$value->name}}</option>
-                                @endforeach
-                    </select>
                 </div>
             </div>
-        </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
+                    <div class="form-icon-user">
+                        <select class="form-control country" name="country" id='country'
+                                    placeholder="Select Country" >
+                                    <option value="">{{ __('Select Country ...') }}</option>
+                                    @foreach($countrylist as $key => $value)
+                                        <option value="{{$value->iso2}}" @if($user->country==$value->iso2) selected @endif>{{$value->name}}</option>
+                                    @endforeach
+                        </select>
+                    </div>
+                </div>
+                </div>
 
        <div class="form-group col-md-6">
             <div class="form-group">
@@ -81,6 +89,7 @@
                 </div>
             </div>
         </div>
+
        <div class="form-group col-md-6">
             <div class="form-group">
                 {{Form::label('city',__('City'),array('class'=>'form-label')) }}
@@ -98,6 +107,7 @@
                 </div>
             </div>
         </div>
+
        <div class="form-group col-md-6">
             <div class="form-group">
                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}
@@ -106,6 +116,7 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
@@ -151,7 +162,7 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light"data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
+    <input type="submit" value="{{__('Update')}}" class="btn  btn-primary" id="edit_user">
 </div>
 
 {{Form::close()}}
@@ -177,13 +188,44 @@
 </script>
 <script>
     $(document).ready(function() {
+
         $(".chosen-select").chosen();
+
+        $(document).on("keypress", '#zip', function (event) {
+            if(event.which <= 48 || event.which >=57){
+                event.preventDefault();
+            }
+        });
+
+        $(document).on("change", '#zip', function (event) {
+            $value = $("#zip").val();
+            if(isNaN($value)){
+            $("#zip").val('');
+            }
+        });
+        
+        $(document).on("keyup", '#email', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_email") }}',
+                type : 'GET',
+                data : { 'get_id': "{{$user->id}}", 'get_name' : $("#email").val(), 'form_name' : "Users" },
+                success : function(data) {
+                    if(data == 1){
+                        $("#edit_user").prop('disabled',false);
+                        $(".email_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $("#edit_user").prop('disabled',true);
+                        $(".email_duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
     });
 
    
 </script>
-<style>
-div#choices_multiple1_chosen {
-    width: 100% !important;
-}
-</style>
