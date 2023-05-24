@@ -19,7 +19,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('email',__('Email'),['class'=>'form-label'])}}
+                {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
                     <span class="text-danger">Email Already Exist!</span>
@@ -77,7 +77,7 @@
 
        <div class="form-group col-md-6">
             <div class="form-group">
-                {{Form::label('state',__('State'),array('class'=>'form-label')) }}
+                {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     <select class="form-control country" name="state" id='state'
                                 placeholder="Select State" >
