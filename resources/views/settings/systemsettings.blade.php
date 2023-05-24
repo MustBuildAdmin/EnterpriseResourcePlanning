@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         {{Form::label('site_currency_symbol',__('Currency Symbol '),array('class' => 'form-label')) }}
-                                        <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol' disabled
+                                        {{-- <select class="form-control site_currency_symbol" name="site_currency_symbol" id='site_currency_symbol'
                                                 placeholder="Select Currecy" required>
                                             <option value=""></option>
                                             <!-- {{ __('Select Currency Symbol ...') }} -->
@@ -83,8 +83,8 @@
                                                 @endisset>{{$value->symbol}}</option>
                                             @endforeach
                                             @endif
-                                        </select>
-                                        <!-- {{Form::text('site_currency_symbol',null,array('class'=>'form-control'))}} -->
+                                        </select> --}}
+                                        {{Form::text('site_currency_symbol',null,array('class'=>'form-control'))}}
                                         @error('site_currency_symbol')
                                         <span class="invalid-site_currency_symbol" role="alert">
                                             <strong class="text-danger">{{ $message }}</strong>
@@ -295,12 +295,12 @@
         </div>
     </div>
 <script>
-var site_currency=document.getElementById("site_currency");
-    var site_currency_symbol=document.getElementById("site_currency_symbol");
-site_currency.addEventListener('change', (event) => {
-    site_currency_symbol.value=site_currency.value;
+// var site_currency=document.getElementById("site_currency");
+//     var site_currency_symbol=document.getElementById("site_currency_symbol");
+// site_currency.addEventListener('change', (event) => {
+//     site_currency_symbol.value=site_currency.value;
    
-});
+// });
 </script>
 @include('new_layouts.footer')
 <style>

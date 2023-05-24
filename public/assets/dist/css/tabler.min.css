@@ -28604,3 +28604,11 @@ table.dataTable>tbody>tr {
     color: #fff !important;
     /* border: none !important; */
 }
+
+
+@media (max-width: 768px) {
+#sidebar ul li .icon{
+    font-size: 73em;
+    margin-right: 8px;
+}
+}
