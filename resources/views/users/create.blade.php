@@ -1,8 +1,8 @@
-
-
-
-
-
+<style>
+    div#choices_multiple1_chosen {
+        width: 100% !important;
+    }
+</style>
 {{Form::open(array('url'=>'users','method'=>'post'))}}
 
 <div class="modal-body">
@@ -23,7 +23,10 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}
-                {{Form::text('email',null,array('class'=>'form-control','placeholder'=>__('Enter User Email'),'required'=>'required'))}}
+                {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'required'=>'required'))}}
+                <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
+                    <span class="text-danger">Email Already Exist!</span>
+                </span> 
                 @error('email')
                 <small class="invalid-email" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
@@ -105,14 +108,14 @@
             <div class="form-group">
                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
+                    {{Form::text('zip',null,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
                 </div>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="input-group">
+                <div class="form-icon-user">
                     {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
                 </div>
             </div>
@@ -175,7 +178,7 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary"  id="create_user">
 </div>
 
 {{Form::close()}}
@@ -203,11 +206,46 @@ $(document).on("change", '#country', function () {
 
 <script>
     $(document).ready(function() {
+
         $(".chosen-select").chosen();
+
+        $(document).on("keypress", '#zip', function (event) {
+            if(event.which <= 48 || event.which >=57){
+                event.preventDefault();
+            }
+        });
+
+        $(document).on("change", '#zip', function (event) {
+            $value = $("#zip").val();
+            if(isNaN($value)){
+            $("#zip").val('');
+            }
+        });
+
+    });
+
+    $(document).ready(function(){
+        $(document).on("keyup", '#email', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_email") }}',
+                type : 'GET',
+                data : { 'get_name' : $("#email").val(),'form_name' : "Users" },
+                success : function(data) {
+                    if(data == 1){
+                        $("#create_user").prop('disabled',false);
+                        $(".email_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $("#create_user").prop('disabled',true);
+                        $(".email_duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
     });
 </script>
-<style>
-div#choices_multiple1_chosen {
-    width: 100% !important;
-}
-</style>
+
