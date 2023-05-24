@@ -151,21 +151,21 @@
                 {{-- Planning --}}
                 <li class="">
                     <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuplanning" role="button" aria-expanded="false"
-                        aria-controls="pageSubmenuplanning"><span class="icon"><img src="assets/images/icons/support.png"/></span>
+                        aria-controls="pageSubmenuplanning"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Planning') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuplanning">
+                        {{-- <li class="">
+                            <a href="# " class="dropdown-item">{{ __('Productivity') }}</a>
+                        </li> --}}
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Productivity') }}</a>
+                            <a href="{{ route('taskBoard.view',['list']) }}" class="dropdown-item">{{ __('Task') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Task') }}</a>
+                            <a href="{{ route('task.newcalendar',['all']) }}" class="dropdown-item">{{ __('Task Calendar') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Task Calendar') }}</a>
-                        </li>
-                        <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Project Reports') }}</a>
+                            <a href="{{route('project_report.index')}}" class="dropdown-item">{{ __('Project Reports') }}</a>
                         </li>
                     </ul>
                 </li>
@@ -173,7 +173,7 @@
                 {{-- Dairy --}}
                 <li class="">
                     <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
-                        aria-controls="pageSubmenuDairy"><span class="icon"><img src="assets/images/icons/support.png"/></span>
+                        aria-controls="pageSubmenuDairy"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Dairy') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuDairy">
@@ -204,7 +204,7 @@
                 {{-- QA and QC --}}
                 <li class="">
                     <a data-bs-target="#submenuQaAndQc" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                        <span class="icon"><img src="assets/images/icons/leave.png"/></span>
+                        <span class="icon"><img src="{{asset('assets/images/icons/leave.png')}}"/></span>
                         <span class="list">{{ __('QA and QC') }}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="submenuQaAndQc">
@@ -227,7 +227,7 @@
                 {{-- Contracts --}}
                 <li class="">
                     <a data-bs-target="#submenuContracts" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
-                        <span class="icon"><img src="assets/images/icons/leave.png"/></span>
+                        <span class="icon"><img src="{{asset('assets/images/icons/leave.png')}}"/></span>
                         <span class="list">{{ __('Contracts') }}</span>
                     </a>
                     <ul class="collapse list-unstyled" id="submenuContracts">
