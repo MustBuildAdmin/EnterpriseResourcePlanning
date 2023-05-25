@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('email',__('Email'),['class'=>'form-label'])}}
+                {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'required'=>'required'))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
                     <span class="text-danger">Email Already Exist!</span>
