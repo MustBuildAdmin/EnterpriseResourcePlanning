@@ -154,10 +154,58 @@
                         aria-controls="pageSubmenuplanning"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Planning') }}</span>
                     </a>
+                    @php
+                        if(Session::has('project_id')){
+                            $project_id = Session::get('project_id');
+                        }
+                        else{
+                            $project_id = 0;
+                        }
+
+                        $setting  = Utility::settings(\Auth::user()->creatorId());
+                    @endphp
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuplanning">
-                        {{-- <li class="">
-                            <a href="# " class="dropdown-item">{{ __('Productivity') }}</a>
-                        </li> --}}
+                        <li class="">
+                            <a href="{{ route('projects.show', $project_id) }}" class="dropdown-item">{{ __('Dashboard') }}</a>
+                        </li>
+                        @can('view grant chart')
+                            <li class="">
+                                <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gand Chart') }}</a>
+                            </li>
+                        @endcan
+
+                        @can('view expense')
+                            <li class="">
+                                <a href="{{ route('projects.expenses.index',$project_id) }}" class="dropdown-item">{{ __('Expense') }}</a>
+                            </li>
+                        @endcan
+                        <li class="">
+                            <a href="{{ route('project_report.view_task_report',$project_id) }}" class="dropdown-item">{{ __('Task Report') }}</a>
+                        </li>
+                        @if($setting['company_type']!=2)
+                            @can('manage bug report')
+                                <li class="">
+                                    <a href="{{ route('task.bug',$project_id) }}" class="dropdown-item">{{ __('Bug Report') }}</a>
+                                </li>
+                            @endcan
+                            @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
+                                <li class="">
+                                    <a href="{{ route('projecttime.tracker',$project_id) }}" class="dropdown-item">{{ __('Tracker') }}</a>
+                                </li>
+                            @endif
+                            @can('create project task')
+                                <li class="">
+                                    <a href="{{ route('projects.tasks.index',$project_id) }}" class="dropdown-item">{{ __('Task') }}</a>
+                                </li>
+                            @endcan
+                            @if(\Auth::user()->type != 'client')
+                                @can('view timesheet')
+                                    <li class="">
+                                        <a href="{{ route('timesheet.index',$project_id) }}" class="dropdown-item">{{ __('Timesheet') }}</a>
+                                    </li>
+                                @endcan
+                            @endif
+                        @endif
                         <li class="">
                             <a href="{{ route('taskBoard.view',['list']) }}" class="dropdown-item">{{ __('Task') }}</a>
                         </li>

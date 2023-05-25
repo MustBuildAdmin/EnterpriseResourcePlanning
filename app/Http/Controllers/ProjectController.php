@@ -425,9 +425,12 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-
+        Session::forget('project_id');
+        Session::forget('project_instance');
         if(\Auth::user()->can('view project'))
         {
+            Session::put('project_id',$project->id);
+            Session::put('project_instance',$project->instance_id);
 
             $usr           = Auth::user();
             if(\Auth::user()->type == 'client'){
@@ -435,8 +438,7 @@ class ProjectController extends Controller
             }else{
               $user_projects = $usr->projects->pluck('id')->toArray();
             }
-            Session::put('project_id',$project->id);
-            Session::put('project_instance',$project->instance_id);
+            
             if(in_array($project->id, $user_projects))
             {
                 // test the holidays
