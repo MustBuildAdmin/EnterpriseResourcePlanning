@@ -39,6 +39,14 @@ Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middlewar
 //diary
 
 
+Route::get('reportnew','reportnew@index')->name('diary')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
 Route::get('diary','DiaryController@index')->name('diary')->middleware(
     [
         'auth',

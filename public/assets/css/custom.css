@@ -55,6 +55,7 @@
   padding: 20px 0;
   border-bottom: 1px solid #fff;
   display: block;
+  position: relative;
 }
 
 #sidebar ul p {
