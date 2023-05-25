@@ -8,7 +8,9 @@
 
 
 <style>
-
+.gantt_grid_data{
+    overflow: auto !important;
+}
 
 .important {
 	border: 2px solid red;
@@ -182,7 +184,7 @@ $holidays=implode(':',$holidays);
                                             <div class="gantt_control" >
 
                                             </div>
-                                                <div id="gantt_here" style='width:100%; height:677px;'onload="script();" ></div>
+                                                <div id="gantt_here" style='width:100%; height:677px;position: relative;'onload="script();"  ></div>
                                             </div>
 
                                             @else
@@ -320,6 +322,61 @@ $holidays=implode(':',$holidays);
 
 
 
+	var hourToStr = gantt.date.date_to_str("%H:%i");
+	var hourRangeFormat = function(step){
+		return function(date){
+			var intervalEnd = new Date(gantt.date.add(date, step, "hour") - 1)
+			return hourToStr(date) + " - " + hourToStr(intervalEnd);
+		};
+	};
+
+
+	gantt.config.min_column_width = 80;
+	var zoomConfig2 = {
+		minColumnWidth: 80,
+		maxColumnWidth: 150,
+		levels: [
+			[
+				{ unit: "month", format: "%M %Y", step: 1},
+				{ unit: "week", step: 1, format: function (date) {
+						var dateToStr = gantt.date.date_to_str("%d %M");
+						var endDate = gantt.date.add(date, -6, "day");
+						var weekNum = gantt.date.date_to_str("%W")(date);
+						return "Week #" + weekNum + ", " + dateToStr(date) + " - " + dateToStr(endDate);
+					}}
+			],
+			[
+				{ unit: "month", format: "%M %Y", step: 1},
+				{ unit: "day", format: "%d %M", step: 1}
+			],
+			[
+				{ unit: "day", format: "%d %M", step: 1},
+				{ unit: "hour", format: hourRangeFormat(12), step: 12}
+			],
+			[
+				{unit: "day", format: "%d %M",step: 1},
+				{unit: "hour",format: hourRangeFormat(6),step: 6}
+			],
+			[
+				{ unit: "day", format: "%d %M", step: 1 },
+				{ unit: "hour", format: "%H:%i", step: 1}
+			]
+		],
+		startDate: new Date(2018, 02, 27),
+		endDate: new Date(2018, 03, 20),
+		useKey: "ctrlKey",
+		trigger: "wheel",
+		element: function(){
+			return gantt.$root.querySelector(".gantt_task");
+		}
+	}
+
+	gantt.ext.zoom.init(zoomConfig2);
+	gantt.message({
+		text:"Use <b>ctrl + mousewheel</b> in order to zoom",
+		expire: -1
+	});
+
 
 
 
@@ -454,6 +511,7 @@ $holidays=implode(':',$holidays);
             gantt.config.show_chart = !gantt.config.show_chart;
             gantt.render()
         }
+
         var zoomConfig = {
             levels: [
                 {
@@ -533,6 +591,8 @@ $holidays=implode(':',$holidays);
             // gantt.config.order_branch_free = true;
 
             gantt.init(main);
+            gantt.config.scrollX = true; // Enable horizontal scrollbar
+            gantt.config.scrollY = true; // Enable vertical scrollbar
             // For Full Screen
             // gantt.plugins({
             //     fullscreen: true
@@ -689,15 +749,24 @@ $holidays=implode(':',$holidays);
             ];
 
 
-		//defines the text inside the tak bars
-		// gantt.templates.task_text = function (start, end, task) {
-		// 	return "<b>Text:</b> " + task.text + ",<b> Holders:</b> " + task.users;
-		// };
+            var hourToStr = gantt.date.date_to_str("%H:%i");
+	var hourRangeFormat = function(step){
+		return function(date){
+			var intervalEnd = new Date(gantt.date.add(date, step, "hour") - 1)
+			return hourToStr(date) + " - " + hourToStr(intervalEnd);
+		};
+	};
 
-		// //defines the style of task bars
-		// gantt.templates.grid_row_class = gantt.templates.task_row_class = function (start, end, task) {
-		// 	return "custom_row";
-		// };
+
+	gantt.config.min_column_width = 80;
+
+	var hourToStr = gantt.date.date_to_str("%H:%i");
+	var hourRangeFormat = function(step){
+		return function(date){
+			var intervalEnd = new Date(gantt.date.add(date, step, "hour") - 1)
+			return hourToStr(date) + " - " + hourToStr(intervalEnd);
+		};
+	};
 
 		gantt.templates.task_class = function (start, end, task) {
 			if (task.progress == 100) {
@@ -707,7 +776,7 @@ $holidays=implode(':',$holidays);
 			}
 		};
             var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-            //var dp = new gantt.dataProcessor("/erpnew/public");
+            // var dp = new gantt.dataProcessor("/erpnew/public");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
@@ -715,5 +784,7 @@ $holidays=implode(':',$holidays);
                 "_token":tempcsrf,
                 }
             });
+
+
         });
     </script>
