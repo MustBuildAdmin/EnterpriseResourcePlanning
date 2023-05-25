@@ -85,7 +85,21 @@ class ContractController extends Controller
 
     }
 
-
+    public function boq(){
+        return view('contract.boq');
+    }
+    public function claimspaymentcertificate(){
+        return view('contract.claimspaymentcertificate');
+    }
+    public function reconcilation(){
+        return view('contract.reconcilation');
+    }
+    public function reports(){
+        return view('contract.reports');
+    }
+    public function eot(){
+        return view('contract.eot');
+    }
     public function create()
     {
         $contractTypes = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
