@@ -44,10 +44,16 @@
                 {{ Form::number('budget', null, ['class' => 'form-control']) }}
             </div>
         </div>
-        <div class="col-6 col-md-6">
+        {{-- <div class="col-6 col-md-6">
             <div class="form-group">
                 {{ Form::label('estimated_hrs', __('Estimated Hours'),['class' => 'form-label']) }}
                 {{ Form::number('estimated_hrs', null, ['class' => 'form-control','min'=>'0','maxlength' => '8']) }}
+            </div>
+        </div> --}}
+        <div class="col-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
+                {{ Form::text('estimated_days', null, ['class' => 'form-control' ,'readonly'=>true]) }}
             </div>
         </div>
     </div>
@@ -174,6 +180,18 @@
     var start=$('#start_date').val();
     $('#end_date').val('');
     $('#end_date').attr('min',start);
+});
+$(document).on("change", '#end_date', function () {
+    var start=$('#start_date').val();
+    var End=$('#end_date').val();
+    const date1 = new Date(start);
+    const date2 = new Date(End);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    const estimated_days=diffDays+1;
+    $('#estimated_days').val(estimated_days);
+   
+   
 });
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
