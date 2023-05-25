@@ -31,7 +31,6 @@
 <script> 
     $(document).ready(function(){
         $(document).on("keyup", '.get_name', function () {
-            $(".show_duplicate_error").css('display','none');
             $.ajax({
                 url : '{{ route("checkDuplicateRS_HRM") }}',
                 type : 'GET',

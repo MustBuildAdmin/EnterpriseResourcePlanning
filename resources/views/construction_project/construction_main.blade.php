@@ -4,10 +4,12 @@
     max-width: 26% !important;
     height: auto;
 }
+.page-wrapper{
+    margin:20px;
+}
 </style>
 <div class="page-wrapper">
 
-    @include('construction_project.side-menu')
 
 
 

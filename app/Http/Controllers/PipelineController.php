@@ -75,7 +75,7 @@ class PipelineController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20',
+                                   'name' => 'required|max:20|unique:pipelines',
                                ]
             );
 
@@ -155,7 +155,7 @@ class PipelineController extends Controller
 
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20',
+                                       'name' => 'required|max:20|unique:pipelines',
                                    ]
                 );
 

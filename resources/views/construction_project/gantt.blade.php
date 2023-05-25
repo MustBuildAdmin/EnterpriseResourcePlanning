@@ -321,7 +321,7 @@ $holidays=implode(':',$holidays);
 
 
 
-        
+
 	var hourToStr = gantt.date.date_to_str("%H:%i");
 	var hourRangeFormat = function(step){
 		return function(date){
@@ -511,7 +511,7 @@ $holidays=implode(':',$holidays);
             gantt.config.show_chart = !gantt.config.show_chart;
             gantt.render()
         }
-        
+
         var zoomConfig = {
             levels: [
                 {
@@ -759,7 +759,7 @@ $holidays=implode(':',$holidays);
 
 
 	gantt.config.min_column_width = 80;
-	
+
 	var hourToStr = gantt.date.date_to_str("%H:%i");
 	var hourRangeFormat = function(step){
 		return function(date){
@@ -785,6 +785,6 @@ $holidays=implode(':',$holidays);
                 }
             });
 
-           
+
         });
     </script>

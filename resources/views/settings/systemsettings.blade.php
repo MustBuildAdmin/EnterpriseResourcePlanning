@@ -49,7 +49,7 @@
                             <div class="row">
                             <div class="form-group col-md-6">
                                         {{Form::label('site_currency',__('Currency *'),array('class' => 'form-label')) }}
-                                        <select class="form-control site_currency" name="site_currency" id='site_currency'
+                                        <select class="form-control site_currency" name="site_currency" id='site_currency' disabled
                                                 placeholder="Select Currecy" required>
                                             <option value="">{{ __('Select Currency ...') }}</option>
                                             @isset($currency)

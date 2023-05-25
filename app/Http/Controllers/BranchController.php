@@ -331,6 +331,14 @@ class BranchController extends Controller
                 $get_check_val = Competencies::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
             }
         }
+        elseif($form_name == "DocumentSetup"){
+            if($get_id == null){
+                $get_check_val = DucumentUpload::where('name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+            else{
+                $get_check_val = DucumentUpload::where('name',$check_name)->where('id','!=',$get_id)->where('created_by',\Auth::user()->creatorId())->first();
+            }
+        }
         else{
             $get_check_val = "Not Empty";
         }

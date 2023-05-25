@@ -28581,3 +28581,34 @@ table.dataTable>tbody>tr {
 .conbtn {
     margin: 10px 10px 0 1% !important;
 }
+
+.proposal .ms-2 {
+    margin-left: 0.5rem !important;
+    float: left;
+}
+
+.bill .ms-2 {
+    margin-left: 0.5rem !important;
+    float: left;
+}
+
+.colorblack{
+ color: #000 !important;
+}
+
+.timeline-icons {
+    font-size: 34px;
+}
+ 
+.timeline-wrapper .ti.ti-pencil {
+    color: #fff !important;
+    /* border: none !important; */
+}
+
+
+@media (max-width: 768px) {
+#sidebar ul li .icon{
+    font-size: 73em;
+    margin-right: 8px;
+}
+}
