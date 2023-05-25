@@ -393,7 +393,7 @@ class ProjectReportController extends Controller
                 // header('Accept-Ranges: bytes');
                 // return $pdf->download($filename);
                 $data["email"] = $to;
-                $data["title"] = "Daily Prodcutivity Report";
+                $data["title"] = "Daily Productivity Report";
                 $data["body"] = "Please find the attachment of the Today Productivity report";
                 try
                 {

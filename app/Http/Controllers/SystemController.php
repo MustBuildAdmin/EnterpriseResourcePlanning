@@ -351,6 +351,11 @@ class SystemController extends Controller
             {
                 $post['shipping_display'] = 'off';
             }
+            
+            if(!isset($post['shipping_display']))
+            {
+                $post['shipping_display'] = 'off';
+            }
 
             $settings = Utility::settings();
 

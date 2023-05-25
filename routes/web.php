@@ -326,6 +326,13 @@ Route::resource('users', 'UserController')->middleware(
     ]
 );
 
+Route::any('check_duplicate_email', 'UserController@check_duplicate_email')->name('check_duplicate_email')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('view_change_password', 'UserController@view_change_password')->name('view_change_password')->middleware(
     [
         'auth',

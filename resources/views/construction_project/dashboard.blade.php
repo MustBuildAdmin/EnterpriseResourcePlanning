@@ -451,51 +451,51 @@
 @include('new_layouts.footer')
 
     <script>
-        (function () {
-            var options = {
-                chart: {
-                    type: 'area',
-                    height: 60,
-                    sparkline: {
-                        enabled: true,
-                    },
-                },
-                colors: ["#ffa21d"],
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth',
-                    width: 2,
-                },
-                series: [{
-                    name: 'Bandwidth',
-                    data:{{ json_encode(array_map('intval',$project_data['timesheet_chart']['chart'])) }}
-                }],
+        // (function () {
+        //     var options = {
+        //         chart: {
+        //             type: 'area',
+        //             height: 60,
+        //             sparkline: {
+        //                 enabled: true,
+        //             },
+        //         },
+        //         colors: ["#ffa21d"],
+        //         dataLabels: {
+        //             enabled: false
+        //         },
+        //         stroke: {
+        //             curve: 'smooth',
+        //             width: 2,
+        //         },
+        //         series: [{
+        //             name: 'Bandwidth',
+        //             data:{{ json_encode(array_map('intval',$project_data['timesheet_chart']['chart'])) }}
+        //         }],
 
-                tooltip: {
-                    followCursor: false,
-                    fixed: {
-                        enabled: false
-                    },
-                    x: {
-                        show: false
-                    },
-                    y: {
-                        title: {
-                            formatter: function (seriesName) {
-                                return ''
-                            }
-                        }
-                    },
-                    marker: {
-                        show: false
-                    }
-                }
-            }
-            var chart = new ApexCharts(document.querySelector("#timesheet_chart"), options);
-            chart.render();
-        })();
+        //         tooltip: {
+        //             followCursor: false,
+        //             fixed: {
+        //                 enabled: false
+        //             },
+        //             x: {
+        //                 show: false
+        //             },
+        //             y: {
+        //                 title: {
+        //                     formatter: function (seriesName) {
+        //                         return ''
+        //                     }
+        //                 }
+        //             },
+        //             marker: {
+        //                 show: false
+        //             }
+        //         }
+        //     }
+        //     var chart = new ApexCharts(document.querySelector("#timesheet_chart"), options);
+        //     chart.render();
+        // })();
 
         (function () {
             var options = {
@@ -584,7 +584,7 @@
                 success: function (data) {
                     mainEle.html(data.html);
                     $('[id^=fire-modal]').remove();
-                    loadConfirm();
+                    // loadConfirm();
                 }
             });
         }

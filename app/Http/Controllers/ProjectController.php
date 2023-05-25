@@ -395,8 +395,12 @@ class ProjectController extends Controller
                 $msg = __("New").' '.$request->project_name.' '.__("project").' '.__(" created by").' ' .\Auth::user()->name.'.';
                 Utility::send_telegram_msg($msg);
             }
-
-            return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
+            if(isset($request->holidays)){
+                return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
+            }else{
+                return redirect('project_holiday')->with('success', __('Project Add Successfully'));
+            }
+            
         }
         else
         {
