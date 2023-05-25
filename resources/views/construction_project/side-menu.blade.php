@@ -214,11 +214,11 @@
                                 <span class="list">{{__('Testing ')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTesting">
-                                <li class=""><a href="">{{__('Concrete')}}</a></li>
-                                <li class=""><a href="">{{__('Bricks')}}</a></li>
-                                <li class=""><a href="">{{__('Cement')}}</a></li>
-                                <li class=""><a href="">{{__('Sand')}}</a></li>
-                                <li class=""><a href="">{{__('Steel')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.concrete')}}">{{__('Concrete')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.steel')}}">{{__('Steel')}}</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -237,12 +237,12 @@
                                 <span class="list">{{__('Tender')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTender">
-                                <li class=""><a href="">{{__('BOQ')}}</a></li>
+                                <li class=""><a href="{{route('contract.boq')}}">{{__('BOQ')}}</a></li>
                                
                             </ul>
                         </li>
                         <li class="">
-                            <a data-bs-target="#submenuTender1" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                            <a href="{{route('contract.claimspaymentcertificate')}}"  aria-expanded="false" class="accordion-collapse collapse list-unstyled">
                                 <span class="icon"><i class="ti ti-users"></i></span>
                                 <span class="list">{{__('Claims/Payment Certificate')}}</span>
                             </a>
@@ -252,12 +252,12 @@
                                         <span class="icon"><i class="ti ti-users"></i></span>
                                         <span class="list">{{__('Material ')}}</span>
                             </a>
-                            <ul class="collapse list-unstyled" id="submenuTender">
+                            <ul class="collapse list-unstyled" id="submenuMaterial">
                             <li class="">
                                     <ul class="collapse list-unstyled" id="submenuMaterial">
-                                        <li class=""><a href="">{{__('Reports')}}</a></li>
-                                        <li class=""><a href="">{{__('Reconcilation')}}</a></li>
-                                        <li class=""><a href="">{{__('EOT-Extension of time')}}</a></li>
+                                        <li class=""><a href="{{route('contract.reports')}}">{{__('Reports')}}</a></li>
+                                        <li class=""><a href="{{route('contract.reconcilation')}}">{{__('Reconcilation')}}</a></li>
+                                        <li class=""><a href="{{route('contract.eot')}}">{{__('EOT-Extension of time')}}</a></li>
                                     </ul>
                                 </li>
                             </ul>

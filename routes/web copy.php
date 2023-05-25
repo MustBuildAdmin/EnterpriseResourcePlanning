@@ -34,122 +34,6 @@ Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middlewar
 //         'revalidate',
 //     ]
 // );
-
-
-//diary
-
-
-Route::get('diary','DiaryController@index')->name('diary')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('diary_data','DiaryController@diary_display_table')->name('diary_data')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::get('diary/{id}','DiaryController@show')->name('diary.show')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::get(
-    'diary-view', [
-    'as' => 'filter.diary.view',
-    'uses' => 'DiaryController@filterDiaryView',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::post('save_concrete_pouring','DiaryController@save_concrete_pouring')->name('diary.save_concrete_pouring')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::post('update_concrete_pouring','DiaryController@update_concrete_pouring')->name('diary.update_concrete_pouring')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::post('diary/diary_destroy/{id}','DiaryController@destroy')->name('diary_destroy')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
-
-Route::post('diary/delete_concrete/{id}','DiaryController@delete_concrete')->name('delete_concrete')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
-
-Route::any('save_consultant_direction','DiaryController@save_consultant_direction')->name('save_consultant_direction')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('update_consultant_direction','DiaryController@update_consultant_direction')->name('update_consultant_direction')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::get('diary_create','DiaryController@diary_create')->name('diary.diary_create')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::get('diary_update','DiaryController@diary_update')->name('diary.diary_update')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('consultant_direction','DiaryController@show_consultant_direction')->name('consultant_direction')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('edit_consultant_direction','DiaryController@edit_consultant_direction')->name('edit_consultant_direction')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-
-
 Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
     [
         'XSS',
@@ -157,25 +41,16 @@ Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_ho
     ]
 );
 
-Route::get('/', 'DashboardController@account_dashboard')->name('new_home')->middleware(
+Route::get('/', 'DashboardController@naccount_dashboard')->name('new_home')->middleware(
     [
-        'auth',
         'XSS',
         'revalidate',
     ]
 );
 Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home')->middleware(
     [
-        'auth',
         'XSS',
         'revalidate',
-    ]
-);
-
-Route::get('hrm_dashboard', 'DashboardController@hrm_dashboard')->name('hrm_dashboard')->middleware(
-    [
-        'auth',
-        'XSS',
     ]
 );
 
@@ -186,37 +61,17 @@ Route::get('/hrm_main', 'DashboardController@hrm_main')->name('hrm_main')->middl
     ]
 );
 
-// HRM Document Setup CRUD
-Route::resource('hrm_doc_setup', 'DucumentUploadController')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::get('/hrm_download_file/{id}', 'DucumentUploadController@hrm_download_file')->name('hrm_download_file')->middleware(['XSS','revalidate',]);
-
-// HRM Company Policy CRUD
-Route::resource('hrm_company_policy', 'CompanyPolicyController')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
 Route::get('/email-settings', 'SystemController@emailsettings')->name('emailsettings')->middleware(['XSS','revalidate',]);
-Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['auth','XSS','revalidate',]);
-Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['auth','XSS','revalidate',]);
+Route::get('/company-settings', 'SystemController@companysettings')->name('companysettings')->middleware(['XSS','revalidate',]);
+Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['XSS','revalidate',]);
 
 
-Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
+Route::get('/construction_main', 'DashboardController@construction_main')->name('construction_main')->middleware(
     [
         'XSS',
         'revalidate',
     ]
 );
-
-
 
 Route::get('/paymentPage', 'Auth\RegisteredUserController@paymentPage');
 Route::get('/register/{lang?}', 'Auth\RegisteredUserController@showRegistrationForm')->name('register');
@@ -286,23 +141,7 @@ Route::get('new_profile', 'UserController@new_profile')->name('new_profile')->mi
         'revalidate',
     ]
 );
-
-Route::any('delete_new_profile', 'UserController@delete_new_profile')->name('delete_new_profile')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
-
 Route::post('edit-profile', 'UserController@editprofile')->name('update.account')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
-Route::post('new_edit_profile', 'UserController@new_edit_profile')->name('new_edit_profile')->middleware(
     [
         'auth',
         'XSS',
@@ -318,13 +157,6 @@ Route::resource('users', 'UserController')->middleware(
     ]
 );
 
-Route::any('check_duplicate_email', 'UserController@check_duplicate_email')->name('check_duplicate_email')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
 Route::get('view_change_password', 'UserController@view_change_password')->name('view_change_password')->middleware(
     [
         'auth',
@@ -333,7 +165,6 @@ Route::get('view_change_password', 'UserController@view_change_password')->name(
     ]
 );
 Route::post('change-password', 'UserController@updatePassword')->name('update.password');
-Route::post('newpassword', 'UserController@newpassword')->name('newpassword');
 Route::any('user-reset-password/{id}', 'UserController@userPassword')->name('users.reset');
 Route::post('user-reset-password/{id}', 'UserController@userPasswordReset')->name('user.password.update');
 
@@ -353,8 +184,6 @@ Route::resource('roles', 'RoleController')->middleware(
         'revalidate',
     ]
 );
-Route::any('delete_multi_role','RoleController@delete_multi_role')->name('delete_multi_role')->middleware(['auth','XSS']);
-
 Route::resource('permissions', 'PermissionController')->middleware(
     [
         'auth',
@@ -460,7 +289,6 @@ Route::group(
         ],
     ], function (){
 
-    Route::get('mark-attendance', 'MyDetailsController@markattendance')->name('mark-attendance');
     Route::get('my-info', 'MyDetailsController@info')->name('my-info');
     Route::get('my-leave', 'MyDetailsController@leave')->name('my-leave');
     Route::get('my-payslip', 'MyDetailsController@payslip')->name('my-payslip');
@@ -2014,7 +1842,7 @@ Route::resource('project_holiday', 'Project_holiday_Controller')->middleware(
         'auth',
         'XSS',
     ]
-    );
+);
 Route::resource('construction_asign', 'Construction_asign_Controller')->middleware(
     [
         'auth',
@@ -2119,12 +1947,6 @@ Route::resource('branch', 'BranchController')->middleware(
     ]
 );
 
-Route::get('checkDuplicateRS_HRM', 'BranchController@checkDuplicateRS_HRM')->name('checkDuplicateRS_HRM')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
 
 // Hrm EmployeeController
 
@@ -2274,12 +2096,6 @@ Route::get('payslip/bulk_pay_create/{date}', 'PaySlipController@bulk_pay_create'
     ]
 );
 Route::post('payslip/bulkpayment/{date}', 'PaySlipController@bulkpayment')->name('payslip.bulkpayment')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-Route::post('payslip/search_json1', 'PaySlipController@search_json1')->name('payslip.search_json1')->middleware(
     [
         'auth',
         'XSS',
@@ -3194,14 +3010,14 @@ Route::post('freeze_status', 'ProjectController@freeze_status_change')->name('pr
         'auth',
         'XSS',
     ]
-);
+); 
 
 Route::any('get_freeze_status', 'ProjectController@get_freeze_status')->name('projects.get_freeze_status')->middleware(
     [
         'auth',
         'XSS',
     ]
-);
+); 
 
 Route::resource('projects', 'ProjectController')->middleware(
     [
@@ -4025,17 +3841,6 @@ Route::group(
     ], function (){
     Route::get('contract/{id}/description', 'ContractController@description')->name('contract.description');
     Route::get('contract/grid', 'ContractController@grid')->name('contract.grid');
-    Route::get('contract/boq', 'ContractController@boq')->name('contract.boq');
-    Route::get('contract/claimspaymentcertificate', 'ContractController@claimspaymentcertificate')->name('contract.claimspaymentcertificate');
-    Route::get('contract/reports', 'ContractController@reports')->name('contract.reports');
-    Route::get('contract/reconcilation', 'ContractController@reconcilation')->name('contract.reconcilation');
-    Route::get('contract/eot', 'ContractController@eot')->name('contract.eot');
-    Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
-    Route::get('qaqc/bricks','QualityAssuranceController@bricks')->name('qaqc.bricks');
-    Route::get('qaqc/cement','QualityAssuranceController@cement')->name('qaqc.cement');
-    Route::get('qaqc/sand','QualityAssuranceController@sand')->name('qaqc.sand');
-    Route::get('qaqc/steel','QualityAssuranceController@steel')->name('qaqc.steel');
-
     Route::resource('contract', 'ContractController');
 }
 );
@@ -4465,6 +4270,7 @@ Route::get('report/pos', 'PosController@report')->name('pos.report')->middleware
 //Storage Setting
 Route::post('storage-settings',['as' => 'storage.setting.store','uses' =>'SystemController@storageSettingStore'])->middleware(['auth','XSS']);
 
+
 //appricalStar
 Route::post('/appraisals', 'AppraisalController@empByStar')->name('empByStar')->middleware(['auth','XSS']);
 Route::post('/appraisals1', 'AppraisalController@empByStar1')->name('empByStar1')->middleware(['auth','XSS']);
@@ -4503,28 +4309,3 @@ Route::post('/project_report_data','ProjectReportController@ajax_data')->name('p
 
 Route::post('/project_report/tasks/{id}',['as' => 'tasks.report.ajaxdata','uses' =>'ProjectReportController@ajax_tasks_report'])->middleware(['auth','XSS']);
 Route::get('export/task_report/{id}', 'ProjectReportController@export')->name('project_report.export');
-
-
-Route::post('api/fetch_user_details', 'ProjectReportController@fetch_user_details')->name('project_report.fetch_user_details2')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);  
-
-Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_details')->name('project_report.fetch_task_details')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
-Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report'); 
-Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con'); 
-
-
-
-
-Route::any('{any}', function() {
-    return view('error');
- })->where('any', '.*');
- 
