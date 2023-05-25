@@ -10,7 +10,7 @@
                 <div class="card-body">
                     {{ Form::open(['url' => ['taskboard/list'], 'method' => 'GET', 'id' => 'project_task_submit']) }}
                         <div class="row d-flex align-items-center justify-content-center">
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
+                            {{-- <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                 <div class="btn-box">
                                     {{ Form::label('projects', __('Projects'),['class'=>'form-label'])}}
                                     <select class="select form-select" name="projects" id="projects">
@@ -20,7 +20,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                             @if(\Auth::user()->type == 'company')
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                     <div class="btn-box">

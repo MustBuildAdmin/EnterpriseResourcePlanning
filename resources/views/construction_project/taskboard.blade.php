@@ -16,7 +16,7 @@
                                             <span class="btn-inner--icon"><i class="ti ti-filter"></i></span>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-steady" id="task_sort">
-                                            <a class="dropdown-item active" href="#" data-val="created_at-desc">
+                                           -- <a class="dropdown-item active" href="#" data-val="created_at-desc">
                                                 <i class="ti ti-sort-amount-down"></i>{{__('Newest')}}
                                             </a>
                                             <a class="dropdown-item" href="#" data-val="created_at-asc">
