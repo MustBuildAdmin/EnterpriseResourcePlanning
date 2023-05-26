@@ -170,7 +170,7 @@
                         </li>
                         @can('view grant chart')
                             <li class="">
-                                <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gand Chart') }}</a>
+                                <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gantt Chart') }}</a>
                             </li>
                         @endcan
 
