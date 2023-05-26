@@ -220,25 +220,25 @@
 
                 {{-- Dairy --}}
                 <li class="">
-                    <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
+                    <a href="{{route('diary')}}"  data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
                         aria-controls="pageSubmenuDairy"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
-                        <span class="list">{{ __('Dairy') }}</span>
+                        <span class="list">{{ __('Diary') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuDairy">
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Drawing') }}</a>
+                            <a href="{{ route('drawing_list') }}" class="dropdown-item">{{ __('Drawing') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Site Reports') }}</a>
+                            <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('VO/Change Order') }}</a>
+                            <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Directions') }}</a>
+                            <a href="{{ route('show_consultant_direction') }}" class="dropdown-item">{{ __('Directions') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('RFI') }}</a>
+                            <a href="{{ route('rfi_show_info') }}" class="dropdown-item">{{ __('RFI') }}</a>
                         </li>
                         <li class="">
                             <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
