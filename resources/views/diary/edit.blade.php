@@ -79,27 +79,27 @@
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Inputdays">7 days Testing Falls on:</label>
-                <input name="testing_fall_on" value="@if($id!='' && $dairy_data->testing_fall!=''){{$dairy_data->testing_fall}}@endif" required type="date" class="form-control" id="testing_fall_on" disabled />
-                <input name="testing_fall"  type="hidden" class="form-control" id="testing_fall"  />
+                <input name="testing_fall_on" value="@if($id!='' && $dairy_data->testing_fall!=''){{$dairy_data->testing_fall}}@endif"  type="date" class="form-control" id="testing_fall_on" disabled />
+                <input name="testing_fall"  type="hidden" class="form-control" id="testing_fall"  value="@if($id!='' && $dairy_data->testing_fall!=''){{$dairy_data->testing_fall}}@endif" />
               </div>
             </div>
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="InputAverage">Total Result (Average):</label>
-                <input name="total_result" value="@if($id!='' && $dairy_data->total_result!=''){{$dairy_data->total_result}}@endif" required type="text" id="total_result" class="form-control" placeholder="Enter your Total Result (Average)" />
+                <input name="total_result" value="@if($id!='' && $dairy_data->total_result!=''){{$dairy_data->total_result}}@endif"  type="text" id="total_result" class="form-control" placeholder="Enter your Total Result (Average)" />
               </div>
             </div>
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Inputdays">28 days Testing Falls on:</label>
-                <input name="days_testing_falls_on" value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif" required type="date" class="form-control" id="days_testing_falls_on" disabled />
-                <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  />
+                <input name="days_testing_falls_on" value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif"  type="date" class="form-control" id="days_testing_falls_on" disabled />
+                <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif"  />
               </div>
             </div>
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Inputdays">28 days Result (Average):</label>
-                <input name="days_testing_result" value="@if($id!='' && $dairy_data->days_testing_result!=''){{$dairy_data->days_testing_result}}@endif" required type="text" id="days_testing_result" class="form-control" placeholder="Enter your 28 days Result (Average)" />
+                <input name="days_testing_result" value="@if($id!='' && $dairy_data->days_testing_result!=''){{$dairy_data->days_testing_result}}@endif"  type="text" id="days_testing_result" class="form-control" placeholder="Enter your 28 days Result (Average)" />
               </div>
             </div>
             <div class="col-md-12 mb-3">
@@ -130,12 +130,45 @@
   var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
   var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
   var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
+  var twenty = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
   
   $("#testing_fall_on").val(seventhDate);
   $("#testing_fall").val(seventhDate);
   $("#days_testing_falls_on").val(twentyEigthData);
   $("#days_testing_falls").val(twentyEigthData);
   $("#total_result").val(seventh);
+  var dt = new Date();
+
+  year  = dt.getFullYear();
+  month = (dt.getMonth() + 1).toString().padStart(2, "0");
+  day   = dt.getDate().toString().padStart(2, "0");
+
+  var currentDate= day + '-' + month + '-' + year;
+  
+  if(currentDate===seventh){
+    $("#testing_fall_on").prop('required',true);
+  }else{
+    $("#testing_fall_on").prop('required',false);
+  }
+
+  if(currentDate===twenty){
+    $("#days_testing_falls_on").prop('required',true);
+  }else{
+    $("#days_testing_falls_on").prop('required',false);
+  }
+
+  if(currentDate===twenty){
+    $("#total_result").prop('required',true);
+  }else{
+    $("#total_result").prop('required',false);
+  }
+
+  if(currentDate===twenty){
+    $("#days_testing_result").prop('required',true);
+  }else{
+    $("#days_testing_result").prop('required',false);
+  }
+  
   });
   
   $("#concreteFile").dropzone({

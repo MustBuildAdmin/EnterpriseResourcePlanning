@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/flatpickr.min.css') }}">
 <div class="row">
   <div class="col-md-6">
-     <h2>Bank Transfer</h2>
+     <h2>{{__('Bank Transfer')}}</h2>
   </div>
   <div class="col-md-6 float-end floatrght">
         @can('create bank transfer')

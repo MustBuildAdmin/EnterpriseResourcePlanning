@@ -13,13 +13,13 @@ use App\Models\ConsultantsDirectionMulti;
 use File;
 use DB;
 
-class DiaryController extends Controller
+class reportnew extends Controller
 {
     public function index($view = "grid")
     {
         try {
 
-            return view("diary.index", compact("view"));
+            return view("reportnew.index", compact("view"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -56,7 +56,7 @@ class DiaryController extends Controller
                     $projects->whereIn("status", $request->status);
                 }
                 $projects = $projects->get();
-                $returnHTML = view("diary." . $request->view,compact("projects", "user_projects"))->render();
+                $returnHTML = view("reportnew." . $request->view,compact("projects", "user_projects"))->render();
 
                 return response()->json([
                     "success" => true,
@@ -80,7 +80,7 @@ class DiaryController extends Controller
                         ->where("status", "0")
                         ->get();
 
-            return view("diary.show",compact("project_id", "dairy_list", "dairy_data"));
+            return view("reportnew.show",compact("project_id", "dairy_list", "dairy_data"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -102,7 +102,7 @@ class DiaryController extends Controller
 
           
 
-            return view("diary.create");
+            return view("reportnew.create",compact("project", "id","project_name"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -132,7 +132,7 @@ class DiaryController extends Controller
 
           
 
-            return view("diary.edit",compact("project", "id", "get_dairy_data", "project_name"));
+            return view("reportnew.edit",compact("project", "id", "get_dairy_data", "project_name"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -149,7 +149,7 @@ class DiaryController extends Controller
                 ->where("id", $project)
                 ->first();
 
-            return view("diary.consultant_direction",compact("project_name", "project"));
+            return view("reportnew.consultant_direction",compact("project_name", "project"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -173,7 +173,7 @@ class DiaryController extends Controller
 
             $replier_date=$consult_dir_multi[0]->replier_date;
 
-            return view("diary.edit_consultant_direction",compact("consult_dir","consult_dir_multi","project_name","project","replier_date"));
+            return view("reportnew.edit_consultant_direction",compact("consult_dir","consult_dir_multi","project_name","project","replier_date"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -351,12 +351,12 @@ class DiaryController extends Controller
                 ->where("project_id", $project_id)
                 ->get();
 
-                $returnHTML = view("diary.show_consultant_direction",compact("project_id", "dairy_data"))->render();
+                $returnHTML = view("reportnew.show_consultant_direction",compact("project_id", "dairy_data"))->render();
 
             } else {
                 $project_id = $request->project_id;
                 $dairy_data = ConcretePouring::where("project_id",$request->project_id)->get();
-                $returnHTML = view("diary.show_consultant_direction",compact("dairy_data", "project_id"))->render();
+                $returnHTML = view("reportnew.show_consultant_direction",compact("dairy_data", "project_id"))->render();
             }
             return response()->json([
                 "success" => true,
