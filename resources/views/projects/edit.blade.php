@@ -2,6 +2,10 @@
     .form-check {
         margin: 8px 12px !important;
     }
+    .chosen-container{
+        width: 75%!important;
+        height: fit-content;
+    }
     </style>
 {{ Form::model($project, ['route' => ['projects.update', $project->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
 <div class="modal-body">
@@ -66,16 +70,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 col-md-6">
+        <div class="col-sm-12 col-md-12">
             <div class="form-group">
+                @php $reportto=explode(',',$project->report_to); @endphp
                 {{ Form::label('Reportto', __('Report To'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {!! Form::select('reportto', $users, $project->report_to,array('class' => 'form-control','required'=>'required')) !!}
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6">
-            <div class="form-group">
-                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
+                {!! Form::select('reportto[]', $repoter, $reportto ,array('class' => 'form-control chosen-select','required'=>'required','multiple'=>'true','required'=>'required')) !!}
             </div>
         </div>
     </div>
@@ -88,7 +87,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-12">
+        <div class="col-sm-6 col-md-6">
             <div class="form-group">
                 {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}
                 <select name="status" id="status" class="form-control main-element select2" required>
@@ -97,6 +96,12 @@
                         <option value="{{$k}}" {{ ($project->status == $k) ? 'selected' : ''}}>{{__($v)}}</option>
                     @endforeach
                 </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
             </div>
         </div>
     </div>
@@ -212,5 +217,9 @@ $(document).on("change", '#end_date', function () {
         var src = URL.createObjectURL(this.files[0])
         document.getElementById('image').src = src
     }
-
+    $(document).ready(function() {
+        $(document).ready(function() {
+            $('.chosen-select').chosen();
+        });
+  });
 </script>
