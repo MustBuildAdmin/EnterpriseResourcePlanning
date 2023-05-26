@@ -116,10 +116,12 @@ class ProjectController extends Controller
             $project->budget = !empty($request->budget) ? $request->budget : 0;
             $project->description = $request->description;
             $project->status = $request->status;
-            $project->estimated_hrs = $request->estimated_hrs;
+            // $project->estimated_hrs = $request->estimated_hrs;
             $project->report_to = $request->reportto;
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;
+            $project->estimated_days = $request->estimated_days;
+            
             $project->created_by = \Auth::user()->creatorId();
             // instance creation------------------------
             $var=rand('100000','555555').date('dmyhisa').$request->client_id.$request->project_name;
@@ -423,9 +425,12 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-
+        Session::forget('project_id');
+        Session::forget('project_instance');
         if(\Auth::user()->can('view project'))
         {
+            Session::put('project_id',$project->id);
+            Session::put('project_instance',$project->instance_id);
 
             $usr           = Auth::user();
             if(\Auth::user()->type == 'client'){
@@ -433,8 +438,7 @@ class ProjectController extends Controller
             }else{
               $user_projects = $usr->projects->pluck('id')->toArray();
             }
-            Session::put('project_id',$project->id);
-            Session::put('project_instance',$project->instance_id);
+            
             if(in_array($project->id, $user_projects))
             {
                 // test the holidays
@@ -662,7 +666,8 @@ class ProjectController extends Controller
             $project->client_id = $request->client;
             $project->description = $request->description;
             $project->status = $request->status;
-            $project->estimated_hrs = $request->estimated_hrs;
+            $project->estimated_days = $request->estimated_days;
+            // $project->estimated_hrs = $request->estimated_hrs;
             $project->report_to = $request->reportto;
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;

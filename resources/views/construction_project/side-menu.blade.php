@@ -154,10 +154,58 @@
                         aria-controls="pageSubmenuplanning"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Planning') }}</span>
                     </a>
+                    @php
+                        if(Session::has('project_id')){
+                            $project_id = Session::get('project_id');
+                        }
+                        else{
+                            $project_id = 0;
+                        }
+
+                        $setting  = Utility::settings(\Auth::user()->creatorId());
+                    @endphp
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuplanning">
-                        {{-- <li class="">
-                            <a href="# " class="dropdown-item">{{ __('Productivity') }}</a>
-                        </li> --}}
+                        <li class="">
+                            <a href="{{ route('projects.show', $project_id) }}" class="dropdown-item">{{ __('Dashboard') }}</a>
+                        </li>
+                        @can('view grant chart')
+                            <li class="">
+                                <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gantt Chart') }}</a>
+                            </li>
+                        @endcan
+
+                        @can('view expense')
+                            <li class="">
+                                <a href="{{ route('projects.expenses.index',$project_id) }}" class="dropdown-item">{{ __('Expense') }}</a>
+                            </li>
+                        @endcan
+                        <li class="">
+                            <a href="{{ route('project_report.view_task_report',$project_id) }}" class="dropdown-item">{{ __('Task Report') }}</a>
+                        </li>
+                        @if($setting['company_type']!=2)
+                            @can('manage bug report')
+                                <li class="">
+                                    <a href="{{ route('task.bug',$project_id) }}" class="dropdown-item">{{ __('Bug Report') }}</a>
+                                </li>
+                            @endcan
+                            @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
+                                <li class="">
+                                    <a href="{{ route('projecttime.tracker',$project_id) }}" class="dropdown-item">{{ __('Tracker') }}</a>
+                                </li>
+                            @endif
+                            @can('create project task')
+                                <li class="">
+                                    <a href="{{ route('projects.tasks.index',$project_id) }}" class="dropdown-item">{{ __('Task') }}</a>
+                                </li>
+                            @endcan
+                            @if(\Auth::user()->type != 'client')
+                                @can('view timesheet')
+                                    <li class="">
+                                        <a href="{{ route('timesheet.index',$project_id) }}" class="dropdown-item">{{ __('Timesheet') }}</a>
+                                    </li>
+                                @endcan
+                            @endif
+                        @endif
                         <li class="">
                             <a href="{{ route('taskBoard.view',['list']) }}" class="dropdown-item">{{ __('Task') }}</a>
                         </li>
@@ -214,11 +262,11 @@
                                 <span class="list">{{__('Testing ')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTesting">
-                                <li class=""><a href="">{{__('Concrete')}}</a></li>
-                                <li class=""><a href="">{{__('Bricks')}}</a></li>
-                                <li class=""><a href="">{{__('Cement')}}</a></li>
-                                <li class=""><a href="">{{__('Sand')}}</a></li>
-                                <li class=""><a href="">{{__('Steel')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.concrete')}}">{{__('Concrete')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>
+                                <li class=""><a href="{{route('qaqc.steel')}}">{{__('Steel')}}</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -237,12 +285,12 @@
                                 <span class="list">{{__('Tender')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTender">
-                                <li class=""><a href="">{{__('BOQ')}}</a></li>
+                                <li class=""><a href="{{route('contract.boq')}}">{{__('BOQ')}}</a></li>
                                
                             </ul>
                         </li>
                         <li class="">
-                            <a data-bs-target="#submenuTender1" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
+                            <a href="{{route('contract.claimspaymentcertificate')}}"  aria-expanded="false" class="accordion-collapse collapse list-unstyled">
                                 <span class="icon"><i class="ti ti-users"></i></span>
                                 <span class="list">{{__('Claims/Payment Certificate')}}</span>
                             </a>
@@ -252,12 +300,12 @@
                                         <span class="icon"><i class="ti ti-users"></i></span>
                                         <span class="list">{{__('Material ')}}</span>
                             </a>
-                            <ul class="collapse list-unstyled" id="submenuTender">
+                            <ul class="collapse list-unstyled" id="submenuMaterial">
                             <li class="">
                                     <ul class="collapse list-unstyled" id="submenuMaterial">
-                                        <li class=""><a href="">{{__('Reports')}}</a></li>
-                                        <li class=""><a href="">{{__('Reconcilation')}}</a></li>
-                                        <li class=""><a href="">{{__('EOT-Extension of time')}}</a></li>
+                                        <li class=""><a href="{{route('contract.reports')}}">{{__('Reports')}}</a></li>
+                                        <li class=""><a href="{{route('contract.reconcilation')}}">{{__('Reconcilation')}}</a></li>
+                                        <li class=""><a href="{{route('contract.eot')}}">{{__('EOT-Extension of time')}}</a></li>
                                     </ul>
                                 </li>
                             </ul>

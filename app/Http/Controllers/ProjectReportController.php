@@ -36,7 +36,13 @@ class ProjectReportController extends Controller
 
         if($user->type == 'client')
         {
-            $projects = Project::where('client_id', '=', $user->id);
+            if(Session::has('project_id')){
+                $projects = Project::where('id',Session::get('project_id'))->where('client_id', '=', $user->id);
+            }
+            else{
+                $projects = Project::where('client_id', '=', $user->id);
+            }
+            
             $users=[];
             $status=[];
 
@@ -52,6 +58,10 @@ class ProjectReportController extends Controller
 
             }else{
                 $projects = Project::where('projects.created_by', '=', $user->id);
+            }
+
+            if(Session::has('project_id')){
+                $projects->where('id',Session::get('project_id'));
             }
 
             if(isset($request->status)&& !empty($request->status)){
@@ -74,6 +84,9 @@ class ProjectReportController extends Controller
         {
             $projects = Project::select('projects.*')->leftjoin('project_users', 'project_users.project_id', 'projects.id')->where('project_users.user_id', '=', $user->id);
 
+            if(Session::has('project_id')){
+                $projects->where('id',Session::get('project_id'));
+            }
         }
 
         $projects = $projects->orderby('id','desc')->get();

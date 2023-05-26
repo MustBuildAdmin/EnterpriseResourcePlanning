@@ -144,6 +144,8 @@
 </style>
 
 <div class="wrapper">
+
+
     <!-- Sidebar  -->
     <nav id="sidebar">
         <div class="sidebar">
@@ -388,9 +390,12 @@
 
     <!-- Page Content  -->
     <div id="content" class="main">
-        <div class="collapseToggle">
+        
+    
+    <div class="collapseToggle hrm">
             <span id="toggleIcon" class="fa fa-chevron-left"></span>
         </div>
+        
         @isset($hrm_header)
             <h2 class="mb-4">{{ __($hrm_header) }}</h2>
         @endisset
