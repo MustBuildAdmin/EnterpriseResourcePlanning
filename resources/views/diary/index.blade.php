@@ -1,6 +1,4 @@
-@include('new_layouts.header')
-
-@include('construction_project.side-menu')
+@extends('layouts.admin')
 @section('page-title')
     {{__('Manage Diary')}}
 @endsection
@@ -12,12 +10,11 @@
 @endsection
 
 
-
+@section('content')
     <div class="row min-750" id="project_view"></div>
+@endsection
 
-
-
-
+@push('script-page')
     <script>
         $(document).ready(function () {
             var sort = 'created_at-desc';
@@ -115,4 +112,4 @@
             });
         }
     </script>
-
+@endpush

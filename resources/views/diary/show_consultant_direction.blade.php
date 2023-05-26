@@ -1,7 +1,7 @@
 <div class="col-xl-12 mt-3">
     <div class="card table-card">
       <div class="col-auto float-end ms-4 mt-4">
-        <a href="#" data-size="xl" data-url="{{ route('consultant_direction',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
+        <a href="#" data-size="xl" data-url="{{ route('add_consultant_direction',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
           <i class="ti ti-plus"></i>
         </a>
       </div>
@@ -38,7 +38,9 @@
                           <i class="ti ti-pencil text-white"></i>
                         </a>
                       </div>
-                      <div class="action-btn bg-danger ms-2"> {!! Form::open(['method' => 'POST', 'route' => ['delete_concrete', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                      <div class="action-btn bg-danger ms-2"> 
+                        {!! Form::open(['method' => 'POST', 'route' => ['delete_concrete', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                        {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                         <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                           <i class="ti ti-trash text-white mt-1"></i>
                         </a> {!! Form::close() !!} 
