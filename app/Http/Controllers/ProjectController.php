@@ -62,8 +62,9 @@ class ProjectController extends Controller
           $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
           $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
           $clients->prepend('Select Client', '');
+          $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
           $users->prepend('Select User', '');
-            return view('projects.create', compact('clients','users','setting'));
+            return view('projects.create', compact('clients','users','setting','repoter'));
         }
         else
         {
@@ -116,10 +117,12 @@ class ProjectController extends Controller
             $project->budget = !empty($request->budget) ? $request->budget : 0;
             $project->description = $request->description;
             $project->status = $request->status;
-            $project->estimated_hrs = $request->estimated_hrs;
-            $project->report_to = $request->reportto;
+            // $project->estimated_hrs = $request->estimated_hrs;
+            $project->report_to = implode(',',$request->reportto);
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;
+            $project->estimated_days = $request->estimated_days;
+
             $project->created_by = \Auth::user()->creatorId();
             // instance creation------------------------
             $var=rand('100000','555555').date('dmyhisa').$request->client_id.$request->project_name;
@@ -400,7 +403,7 @@ class ProjectController extends Controller
             }else{
                 return redirect('project_holiday')->with('success', __('Project Add Successfully'));
             }
-            
+
         }
         else
         {
@@ -423,9 +426,12 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-
+        Session::forget('project_id');
+        Session::forget('project_instance');
         if(\Auth::user()->can('view project'))
         {
+            Session::put('project_id',$project->id);
+            Session::put('project_instance',$project->instance_id);
 
             $usr           = Auth::user();
             if(\Auth::user()->type == 'client'){
@@ -433,8 +439,7 @@ class ProjectController extends Controller
             }else{
               $user_projects = $usr->projects->pluck('id')->toArray();
             }
-            Session::put('project_id',$project->id);
-            Session::put('project_instance',$project->instance_id);
+
             if(in_array($project->id, $user_projects))
             {
                 // test the holidays
@@ -599,17 +604,17 @@ class ProjectController extends Controller
           $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
           $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
           $users->prepend('Select User', '');
-          
+          $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
           $project = Project::findOrfail($project->id);
           if($project->created_by == \Auth::user()->creatorId())
           {
-              return view('projects.edit', compact('project', 'clients','users'));
+              return view('projects.edit', compact('project', 'clients','users','repoter'));
           }
           else
           {
               return response()->json(['error' => __('Permission denied.')], 401);
           }
-            return view('projects.edit',compact('project','users'));
+            return view('projects.edit',compact('project','users','repoter'));
         }
         else
         {
@@ -617,7 +622,7 @@ class ProjectController extends Controller
         }
     }
 
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -662,8 +667,10 @@ class ProjectController extends Controller
             $project->client_id = $request->client;
             $project->description = $request->description;
             $project->status = $request->status;
-            $project->estimated_hrs = $request->estimated_hrs;
-            $project->report_to = $request->reportto;
+            $project->estimated_days = $request->estimated_days;
+            // $project->estimated_hrs = $request->estimated_hrs;
+            $project->report_to = implode(',',$request->reportto);
+            // $project->report_to = $request->reportto;
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->save();

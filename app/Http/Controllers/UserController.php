@@ -875,4 +875,39 @@ public function delete_new_profile(Request $request){
 
 }
 
+public function check_duplicate_email(Request $request){
+    
+    try {
+        $form_name  = $request->form_name;
+        $check_name = $request->get_name;
+        $get_id     = $request->get_id;
+   
+        if($form_name == "Users"){
+            if($get_id == null){
+                $get_check_val = User::where('email',$check_name)->first();
+            }
+            else{
+                $get_check_val = User::where('email',$check_name)->where('id','!=',$get_id)->first();
+            }
+        }
+        else{
+            $get_check_val = "Not Empty";
+        }
+      
+        if($get_check_val == null){
+            return 1; //Success
+        }
+        else{
+            return 0; //Error
+        }
+       
+      } catch (Exception $e) {
+
+          return $e->getMessage();
+
+      }
+    
+   
+}
+
 }

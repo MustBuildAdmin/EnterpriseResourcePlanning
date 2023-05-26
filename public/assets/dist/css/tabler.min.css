@@ -28606,6 +28606,52 @@ table.dataTable>tbody>tr {
 }
 
 
+.hrm #toggleIcon {
+    background: #fafbfc;
+    color: #7c7a7a;
+    width: 30px;
+    height: 30px;
+    margin-left: -3%;
+    z-index: 9999999;
+    position: absolute;
+    margin-top: -4%;
+    top: 4%;
+    line-height: 30px;
+    text-align: center;
+}
+
+
+.maindivreport {
+    background: #fff;
+    margin: 1% 1%;
+    height: 100vh;
+    padding: 2% 3%;
+}
+
+
+.float-left{
+    float: left;
+}
+
+.selectbox {
+    margin: 15% 0 0 0 !important;
+}
+
+.tablereport {
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    /* max-width: 1072px; */
+    width: 100%;
+    float: left;
+    height: 20vh;
+}
+
+.dropdowmselect {
+    margin: 9px 9px 0 0;
+    width: 55%;
+}
+
 @media (max-width: 768px) {
 #sidebar ul li .icon{
     font-size: 73em;

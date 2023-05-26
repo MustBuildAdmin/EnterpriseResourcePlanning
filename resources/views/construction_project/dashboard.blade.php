@@ -15,22 +15,22 @@
    </div> 
    <div class="col-md-6">
     <div class="float-end icons">
-      @can('view grant chart')
+      {{-- @can('view grant chart')
           <a href="{{ route('projects.gantt',$project->id) }}" class="btn btn-sm btn-primary">
               {{__('Gantt Chart')}}
           </a>
-      @endcan
-    
-      @can('view expense')
+      @endcan --}}
+
+      {{-- @can('view expense')
           <a href="{{ route('projects.expenses.index',$project->id) }}" class="btn btn-sm btn-primary">
               {{__('Expense')}}
           </a>
       @endcan
       <a href="{{ route('project_report.view_task_report',$project->id) }}" class="btn btn-sm btn-primary">
         {{__('Report')}}
-      </a>
+      </a> --}}
     
-      @if($setting['company_type']!=2)
+      {{-- @if($setting['company_type']!=2)
           @can('manage bug report')
               <a href="{{ route('task.bug',$project->id) }}" class="btn btn-sm btn-primary">
                   {{__('Bug Report')}}
@@ -53,7 +53,7 @@
               </a>
           @endcan
           @endif
-      @endif
+      @endif --}}
       
       @can('edit project')
           <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">

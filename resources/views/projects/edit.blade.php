@@ -2,6 +2,10 @@
     .form-check {
         margin: 8px 12px !important;
     }
+    .chosen-container{
+        width: 75%!important;
+        height: fit-content;
+    }
     </style>
 {{ Form::model($project, ['route' => ['projects.update', $project->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data']) }}
 <div class="modal-body">
@@ -44,10 +48,16 @@
                 {{ Form::number('budget', null, ['class' => 'form-control']) }}
             </div>
         </div>
-        <div class="col-6 col-md-6">
+        {{-- <div class="col-6 col-md-6">
             <div class="form-group">
                 {{ Form::label('estimated_hrs', __('Estimated Hours'),['class' => 'form-label']) }}
                 {{ Form::number('estimated_hrs', null, ['class' => 'form-control','min'=>'0','maxlength' => '8']) }}
+            </div>
+        </div> --}}
+        <div class="col-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
+                {{ Form::text('estimated_days', null, ['class' => 'form-control' ,'readonly'=>true]) }}
             </div>
         </div>
     </div>
@@ -60,16 +70,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 col-md-6">
+        <div class="col-sm-12 col-md-12">
             <div class="form-group">
+                @php $reportto=explode(',',$project->report_to); @endphp
                 {{ Form::label('Reportto', __('Report To'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {!! Form::select('reportto', $users, $project->report_to,array('class' => 'form-control','required'=>'required')) !!}
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6">
-            <div class="form-group">
-                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
+                {!! Form::select('reportto[]', $repoter, $reportto ,array('class' => 'form-control chosen-select','required'=>'required','multiple'=>'true','required'=>'required')) !!}
             </div>
         </div>
     </div>
@@ -82,7 +87,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-12">
+        <div class="col-sm-6 col-md-6">
             <div class="form-group">
                 {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}
                 <select name="status" id="status" class="form-control main-element select2" required>
@@ -91,6 +96,12 @@
                         <option value="{{$k}}" {{ ($project->status == $k) ? 'selected' : ''}}>{{__($v)}}</option>
                     @endforeach
                 </select>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
             </div>
         </div>
     </div>
@@ -175,6 +186,18 @@
     $('#end_date').val('');
     $('#end_date').attr('min',start);
 });
+$(document).on("change", '#end_date', function () {
+    var start=$('#start_date').val();
+    var End=$('#end_date').val();
+    const date1 = new Date(start);
+    const date2 = new Date(End);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    const estimated_days=diffDays+1;
+    $('#estimated_days').val(estimated_days);
+   
+   
+});
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
         var fileName=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.') + 1);
@@ -194,5 +217,9 @@
         var src = URL.createObjectURL(this.files[0])
         document.getElementById('image').src = src
     }
-
+    $(document).ready(function() {
+        $(document).ready(function() {
+            $('.chosen-select').chosen();
+        });
+  });
 </script>
