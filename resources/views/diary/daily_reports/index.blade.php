@@ -1,6 +1,6 @@
 
 @include('new_layouts.header')
-@include('accounting.side-menu')
+@include('construction_project.side-menu')
 
 
 <div class="row">
@@ -9,14 +9,14 @@
   </div>
   <div class="col-md-6 float-end floatrght">
 
-        <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('daily_reportcreate') }}" data-ajax-popup="true" data-title="{{__('Import product CSV file')}}" class="floatrght gapbtn btn btn-sm btn-primary">
+        <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('daily_reportscreate') }}" data-ajax-popup="true" data-title="{{__('Import product CSV file')}}" class="floatrght gapbtn btn btn-sm btn-primary">
             <i class="ti ti-file-import"></i>
         </a>
         <a href="{{route('productservice.export')}}" data-bs-toggle="tooltip" title="{{__('Export')}}" class="gapbtn floatrght btn btn-sm btn-primary">
             <i class="ti ti-file-export"></i>
         </a>
 
-        <a href="#" data-size="lg" data-url="{{ route('daily_reportcreate') }}" class="gapbtn floatrght btn btn-sm btn-primary">
+        <a href="#" data-size="lg" data-url="{{ route('daily_reportscreate') }}" class="gapbtn floatrght btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
         </a>
 

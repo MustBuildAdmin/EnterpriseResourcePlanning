@@ -312,7 +312,7 @@ Route::any('delete_variation_scope_change','DiaryController@delete_variation_sco
     );
 
     
-    Route::any('daily_reportcreate','DiaryController@daily_reportsedit')->name('daily_reportcreate')->middleware(
+    Route::any('daily_reportscreate','DiaryController@daily_reportscreate')->name('daily_reportscreate')->middleware(
         [
             'auth',
             'XSS',
