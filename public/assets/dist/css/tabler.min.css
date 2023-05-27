@@ -28716,7 +28716,7 @@ table.dataTable>tbody>tr {
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    width: 1160px;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
