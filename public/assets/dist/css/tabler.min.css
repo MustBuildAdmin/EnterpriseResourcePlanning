@@ -28680,8 +28680,22 @@ table.dataTable>tbody>tr {
     margin: 15% 0 0 0 !important;
 }
 
+.dailyreport a.btn.btn-sm {
+    background: #206bc4;
+    min-width: 0px;
+    font-size: 16px;
+    border: none;
+    padding: 0 1px;
+    font-size: 16px !important;
+}
+
+.dailyreport .ms-2 {
+    margin-left: 0 !important;
+    float: left;
+}
+
 .tablereport {
-    overflow: hidden;
+    overflow: hidden !important;
     -webkit-overflow-scrolling: touch;
     background: #fff;
     /* max-width: 1072px; */

@@ -62,7 +62,7 @@
             <div class="card">
                 <div class="card-body table-border-style">
                     <div class="table-responsive">
-                        <table class="table datatable bill">
+                        <table class="table datatable bill dailyreport">
                             <thead>
                             <tr>
                                 <th>{{__('Daily Report No')}}</th>
@@ -75,7 +75,7 @@
                                 <th>{{__('Temparture')}}</th>
                                 <th>{{__('Contractor')}}</th>
                                 <th>{{__('Sub Contractor')}}</th>
-                                <th>{{__('Major Equipment on project')}}</th>
+                                <th >{{__('Major Equipment on project')}}</th>
                                 <th style="width:25%;">{{__('Action')}}</th>
                             </tr>
                             </thead>
