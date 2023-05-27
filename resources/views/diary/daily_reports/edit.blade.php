@@ -54,36 +54,7 @@
 
         }
 
-        $(document).on('change', '#customer', function () {
-            $('#customer_detail').removeClass('d-none');
-            $('#customer_detail').addClass('d-block');
-            $('#customer-box').removeClass('d-block');
-            $('#customer-box').addClass('d-none');
-            var id = $(this).val();
-            var url = $(this).data('url');
-            $.ajax({
-                url: url,
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('#token').val()
-                },
-                data: {
-                    'id': id
-                },
-                cache: false,
-                success: function (data) {
-                    if (data != '') {
-                        $('#customer_detail').html(data);
-                    } else {
-                        $('#customer-box').removeClass('d-none');
-                        $('#customer-box').addClass('d-block');
-                        $('#customer_detail').removeClass('d-block');
-                        $('#customer_detail').addClass('d-none');
-                    }
-                },
-
-            });
-        });
+   
 
         $(document).on('click', '#remove', function () {
             $('#customer-box').removeClass('d-none');
