@@ -28713,11 +28713,11 @@ table.dataTable>tbody>tr {
  margin:5px 0 0 4px;
 }
 
-.table-responsive {
+/* .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     width: 100%;
-}
+} */
 
 @media (max-width: 768px) {
 #sidebar ul li .icon{
