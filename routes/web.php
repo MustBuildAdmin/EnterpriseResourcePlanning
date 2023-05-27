@@ -311,6 +311,22 @@ Route::any('delete_variation_scope_change','DiaryController@delete_variation_sco
         ]
     );
 
+    
+    Route::any('daily_reportcreate','DiaryController@daily_reportsedit')->name('daily_reportcreate')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+
+    Route::any('daily_reportsedit','DiaryController@daily_reportsedit')->name('daily_reportsedit')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
 
 Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
     [
