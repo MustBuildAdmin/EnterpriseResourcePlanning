@@ -11,7 +11,7 @@
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('amount', __('Amount'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::number('amount', '', array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+            {{ Form::number('amount', '', array('class' => 'form-control','required'=>'required','step'=>'0.01', 'min'=>0)) }}
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('date', __('Date'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
