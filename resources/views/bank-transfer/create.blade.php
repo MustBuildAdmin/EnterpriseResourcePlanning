@@ -15,7 +15,7 @@
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('date', __('Date'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{Form::date('date',null,array('class'=>'form-control','required'=>'required'))}}
+            <input type="date" name="date" class="form-control" required="required" max="<?php echo date("Y-m-d"); ?>">
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('reference', __('Reference'),['class'=>'form-label']) }}
