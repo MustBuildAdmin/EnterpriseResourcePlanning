@@ -188,12 +188,15 @@ h3, .h3 {
 
         <div class="col-xl-12 mt-3">
             <div class="card table-card">
+            @can('create directions')
             <div class="col-auto float-end ms-4 mt-4">
                 <a href="#" data-size="xl" data-url="{{ route('add_consultant_direction',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
                 </a>
             </div>
+            @endcan
             <div class="card-header card-body table-border-style">
+                @can('manage directions')
                 <div class="table">
                 <table class="table datatable" id="example1">
                     <thead class="">
@@ -221,18 +224,22 @@ h3, .h3 {
                         <td>{{$data->initiator_reference}}</td>
                         <td>{{$data->initiator_date}}</td>
                         <td>
+                            @can('edit directions')
                             <div class="action-btn bg-primary ms-2">
                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('edit_consultant_direction',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
                                 <i class="ti ti-pencil text-white"></i>
                                 </a>
                             </div>
+                            @endcan
+                            @can('delete directions')
                             <div class="action-btn bg-danger ms-2"> 
-                                {!! Form::open(['method' => 'POST', 'route' => ['delete_concrete', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                                {!! Form::open(['method' => 'POST', 'route' => ['delete_consultant_direction', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                                 {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                                 <i class="ti ti-trash text-white mt-1"></i>
                                 </a> {!! Form::close() !!} 
                             </div>
+                            @endcan
                             </td> 
     
                     </tr> 
@@ -240,6 +247,7 @@ h3, .h3 {
                     </tbody>
                 </table>
                 </div>
+                @endcan
             </div>
             </div>
         </div>

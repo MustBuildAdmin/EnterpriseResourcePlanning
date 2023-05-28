@@ -85,12 +85,6 @@ Route::get(
 
 
 
-Route::post('diary/diary_destroy/{id}','DiaryController@destroy')->name('diary_destroy')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
 
 
 
@@ -115,6 +109,28 @@ Route::any('edit_consultant_direction','DiaryController@edit_consultant_directio
         'XSS',
     ]
 );
+
+Route::any('save_consultant_direction','DiaryController@save_consultant_direction')->name('save_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_consultant_direction','DiaryController@update_consultant_direction')->name('update_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::post('delete_consultant_direction/{id}','DiaryController@delete_consultant_direction')->name('delete_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 
+
 
 Route::any('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
     [

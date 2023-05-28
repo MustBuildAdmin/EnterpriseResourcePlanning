@@ -195,7 +195,7 @@ h3, .h3 {
         </div>
         <div class="card-header card-body table-border-style">
             <div class="table">
-              <table class="table datatable" id="example1">
+              <table class="table datatable" id="example">
                 <thead class="">
                 <tr>
                     <th>{{__('Sno')}}</th>
@@ -213,16 +213,18 @@ h3, .h3 {
                 </thead>
                 <tbody> 
                 @foreach ($dairy_data as $key=>$data) 
+                <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$data->reference_no}}</td>
                 <td>{{$data->issue_date}}</td>
                 <td>{{$data->description}}</td>
                 <td>
                     <div class="action-btn bg-primary ms-2">
-                    <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
-                        <i class="ti ti-pencil text-white"></i>
-                    </a>
+                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
+                            <i class="ti ti-pencil text-white"></i>
+                        </a>
                     </div>
+                    @can('delete concrete')
                     <div class="action-btn bg-danger ms-2"> 
                     {!! Form::open(['method' => 'POST', 'route' => ['delete_rfi_status', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
@@ -233,6 +235,7 @@ h3, .h3 {
                     {!! Form::close() !!} 
                     </div>
                 </td> 
+                </tr>
                 @endforeach
                 </tbody>
             </table>

@@ -11,12 +11,15 @@ h3, .h3 {
 <div>
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
+          @can('create concrete')
           <div class="col-auto float-end ms-4 mt-4">
             <a href="#" data-size="xl" data-url="{{ route('qaqc.concrete_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
               <i class="ti ti-plus"></i>
             </a>
           </div>
+          @endcan
           <div class="card-header card-body table-border-style">
+            @can('manage concrete')
             <div class="table-responsive">
               <table class="table datatable" id="example1">
                 <thead class="">
@@ -35,7 +38,7 @@ h3, .h3 {
                   </tr>
                 </thead>
                 <tbody> 
-                @forelse ($dairy_data as $key=>$data) 
+                @foreach ($dairy_data as $key=>$data) 
                         @php $check=$data->diary_data; @endphp 
                         @if($check != null) 
                             @php $bulk_data = json_decode($check); @endphp 
@@ -54,11 +57,14 @@ h3, .h3 {
                     <td>{{$bulk_data->days_testing_result ?? '-'}}</td>
                     <td>{{$bulk_data->remarks}}</td>
                     <td>
+                      @can('edit concrete')
                       <div class="action-btn bg-primary ms-2">
                         <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('qaqc.concrete_edit',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
                           <i class="ti ti-pencil text-white"></i>
                         </a>
                       </div>
+                      @endcan
+                      @can('delete concrete')
                       <div class="action-btn bg-danger ms-2"> 
                         {!! Form::open(['method' => 'POST', 'route' => ['concrete.delete_concrete', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                         {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
@@ -68,16 +74,14 @@ h3, .h3 {
                         </a> 
                         {!! Form::close() !!} 
                       </div>
+                      @endcan
                     </td> 
                   </tr> 
-                @empty 
-                  <tr>
-                      <td  colspan="11" class="text-center">No Concrete Pouring Record Data Found</td>
-                  </tr> 
-                @endforelse 
+                @endforeach
                 </tbody>
               </table>
             </div>
+            @endcan
           </div>
         </div>
       </div>

@@ -374,20 +374,8 @@ class DiaryController extends Controller
         }
     }
 
-    public function destroy(Request $request)
-    {
-        try {
-
-            ConcretePouring::where('id', $request->id)->where('user_id',Auth::id())->where('project_id',$request->project_id)->delete();
-
-            return redirect()->back()->with("success", "Concrete pouring record deleted successfully.");
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function delete_concrete(Request $request)
+    
+    public function delete_consultant_direction(Request $request)
     {
         try {
 
