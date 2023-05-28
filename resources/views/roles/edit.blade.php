@@ -482,7 +482,7 @@
                         $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','bug report','bug status'];
                     @endphp --}}
                      @php
-                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage'];
+                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','vochange order','rfi','concrete'];
                     @endphp
                     <div class="col-md-12">
                         <div class="form-group">
