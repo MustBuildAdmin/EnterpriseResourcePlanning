@@ -5,35 +5,35 @@
             {{ Form::label('holder_name', __('Bank Holder Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
             <div class="form-icon-user">
                 <span><i class="ti ti-address-card"></i></span>
-                {{ Form::text('holder_name', '', array('class' => 'form-control','required'=>'required')) }}
+                <input type="text" name="holder_name" id="holder_name" value="" class="form-control" required ="required" onkeydown="return /[a-z]/i.test(event.key)">
             </div>
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('bank_name', __('Bank Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
             <div class="form-icon-user">
                 <span><i class="ti ti-university"></i></span>
-                {{ Form::text('bank_name', '', array('class' => 'form-control','required'=>'required')) }}
+                <input type="text" name="bank_name" id="bank_name" value="" class="form-control" required ="required" onkeydown="return /[a-z]/i.test(event.key)">
             </div>
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('account_number', __('Account Number'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
             <div class="form-icon-user">
                 <span><i class="ti ti-notes-medical"></i></span>
-                {{ Form::text('account_number', '', array('class' => 'form-control','required'=>'required')) }}
+                <input type="text" name="account_number" id="account_number" value="" class="form-control" required ="required" onkeydown="return /[0-9]/i.test(event.key)">
             </div>
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('opening_balance', __('Opening Balance'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
             <div class="form-icon-user">
                 <span><i class="ti ti-dollar-sign"></i></span>
-                {{ Form::number('opening_balance', '', array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+                {{ Form::number('opening_balance', '', array('class' => 'form-control','required'=>'required','step'=>'0.01', 'min'=>0)) }}
             </div>
         </div>
         <div class="form-group col-md-6">
             <div class="form-group">
                 {{Form::label('contact_number',__('Contact Number'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <input class="form-control" name="contact_number" type="number" id="contact_number" required maxlength="16" placeholder="+91 111 111 1111">
+                    <input class="form-control" name="contact_number" type="number" id="contact_number" required maxlength="16" placeholder="+91 111 111 1111" min=0>
                 </div>
             </div>
         </div>
@@ -63,3 +63,4 @@
     <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
 {{ Form::close() }}
+

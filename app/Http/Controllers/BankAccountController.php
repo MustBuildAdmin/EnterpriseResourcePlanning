@@ -50,9 +50,9 @@ class BankAccountController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'holder_name' => 'required',
-                                   'bank_name' => 'required',
-                                   'account_number' => 'required',
+                                   'holder_name' => 'required|alpha',
+                                   'bank_name' => 'required|alpha',
+                                   'account_number' => 'required|alpha_num',
                                    'opening_balance' => 'required',
                                    'contact_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/',
                                ]
