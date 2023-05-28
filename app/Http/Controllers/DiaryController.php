@@ -91,60 +91,7 @@ class DiaryController extends Controller
         }
     }
 
-    public function dairy_create(Request $request)
-    {
-        try {
-
-            $project = $request["project_id"];
-
-            $id = $request["id"];
-       
-
-            $project_name = Project::select("project_name")
-                ->where("id", $project)
-                ->first();
-
-          
-
-            return view("diary.create",compact("project", "id","project_name"));
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function dairy_update(Request $request)
-    {
-        try {
-
-            $project = $request["project_id"];
-
-            $id = $request["id"];
-       
-
-            if ($id != null) {
-                $get_dairy_data = ConcretePouring::where('project_id', $project)
-                    ->where('user_id', Auth::id())
-                    ->where('project_id',$project)
-                    ->where('id', $id)
-                    ->first();
-            } else {
-                $get_dairy_data = null;
-            }
-
-            $project_name = Project::select("project_name")
-                ->where("id", $project)
-                ->first();
-
-          
-
-            return view("diary.edit",compact("project", "id", "get_dairy_data", "project_name"));
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
+    
     
     public function show_consultant_direction(Request $request)
     {
@@ -190,7 +137,7 @@ class DiaryController extends Controller
                 ->where("id", $project)
                 ->first();
               
-            return view("diary.consultant_direction",compact("project_name", "project"));
+            return view("diary.consultant_direction.create",compact("project_name", "project"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -216,7 +163,7 @@ class DiaryController extends Controller
 
             $replier_date=$consult_dir_multi[0]->replier_date;
 
-            return view("diary.edit_consultant_direction",compact("consult_dir","consult_dir_multi","project_name","project","replier_date"));
+            return view("diary.consultant_direction.edit",compact("consult_dir","consult_dir_multi","project_name","project","replier_date"));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -772,7 +719,7 @@ class DiaryController extends Controller
             $project_name = Project::select('project_name')
             ->where('id', $project)
             ->first();
-           return view('diary.rfs_view_status',compact('project','project_name'));
+           return view('diary.rfi.create',compact('project','project_name'));
 
         }
         catch (exception $e) {
@@ -818,7 +765,7 @@ class DiaryController extends Controller
 
             $rfs_dir_multi = RFIStatusSubSave::where('rfi_id','=',$data->id)->get();
     
-            return view('diary.edit_rfs_view_status',compact('data','project_name','project_id','rfs_dir_multi'));
+            return view('diary.rfi.edit',compact('data','project_name','project_id','rfs_dir_multi'));
 
         } catch (Exception $e) {
 
@@ -1188,7 +1135,7 @@ class DiaryController extends Controller
             ->where('id', $project)
             ->first();
           
-           return view('diary.vo_change_order',compact('project','project_name'));
+           return view('diary.vo_sca_change_order.create',compact('project','project_name'));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -1220,7 +1167,7 @@ class DiaryController extends Controller
 
           
 
-            return view("diary.edit_vo_change_order",compact("project", "id", "get_dairy_data", "project_name"));
+            return view("diary.vo_sca_change_order.edit",compact("project", "id", "get_dairy_data", "project_name"));
 
         } catch (Exception $e) {
             return $e->getMessage();
