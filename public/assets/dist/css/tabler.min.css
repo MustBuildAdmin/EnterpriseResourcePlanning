@@ -2883,7 +2883,7 @@ progress {
 
 .table-responsive {
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch
+    -webkit-overflow-scrolling: touch;
 }
 
 @media (max-width:575.98px) {
@@ -28624,10 +28624,53 @@ table.dataTable>tbody>tr {
 .maindivreport {
     background: #fff;
     margin: 1% 1%;
-    height: 100vh;
+    height: auto;
     padding: 2% 3%;
 }
 
+
+.maindivreport .form-control {
+    display: block;
+    width: 100%;
+    padding: 0.4375rem 0.75rem;
+    font-family: var(--tblr-font-sans-serif);
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.4285714286;
+    color: inherit;
+    background-color: var(--tblr-bg-forms);
+    background-clip: padding-box;
+    border: var(--tblr-border-width) solid var(--tblr-border-color);
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+    appearance: auto !important;
+    border-radius: var(--tblr-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    height: 31px;
+}
+
+.maindivreport .mb-2 {
+    padding: 5px;
+}
+
+
+.maindivreport .ti-trash {
+    margin: 17% 8px 0 0;
+    font-size: 18px;
+    vertical-align: bottom;
+}
+
+.maindivreport .ti-eye {
+    margin: 17% 8px 0 0;
+    font-size: 18px;
+    vertical-align: bottom;
+}
+
+.maindivreport .ti-edit {
+    margin: 17% 8px 0 0;
+    font-size: 18px;
+    vertical-align: bottom;
+}
 
 .float-left{
     float: left;
@@ -28637,20 +28680,39 @@ table.dataTable>tbody>tr {
     margin: 15% 0 0 0 !important;
 }
 
+.dailyreport a.btn.btn-sm {
+    background: #206bc4;
+    min-width: 0px;
+    font-size: 16px;
+    border: none;
+    padding: 0 1px;
+    font-size: 16px !important;
+}
+
+.dailyreport .ms-2 {
+    margin-left: 0 !important;
+    float: left;
+}
+
 .tablereport {
-    overflow: hidden;
+    overflow: hidden !important;
     -webkit-overflow-scrolling: touch;
     background: #fff;
     /* max-width: 1072px; */
-    width: 100%;
+    width: 100% !important;
     float: left;
-    height: 20vh;
+    height: auto;
 }
 
 .dropdowmselect {
     margin: 9px 9px 0 0;
     width: 55%;
 }
+
+.tempselect {
+ margin:5px 0 0 4px;
+}
+
 
 @media (max-width: 768px) {
 #sidebar ul li .icon{

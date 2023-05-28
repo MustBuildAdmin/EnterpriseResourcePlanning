@@ -1344,6 +1344,31 @@ class DiaryController extends Controller
         }
     }
 
+
+    public function daily_reportscreate(Request $request)
+    {
+        try {
+
+            return view("diary.daily_reports.create");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+    public function daily_reportsedit(Request $request)
+    {
+        try {
+
+            return view("diary.daily_reports.edit");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
+
     public function daily_reports(Request $request)
     {
         try {
@@ -1354,5 +1379,9 @@ class DiaryController extends Controller
             return $e->getMessage();
         }
     }
+
+
+
+
     
 }
