@@ -16,13 +16,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="InputLIst">RFI Reference No :</label>
-                            <input type="text" name="reference_no" class="form-control" placeholder="Text input">
+                            <input type="text" name="reference_no" class="form-control" placeholder="Text input" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="input">Issue Date :</label>
-                            <input type="date" name="issue_date" class="form-control" placeholder="Text input">
+                            <input type="date" name="issue_date" class="form-control" placeholder="Text input" required>
                         </div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="input">Description:</label>
-                            <textarea name="description" class="form-control" type="text"></textarea>
+                            <textarea name="description" class="form-control" required></textarea>
                         </div>
                     </div>
                 </div>

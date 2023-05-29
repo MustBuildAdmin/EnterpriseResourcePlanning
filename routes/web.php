@@ -35,10 +35,6 @@ Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middlewar
 //     ]
 // );
 
-
-//diary
-
-
 Route::get('reportnew','reportnew@index')->name('diary')->middleware(
     [
         'auth',
@@ -46,6 +42,7 @@ Route::get('reportnew','reportnew@index')->name('diary')->middleware(
     ]
 );
 
+//diary
 
 Route::get('diary','DiaryController@index')->name('diary_new')->middleware(
     [
@@ -83,63 +80,11 @@ Route::get(
 );
 
 
-Route::post('save_concrete_pouring','DiaryController@save_concrete_pouring')->name('diary.save_concrete_pouring')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
 
 
-Route::post('update_concrete_pouring','DiaryController@update_concrete_pouring')->name('diary.update_concrete_pouring')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::post('diary/diary_destroy/{id}','DiaryController@destroy')->name('diary_destroy')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
-
-Route::post('diary/delete_concrete/{id}','DiaryController@delete_concrete')->name('delete_concrete')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
-
-Route::any('save_consultant_direction','DiaryController@save_consultant_direction')->name('save_consultant_direction')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('update_consultant_direction','DiaryController@update_consultant_direction')->name('update_consultant_direction')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
 
 
-Route::get('dairy_create','DiaryController@dairy_create')->name('dairy.dairy_create')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
 
-Route::get('dairy_update','DiaryController@dairy_update')->name('dairy.dairy_update')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
 
 Route::any('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
     [
@@ -161,6 +106,28 @@ Route::any('edit_consultant_direction','DiaryController@edit_consultant_directio
         'XSS',
     ]
 );
+
+Route::any('save_consultant_direction','DiaryController@save_consultant_direction')->name('save_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_consultant_direction','DiaryController@update_consultant_direction')->name('update_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::post('delete_consultant_direction/{id}','DiaryController@delete_consultant_direction')->name('delete_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 
+
 
 Route::any('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
     [
@@ -305,6 +272,22 @@ Route::any('delete_variation_scope_change','DiaryController@delete_variation_sco
      /*Daily  Reports */
 
      Route::any('daily_reports','DiaryController@daily_reports')->name('daily_reports')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    
+    Route::any('daily_reportscreate','DiaryController@daily_reportscreate')->name('daily_reportscreate')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+
+    Route::any('daily_reportsedit','DiaryController@daily_reportsedit')->name('daily_reportsedit')->middleware(
         [
             'auth',
             'XSS',
@@ -3582,98 +3565,6 @@ Route::get(
     ]
 );
 
-//dairy
-
-
-
-Route::any(
-    'dairy', [
-    'as' => 'dairy.index',
-    'uses' => 'DairyController@index',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy_create', [
-    'as' => 'dairy.dairy_create',
-    'uses' => 'DairyController@dairy_create',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/{id}', [
-    'as' => 'dairy.show',
-    'uses' => 'DairyController@show',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy-view', [
-    'as' => 'filter.dairy.view',
-    'uses' => 'DairyController@filterDairyView',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/concrete_pouring', [
-    'as' => 'dairy.concrete_pouring',
-    'uses' => 'DairyController@concrete_pouring',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy/destroy/{id}', [
-    'as' => 'dairy.destroy',
-    'uses' => 'DairyController@destroy',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/destroy/{id}', [
-    'as' => 'dairy.destroy',
-    'uses' => 'DairyController@destroy',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
 
 
 Route::get(
@@ -4192,7 +4083,50 @@ Route::group(
     Route::get('contract/reports', 'ContractController@reports')->name('contract.reports');
     Route::get('contract/reconcilation', 'ContractController@reconcilation')->name('contract.reconcilation');
     Route::get('contract/eot', 'ContractController@eot')->name('contract.eot');
+
     Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
+    Route::get('concrete_create','QualityAssuranceController@concrete_create')->name('qaqc.concrete_create')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+    Route::get('concrete_edit','QualityAssuranceController@concrete_edit')->name('qaqc.concrete_edit')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+   
+    Route::get('concrete_update','QualityAssuranceController@concrete_update')->name('qaqc.concrete_update')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('save_concrete_pouring','QualityAssuranceController@save_concrete_pouring')->name('concrete.save_concrete_pouring')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+    
+    
+    Route::post('update_concrete_pouring','QualityAssuranceController@update_concrete_pouring')->name('concrete.update_concrete_pouring')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('delete_concrete/{id}','QualityAssuranceController@delete_concrete')->name('concrete.delete_concrete')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    ); 
+
     Route::get('qaqc/bricks','QualityAssuranceController@bricks')->name('qaqc.bricks');
     Route::get('qaqc/cement','QualityAssuranceController@cement')->name('qaqc.cement');
     Route::get('qaqc/sand','QualityAssuranceController@sand')->name('qaqc.sand');

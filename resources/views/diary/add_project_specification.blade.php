@@ -16,13 +16,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="InputLIst">Reference No:</label>
-                <input type="text" name="reference_no" class="form-control" placeholder="Reference No">
+                <input type="text" name="reference_no" class="form-control" placeholder="Reference No" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="input">Description :</label>
-                <input type="text" name="description" class="form-control" placeholder="Description">
+                <input type="text" name="description" class="form-control" placeholder="Description" required>
               </div>
             </div>
           </div>
