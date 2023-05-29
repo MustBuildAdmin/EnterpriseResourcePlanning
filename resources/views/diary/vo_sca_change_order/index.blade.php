@@ -189,11 +189,14 @@ h3, .h3 {
     <div class="col-xl-12 mt-3">
       <div class="card table-card">
         <div class="col-auto float-end ms-4 mt-4">
+          @can('create vochange')
           <a href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
           </a>
+          @endcan
         </div>
         <div class="card-header card-body table-border-style">
+          @can('manage vochange')
           <div class="table-responsive">
             <table class="table datatable" id="example1">
               <thead class="">
@@ -244,11 +247,14 @@ h3, .h3 {
                             <td>{{$bulk_data->granted_eot}}</td>
                             <td>{{$bulk_data->remarks}}</td>
                             <td>
+                              @can('delete vochange')
                               <div class="action-btn bg-primary ms-2">
                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('edit_variation_scope_change',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
                                   <i class="ti ti-pencil text-white"></i>
                                 </a>
                               </div>
+                              @endcan
+                              @can('edit vochange')
                               <div class="action-btn bg-danger ms-2"> 
                                 {!! Form::open(['method' => 'POST', 'route' => ['delete_variation_scope_change', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                                 @csrf
@@ -259,6 +265,7 @@ h3, .h3 {
                                 </a> 
                                 {!! Form::close() !!} 
                               </div>
+                              @endcan
                             </td> 
                           </tr>
                           {{-- @empty 
@@ -269,6 +276,7 @@ h3, .h3 {
               </tbody>
             </table>
           </div>
+          @endcan
         </div>
       </div>
     </div>
