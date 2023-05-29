@@ -12,7 +12,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('rate', __('Tax Rate %'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::number('rate', '', array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+            {{ Form::number('rate', '', array('class' => 'form-control','required'=>'required','step'=>'0.01', 'min'=>0)) }}
             @error('rate')
             <small class="invalid-rate" role="alert">
                 <strong class="text-danger">{{ $message }}</strong>
