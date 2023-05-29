@@ -132,8 +132,6 @@
     </div>
   </div>
 </div>
-
-@push('script-page')
 <script type="text/javascript">
   $(document).ready(function () {
     var i = 0;
@@ -146,4 +144,3 @@
     });
   });
 </script>
-@endpush

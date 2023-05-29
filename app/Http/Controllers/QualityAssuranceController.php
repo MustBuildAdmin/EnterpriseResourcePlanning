@@ -29,12 +29,25 @@ class QualityAssuranceController extends Controller
 
         try {
 
-            $project_id = Session::get('project_id');
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
 
-            $dairy_data = ConcretePouring::where('user_id',Auth::id())->where('project_id',$project_id)->get();
+            if(\Auth::user()->can('manage concrete')){
 
+                $project_id = Session::get('project_id');
+
+                $dairy_data = ConcretePouring::where('user_id',Auth::id())->where('project_id',$project_id)->get();
     
-            return view('qaqc.concrete.index',compact("project_id","dairy_data"));
+        
+                return view('qaqc.concrete.index',compact("project_id","dairy_data"));
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+           
 
         } catch (Exception $e) {
 
@@ -48,19 +61,24 @@ class QualityAssuranceController extends Controller
     {
         try {
 
-            $project =  Session::get('project_id');
+            if(\Auth::user()->can('create concrete')){
 
-            $id = $request["id"];
-       
+                $project =  Session::get('project_id');
 
-            $project_name = Project::select("project_name")
-                ->where("id", $project)
-                ->first();
+                $id = $request["id"];
+        
 
-          
+                $project_name = Project::select("project_name")
+                    ->where("id", $project)
+                    ->first();
 
-            
-            return view("qaqc.concrete.create",compact("project", "id","project_name"));
+                return view("qaqc.concrete.create",compact("project", "id","project_name"));
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -71,27 +89,34 @@ class QualityAssuranceController extends Controller
     {
         try {
 
-            $project =  Session::get('project_id');
+            if(\Auth::user()->can('edit concrete')){
 
-            $id = $request["id"];
+                $project =  Session::get('project_id');
+
+                $id = $request["id"];
        
 
-            if ($id != null) {
-                $get_dairy_data = ConcretePouring::where('project_id', $project)
-                    ->where('user_id', Auth::id())
-                    ->where('project_id',$project)
-                    ->where('id', $id)
+                if ($id != null) {
+                    $get_dairy_data = ConcretePouring::where('project_id', $project)
+                        ->where('user_id', Auth::id())
+                        ->where('project_id',$project)
+                        ->where('id', $id)
+                        ->first();
+                } else {
+                    $get_dairy_data = null;
+                }
+
+                $project_name = Project::select("project_name")
+                    ->where("id", $project)
                     ->first();
-            } else {
-                $get_dairy_data = null;
-            }
 
-            $project_name = Project::select("project_name")
-                ->where("id", $project)
-                ->first();
-
-          
                 return view("qaqc.concrete.edit",compact("project", "id", "get_dairy_data", "project_name"));
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
             
         } catch (Exception $e) {
             return $e->getMessage();
@@ -246,10 +271,18 @@ class QualityAssuranceController extends Controller
     {
         try {
 
-            ConcretePouring::where('id', $request->id)->where('user_id',Auth::id())->where('project_id',$request->project_id)->delete();
+            if(\Auth::user()->can('delete concrete')){
 
-            return redirect()->back()->with("success", "Concrete pouring record deleted successfully.");
+                ConcretePouring::where('id', $request->id)->where('user_id',Auth::id())->where('project_id',$request->project_id)->delete();
 
+                return redirect()->back()->with("success", "Concrete pouring record deleted successfully.");
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+           
         } catch (Exception $e) {
             return $e->getMessage();
         }

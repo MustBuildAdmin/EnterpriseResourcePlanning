@@ -35,10 +35,6 @@ Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middlewar
 //     ]
 // );
 
-
-//diary
-
-
 Route::get('reportnew','reportnew@index')->name('diary')->middleware(
     [
         'auth',
@@ -46,6 +42,7 @@ Route::get('reportnew','reportnew@index')->name('diary')->middleware(
     ]
 );
 
+//diary
 
 Route::get('diary','DiaryController@index')->name('diary_new')->middleware(
     [
@@ -3567,98 +3564,6 @@ Route::get(
         'XSS',
     ]
 );
-
-//dairy
-
-
-
-Route::any(
-    'dairy', [
-    'as' => 'dairy.index',
-    'uses' => 'DairyController@index',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy_create', [
-    'as' => 'dairy.dairy_create',
-    'uses' => 'DairyController@dairy_create',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/{id}', [
-    'as' => 'dairy.show',
-    'uses' => 'DairyController@show',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy-view', [
-    'as' => 'filter.dairy.view',
-    'uses' => 'DairyController@filterDairyView',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/concrete_pouring', [
-    'as' => 'dairy.concrete_pouring',
-    'uses' => 'DairyController@concrete_pouring',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy/destroy/{id}', [
-    'as' => 'dairy.destroy',
-    'uses' => 'DairyController@destroy',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/destroy/{id}', [
-    'as' => 'dairy.destroy',
-    'uses' => 'DairyController@destroy',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
 
 
 

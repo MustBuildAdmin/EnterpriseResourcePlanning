@@ -231,7 +231,7 @@
                         <li class="">
                             <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                         </li>
-                        @can('manage vo/change')
+                        @can('manage vochange')
                         <li class="">
                             <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
                         </li>

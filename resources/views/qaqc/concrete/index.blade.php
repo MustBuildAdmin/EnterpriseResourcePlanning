@@ -87,9 +87,7 @@ h3, .h3 {
       </div>
 </div>
 @include('new_layouts.footer')
-<script>
-
-</script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
 <script type="text/javascript">
   $(document).ready(function () {
     var i = 0;

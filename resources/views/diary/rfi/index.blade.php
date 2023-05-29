@@ -188,12 +188,15 @@ h3, .h3 {
 
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
+        @can('create rfi')
         <div class="col-auto float-end ms-4 mt-4">
             <a href="#" data-size="xl" data-url="{{ route('rfi_info_status',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
             </a>
         </div>
+        @endcan
         <div class="card-header card-body table-border-style">
+            @can('manage rfi')
             <div class="table">
               <table class="table datatable" id="example">
                 <thead class="">
@@ -219,12 +222,14 @@ h3, .h3 {
                 <td>{{$data->issue_date}}</td>
                 <td>{{$data->description}}</td>
                 <td>
+                    @can('edit rfi')
                     <div class="action-btn bg-primary ms-2">
                         <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
                             <i class="ti ti-pencil text-white"></i>
                         </a>
                     </div>
-                    @can('delete concrete')
+                    @endcan
+                    @can('delete rfi')
                     <div class="action-btn bg-danger ms-2"> 
                     {!! Form::open(['method' => 'POST', 'route' => ['delete_rfi_status', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
@@ -234,17 +239,30 @@ h3, .h3 {
                     </a> 
                     {!! Form::close() !!} 
                     </div>
+                    @endcan
                 </td> 
                 </tr>
                 @endforeach
                 </tbody>
             </table>
             </div>
+            @endcan
         </div>
         </div>
     </div>
-  
-
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+      var j = 0;
+      $(document).on("click", "#dynamic-rfi", function () {
+          ++j;
+          $("#dynamicaddrfi").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submit Date :</label><input type="date" name="submit_date[]" class="form-control" value=""></div></div><div class="col-md-6"><div class="form-group"><label for="input">Return Date :</label><input type="date" name="return_date[]" class="form-control" value=""></div></div></div><div class="row"><div class="col-md-6"><div class="form-group"><label for="Input">Status of Return :</label><select class="form-control" name="status_of_return[]"><option selected disabled>Status</option><option value="Exception">No Exception Taken (NET) (OR) Approved /with comment</option><option value="Resubmission">Revise No Resubmission Requried (RNRR)</option><option value="Revise">Revise and Resubmit (RR)</option><option value="Submit">Submit Specified Item (SSI)</option><option value="Rejected">Rejected</option></select></div></div><div class="col-md-6"><div class="form-group"><label for="InputDate">Remarks :</label><textarea class="form-control" name="remarks[]"></textarea></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="remove-input-field"> Remove Submission </button></div></div></td></tr>');
+      });
+      $(document).on('click', '#remove-input-field', function () {
+          $(this).parents('tr').remove();
+      });
+  
+    });
+  </script>
 @include('new_layouts.footer')
 
