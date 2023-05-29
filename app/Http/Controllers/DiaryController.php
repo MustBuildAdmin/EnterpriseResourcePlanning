@@ -1432,6 +1432,7 @@ class DiaryController extends Controller
     }
 
 
+
     public function daily_reportscreate(Request $request)
     {
         try {

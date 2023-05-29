@@ -1,4 +1,4 @@
-{{ Form::open(array('url' => 'bank-account')) }}
+{{ Form::open(array('url' => 'bank-account', 'id'=>'create_account_form')) }}
 <div class="modal-body">
     <div class="row">
         <div class="form-group col-md-6">
@@ -60,7 +60,24 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary account_submit">
 </div>
 {{ Form::close() }}
 
+<script>
+$(document).ready(function() {
+    $(".account_submit").click(function() {
+        var valid = true;
+        $('[required]').each(function() {
+            if ($(this).is(':invalid') || !$(this).val()) {
+                valid = false;
+            }
+        });
+        if (!valid) {
+            $(".account_submit").attr('disabled', false);
+        }else{
+            $(".account_submit").hide();
+        }        
+    })   
+});
+</script>
