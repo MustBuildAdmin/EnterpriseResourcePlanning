@@ -380,31 +380,17 @@ class ProjectReportController extends Controller
 
                     );
                 }
-                $to=DB::table('users')->where('id',$project->report_to)->pluck('email')->first();
+                $to=array();
+                $to_array=explode(',',$project->report_to);
+                foreach ($to_array as $key => $value) {
+                    $to[]=DB::table('users')->where('id',$value)->pluck('email')->first();
+                }
+                
                 if(!$to){
                     return redirect()->back()->with('error', __('Not Assign a Report person'));
                 }
-
                 $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
-               // return $pdf->download('Report.pdf');
-                //file put in public path
-                // $path='projectfiles/';
-                // $filename ='reportfile'.rand(555555,888888).'.pdf';
-                // $pathname='projectfiles/'.$filename;
-                // $link=env('APP_URL').'/'.$path.$filename;
-                // if (file_exists(public_path($pathname))){
-                //     unlink(public_path($pathname));
-                // }
-                // $file_to_save =$pathname;
-                //save the pdf file on the server
-                // file_put_contents($file_to_save, $pdf->output());
-                //print the pdf file to the screen for saving
-                // header('Content-type: application/pdf');
-                // header('Content-Disposition: inline; filename="file.pdf"');
-                // header('Content-Transfer-Encoding: binary');
-                // header('Content-Length: ' . filesize($file_to_save));
-                // header('Accept-Ranges: bytes');
-                // return $pdf->download($filename);
+       
                 $data["email"] = $to;
                 $data["title"] = "Daily Productivity Report";
                 $data["body"] = "Please find the attachment of the Today Productivity report";

@@ -170,7 +170,7 @@
                         </li>
                         @can('view grant chart')
                             <li class="">
-                                <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gand Chart') }}</a>
+                                <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gantt Chart') }}</a>
                             </li>
                         @endcan
 
@@ -220,26 +220,32 @@
 
                 {{-- Dairy --}}
                 <li class="">
-                    <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
+                    <a href="{{route('diary')}}"  data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
                         aria-controls="pageSubmenuDairy"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
-                        <span class="list">{{ __('Dairy') }}</span>
+                        <span class="list">{{ __('Diary') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuDairy">
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Drawing') }}</a>
+                            <a href="{{ route('drawing_list') }}" class="dropdown-item">{{ __('Drawing') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Site Reports') }}</a>
+                            <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                         </li>
+                        @can('manage vochange')
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('VO/Change Order') }}</a>
+                            <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
                         </li>
+                        @endcan
+                        @can('manage directions')
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Directions') }}</a>
+                            <a href="{{ route('show_consultant_direction') }}" class="dropdown-item">{{ __('Directions') }}</a>
                         </li>
+                        @endcan
+                        @can('manage rfi')
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('RFI') }}</a>
+                            <a href="{{ route('rfi_show_info') }}" class="dropdown-item">{{ __('RFI') }}</a>
                         </li>
+                        @endcan
                         <li class="">
                             <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
                         </li>
@@ -262,7 +268,9 @@
                                 <span class="list">{{__('Testing ')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTesting">
+                                @can('manage concrete')
                                 <li class=""><a href="{{route('qaqc.concrete')}}">{{__('Concrete')}}</a></li>
+                                @endcan
                                 <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>

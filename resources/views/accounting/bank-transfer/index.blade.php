@@ -1,9 +1,22 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/flatpickr.min.css') }}">
+<style>
+.month, .date, .account {
+    margin-right: 20px;
+}
+.col-auto {
+    padding-top : 27px;
+}
+.bank_action_btn {
+    margin-right: 9px;
+    margin-left: 10px;
+    height: 30px;
+}
+</style>
 <div class="row">
   <div class="col-md-6">
-     <h2>Bank Transfer</h2>
+     <h2>{{__('Bank Transfer')}}</h2>
   </div>
   <div class="col-md-6 float-end floatrght">
         @can('create bank transfer')
@@ -21,12 +34,8 @@
                     <div class="card-body">
                         {{ Form::open(array('route' => array('bank-transfer.index'),'method' => 'GET','id'=>'transfer_form')) }}
                         <div class="row align-items-center justify-content-end">
-                            <div class="col-xl-10">
+                            <div class="col-xl-12">
                                 <div class="row">
-
-                                    <div class="col-3">
-                                    </div>
-
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 month">
                                         <div class="btn-box">
                                             {{ Form::label('date', __('Date'),['class'=>'form-label'])}}
@@ -41,31 +50,21 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 account">
                                         <div class="btn-box">
                                             {{ Form::label('t_account', __('To Account'),['class'=>'form-label'])}}
                                             {{ Form::select('t_account', $account,isset($_GET['t_account'])?$_GET['t_account']:'', array('class' => 'form-control select')) }}
                                         </div>
                                     </div>
-
-
-                                </div>
-                            </div>
-                            <div class="col-auto mt-4">
-                                <div class="row">
                                     <div class="col-auto">
-
-                                        <a href="#" class="btn btn-sm btn-primary" onclick="document.getElementById('transfer_form').submit(); return false;" data-bs-toggle="tooltip" title="{{__('Apply')}}" data-original-title="{{__('apply')}}">
+                                        <a href="#" class="btn btn-sm btn-primary bank_action_btn" onclick="document.getElementById('transfer_form').submit(); return false;" data-bs-toggle="tooltip" title="{{__('Apply')}}" data-original-title="{{__('apply')}}">
                                             <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
                                         </a>
 
-                                        <a href="{{route('bank-transfer.index')}}" class="btn btn-sm btn-danger " data-bs-toggle="tooltip"  title="{{ __('Reset') }}" data-original-title="{{__('Reset')}}">
-                                            <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off "></i></span>
+                                        <a href="{{route('bank-transfer.index')}}" class="btn btn-sm btn-danger bank_action_btn" data-bs-toggle="tooltip"  title="{{ __('Reset') }}" data-original-title="{{__('Reset')}}">
+                                            <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
                                         </a>
-
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>

@@ -156,7 +156,7 @@
         @endif
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('password',__('Password'),['class'=>'form-label'])}}
+                {{Form::label('password',__('Password'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
                 @error('password')
                 <small class="invalid-password" role="alert">

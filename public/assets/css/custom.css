@@ -37,11 +37,11 @@
 }
 
 #sidebar {
-
   background: #fafbfc;
   color: #6b6b6b;
   transition: all 0.3s;
   box-shadow: 0px 0px 1px 1px #ccc;
+  float: left;
 }
 
 
