@@ -209,9 +209,9 @@
                         <li class="">
                             <a href="{{ route('taskBoard.view',['list']) }}" class="dropdown-item">{{ __('Task') }}</a>
                         </li>
-                        <li class="">
+                        {{-- <li class="">
                             <a href="{{ route('task.newcalendar',['all']) }}" class="dropdown-item">{{ __('Task Calendar') }}</a>
-                        </li>
+                        </li> --}}
                         <li class="">
                             <a href="{{route('project_report.index')}}" class="dropdown-item">{{ __('Project Reports') }}</a>
                         </li>
