@@ -1398,6 +1398,31 @@ class DiaryController extends Controller
     }
 
 
+    
+    public function drawing_listcreate(Request $request)
+    {
+        try {
+              
+            return view("diary.drawings_list.create");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+    public function drawing_listedit(Request $request)
+    {
+        try {
+              
+            return view("diary.drawings_list.edit");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
 
     public function daily_reportscreate(Request $request)
     {

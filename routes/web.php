@@ -302,6 +302,21 @@ Route::any('delete_variation_scope_change','DiaryController@delete_variation_sco
     );
 
 
+    Route::any('drawing_listcreate','DiaryController@drawing_listcreate')->name('drawing_listcreate')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+
+    Route::any('drawing_listedit','DiaryController@drawing_listedit')->name('drawing_listedit')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
      /*Daily  Reports */
 
      Route::any('daily_reports','DiaryController@daily_reports')->name('daily_reports')->middleware(

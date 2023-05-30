@@ -5,7 +5,7 @@
 <div class="sitereportmain">
 <div class="row">
   <div class="col-md-6">
-      <h2>{{__('Daily Reports')}}</h2>
+      <h2>{{__('Drawings Reports')}}</h2>
   </div>
   <div class="col-md-6 float-end floatrght">
         <a href="{{ route('daily_reportscreate') }}" data-size="lg" data-url="{{ route('daily_reportscreate') }}" class="gapbtn floatrght btn btn-sm btn-primary">
