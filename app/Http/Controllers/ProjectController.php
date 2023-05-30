@@ -439,7 +439,6 @@ class ProjectController extends Controller
             }else{
               $user_projects = $usr->projects->pluck('id')->toArray();
             }
-
             if(in_array($project->id, $user_projects))
             {
                 // test the holidays
