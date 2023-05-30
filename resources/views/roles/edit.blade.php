@@ -482,7 +482,7 @@
                         $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','bug report','bug status'];
                     @endphp --}}
                      @php
-                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','vochange','rfi','concrete'];
+                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','vochange','RFI','concrete'];
                     @endphp
                     <div class="col-md-12">
                         <div class="form-group">
@@ -1420,6 +1420,47 @@
         if(count_grantchart==1){
             $("#grantchart").prop('checked', true);
         }
+        var directions = $(".isscheck_directions");
+        var count_directions=1;
+        directions.filter((e)=>{
+            if(!directions[e].checked){
+                count_directions --;
+            }
+        });
+        if(count_directions==1){
+            $("#directions").prop('checked', true);
+        }
+        var vochange = $(".isscheck_vochange");
+        var count_vochange=1;
+        vochange.filter((e)=>{
+            if(!vochange[e].checked){
+                count_vochange --;
+            }
+        });
+        if(count_vochange==1){
+            $("#vochange").prop('checked', true);
+        }
+        var rfi = $(".isscheck_rfi");
+        var count_rfi=1;
+        rfi.filter((e)=>{
+            if(!rfi[e].checked){
+                count_rfi --;
+            }
+        });
+        if(count_rfi==1){
+            $("#rfi").prop('checked', true);
+        }
+        var concrete = $(".isscheck_concrete");
+        var count_concrete=1;
+        concrete.filter((e)=>{
+            if(!concrete[e].checked){
+                count_concrete --;
+            }
+        });
+        if(count_concrete==1){
+            $("#concrete").prop('checked', true);
+        }
+        
         var projectstage = $(".isscheck_projectstage");
         var count_projectstage=1;
         projectstage.filter((e)=>{

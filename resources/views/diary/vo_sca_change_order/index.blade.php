@@ -247,6 +247,7 @@ h3, .h3 {
                             <td>{{$bulk_data->granted_eot}}</td>
                             <td>{{$bulk_data->remarks}}</td>
                             <td>
+
                               @can('delete vochange')
                               <div class="action-btn bg-primary ms-2">
                                 <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('edit_variation_scope_change',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
@@ -254,6 +255,7 @@ h3, .h3 {
                                 </a>
                               </div>
                               @endcan
+                             
                               @can('edit vochange')
                               <div class="action-btn bg-danger ms-2"> 
                                 {!! Form::open(['method' => 'POST', 'route' => ['delete_variation_scope_change', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
@@ -266,6 +268,7 @@ h3, .h3 {
                                 {!! Form::close() !!} 
                               </div>
                               @endcan
+                              
                             </td> 
                           </tr>
                           {{-- @empty 
