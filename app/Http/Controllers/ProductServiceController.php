@@ -118,7 +118,7 @@ class ProductServiceController extends Controller
 
                 if($productService->pro_image)
                 {
-                    $path = storage_path('uploads/pro_image' . $productService->pro_image);
+                    $path = storage_path('app/public/uploads/pro_image' . $productService->pro_image);
                     if(file_exists($path))
                     {
                         \File::delete($path);
@@ -126,7 +126,7 @@ class ProductServiceController extends Controller
                 }
                 $fileName = time() . "_" . $request->pro_image->getClientOriginalName();
                 $productService->pro_image = $fileName;
-                $dir        = 'uploads/pro_image';
+                $dir        = 'app/public/uploads/pro_image';
                 $path = Utility::upload_file($request,'pro_image',$fileName,$dir,[]);
             }
 
@@ -224,7 +224,7 @@ class ProductServiceController extends Controller
 
                     if($productService->pro_image)
                     {
-                        $path = storage_path('uploads/pro_image' . $productService->pro_image);
+                        $path = storage_path('app/public/uploads/pro_image' . $productService->pro_image);
                         if(file_exists($path))
                         {
                             \File::delete($path);
@@ -232,7 +232,7 @@ class ProductServiceController extends Controller
                     }
                     $fileName = time() . "_" . $request->pro_image->getClientOriginalName();
                     $productService->pro_image = $fileName;
-                    $dir        = 'uploads/pro_image';
+                    $dir        = 'app/public/uploads/pro_image';
                     $path = Utility::upload_file($request,'pro_image',$fileName,$dir,[]);
 
                 }
@@ -413,9 +413,9 @@ class ProductServiceController extends Controller
                 foreach ($products as $key => $product)
                 {
                     if(!empty($product->pro_image)){
-                        $image_url =('uploads/pro_image').'/'.$product->pro_image;
+                        $image_url =('app/public/uploads/pro_image').'/'.$product->pro_image;
                     }else{
-                        $image_url =('uploads/pro_image').'/default.png';
+                        $image_url =('app/public/uploads/pro_image').'/default.png';
                     }
                     if ($request->session_key == 'purchases')
                     {
@@ -522,7 +522,7 @@ class ProductServiceController extends Controller
             $subtotal        = $productprice + $tax;
             $cart            = session()->get($session_key);
 //            $image_url       = (!empty($product->image) && Storage::exists($product->image)) ? $product->image : 'logo/placeholder.png';
-            $image_url = (!empty($product->pro_image) && Storage::exists($product->pro_image)) ? $product->pro_image : 'uploads/pro_image/'. $product->pro_image;
+            $image_url = (!empty($product->pro_image) && Storage::exists($product->pro_image)) ? $product->pro_image : 'app/public/uploads/pro_image/'. $product->pro_image;
 
 
             $model_delete_id = 'delete-form-' . $id;
