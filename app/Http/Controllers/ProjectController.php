@@ -206,7 +206,7 @@ class ProjectController extends Controller
                         }
                         if(isset($value['parent'])){
                             $task->parent=$value['parent'];
-                            $task->predecessors=$value['parent'];
+                            // $task->predecessors=$value['parent'];
                         }
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
@@ -224,7 +224,27 @@ class ProjectController extends Controller
                         $link->project_id=$project->id;
                         $link->instance_id=$instance_id;
                         $link->id=$value['id'];
-                        // Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
+                        $old_predis=Con_task::where(['id'=>$value['target'],'project_id'=>$project->id])->pluck('predecessors')->first();
+                        if($old_predis!=''){
+                            $predis=$old_predis.','.$value['source'];
+                            if($value['lag']!=0){
+                                if (str_contains($value['lag'], '-')) {
+                                    $predis=$predis.$value['lag'].' days';
+                                } else {
+                                    $predis=$predis.' +'.$value['lag'].' days';
+                                }
+                            }
+                        }else{
+                            $predis=$value['source'];
+                            if($value['lag']!=0){
+                                if (str_contains($value['lag'], '-')) {
+                                    $predis=$predis.$value['lag'].' days';
+                                } else {
+                                    $predis=$predis.' +'.$value['lag'].' days';
+                                }
+                            }
+                        }
+                        Con_task::where(['id'=>$value['target'],'project_id'=>$project->id])->update(['predecessors'=>$predis]);
                         if(isset($value['type'])){
                             $link->type=$value['type'];
                         }
@@ -311,7 +331,29 @@ class ProjectController extends Controller
                             $link= new Link();
                             $link->project_id=$project->id;
                             $link->instance_id=$instance_id;
-                            // Con_task::where(['main_id'=>$value['source'],'project_id'=>$project->id])->update(['predecessors'=>$value['target']]);
+                            $old_predis=Con_task::where(['id'=>$value['target'],'project_id'=>$project->id])->pluck('predecessors')->first();
+                            if($old_predis!=''){
+                                $predis=$old_predis.','.$value['source'];
+                                if($value['lag']!=0){
+                                    if (str_contains($value['lag'], '-')) {
+                                        $predis=$predis.$value['lag'].' days';
+                                    } else {
+                                        $predis=$predis.' +'.$value['lag'].' days';
+                                    }
+
+                                }
+
+                            }else{
+                                $predis=$value['source'];
+                                if($value['lag']!=0){
+                                    if (str_contains($value['lag'], '-')) {
+                                        $predis=$predis.$value['lag'].' days';
+                                    } else {
+                                        $predis=$predis.' +'.$value['lag'].' days';
+                                    }
+                                }
+                            }
+                            Con_task::where(['id'=>$value['target'],'project_id'=>$project->id])->update(['predecessors'=>$predis]);
                             $link->id=$value['id'];
                             if(isset($value['type'])){
                                 $link->type=$value['type'];
@@ -401,6 +443,8 @@ class ProjectController extends Controller
             if(isset($request->holidays)){
                 return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
             }else{
+                Session::put('project_id',$project->id);
+                Session::put('project_instance',$project->instance_id);
                 return redirect('project_holiday')->with('success', __('Project Add Successfully'));
             }
 
