@@ -7,7 +7,7 @@
         height: fit-content;
     }
 </style>
-{{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data']) }}
+{{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_project_form', 'class' => 'create_project_form']) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-sm-12 col-md-12">
@@ -82,7 +82,7 @@
         <div class="col-sm-12 col-md-12">
             <div class="form-group">
                 {{ Form::label('Reportto', __('Report To'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {!! Form::select('reportto[]', $repoter, null,array('class' => 'form-control chosen-select','required'=>'required','multiple'=>'true','required'=>'required')) !!}
+                {!! Form::select('reportto', $repoter, null,array('id' => 'reportto','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
             </div>
         </div>
     </div>
@@ -217,30 +217,50 @@ $(document).on("change", '#end_date', function () {
    
    
 });
+    
+    $('#create_project_form').validate({
+        rules: {
+            reportto: "required",
+        },
+        ignore: ':hidden:not("#reportto")'
+    });
+
+    $('.get_reportto').on('change', function() {
+        get_val = $(this).val();
+        console.log("get_val",get_val);
+
+        if(get_val != ""){
+            $("#reportto-error").hide();
+        }
+        else{
+            $("#reportto-error").show();
+        }
+       
+    });
+
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
         var fileName=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.') + 1);
         if(fileName=='jpeg' || fileName=='png' || fileName=='jpg' || fileName=='txt'){
             document.getElementById('project_image').classList="form-control valid";
             document.getElementById('project_image_error').innerHTML='';
-            document.getElementById('upload_customer').disabled=false;
+            $("#upload_customer").prop('disabled',false);
+            $("#create_project").prop('disabled',false);
         }
         else if(fileInput.files[0] && fileInput.files[0].size>2097152){
             document.getElementById('project_image').classList="form-control error";
             document.getElementById('project_image_error').innerHTML='Size of image should not be more than 2MB';
-            document.getElementById('create_project').disabled=true;
+            $("#create_project").prop('disabled',true);
         }else{
             document.getElementById('project_image').classList="form-control error";
             document.getElementById('project_image_error').innerHTML='Upload valid file types(jpeg,png,jpg,txt)';
-            document.getElementById('create_project').disabled=true;
+            $("#create_project").prop('disabled',true);
         }
     }
 
     $(document).ready(function() {
-        $(document).ready(function() {
-            $('.chosen-select').chosen();
-        });
-  });
+        $('.chosen-select').chosen();
+    });
 
 
   </script>
