@@ -4086,6 +4086,9 @@ Route::group(
     Route::get('contract/eot', 'ContractController@eot')->name('contract.eot');
 
     Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
+
+
+    Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
     Route::get('concrete_create','QualityAssuranceController@concrete_create')->name('qaqc.concrete_create')->middleware(
         [
             'auth',
