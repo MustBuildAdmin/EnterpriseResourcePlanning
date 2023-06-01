@@ -1,7 +1,152 @@
+<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <style>
-    .table-responsive{
-        max-width: none;
+    /* .table-responsive{
+        max-width: none; 
+    } */
+
+    /* pagination */
+    .pagination {
+        height: 36px;
+        margin: 18px 0;
+        color: #6c58bF;
     }
+
+    .pagination ul {
+        display: inline-block;
+        *display: inline;
+        /* IE7 inline-block hack */
+        *zoom: 1;
+        margin-left: 0;
+        color: #ffffff;
+        margin-bottom: 0;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .pagination li {
+        display: inline;
+        color: #6c58bF;
+    }
+
+    .pagination a {
+        float: left;
+        padding: 0 14px;
+        line-height: 34px;
+        color: #6c58bF;
+        text-decoration: none;
+        border: 1px solid #ddd;
+        border-left-width: 0;
+    }
+
+    .pagination a:hover,
+    .pagination .active a {
+        background-color: var(--tblr-pagination-active-bg);
+        color: #ffffff;
+    }
+
+    .pagination a:focus {
+        background-color: #ffffff;
+        color: #ffffff;
+    }
+
+
+    .pagination .active a {
+        color: #242121 !important;
+        cursor: default;
+    }
+
+    .pagination .disabled span,
+    .pagination .disabled a,
+    .pagination .disabled a:hover {
+        color: #999999;
+        background-color: transparent;
+        cursor: default;
+    }
+
+    .pagination li:first-child a {
+        border-left-width: 1px;
+        -webkit-border-radius: 3px 0 0 3px;
+        -moz-border-radius: 3px 0 0 3px;
+        border-radius: 3px 0 0 3px;
+    }
+
+    .pagination li:last-child a {
+        -webkit-border-radius: 0 3px 3px 0;
+        -moz-border-radius: 0 3px 3px 0;
+        border-radius: 0 3px 3px 0;
+    }
+
+    .pagination-centered {
+        text-align: center;
+    }
+
+    .pagination-right {
+        text-align: right;
+    }
+
+    .pager {
+        margin-left: 0;
+        margin-bottom: 18px;
+        list-style: none;
+        text-align: center;
+        color: #6c58bF;
+        *zoom: 1;
+    }
+
+    .pager:before,
+    .pager:after {
+        display: table;
+        content: "";
+    }
+
+    .pager:after {
+        clear: both;
+    }
+
+    .pager li {
+        display: inline;
+        color: #6c58bF;
+    }
+
+    .pager a {
+        display: inline-block;
+        padding: 5px 14px;
+        color: #6c58bF;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+    }
+
+    .pager a:hover {
+        text-decoration: none;
+        background-color: #f5f5f5;
+    }
+
+    .pager .next a {
+        float: right;
+    }
+
+    .pager .previous a {
+        float: left;
+    }
+
+    .pager .disabled a,
+    .pager .disabled a:hover {
+        color: #999999;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        float: right;
+        text-align: right;
+        padding-top: 0.25em;
+    }
+
 </style>
 <div class="row">
     <div class="col-sm-12">
@@ -106,7 +251,7 @@
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div class="card-body table-border-style">
                             <div class="table-responsive">
-                                <table class="table datatable">
+                                <table class="table" id="example2">
                                     <thead>
                                     <tr>
                                         <th scope="col">{{__('Projects')}}</th>
@@ -135,8 +280,12 @@
                                                             <td>
                                                                 <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
                                                             </td>
-                                                            <td class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">{{ Utility::getDateFormated($task->start_date) }}</td>
-                                                            <td class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">{{ Utility::getDateFormated($task->end_date) }}</td>
+                                                            <td class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
+                                                                {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
+                                                            </td>
+                                                            <td class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+                                                                {{ Utility::site_date_format($task->end_date,\Auth::user()->id) }}
+                                                            </td>
                                                             <td>
                                                                 <div class="avatar-group">
                                                                     @if($task->users()->count() > 0)
@@ -174,7 +323,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <th scope="col" colspan="7"><h6 class="text-center">{{__('No tasks found')}}</h6></th>
+                                                <th scope="col" colspan="6"><h6 class="text-center">{{__('No tasks found')}}</h6></th>
                                             </tr>
                                         @endif
                                     </tbody>
@@ -188,7 +337,7 @@
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                             <div class="card-body table-border-style">
                                 <div class="table-responsive">
-                                    <table class="table datatable">
+                                    <table class="table" id="example3">
                                         <thead>
                                             <tr>
                                                 <th scope="col">{{__('Projects')}}</th>
@@ -215,8 +364,12 @@
                                                             <td>
                                                                 <span class="h6 text-sm font-weight-bold mb-0">{{ $show_parent->text }}</span>
                                                             </td>
-                                                            <td class="{{ (strtotime($show_parent->start_date) < time()) ? 'text-danger' : '' }}">{{ Utility::getDateFormated($show_parent->start_date) }}</td>
-                                                            <td class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">{{ Utility::getDateFormated($show_parent->end_date) }}</td>
+                                                            <td class="{{ (strtotime($show_parent->start_date) < time()) ? 'text-danger' : '' }}">
+                                                                {{ Utility::site_date_format($show_parent->start_date,\Auth::user()->id) }}
+                                                            </td>
+                                                            <td class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
+                                                                {{ Utility::site_date_format($show_parent->end_date,\Auth::user()->id) }}
+                                                            </td>
                                                             <td>
                                                                 <div class="avatar-group">
                                                                     @if($show_parent->users()->count() > 0)
@@ -251,7 +404,7 @@
                                                 @endforeach
                                             @else
                                                 <tr>
-                                                    <th scope="col" colspan="7"><h6 class="text-center">{{__('No tasks found')}}</h6></th>
+                                                    <th scope="col" colspan="6"><h6 class="text-center">{{__('No tasks found')}}</h6></th>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -267,7 +420,25 @@
     </div>
 </div>
 
-<script>
+    <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example2').DataTable({
+                dom: 'Bfrtip',
+                searching: true,
+                info: true,
+                paging: true,
+            });
+
+            $('#example3').DataTable({
+                dom: 'Bfrtip',
+                searching: true,
+                info: true,
+                paging: true,
+            });
+        });
+    </script>
+    <script>
     $('#projects').on('change', function () {
         var id_porjects = this.value;
     

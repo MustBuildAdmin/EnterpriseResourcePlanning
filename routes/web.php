@@ -356,6 +356,7 @@ Route::get('/system-settings', 'SystemController@systemsettings')->name('systems
 
 Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
     [
+        'auth',
         'XSS',
         'revalidate',
     ]

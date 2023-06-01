@@ -228,11 +228,12 @@ class ProjectTaskController extends Controller
             $setting  = Utility::settings(\Auth::user()->creatorId());
             if($setting['company_type']==2){
                 $get_start_date = $_GET["start_date"];
-                $get_end_date = $_GET["end_date"];
+                $get_end_date   = $_GET["end_date"];
 
                 if(\Auth::user()->type != 'company'){
                     // Construction User
-                    $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
                             ->join('projects as pro','pro.id','con_tasks.project_id')
                             ->whereNotNull('pro.instance_id')
                             ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
@@ -243,28 +244,23 @@ class ProjectTaskController extends Controller
                                 $query->whereDate('con_tasks.end_date', '>', $get_end_date);
                             });
                     }
-                    else if($_GET['end_date'] != ""){
-                        $tasks->whereIn('con_tasks.project_id', $user_projects)
-                            ->where(function ($query) use ($get_start_date, $get_end_date) {
-                                $query->whereDate('con_tasks.end_date', '>', $get_end_date);
-                            });
-                    }
                     else{
-                        $tasks->whereDate('con_tasks.end_date', ">", date('Y-m-d'))->whereIn('con_tasks.project_id', $user_projects);
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
                     }
                     
                     if(isset($_GET['task_types'])){
-                    if($_GET['task_types'] != ""){
-                        if($_GET['task_types'] == 2){ //Pending Task
-                            $tasks->where('progress','<','100');
-                        }
-                        else if($_GET['task_types'] == 3){ //Completed Task
-                            $tasks->where('progress','>=','100');
+                        if($_GET['task_types'] != ""){
+                            if($_GET['task_types'] == 2){ //Pending Task
+                                $tasks->where('progress','<','100');
+                            }
+                            else if($_GET['task_types'] == 3){ //Completed Task
+                                $tasks->where('progress','>=','100');
+                            }
                         }
                     }
-                    }   
 
-                    $show_parent_task = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
                                         ->join('projects as pro', function($join) {
                                             $join->on('pro.id', '=', 'con_tasks.project_id')
                                             ->on('pro.instance_id', '=', 'con_tasks.instance_id');
@@ -278,7 +274,8 @@ class ProjectTaskController extends Controller
                 }
                 else{
                     // Construction Company
-                    $tasks = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
                             ->join('projects as pro','pro.id','con_tasks.project_id')
                             ->whereNotNull('pro.instance_id');
 
@@ -297,21 +294,18 @@ class ProjectTaskController extends Controller
                                 $query->whereDate('con_tasks.end_date', '<', $get_end_date);
                             });
                     }
-                    else if($_GET['start_date'] != "" && $_GET['end_date'] != ""){
-                        $tasks->whereIn('con_tasks.project_id', $user_projects)
-                            ->where(function ($query) use ($get_start_date, $get_end_date) {
-                                $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                                $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                            });
+                    else if($project_id != 0 && $_GET['end_date'] != ""){
+                        $tasks->whereDate('con_tasks.end_date', ">", $_GET['end_date'])->where('con_tasks.project_id', $project_id);
                     }
-                    else if($_GET['end_date'] != ""){
-                        $tasks->whereDate('con_tasks.end_date', ">", $_GET['end_date'])
-                        ->whereIn('con_tasks.project_id', $user_projects);
+                    else if($project_id != 0){
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                        ->orderBy('con_tasks.end_date','ASC');
                     }
                     else{
-                        $tasks->whereDate('con_tasks.end_date', ">", date('Y-m-d'))
-                            ->whereIn('con_tasks.project_id', $user_projects);
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                        ->orderBy('con_tasks.end_date','ASC');
                     }
+
                     if(isset($_GET['task_types'])){
                         if($_GET['task_types'] != ""){
                             if($_GET['task_types'] == 2){ //Pending Task
@@ -323,21 +317,20 @@ class ProjectTaskController extends Controller
                         }
                     }
                     
-                    $show_parent_task = Con_task::select('con_tasks.*','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
                                         ->join('projects as pro', function($join) {
                                             $join->on('pro.id', '=', 'con_tasks.project_id')
                                             ->on('pro.instance_id', '=', 'con_tasks.instance_id');
                                         })
                                         ->whereNotNull('pro.instance_id')
-                                        ->whereIn('con_tasks.project_id', $user_projects)
+                                        ->where('con_tasks.project_id', $project_id)
                                         ->orderBy('main_id','DESC')
                                         ->get();
-           
                     
                 }
                 
                 $tasks = $tasks->get();
-
 
                 $returnHTML = view('project_task_con.' . $request->view, compact('tasks','project_select','get_user_data','show_parent_task'))->render();
             }
