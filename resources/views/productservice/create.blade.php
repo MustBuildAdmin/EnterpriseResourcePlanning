@@ -1,4 +1,15 @@
+
+
 {{ Form::open(array('url' => 'productservice','enctype' => "multipart/form-data")) }}
+<style>
+    .alert-message {
+        border-left: white !important;
+        box-shadow: none !important;
+        margin-bottom: -2px !important;
+        margin-top: -1px !important;
+        border: white;
+    }
+</style>
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
@@ -33,7 +44,7 @@
             <div class="form-group">
                 {{ Form::label('sale_price', __('Sale Price'),['class'=>'form-label']) }}<span class="text-danger">*</span>
                 <div class="form-icon-user">
-                    {{ Form::number('sale_price', '', array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+                    {{ Form::number('sale_price', '', array('class' => 'form-control','required'=>'required','step'=>'0.01','min'=>'0')) }}
                 </div>
             </div>
         </div>
@@ -41,7 +52,7 @@
             <div class="form-group">
                 {{ Form::label('purchase_price', __('Purchase Price'),['class'=>'form-label']) }}<span class="text-danger">*</span>
                 <div class="form-icon-user">
-                    {{ Form::number('purchase_price', '', array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+                    {{ Form::number('purchase_price', '', array('class' => 'form-control','required'=>'required','step'=>'0.01','min'=>'0')) }}
                 </div>
             </div>
         </div>
@@ -92,7 +103,8 @@
         <div class="col-md-6 form-group">
             {{Form::label('pro_image',__('Product Image'),['class'=>'form-label'])}}
             <div class="choose-file ">
-                <label for="pro_image" class="form-label"><span style="font-size: 2m;font-size: 11px;color: #c71616;">Size of image should not be more than 2MB</span>
+                <label for="pro_image" class="form-label"><span style="font-size: 2m;font-size: 11px;color: #c71616;"></span>
+                <span id="image-label"></span>
                     <input type="file" class="form-control" name="pro_image" id="pro_image" data-filename="pro_image_create" accept="image/*">
                     <img id="image" class="mt-3" style="width:25%;"/>
 
@@ -119,6 +131,17 @@
 
 <script>
     document.getElementById('pro_image').onchange = function () {
+
+        if (this.files[0].size > 2097152) {
+            var image_error = "Size of image should not be more than 2MB!"
+            $('#image-label').append('<div class="alert alert-danger alert-message" role="alert">'+image_error+'</div');
+            $('.alert-message').fadeOut(4000);
+            } else {
+                var image_success = "Good to upload!"
+                $('#image-label').append('<div class="alert alert-success alert-message" role="alert">'+image_success+'</div');
+                $('.alert-success').fadeOut(4000);
+            }
+
         var src = URL.createObjectURL(this.files[0])
         document.getElementById('image').src = src
     }
