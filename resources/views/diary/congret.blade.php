@@ -1,7 +1,7 @@
 <div class="col-xl-12 mt-3">
     <div class="card table-card">
       <div class="col-auto float-end ms-4 mt-4">
-        <a href="#" data-size="xl" data-url="{{ route('diary.diary_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
+        <a href="#" data-size="xl" data-url="{{ route('dairy.dairy_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
           <i class="ti ti-plus"></i>
         </a>
       </div>
@@ -48,16 +48,31 @@
                       <i class="ti ti-pencil text-white"></i>
                     </a>
                   </div>
-                  <div class="action-btn bg-danger ms-2"> {!! Form::open(['method' => 'POST', 'route' => ['diary_destroy', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                  <div class="action-btn bg-danger ms-2"> 
+                    {!! Form::open(['method' => 'POST', 'route' => ['diary_destroy', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                    {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
+                    {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                     <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                       <i class="ti ti-trash text-white mt-1"></i>
-                    </a> {!! Form::close() !!} 
+                    </a> 
+                    {!! Form::close() !!} 
                   </div>
                 </td> 
                 </tr>
             @empty 
              <tr>
-                <td colspan="11" class="text-center">No Concrete Pouring Record Data Found</td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                <td  class="text-center">No Concrete Pouring Record Data Found</td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                <td  class="text-center"></td>
+                
               </tr> 
             @endforelse 
             </tbody>
@@ -66,3 +81,20 @@
       </div>
     </div>
   </div>
+
+  @push('script-page')
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
+<script>
+  $(document).ready(function() {
+    
+      
+  }); 
+  
+  </script>
+@endpush

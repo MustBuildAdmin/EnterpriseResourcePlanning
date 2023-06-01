@@ -2883,7 +2883,7 @@ progress {
 
 .table-responsive {
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch
+    -webkit-overflow-scrolling: touch;
 }
 
 @media (max-width:575.98px) {
@@ -28319,8 +28319,7 @@ i.ti.ti-pencil {
 
 #content {
     width: 100% !important;
-    display: table-row;
-    float: left;
+    display: inline-block;
 }
 
 .calendarrght {
@@ -28603,6 +28602,228 @@ table.dataTable>tbody>tr {
 .timeline-wrapper .ti.ti-pencil {
     color: #fff !important;
     /* border: none !important; */
+}
+
+
+.hrm #toggleIcon {
+    background: #fafbfc;
+    color: #7c7a7a;
+    width: 30px;
+    height: 30px;
+    margin-left: -3%;
+    z-index: 9999999;
+    position: absolute;
+    margin-top: -4%;
+    top: 4%;
+    line-height: 30px;
+    text-align: center;
+}
+
+
+.maindailyreport {
+    /* background: #fff; */
+    margin: 0
+    height: auto;
+    padding: 0;
+}
+
+
+.maindailyreport .form-control {
+    display: block;
+    width: 100%;
+    padding: 0.4375rem 0.75rem;
+    font-family: var(--tblr-font-sans-serif);
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.4285714286;
+    color: inherit;
+    background-color: var(--tblr-bg-forms);
+    background-clip: padding-box;
+    border: var(--tblr-border-width) solid var(--tblr-border-color);
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+    appearance: auto !important;
+    border-radius: var(--tblr-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    height: 35px;
+}
+
+
+.maindivreport {
+    background: #fff;
+    margin: 1% 1%;
+    height: auto;
+    padding: 2% 3%;
+}
+
+
+.maindivreport .form-control {
+    display: block;
+    width: 100%;
+    padding: 0.4375rem 0.75rem;
+    font-family: var(--tblr-font-sans-serif);
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.4285714286;
+    color: inherit;
+    background-color: var(--tblr-bg-forms);
+    background-clip: padding-box;
+    border: var(--tblr-border-width) solid var(--tblr-border-color);
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+    appearance: auto !important;
+    border-radius: var(--tblr-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    height: 35px;
+}
+
+.maindivreport .mb-2 {
+    padding: 5px;
+}
+
+
+.maindivreport .ti-trash {
+    margin: 17% 8px 0 0;
+    font-size: 18px;
+    vertical-align: bottom;
+}
+
+.maindivreport .ti-eye {
+    margin: 17% 8px 0 0;
+    font-size: 18px;
+    vertical-align: bottom;
+}
+
+.maindivreport .ti-edit {
+    margin: 17% 8px 0 0;
+    font-size: 18px;
+    vertical-align: bottom;
+}
+
+.float-left{
+    float: left;
+}
+
+.selectbox {
+    margin: 15% 0 0 0 !important;
+}
+
+.dailyreport a.btn.btn-sm {
+    background: #206bc4;
+    min-width: 0px;
+    font-size: 16px;
+    border: none;
+    padding: 0 1px;
+    font-size: 16px !important;
+}
+
+.dailyreport .ms-2 {
+    margin-left: 0 !important;
+    float: left;
+}
+
+.tablereport {
+    overflow: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    /* max-width: 1072px; */
+    width: 100% !important;
+    float: left;
+    height: auto;
+}
+
+.dropdowmselect {
+    margin: 9px 9px 0 0;
+    width: 55%;
+}
+
+
+.tableadd thead th {
+    color: var(--tblr-muted);
+    background: var(--tblr-bg-surface-tertiary);
+    font-size: 14px;
+    font-weight: var(--tblr-font-weight-bold);
+    text-transform: capitalize;
+    letter-spacing: .04em;
+    line-height: 1rem;
+    color: var(--tblr-muted);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    white-space: nowrap;
+}
+
+.bttoncreate {
+    position: relative;
+    top: 13px;
+}
+
+
+.addbutton {
+    height: 20px;
+}
+
+.dropdowmselectnormal {
+    margin: 0 9px 0 0;
+    width: 55%;
+}
+
+.tempselect {
+ margin:5px 0 0 4px;
+}
+
+
+.disabledmode {
+    border: none !important;
+    padding: 4px 0 0 0 !important;
+}
+
+.dropdownrpt{
+    margin:2% 0 0 0
+}
+
+
+.totalcount {
+    border: 1px solid;
+    padding: 12px 0 0 0;
+    border-radius: 5px;
+}
+
+.textareaheight{
+    margin:2% 0 0 0
+}
+
+.sitereportmain {
+    width: 100% !important;
+    display: inline-block;
+}
+
+.imageedit {
+    width: 16%;
+}
+
+.sitereportmain .table-responsive {
+     /* overflow-x: auto; */
+    -webkit-overflow-scrolling: touch;
+    /* background: #fff; */
+    /* max-width: 1072px; */
+    /* overflow: auto; */
+    float: left;
+    margin: 0 auto;
+    width: 1150px;
+}
+
+
+/* .table-responsive {
+/* .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+} */
+
+.dailyreport .ti.ti-pencil {
+    color: #000 !important;
+    /* border: none !important; */
+    margin: 6px 0 0 0;
 }
 
 

@@ -2,8 +2,12 @@
     .form-check {
         margin: 8px 12px !important;
     }
+    .chosen-container{
+        width: 75%!important;
+        height: fit-content;
+    }
 </style>
-{{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data']) }}
+{{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_project_form', 'class' => 'create_project_form']) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-sm-12 col-md-12">
@@ -75,16 +79,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 col-md-6">
+        <div class="col-sm-12 col-md-12">
             <div class="form-group">
                 {{ Form::label('Reportto', __('Report To'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {!! Form::select('reportto', $users, null,array('class' => 'form-control','required'=>'required')) !!}
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-6">
-            <div class="form-group">
-                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
+                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
             </div>
         </div>
     </div>
@@ -106,6 +104,14 @@
                         <option value="{{$k}}">{{__($v)}}</option>
                     @endforeach
                 </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div class="form-group">
+                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
             </div>
         </div>
     </div>
@@ -211,22 +217,50 @@ $(document).on("change", '#end_date', function () {
    
    
 });
+    
+    $('#create_project_form').validate({
+        rules: {
+            reportto: "required",
+        },
+        ignore: ':hidden:not("#reportto")'
+    });
+
+    $('.get_reportto').on('change', function() {
+        get_val = $(this).val();
+        console.log("get_val",get_val);
+
+        if(get_val != ""){
+            $("#reportto-error").hide();
+        }
+        else{
+            $("#reportto-error").show();
+        }
+       
+    });
+
     document.getElementById('project_image').onchange = function () {
         var fileInput =  document.getElementById("project_image");
         var fileName=fileInput.files[0].name.substring(fileInput.files[0].name.lastIndexOf('.') + 1);
         if(fileName=='jpeg' || fileName=='png' || fileName=='jpg' || fileName=='txt'){
             document.getElementById('project_image').classList="form-control valid";
             document.getElementById('project_image_error').innerHTML='';
-            document.getElementById('upload_customer').disabled=false;
+            $("#upload_customer").prop('disabled',false);
+            $("#create_project").prop('disabled',false);
         }
         else if(fileInput.files[0] && fileInput.files[0].size>2097152){
             document.getElementById('project_image').classList="form-control error";
             document.getElementById('project_image_error').innerHTML='Size of image should not be more than 2MB';
-            document.getElementById('create_project').disabled=true;
+            $("#create_project").prop('disabled',true);
         }else{
             document.getElementById('project_image').classList="form-control error";
             document.getElementById('project_image_error').innerHTML='Upload valid file types(jpeg,png,jpg,txt)';
-            document.getElementById('create_project').disabled=true;
+            $("#create_project").prop('disabled',true);
         }
     }
-</script>
+
+    $(document).ready(function() {
+        $('.chosen-select').chosen();
+    });
+
+
+  </script>

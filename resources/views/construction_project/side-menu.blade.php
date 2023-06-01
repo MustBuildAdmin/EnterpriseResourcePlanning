@@ -154,16 +154,64 @@
                         aria-controls="pageSubmenuplanning"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Planning') }}</span>
                     </a>
+                    @php
+                        if(Session::has('project_id')){
+                            $project_id = Session::get('project_id');
+                        }
+                        else{
+                            $project_id = 0;
+                        }
+
+                        $setting  = Utility::settings(\Auth::user()->creatorId());
+                    @endphp
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuplanning">
-                        {{-- <li class="">
-                            <a href="# " class="dropdown-item">{{ __('Productivity') }}</a>
-                        </li> --}}
+                        <li class="">
+                            <a href="{{ route('projects.show', $project_id) }}" class="dropdown-item">{{ __('Dashboard') }}</a>
+                        </li>
+                        @can('view grant chart')
+                            <li class="">
+                                <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gantt Chart') }}</a>
+                            </li>
+                        @endcan
+
+                        @can('view expense')
+                            <li class="">
+                                <a href="{{ route('projects.expenses.index',$project_id) }}" class="dropdown-item">{{ __('Expense') }}</a>
+                            </li>
+                        @endcan
+                        <li class="">
+                            <a href="{{ route('project_report.view_task_report',$project_id) }}" class="dropdown-item">{{ __('Task Report') }}</a>
+                        </li>
+                        @if($setting['company_type']!=2)
+                            @can('manage bug report')
+                                <li class="">
+                                    <a href="{{ route('task.bug',$project_id) }}" class="dropdown-item">{{ __('Bug Report') }}</a>
+                                </li>
+                            @endcan
+                            @if(\Auth::user()->type!='client' || (\Auth::user()->type=='client' ))
+                                <li class="">
+                                    <a href="{{ route('projecttime.tracker',$project_id) }}" class="dropdown-item">{{ __('Tracker') }}</a>
+                                </li>
+                            @endif
+                            @can('create project task')
+                                <li class="">
+                                    <a href="{{ route('projects.tasks.index',$project_id) }}" class="dropdown-item">{{ __('Task') }}</a>
+                                </li>
+                            @endcan
+                            @if(\Auth::user()->type != 'client')
+                                @can('view timesheet')
+                                    <li class="">
+                                        <a href="{{ route('timesheet.index',$project_id) }}" class="dropdown-item">{{ __('Timesheet') }}</a>
+                                    </li>
+                                @endcan
+                            @endif
+                        @endif
                         <li class="">
                             <a href="{{ route('taskBoard.view',['list']) }}" class="dropdown-item">{{ __('Task') }}</a>
                         </li>
-                        <li class="">
+                        {{-- <li class="">
                             <a href="{{ route('task.newcalendar',['all']) }}" class="dropdown-item">{{ __('Task Calendar') }}</a>
-                        </li>
+                        </li> --}}
                         <li class="">
                             <a href="{{route('project_report.index')}}" class="dropdown-item">{{ __('Project Reports') }}</a>
                         </li>
@@ -172,26 +220,32 @@
 
                 {{-- Dairy --}}
                 <li class="">
-                    <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
+                    <a href="{{route('diary')}}"  data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
                         aria-controls="pageSubmenuDairy"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
-                        <span class="list">{{ __('Dairy') }}</span>
+                        <span class="list">{{ __('Diary') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuDairy">
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Drawing') }}</a>
+                            <a href="{{ route('drawing_list') }}" class="dropdown-item">{{ __('Drawing') }}</a>
                         </li>
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Site Reports') }}</a>
+                            <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                         </li>
+                        @can('manage vochange')
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('VO/Change Order') }}</a>
+                            <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
                         </li>
+                        @endcan
+                        @can('manage directions')
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Directions') }}</a>
+                            <a href="{{ route('show_consultant_direction') }}" class="dropdown-item">{{ __('Directions') }}</a>
                         </li>
+                        @endcan
+                        @can('manage rfi')
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('RFI') }}</a>
+                            <a href="{{ route('rfi_show_info') }}" class="dropdown-item">{{ __('RFI') }}</a>
                         </li>
+                        @endcan
                         <li class="">
                             <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
                         </li>
@@ -214,7 +268,11 @@
                                 <span class="list">{{__('Testing ')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTesting">
+
+                                @can('manage concrete')
                                 <li class=""><a href="{{route('qaqc.concrete')}}">{{__('Concrete')}}</a></li>
+                                @endcan
+
                                 <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>

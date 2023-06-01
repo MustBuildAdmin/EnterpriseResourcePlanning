@@ -35,11 +35,16 @@ Route::get('/home', ['as' => 'home','uses' =>'HomeController@index'])->middlewar
 //     ]
 // );
 
+Route::get('reportnew','reportnew@index')->name('diary')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 //diary
 
-
-Route::get('diary','DiaryController@index')->name('diary')->middleware(
+Route::get('diary','DiaryController@index')->name('diary_new')->middleware(
     [
         'auth',
         'XSS',
@@ -75,34 +80,32 @@ Route::get(
 );
 
 
-Route::post('save_concrete_pouring','DiaryController@save_concrete_pouring')->name('diary.save_concrete_pouring')->middleware(
+
+
+
+
+
+
+Route::any('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-
-Route::post('update_concrete_pouring','DiaryController@update_concrete_pouring')->name('diary.update_concrete_pouring')->middleware(
+Route::any('add_consultant_direction','DiaryController@add_consultant_direction')->name('add_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::post('diary/diary_destroy/{id}','DiaryController@destroy')->name('diary_destroy')->middleware(
+Route::any('edit_consultant_direction','DiaryController@edit_consultant_direction')->name('edit_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
-); 
-
-Route::post('diary/delete_concrete/{id}','DiaryController@delete_concrete')->name('delete_concrete')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-); 
+);
 
 Route::any('save_consultant_direction','DiaryController@save_consultant_direction')->name('save_consultant_direction')->middleware(
     [
@@ -118,29 +121,29 @@ Route::any('update_consultant_direction','DiaryController@update_consultant_dire
     ]
 );
 
+Route::post('delete_consultant_direction/{id}','DiaryController@delete_consultant_direction')->name('delete_consultant_direction')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+); 
 
-Route::get('diary_create','DiaryController@diary_create')->name('diary.diary_create')->middleware(
+
+Route::any('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::get('diary_update','DiaryController@diary_update')->name('diary.diary_update')->middleware(
+Route::any('rfi_info_status','DiaryController@rfi_info_status')->name('rfi_info_status')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('consultant_direction','DiaryController@show_consultant_direction')->name('consultant_direction')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('edit_consultant_direction','DiaryController@edit_consultant_direction')->name('edit_consultant_direction')->middleware(
+Route::any('rfi_info_main_save','DiaryController@rfi_info_main_save')->name('rfi_info_main_save')->middleware(
     [
         'auth',
         'XSS',
@@ -148,6 +151,148 @@ Route::any('edit_consultant_direction','DiaryController@edit_consultant_directio
 );
 
 
+Route::any('edit_rfi_info_status','DiaryController@edit_rfi_info_status')->name('edit_rfi_info_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_rfi_info_status','DiaryController@update_rfi_info_status')->name('update_rfi_info_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('delete_rfi_status','DiaryController@delete_rfi_status')->name('delete_rfi_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('add_project_specification','DiaryController@add_project_specification')->name('add_project_specification')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('save_project_specification','DiaryController@save_project_specification')->name('save_project_specification')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('edit_project_specification','DiaryController@edit_project_specification')->name('edit_project_specification')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_project_specification','DiaryController@update_project_specification')->name('update_project_specification')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any('show_project_specification','DiaryController@show_project_specification')->name('show_project_specification')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any('delete_project_specification','DiaryController@delete_project_specification')->name('delete_project_specification')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any('variation_scope_change','DiaryController@variation_scope_change')->name('variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('add_variation_scope_change','DiaryController@add_variation_scope_change')->name('add_variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('save_variation_scope_change','DiaryController@save_variation_scope_change')->name('save_variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('edit_variation_scope_change','DiaryController@edit_variation_scope_change')->name('edit_variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_variation_scope_change','DiaryController@update_variation_scope_change')->name('update_variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('delete_variation_scope_change','DiaryController@delete_variation_scope_change')->name('delete_variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+    /* Drawing List */
+
+    Route::any('drawing_list','DiaryController@drawing_list')->name('drawing_list')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+
+     /*Daily  Reports */
+
+     Route::any('daily_reports','DiaryController@daily_reports')->name('daily_reports')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    
+    Route::any('daily_reportscreate','DiaryController@daily_reportscreate')->name('daily_reportscreate')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+
+    Route::any('daily_reportsedit','DiaryController@daily_reportsedit')->name('daily_reportsedit')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
 
 
 Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
@@ -211,6 +356,7 @@ Route::get('/system-settings', 'SystemController@systemsettings')->name('systems
 
 Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
     [
+        'auth',
         'XSS',
         'revalidate',
     ]
@@ -3420,98 +3566,6 @@ Route::get(
     ]
 );
 
-//dairy
-
-
-
-Route::any(
-    'dairy', [
-    'as' => 'dairy.index',
-    'uses' => 'DairyController@index',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy_create', [
-    'as' => 'dairy.dairy_create',
-    'uses' => 'DairyController@dairy_create',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/{id}', [
-    'as' => 'dairy.show',
-    'uses' => 'DairyController@show',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy-view', [
-    'as' => 'filter.dairy.view',
-    'uses' => 'DairyController@filterDairyView',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/concrete_pouring', [
-    'as' => 'dairy.concrete_pouring',
-    'uses' => 'DairyController@concrete_pouring',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'dairy/destroy/{id}', [
-    'as' => 'dairy.destroy',
-    'uses' => 'DairyController@destroy',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any(
-    'dairy/destroy/{id}', [
-    'as' => 'dairy.destroy',
-    'uses' => 'DairyController@destroy',
-]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
 
 
 Route::get(
@@ -4030,7 +4084,53 @@ Route::group(
     Route::get('contract/reports', 'ContractController@reports')->name('contract.reports');
     Route::get('contract/reconcilation', 'ContractController@reconcilation')->name('contract.reconcilation');
     Route::get('contract/eot', 'ContractController@eot')->name('contract.eot');
+
     Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
+
+
+    Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
+    Route::get('concrete_create','QualityAssuranceController@concrete_create')->name('qaqc.concrete_create')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+    Route::get('concrete_edit','QualityAssuranceController@concrete_edit')->name('qaqc.concrete_edit')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+   
+    Route::get('concrete_update','QualityAssuranceController@concrete_update')->name('qaqc.concrete_update')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('save_concrete_pouring','QualityAssuranceController@save_concrete_pouring')->name('concrete.save_concrete_pouring')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+    
+    
+    Route::post('update_concrete_pouring','QualityAssuranceController@update_concrete_pouring')->name('concrete.update_concrete_pouring')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::post('delete_concrete/{id}','QualityAssuranceController@delete_concrete')->name('concrete.delete_concrete')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    ); 
+
     Route::get('qaqc/bricks','QualityAssuranceController@bricks')->name('qaqc.bricks');
     Route::get('qaqc/cement','QualityAssuranceController@cement')->name('qaqc.cement');
     Route::get('qaqc/sand','QualityAssuranceController@sand')->name('qaqc.sand');

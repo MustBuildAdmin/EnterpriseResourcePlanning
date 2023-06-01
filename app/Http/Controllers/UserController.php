@@ -120,7 +120,7 @@ class UserController extends Controller
                 $validator = \Validator::make(
                     $request->all(), [
                                        'name' => 'required|max:120',
-                                       'email' => 'required',
+                                       'email' => 'required|email|unique:users',
                                        'password' => 'required|min:6',
                                        'gender'=>'required'
                                    ]

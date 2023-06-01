@@ -61,27 +61,27 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Inputdays">7 days Testing Falls on:</label>
-              <input name="testing_fall_on" value="" required type="date" class="form-control" id="testing_fall_on" disabled />
+              <input name="testing_fall_on" value=""  type="date" class="form-control" id="testing_fall_on" disabled />
               <input name="testing_fall"  type="hidden" class="form-control" id="testing_fall"  />
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputAverage">Total Result (Average):</label>
-              <input name="total_result" value="" required type="text" id="total_result" class="form-control" placeholder="Enter your Total Result (Average)" />
+              <input name="total_result" value=""  type="text" id="total_result" class="form-control" placeholder="Enter your Total Result (Average)" />
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Inputdays">28 days Testing Falls on:</label>
-              <input name="days_testing_falls_on" value="" required type="date" class="form-control" id="days_testing_falls_on" disabled />
+              <input name="days_testing_falls_on" value=""  type="date" class="form-control" id="days_testing_falls_on" disabled />
               <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  />
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Inputdays">28 days Result (Average):</label>
-              <input name="days_testing_result" id="days_testing_result" value="" required type="text" id="days_testing_result" class="form-control" placeholder="Enter your 28 days Result (Average)" />
+              <input name="days_testing_result" id="days_testing_result" value=""  type="text" id="days_testing_result" class="form-control" placeholder="Enter your 28 days Result (Average)" />
             </div>
           </div>
           <div class="col-md-12 mb-3">
