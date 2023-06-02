@@ -14,6 +14,7 @@ use App\Models\UserDefualtView;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 use App\Models\ConcretePouring;
 use File;
 use DB;
@@ -26,6 +27,7 @@ class QualityAssuranceController extends Controller
 
 
     public function concrete(){
+
 
         try {
 

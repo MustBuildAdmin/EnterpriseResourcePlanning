@@ -275,9 +275,11 @@
                                 <span class="list">{{__('Testing ')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTesting">
+
                                 @can('manage concrete')
                                 <li class=""><a href="{{route('qaqc.concrete')}}">{{__('Concrete')}}</a></li>
                                 @endcan
+
                                 <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>

@@ -12,22 +12,6 @@
     overflow: auto !important;
 }
 
-.important {
-	border: 2px solid red;
-	color: red;
-	background: red;
-}
-.important .gantt_task_progress {
-	background: #ff5956;
-}
-.completed{
-    border: 2px solid green;
-	color: green;
-	background: green;
-}
-.completed .gantt_task_progress {
-	background: green;
-}
 .normal {
 	border: 2px solid green;
 }
