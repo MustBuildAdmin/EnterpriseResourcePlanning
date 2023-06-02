@@ -1522,8 +1522,65 @@ class DiaryController extends Controller
         }
     }
 
+    public function procurement_material(){
+       
+        try {
+            if(\Auth::user()->can('manage procurement material')){
 
+                $project_id = Session::get('project_id');
+                $project_name = Project::select('project_name')
+                ->where('id', $project_id)
+                ->first();
+            
+                return view('diary.procurement_material.index',compact('project_id','project_name'));
 
+            }else{
 
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function add_procurement_material(){
+       
+        try {
+            if(\Auth::user()->can('create procurement material')){
+
+                $project_id = Session::get('project_id');
+                $project_name = Project::select('project_name')
+                ->where('id', $project_id)
+                ->first();
+            
+                return view('diary.procurement_material.create',compact('project_id','project_name'));
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function save_procurement_material(Request $request){
+       
+        try {
+           
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    
     
 }

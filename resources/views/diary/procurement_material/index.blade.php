@@ -182,11 +182,11 @@ h3, .h3 {
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Project Specifications Summary')}}</h2> 
+     <h2>{{__('Procurement Material Supply Log')}}</h2> 
   </div>
-@can('create directions')
+@can('create procurement material')
 <div class="col-md-6 float-end floatrght">
-    <a href="#" data-size="xl" data-url="{{ route('add_project_specification',["project_id"=>$project_id]) }}"  data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
+    <a href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}"  data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
     <i class="ti ti-plus"></i>
     </a>
 </div>
@@ -194,55 +194,29 @@ h3, .h3 {
 <div class="col-xl-12 mt-3">
     <div class="card table-card">
       <div class="card-header card-body table-border-style">
-        @can('manage project specification')
+        @can('manage procurement material')
         <div class="table">
           <table class="table" id="example2">
             <thead class="">
               <tr>
                 <th>{{__('Sno')}}</th>
-                <th>{{__('Reference No')}}</th>
                 <th>{{__('Description')}}</th>
+                <th>{{__('RAM Ref with No')}}</th>
                 <th>{{__('Location')}}</th>
-                <th>{{__('Drawing References (if any)')}}</th>
-                <th>{{__('Remarks/ Notes')}}</th>
-                <th>{{__('Attachments')}}</th>
+                <th>{{__('Name of Supplier')}}</th>
+                <th>{{__('Contact Person')}}</th>
+                <th>{{__('Mobile/ HP')}}</th>
+                <th>{{__('Fax')}}</th>
+                <th>{{__('Target Delivery Date')}}</th>
+                <th>{{__('Status')}}</th>
+                <th>{{__('Attachment')}}</th>
                 @if(Gate::check('edit project specification') || Gate::check('delete project specification'))
                 <th>{{__('Action')}}</th>
                 @endif
               </tr>
             </thead>
             <tbody> 
-              @foreach ($dairy_data as $key=>$data) 
-              <tr>
-                <td>{{$loop->iteration}}</td>
-                <td>{{$data->reference_no}}</td>
-                <td>{{$data->description}}</td>
-                <td>{{$data->location}}</td>
-                <td>{{$data->drawing_reference}}</td>
-                <td>{{$data->remarks}}</td>
-                <td>{{$data->attachment_file_name}}</td>
-                @if(Gate::check('edit project specification') || Gate::check('delete project specification'))
-                <td>
-                    <div class="ms-2" style="display:flex;gap:10px;">
-                        @can('edit project specification')
-                            <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_project_specification',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
-                        @endcan
-
-                        @can('delete project specification')
-                          {!! Form::open(['method' => 'POST', 'route' => ['delete_project_specification', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
-                          {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
-                          {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
-                          <a href="#"  class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
-                            <i class="ti ti-trash text-white mt-1">
-                            </i>
-                          </a>
-                          {!! Form::close() !!} 
-                        @endcan
-                    </div>
-                </td>
-                @endif
-              </tr>
-              @endforeach
+             
             </tbody>
           </table>
         </div>
@@ -259,6 +233,19 @@ h3, .h3 {
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 <script>
+
+$(document).ready(function () {
+        var j = 0;
+        $(document).on("click", "#dynamic-procurement", function () {
+            ++j;
+            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Submission:</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submission Date</label><input type="date" name="submission_date[]" class="form-control"></div></div><div class="col-md-6"><div class="form-group"><label for="input">Actual Reply Date</label><input type="date" name="actual_reply_date[]" class="form-control"> </div></div></div></div></td></tr><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="remove-procurement"> Remove Submission </button></div></div></td></tr>');
+        });
+        $(document).on('click', '#remove-procurement', function () {
+            $(this).parents('tr').remove();
+        });
+    
+    });
+
   $(document).on('keypress', function (e) {
     if (e.which == 13) {
         swal.closeModal();
@@ -274,7 +261,7 @@ h3, .h3 {
               buttons: [
                   {
                       extend: 'excelHtml5',
-                      title: 'Project Specifications Summary',
+                      title: 'Procurement Material Supply Log',
                       titleAttr: 'Excel',
                       text: '<i class="fa fa-file-excel-o"></i>',
       
@@ -289,7 +276,7 @@ h3, .h3 {
                   },
                   {
                       extend: 'pdfHtml5',
-                      title: 'Project Specifications Summary',
+                      title: 'Procurement Material Supply Log',
                       titleAttr: 'PDF',
                       text: '<i class="fa fa-file-pdf-o"></i>',
       
@@ -304,7 +291,7 @@ h3, .h3 {
                   },
                   {
                       extend: 'print',
-                      title: 'Project Specifications Summary',
+                      title: 'Procurement Material Supply Log',
                       titleAttr: 'Print',
                       text: '<i class="fa fa-print"></i>',
       
