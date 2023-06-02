@@ -259,6 +259,7 @@ class SystemController extends Controller
             );
             $post = $request->all();
             unset($post['_token']);
+            dd($post);
             $settings = Utility::settings();
 
             foreach($post as $key => $data)
