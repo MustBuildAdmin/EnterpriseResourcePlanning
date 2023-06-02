@@ -209,9 +209,9 @@
                         <li class="">
                             <a href="{{ route('taskBoard.view',['list']) }}" class="dropdown-item">{{ __('Task') }}</a>
                         </li>
-                        <li class="">
+                        {{-- <li class="">
                             <a href="{{ route('task.newcalendar',['all']) }}" class="dropdown-item">{{ __('Task Calendar') }}</a>
-                        </li>
+                        </li> --}}
                         <li class="">
                             <a href="{{route('project_report.index')}}" class="dropdown-item">{{ __('Project Reports') }}</a>
                         </li>
@@ -268,9 +268,11 @@
                                 <span class="list">{{__('Testing ')}}</span>
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTesting">
+
                                 @can('manage concrete')
                                 <li class=""><a href="{{route('qaqc.concrete')}}">{{__('Concrete')}}</a></li>
                                 @endcan
+
                                 <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
                                 <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>

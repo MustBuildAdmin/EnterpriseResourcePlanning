@@ -356,6 +356,7 @@ Route::get('/system-settings', 'SystemController@systemsettings')->name('systems
 
 Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
     [
+        'auth',
         'XSS',
         'revalidate',
     ]
@@ -4083,6 +4084,9 @@ Route::group(
     Route::get('contract/reports', 'ContractController@reports')->name('contract.reports');
     Route::get('contract/reconcilation', 'ContractController@reconcilation')->name('contract.reconcilation');
     Route::get('contract/eot', 'ContractController@eot')->name('contract.eot');
+
+    Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
+
 
     Route::get('qaqc/concrete','QualityAssuranceController@concrete')->name('qaqc.concrete');
     Route::get('concrete_create','QualityAssuranceController@concrete_create')->name('qaqc.concrete_create')->middleware(
