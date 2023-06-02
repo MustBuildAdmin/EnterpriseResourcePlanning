@@ -974,20 +974,57 @@ class DiaryController extends Controller
         }
     }
 
+    public function show_project_specification(Request $request){
+
+        try {
+
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
+
+            if(\Auth::user()->can('manage project specification')){
+
+                $project_id = Session::get('project_id');
+                $dairy_data = ProjectSpecification::where('user_id',Auth::id())->where('project_id',$project_id)->orderBy('id', 'DESC')->get();
+                return view('diary.project_specification.index',compact('project_id','dairy_data'));
+        
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+          
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+
+    }
+
+
 
     public function add_project_specification(Request $request){
 
         try {
 
-            $project_id = $request["project_id"];
 
-            $project_name = Project::select('project_name')
-            ->where("id", $project_id)
-            ->first();
-            
+            if(\Auth::user()->can('create project specification')){
+
+                $project_id = Session::get('project_id');
+
+                $project_name = Project::select('project_name')
+                ->where("id", $project_id)
+                ->first();
+
+                return view('diary.project_specification.create',compact('project_name','project_id'));
         
-            return view('diary.add_project_specification',compact('project_name','project_id'));
+            }else{
 
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
 
         } catch (Exception $e) {
 
@@ -1058,20 +1095,27 @@ class DiaryController extends Controller
 
         try {
 
-            $project_id = $request["project_id"];
+            if(\Auth::user()->can('edit project specification')){
 
-            $project_name = Project::select('project_name')
-            ->where('id', $project_id)
-            ->first();
-            
-            $data=ProjectSpecification::where('project_id',$project_id)
-                                        ->where('id',$request->id)
-                                        ->where('user_id',Auth::id())
-                                        ->first();
+                $project_id = Session::get('project_id');
 
-    
-            return view('diary.edit_project_specification',compact('data','project_name','project_id'));
+        
+                $project_name = Project::select('project_name')
+                ->where('id', $project_id)
+                ->first();
+                
+                $data=ProjectSpecification::where('project_id',$project_id)
+                                            ->where('id',$request->id)
+                                            ->where('user_id',Auth::id())
+                                            ->first();
 
+                return view('diary.project_specification.edit',compact('data','project_name','project_id'));
+        
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
 
         } catch (Exception $e) {
 
@@ -1151,12 +1195,22 @@ class DiaryController extends Controller
 
         try{
 
-            ProjectSpecification::where('id', $request->id)
-                                 ->where('project_id',$request->project_id)
-                                 ->where('user_id',Auth::id())
-                                 ->delete();
+            if(\Auth::user()->can('delete project specification')){
 
-            return redirect()->back()->with("success", "Project specification summary record deleted successfully.");
+                $project_id = Session::get('project_id');
+
+                ProjectSpecification::where('id', $request->id)
+                ->where('project_id',$request->project_id)
+                ->where('user_id',Auth::id())
+                ->delete();
+
+                return redirect()->back()->with("success", "Project specification summary record deleted successfully.");
+        
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
 
         }catch (Exception $e) {
 

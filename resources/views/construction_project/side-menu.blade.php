@@ -231,6 +231,11 @@
                         <li class="">
                             <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                         </li>
+                        @can('manage project specification')
+                        <li class="">
+                            <a href="{{ route('show_project_specification') }}" class="dropdown-item">{{ __('Project Specifications Summary') }}</a>
+                        </li>
+                        @endcan
                         @can('manage vochange')
                         <li class="">
                             <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
@@ -249,9 +254,11 @@
                         <li class="">
                             <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
                         </li>
+                        @can('manage procurement material')
                         <li class="">
-                            <a href="#" class="dropdown-item">{{ __('Procurement Material Supply Log') }}</a>
+                            <a href="{{ route('procurement_material') }}" class="dropdown-item">{{ __('Procurement Material Supply Log') }}</a>
                         </li>
+                        @endcan
                     </ul>
                 </li>
 

@@ -1,5 +1,9 @@
 @include('new_layouts.header')
 @include('construction_project.side-menu')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="row">
   <div class="col-md-6">
      <h2>{{__('RFI-Request For Information Status')}}</h2> 
@@ -174,9 +178,7 @@ div.dt-buttons .dt-button:hover {
     justify-content: center;
     font-size: 20px;
 }
-div.dt-buttons {
-    float: right;
-}
+
 .action-btn {
     display: inline-grid !important;
 }
@@ -185,20 +187,21 @@ h3, .h3 {
 }
 
 </style>
+<div class="col-md-6 float-end floatrght">
 
+    @can('create rfi')
+        <a class="floatrght btn btn-primary mb-3" href="#" data-size="xl" data-url="{{ route('rfi_info_status',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
+            <i class="ti ti-plus"></i>
+        </a>
+    @endcan
+  </div>
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
-        @can('create rfi')
-        <div class="col-auto float-end ms-4 mt-4">
-            <a href="#" data-size="xl" data-url="{{ route('rfi_info_status',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
-            <i class="ti ti-plus"></i>
-            </a>
-        </div>
-        @endcan
+    
         <div class="card-header card-body table-border-style">
             @can('manage rfi')
             <div class="table">
-              <table class="table datatable" id="example">
+              <table class="table" id="example2">
                 <thead class="">
                 <tr>
                     <th>{{__('Sno')}}</th>
@@ -223,12 +226,17 @@ h3, .h3 {
                 <td>{{$data->description}}</td>
                 <td>
                     @can('edit rfi')
-                    <div class="action-btn bg-primary ms-2">
-                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
+                    {{-- <div class="action-btn bg-primary ms-2">
+                        <a href="#" class="mx-3 btn btn-sm  align-items-center backgroundnone" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project')}}">
+                            <i class="ti ti-pencil text-white"></i>
+                        </a>
+                    </div> --}}
+                    @endcan
+                    <div class="ms-2">
+                        <a href="#" class="mx-3 btn btn-sm  align-items-center backgroundnone" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true"  data-size="lg " data-bs-toggle="tooltip" title="{{__('Edit')}}"  data-title="{{__('Product Edit')}}">
                             <i class="ti ti-pencil text-white"></i>
                         </a>
                     </div>
-                    @endcan
                     @can('delete rfi')
                     <div class="action-btn bg-danger ms-2"> 
                     {!! Form::open(['method' => 'POST', 'route' => ['delete_rfi_status', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
@@ -251,8 +259,17 @@ h3, .h3 {
         </div>
     </div>
 </div>
+
+@include('new_layouts.footer')
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
+
+$(document).ready(function () {
       var j = 0;
       $(document).on("click", "#dynamic-rfi", function () {
           ++j;
@@ -263,6 +280,63 @@ h3, .h3 {
       });
   
     });
-  </script>
-@include('new_layouts.footer')
+
+    $(document).ready(function() {
+        $('#example2').DataTable({
+            dom: 'Bfrtip',
+            searching: true,
+            info: true,
+            paging: true,
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Task Report',
+                    titleAttr: 'Excel',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+    
+                    exportOptions: {
+                        modifier: {
+                            order: 'index', // 'current', 'applied','index', 'original'
+                            page: 'all', // 'all', 'current'
+                            search: 'none' // 'none', 'applied', 'removed'
+                        },
+                        columns: [0, 1, 2, 3]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'Task Report',
+                    titleAttr: 'PDF',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+    
+                    exportOptions: {
+                        modifier: {
+                            order: 'index', // 'current', 'applied','index', 'original'
+                            page: 'all', // 'all', 'current'
+                            search: 'none' // 'none', 'applied', 'removed'
+                        },
+                        columns: [0, 1, 2, 3]
+                    }
+                },
+                {
+                    extend: 'print',
+                    title: 'Task Report',
+                    titleAttr: 'Print',
+                    text: '<i class="fa fa-print"></i>',
+    
+                    exportOptions: {
+                        modifier: {
+                            order: 'index', // 'current', 'applied','index', 'original'
+                            page: 'all', // 'all', 'current'
+                            search: 'none' // 'none', 'applied', 'removed'
+                        },
+                        columns: [0, 1, 2, 3]
+                    }
+                },
+                'colvis'
+            ]
+        });
+    });
+</script>
+
 

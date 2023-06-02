@@ -482,7 +482,7 @@
                         $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','bug report','bug status'];
                     @endphp --}}
                      @php
-                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','vochange','RFI','concrete'];
+                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','project specification','procurement material','vochange','RFI','concrete'];
                     @endphp
                     <div class="col-md-12">
                         <div class="form-group">
@@ -1429,6 +1429,26 @@
         });
         if(count_directions==1){
             $("#directions").prop('checked', true);
+        }
+        var projectspecification = $(".isscheck_projectspecification");
+        var count_projectspecification=1;
+        projectspecification.filter((e)=>{
+            if(!projectspecification[e].checked){
+                count_projectspecification --;
+            }
+        });
+        if(count_projectspecification==1){
+            $("#projectspecification").prop('checked', true);
+        }
+        var procurementmaterial = $(".isscheck_procurementmaterial");
+        var count_procurementmaterial=1;
+        procurementmaterial.filter((e)=>{
+            if(!procurementmaterial[e].checked){
+                count_procurementmaterial --;
+            }
+        });
+        if(count_procurementmaterial==1){
+            $("#procurementmaterial").prop('checked', true);
         }
         var vochange = $(".isscheck_vochange");
         var count_vochange=1;
