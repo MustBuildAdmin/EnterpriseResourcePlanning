@@ -222,9 +222,9 @@ h3, .h3 {
                   </th>
                   <th>{{__('Net Amount')}}
                   </th> --}}
-                  <th>{{__('Impact/Lead Time')}}</th>
+                  {{-- <th>{{__('Impact/Lead Time')}}</th>
                   <th>{{__('Granted EOT(in days)')}}</th>
-                  <th>{{__(' Remarks')}}</th>
+                  <th>{{__(' Remarks')}}</th> --}}
                   @if(Gate::check('edit vochange') || Gate::check('delete vochange'))
                   <th>{{__('Action')}}</th>
                   @endif
@@ -259,9 +259,9 @@ h3, .h3 {
                   </td>
                   <td>{{$bulk_data->approved_net_cost}}
                   </td> --}}
-                  <td>{{$bulk_data->impact_time}}</td>
+                  {{-- <td>{{$bulk_data->impact_time}}</td>
                   <td>{{$bulk_data->granted_eot}}</td>
-                  <td>{{$bulk_data->remarks}}</td>
+                  <td>{{$bulk_data->remarks}}</td> --}}
                   @if(Gate::check('edit vochange') || Gate::check('delete vochange'))
                   <td>
                     <div class="ms-2" style="display:flex;gap:10px;">
@@ -327,7 +327,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                       }
                   },
                   {
@@ -342,7 +342,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                       }
                   },
                   {
@@ -357,7 +357,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                       }
                   },
                   'colvis'

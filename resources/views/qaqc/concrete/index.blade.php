@@ -209,10 +209,10 @@ h3, .h3 {
                   <th>{{__('Grade of Concrete')}}</th>
                   <th>{{__('Theoretical')}}</th>
                   <th>{{__('Actual')}}</th>
-                  <th>{{__('7 days Test Fall on')}}</th>
-                  <th>{{__('28 days Test Fall on')}}</th>
+                  {{-- <th>{{__('7 days Test Fall on')}}</th>
+                  <th>{{__('28 days Test Fall on')}}</th> --}}
                   <th>{{__('28 days Result')}}</th>
-                  <th>{{__('Remarks')}}</th>
+                  {{-- <th>{{__('Remarks')}}</th> --}}
                   @if(Gate::check('edit concrete') || Gate::check('delete concrete'))
                   <th>{{__('Action')}}</th>
                   @endif
@@ -233,10 +233,10 @@ h3, .h3 {
                   <td>{{$bulk_data->grade_of_concrete}}</td>
                   <td>{{$bulk_data->theoretical}}</td>
                   <td>{{$bulk_data->actual}}</td>
-                  <td>{{$bulk_data->testing_fall ?? '-'}}</td>
-                  <td>{{$bulk_data->days_testing_falls ?? '-'}}</td>
+                  {{-- <td>{{$bulk_data->testing_fall ?? '-'}}</td>
+                  <td>{{$bulk_data->days_testing_falls ?? '-'}}</td> --}}
                   <td>{{$bulk_data->days_testing_result ?? '-'}}</td>
-                  <td>{{$bulk_data->remarks}}</td>
+                  {{-- <td>{{$bulk_data->remarks}}</td> --}}
                   @if(Gate::check('edit concrete') || Gate::check('delete concrete'))
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
@@ -314,7 +314,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        columns: [0, 1, 2, 3, 4, 5, 6]
                     }
                 },
                 {
@@ -329,7 +329,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        columns: [0, 1, 2, 3, 4, 5, 6]
                     }
                 },
                 {
@@ -344,7 +344,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                        columns: [0, 1, 2, 3, 4, 5, 6]
                     }
                 },
                 'colvis'
