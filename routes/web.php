@@ -259,6 +259,29 @@ Route::any('delete_variation_scope_change','DiaryController@delete_variation_sco
     ]
 );
 
+Route::any('procurement_material','DiaryController@procurement_material')->name('procurement_material')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('add_procurement_material','DiaryController@add_procurement_material')->name('add_procurement_material')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('save_procurement_material','DiaryController@save_procurement_material')->name('save_procurement_material')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
     /* Drawing List */
 
     Route::any('drawing_list','DiaryController@drawing_list')->name('drawing_list')->middleware(

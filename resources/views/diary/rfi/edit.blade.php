@@ -16,13 +16,13 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="InputLIst">RFI Reference No :</label>
+									<label for="InputLIst">RFI Reference No <span style='color:red;'>*</span></label>
 									<input type="text" name="reference_no" class="form-control" placeholder="Text input" value="{{$data->reference_no}}" required> 
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="input">Issue Date :</label>
+									<label for="input">Issue Date <span style='color:red;'>*</span></label>
 									<input type="date" name="issue_date" class="form-control" placeholder="Text input" value="{{$data->issue_date}}" required> 
 								</div>
 							</div>
@@ -30,7 +30,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="form-group">
-									<label for="input">Description:</label>
+									<label for="input">Description <span style='color:red;'>*</span></label>
 									<textarea name="description" class="form-control"  required>{{$data->description}}</textarea>
 								</div>
 							</div>
@@ -45,13 +45,13 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="InputLIst">Submit Date :</label>
+													<label for="InputLIst">Submit Date</label>
 													<input type="date" name="submit_date[]" class="form-control" value="{{$mutli_data['submit_date']}}" required> 
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="input">Return Date :</label>
+													<label for="input">Return Date</label>
 													<input type="date" name="return_date[]" class="form-control" value="{{$mutli_data['return_date']}}" required> 
 												</div>
 											</div>
@@ -59,7 +59,7 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="Input">Status of Return :</label>
+													<label for="Input">Status of Return</label>
 													<select class="form-control" name="status_of_return[]" required>
 														<option selected disabled>Status</option>
 														<option value="Exception" @if( 'Exception'==$mutli_data[ 'status_of_return']){ selected }@endif>No Exception Taken (NET) (OR) Approved /with comment</option>
@@ -72,7 +72,7 @@
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="InputDate">Remarks :</label>
+													<label for="InputDate">Remarks</label>
 													<textarea class="form-control" name="remarks[]" required>{{$mutli_data['remarks']}}</textarea>
 												</div>
 											</div>
@@ -89,20 +89,20 @@
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="InputLIst">Submit Date :</label>
+													<label for="InputLIst">Submit Date</label>
 													<input type="date" name="submit_date[]" class="form-control" value=""> </div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="input">Return Date :</label>
+													<label for="input">Return Date</label>
 													<input type="date" name="return_date[]" class="form-control" value=""> </div>
 											</div>
 										</div>
 										<div class="row">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label for="Input">Status of Return :</label>
-													<select class="form-control" name="status_of_return[]">
+													<label for="Input">Status of Return</label>
+													<select class="form-control" name="status_of_return[]" required>
 														<option selected disabled>Status</option>
 														<option value="Exception">No Exception Taken (NET) (OR) Approved /with comment</option>
 														<option value="Resubmission">Revise No Resubmission Requried (RNRR)</option>
@@ -115,7 +115,7 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="InputDate">Remarks :</label>
-													<textarea class="form-control" name="remarks[]"></textarea>
+													<textarea class="form-control" name="remarks[]" required></textarea>
 												</div>
 											</div>
 										</div>
@@ -131,19 +131,19 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="Input">Consultant-1 :</label>
+									<label for="Input">Consultant-1</label>
 									<input type="date" name="consultant_date1" class="form-control" value="{{$data->consultant_date1}}">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="Input">Consultant-2 :</label>
+									<label for="Input">Consultant-2</label>
 									<input type="date" name="consultant_date2" class="form-control" value="{{$data->consultant_date2}}">
 								 </div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="Input">Consultant-3 :</label>
+									<label for="Input">Consultant-3</label>
 									<input type="date" name="consultant_date3" class="form-control" value="{{$data->consultant_date3}}"> 
 								</div>
 							</div>
@@ -151,26 +151,26 @@
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="Input">Consultant-4 :</label>
+									<label for="Input">Consultant-4</label>
 									<input type="date" name="consultant_date4" class="form-control" value="{{$data->consultant_date4}}"> 
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="Input">Consultant-5 :</label>
+									<label for="Input">Consultant-5</label>
 									<input type="date" name="consultant_date5" class="form-control" value="{{$data->consultant_date5}}"> 
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="Input">Consultant-6 :</label>
+									<label for="Input">Consultant-6</label>
 									<input type="date" name="consultant_date6" class="form-control" value="{{$data->consultant_date6}}"> 
 								</div>
 							</div>
 						</div>
 						<div class="col-md-12">
-							<h4>Status :</h4>
-							<select class="form-select" aria-label="Default select example" name="rfi_status">
+							<h4>Status: <span style='color:red;'>*</span></h4>
+							<select class="form-select" aria-label="Default select example" name="rfi_status" required>
 								<option selected disabled>Status</option>
 								<option value="Clear" @if( 'Clear'==$data->rfi_status){ selected }@endif>Clear</option>
 								<option value="Pending" @if( 'Pending'==$data->Pending){ selected }@endif>Pending</option>
@@ -180,13 +180,13 @@
 						</div>
 						<div class="col-md-12">
 							<div class="form-group">
-								<label class="form-group">Remarks:</label>
-								<textarea class="form-control" type="text" name="remark1">{{$data->remark1}}</textarea>
+								<label class="form-group">Remarks <span style='color:red;'>*</span></label>
+								<textarea class="form-control" type="text" name="remark1" required>{{$data->remark1}}</textarea>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="InputATTACHMENTS:">ATTACHMENTS:</label>
+								<label for="InputATTACHMENTS:">Attachments <span style='color:red;'>*</span></label>
 								<input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input"> <span>{{$data->attachment_file}}</span> </div>
 						</div>
 					</div>
