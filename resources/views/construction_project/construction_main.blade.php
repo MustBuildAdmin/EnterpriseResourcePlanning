@@ -20,11 +20,11 @@
       <div class="col-md-6">
 
       @can('create project')
-                <a href="#" data-size="lg" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
+                <a href="#" data-size="lg"    style="
+                float: right;" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
                     data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
-                    <input type="button" value='ADD' class="btn btn-outline-primary w-20"
-                        style="
-                                            float: right;">
+                    <button type="button" class="btn btn-outline-primary w-20"
+                     ><i class="ti ti-plus mr-1"></i> {{ __('Create New Project') }}</button>
                 </a>
             @endcan
 
