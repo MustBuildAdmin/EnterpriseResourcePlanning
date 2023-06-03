@@ -9,12 +9,12 @@
   </div>
   <div class="col-md-6 float-end floatrght">
 
-        <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('productservice.file.import') }}" data-ajax-popup="true" data-title="{{__('Import product CSV file')}}" class="floatrght gapbtn btn btn-sm btn-primary">
+        <!-- <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('productservice.file.import') }}" data-ajax-popup="true" data-title="{{__('Import product CSV file')}}" class="floatrght gapbtn btn btn-sm btn-primary">
             <i class="ti ti-file-import"></i>
         </a>
         <a href="{{route('productservice.export')}}" data-bs-toggle="tooltip" title="{{__('Export')}}" class="gapbtn floatrght btn btn-sm btn-primary">
             <i class="ti ti-file-export"></i>
-        </a>
+        </a> -->
 
         <a href="#" data-size="lg" data-url="{{ route('productservice.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Product')}}" class="gapbtn floatrght btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
@@ -47,7 +47,7 @@
                                 </a>
                                 <a href="{{ route('productservice.index') }}" class="btn btn-sm btn-danger" data-bs-toggle="tooltip"
                                    title="{{ __('Reset') }}">
-                                    <span class="btn-inner--icon"><i class="ti ti-trash-off "></i></span>
+                                    <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
                                 </a>
                             </div>
 
@@ -105,12 +105,12 @@
 
                                     @if(Gate::check('edit product & service') || Gate::check('delete product & service'))
                                         <td>
-                                            <div class="ms-2">
+                                            <!-- <div class="ms-2">
                                                 <a href="#" class="mx-3 btn btn-sm align-items-center backgroundnone" data-url="{{ route('productservice.detail',$productService->id) }}"
                                                    data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Warehouse Details')}}" data-title="{{__('Warehouse Details')}}">
                                                     <i class="ti ti-eye text-white"></i>
                                                 </a>
-                                            </div>
+                                            </div> -->
 
                                             @can('edit product & service')
                                                 <div class="ms-2">

@@ -660,7 +660,7 @@ function getContacts() {
             cssMediaQueries();
         },
         error: () => {
-            console.error('Server error, check your response');
+            console.log('Server error, check your response');
         }
     });
 }

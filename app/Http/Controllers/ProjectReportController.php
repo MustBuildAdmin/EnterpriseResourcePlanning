@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Milestone;
 use App\Models\Projectstages;
+use App\Jobs\Reportemail;
 use App\Models\TaskStage;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
@@ -420,6 +421,15 @@ class ProjectReportController extends Controller
 
 
         }
+        // cron email 
+        public function cronmail(Request $request){
+            $time=Carbon::now()->format('H:i');
+            $project=Project::where('end_date','>=',Carbon::now()->format('Y-m-d'))->where('report_time',$time)->get();
+            foreach ($project as $key => $value3) {
+                Reportemail::dispatch($value3->id);
+            }
+        }
+        
         public function fetch_user_details(Request $request){
 
             try {

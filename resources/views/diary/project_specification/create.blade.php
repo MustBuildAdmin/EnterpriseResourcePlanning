@@ -15,27 +15,27 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="InputLIst">Reference No:</label>
-                <input type="text" name="reference_no" class="form-control" placeholder="Reference No">
+                <label for="InputLIst">Reference No:<span style='color:red;'>*</span></label>
+                <input type="text" name="reference_no" class="form-control" placeholder="Reference No" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="input">Description :</label>
-                <input type="text" name="description" class="form-control" placeholder="Description">
+                <label for="input">Description:<span style='color:red;'>*</span></label>
+                <input type="text" name="description" class="form-control" placeholder="Description" required>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="InputLIst">Location:</label>
+                <label for="InputLIst">Location:<span style='color:red;'>*</span></label>
                 <input type="text" name="location" class="form-control" placeholder="Location" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="input">Drawing References (if any): </label>
+                <label for="input">Drawing References (if any):<span style='color:red;'>*</span></label>
                 <input type="text" name="drawing_reference" class="form-control" placeholder="Drawing References (if any):" required>
               </div>
             </div>
@@ -43,7 +43,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="input">Remarks/ Notes:</label>
+                <label for="input">Remarks/ Notes:<span style='color:red;'>*</span></label>
                 <textarea name="remarks" class="form-control" placeholder="Remarks/ Notes" required></textarea>
               </div>
             </div>
@@ -51,7 +51,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="input">Attachments:</label>
+                <label for="input">Attachments:<span style='color:red;'>*</span></label>
                 <input type="file" class="form-control" name="attachment_file_name" required>
               </div>
             </div>
