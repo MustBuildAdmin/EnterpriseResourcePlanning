@@ -23,7 +23,7 @@
                 <a href="#" data-size="lg"    style="
                 float: right;" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
                     data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
-                    <button type="button" class="btn btn-outline-primary w-20"
+                    <button type="button" class="btn btn-primary w-20"
                      ><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M12 5l0 14"></path>
