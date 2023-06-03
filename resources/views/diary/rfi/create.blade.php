@@ -15,13 +15,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="InputLIst">RFI Reference No :</label>
+                            <label for="InputLIst">RFI Reference No <span style='color:red;'>*</span></label>
                             <input type="text" name="reference_no" class="form-control" placeholder="Text input" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="input">Issue Date :</label>
+                            <label for="input">Issue Date <span style='color:red;'>*</span></label>
                             <input type="date" name="issue_date" class="form-control" placeholder="Text input" required>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="input">Description:</label>
+                            <label for="input">Description <span style='color:red;'>*</span></label>
                             <textarea name="description" class="form-control" required></textarea>
                         </div>
                     </div>

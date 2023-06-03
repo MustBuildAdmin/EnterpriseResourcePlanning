@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Role;
 use Auth;
 use Cache;
 use Carbon\Carbon;
-
+use DB;
 class RoleController extends Controller
 {
 
@@ -17,9 +17,16 @@ class RoleController extends Controller
     {
         if(\Auth::user()->can('manage role'))
         {
-
-            $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get();
-            Cache::put('roles', $roles, 200);
+            if (Cache::has("cachevar")){
+                $roles = Cache::get("cachevar");
+             } else {
+                DB::statement('SET SESSION group_concat_max_len = 1000000');
+                // $ra_portal_version = Session::get('ra_portal_version');
+                $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get();
+        
+                Cache::put("cachevar", $roles, 200);
+    
+             }
             // return view('role.index')->with('roles', $roles);
             $roles_count = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get()->count();
           

@@ -755,7 +755,6 @@ class DashboardController extends Controller
     }
 
     public function construction_main(Request $request){
-        
         if(\Auth::user()->can('manage project'))
         {
             $usr           = Auth::user();
