@@ -42,8 +42,8 @@ class ProjectController extends Controller
 
         if(\Auth::user()->can('manage project'))
         {
-            // return view('projects.index', compact('view'));
-            return view('new_layouts.home', compact('view'));
+            return view('projects.index', compact('view'));
+            // return view('new_layouts.home', compact('view'));
            
         }
         else
