@@ -136,7 +136,7 @@
 						@endif
 						
 						@if(\Auth::user()->show_crm() == 1)
-                        @if( Gate::check('manage lead') || Gate::check('manage deal') || Gate::check('manage form builder')  || Gate::check('manage contract'))
+                        @if( Gate::check('manage lead') || Gate::check('manage deal') || Gate::check('manage form builder')  || Gate::check('manage contract') || Gate::check('manage client'))
 						<div class="col-md-6 col-xl-2">
 							
 							<a class="card card-link" @if(Auth::user()->type == 'client') href="{{ route('deals.index') }}" @else href="{{ route('clients.index') }}" @endif>
