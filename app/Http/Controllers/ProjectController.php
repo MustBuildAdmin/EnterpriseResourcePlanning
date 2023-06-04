@@ -43,6 +43,8 @@ class ProjectController extends Controller
         if(\Auth::user()->can('manage project'))
         {
             return view('projects.index', compact('view'));
+            // return view('new_layouts.home', compact('view'));
+           
         }
         else
         {
@@ -121,6 +123,7 @@ class ProjectController extends Controller
             // $project->estimated_hrs = $request->estimated_hrs;
             $project->report_to = implode(',',$request->reportto);
             $project->report_time = $request->report_time;
+            // $project->report_time = Utility::utc_time_convert($request->report_time);
             $project->tags = $request->tag;
             $project->estimated_days = $request->estimated_days;
 
@@ -215,7 +218,7 @@ class ProjectController extends Controller
                             $task->start_date=$value['start_date'];
                         }
                         if(isset($value['duration'])){
-                            $task->duration=$value['duration'];
+                            $task->duration=$value['duration']+1;
                         }
                         if(isset($value['progress'])){
                             $task->progress=$value['progress'];
@@ -717,15 +720,16 @@ class ProjectController extends Controller
           $users->prepend('Select User', '');
           $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
           $project = Project::findOrfail($project->id);
+          $setting  = Utility::settings(\Auth::user()->creatorId());
           if($project->created_by == \Auth::user()->creatorId())
           {
-              return view('projects.edit', compact('project', 'clients','users','repoter'));
+              return view('projects.edit', compact('project', 'clients','users','repoter','setting'));
           }
           else
           {
               return response()->json(['error' => __('Permission denied.')], 401);
           }
-            return view('projects.edit',compact('project','users','repoter'));
+            return view('projects.edit',compact('project','users','repoter','setting'));
         }
         else
         {
@@ -781,8 +785,8 @@ class ProjectController extends Controller
             $project->estimated_days = $request->estimated_days;
             // $project->estimated_hrs = $request->estimated_hrs;
             $project->report_to = implode(',',$request->reportto);
-            // $project->report_to = $request->reportto;
-            $project->report_time = $request->report_time;
+            // $project->report_time =  Utility::utc_time_convert($request->report_time);
+            $project->report_time=$request->report_time;
             $project->tags = $request->tag;
             $project->save();
             if($project->holidays==0){

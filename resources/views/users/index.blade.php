@@ -2,10 +2,17 @@
 <style>
 #create {
 	height: 35px !important;
+	width: 12% !important;
+}
+
+#reset{
+	
+	width: 12% !important;
 }
 
 #search_button {
 	height: 35px !important;
+	width: 12% !important;
 }
 
 .dropdown-toggle::after {
@@ -42,13 +49,13 @@
 							<div class="input-group-btn">
 								<button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
 							{!! Form::close() !!}
-								<a href="#" data-size="lg" data-url="{{ route('users.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New User')}}" id="create" class="btn btn-primary">
-
-					<!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-					<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-						<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-						<path d="M12 5l0 14" />
-						<path d="M5 12l14 0" /> </svg>{{__('Create New User')}} </a>
+							<a href="{{ route('users.index') }}" id="reset" class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Reset') }}">
+								<span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+							</a>
+							<a href="#" class="btn btn-primary" data-size="lg" data-url="{{ route('users.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New User')}}" id="create" class="btn btn-primary" id="create">
+								<span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
+							</a>
+							
 					</div>
 					</div>
 				</div>

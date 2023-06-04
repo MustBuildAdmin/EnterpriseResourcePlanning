@@ -40,6 +40,7 @@ class Utility extends Model
             'indiangst'=>'0',
             "site_currency" => "USD",
             "site_currency_symbol" => "$",
+            "timezone"=>"Asia/Kolkata",
             "site_currency_symbol_position" => "pre",
             "site_date_format" => "M j, Y",
             "site_time_format" => "g:i A",
@@ -187,6 +188,7 @@ class Utility extends Model
             "site_currency" => "USD",
             'indiangst'=>'0',
             "site_currency_symbol" => "$",
+            "timezone"=>"Asia/Calcutta",
             "site_currency_symbol_position" => "pre",
             "site_date_format" => "M j, Y",
             "site_time_format" => "g:i A",
@@ -3538,6 +3540,32 @@ class Utility extends Model
                 $convertor="₹";
             }
             return  $convertor;
+
+        }
+        // UTC  Time Convert
+        public static function utc_time_convert($time){
+            $timezone = 'America/New_York';
+            $carbon = Carbon::parse($time);
+            $carbon->utc();
+            $utcTime = $carbon->toDateTimeString();
+            $dateTimeUTC= date('H:i:s', strtotime($utcTime));
+            return  $dateTimeUTC;
+        }
+        // utc to company timezone
+        public static function utc_to_originaltime($time,$setting){
+            
+            $timezone =$setting['timezone'];
+            // dd($timezone);
+            // $timezone = 'America/New_York';
+            $carbon = Carbon::parse($time, $timezone);
+            $carbon->utc();
+            $utcTime = $carbon->toDateTimeString();
+            $dateTimeUTC= date('H:i:s', strtotime($utcTime));
+            return  $dateTimeUTC;
+            // $carbon = Carbon::parse('H:i:s', $time, 'America/Hermosillo');
+            // $utcTime = $carbon->toDateTimeString();
+            // $dateTimeUTC= date('H:i:s', strtotime($utcTime));
+            // return  $dateTimeUTC;
 
         }
 

@@ -572,7 +572,8 @@ class DashboardController extends Controller
 
                 $taskData = \App\Models\TaskStage::getChartData();
 
-                return view('dashboard.clientView', compact('calenderTasks', 'arrErr', 'arrCount', 'chartData', 'project', 'invoice', 'top_tasks', 'top_due_invoice', 'users', 'project_status', 'projectData', 'taskData', 'transdate', 'currentYear'));
+                // return view('dashboard.clientView', compact('calenderTasks', 'arrErr', 'arrCount', 'chartData', 'project', 'invoice', 'top_tasks', 'top_due_invoice', 'users', 'project_status', 'projectData', 'taskData', 'transdate', 'currentYear'));
+               return view('new_layouts.home', compact('calenderTasks', 'arrErr', 'arrCount', 'chartData', 'project', 'invoice', 'top_tasks', 'top_due_invoice', 'users', 'project_status', 'projectData', 'taskData', 'transdate', 'currentYear'));
             }
         }
     }
@@ -651,7 +652,7 @@ class DashboardController extends Controller
             }
             elseif(Auth::user()->type == 'client')
             {
-                return redirect()->route('client.dashboard.view');
+                return view('new_layouts.home');
             }
             else
             {
@@ -755,7 +756,6 @@ class DashboardController extends Controller
     }
 
     public function construction_main(Request $request){
-        
         if(\Auth::user()->can('manage project'))
         {
             $usr           = Auth::user();

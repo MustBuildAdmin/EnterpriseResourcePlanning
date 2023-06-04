@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Role;
 use Auth;
 use Cache;
 use Carbon\Carbon;
-
+use DB;
 class RoleController extends Controller
 {
 
@@ -17,12 +17,13 @@ class RoleController extends Controller
     {
         if(\Auth::user()->can('manage role'))
         {
-
             $roles = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get();
-            Cache::put('roles', $roles, 200);
-            // return view('role.index')->with('roles', $roles);
+           
             $roles_count = Role::where('created_by', '=', \Auth::user()->creatorId())->where('created_by', '=', \Auth::user()->creatorId())->get()->count();
+           
+            // return view('role.index')->with('roles', $roles);
           
+            Cache::put('roles', $roles, 600);
             return view('roles.index')->with('roles', $roles)->with('roles_count',$roles_count);
         }
         else

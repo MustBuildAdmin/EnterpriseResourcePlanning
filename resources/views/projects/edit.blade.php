@@ -102,6 +102,7 @@
             <div class="form-group">
                 {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
                 {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
+                  {{-- {{ Form::time('report_time',  \App\Models\Utility::utc_to_originaltime($project->report_time,$setting), ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }} --}}
             </div>
         </div>
     </div>

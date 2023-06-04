@@ -32,15 +32,16 @@
             </div>
         </div>
         <div class="row">
-        <div class="form-group col-md-6">
-                {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
-                {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control select2','required'=>'required')) !!}
-                @error('role')
-                <small class="invalid-role" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
+            <div class="form-group col-md-6">
+                    {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
+                    {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control select2','required'=>'required')) !!}
+                    @error('role')
+                    <small class="invalid-role" role="alert">
+                        <strong class="text-danger">{{ $message }}</strong>
+                    </small>
+                    @enderror
             </div>
+            @if(\Auth::user()->type != 'super admin')
             <?php $reporting_to=explode(",",$user->reporting_to); ?>
             <div class="form-group col-md-6">
                 <div class="form-group">
@@ -60,6 +61,7 @@
                 </div>
                 </div>
             </div>
+            @endif
             <div class="form-group col-md-6">
                 <div class="form-group">
                     {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
