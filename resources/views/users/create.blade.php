@@ -3,7 +3,7 @@
         width: 100% !important;
     }
 </style>
-{{Form::open(array('url'=>'users','method'=>'post'))}}
+{{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form'))}}
 
 <div class="modal-body">
 
@@ -49,14 +49,8 @@
             @if(\Auth::user()->type != 'super admin')
             <div class="form-group col-md-6">
                 <div class="form-group">
-                {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    <div class="form-icon-user">
-                        <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select' required multiple>
-                            <option value="">{{ __('Select Reporting to ...') }}</option>
-                            @foreach($users as $key => $value)
-                                <option value="{{$key}}">{{$value}}</option>
-                            @endforeach
-                        </select>
+                    {{ Form::label('Reportto', __('Reporting to'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                    {!! Form::select('reporting_to[]', $users, null,array('id' => 'choices-multiple1','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
                     </div>
                 </div>
             </div>
@@ -208,7 +202,9 @@ $(document).on("change", '#country', function () {
 <script>
     $(document).ready(function() {
 
-        $(".chosen-select").chosen();
+        $(".chosen-select").chosen({
+            placeholder_text:"{{ __('Reporting to') }}"
+        });
 
         $(document).on("keypress", '#zip', function (event) {
             if(event.which <= 48 || event.which >=57){
@@ -248,5 +244,26 @@ $(document).on("change", '#country', function () {
             });
         });
     });
+
+    $('#users_form').validate({
+        rules: {
+            reportto: "required",
+        },
+        ignore: ':hidden:not("#choices-multiple1")'
+    });
+
+    $('.get_reportto').on('change', function() {
+        get_val = $(this).val();
+        
+
+        if(get_val != ""){
+            $("#reportto-error").hide();
+        }
+        else{
+            $("#reportto-error").show();
+        }
+       
+    });
+ 
 </script>
 
