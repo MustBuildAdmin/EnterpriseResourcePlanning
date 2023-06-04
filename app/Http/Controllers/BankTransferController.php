@@ -49,7 +49,7 @@ class BankTransferController extends Controller
     {
         if(\Auth::user()->can('create bank transfer'))
         {
-            $bankAccount = BankAccount::select('id', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->toArray();
+            $bankAccount = BankAccount::select('*', \DB::raw("CONCAT(bank_name,' ',holder_name) AS name"))->where('created_by', \Auth::user()->creatorId())->get()->toArray();
             
             return view('bank-transfer.create', compact('bankAccount'));
         }
