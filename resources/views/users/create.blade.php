@@ -46,20 +46,21 @@
                 </small>
                 @enderror
             </div>
-
+            @if(\Auth::user()->type != 'super admin')
             <div class="form-group col-md-6">
                 <div class="form-group">
                 {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select' required multiple>
-                        <option value="">{{ __('Select Reporting to ...') }}</option>
-                        @foreach($users as $key => $value)
-                              <option value="{{$key}}">{{$value}}</option>
-                        @endforeach
-                    </select>
+                    <div class="form-icon-user">
+                        <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select' required multiple>
+                            <option value="">{{ __('Select Reporting to ...') }}</option>
+                            @foreach($users as $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
-            </div>
+            @endif
        <div class="form-group col-md-6">
             <div class="form-group">
                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>

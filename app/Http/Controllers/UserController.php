@@ -82,7 +82,7 @@ class UserController extends Controller
         $user  = \Auth::user();
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
-        $company_type=Company_type::get()->pluck('name', 'id');
+        $company_type=Company_type::where('status',1)->get()->pluck('name', 'id');
         $users =User::where([
             ['name', '!=', Null],
             [function ($query) use ($request) {
