@@ -3,7 +3,7 @@
         width: 100% !important;
     }
 </style>
-{{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT')) }}
+{{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT','id'=>'edit_user')) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
@@ -46,9 +46,8 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                 {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select' required multiple>
-                        <option value="">{{ __('Select Reporting to ...') }}</option>
+                <div class="form-icon-user" id="reporting_toerr">
+                    <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select get_reportto' required multiple>
                         @foreach($users as $key => $value)
                             @if(in_array($key,$reporting_to)) 
                                 <option value="{{$key}}" selected>{{$value}}</option>
@@ -191,7 +190,9 @@
 <script>
     $(document).ready(function() {
 
-        $(".chosen-select").chosen();
+        $(".chosen-select").chosen({
+            placeholder_text:"{{ __('Reporting to') }}"
+        });
 
         $(document).on("keypress", '#zip', function (event) {
             if(event.which <= 48 || event.which >=57){
@@ -229,5 +230,30 @@
         });
     });
 
+    $('#edit_user').validate({
+        rules: {
+            reportto: "required",
+        },
+        ignore: ':hidden:not("#choices-multiple1")'
+    });
+
+    $('.get_reportto').on('change', function() {
+        get_val = $(this).val();
+        console.log("get_val",get_val);
+
+        if(get_val != ""){
+            $("#reportto-error").hide();
+        }
+        else{
+            $("#reportto-error").show();
+        }
+       
+    });
    
 </script>
+<style>
+div#reporting_toerr {
+    display: flex;
+    flex-direction: column-reverse;
+}
+</style>
