@@ -276,7 +276,9 @@ class UserController extends Controller
                         ->get();
                     }
                 }]
-            ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('id', '!=', $id)->get()->pluck('name', 'id');
+            ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('id', '!=', $id)->orwhere('id', '=', $user->creatorId())->get()->pluck('name', 'id');
+          
+
             // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
             return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users'));
         }

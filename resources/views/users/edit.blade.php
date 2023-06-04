@@ -46,7 +46,7 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                 {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
+                <div class="form-icon-user" id="reporting_toerr">
                     <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select get_reportto' required multiple>
                         @foreach($users as $key => $value)
                             @if(in_array($key,$reporting_to)) 
@@ -251,3 +251,9 @@
     });
    
 </script>
+<style>
+div#reporting_toerr {
+    display: flex;
+    flex-direction: column-reverse;
+}
+</style>

@@ -50,7 +50,9 @@
             <div class="form-group col-md-6">
                 <div class="form-group">
                     {{ Form::label('Reportto', __('Reporting to'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                    {!! Form::select('reporting_to[]', $users, null,array('id' => 'choices-multiple1','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
+                        <div id="reporting_toerr">
+                        {!! Form::select('reporting_to[]', $users, null,array('id' => 'choices-multiple1','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -267,3 +269,9 @@ $(document).on("change", '#country', function () {
  
 </script>
 
+<style>
+div#reporting_toerr {
+    display: flex;
+    flex-direction: column-reverse;
+}
+</style>
