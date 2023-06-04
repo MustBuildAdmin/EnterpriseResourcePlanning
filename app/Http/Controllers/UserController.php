@@ -93,6 +93,18 @@ class UserController extends Controller
                 }
             }]
         ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+        if(count($users)<=0){
+            $users =User::where([
+                ['name', '!=', Null],
+                [function ($query) use ($request) {
+                    if (($s = $request->search)) {
+                        $user = \Auth::user();
+                        $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                        ->get();
+                    }
+                }]
+            ])->where('id', '=', $user->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+        }
         if(\Auth::user()->can('create user'))
         {
             $country=Utility::getcountry();
@@ -815,6 +827,7 @@ class UserController extends Controller
 
     public function userPasswordReset(Request $request, $id)
     {
+       
         $validator = \Validator::make(
             $request->all(), [
                                'password' => 'required|confirmed|same:password_confirmation',
@@ -824,6 +837,7 @@ class UserController extends Controller
         if($validator->fails())
         {
             $messages = $validator->getMessageBag();
+            
 
             return redirect()->back()->with('error', $messages->first());
         }

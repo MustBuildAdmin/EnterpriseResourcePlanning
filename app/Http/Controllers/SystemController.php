@@ -259,7 +259,7 @@ class SystemController extends Controller
             );
             $post = $request->all();
             unset($post['_token']);
-            dd($post);
+            // dd($post);
             $settings = Utility::settings();
 
             foreach($post as $key => $data)
@@ -275,11 +275,18 @@ class SystemController extends Controller
                     );
                 }
             }
-            $arrEnv = [
-                'TIMEZONE' => $request->timezone,
-            ];
+            // $insert_array=array(
+            //     'name'=>'TIMEZONE',
+            //     'value'=>$request->timezone,
+            //     'created_by'=>\Auth::user()->creatorId(),
+            // );
+            // $data =DB::table('settings')->insert($insert_array);
 
-            Utility::setEnvironmentValue($arrEnv);
+            // $arrEnv = [
+            //     'TIMEZONE' => $request->timezone,
+            // ];
+
+            // Utility::setEnvironmentValue($arrEnv);
             return redirect()->route('new_home');
 
             // return redirect()->back()->with('success', __('Setting successfully updated.'));
@@ -704,6 +711,8 @@ class SystemController extends Controller
             {
                 $settings['company_email']=$get_user['email'];
             }
+            // print_r($country);
+            // exit;
 
             return view('settings.companysettings', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang','currency'));
         }
