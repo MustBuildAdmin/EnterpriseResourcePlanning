@@ -1,5 +1,14 @@
 
 {{ Form::open(array('url' => 'bank-transfer')) }}
+<style>
+    .alert-message {
+        border-left: white !important;
+        box-shadow: none !important;
+        margin-bottom: -2px !important;
+        margin-top: -1px !important;
+        border: white;
+    }
+</style>
 <div class="modal-body">
     <div class="row">
         <div class="form-group  col-md-6">
@@ -19,6 +28,7 @@
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('amount', __('Amount'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+            <span id="amount-label"></span>
             {{ Form::number('amount', '', array('class' => 'form-control','required'=>'required','step'=>'0.01', 'min'=>0)) }}
         </div>
         <div class="form-group  col-md-6">
@@ -38,7 +48,7 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary transfer_submit">
 </div>
 {{ Form::close() }}
 
@@ -58,6 +68,20 @@ $(document).ready(function() {
             });       
         $(".to_account option[value="+val+"]").remove();
         });
+    $(".transfer_submit").click(function (){
+        var amount_val = $("#amount").val();
+        var from_acc = $(".from_account").find('option:selected').attr('value');
+        var bank_details = <?php echo json_encode($bankAccount); ?>;
+        var result = bank_details.find(item => item.id == from_acc);
+        if(result) {
+            if(result['opening_balance'] < amount_val | result['opening_balance'] == 0) {
+                var image_error = "Insufficient amount in your account!"
+                $('#amount-label').append('<div class="alert alert-danger alert-message" role="alert">'+image_error+'</div');
+                $('.alert-message').fadeOut(4000);
+                return false;
+            }
+        }  
+    });
 });
 </script>
 
