@@ -297,7 +297,7 @@ class SystemController extends Controller
             return redirect()->back()->with('error', 'Permission denied.');
         }
     }
-    
+
 
     public function savePaymentSettings(Request $request)
     {
@@ -359,7 +359,7 @@ class SystemController extends Controller
             {
                 $post['shipping_display'] = 'off';
             }
-            
+
             if(!isset($post['shipping_display']))
             {
                 $post['shipping_display'] = 'off';
@@ -682,7 +682,7 @@ class SystemController extends Controller
 
             $settings                = Utility::settings();
             $get_user=User::where('id',\Auth::user()->id)->first();
-           
+
             $timezones               = config('timezones');
             $company_payment_setting = Utility::getCompanyPaymentSetting(\Auth::user()->creatorId());
 
