@@ -203,7 +203,7 @@ class ProjectController extends Controller
                     // $gant_data_parent->is_active=1;
                     // $gant_data_parent->is_open=true;
                     // $gant_data_parent->save();
-                    $i=0;
+                    // $i=0;
                     foreach($responseBody['data']['data'] as $key=>$value){
                         $task= new Con_task();
                         $task->project_id=$project->id;
