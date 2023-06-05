@@ -135,10 +135,12 @@
 						@endcan
 						@endif
 						
-						@if(\Auth::user()->type!='super admin' && ( Gate::check('manage user') || Gate::check('manage role') || Gate::check('manage client')))
-						@can('manage client')
+						@if(\Auth::user()->show_crm() == 1)
+                        @if( Gate::check('manage lead') || Gate::check('manage deal') || Gate::check('manage form builder')  || Gate::check('manage contract') || Gate::check('manage client'))
 						<div class="col-md-6 col-xl-2">
-							<a class="card card-link" href="{{ route('clients.index') }}">
+							
+							<a class="card card-link" @if(Auth::user()->type == 'client') href="{{ route('deals.index') }}" @else href="{{ route('clients.index') }}" @endif>
+							
 							{{-- <a class="card card-link" href="{{ route('clients.index') }}"> --}}
 								<div class="card-body">
 									<div class="row">
@@ -160,7 +162,7 @@
 								</div>
 							</a>
 						</div>
-						@endcan
+						@endif
 						@endif
 						@if(\Auth::user()->show_project() == 1)
                         @if( Gate::check('manage project'))

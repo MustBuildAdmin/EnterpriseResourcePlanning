@@ -259,7 +259,7 @@ class SystemController extends Controller
             );
             $post = $request->all();
             unset($post['_token']);
-            dd($post);
+            // dd($post);
             $settings = Utility::settings();
 
             foreach($post as $key => $data)
@@ -275,11 +275,18 @@ class SystemController extends Controller
                     );
                 }
             }
-            $arrEnv = [
-                'TIMEZONE' => $request->timezone,
-            ];
+            // $insert_array=array(
+            //     'name'=>'TIMEZONE',
+            //     'value'=>$request->timezone,
+            //     'created_by'=>\Auth::user()->creatorId(),
+            // );
+            // $data =DB::table('settings')->insert($insert_array);
 
-            Utility::setEnvironmentValue($arrEnv);
+            // $arrEnv = [
+            //     'TIMEZONE' => $request->timezone,
+            // ];
+
+            // Utility::setEnvironmentValue($arrEnv);
             return redirect()->route('new_home');
 
             // return redirect()->back()->with('success', __('Setting successfully updated.'));
@@ -290,7 +297,7 @@ class SystemController extends Controller
             return redirect()->back()->with('error', 'Permission denied.');
         }
     }
-    
+
 
     public function savePaymentSettings(Request $request)
     {
@@ -352,7 +359,7 @@ class SystemController extends Controller
             {
                 $post['shipping_display'] = 'off';
             }
-            
+
             if(!isset($post['shipping_display']))
             {
                 $post['shipping_display'] = 'off';
@@ -675,7 +682,7 @@ class SystemController extends Controller
 
             $settings                = Utility::settings();
             $get_user=User::where('id',\Auth::user()->id)->first();
-           
+
             $timezones               = config('timezones');
             $company_payment_setting = Utility::getCompanyPaymentSetting(\Auth::user()->creatorId());
 
@@ -704,6 +711,8 @@ class SystemController extends Controller
             {
                 $settings['company_email']=$get_user['email'];
             }
+            // print_r($country);
+            // exit;
 
             return view('settings.companysettings', compact('settings','country','company_payment_setting','timezones', 'ips','EmailTemplates','currOfferletterLang','Offerletter','offerlang','Joiningletter','currjoiningletterLang','joininglang','experience_certificate','curr_exp_cetificate_Lang','explang','noc_certificate','currnocLang','noclang','currency'));
         }

@@ -1,6 +1,21 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
+<style>
+    .invoice-number {
+        margin-bottom: 15px;
+    }
+    .ti {
+        margin-right: 5px;
+    }
+    .table thead th {
+        font-size : 12px;
+    }
+    .col-md-3 {
+        width : 35%;
+    }
 
+
+</style>
 <div class="row">
   <div class="col-md-6">
      <h2>{{__('Proposal Detail')}}</h2>
@@ -14,9 +29,9 @@
                             <div class="row timeline-wrapper">
                                 <div class="col-md-6 col-lg-4 col-xl-4">
                                     <div class="timeline-icons"><span class="timeline-dots"></span>
-                                        <i class="ti ti-plus text-primary"></i>
+                                        <i class="fa fa-plus text-primary"></i>
                                     </div>
-                                    <h6 class="text-primary my-3">{{__('Create Proposal')}}</h6>
+                                    <h3 class="text-primary my-3">{{__('Create Proposal')}}</h3>
                                     <p class="text-muted text-sm mb-3"><i class="ti ti-clock mr-2"></i>{{__('Created on ')}}{{\Auth::user()->dateFormat($proposal->issue_date)}}</p>
                                     @can('edit proposal')
                                         <a href="{{ route('proposal.edit',\Crypt::encrypt($proposal->id)) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil mr-2"></i>{{__('Edit')}}</a>
@@ -27,7 +42,7 @@
                                     <div class="timeline-icons"><span class="timeline-dots"></span>
                                         <i class="ti ti-mail text-warning"></i>
                                     </div>
-                                    <h6 class="text-warning my-3">{{__('Send Proposal')}}</h6>
+                                    <h3 class="text-warning my-3">{{__('Send Proposal')}}</h3>
                                     <p class="text-muted text-sm mb-3">
                                         @if($proposal->status!=0)
                                             <i class="ti ti-clock mr-2"></i>{{__('Sent on')}} {{\Auth::user()->dateFormat($proposal->send_date)}}
@@ -48,7 +63,7 @@
                                     <div class="timeline-icons"><span class="timeline-dots"></span>
                                         <i class="ti ti-report-money text-info"></i>
                                     </div>
-                                    <h6 class="text-info my-3">{{__('Proposal Status')}}</h6>
+                                    <h3 class="text-info my-3">{{__('Proposal Status')}}</h3>
                                     <small>
                                         @if($proposal->status == 0)
                                             <span class="badge bg-primary p-2 px-3 rounded">{{ __(\App\Models\Proposal::$statues[$proposal->status]) }}</span>
@@ -116,7 +131,7 @@
                                     <h4>{{__('Proposal')}}</h4>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-nd-6 col-lg-6 col-12 text-end">
-                                    <h4 class="invoice-number">{{ Auth::user()->proposalNumberFormat($proposal->proposal_id) }}</h4>
+                                    <span class="badge bg-primary p-2 px-3 rounded invoice-number">{{ Auth::user()->proposalNumberFormat($proposal->proposal_id) }}</span>
                                 </div>
                                 <div class="col-12">
                                     <hr>

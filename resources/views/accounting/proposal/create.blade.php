@@ -8,70 +8,57 @@
   
   <div class="row">
       {{ Form::open(array('url' => 'proposal','class'=>'w-100')) }}
+      <style>
+        input {
+            margin : 0px;
+        }
+        .item {
+            margin-top: 13px;
+        }
+        .issue-date, .proposal-number {
+            margin-top : 5px;
+        }
+
+      </style>
       <div class="col-12">
           <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
           <div class="card">
               <div class="card-body">
                   <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-3">
                           <div class="form-group" id="customer-box">
                               {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
                               {{ Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>route('proposal.customer'),'required'=>'required')) }}
                           </div>
-
-                          <div id="customer_detail" class="d-none">
-                          </div>
                       </div>
-                      <div class="col-md-6">
-                          <div class="row">
-                              <div class="col-md-6">
-                                  <div class="form-group">
-                                      {{ Form::label('issue_date', __('Issue Date'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                      <div class="form-icon-user">
-                                          {{Form::date('issue_date',null,array('class'=>'form-control','required'=>'required'))}}
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <div class="form-group">
-                                      {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                      {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <div class="form-group">
-                                      {{ Form::label('proposal_number', __('Proposal Number'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                      <div class="form-icon-user">
-                                          <input type="text" class="form-control" value="{{$proposal_number}}" readonly>
-                                      </div>
-                                  </div>
-                              </div>
-                              <input type='hidden' name='user_id' id='user_id' value='0'>
-                              <input type='hidden' name='indiangst' id='indiangst' value='0'>
-                              <input type='hidden' name='stategst' id='stategst' value='0'>
-{{--                                <div class="col-md-6">--}}
-{{--                                    <div class="form-check custom-checkbox mt-4">--}}
-{{--                                        <input class="form-check-input" type="checkbox" name="discount_apply" id="discount_apply">--}}
-{{--                                        <label class="form-check-label " for="discount_apply">{{__('Discount Apply')}}</label>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
-
-{{--                                <div class="col-md-6">--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        {{Form::label('sku',__('SKU')) }}--}}
-{{--                                        {!!Form::text('sku', null,array('class' => 'form-control','required'=>'required')) !!}--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-                              @if(!$customFields->isEmpty())
-                                  <div class="col-md-6">
-                                      <div class="tab-pane fade show" id="tab-2" role="tabpanel">
-                                          @include('customFields.formBuilder')
-                                      </div>
-                                  </div>
-                              @endif
-                          </div>
+                      <div class="col-md-3">
+                            <div class="form-group">
+                                {{ Form::label('issue_date', __('Issue Date'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                                {{Form::date('issue_date',null,array('class'=>'form-control issue-date','required'=>'required'))}}
+                            </div>
                       </div>
+                      <div class="col-md-3">
+                            <div class="form-group">
+                                {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                                {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
+                            </div>
+                      </div>
+                      <div class="col-md-3">
+                            <div class="form-group">
+                                {{ Form::label('proposal_number', __('Proposal Number'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                                <input type="text" class="form-control proposal-number" value="{{$proposal_number}}" readonly>
+                            </div>
+                      </div>
+                      <input type='hidden' name='user_id' id='user_id' value='0'>
+                      <input type='hidden' name='indiangst' id='indiangst' value='0'>
+                      <input type='hidden' name='stategst' id='stategst' value='0'>
+                      @if(!$customFields->isEmpty())
+                            <div class="col-md-6">
+                                <div class="tab-pane fade show" id="tab-2" role="tabpanel">
+                                    @include('customFields.formBuilder')
+                                </div>
+                            </div>
+                      @endif
                   </div>
               </div>
           </div>
@@ -260,7 +247,7 @@
           $('#customer_detail').removeClass('d-none');
           $('#customer_detail').addClass('d-block');
           $('#customer-box').removeClass('d-block');
-          $('#customer-box').addClass('d-none');
+        //   $('#customer-box').addClass('d-none');
           var id = $(this).val();
           var url = $(this).data('url');
           $.ajax({
