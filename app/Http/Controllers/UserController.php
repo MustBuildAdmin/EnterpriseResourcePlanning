@@ -82,7 +82,7 @@ class UserController extends Controller
         $user  = \Auth::user();
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
-        $company_type=Company_type::get()->pluck('name', 'id');
+        $company_type=Company_type::where('status',1)->get()->pluck('name', 'id');
         $users =User::where([
             ['name', '!=', Null],
             [function ($query) use ($request) {
@@ -93,6 +93,18 @@ class UserController extends Controller
                 }
             }]
         ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+        if(count($users)<=0){
+            $users =User::where([
+                ['name', '!=', Null],
+                [function ($query) use ($request) {
+                    if (($s = $request->search)) {
+                        $user = \Auth::user();
+                        $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                        ->get();
+                    }
+                }]
+            ])->where('id', '=', $user->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+        }
         if(\Auth::user()->can('create user'))
         {
             $country=Utility::getcountry();
@@ -264,7 +276,9 @@ class UserController extends Controller
                         ->get();
                     }
                 }]
-            ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('id', '!=', $id)->get()->pluck('name', 'id');
+            ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('id', '!=', $id)->orwhere('id', '=', $user->creatorId())->get()->pluck('name', 'id');
+          
+
             // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
             return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users'));
         }
@@ -815,6 +829,7 @@ class UserController extends Controller
 
     public function userPasswordReset(Request $request, $id)
     {
+       
         $validator = \Validator::make(
             $request->all(), [
                                'password' => 'required|confirmed|same:password_confirmation',
@@ -824,6 +839,7 @@ class UserController extends Controller
         if($validator->fails())
         {
             $messages = $validator->getMessageBag();
+            
 
             return redirect()->back()->with('error', $messages->first());
         }
