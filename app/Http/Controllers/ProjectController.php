@@ -44,7 +44,7 @@ class ProjectController extends Controller
         {
             return view('projects.index', compact('view'));
             // return view('new_layouts.home', compact('view'));
-           
+
         }
         else
         {
@@ -202,7 +202,7 @@ class ProjectController extends Controller
                     $gant_data_parent->parent=0;
                     $gant_data_parent->is_active=1;
                     $gant_data_parent->is_open=true;
-                    $gant_data->save();
+                    $gant_data_parent->save();
                     $i=0;
                     foreach($responseBody['data']['data'] as $key=>$value){
                         $task= new Con_task();
@@ -236,7 +236,7 @@ class ProjectController extends Controller
                         }
 
                         $task->save();
-                        
+
                         $gant_data=new GanttPlan();
                         $gant_data->task_id=$value['id'];
                         $gant_data->project_id=$project->id;
@@ -250,7 +250,7 @@ class ProjectController extends Controller
                         }else{
                             $gant_data->parent=$value['parent'];
                         }
-                       
+
                         $gant_data->is_active=1;
                         $gant_data->is_open=true;
                         $gant_data->save();
@@ -333,7 +333,7 @@ class ProjectController extends Controller
                     if(isset($responseBody['data']['data'])){
                         $gant_data_parent=new GanttPlan();
                         $TenDigitRandomNumber = mt_rand(1000000000,9999999999);
-    
+
                         $gant_data_parent->task_id=$project->id.$TenDigitRandomNumber;
                         $gant_data_parent->project_id=$project->id;
                         $gant_data_parent->text=$request->project_name;
@@ -344,7 +344,7 @@ class ProjectController extends Controller
                         $gant_data_parent->parent=0;
                         $gant_data_parent->is_active=1;
                         $gant_data_parent->is_open=true;
-                        $gant_data->save();
+                        $gant_data_parent->save();
                         $i=0;
                         foreach($responseBody['data']['data'] as $key=>$value){
                             $task= new Con_task();
@@ -391,7 +391,7 @@ class ProjectController extends Controller
                             }else{
                                 $gant_data->parent=$value['parent'];
                             }
-                        
+
                             $gant_data->is_active=1;
                             $gant_data->is_open=true;
                             $gant_data->save();
