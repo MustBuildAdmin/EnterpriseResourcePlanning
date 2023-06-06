@@ -162,9 +162,9 @@
                                                 </tr>
                                             @endforeach
                                         @else
-                                            <tr>
+                                            {{-- <tr>
                                                 <th scope="col" colspan="7"><h6 class="text-center">{{__('No Projects Found.')}}</h6></th>
-                                            </tr>
+                                            </tr> --}}
                                         @endif
                 
                                         </tbody>
