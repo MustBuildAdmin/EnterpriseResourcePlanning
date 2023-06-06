@@ -3,12 +3,12 @@
         width: 100% !important;
     }
 </style>
-{{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT','id'=>'edit_user')) }}
+{{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group ">
-                {{Form::label('name',__('Name'),['class'=>'form-label']) }}
+                {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
                 {{Form::text('name',null,array('class'=>'form-control font-style','maxlength' => 35,'placeholder'=>__('Enter User Name')))}}
                 @error('name')
                 <small class="invalid-name" role="alert">
@@ -63,10 +63,9 @@
             @endif
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
+                    {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <select class="form-control country" name="country" id='country'
-                                    placeholder="Select Country" >
+                        <select class="form-control country" name="country" id='country'placeholder="Select Country" required>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($countrylist as $key => $value)
                                         <option value="{{$value->iso2}}" @if($user->country==$value->iso2) selected @endif>{{$value->name}}</option>
@@ -76,69 +75,70 @@
                 </div>
                 </div>
 
-       <div class="form-group col-md-6">
-            <div class="form-group">
-                {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <select class="form-control country" name="state" id='state'
-                                placeholder="Select State" >
-                                <option value="">{{ __('Select State ...') }}</option>
-                                @foreach($statelist as $key => $value)
-                                    <option value="{{$value->iso2}}" @if($user->state==$value->iso2) selected @endif>{{$value->name}}</option>
-                                @endforeach
-                    </select>
+                <div class="form-group col-md-6">
+                        <div class="form-group">
+                            {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                            <div class="form-icon-user">
+                                <select class="form-control state" name="state" id='state' placeholder="Select State" required>
+                                            <option value="">{{ __('Select State ...') }}</option>
+                                            @foreach($statelist as $key => $value)
+                                                <option value="{{$value->iso2}}" @if($user->state==$value->iso2) selected @endif>{{$value->name}}</option>
+                                            @endforeach
+                                </select>
+                            </div>
+                        </div>
                 </div>
-            </div>
-        </div>
 
-       <div class="form-group col-md-6">
-            <div class="form-group">
-                {{Form::label('city',__('City'),array('class'=>'form-label')) }}
-                <div class="form-icon-user">
-                    {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                <div class="form-group col-md-6">
+                        <div class="form-group">
+                            {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                            <div class="form-icon-user">
+                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                            </div>
+                        </div>
                 </div>
-            </div>
-        </div>
 
-       <div class="form-group col-md-6">
-            <div class="form-group">
-                {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}
-                <div class="form-icon-user">
-                    <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111" value='{{$user->phone}}'>
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111" value='{{$user->phone}}' required>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-       <div class="form-group col-md-6">
-            <div class="form-group">
-                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}
-                <div class="form-icon-user">
-                    {{Form::text('zip',null,array('class'=>'form-control'))}}
+                <div class="form-group col-md-6">
+                    <div class="form-group">
+                        {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-12">
-            <div class="form-group">
-                {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
-                <div class="form-icon-user">
-                    {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3))}}
+                @if(\Auth::user()->type != 'super admin')
+                    <div class="form-group col-md-6">
+                        {{ Form::label('role', __('User Role'),['class'=>'form-label']) }}
+                        {!! Form::select('role', $roles, $user->roles,array('class' => 'form-control select2')) !!}
+                        @error('role')
+                        <small class="invalid-role" role="alert">
+                            <strong class="text-danger">{{ $message }}</strong>
+                        </small>
+                        @enderror
+                    </div>
+                @endif
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
+                            <div class="form-icon-user">
+                                {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3))}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-        @if(\Auth::user()->type != 'super admin')
-            <div class="form-group col-md-12">
-                {{ Form::label('role', __('User Role'),['class'=>'form-label']) }}
-                {!! Form::select('role', $roles, $user->roles,array('class' => 'form-control select2')) !!}
-                @error('role')
-                <small class="invalid-role" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
-            </div>
-        @endif
+       
         @if(\Auth::user()->type == 'super admin')
             <div class="form-group col-md-6">
                 {{ Form::label('company_type', __('Company'),['class'=>'form-label']) }}

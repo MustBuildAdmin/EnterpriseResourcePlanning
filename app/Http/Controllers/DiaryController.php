@@ -1654,6 +1654,70 @@ class DiaryController extends Controller
 
     }
 
-    
+    public function edit_procurement_material(Request $request){
+       
+        try {
+
+            if(\Auth::user()->can('edit rfi')){
+
+                $project_id = $request["project_id"];
+
+                $project_name = Project::select('project_name')
+                ->where("id", $project_id)
+                ->first();
+                
+                $data=ProcurementMaterial::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
+
+                $pro_material_mutli = ProcurementMaterialSub::where('procurement_id','=',$data->id)->get();
+        
+                return view('diary.procurement_material.edit',compact('data','project_name','project_id','pro_material_mutli'));
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function update_procurement_material(Request $request){
+       
+        try {
+           
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+
+    public function delete_procurement_material(Request $request){
+       
+        try {
+
+            if(\Auth::user()->can('delete procurement material')){
+           
+                ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
+
+                ProcurementMaterialSub::where("procurement_id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
+
+                return redirect()->back()->with("success", "Procurement Material deleted successfully.");
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
     
 }
