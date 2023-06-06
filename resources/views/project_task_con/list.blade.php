@@ -320,9 +320,9 @@
                                                 @endif
                                             @endif
                                         @empty
-                                            <tr>
+                                            {{-- <tr>
                                                 <td colspan="6"><h6 class="text-center">{{__('No tasks found')}}</h6></td>
-                                            </tr>
+                                            </tr> --}}
                                         @endforelse
                                     </tbody>
                                 </table>
