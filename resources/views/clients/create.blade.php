@@ -7,7 +7,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="form-group">
             {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter client Name'),'required'=>'required')) }}
+            {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter client Name'),'required'=>'required','id'=>'billings_name')) }}
         </div>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-6">
@@ -30,88 +30,86 @@
 </div>
 <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
-                @error('role')
-                <small class="invalid-role" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
-            </div>
+        <div class="form-group">
+            {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+            {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
+            @error('role')
+            <small class="invalid-role" role="alert">
+                <strong class="text-danger">{{ $message }}</strong>
+            </small>
+            @enderror
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <select class="form-control country" name="country" id='country'
-                            placeholder="Select Country" required>
-                        <option value="">{{ __('Select Country ...') }}</option>
-                        @foreach($country as $key => $value)
-                              <option value="{{$value->iso2}}">{{$value->name}}</option>
-                        @endforeach
-                    </select>
-                    {{-- {{Form::text('country',null,array('class'=>'form-control'))}} --}}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <select class="form-control" name="state" id='state' required
-                            placeholder="Select State" >
-                        <option value="">{{ __('Select State ...') }}</option>
-                    </select>
-                </div>
+    </div>
+    <div class="col-lg-8 col-md-4 col-sm-6">
+        <div class="form-group">
+            {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+            <div class="form-icon-user">
+                {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                      {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111"  required>
-                    {{-- {{Form::text('phone',null,array('class'=>'form-control'))}} --}}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
-                </div>
+    {{-- <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="form-group">
+            {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+            <div class="form-icon-user">
+                <select class="form-control country" name="country" id='country'
+                        placeholder="Select Country" required>
+                    <option value="">{{ __('Select Country ...') }}</option>
+                    @foreach($country as $key => $value)
+                            <option value="{{$value->iso2}}">{{$value->name}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="">
-                    {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
-                </div>
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="form-group">
+            {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+            <div class="form-icon-user">
+                <select class="form-control" name="state" id='state' required
+                        placeholder="Select State" >
+                    <option value="">{{ __('Select State ...') }}</option>
+                </select>
             </div>
         </div>
-        <div class="col-lg-6 col-md-4 col-sm-6">
-            <div class="form-group">
-                {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
-                </div>
+    </div> --}}
+</div>
+{{-- <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="form-group">
+            {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+            <div class="form-icon-user">
+                    {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
             </div>
         </div>
     </div>
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="form-group">
+            {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+            <div class="form-icon-user">
+                <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111"  required>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="form-group">
+            {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+            <div class="form-icon-user">
+                {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
+            </div>
+        </div>
+    </div>
+</div> --}}
+{{-- <div class="row">
+    <div class="col-lg-6 col-md-4 col-sm-6">
+        <div class="form-group">
+            {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+            <div class="">
+                {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
+            </div>
+        </div>
+    </div>
+</div> --}}
     
         @if(!$customFields->isEmpty())
             @include('custom_fields.formBuilder')
@@ -121,14 +119,14 @@
     <hr>
     <h5 class="sub-title"><strong>{{__('Billing Address')}}</strong></h5>
     <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-6">
+        {{-- <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
                 {{Form::label('billing_name',__('Name'),array('class'=>'','class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{Form::text('billing_name',null,array('class'=>'form-control','required'=>'required','id'=>'billing_name'))}}
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
                 {{Form::label('billing_country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
@@ -164,7 +162,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="col-lg-6 col-md-4 col-sm-6">
             <div class="form-group">
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
@@ -173,7 +171,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="col-lg-6 col-md-4 col-sm-6">
             <div class="form-group">
                 {{Form::label('billing_zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
@@ -348,12 +346,21 @@ $(document).on("change", '#country', function () {
     var $this = $(this).parent().parent();
     if (this.checked) {
 
-      $this.find('#shipping_name').val($this.find('#billing_name').val());
+      $this.find('#shipping_name').val($this.find('#billings_name').val());
       $this.find('#shipping_city').val($this.find('#billing_city').val());
       $this.find('#shipping_phone').val($this.find('#billing_phone').val());
       $this.find('#shipping_zip').val($this.find('#billing_zip').val());
       $this.find('#shipping_address').val($this.find('#billing_address').val());
       $this.find('#shipping_country').val($this.find('#billing_country').val());
+
+      $this.find('#shipping_name').prop('disabled',true);
+      $this.find('#shipping_city').prop('disabled',true);
+      $this.find('#shipping_phone').prop('disabled',true);
+      $this.find('#shipping_zip').prop('disabled',true);
+      $this.find('#shipping_address').prop('disabled',true);
+      $this.find('#shipping_country').prop('disabled',true);
+      $this.find('#shipping_state').prop('disabled',true);
+
       var name=$this.find('#shipping_country').val();
     var settings = {
             "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
@@ -382,11 +389,31 @@ $(document).on("change", '#country', function () {
       $this.find('#shipping_address').val("");
       $this.find('#shipping_country').val("");
       setTimeout(function() {     $this.find('#shipping_state').val(""); }, 100);
-     
+
+      $this.find('#shipping_name').prop('disabled',false);
+      $this.find('#shipping_city').prop('disabled',false);
+      $this.find('#shipping_phone').prop('disabled',false);
+      $this.find('#shipping_zip').prop('disabled',false);
+      $this.find('#shipping_address').prop('disabled',false);
+      $this.find('#shipping_country').prop('disabled',false);
+      $this.find('#shipping_state').prop('disabled',false);
 
     }
 
   });
 
 });
+
+$('#billing_zip, #shipping_zip').on('paste', function (event) {
+    if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+        event.preventDefault();
+    }
+});
+
+$("#billing_zip, #shipping_zip").on("keypress",function(event){
+    if(event.which < 48 || event.which >58){
+        return false;
+    }
+});
+
 </script>
