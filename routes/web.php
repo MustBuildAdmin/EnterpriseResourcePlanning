@@ -280,6 +280,7 @@ Route::any('save_procurement_material','DiaryController@save_procurement_materia
     ]
 );
 
+
 Route::any('edit_procurement_material','DiaryController@edit_procurement_material')->name('edit_procurement_material')->middleware(
     [
         'auth',
@@ -301,6 +302,12 @@ Route::any('delete_procurement_material','DiaryController@delete_procurement_mat
     ]
 );
 
+Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary_email')->name('check_duplicate_diary_email')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 
     /* Drawing List */
