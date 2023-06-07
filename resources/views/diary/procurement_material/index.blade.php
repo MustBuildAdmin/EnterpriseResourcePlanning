@@ -189,8 +189,8 @@ h3, .h3 {
      <h2>{{__('Procurement Material Supply Log')}}</h2> 
   </div>
     <div class="col-md-6 float-end floatrght">
-        @can('create rfi')
-            <a class="floatrght btn btn-primary mb-3" href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create RFI')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
+        @can('create procurement material')
+            <a class="floatrght btn btn-primary mb-3" href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
             </a>
         @endcan
@@ -232,7 +232,7 @@ h3, .h3 {
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 @can('edit procurement material')
-                                    <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
+                                    <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
                                 @endcan
                                 @can('delete procurement material')
                                     {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
@@ -268,7 +268,7 @@ h3, .h3 {
         var j = 0;
         $(document).on("click", "#dynamic-procurement", function () {
             ++j;
-            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submission Date :</label><input type="date" name="submission_date[]" class="form-control" value=""></div></div><div class="col-md-6"><div class="form-group"><label for="input">Actual Reply Date :</label><input type="date" name="actual_reply_date[][]" class="form-control" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button></div></div></td></tr>');
+            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submission Date :</label><input type="date" name="submission_date[]" class="form-control" value=""></div></div><div class="col-md-6"><div class="form-group"><label for="input">Actual Reply Date :</label><input type="date" name="actual_reply_date[]" class="form-control" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button></div></div></td></tr>');
         });
         $(document).on('click', '#removedynamicprocurement', function () {
             $(this).parents('tr').remove();

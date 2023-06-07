@@ -72,8 +72,11 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Email')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="email" class="form-control" placeholder="{{__('Email')}}" required>
+							<input type="text" name="email" id="email" class="form-control" placeholder="{{__('Email')}}" required>
 						</div>
+						<span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
+							<span class="text-danger">{{__('Email already exist in our record.!')}}</span>
+						</span> 
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
@@ -153,9 +156,35 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary"> 
+				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal" >
+				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary" id="create_procurement"> 
 			</div>
 		</form>
 	</div>
 </div>
+
+<script>
+	$(document).ready(function(){
+        $(document).on("keyup", '#email', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_diary_email") }}',
+                type : 'GET',
+                data : { 'get_name' : $("#email").val(),'form_name' : "procurement_material" },
+                success : function(data) {
+                    if(data == 1){
+                        $("#create_procurement").prop('disabled',false);
+                        $(".email_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $("#create_procurement").prop('disabled',true);
+                        $(".email_duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
+    });
+</script>
