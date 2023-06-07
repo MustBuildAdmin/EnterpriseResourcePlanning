@@ -13,6 +13,8 @@ use App\Models\ConsultantsDirectionMulti;
 use App\Models\RFIStatusSave;
 use App\Models\RFIStatusSubSave;
 use App\Models\ProjectSpecification;
+use App\Models\ProcurementMaterial;
+use App\Models\ProcurementMaterialSub;
 use File;
 use DB;
 use Session;
@@ -1531,8 +1533,13 @@ class DiaryController extends Controller
                 $project_name = Project::select('project_name')
                 ->where('id', $project_id)
                 ->first();
+
+
+                $dairy_data = ProcurementMaterial::get();
+
+                
             
-                return view('diary.procurement_material.index',compact('project_id','project_name'));
+                return view('diary.procurement_material.index',compact('project_id','project_name','dairy_data'));
 
             }else{
 
@@ -1573,6 +1580,113 @@ class DiaryController extends Controller
     public function save_procurement_material(Request $request){
        
         try {
+    
+        $fileNameToStore='';
+        $url='';
+
+        if (!empty($request->filename)) {
+            $filenameWithExt = $request->file("filename")->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file("filename")->getClientOriginalExtension();
+            $fileNameToStore =$filename. "_" . time() . "." . $extension;
+
+            $dir = "uploads/procurement_material";
+
+            $image_path = $dir . $filenameWithExt;
+
+            if (\File::exists($image_path)) {
+                \File::delete($image_path);
+            }
+            $url = "";
+            $path = Utility::upload_file($request,"filename",$fileNameToStore,$dir,[]);
+
+            if ($path["flag"] == 1) {
+                $url = $path["url"];
+        
+            } else {
+                return redirect()->back()->with("error", __($path["msg"]));
+            }
+
+            $data = [
+                "project_id" => Session::get('project_id'),
+                "user_id" => Auth::id(),
+                "description" => $request->description,
+                "ram_ref_no" => $request->ram_ref_no,
+                "location" => $request->location,
+                "supplier_name" => $request->supplier_name,
+                "contact_person" => $request->contact_person,
+                "mobile_hp_no" => $request->mobile_hp_no,
+                "tel" => $request->tel,
+                "fax" => $request->fax,
+                "email" => $request->email,
+                "lead_time" => $request->lead_time,
+                "target_delivery_date" => $request->target_delivery_date,
+                "target_approval_date" => $request->target_approval_date,
+                "status" => $request->status,
+                "remarks" => $request->remarks,
+                "filename" => $filename,
+                "file_location" => $image_path,
+            ];
+            
+            ProcurementMaterial::insert($data);
+            $id = DB::getPdo()->lastInsertId(); 
+
+            if (count($request->submission_date) > 0) {
+                foreach ($request->submission_date as $item => $v) {
+                    $data2 = [
+                        "procurement_id" => $id,
+                        "project_id" => Session::get('project_id'),
+                        "user_id" => Auth::id(),
+                        "submission_date" =>$request->submission_date[$item],
+                        "actual_reply_date" =>$request->actual_reply_date[$item]
+                    ];
+                    ProcurementMaterialSub::insert($data2);
+                }
+            }
+            return redirect()->back()->with("success", "Procurement Material created successfully.");
+            
+        }
+
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function edit_procurement_material(Request $request){
+       
+        try {
+
+            if(\Auth::user()->can('edit rfi')){
+
+                $project_id = $request["project_id"];
+
+                $project_name = Project::select('project_name')
+                ->where("id", $project_id)
+                ->first();
+                
+                $data=ProcurementMaterial::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
+
+                $pro_material_mutli = ProcurementMaterialSub::where('procurement_id','=',$data->id)->get();
+        
+                return view('diary.procurement_material.edit',compact('data','project_name','project_id','pro_material_mutli'));
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function update_procurement_material(Request $request){
+       
+        try {
            
 
         } catch (Exception $e) {
@@ -1581,6 +1695,29 @@ class DiaryController extends Controller
 
     }
 
-    
+
+    public function delete_procurement_material(Request $request){
+       
+        try {
+
+            if(\Auth::user()->can('delete procurement material')){
+           
+                ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
+
+                ProcurementMaterialSub::where("procurement_id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
+
+                return redirect()->back()->with("success", "Procurement Material deleted successfully.");
+
+            }else{
+
+                return redirect()->back()->with('error', __('Permission denied.'));
+
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
     
 }

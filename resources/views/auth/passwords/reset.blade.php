@@ -192,6 +192,8 @@
     @endsection
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
     <script>
         $.strength = function( element, password ) {
             var desc = [{'width':'0px'}, {'width':'20%'}, {'width':'40%'}, {'width':'60%'}, {'width':'80%'}, {'width':'100%'}];

@@ -1,9 +1,19 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/flatpickr.min.css') }}">
+<style>
+    .btn-box {
+        margin-right : 20px;
+    }
+    .btn-sm {
+        border-radius: 6px;
+    }
+    .mt-4 {
+        margin-bottom: 7px;
+    }
+
+</style>
 <div class="row">
-
-
 <div class="row">
   <div class="col-md-6">
      <h2>{{__('Manage Proposals')}}</h2>
@@ -44,7 +54,7 @@
                         @else
                             {{ Form::open(array('route' => array('customer.proposal'),'method' => 'GET','id'=>'frm_submit')) }}
                         @endif
-                        <div class="d-flex align-items-center justify-content-end">
+                        <div class="d-flex align-items-center">
                             @if(!\Auth::guard('customer')->check())
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 me-2">
                                     <div class="btn-box">

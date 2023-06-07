@@ -13,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Utility;
 
 class Reportemail implements ShouldQueue
 {
@@ -155,7 +156,14 @@ class Reportemail implements ShouldQueue
                                        ->attachData($pdf->output(),'Report.pdf');
        
                            });
-       
+                           $dir = 'uploads/cronreport/';
+                           $image_path = date('ymdhis').$project_id.'.pdf';
+                           $path = Utility::upload_file($pdf->output(),'attachment',$image_path,$dir,[]);
+                           $insert=array(
+                            'project_id'=>$project_id,
+                            'url'=>$dir.$image_path,
+                           );
+                           DB::table('cron_report')->insert($insert);
                        }catch(\Exception $e)
                        {
                            $error = $e->getMessage();

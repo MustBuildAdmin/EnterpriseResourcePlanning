@@ -650,7 +650,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_email',__('System Email *'),array('class' => 'form-label')) }}
-                                    {{Form::email('company_email',null,array('class'=>'form-control','required'=>'required'))}}
+                                    {{Form::email('company_email',null,array('class'=>'form-control','required'=>'required','readonly'=>'true'))}}
                                     @error('company_email')
                                     <span class="invalid-company_email" role="alert">
                                                             <strong class="text-danger">{{ $message }}</strong>

@@ -3,7 +3,7 @@
         width: 100% !important;
     }
 </style>
-{{Form::open(array('url'=>'users','method'=>'post'))}}
+{{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form','autocomplete'=>'off'))}}
 
 <div class="modal-body">
 
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('name',__('Name'),['class'=>'form-label']) }}
+                {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
                 {{Form::text('name',null,array('class'=>'form-control','maxlength' => 35,'placeholder'=>__('Enter User Name'),'required'=>'required'))}}
                 @error('name')
                 <small class="invalid-name" role="alert">
@@ -23,7 +23,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'required'=>'required'))}}
+                {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
                     <span class="text-danger">Email Already Exist!</span>
                 </span> 
@@ -46,26 +46,22 @@
                 </small>
                 @enderror
             </div>
-
+            @if(\Auth::user()->type != 'super admin')
             <div class="form-group col-md-6">
                 <div class="form-group">
-                {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user">
-                    <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select' required multiple>
-                        <option value="">{{ __('Select Reporting to ...') }}</option>
-                        @foreach($users as $key => $value)
-                              <option value="{{$key}}">{{$value}}</option>
-                        @endforeach
-                    </select>
+                    {{ Form::label('Reportto', __('Reporting to'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                        <div id="reporting_toerr">
+                        {!! Form::select('reporting_to[]', $users, null,array('id' => 'choices-multiple1','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
+            @endif
        <div class="form-group col-md-6">
             <div class="form-group">
                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <select class="form-control country" name="country" id='country'
-                            placeholder="Select Country" required>
+                    <select class="form-control country" name="country" id='country' placeholder="Select Country" required>
                         <option value="">{{ __('Select Country ...') }}</option>
                         @foreach($country as $key => $value)
                               <option value="{{$value->iso2}}">{{$value->name}}</option>
@@ -79,8 +75,7 @@
             <div class="form-group">
                 {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <select class="form-control" name="state" id='state'
-                            placeholder="Select State" >
+                    <select class="form-control" name="state" id='state' placeholder="Select State" required>
                         <option value="">{{ __('Select State ...') }}</option>
                     </select>
                 </div>
@@ -110,6 +105,17 @@
                 <div class="form-icon-user">
                     {{Form::text('zip',null,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
                 </div>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <div class="form-group">
+                {{Form::label('password',__('Password'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
+                @error('password')
+                <small class="invalid-password" role="alert">
+                    <strong class="text-danger">{{ $message }}</strong>
+                </small>
+                @enderror
             </div>
         </div>
         <div class="col-md-12">
@@ -154,17 +160,7 @@
                 @enderror
             </div>
         @endif
-        <div class="col-md-6">
-            <div class="form-group">
-                {{Form::label('password',__('Password'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
-                @error('password')
-                <small class="invalid-password" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
-            </div>
-        </div>
+       
         @if(!$customFields->isEmpty())
             <div class="col-md-6">
                 <div class="tab-pane fade show" id="tab-2" role="tabpanel">
@@ -207,7 +203,9 @@ $(document).on("change", '#country', function () {
 <script>
     $(document).ready(function() {
 
-        $(".chosen-select").chosen();
+        $(".chosen-select").chosen({
+            placeholder_text:"{{ __('Reporting to') }}"
+        });
 
         $(document).on("keypress", '#zip', function (event) {
             if(event.which <= 48 || event.which >=57){
@@ -247,5 +245,32 @@ $(document).on("change", '#country', function () {
             });
         });
     });
+
+    $('#users_form').validate({
+        rules: {
+            reportto: "required",
+        },
+        ignore: ':hidden:not("#choices-multiple1")'
+    });
+
+    $('.get_reportto').on('change', function() {
+        get_val = $(this).val();
+        
+
+        if(get_val != ""){
+            $("#reportto-error").hide();
+        }
+        else{
+            $("#reportto-error").show();
+        }
+       
+    });
+ 
 </script>
 
+<style>
+div#reporting_toerr {
+    display: flex;
+    flex-direction: column-reverse;
+}
+</style>

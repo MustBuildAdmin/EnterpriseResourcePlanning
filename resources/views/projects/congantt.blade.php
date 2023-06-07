@@ -29,60 +29,45 @@
         height: 440px !important;
         width: 42% !important;
     }
-    .gantt_control {
-        height: 50px;
-        padding: 10px;
-        width: 100%;
-        background-color: rgb(169, 22, 214);
-        display: block;
-        color: rgb(99, 17, 175);
-    }
-    .gantt_task_progress {
-			text-align: left;
-			padding-left: 10px;
-			box-sizing: border-box;
-			color: white;
-			font-weight: bold;
-	}
-    textarea.editor_description {
-        max-width: 100%;
-        height: 100px !important;
-    }
-    .gantt_cal_larea {
-        height: 84% !important;
-        overflow:visible;
-    }
-    .gantt_cal_chosen,
-    .gantt_cal_chosen select{
-        width: 400px;
-    }
-
-    .align{
-    display: flex; 
-    justify-content: flex-end;
-    }
-.freezebtn{
-    margin-right:5px;
-}
-    .gantt-fullscreen {
-			position: absolute;
-			bottom: 20px;
-			right: 20px;
-			width: 30px;
-			height: 30px;
-			padding: 2px;
-			font-size: 32px;
-			background: transparent;
-			cursor: pointer;
-			opacity: 0.5;
-			text-align: center;
-			-webkit-transition: background-color 0.5s, opacity 0.5s;
-			transition: background-color 0.5s, opacity 0.5s;
+	.status_line {
+			background-color: #0ca30a;
 		}
 
-		.gantt-fullscreen:hover {
-			background: rgba(150, 150, 150, 0.5);
-			opacity: 1;
+		.gantt_task_cell.week_end {
+			background-color: #EFF5FD;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #F8EC9C;
+		}
+
+		.gantt_grid .gantt_grid_scale .gantt_grid_head_cell {
+			font-size: 13px;
+			color: rgba(0, 0, 0, .54);
+			border: none;
+			text-transform: capitalize;
+			font-weight: 600;
+		}
+
+		.gantt_task .gantt_task_scale .gantt_scale_cell {
+			font-size: 12px;
+		}
+
+		.gantt_grid_data .gantt_cell {
+			font-size: 11px;
+		}
+
+		.gantt_task_line.gantt_project {
+			background-color: #25c684;
+			border-color: #25c684;
+		}
+
+		.gantt_task_line {
+			background-color: #4e6da0;
+			border: 1px solid #4e6da0;
+		}
+		.gantt_cal_light >.gantt_cal_ltitle {
+             font-size: 13px !important;
 		}
 </style>
 @section('page-title') {{__('Gantt Chart')}} @endsection

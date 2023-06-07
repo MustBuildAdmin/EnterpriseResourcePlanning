@@ -687,13 +687,13 @@
                                             <a class="dash-link" href="{{route('projects.index')}}">@if($setting_data['company_type']!=2){{__('Projects')}}@else {{__('Productivity')}} @endif</a>
                                         </li>
                                     @endcan
-                                    @if($setting_data['company_type']==2)
+                                    {{-- @if($setting_data['company_type']==2)
                                         @can('manage project')
                                         <li class="dash-item  {{Request::segment(1) == 'dairy' ? 'active' : ''}}">
                                             <a class="dash-link" href="{{route('dairy.index')}}">{{__('Dairy')}}</a>
                                         </li>
                                         @endcan
-                                    @endif
+                                    @endif --}}
                                     @can('manage project task')
                                         <li class="dash-item {{ (request()->is('taskboard*') ? 'active' : '')}}">
                                             <a class="dash-link" href="{{ route('taskBoard.view', 'list') }}">{{__('Tasks')}}</a>

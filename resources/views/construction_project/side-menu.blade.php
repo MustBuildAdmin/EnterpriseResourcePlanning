@@ -254,11 +254,11 @@
                         <li class="">
                             <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
                         </li>
-                        @can('manage procurement material')
+                        {{-- @can('manage procurement material')
                         <li class="">
-                            <a  href="#" class="dropdown-item">{{ __('Procurement Material Supply Log') }}</a>
+                            <a  href="{{ route('procurement_material') }}" class="dropdown-item">{{ __('Procurement Material Supply Log') }}</a>
                         </li>
-                        @endcan
+                        @endcan --}}
                     </ul>
                 </li>
 
