@@ -246,7 +246,7 @@
                             <a href="{{ route('show_consultant_direction') }}" class="dropdown-item">{{ __('Directions') }}</a>
                         </li>
                         @endcan
-                        @can('manage rfi')
+                        @can('manage RFI')
                         <li class="">
                             <a href="{{ route('rfi_show_info') }}" class="dropdown-item">{{ __('RFI') }}</a>
                         </li>
