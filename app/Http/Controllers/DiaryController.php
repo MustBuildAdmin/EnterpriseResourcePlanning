@@ -727,7 +727,7 @@ class DiaryController extends Controller
                 return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
             }
 
-            if(\Auth::user()->can('manage rfi')){
+            if(\Auth::user()->can('manage RFI')){
 
                 $project_id = Session::get('project_id');
                 $dairy_data = RFIStatusSave::where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->orderBy('rfi_status_save.id', 'DESC')->groupBy('rfi_status_save.id')->get();
@@ -747,7 +747,7 @@ class DiaryController extends Controller
 
     public function rfi_info_status(Request $request){
         try {
-            if(\Auth::user()->can('create rfi')){
+            if(\Auth::user()->can('create RFI')){
 
                 $project = Session::get('project_id');
                 $project_name = Project::select('project_name')
@@ -795,7 +795,7 @@ class DiaryController extends Controller
 
         try {
 
-            if(\Auth::user()->can('edit rfi')){
+            if(\Auth::user()->can('edit RFI')){
 
                 $project_id = $request["project_id"];
 
@@ -955,7 +955,7 @@ class DiaryController extends Controller
 
         try{
 
-            if(\Auth::user()->can('delete rfi')){
+            if(\Auth::user()->can('delete RFI')){
            
                 RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
 
