@@ -33,7 +33,7 @@
 		<a href="{{ route('clients.index') }}" id="reset" class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Reset') }}">
 			<span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
 		</a>
-		<a href="#" class="btn btn-primary" data-size="lg" data-url="{{ route('clients.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" id="create">
+		<a href="#" class="btn btn-primary" data-size="xl" data-url="{{ route('clients.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" id="create">
 			<span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
 		</a>
        
@@ -57,7 +57,7 @@
 								<div class="dropdown-menu dropdown-menu-end">
 									<a href="{{ route('clients.show',$client->id) }}" class="dropdown-item" data-bs-original-title="{{__('View')}}"> <i class="ti ti-eye"></i> <span>{{__('Show')}}</span> </a> 
 										@can('edit client')
-											<a href="#!" data-size="md" data-url="{{ route('clients.edit',$client->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> 
+											<a href="#!" data-size="xl" data-url="{{ route('clients.edit',$client->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> 
 												<span>{{__('Edit')}}</span> 
 											</a> 
 										@endcan 
