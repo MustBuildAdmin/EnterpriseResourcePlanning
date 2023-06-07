@@ -190,7 +190,7 @@ h3, .h3 {
   </div>
     @can('create concrete')
     <div class="col-md-6 float-end floatrght">
-        <a href="#" data-size="xl" data-url="{{ route('qaqc.concrete_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Vo/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
+        <a href="#" data-size="xl" data-url="{{ route('qaqc.concrete_create',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Concrete Pouring Record')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
         <i class="ti ti-plus"></i>
         </a>
     </div>
@@ -241,7 +241,7 @@ h3, .h3 {
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
                         @can('edit concrete')
-                              <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('qaqc.concrete_edit',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
+                              <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('qaqc.concrete_edit',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Create Concrete Pouring Record')}}"><i class="ti ti-pencil text-white"></i></a>
                           @endcan
                           @can('delete concrete')
                           {!! Form::open(['method' => 'POST', 'route' => ['concrete.delete_concrete', $data->id],'id'=>'delete-form-'.$data->id]) !!} 

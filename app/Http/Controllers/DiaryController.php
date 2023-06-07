@@ -727,7 +727,7 @@ class DiaryController extends Controller
                 return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
             }
 
-            if(\Auth::user()->can('manage RFI')){
+            if(\Auth::user()->can('manage rfi')){
 
                 $project_id = Session::get('project_id');
                 $dairy_data = RFIStatusSave::where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->orderBy('rfi_status_save.id', 'DESC')->groupBy('rfi_status_save.id')->get();
@@ -747,7 +747,7 @@ class DiaryController extends Controller
 
     public function rfi_info_status(Request $request){
         try {
-            if(\Auth::user()->can('create RFI')){
+            if(\Auth::user()->can('create rfi')){
 
                 $project = Session::get('project_id');
                 $project_name = Project::select('project_name')
@@ -795,7 +795,7 @@ class DiaryController extends Controller
 
         try {
 
-            if(\Auth::user()->can('edit RFI')){
+            if(\Auth::user()->can('edit rfi')){
 
                 $project_id = $request["project_id"];
 
@@ -955,7 +955,7 @@ class DiaryController extends Controller
 
         try{
 
-            if(\Auth::user()->can('delete RFI')){
+            if(\Auth::user()->can('delete rfi')){
            
                 RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
 
@@ -1625,12 +1625,13 @@ class DiaryController extends Controller
                 "status" => $request->status,
                 "remarks" => $request->remarks,
                 "filename" => $filename,
-                "file_location" => $image_path,
+                "file_location" => "filename.png",
             ];
             
             ProcurementMaterial::insert($data);
             $id = DB::getPdo()->lastInsertId(); 
 
+        
             if (count($request->submission_date) > 0) {
                 foreach ($request->submission_date as $item => $v) {
                     $data2 = [
@@ -1638,7 +1639,8 @@ class DiaryController extends Controller
                         "project_id" => Session::get('project_id'),
                         "user_id" => Auth::id(),
                         "submission_date" =>$request->submission_date[$item],
-                        "actual_reply_date" =>$request->actual_reply_date[$item]
+                        "actual_reply_date" =>$request->actual_reply_date[$item],
+    
                     ];
                     ProcurementMaterialSub::insert($data2);
                 }
@@ -1658,7 +1660,7 @@ class DiaryController extends Controller
        
         try {
 
-            if(\Auth::user()->can('edit rfi')){
+            if(\Auth::user()->can('edit procurement material')){
 
                 $project_id = $request["project_id"];
 
@@ -1689,6 +1691,127 @@ class DiaryController extends Controller
         try {
            
 
+            $fileNameToStore1='';
+            $url='';
+
+            if (!empty($request->filename)) {
+                $filenameWithExt1 = $request->file("filename")->getClientOriginalName();
+                $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                $extension1 = $request->file("filename")->getClientOriginalExtension();
+                $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
+
+                $dir = "uploads/procurement_material";
+
+                $image_path = $dir . $filenameWithExt1;
+                if (\File::exists($image_path)) {
+                    \File::delete($image_path);
+                }
+                $url = "";
+                $path = Utility::upload_file($request,"filename",$fileNameToStore1,$dir,[]);
+
+                if ($path["flag"] == 1) {
+
+                    $url = $path["url"];
+            
+                } else {
+        
+                    return redirect()->back()->with("error", __($path["msg"]));
+                }
+                
+            }else{
+                $check_attach_file=ProcurementMaterial::select('filename')->where('id',$request->id)
+                                                  ->where('project_id',Session::get('project_id'))->first();
+                                                                     
+                $fileNameToStore1=$check_attach_file->filename;
+                         
+            }
+
+            $data = [
+                "project_id" => Session::get('project_id'),
+                "user_id" => Auth::id(),
+                "description" => $request->description,
+                "ram_ref_no" => $request->ram_ref_no,
+                "location" => $request->location,
+                "supplier_name" => $request->supplier_name,
+                "contact_person" => $request->contact_person,
+                "mobile_hp_no" => $request->mobile_hp_no,
+                "tel" => $request->tel,
+                "fax" => $request->fax,
+                "email" => $request->email,
+                "lead_time" => $request->lead_time,
+                "target_delivery_date" => $request->target_delivery_date,
+                "target_approval_date" => $request->target_approval_date,
+                "status" => $request->status,
+                "remarks" => $request->remarks,
+                // "filename" => $filename,
+                "filename" => "filename.png",
+                // "file_location" => $image_path,
+                "file_location" => "filename.png",
+            ];
+            
+          
+
+            ProcurementMaterial::where('id',$request->id)
+                ->where('user_id',Auth::id())
+                ->where('project_id',Session::get('project_id'))
+                ->update($data);
+
+            $in_id = ProcurementMaterial::where('user_id',Auth::id())
+                                                ->where('project_id',Session::get('project_id'))
+                                                ->where('id', '=', $request->id)
+                                                ->get('id');
+
+            $invoice_id = trim($in_id, '[{"id:"}]');
+
+            $delete_invoice = ProcurementMaterialSub::where('procurement_id','=',$request->id)->delete();
+
+                if(isset($request->submission_date)){
+
+                
+                    if (count($request->submission_date) > 0) {
+
+                        foreach ($request->submission_date as $item => $v) {
+                       
+                    
+                            if(isset($request->submission_date[$item])){
+                                $set_submit_date=$request->submission_date[$item];
+                            }else{
+                                $set_submit_date=null;
+                            }
+
+                            if(isset($request->actual_reply_date[$item])){
+                                $set_return_date=$request->actual_reply_date[$item];
+                            }else{
+                                $set_return_date=null;
+                            }
+
+                            $data2 = [
+                                "procurement_id" => $invoice_id,
+                                "project_id" => Session::get('project_id'),
+                                "user_id" => Auth::id(),
+                                "submission_date" =>$request->submission_date[$item],
+                                "actual_reply_date" =>$request->actual_reply_date[$item],
+            
+                            ];
+                            
+                            
+                        
+                    
+                            if ($request->increment < 0) {
+                                ProcurementMaterialSub::insert($data2);
+                            
+                            } else {
+                                ProcurementMaterialSub::insert($data2);
+                            
+                            }
+                            
+                        }
+                    }
+
+                }
+
+            return redirect()->back()->with("success", __("Procurement Material updated successfully."));
+
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -1718,6 +1841,42 @@ class DiaryController extends Controller
             return $e->getMessage();
         }
 
+    }
+
+    public function check_duplicate_diary_email(Request $request){
+    
+        try {
+
+            $form_name  = $request->form_name;
+            $check_name = $request->get_name;
+            $get_id     = $request->get_id;
+       
+            if($form_name == "procurement_material"){
+                if($get_id == null){
+                    $get_check_val = ProcurementMaterial::where('email',$check_name)->first();
+                }
+                else{
+                    $get_check_val = ProcurementMaterial::where('email',$check_name)->where('id','!=',$get_id)->first();
+                }
+            }
+            else{
+                $get_check_val = "Not Empty";
+            }
+          
+                if($get_check_val == null){
+                    return 1; //Success
+                }
+                else{
+                    return 0; //Error
+                }
+           
+          } catch (Exception $e) {
+    
+              return $e->getMessage();
+    
+          }
+        
+       
     }
     
 }

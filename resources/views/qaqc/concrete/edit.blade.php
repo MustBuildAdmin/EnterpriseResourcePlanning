@@ -6,7 +6,6 @@
 <div class="modal-body">
   <div class="row">
     <div class="container">
-      <h3 style="text-align: center; font-weight: 800; color: blue"> Concrete Pouring Record ( Cube Register) </h3>
       <h3 style="text-align: center; font-weight: 500"> MONTHLY REPORT BY PROJECT ENGINEERS / SITE ENGINEERS </h3>
       <form class="" action="{{ route('concrete.update_concrete_pouring') }}" enctype="multipart/form-data" method="POST">
         @csrf
