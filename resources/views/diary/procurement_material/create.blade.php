@@ -49,7 +49,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Mobile/HP')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="mobile_hp_no" class="form-control" placeholder="{{__('Mobile/HP')}}" required>
+							<input type="text" name="mobile_hp_no" class="form-control number" placeholder="{{__('Mobile/HP')}}" required>
 						</div>
 					</div>
 				</div>
@@ -58,13 +58,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Telephone')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="tel" class="form-control" placeholder="{{__('Telephone')}}" required>
+							<input type="text" name="tel" class="form-control number" placeholder="{{__('Telephone')}}" required>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Fax')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="fax" class="form-control" placeholder="{{__('Fax')}}" required>
+							<input type="text" name="fax" class="form-control number" placeholder="{{__('Fax')}}" required>
 						</div>
 					</div>
 				</div>
@@ -186,5 +186,19 @@
                 }
             });
         });
+
+		$('.number').on('paste', function (event) {
+		if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+			event.preventDefault();
+		}
+		});
+
+		$(".number").on("keypress",function(event){
+		if(event.which < 48 || event.which >58){
+			return false;
+		}
+		});
+
     });
+
 </script>

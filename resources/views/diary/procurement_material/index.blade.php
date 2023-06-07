@@ -285,7 +285,7 @@ h3, .h3 {
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    title: 'RFI-Request For Information Status',
+                    title: 'Procurement Material Supply Log',
                     titleAttr: 'Excel',
                     text: '<i class="fa fa-file-excel-o"></i>',
     
@@ -300,7 +300,7 @@ h3, .h3 {
                 },
                 {
                     extend: 'pdfHtml5',
-                    title: 'RFI-Request For Information Status',
+                    title: 'Procurement Material Supply Log',
                     titleAttr: 'PDF',
                     text: '<i class="fa fa-file-pdf-o"></i>',
     
@@ -315,7 +315,7 @@ h3, .h3 {
                 },
                 {
                     extend: 'print',
-                    title: 'RFI-Request For Information Status',
+                    title: 'Procurement Material Supply Log',
                     titleAttr: 'Print',
                     text: '<i class="fa fa-print"></i>',
     

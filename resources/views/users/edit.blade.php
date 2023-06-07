@@ -194,16 +194,16 @@
             placeholder_text:"{{ __('Reporting to') }}"
         });
 
-        $(document).on("keypress", '#zip', function (event) {
-            if(event.which <= 48 || event.which >=57){
+
+        $(document).on("paste", '#zip', function (event) {
+            if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
                 event.preventDefault();
             }
         });
 
-        $(document).on("change", '#zip', function (event) {
-            $value = $("#zip").val();
-            if(isNaN($value)){
-            $("#zip").val('');
+        $(document).on("keypress", '#zip', function (event) {
+            if(event.which < 48 || event.which >58){
+                return false;
             }
         });
         
