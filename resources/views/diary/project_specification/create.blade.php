@@ -16,13 +16,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="InputLIst">{{__('Reference No')}} <span style='color:red;'>*</span></label>
-                <input type="text" name="reference_no" class="form-control" placeholder="Reference No" required>
+                <input type="text" name="reference_no" class="form-control" placeholder="{{__('Reference No')}}" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="input">{{__('Description')}} <span style='color:red;'>*</span></label>
-                <input type="text" name="description" class="form-control" placeholder="Description" required>
+                <input type="text" name="description" class="form-control" placeholder="{{__('Description')}}" required>
               </div>
             </div>
           </div>
@@ -30,29 +30,29 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="InputLIst">{{__('Location')}} <span style='color:red;'>*</span></label>
-                <input type="text" name="location" class="form-control" placeholder="Location" required>
+                <input type="text" name="location" class="form-control" placeholder="{{__('Location')}}" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="input">{{__('Drawing References (if any)')}} <span style='color:red;'>*</span></label>
-                <input type="text" name="drawing_reference" class="form-control" placeholder="Drawing References (if any):" required>
+                <label for="input">{{__('Drawing References (if any)')}}</label>
+                <input type="text" name="drawing_reference" class="form-control" placeholder="{{__('Drawing References (if any)')}}" >
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="input">{{__('Remarks/ Notes')}} <span style='color:red;'>*</span></label>
-                <textarea name="remarks" class="form-control" placeholder="Remarks/ Notes" required></textarea>
+                <label for="input">{{__('Remarks/ Notes')}}</label>
+                <textarea name="remarks" class="form-control" placeholder="{{__('Remarks/ Notes')}}" ></textarea>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="input">{{__('Attachments')}} <span style='color:red;'>*</span></label>
-                <input type="file" class="form-control" name="attachment_file_name" required>
+                <label for="input">{{__('Attachments')}}</label>
+                <input type="file" class="form-control" name="attachment_file_name">
               </div>
             </div>
           </div>
