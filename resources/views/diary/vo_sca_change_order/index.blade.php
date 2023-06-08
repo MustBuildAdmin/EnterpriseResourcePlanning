@@ -11,6 +11,14 @@
 	color: #6c58bF;
 }
 
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    max-width: 1072px !important;
+   
+}
+
 .pagination ul {
 	display: inline-block;
 	*display: inline;
