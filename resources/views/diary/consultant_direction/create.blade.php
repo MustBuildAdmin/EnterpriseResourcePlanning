@@ -6,18 +6,20 @@
 <div class="modal-body">
   <div class="row">
     <div class="container">
-      <h3 style="text-align: center; font-weight: 800; color: blue"> Consultants Directions Summary</h3>
       <form class="" action="{{ route('save_consultant_direction') }}" enctype="multipart/form-data" method="POST"> 
         @csrf 
         <div class="container">
-          <div class="row mb-5">
+          <div class="row">
             <div class="col form-group ">
               <label for="InputIssued">ARCHITECT AND ENGNEER'S DIRECTIONS (AD & ED) SUMMARY for the project of:</label>
               <span>{{$project_name->project_name}}</span>
             </div>
           </div>
           <hr style="border: 1px solid black" />
-          <div class="row mb-5">
+          <div class="col-xs-12">
+            <h3 style="text-align: center;text-transform: uppercase;">Consultants Directions Summary</h3>
+          </div>
+          <div class="row">
             <input type="hidden" name="project_id" value="{{$project}}">
             <div class="col">
               <div class="form-group">
@@ -70,7 +72,7 @@
                     <input name="initiator_file_name[]" required type="file" id="concreteFile" class="form-control" required />
                   </div>
                 </div>
-                <h4 style="text-align: center; font-weight: 700">Replier:</h4>
+                <h4 style="text-align: center; font-weight: 700;">Replier:</h4>
                 <div class="row mb-3">
                   <div class="col">
                     <div class="form-group">
@@ -85,7 +87,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row mb-5">
+                <div class="row">
                   <div class="col form-group">
                     <label for="InputRemarks">Status <span style='color:red;'>*</span></label>
                     <select name="replier_status[]" class="form-control" aria-label="Default select example" required>
@@ -109,7 +111,7 @@
               </td>
             </tr>
           </table>
-          <div class="row" style="margin:20px 0px 20px">
+          <div class="row">
             <div class="modal-footer">
               <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
               <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
