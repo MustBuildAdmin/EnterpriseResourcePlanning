@@ -198,7 +198,7 @@ h3, .h3 {
             <div class="card-header card-body table-border-style">
                 @can('manage directions')
                 <div class="table">
-e                <table class="table" id="example2">
+                <table class="table" id="example2">
                     <thead class="">
                     <tr>
                         <th>{{__('Sno')}}</th>

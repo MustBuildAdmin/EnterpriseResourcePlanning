@@ -225,7 +225,7 @@ h3, .h3 {
                 <td>
                     <div class="ms-2" style="display:flex;gap:10px;">
                         @can('edit project specification')
-                            <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_project_specification',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
+                            <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_project_specification',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project Specifications Summary')}}"><i class="ti ti-pencil text-white"></i></a>
                         @endcan
 
                         @can('delete project specification')

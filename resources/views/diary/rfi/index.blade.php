@@ -214,7 +214,7 @@ h3, .h3 {
                     <th>{{__('Consultant-4')}}</th>
                     <th>{{__('Consultant-5')}}</th>
                     <th>{{__('Consultant-6')}}</th> --}}
-                    @if(Gate::check('edit rfi') || Gate::check('delete rfi'))
+                    @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                     <th>{{__('Action')}}</th>
                     @endif
                 </tr>

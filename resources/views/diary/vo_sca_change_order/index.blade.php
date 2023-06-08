@@ -207,21 +207,16 @@ h3, .h3 {
                   <th>{{__('Issued By')}}</th>
                   <th>{{__('Issued Date')}}</th>
                   <th>{{__('VO/SCA Reference')}}</th>
-                  {{-- 
-                  <th>{{__('VO Description')}}
-                  </th> --}}
+                  <th>{{__('VO Description')}}</th>
                   <th>{{__('Reference')}}</th>
                   <th>{{__('Date')}}</th>
                   <th>{{__('Omission Cost')}}</th>
                   <th>{{__('Addition Cost')}}</th>
                   <th>{{__('Net Amount')}}</th>
-                  {{-- 
-                  <th>{{__('Omission Cost')}}
-                  </th>
-                  <th>{{__('Addition Cost')}}
-                  </th>
-                  <th>{{__('Net Amount')}}
-                  </th> --}}
+                  <th>{{__('Omission Cost')}}</th>
+                  <th>{{__('Addition Cost')}}</th>
+                  {{-- <th>{{__('Net Amount')}}
+                  </th>  --}}
                   {{-- <th>{{__('Impact/Lead Time')}}</th>
                   <th>{{__('Granted EOT(in days)')}}</th>
                   <th>{{__(' Remarks')}}</th> --}}
@@ -243,21 +238,15 @@ h3, .h3 {
                   <td>{{$bulk_data->issued_by}}</td>
                   <td>{{$bulk_data->issued_date}}</td>
                   <td>{{$bulk_data->sca_reference}}</td>
-                  {{-- 
-                  <td>{{$bulk_data->vo_reference}}
-                  </td> --}}
+                  <td>{{$bulk_data->vo_reference}}</td>
                   <td>{{$bulk_data->reference}}</td>
                   <td>{{$bulk_data->vo_date}}</td>
                   <td>{{$bulk_data->claimed_omission_cost}}</td>
-                  <td>{{$bulk_data->claimed_addition_cost}}
-                  </td>
+                  <td>{{$bulk_data->claimed_addition_cost}}</td>
                   <td>{{$bulk_data->claimed_net_amount}}</td>
-                  {{-- 
-                  <td>{{$bulk_data->approved_omission_cost}}
-                  </td>
-                  <td>{{$bulk_data->approved_addition_cost}}
-                  </td>
-                  <td>{{$bulk_data->approved_net_cost}}
+                  <td>{{$bulk_data->approved_omission_cost}}</td>
+                  <td>{{$bulk_data->approved_addition_cost}}</td>
+                  {{-- <td>{{$bulk_data->approved_net_cost}}
                   </td> --}}
                   {{-- <td>{{$bulk_data->impact_time}}</td>
                   <td>{{$bulk_data->granted_eot}}</td>
