@@ -30,6 +30,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Session;
 use Hash;
+use DateInterval;
+use DateTime;
+use DatePeriod;
+use DB;
 class ProjectController extends Controller
 {
     /**
@@ -1705,43 +1709,111 @@ class ProjectController extends Controller
             return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
         }
 
-        $task_id=$request->task_id;
-        $task =Con_task::where('main_id',$task_id)->first();
-        // $date1=date_create($task->start_date);
-        // $date2=date_create($task->end_date);
+        $get_all_dates    = [];
+        $fileNameToStore1 = '';
+        $url              = '';
 
-        // $diff=date_diff($date1,$date2);
-        // $no_working_days=$diff->format("%a");
-        // $no_working_days=$no_working_days+1;// include the last day
-        $no_working_days=$task->duration;
-
-        // insert details
-        $array=array(
-            'task_id'=>$task_id,
-            'percentage'=>$request->percentage,
-            'description'=>$request->description,
-            'user_id'=>$request->user_id,
-            'project_id'=>$task->project_id,
-            'created_at'=>$request->get_date,
-            'record_date'=>date('Y-m-d H:m:s')
-        );
-
-        $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
-        if($check_data == null){
-            Task_progress::insert($array);
+        if(\Auth::user()->type == 'company'){
+            $get_holiday = Holiday::where('created_by',\Auth::user()->id)->get();
         }
         else{
-            Task_progress::where('task_id',$task_id)->where('user_id',$request->user_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+            $get_holiday = Holiday::where('created_by',\Auth::user()->creatorId())->get();
+        }
+      
+        foreach($get_holiday as $check_holiday){
+            $get_all_dates[] = $this->getBetweenDates($check_holiday->date, $check_holiday->end_date);
         }
 
-        $total_pecentage=Task_progress::where('task_id',$task_id)->sum('percentage');
-        $per_percentage=$total_pecentage/$no_working_days;
-        $per_percentage=round($per_percentage);
-        Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
-        // update the  gantt
-        $this->taskpersentage_update($task->project_id);
+        $holiday_merge = $this->array_flatten($get_all_dates);
 
-        return redirect()->back()->with('success', __('Task successfully Updated.'));
+        $task_id = $request->task_id;
+        $task    = Con_task::where('main_id',$task_id)->first();
+        $date1   = date_create($task->start_date);
+        $date2   = date_create($task->end_date);
+        $diff    = date_diff($date1,$date2);
+
+        $no_working_days = $diff->format("%a");
+        $no_working_days = $no_working_days+1; // include the last day
+        // $no_working_days=$task->duration;
+
+        if(in_array($request->get_date,$holiday_merge)){
+            return redirect()->back()->with('error', __($request->get_date.' This is holiday Your Record has been not recorded! Please Contact Your Company.'));
+        }
+        else{
+            if (!empty($request->attachment_file_name)) {
+                $filenameWithExt1 = $request->file("attachment_file_name")->getClientOriginalName();
+                $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                $extension1       = $request->file("attachment_file_name")->getClientOriginalExtension();
+                $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+                $dir              = "uploads/task_particular_list/";
+    
+                $image_path = $dir . $filenameWithExt1;
+                if (\File::exists($image_path)) {
+                    \File::delete($image_path);
+                }
+                
+                $path = Utility::upload_file($request,"attachment_file_name",$fileNameToStore1,$dir,[]);
+    
+                if ($path["flag"] == 1) {
+                    $url = $path["url"];
+                } 
+                else {
+                    return redirect()->back()->with("error", __($path["msg"]));
+                }
+            }
+            else{
+                $check_file_name  = Task_progress::where('task_id',$task_id)
+                    ->where('project_id',$task->project_id)
+                    ->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
+                if($check_file_name != null){
+                    $fileNameToStore1 = $check_file_name->filename;
+                    $url              = $check_file_name->path_location;
+                }
+            }
+
+            if(\Auth::user()->type == 'company'){
+                if($task->users != null){
+                    $assign_to  = $task->users;
+                }
+                else{
+                    $assign_to  = null;
+                }
+            }
+            else{
+                $assign_to  = \Auth::user()->id;
+            }
+
+            // insert details
+            $array=array(
+                'task_id'        => $task_id,
+                'assign_to'      => $assign_to,
+                'percentage'     => $request->percentage,
+                'description'    => $request->description,
+                'user_id'        => $request->user_id,
+                'project_id'     => $task->project_id,
+                'filename'       => $fileNameToStore1,
+                'path_location'  => $url,
+                'created_at'     => $request->get_date, //Planned Date
+                'record_date'    => date('Y-m-d H:m:s') //Actual Date
+            );
+
+            $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
+            if($check_data == null){
+                Task_progress::insert($array);
+            }
+            else{
+                Task_progress::where('task_id',$task_id)->where('user_id',$request->user_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+            }
+
+            $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');
+            $per_percentage  = $total_pecentage/$no_working_days;
+            $per_percentage  = round($per_percentage);
+            Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
+            // update the  gantt
+            $this->taskpersentage_update($task->project_id);
+
+            return redirect()->back()->with('success', __('Task successfully Updated.'));
+        }
 
     }
     public function taskpersentage_update($project_id)
@@ -1757,5 +1829,38 @@ class ProjectController extends Controller
         }
 
     }
+
+    function getBetweenDates($startDate, $endDate) {
+        $array = array();
+        $interval = new DateInterval('P1D');
+     
+        $realEnd = new DateTime($endDate);
+        $realEnd->add($interval);
+     
+        $period = new DatePeriod(new DateTime($startDate), $interval, $realEnd);
+     
+        $array = [];
+        foreach($period as $date) {
+            array_push($array,$date->format('Y-m-d'));
+        }
+     
+        return $array;
+    }
+
+    function array_flatten($array) { 
+        if (!is_array($array)) { 
+            return FALSE; 
+        } 
+        $result = array(); 
+        foreach ($array as $key => $value) { 
+            if (is_array($value)) { 
+                $result = array_merge($result, $this->array_flatten($value)); 
+            } 
+            else { 
+                $result[$key] = $value; 
+            } 
+        } 
+        return $result; 
+    } 
 
 }
