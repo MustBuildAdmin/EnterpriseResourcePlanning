@@ -1606,7 +1606,8 @@ class DiaryController extends Controller
             } else {
                 return redirect()->back()->with("error", __($path["msg"]));
             }
-
+            
+          
             $data = [
                 "project_id" => Session::get('project_id'),
                 "user_id" => Auth::id(),
@@ -1625,7 +1626,7 @@ class DiaryController extends Controller
                 "status" => $request->status,
                 "remarks" => $request->remarks,
                 "filename" => $filename,
-                "file_location" => "filename.png",
+                "file_location" => $url,
             ];
             
             ProcurementMaterial::insert($data);
@@ -1719,11 +1720,11 @@ class DiaryController extends Controller
                 }
                 
             }else{
-                $check_attach_file=ProcurementMaterial::select('filename')->where('id',$request->id)
+                $check_attach_file=ProcurementMaterial::select('filename','file_location')->where('id',$request->id)
                                                   ->where('project_id',Session::get('project_id'))->first();
                                                                      
                 $fileNameToStore1=$check_attach_file->filename;
-                         
+                $url=$check_attach_file->file_location;    
             }
 
             $data = [
@@ -1743,10 +1744,8 @@ class DiaryController extends Controller
                 "target_approval_date" => $request->target_approval_date,
                 "status" => $request->status,
                 "remarks" => $request->remarks,
-                // "filename" => $filename,
-                "filename" => "filename.png",
-                // "file_location" => $image_path,
-                "file_location" => "filename.png",
+                "filename" => $fileNameToStore1,
+                "file_location" => $url,
             ];
             
           
