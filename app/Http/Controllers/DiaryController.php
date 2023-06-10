@@ -486,17 +486,58 @@ class DiaryController extends Controller
 
                 if (count($request->initiator_reference) > 0) {
                     foreach ($request->initiator_reference as $item => $v) {
+
+                        if(isset($request->initiator_reference[$item])){
+                            $set_initiator_reference=$request->initiator_reference[$item];
+                        }else{
+                            $set_initiator_reference=null;
+                        }
+        
+                        if(isset($request->initiator_date[$item])){
+                            $set_initiator_date=$request->initiator_date[$item];
+                        }else{
+                            $set_initiator_date=null;
+                        }
+        
+                        if(isset($initiator_file_name[$item])){
+                            $set_initiator_file_name=$initiator_file_name[$item];
+                        }else{
+                            $set_initiator_file_name=null;
+                        }
+        
+
+        
+                        if(isset($request->replier_status[$item])){
+                            $set_replier_status=$request->replier_status[$item];
+                        }else{
+                            $set_replier_status=null;
+                        }
+        
+                        if(isset($request->replier_remark[$item])){
+                            $set_replier_remark=$request->replier_remark[$item];
+                        }else{
+                            $set_replier_remark=null;
+                        }
+        
+                        if(isset($replier_file_name[$item])){
+                            $set_replier_file_name=$replier_file_name[$item];
+                        }else{
+                            $set_replier_file_name=null;
+                        }
+
                         $data2 = [
                             "consultant_id" => $id,
-                            "initiator_reference" =>$request->initiator_reference[$item],
-                            "initiator_date" =>$request->initiator_date[$item],
-                            "initiator_file_name" =>$initiator_file_name[$item],
-                            // "replier_reference" =>$request->replier_reference[$item],
-                            // "replier_date" => $request->replier_date[$item],
-                            "replier_status" =>$request->replier_status[$item],
-                            "replier_remark" =>$request->replier_remark[$item],
-                            "replier_file_name" =>$replier_file_name[$item],
+                            "initiator_reference" =>$set_initiator_reference,
+                            "initiator_date" =>$set_initiator_date,
+                            "initiator_file_name" =>$set_initiator_file_name,
+                            // "replier_reference" =>$set_replier_reference,
+                            // "replier_date" => $set_replier_date,
+                            "replier_status" =>$set_replier_status,
+                            "replier_remark" =>$set_replier_remark,
+                            "replier_file_name" =>$set_replier_file_name,
+                            
                         ];
+                       
                         ConsultantsDirectionMulti::insert($data2);
                     }
                 }

@@ -106,7 +106,7 @@
                   </div>
                   <div class="col-md-12 mt-3">
                     <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input required type="file" name="replier_file_name[]" class="form-control"  />
+                    <input  type="file" name="replier_file_name[]" class="form-control"  />
                   </div>
                 </div>
               </td>
