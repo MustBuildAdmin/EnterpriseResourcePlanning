@@ -281,6 +281,34 @@ Route::any('save_procurement_material','DiaryController@save_procurement_materia
 );
 
 
+Route::any('edit_procurement_material','DiaryController@edit_procurement_material')->name('edit_procurement_material')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_procurement_material','DiaryController@update_procurement_material')->name('update_procurement_material')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('delete_procurement_material','DiaryController@delete_procurement_material')->name('delete_procurement_material')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary_email')->name('check_duplicate_diary_email')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 
     /* Drawing List */
 
@@ -2889,6 +2917,10 @@ Route::get(
         'XSS',
     ]
 );
+
+Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
+Route::get('edit_task_progress', 'ProjectTaskController@edit_task_progress')->name('edit_task_progress')->middleware(['auth','XSS',]);
+
 Route::get(
     'taskboard-edit', [
     'as' => 'project.taskboard.edit',

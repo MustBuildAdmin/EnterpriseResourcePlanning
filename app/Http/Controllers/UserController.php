@@ -121,7 +121,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
 
-        $string_version = implode(',', $request->reporting_to);
+        if($request->reporting_to!=null){
+            $string_version = implode(',', $request->reporting_to);
+        }else{
+            $string_version = Null;
+        }
        
 
         if(\Auth::user()->can('create user'))
@@ -163,7 +167,7 @@ class UserController extends Controller
                 $user['zip']=$request->zip;
                 $user['address']=$request->address;
                 $user['company_type']       = $request->company_type;
-                $user['reporting_to']=$string_version;
+                // $user['reporting_to']=$string_version;
                 $user['company_name']       = $request->company_name;
 
                 $user->save();
@@ -292,7 +296,13 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $string_version = implode(',', $request->reporting_to);
+      
+        if($request->reporting_to!=null){
+            $string_version = implode(',', $request->reporting_to);
+        }else{
+            $string_version = Null;
+        }
+       
         if(\Auth::user()->can('edit user'))
         {
             if(\Auth::user()->type == 'super admin')
@@ -315,7 +325,7 @@ class UserController extends Controller
                 $role = Role::findByName('company');
                 $input = $request->all();
                 $input['type'] = $role->name;
-                $input['reporting_to']=$string_version;
+                // $input['reporting_to']=$string_version;
 
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);

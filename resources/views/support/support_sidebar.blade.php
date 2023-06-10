@@ -771,13 +771,14 @@
                                         <a href="{{route('projects.index')}}">@if($setting_data['company_type']!=2){{__('Projects')}}@else {{__('Productivity')}} @endif</a>
                                     </li>
                                 @endcan
-                                @if($setting_data['company_type']==2)
-                                    @can('manage project')
+                                {{-- @if($setting_data['company_type']==2) --}}
+                                <!-- this diary url need to remove !-->
+                                    {{-- @can('manage project')
                                     <li class=" {{Request::segment(1) == 'dairy' ? 'active' : ''}}">
                                         <a href="{{route('dairy.index')}}">{{__('Dairy')}}</a>
                                     </li>
-                                    @endcan
-                                @endif
+                                    @endcan --}}
+                                {{-- @endif --}}
                                 @can('manage project task')
                                     <li class="{{ (request()->is('taskboard*') ? 'active' : '')}}">
                                         <a href="{{ route('taskBoard.view', 'list') }}">{{__('Tasks')}}</a>

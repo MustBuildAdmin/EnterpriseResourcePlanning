@@ -189,7 +189,7 @@ h3, .h3 {
      <h2>{{__('RFI-Request For Information Status')}}</h2> 
   </div>
     <div class="col-md-6 float-end floatrght">
-        @can('create rfi')
+        @can('create RFI')
             <a class="floatrght btn btn-primary mb-3" href="#" data-size="xl" data-url="{{ route('rfi_info_status',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create RFI')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
             </a>
@@ -199,7 +199,7 @@ h3, .h3 {
         <div class="card table-card">
     
         <div class="card-header card-body table-border-style">
-            @can('manage rfi')
+            @can('manage RFI')
             <div class="table">
               <table class="table" id="example2">
                 <thead class="">
@@ -214,7 +214,7 @@ h3, .h3 {
                     <th>{{__('Consultant-4')}}</th>
                     <th>{{__('Consultant-5')}}</th>
                     <th>{{__('Consultant-6')}}</th> --}}
-                    @if(Gate::check('edit rfi') || Gate::check('delete rfi'))
+                    @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                     <th>{{__('Action')}}</th>
                     @endif
                 </tr>
@@ -226,13 +226,13 @@ h3, .h3 {
                         <td>{{$data->reference_no}}</td>
                         <td>{{$data->issue_date}}</td>
                         <td>{{$data->description}}</td>
-                        @if(Gate::check('edit rfi') || Gate::check('delete rfi'))
+                        @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
-                                @can('edit rfi')
+                                @can('edit RFI')
                                     <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
                                 @endcan
-                                @can('delete rfi')
+                                @can('delete RFI')
                                     {!! Form::open(['method' => 'POST', 'route' => ['delete_rfi_status', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
                                     {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}

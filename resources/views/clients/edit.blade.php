@@ -3,11 +3,20 @@
 <div class="modal-body">
     <div class="row">
         <h5 class="sub-title"><strong>{{__('Basic Info')}}</strong></h5>
+            @php
+            if($user->copy_status == 1){
+                $disabled_enabled = 'disabled';
+            }
+            else{
+                $disabled_enabled = '';
+            }
+                
+            @endphp
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                        {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter Client Name'),'required'=>'required')) }}
+                        {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter Client Name'),'required'=>'required','id'=>'billings_name')) }}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
@@ -28,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
@@ -66,45 +75,45 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-6">
-                <div class="form-group">
-                    {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    <div class="form-icon-user">
-                        <input class="form-control" name="phone" type="number" id="phone" maxlength="16" required placeholder="+91 111 111 1111" value='{{$user->phone}}'>
+            </div> --}}
+            {{-- <div class="row">
+                <div class="col-lg-6 col-md-4 col-sm-6">
+                    <div class="form-group">
+                        {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            <input class="form-control" name="phone" type="number" id="phone" maxlength="16" required placeholder="+91 111 111 1111" value='{{$user->phone}}'>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-4 col-sm-6">
+                    <div class="form-group">
+                        {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
+                        </div>
+                    </div>
+                </div>
+            
+            </div> --}}
+            <div class="row">
+                {{-- <div class="col-lg-6 col-md-4 col-sm-6">
+                    <div class="form-group">
+                        {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        <div class="">
+                            {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
+                        </div>
+                    </div>
+                </div> --}}
+                <div class="col-lg-6 col-md-4 col-sm-6">
+                    <div class="form-group">
+                        {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-4 col-sm-6">
-                <div class="form-group">
-                    {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    <div class="form-icon-user">
-                        {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
-                    </div>
-                </div>
-            </div>
-           
         </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-4 col-sm-6">
-                <div class="form-group">
-                    {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    <div class="">
-                        {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-4 col-sm-6">
-                <div class="form-group">
-                    {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                    <div class="form-icon-user">
-                        {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
         @if(!$customFields->isEmpty())
             @include('custom_fields.formBuilder')
         @endif
@@ -112,14 +121,14 @@
         <h5 class="sub-title"><strong>{{__('Billing Address')}}</strong></h5>
         <hr>
         <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-6">
+            {{-- <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group">
                     {{Form::label('billing_name',__('Name'),array('class'=>'','class'=>'form-label')) }}
                     <div class="form-icon-user">
                         {{Form::text('billing_name',null,array('class'=>'form-control'))}}
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group">
                     {{Form::label('billing_country',__('Country'),array('class'=>'form-label')) }}
@@ -158,7 +167,7 @@
                 </div>
             </div>
     
-            <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="col-lg-6 col-md-4 col-sm-6">
                 <div class="form-group">
                     {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
@@ -166,11 +175,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="col-lg-6 col-md-4 col-sm-6">
                 <div class="form-group">
                     {{Form::label('billing_zip',__('Zip Code'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::number('billing_zip',null,array('class'=>'form-control'))}}
+                        {{Form::number('billing_zip',null,array('class'=>'form-control', 'id'=>'billing_zip'))}}
                     </div>
                 </div>
             </div>
@@ -198,7 +207,7 @@
                     <div class="form-group">
                         {{Form::label('shipping_name',__('Name'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            {{Form::text('shipping_name',null,array('class'=>'form-control'))}}
+                            {{Form::text('shipping_name',null,array('class'=>'form-control',$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -207,7 +216,7 @@
                         {{Form::label('shipping_country',__('Country'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
                             <select class="form-control" name="shipping_country" id='shipping_country'
-                                    placeholder="Select Country" >
+                                    placeholder="Select Country" {{$disabled_enabled}}>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($countrylist as $key => $value)
                                         <option value="{{$value->iso2}}" @isset($user->shipping_country)@if($user->shipping_country==$value->iso2) selected @endif @endisset>{{$value->name}}</option>
@@ -221,7 +230,7 @@
                         {{Form::label('shipping_state',__('State'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
                             <select class="form-control " name="shipping_state" id='shipping_state'
-                            placeholder="Select Country" >
+                            placeholder="Select Country" {{$disabled_enabled}}>
                             <option value="">{{ __('Select State ...') }}</option>
                             @foreach($statelist as $key => $value)
                                 <option value="{{$value->iso2}}" @if($user->shipping_state==$value->iso2) selected @endif>{{$value->name}}</option>
@@ -234,7 +243,7 @@
                     <div class="form-group">
                         {{Form::label('shipping_city',__('City'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required'))}}
+                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required',$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -243,7 +252,7 @@
                     <div class="form-group">
                         {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            <input class="form-control" name="shipping_phone" type="number" id="shipping_phone" maxlength="16" placeholder="+91 111 111 1111"  value='{{$user->shipping_phone}}'>
+                            <input {{$disabled_enabled}} class="form-control" name="shipping_phone" type="number" id="shipping_phone" maxlength="16" placeholder="+91 111 111 1111"  value='{{$user->shipping_phone}}'>
                             {{-- {{Form::text('shipping_phone',null,array('class'=>'form-control'))}} --}}
                         </div>
                     </div>
@@ -252,7 +261,7 @@
                     <div class="form-group">
                         {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            {{Form::number('shipping_zip',null,array('class'=>'form-control'))}}
+                            {{Form::number('shipping_zip',null,array('class'=>'form-control','id'=>'shipping_zip',$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -261,7 +270,7 @@
                         {{Form::label('shipping_address',__('Address'),array('class'=>'form-label')) }}
                         <label class="form-label" for="example2cols1Input"></label>
                         <div class="input-group">
-                            {{Form::textarea('shipping_address',null,array('class'=>'form-control','rows'=>3))}}
+                            {{Form::textarea('shipping_address',null,array('class'=>'form-control','rows'=>3,$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -343,12 +352,21 @@
     var $this = $(this).parent().parent();
     if (this.checked) {
 
-      $this.find('#shipping_name').val($this.find('#billing_name').val());
+      $this.find('#shipping_name').val($this.find('#billings_name').val());
       $this.find('#shipping_city').val($this.find('#billing_city').val());
       $this.find('#shipping_phone').val($this.find('#billing_phone').val());
       $this.find('#shipping_zip').val($this.find('#billing_zip').val());
       $this.find('#shipping_address').val($this.find('#billing_address').val());
       $this.find('#shipping_country').val($this.find('#billing_country').val());
+
+      $this.find('#shipping_name').prop('disabled',true);
+      $this.find('#shipping_city').prop('disabled',true);
+      $this.find('#shipping_phone').prop('disabled',true);
+      $this.find('#shipping_zip').prop('disabled',true);
+      $this.find('#shipping_address').prop('disabled',true);
+      $this.find('#shipping_country').prop('disabled',true);
+      $this.find('#shipping_state').prop('disabled',true);
+
       var name=$this.find('#shipping_country').val();
     var settings = {
             "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
@@ -377,11 +395,31 @@
       $this.find('#shipping_address').val("");
       $this.find('#shipping_country').val("");
       setTimeout(function() {     $this.find('#shipping_state').val(""); }, 100);
+
+      $this.find('#shipping_name').prop('disabled',false);
+      $this.find('#shipping_city').prop('disabled',false);
+      $this.find('#shipping_phone').prop('disabled',false);
+      $this.find('#shipping_zip').prop('disabled',false);
+      $this.find('#shipping_address').prop('disabled',false);
+      $this.find('#shipping_country').prop('disabled',false);
+      $this.find('#shipping_state').prop('disabled',false);
      
 
     }
 
   });
 
+});
+
+$('#billing_zip, #shipping_zip').on('paste', function (event) {
+    if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+        event.preventDefault();
+    }
+});
+
+$("#billing_zip, #shipping_zip").on("keypress",function(event){
+    if(event.which < 48 || event.which >58){
+        return false;
+    }
 });
 </script>

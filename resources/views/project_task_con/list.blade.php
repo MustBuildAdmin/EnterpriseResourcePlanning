@@ -256,6 +256,7 @@
                                     <tr>
                                         <th scope="col">{{__('Projects')}}</th>
                                         <th scope="col">{{__('Tasks')}}</th>
+                                        <th scope="col">{{__('Progress')}}</th>
                                         <th scope="col">{{__('Start Date')}}</th>
                                         <th scope="col">{{__('End Date')}}</th>
                                         <th scope="col">{{__('Assigned To')}}</th>
@@ -278,6 +279,9 @@
                                                         </td>
                                                         <td>
                                                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="h6 text-sm font-weight-bold mb-0">{{ $task->progress }}</span>
                                                         </td>
                                                         <td class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                                                             {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
@@ -311,7 +315,7 @@
                                                         </td>
                                                         <td class="text-center w-15">
                                                             <div class="actions">
-                                                                <a data-size="lg" data-url="{{ route('project.taskboard.edit',['task_id'=>$task->main_id,'get_date'=>$get_date]) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Task')}}" class="btn btn-sm btn-primary">
+                                                                <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_date])}}" title="{{__('Edit')}}" class="btn btn-sm btn-primary">
                                                                     <i class="ti ti-pencil"></i>
                                                                 </a>
                                                             </div>
@@ -401,9 +405,9 @@
                                                     @endif
                                                 @endforeach
                                             @else
-                                                <tr>
+                                                {{-- <tr>
                                                     <td scope="col" colspan="6"><h6 class="text-center">{{__('No tasks found')}}</h6></td>
-                                                </tr>
+                                                </tr> --}}
                                             @endif
                                         </tbody>
                                     </table>

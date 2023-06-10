@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-  /* pagination */
+/* pagination */
 .pagination {
 	height: 36px;
 	margin: 18px 0;
@@ -14,7 +14,7 @@
 .pagination ul {
 	display: inline-block;
 	*display: inline;
-        /* IE7 inline-block hack */
+         /* IE7 inline-block hack */
 	*zoom: 1;
 	margin-left: 0;
 	color: #ffffff;
@@ -43,7 +43,7 @@
 }
 
 .pagination a:hover,
-    .pagination .active a {
+     .pagination .active a {
 	background-color: var(--tblr-pagination-active-bg);
 	color: #ffffff;
 }
@@ -59,8 +59,8 @@
 }
 
 .pagination .disabled span,
-    .pagination .disabled a,
-    .pagination .disabled a:hover {
+     .pagination .disabled a,
+     .pagination .disabled a:hover {
 	color: #999999;
 	background-color: transparent;
 	cursor: default;
@@ -97,7 +97,7 @@
 }
 
 .pager:before,
-    .pager:after {
+     .pager:after {
 	display: table;
 	content: "";
 }
@@ -136,7 +136,7 @@
 }
 
 .pager .disabled a,
-    .pager .disabled a:hover {
+     .pager .disabled a:hover {
 	color: #999999;
 }
 
@@ -176,6 +176,10 @@ div.dt-buttons .dt-button:hover {
 	font-size: 20px;
 }
 
+.action-btn {
+	display: inline-grid !important;
+}
+
 h3, .h3 {
 	font-size: 1rem !important;
 }
@@ -184,46 +188,72 @@ h3, .h3 {
   <div class="col-md-6">
      <h2>{{__('Procurement Material Supply Log')}}</h2> 
   </div>
-@can('create procurement material')
-<div class="col-md-6 float-end floatrght">
-    <a href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}"  data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
-    <i class="ti ti-plus"></i>
-    </a>
-</div>
-@endcan
-<div class="col-xl-12 mt-3">
-    <div class="card table-card">
-      <div class="card-header card-body table-border-style">
-        @can('manage procurement material')
-        <div class="table">
-          <table class="table" id="example2">
-            <thead class="">
-              <tr>
-                <th>{{__('Sno')}}</th>
-                <th>{{__('Description')}}</th>
-                <th>{{__('RAM Ref with No')}}</th>
-                <th>{{__('Location')}}</th>
-                <th>{{__('Name of Supplier')}}</th>
-                <th>{{__('Contact Person')}}</th>
-                <th>{{__('Mobile/ HP')}}</th>
-                <th>{{__('Fax')}}</th>
-                <th>{{__('Target Delivery Date')}}</th>
-                <th>{{__('Status')}}</th>
-                <th>{{__('Attachment')}}</th>
-                @if(Gate::check('edit project specification') || Gate::check('delete project specification'))
-                <th>{{__('Action')}}</th>
-                @endif
-              </tr>
-            </thead>
-            <tbody> 
-             
-            </tbody>
-          </table>
-        </div>
+    <div class="col-md-6 float-end floatrght">
+        @can('create procurement material')
+            <a class="floatrght btn btn-primary mb-3" href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
+                <i class="ti ti-plus"></i>
+            </a>
         @endcan
-      </div>
     </div>
-  </div>
+    <div class="col-xl-12 mt-3">
+        <div class="card table-card">
+    
+        <div class="card-header card-body table-border-style">
+            @can('manage procurement material')
+            <div class="table">
+              <table class="table" id="example2">
+                <thead class="">
+                <tr>
+                    <th>{{__('Sno')}}</th>
+                    <th>{{__('RAM Ref with No')}}</th>
+                    <th>{{__('Name of Supplier')}}</th>
+                    <th>{{__('Contact Person')}}</th>
+                    <th>{{__('Mobile/HP')}}</th>
+                    <th>{{__('Target Delivery Date')}}</th>
+                    <th>{{__('Target Date of Approval')}}</th>
+                    <th>{{__('Status')}}</th>
+                    @if(Gate::check('edit procurement material') || Gate::check('delete procurement material'))
+                    <th>{{__('Action')}}</th>
+                    @endif
+                </tr>
+                </thead>
+                <tbody> 
+                    @foreach ($dairy_data as $key=>$data) 
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$data->ram_ref_no}}</td>
+                        <td>{{$data->supplier_name}}</td>
+                        <td>{{$data->contact_person}}</td>
+                        <td>{{$data->mobile_hp_no}}</td>
+                        <td>{{$data->target_delivery_date}}</td>
+                        <td>{{$data->target_approval_date}}</td>
+                        <td>{{$data->status}}</td>
+                        @if(Gate::check('edit procurement material') || Gate::check('delete procurement material'))
+                        <td>
+                            <div class="ms-2" style="display:flex;gap:10px;">
+                                @can('edit procurement material')
+                                    <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
+                                @endcan
+                                @can('delete procurement material')
+                                    {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                                    {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
+                                    {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
+                                        <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
+                                    {!! Form::close() !!} 
+                                @endcan
+                            </div>
+                        </td>
+                        @endif
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            </div>
+            @endcan
+        </div>
+        </div>
+    </div>
+</div>
 
 @include('new_layouts.footer')
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
@@ -232,81 +262,82 @@ h3, .h3 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
-<script>
+<script type="text/javascript">
 
-$(document).ready(function () {
+    $(document).ready(function () {
         var j = 0;
         $(document).on("click", "#dynamic-procurement", function () {
             ++j;
-            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Submission:</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submission Date</label><input type="date" name="submission_date[]" class="form-control"></div></div><div class="col-md-6"><div class="form-group"><label for="input">Actual Reply Date</label><input type="date" name="actual_reply_date[]" class="form-control"> </div></div></div></div></td></tr><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="remove-procurement"> Remove Submission </button></div></div></td></tr>');
+            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submission Date :</label><input type="date" name="submission_date[]" class="form-control" value=""></div></div><div class="col-md-6"><div class="form-group"><label for="input">Actual Reply Date :</label><input type="date" name="actual_reply_date[]" class="form-control" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button></div></div></td></tr>');
         });
-        $(document).on('click', '#remove-procurement', function () {
+        $(document).on('click', '#removedynamicprocurement', function () {
             $(this).parents('tr').remove();
         });
     
     });
 
-  $(document).on('keypress', function (e) {
+    $(document).ready(function() {
+        $('#example2').DataTable({
+            dom: 'Bfrtip',
+            searching: true,
+            info: true,
+            paging: true,
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Procurement Material Supply Log',
+                    titleAttr: 'Excel',
+                    text: '<i class="fa fa-file-excel-o"></i>',
+    
+                    exportOptions: {
+                        modifier: {
+                            order: 'index', // 'current', 'applied','index', 'original'
+                            page: 'all', // 'all', 'current'
+                            search: 'none' // 'none', 'applied', 'removed'
+                        },
+                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7]
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    title: 'Procurement Material Supply Log',
+                    titleAttr: 'PDF',
+                    text: '<i class="fa fa-file-pdf-o"></i>',
+    
+                    exportOptions: {
+                        modifier: {
+                            order: 'index', // 'current', 'applied','index', 'original'
+                            page: 'all', // 'all', 'current'
+                            search: 'none' // 'none', 'applied', 'removed'
+                        },
+                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7]
+                    }
+                },
+                {
+                    extend: 'print',
+                    title: 'Procurement Material Supply Log',
+                    titleAttr: 'Print',
+                    text: '<i class="fa fa-print"></i>',
+    
+                    exportOptions: {
+                        modifier: {
+                            order: 'index', // 'current', 'applied','index', 'original'
+                            page: 'all', // 'all', 'current'
+                            search: 'none' // 'none', 'applied', 'removed'
+                        },
+                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7]
+                    }
+                },
+                'colvis'
+            ]
+        });
+    });
+
+$(document).on('keypress', function (e) {
     if (e.which == 13) {
         swal.closeModal();
     }
 });
-
-  $(document).ready(function() {
-          $('#example2').DataTable({
-              dom: 'Bfrtip',
-              searching: true,
-              info: true,
-              paging: true,
-              buttons: [
-                  {
-                      extend: 'excelHtml5',
-                      title: 'Procurement Material Supply Log',
-                      titleAttr: 'Excel',
-                      text: '<i class="fa fa-file-excel-o"></i>',
-      
-                      exportOptions: {
-                          modifier: {
-                              order: 'index', // 'current', 'applied','index', 'original'
-                              page: 'all', // 'all', 'current'
-                              search: 'none' // 'none', 'applied', 'removed'
-                          },
-                          columns: [0, 1, 2, 3, 4, 5, 6]
-                      }
-                  },
-                  {
-                      extend: 'pdfHtml5',
-                      title: 'Procurement Material Supply Log',
-                      titleAttr: 'PDF',
-                      text: '<i class="fa fa-file-pdf-o"></i>',
-      
-                      exportOptions: {
-                          modifier: {
-                              order: 'index', // 'current', 'applied','index', 'original'
-                              page: 'all', // 'all', 'current'
-                              search: 'none' // 'none', 'applied', 'removed'
-                          },
-                          columns: [0, 1, 2, 3, 4, 5, 6]
-                      }
-                  },
-                  {
-                      extend: 'print',
-                      title: 'Procurement Material Supply Log',
-                      titleAttr: 'Print',
-                      text: '<i class="fa fa-print"></i>',
-      
-                      exportOptions: {
-                          modifier: {
-                              order: 'index', // 'current', 'applied','index', 'original'
-                              page: 'all', // 'all', 'current'
-                              search: 'none' // 'none', 'applied', 'removed'
-                          },
-                          columns: [0, 1, 2, 3, 4, 5, 6]
-                      }
-                  },
-                  'colvis'
-              ]
-          });
-  });
-      
 </script>
+
+
