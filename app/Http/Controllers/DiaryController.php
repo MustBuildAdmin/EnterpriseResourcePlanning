@@ -181,9 +181,9 @@ class DiaryController extends Controller
     
                 $consult_dir_multi = ConsultantsDirectionMulti::where("consultant_id","=",$consult_dir->id)->get();
     
-                $replier_date=$consult_dir_multi[0]->replier_date;
+                $initiator_date=$consult_dir_multi[0]->initiator_date;
     
-                return view("diary.consultant_direction.edit",compact("consult_dir","consult_dir_multi","project_name","project","replier_date"));
+                return view("diary.consultant_direction.edit",compact("consult_dir","consult_dir_multi","project_name","project","initiator_date"));
 
             }else{
 
@@ -578,13 +578,14 @@ class DiaryController extends Controller
                         ->with("error", __($path["msg"]));
                 }
             }else{
-                $check_attach_file=ConsultantDirection::select('attach_file_name')
+                $check_attach_file=ConsultantDirection::select('attach_file_name','file_path')
                                                         ->where('id',$request->id)
                                                         ->where('user_id',Auth::id())
                                                         ->where('project_id',$request->project_id)
                                                         ->first();              
                                                                      
                 $filenameWithExt1=$check_attach_file->attach_file_name;
+                $url=$check_attach_file->file_path;
                          
             }
           
