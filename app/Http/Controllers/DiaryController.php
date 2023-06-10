@@ -601,34 +601,34 @@ class DiaryController extends Controller
                     }
             }
 
-            // $replier_file_name = [];
+            $replier_file_name = [];
 
-            // if (!empty($request->replier_file_name)) {
-            //     if ($request->hasfile("replier_file_name")) {
-            //         foreach ($request->file("replier_file_name") as $file) {
-            //             $name = $file->getClientOriginalName();
-            //             $file->move(public_path("files/1"), $name);
-            //             // $initiator_file_name[] = $name;
-            //             array_push($replier_file_name,$name);
-            //         }
-            //         $check_replier_file=ConsultantsDirectionMulti::select('replier_file_name')->where('consultant_id',$request->id)->get();
-            //         if(count($check_replier_file)!=0){
-            //             foreach ($check_replier_file as $file) {
-            //                 array_push($replier_file_name,$file->replier_file_name);
+            if (!empty($request->replier_file_name)) {
+                if ($request->hasfile("replier_file_name")) {
+                    foreach ($request->file("replier_file_name") as $file) {
+                        $name = $file->getClientOriginalName();
+                        $file->move(public_path("files/1"), $name);
+                        // $initiator_file_name[] = $name;
+                        array_push($replier_file_name,$name);
+                    }
+                    $check_replier_file=ConsultantsDirectionMulti::select('replier_file_name')->where('consultant_id',$request->id)->get();
+                    if(count($check_replier_file)!=0){
+                        foreach ($check_replier_file as $file) {
+                            array_push($replier_file_name,$file->replier_file_name);
                             
-            //             }
-            //         }
+                        }
+                    }
                    
-            //         }
-            // }else{
-            //         $check_replier_file=ConsultantsDirectionMulti::select('replier_file_name')->where('consultant_id',$request->id)->get();
-            //         if(count($check_replier_file)!=0){
-            //             foreach ($check_replier_file as $file) {
-            //                 $replier_file_name[] = $file->replier_file_name;
+                    }
+            }else{
+                    $check_replier_file=ConsultantsDirectionMulti::select('replier_file_name')->where('consultant_id',$request->id)->get();
+                    if(count($check_replier_file)!=0){
+                        foreach ($check_replier_file as $file) {
+                            $replier_file_name[] = $file->replier_file_name;
                             
-            //             }
-            //         }
-            // }
+                        }
+                    }
+            }
 
            
             $delete_invoice = ConsultantsDirectionMulti::where('consultant_id','=',$request->id)->delete();
