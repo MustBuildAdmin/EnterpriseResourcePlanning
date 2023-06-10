@@ -405,6 +405,97 @@ class ProjectTaskController extends Controller
         }
     }
 
+    public function task_particular(Request $request){
+        if($request['get_date'] == ""){
+            $get_date = date('Y-m-d');
+        }
+        else{
+            $get_date = $request['get_date'];
+        }
+
+        if(isset($request['task_id'])){
+            $task_id      = $request['task_id'];
+            $get_con_task = Con_task::where('main_id',$task_id)->first();
+            $end_date     = $get_con_task->end_date != null ? explode(" ",$get_con_task->end_date) : array();
+
+            $get_popup_data_con = Con_task::where('main_id',$task_id)->first();
+
+            if(\Auth::user()->type != 'company'){
+                $get_task_progress = Task_progress::select('task_progress.*','pro.project_name')
+                ->Join('projects as pro','pro.id','task_progress.project_id')
+                ->where('task_id',$task_id)->where('user_id',\Auth::user()->id)
+                ->where('project_id',$get_popup_data_con->project_id)->get();
+            }else{
+                $get_task_progress = Task_progress::select('task_progress.*','pro.project_name')
+                ->Join('projects as pro','pro.id','task_progress.project_id')
+                ->where('task_id',$task_id)->where('project_id',$get_popup_data_con->project_id)
+                ->get();
+            }
+
+            if(date('Y-m-d') >= $get_date){
+                $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)->select('percentage','description')->first();
+
+                if($get_popup_data != null){
+                    $data = array(
+                        'percentage' => $get_popup_data->percentage,
+                        'desc'       => $get_popup_data->description,
+                        'get_date'   => $get_date,
+                        'con_data'   => $get_popup_data_con,
+                        'get_task_progress' => $get_task_progress
+                    );
+                }
+                else{
+                    $data = array(
+                        'percentage' => "",
+                        'desc'       => "",
+                        'get_date'   => $get_date,
+                        'con_data'   => $get_popup_data_con,
+                        'get_task_progress' => $get_task_progress
+                    );
+                }
+            }else{
+                $data = array(
+                    'percentage' => "",
+                    'desc'       => "",
+                    'get_date'   => $get_date,
+                    'con_data'   => $get_popup_data_con,
+                    'get_task_progress' => $get_task_progress
+                );
+            }
+        }
+
+        return view('construction_project.task_particular_list',compact('task_id','data'));
+    }
+
+    public function edit_task_progress(Request $request){
+        $taskprogress_id = $request->taskprogress_id;
+        $task_id    = $request->task_id;
+        $get_date   = $request->get_date;
+        $user_id    = \Auth::user()->id;
+        $project_id = Session::get('project_id');
+        $task       = Con_task::where('main_id',$task_id)->first();
+        $check_data = Task_progress::where('id',$taskprogress_id)->where('task_id',$task_id)->where('project_id',$task->project_id)->where('user_id',$user_id)->first();
+
+        if($check_data != null){
+            $get_data = [
+                'get_date'    => date('Y-m-d',strtotime($check_data->created_at)),
+                'percentage'  => $check_data->percentage,
+                'description' => $check_data->description,
+                'filename'    => $check_data->filename,
+            ];
+        }
+        else{
+            $get_data = [
+                'get_date'    => "",
+                'percentage'  => "",
+                'description' => "",
+                'filename'    => "",
+            ];
+        }
+
+        return $get_data;
+    }
+
     public function taskboard_get(Request $request){
         try {
 

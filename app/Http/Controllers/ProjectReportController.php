@@ -426,7 +426,14 @@ class ProjectReportController extends Controller
             $time=Carbon::now()->format('H:i');
             $project=Project::where('end_date','>=',Carbon::now()->format('Y-m-d'))->where('report_time',$time)->get();
             foreach ($project as $key => $value3) {
-                Reportemail::dispatch($value3->id);
+                $holidays=DB::table('project_holidays')->where('project_id',$value3->id)->where('date',Carbon::now()->format('Y-m-d'))->first();
+                if(!$holidays){
+                    if(!str_contains( $value3->non_working_days, Carbon::now()->format('w'))){
+                        Reportemail::dispatch($value3->id);
+                    }
+                   
+                }
+               
             }
         }
         

@@ -64,9 +64,12 @@
                                                 </div>
                                                 <div class="btn btn-outline-primary">
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['project_holiday.destroy', $project->id],'id'=>'delete-form-'.$project->id]) !!}
+                                                    <a href="#" class="bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$project->id}}').submit();"><i class="ti ti-trash text-white text-white"></i></a>
+                                                {!! Form::close() !!}
+                                                {{-- {!! Form::open(['method' => 'DELETE', 'route' => ['project_holiday.destroy', $project->id],'id'=>'delete-form-'.$project->id]) !!}
 
                                                     <a href="#" class="" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$project->id}}').submit();"><i class="ti ti-trash text-white text-white"></i></a>
-                                                    {!! Form::close() !!}
+                                                    {!! Form::close() !!} --}}
                                                 </div>
 
                                             </span>

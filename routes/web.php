@@ -2917,6 +2917,10 @@ Route::get(
         'XSS',
     ]
 );
+
+Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
+Route::get('edit_task_progress', 'ProjectTaskController@edit_task_progress')->name('edit_task_progress')->middleware(['auth','XSS',]);
+
 Route::get(
     'taskboard-edit', [
     'as' => 'project.taskboard.edit',
