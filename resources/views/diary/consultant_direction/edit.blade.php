@@ -98,7 +98,7 @@
                       <span>{{ $mutli_data['replier_file_name'] }}</span>
                     </div>
                   </div>
-                  @if(!empty($replier_date))
+                  @if(!empty($initiator_date))
                   <div class="col-md-12 mt-3">
                     <button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">{{__('Add More')}}</button>
                   </div>
