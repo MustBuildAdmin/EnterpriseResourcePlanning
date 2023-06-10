@@ -458,7 +458,7 @@ class DiaryController extends Controller
                     "ad_ae_ref" => $request->ad_ae_ref,
                     "ad_ae_decs" => $request->ad_ae_decs,
                     "attach_file_name" => $filenameWithExt1,
-                    "file_path" => "",
+                    "file_path" =>$url,
                 ];
 
                 ConsultantDirection::insert($data);
@@ -491,8 +491,8 @@ class DiaryController extends Controller
                             "initiator_reference" =>$request->initiator_reference[$item],
                             "initiator_date" =>$request->initiator_date[$item],
                             "initiator_file_name" =>$initiator_file_name[$item],
-                            "replier_reference" =>$request->replier_reference[$item],
-                            "replier_date" => $request->replier_date[$item],
+                            // "replier_reference" =>$request->replier_reference[$item],
+                            // "replier_date" => $request->replier_date[$item],
                             "replier_status" =>$request->replier_status[$item],
                             "replier_remark" =>$request->replier_remark[$item],
                             "replier_file_name" =>$replier_file_name[$item],
@@ -556,7 +556,7 @@ class DiaryController extends Controller
                 "ad_ae_ref" => $request->ad_ae_ref,
                 "ad_ae_decs" => $request->ad_ae_decs,
                 "attach_file_name" => $filenameWithExt1,
-                "file_path" => "",
+                "file_path" => $url,
             ];
 
             ConsultantDirection::where('project_id',$request->project_id)
@@ -657,17 +657,17 @@ class DiaryController extends Controller
 
               
 
-                if(isset($request->replier_reference[$item])){
-                    $set_replier_reference=$request->replier_reference[$item];
-                }else{
-                    $set_replier_reference=null;
-                }
+                // if(isset($request->replier_reference[$item])){
+                //     $set_replier_reference=$request->replier_reference[$item];
+                // }else{
+                //     $set_replier_reference=null;
+                // }
 
-                if(isset($request->replier_date[$item])){
-                    $set_replier_date=$request->replier_date[$item];
-                }else{
-                    $set_replier_date=null;
-                }
+                // if(isset($request->replier_date[$item])){
+                //     $set_replier_date=$request->replier_date[$item];
+                // }else{
+                //     $set_replier_date=null;
+                // }
 
 
                 if(isset($request->replier_status[$item])){
@@ -694,8 +694,8 @@ class DiaryController extends Controller
                         "initiator_reference" =>$set_initiator_reference,
                         "initiator_date" =>$set_initiator_date,
                         "initiator_file_name" =>$set_initiator_file_name,
-                        "replier_reference" =>$set_replier_reference,
-                        "replier_date" => $set_replier_date,
+                        // "replier_reference" =>$set_replier_reference,
+                        // "replier_date" => $set_replier_date,
                         "replier_status" =>$set_replier_status,
                         "replier_remark" =>$set_replier_remark,
                         "replier_file_name" =>$set_replier_file_name,
