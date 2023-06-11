@@ -193,11 +193,11 @@ h3, .h3 {
 }
 </style>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-8">
      <h2>{{__('VO or Change Order or Scope Change Authorization Summary')}}</h2> 
   </div>
     @can('create vochange')
-    <div class="col-md-6 float-end floatrght">
+    <div class="col-md-4 float-end floatrght">
         <a href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Vo/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
         <i class="ti ti-plus"></i>
         </a>
@@ -332,7 +332,17 @@ h3, .h3 {
                       title: 'VO or Change Order or Scope Change Authorization Summary',
                       titleAttr: 'PDF',
                       text: '<i class="fa fa-file-pdf-o"></i>',
-      
+                      customize: function(doc) {
+                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
+                        doc.styles.tableBodyEven.alignment = 'center';
+                        doc.styles.tableBodyEven.noWrap = true;
+                        doc.styles.tableBodyOdd.alignment = 'center';
+                        doc.styles.tableBodyOdd.noWrap = true;
+                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.defaultStyle.fontSize = 9;
+                        doc.defaultStyle.alignment = 'center';
+                        doc.styles.tableHeader.alignment = 'center';
+                        },
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'

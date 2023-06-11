@@ -1029,7 +1029,7 @@ class DiaryController extends Controller
             if(\Auth::user()->can('manage project specification')){
 
                 $project_id = Session::get('project_id');
-                $dairy_data = ProjectSpecification::where('user_id',Auth::id())->where('project_id',$project_id)->orderBy('id', 'DESC')->get();
+                $dairy_data = ProjectSpecification::where('user_id',Auth::id())->where('project_id',$project_id)->orderBy('id', 'ASC')->get();
                 return view('diary.project_specification.index',compact('project_id','dairy_data'));
         
             }else{
