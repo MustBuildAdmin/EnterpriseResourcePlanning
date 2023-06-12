@@ -298,6 +298,7 @@ h3, .h3 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+{{-- <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script> --}}
 <script>
   $(document).on('keypress', function (e) {
     if (e.which == 13) {
@@ -370,83 +371,186 @@ h3, .h3 {
                   'colvis'
               ]
           });
+        
+        
+          $(document).on("keyup", '.claimed_omission_cost', function (e) {
+           
+           var u1 = $('.claimed_omission_cost').val();
 
-    $(document).on("keypress", '.claimed_omission_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if(u1.indexOf('-') !== -1){
+             var s  = "(" + '' + ")";
+             $('.claimed_omission_cost').val(s);
+           }
+         });
 
-    $(document).on("change", '.claimed_omission_cost', function (event) {
-        $value = $(".claimed_omission_cost").val();
-        if(isNaN($value)){
-        $(".claimed_omission_cost").val('');
-        }
-    });
-    $(document).on("keypress", '.claimed_addition_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+         $(document).on("keyup", '.claimed_addition_cost', function (e) {
+           
+           var n1 = $('.claimed_addition_cost').val();
+           var n2 = $('.claimed_omission_cost').val();
+           var n3 = $('.claimed_net_amount').val();
 
-    $(document).on("change", '.claimed_addition_cost', function (event) {
-        $value = $(".claimed_addition_cost").val();
-        if(isNaN($value)){
-        $(".claimed_addition_cost").val('');
-        }
-    });
 
-    $(document).on("keypress", '.claimed_net_amount', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if(n1.indexOf('-') !== -1){
+             var r  = "(" + '' + ")";
+             $('.claimed_addition_cost').val(r);
+           }
 
-    $(document).on("change", '.claimed_net_amount', function (event) {
-        $value = $(".claimed_net_amount").val();
-        if(isNaN($value)){
-        $(".claimed_net_amount").val('');
-        }
-    });
+           if (n1.indexOf('(') !== -1) {
+            console.log("n1",n1);
+               n1_minus = 'minus';
+               var c = n1.slice(1,-1);
+           }
+           else{
+            console.log("n11",n1);
+               n1_minus = '+';
+               var c = n1;
+           }
 
-    $(document).on("keypress", '.approved_omission_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if (n2.indexOf('(') !== -1) {
+               n2_minus = 'minus';
+               var cc   = n2.slice(1,-1);
+           }
+           else{
+               n2_minus = '+';
+               var cc   = n2;
+           }
 
-    $(document).on("change", '.approved_omission_cost', function (event) {
-        $value = $(".approved_omission_cost").val();
-        if(isNaN($value)){
-        $(".approved_omission_cost").val('');
-        }
-    });
-    
-    $(document).on("keypress", '.approved_addition_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if(n1_minus == 'minus' && n2_minus == 'minus'){
+            var r = parseInt(c) + parseInt(cc);
+           
+            }
+           else if(n1_minus == "minus"){
+                var r = cc - c;
+            }
+            else if(n2_minus == "minus"){
+                var r = cc - c;
+            }
+            else{
+                var r = parseInt(c) + parseInt(cc);
+            }
 
-    $(document).on("change", '.approved_addition_cost', function (event) {
-        $value = $(".approved_addition_cost").val();
-        if(isNaN($value)){
-        $(".approved_addition_cost").val('');
-        }
-    });
+            
+            if(cc>c && n2_minus == 'minus'){
+                var r = cc- c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("1");
+            }else if(cc>c && n2_minus == 'minus'){
+                var r = cc - c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("2");
+            }else if(cc>c && n1_minus == 'minus'){
+                var r = c - cc;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("3");
+            }else if(cc<c && n2_minus == 'minus'){
+                var r = cc - c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("4");
+            }else if(cc<c && n1_minus == 'minus'){
+                var r = c - cc;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("5");
+            }else{
+              $('.claimed_net_amount').val(r);
+              console.log("6");
+            }
 
-    $(document).on("keypress", '.approved_net_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+        });
 
-    $(document).on("change", '.approved_net_cost', function (event) {
-        $value = $(".approved_net_cost").val();
-        if(isNaN($value)){
-        $(".approved_net_cost").val('');
-        }
-    });
+        $(document).on("keyup", '.approved_omission_cost', function (e) {
+           
+            var v1 = $('.approved_omission_cost').val();
+
+            if(v1.indexOf('-') !== -1){
+              var p  = "(" + '' + ")";
+              $('.approved_omission_cost').val(p);
+            }
+
+         });
+
+         $(document).on("keyup", '.approved_addition_cost', function (e) {
+           
+           var n1 = $('.claimed_addition_cost').val();
+           var n2 = $('.claimed_omission_cost').val();
+           var n3 = $('.claimed_net_amount').val();
+
+
+           if(n1.indexOf('-') !== -1){
+             var r  = "(" + '' + ")";
+             $('.claimed_addition_cost').val(r);
+           }
+
+           if (n1.indexOf('(') !== -1) {
+            console.log("n1",n1);
+               n1_minus = 'minus';
+               var c = n1.slice(1,-1);
+           }
+           else{
+            console.log("n11",n1);
+               n1_minus = '+';
+               var c = n1;
+           }
+
+           if (n2.indexOf('(') !== -1) {
+               n2_minus = 'minus';
+               var cc   = n2.slice(1,-1);
+           }
+           else{
+               n2_minus = '+';
+               var cc   = n2;
+           }
+
+           if(n1_minus == 'minus' && n2_minus == 'minus'){
+            var r = parseInt(c) + parseInt(cc);
+           
+            }
+           else if(n1_minus == "minus"){
+                var r = cc - c;
+            }
+            else if(n2_minus == "minus"){
+                var r = cc - c;
+            }
+            else{
+                var r = parseInt(c) + parseInt(cc);
+            }
+
+            
+            if(cc>c && n2_minus == 'minus'){
+                var r = cc- c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("1");
+            }else if(cc>c && n2_minus == 'minus'){
+                var r = cc - c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("2");
+            }else if(cc>c && n1_minus == 'minus'){
+                var r = c - cc;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("3");
+            }else if(cc<c && n2_minus == 'minus'){
+                var r = cc - c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("4");
+            }else if(cc<c && n1_minus == 'minus'){
+                var r = c - cc;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("5");
+            }else{
+              $('.claimed_net_amount').val(r);
+              console.log("6");
+            }
+
+        });
 
 });
       
