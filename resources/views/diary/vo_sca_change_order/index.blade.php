@@ -446,8 +446,8 @@ h3, .h3 {
                 $('.claimed_net_amount').val(r);
                 console.log("3");
             }else if(cc<c && n2_minus == 'minus'){
-                var r = cc - c;
-                var r  ="(" + r + ")" ;
+                var r = c - cc;
+                var r  =r
                 $('.claimed_net_amount').val(r);
                 console.log("4");
             }else if(cc<c && n1_minus == 'minus'){
@@ -455,7 +455,8 @@ h3, .h3 {
                 var r  ="(" + r + ")" ;
                 $('.claimed_net_amount').val(r);
                 console.log("5");
-            }else{
+            }
+            else{
               $('.claimed_net_amount').val(r);
               console.log("6");
             }
@@ -473,80 +474,80 @@ h3, .h3 {
 
          });
 
-         $(document).on("keyup", '.approved_addition_cost', function (e) {
+         $(document).on("keyup", '.approved_net_cost', function (ev) {
            
-           var n1 = $('.claimed_addition_cost').val();
-           var n2 = $('.claimed_omission_cost').val();
-           var n3 = $('.claimed_net_amount').val();
+           var m1 = $('.approved_addition_cost').val();
+           var m2 = $('.approved_omission_cost').val();
+           var m3 = $('.approved_net_cost').val();
 
 
-           if(n1.indexOf('-') !== -1){
-             var r  = "(" + '' + ")";
-             $('.claimed_addition_cost').val(r);
+           if(m1.indexOf('-') !== -1){
+             var q  = "(" + '' + ")";
+             $('.approved_addition_cost').val(q);
            }
 
-           if (n1.indexOf('(') !== -1) {
-            console.log("n1",n1);
-               n1_minus = 'minus';
-               var c = n1.slice(1,-1);
-           }
-           else{
-            console.log("n11",n1);
-               n1_minus = '+';
-               var c = n1;
-           }
-
-           if (n2.indexOf('(') !== -1) {
-               n2_minus = 'minus';
-               var cc   = n2.slice(1,-1);
+           if (m1.indexOf('(') !== -1) {
+            
+               m1_minus = 'minus';
+               var d = m1.slice(1,-1);
            }
            else{
-               n2_minus = '+';
-               var cc   = n2;
+            
+              m1_minus = '+';
+               var d = m1;
            }
 
-           if(n1_minus == 'minus' && n2_minus == 'minus'){
-            var r = parseInt(c) + parseInt(cc);
+           if (m2.indexOf('(') !== -1) {
+               m2_minus = 'minus';
+               var dd   = m2.slice(1,-1);
+           }
+           else{
+               m2_minus = '+';
+               var dd   = m2;
+           }
+
+           if(m1_minus == 'minus' && m2_minus == 'minus'){
+            var q = parseInt(d) + parseInt(dd);
            
             }
-           else if(n1_minus == "minus"){
-                var r = cc - c;
+           else if(m1_minus == "minus"){
+                var q = dd - d;
             }
             else if(n2_minus == "minus"){
-                var r = cc - c;
+                var q = dd - d;
             }
             else{
-                var r = parseInt(c) + parseInt(cc);
+                var q = parseInt(d) + parseInt(dd);
             }
 
             
-            if(cc>c && n2_minus == 'minus'){
-                var r = cc- c;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
+            if(dd>d && m2_minus == 'minus'){
+                var q = dd- d;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(r);
                 console.log("1");
-            }else if(cc>c && n2_minus == 'minus'){
-                var r = cc - c;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
+            }else if(dd>d && m2_minus == 'minus'){
+                var q = dd - d;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(r);
                 console.log("2");
-            }else if(cc>c && n1_minus == 'minus'){
-                var r = c - cc;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
+            }else if(dd>d && m1_minus == 'minus'){
+                var q = d - dd;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(q);
                 console.log("3");
-            }else if(cc<c && n2_minus == 'minus'){
-                var r = cc - c;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
+            }else if(dd<d && m2_minus == 'minus'){
+                var q = dd - d;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(q);
                 console.log("4");
-            }else if(cc<c && n1_minus == 'minus'){
-                var r = c - cc;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
+            }else if(dd<d && m1_minus == 'minus'){
+                var q = d - dd;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(q);
                 console.log("5");
             }else{
-              $('.claimed_net_amount').val(r);
+              $('.approved_net_cost').val(q);
               console.log("6");
             }
 
