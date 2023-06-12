@@ -2893,6 +2893,8 @@ Route::get(
         'XSS',
     ]
 );
+Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth','XSS',]);
+Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')->middleware(['auth','XSS',]);
 // task progress update for construction part
     Route::any(
         'con_taskupdate', [

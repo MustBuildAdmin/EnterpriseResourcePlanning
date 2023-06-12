@@ -39,7 +39,10 @@
                         </div>
                     </div>
                 </div>
-                <center><input type="submit" value="{{__('Submit')}}" class="btn  btn-primary"></center>
+                <center>
+                    <input type="submit" value="{{__('Submit')}}" class="btn btn-primary">
+                    <a href="{{url('taskboard/list')}}" class="btn btn-danger">Back</a>
+                </center>
             </form>
             <br>
             <div class="card-body table-border-style">
