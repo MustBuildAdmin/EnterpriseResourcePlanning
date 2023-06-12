@@ -1,10 +1,21 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
+<style>
+    .vender-btn {
+        /* margin: 2px 5px 2px 2px; */
+        border-radius: 4px;
+        background : #ffffff !important;
+    }
+    .delete-vender {
+        margin-left: 134px !important;
+        margin-top: -52px !important;
+    }
+</style>
 <div class="row">
     <div class="col-md-6">
        <h2> {{__('Manage Vendor-Detail')}}</h2>
     </div>
-
+<div class="row">
     <div class="float-end">
         @can('create bill')
             <a href="{{ route('bill.create',$vendor->id) }}" class="btn btn-sm btn-primary">
@@ -13,19 +24,21 @@
         @endcan
 
         @can('edit vender')
-            <a href="#" class="btn btn-sm btn-primary" data-size="xl" data-url="{{ route('vender.edit',$vendor['id']) }}" data-ajax-popup="true" title="{{__('Edit')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}">
-                <i class="ti ti-pencil"></i>
-            </a>
+            
+                <a href="#" class="mx-3 btn btn-sm vender-btn align-items-center" data-url="{{ route('vender.edit',$vendor['id']) }}" data-ajax-popup="true" title="{{__('Edit')}}" data-title="{{__('Edit Vender')}}"data-bs-toggle="tooltip"  data-size="lg"  data-original-title="{{__('Edit')}}">
+                    <i class="ti ti-pencil text-white"></i>
+                </a>
+            
         @endcan
         @can('delete vender')
             {!! Form::open(['method' => 'DELETE', 'route' => ['vender.destroy', $vendor['id']],'class'=>'delete-form-btn','id'=>'delete-form-'.$vendor['id']]) !!}
-            <a href="#" class="btn btn-sm btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"  data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{ $vendor['id']}}').submit();">
+            <a href="#" class="mx-3 btn btn-sm align-items-center vender-btn delete-vender" data-bs-toggle="tooltip" title="{{__('Delete')}}"  data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{ $vendor['id']}}').submit();">
                 <i class="ti ti-trash text-white"></i>
             </a>
             {!! Form::close() !!}
         @endcan
     </div>
-
+</div>
     <div class="row">
         <div class="col-md-4 col-lg-4 col-xl-4">
             <div class="card pb-0 customer-detail-box vendor_card">
@@ -45,7 +58,7 @@
                     <p class="card-text mb-0">{{$vendor->billing_phone}}</p>
                     <p class="card-text mb-0">{{$vendor->billing_address}}</p>
                     <p class="card-text mb-0">{{$vendor->billing_zip}}</p>
-                    <p class="card-text mb-0">{{$vendor->billing_city.', '. $state->name .', '.$country->name}}</p>
+                    
                 </div>
             </div>
         </div>
@@ -57,7 +70,7 @@
                     <p class="card-text mb-0">{{$vendor->shipping_phone}}</p>
                     <p class="card-text mb-0">{{$vendor->shipping_address}}</p>
                     <p class="card-text mb-0">{{$vendor->shipping_zip}}</p>
-                    <p class="card-text mb-0">{{$vendor->shipping_city.', '. $shipstate->name .', '.$shipcountry->name}}</p>
+                    
                 </div>
             </div>
         </div>
