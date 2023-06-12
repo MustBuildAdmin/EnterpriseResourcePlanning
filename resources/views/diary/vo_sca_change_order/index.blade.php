@@ -193,11 +193,11 @@ h3, .h3 {
 }
 </style>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-8">
      <h2>{{__('VO or Change Order or Scope Change Authorization Summary')}}</h2> 
   </div>
     @can('create vochange')
-    <div class="col-md-6 float-end floatrght">
+    <div class="col-md-4 float-end floatrght">
         <a href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Vo/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
         <i class="ti ti-plus"></i>
         </a>
@@ -298,6 +298,7 @@ h3, .h3 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+{{-- <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script> --}}
 <script>
   $(document).on('keypress', function (e) {
     if (e.which == 13) {
@@ -332,7 +333,17 @@ h3, .h3 {
                       title: 'VO or Change Order or Scope Change Authorization Summary',
                       titleAttr: 'PDF',
                       text: '<i class="fa fa-file-pdf-o"></i>',
-      
+                      customize: function(doc) {
+                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
+                        doc.styles.tableBodyEven.alignment = 'center';
+                        doc.styles.tableBodyEven.noWrap = true;
+                        doc.styles.tableBodyOdd.alignment = 'center';
+                        doc.styles.tableBodyOdd.noWrap = true;
+                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.defaultStyle.fontSize = 9;
+                        doc.defaultStyle.alignment = 'center';
+                        doc.styles.tableHeader.alignment = 'center';
+                        },
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'
@@ -360,83 +371,187 @@ h3, .h3 {
                   'colvis'
               ]
           });
+        
+        
+          $(document).on("keyup", '.claimed_omission_cost', function (e) {
+           
+           var u1 = $('.claimed_omission_cost').val();
 
-    $(document).on("keypress", '.claimed_omission_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if(u1.indexOf('-') !== -1){
+             var s  = "(" + '' + ")";
+             $('.claimed_omission_cost').val(s);
+           }
+         });
 
-    $(document).on("change", '.claimed_omission_cost', function (event) {
-        $value = $(".claimed_omission_cost").val();
-        if(isNaN($value)){
-        $(".claimed_omission_cost").val('');
-        }
-    });
-    $(document).on("keypress", '.claimed_addition_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+         $(document).on("keyup", '.claimed_addition_cost', function (e) {
+           
+           var n1 = $('.claimed_addition_cost').val();
+           var n2 = $('.claimed_omission_cost').val();
+           var n3 = $('.claimed_net_amount').val();
 
-    $(document).on("change", '.claimed_addition_cost', function (event) {
-        $value = $(".claimed_addition_cost").val();
-        if(isNaN($value)){
-        $(".claimed_addition_cost").val('');
-        }
-    });
 
-    $(document).on("keypress", '.claimed_net_amount', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if(n1.indexOf('-') !== -1){
+             var r  = "(" + '' + ")";
+             $('.claimed_addition_cost').val(r);
+           }
 
-    $(document).on("change", '.claimed_net_amount', function (event) {
-        $value = $(".claimed_net_amount").val();
-        if(isNaN($value)){
-        $(".claimed_net_amount").val('');
-        }
-    });
+           if (n1.indexOf('(') !== -1) {
+            console.log("n1",n1);
+               n1_minus = 'minus';
+               var c = n1.slice(1,-1);
+           }
+           else{
+            console.log("n11",n1);
+               n1_minus = '+';
+               var c = n1;
+           }
 
-    $(document).on("keypress", '.approved_omission_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if (n2.indexOf('(') !== -1) {
+               n2_minus = 'minus';
+               var cc   = n2.slice(1,-1);
+           }
+           else{
+               n2_minus = '+';
+               var cc   = n2;
+           }
 
-    $(document).on("change", '.approved_omission_cost', function (event) {
-        $value = $(".approved_omission_cost").val();
-        if(isNaN($value)){
-        $(".approved_omission_cost").val('');
-        }
-    });
-    
-    $(document).on("keypress", '.approved_addition_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if(n1_minus == 'minus' && n2_minus == 'minus'){
+            var r = parseInt(c) + parseInt(cc);
+           
+            }
+           else if(n1_minus == "minus"){
+                var r = cc - c;
+            }
+            else if(n2_minus == "minus"){
+                var r = cc - c;
+            }
+            else{
+                var r = parseInt(c) + parseInt(cc);
+            }
 
-    $(document).on("change", '.approved_addition_cost', function (event) {
-        $value = $(".approved_addition_cost").val();
-        if(isNaN($value)){
-        $(".approved_addition_cost").val('');
-        }
-    });
+            
+            if(cc>c && n2_minus == 'minus'){
+                var r = cc- c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("1");
+            }else if(cc>c && n2_minus == 'minus'){
+                var r = cc - c;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("2");
+            }else if(cc>c && n1_minus == 'minus'){
+                var r = c - cc;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("3");
+            }else if(cc<c && n2_minus == 'minus'){
+                var r = c - cc;
+                var r  =r
+                $('.claimed_net_amount').val(r);
+                console.log("4");
+            }else if(cc<c && n1_minus == 'minus'){
+                var r = c - cc;
+                var r  ="(" + r + ")" ;
+                $('.claimed_net_amount').val(r);
+                console.log("5");
+            }
+            else{
+              $('.claimed_net_amount').val(r);
+              console.log("6");
+            }
 
-    $(document).on("keypress", '.approved_net_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+        });
 
-    $(document).on("change", '.approved_net_cost', function (event) {
-        $value = $(".approved_net_cost").val();
-        if(isNaN($value)){
-        $(".approved_net_cost").val('');
-        }
-    });
+        $(document).on("keyup", '.approved_omission_cost', function (e) {
+           
+            var v1 = $('.approved_omission_cost').val();
+
+            if(v1.indexOf('-') !== -1){
+              var p  = "(" + '' + ")";
+              $('.approved_omission_cost').val(p);
+            }
+
+         });
+
+         $(document).on("keyup", '.approved_net_cost', function (ev) {
+           
+           var m1 = $('.approved_addition_cost').val();
+           var m2 = $('.approved_omission_cost').val();
+           var m3 = $('.approved_net_cost').val();
+
+
+           if(m1.indexOf('-') !== -1){
+             var q  = "(" + '' + ")";
+             $('.approved_addition_cost').val(q);
+           }
+
+           if (m1.indexOf('(') !== -1) {
+            
+               m1_minus = 'minus';
+               var d = m1.slice(1,-1);
+           }
+           else{
+            
+              m1_minus = '+';
+               var d = m1;
+           }
+
+           if (m2.indexOf('(') !== -1) {
+               m2_minus = 'minus';
+               var dd   = m2.slice(1,-1);
+           }
+           else{
+               m2_minus = '+';
+               var dd   = m2;
+           }
+
+           if(m1_minus == 'minus' && m2_minus == 'minus'){
+            var q = parseInt(d) + parseInt(dd);
+           
+            }
+           else if(m1_minus == "minus"){
+                var q = dd - d;
+            }
+            else if(n2_minus == "minus"){
+                var q = dd - d;
+            }
+            else{
+                var q = parseInt(d) + parseInt(dd);
+            }
+
+            
+            if(dd>d && m2_minus == 'minus'){
+                var q = dd- d;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(r);
+                console.log("1");
+            }else if(dd>d && m2_minus == 'minus'){
+                var q = dd - d;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(r);
+                console.log("2");
+            }else if(dd>d && m1_minus == 'minus'){
+                var q = d - dd;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(q);
+                console.log("3");
+            }else if(dd<d && m2_minus == 'minus'){
+                var q = dd - d;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(q);
+                console.log("4");
+            }else if(dd<d && m1_minus == 'minus'){
+                var q = d - dd;
+                var q  ="(" + q + ")" ;
+                $('.approved_net_cost').val(q);
+                console.log("5");
+            }else{
+              $('.approved_net_cost').val(q);
+              console.log("6");
+            }
+
+        });
 
 });
       

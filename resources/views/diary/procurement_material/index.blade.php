@@ -4,152 +4,14 @@
 <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-/* pagination */
-.pagination {
-	height: 36px;
-	margin: 18px 0;
-	color: #6c58bF;
-}
 
-.pagination ul {
-	display: inline-block;
-	*display: inline;
-         /* IE7 inline-block hack */
-	*zoom: 1;
-	margin-left: 0;
-	color: #ffffff;
-	margin-bottom: 0;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    max-width: 1072px !important;
+   
 }
-
-.pagination li {
-	display: inline;
-	color: #6c58bF;
-}
-
-.pagination a {
-	float: left;
-	padding: 0 14px;
-	line-height: 34px;
-	color: #6c58bF;
-	text-decoration: none;
-	border: 1px solid #ddd;
-	border-left-width: 0;
-}
-
-.pagination a:hover,
-     .pagination .active a {
-	background-color: var(--tblr-pagination-active-bg);
-	color: #ffffff;
-}
-
-.pagination a:focus {
-	background-color: #ffffff;
-	color: #ffffff;
-}
-
-.pagination .active a {
-	color: #ffffff;
-	cursor: default;
-}
-
-.pagination .disabled span,
-     .pagination .disabled a,
-     .pagination .disabled a:hover {
-	color: #999999;
-	background-color: transparent;
-	cursor: default;
-}
-
-.pagination li:first-child a {
-	border-left-width: 1px;
-	-webkit-border-radius: 3px 0 0 3px;
-	-moz-border-radius: 3px 0 0 3px;
-	border-radius: 3px 0 0 3px;
-}
-
-.pagination li:last-child a {
-	-webkit-border-radius: 0 3px 3px 0;
-	-moz-border-radius: 0 3px 3px 0;
-	border-radius: 0 3px 3px 0;
-}
-
-.pagination-centered {
-	text-align: center;
-}
-
-.pagination-right {
-	text-align: right;
-}
-
-.pager {
-	margin-left: 0;
-	margin-bottom: 18px;
-	list-style: none;
-	text-align: center;
-	color: #6c58bF;
-	*zoom: 1;
-}
-
-.pager:before,
-     .pager:after {
-	display: table;
-	content: "";
-}
-
-.pager:after {
-	clear: both;
-}
-
-.pager li {
-	display: inline;
-	color: #6c58bF;
-}
-
-.pager a {
-	display: inline-block;
-	padding: 5px 14px;
-	color: #6c58bF;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-}
-
-.pager a:hover {
-	text-decoration: none;
-	background-color: #f5f5f5;
-}
-
-.pager .next a {
-	float: right;
-}
-
-.pager .previous a {
-	float: left;
-}
-
-.pager .disabled a,
-     .pager .disabled a:hover {
-	color: #999999;
-}
-
-.dataTables_wrapper .dataTables_paginate {
-	float: right;
-	text-align: right;
-	padding-top: 0.25em;
-}
-
-.table-responsive .bg-primary {
-	background: #206bc4 !important;
-}
-
 div.dt-buttons .dt-button {
 	background-color: #ffa21d;
 	color: #fff;
@@ -200,15 +62,21 @@ h3, .h3 {
     
         <div class="card-header card-body table-border-style">
             @can('manage procurement material')
-            <div class="table">
+            <div class="table-responsive">
               <table class="table" id="example2">
                 <thead class="">
                 <tr>
                     <th>{{__('Sno')}}</th>
+                    <th>{{__('Description')}}</th>
                     <th>{{__('RAM Ref with No')}}</th>
+                    <th>{{__('Location')}}</th>
                     <th>{{__('Name of Supplier')}}</th>
                     <th>{{__('Contact Person')}}</th>
                     <th>{{__('Mobile/HP')}}</th>
+                    <th>{{__('Telephone')}}</th>
+                    <th>{{__('Fax')}}</th>
+                    <th>{{__('Email')}}</th>
+                    <th>{{__('Lead Time')}}</th>
                     <th>{{__('Target Delivery Date')}}</th>
                     <th>{{__('Target Date of Approval')}}</th>
                     <th>{{__('Status')}}</th>
@@ -221,10 +89,16 @@ h3, .h3 {
                     @foreach ($dairy_data as $key=>$data) 
                     <tr>
                         <td>{{$loop->iteration}}</td>
+                        <td>{{$data->description}}</td>
                         <td>{{$data->ram_ref_no}}</td>
+                        <td>{{$data->location}}</td>
                         <td>{{$data->supplier_name}}</td>
                         <td>{{$data->contact_person}}</td>
                         <td>{{$data->mobile_hp_no}}</td>
+                        <td>{{$data->tel}}</td>
+                        <td>{{$data->fax}}</td>
+                        <td>{{$data->email}}</td>
+                        <td>{{$data->lead_time}}</td>
                         <td>{{$data->target_delivery_date}}</td>
                         <td>{{$data->target_approval_date}}</td>
                         <td>{{$data->status}}</td>
@@ -295,22 +169,36 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7]
+                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7, 8, 9, 10, 11, 12, 13]
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     title: 'Procurement Material Supply Log',
                     titleAttr: 'PDF',
+                    orientation : 'landscape',
+                    pageSize : 'A4', //
                     text: '<i class="fa fa-file-pdf-o"></i>',
-    
+                    customize: function(doc) {
+                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
+                        doc.styles.tableBodyEven.alignment = 'center';
+                        doc.styles.tableBodyEven.noWrap = true;
+                        doc.styles.tableBodyOdd.alignment = 'center';
+                        doc.styles.tableBodyOdd.noWrap = true;
+                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.defaultStyle.fontSize = 9;
+                        doc.content[0].alignment = 'center';
+                        doc.defaultStyle.alignment = 'center';
+                        doc.styles.tableHeader.alignment = 'center';
+                        },
                     exportOptions: {
+                  
                         modifier: {
                             order: 'index', // 'current', 'applied','index', 'original'
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7]
+                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7, 8, 9, 10, 11, 12, 13]
                     }
                 },
                 {
@@ -325,7 +213,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7]
+                        columns: [0, 1, 2, 3, 4, 5 ,6 , 7, 8, 9, 10, 11, 12, 13]
                     }
                 },
                 'colvis'

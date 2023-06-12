@@ -48,8 +48,8 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="input">{{__('Mobile/HP')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="mobile_hp_no" class="form-control number" placeholder="{{__('Mobile/HP')}}" required>
+							<label for="input">{{__('Mobile/HP')}}</label>
+							<input type="text" name="mobile_hp_no" class="form-control number" placeholder="{{__('Mobile/HP')}}">
 						</div>
 					</div>
 				</div>
@@ -57,14 +57,14 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="input">{{__('Telephone')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="tel" class="form-control number" placeholder="{{__('Telephone')}}" required>
+							<label for="input">{{__('Telephone')}}</label>
+							<input type="text" name="tel" class="form-control number" placeholder="{{__('Telephone')}}">
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="input">{{__('Fax')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="fax" class="form-control number" placeholder="{{__('Fax')}}" required>
+							<label for="input">{{__('Fax')}}</label>
+							<input type="text" name="fax" class="form-control number" placeholder="{{__('Fax')}}">
 						</div>
 					</div>
 				</div>
@@ -131,10 +131,10 @@
 							<label for="input">{{__('Status')}} <span style='color:red;'>*</span></label>
 							<select class="form-select" aria-label="Default select example" name="status">
 								<option selected="" disabled="">Status</option>
-								<option value="Comment">Approved With Comment</option>
+								<option value="Approved With Comment">Approved With Comment</option>
 								<option value="Approved">Approved</option>
 								<option value="Rejected">Rejected To Resubmit</option>
-								<option value="Subject">Approvied Subject to Additional Info</option>
+								<option value="Subject">Approved Subject to Additional Info</option>
 								<option value="Pending">Pending</option>
 							</select>
 						</div>
