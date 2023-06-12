@@ -15,7 +15,7 @@
 
 <div class="row mainrow">
    <div class="col-md-6">
-     <h2>Project Dashboard</h2>
+     <h2>Task Report</h2>
    </div>
    <div class="col-md-6">
 
@@ -134,7 +134,7 @@
                           {{-- <th>{{__('Actual End Date')}}</th>
                           <th>{{__('Actual End Date')}}</th> --}}
                           <th>{{__('Projects Members')}}</th>
-                          <th class="hide_user">{{__('Projects Members')}}</th>
+                          {{-- <th class="hide_user">{{__('Projects Members')}}</th> --}}
                           <th>{{__('Progress')}}</th>
                         
                       </tr>
@@ -205,7 +205,7 @@
                               <td></td>
                               <td><h6 class="text-center">{{__('No Task Found.')}}</h6></td>
                               <td></td>
-                              <td class="hide_user"></td>
+                              {{-- <td class="hide_user"></td> --}}
                               <td></td>
                           </tr>
                   @endif
