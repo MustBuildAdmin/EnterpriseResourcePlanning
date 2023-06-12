@@ -1884,6 +1884,55 @@ class DiaryController extends Controller
 
     }
 
+
+    public function ConstructionDrawingsedit(Request $request)
+    {
+        try {
+              
+            return view("diary.Construction_DrawingsList.edit");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function ConstructionDrawingscreate(Request $request)
+    {
+        try {
+              
+            return view("diary.Construction_DrawingsList.create");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
+    public function shopdrawing_listedit(Request $request)
+    {
+        try {
+              
+            return view("diary.shop_drawings.edit");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
+    public function shopdrawing_listcreate(Request $request)
+    {
+        try {
+              
+            return view("diary.shop_drawings.create");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
     public function check_duplicate_diary_email(Request $request){
     
         try {

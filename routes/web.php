@@ -320,6 +320,37 @@ Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary
     );
 
 
+    
+Route::any('ConstructionDrawingsedit','DiaryController@ConstructionDrawingsedit')->name('ConstructionDrawingsedit')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscreate')->name('ConstructionDrawingscreate')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+    Route::any('shopdrawing_listedit','DiaryController@shopdrawing_listedit')->name('shopdrawing_listedit')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::any('shopdrawing_listcreate','DiaryController@shopdrawing_listcreate')->name('shopdrawing_listcreate')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+
      /*Daily  Reports */
 
      Route::any('daily_reports','DiaryController@daily_reports')->name('daily_reports')->middleware(
