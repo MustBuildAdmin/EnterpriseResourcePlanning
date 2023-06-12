@@ -62,7 +62,7 @@ class ProjectReportController extends Controller
             }
 
             if(Session::has('project_id')){
-                $projects->where('id',Session::get('project_id'));
+                $projects->where('projects.id',Session::get('project_id'));
             }
 
             if(isset($request->status)&& !empty($request->status)){
