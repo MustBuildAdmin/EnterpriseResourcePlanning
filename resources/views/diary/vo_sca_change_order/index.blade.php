@@ -368,7 +368,7 @@ h3, .h3 {
                    var app_add_bracket_value  = "(" + app_add_bracket_value_get + ")";
                }
                else{
-                   var app_add_bracket_value = value;
+                   var app_add_bracket_value = app_value;
                }
            }
 
