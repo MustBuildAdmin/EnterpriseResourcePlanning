@@ -54,6 +54,13 @@
                                         <option value="">Clear</option>
                                         <option value="">Dusty</option>
                                         <option value="">Muddy</option>
+                                        <option value="">Windy</option>
+                                        <option value="">Cool</option>
+                                        <option value="">Fog</option>
+                                        <option value="">Warm</option>
+                                        <option value="">Rain</option>
+                                        <option value="">Cold</option>
+                                        <option value="">Hot</option>
                                 </select>
                             </div>
                           </div>
@@ -67,6 +74,13 @@
                                         <option value="">Clear</option>
                                         <option value="">Dusty</option>
                                         <option value="">Muddy</option>
+                                        <option value="">Windy</option>
+                                        <option value="">Cool</option>
+                                        <option value="">Fog</option>
+                                        <option value="">Warm</option>
+                                        <option value="">Rain</option>
+                                        <option value="">Cold</option>
+                                        <option value="">Hot</option>
                                 </select>
                             </div>
                           </div>
@@ -111,7 +125,7 @@
 
                     <div class="col-md-12 l-section">
 
-                        <h2>Contractors</h2>
+                        <h2>Contractors Personnel</h2>
                         <br/>
 
 
@@ -123,7 +137,7 @@
                         <thead>
                         <tr>
                             <tr>
-                            <th>Posistion Name</th>
+                            <th>Posistion</th>
                             <th>No Of Person per Posistion</th>
                             <th></th>
                             <th></th>
@@ -142,8 +156,8 @@
                             <td class="col-xs-5">
                             <select class="form-control addbutton addCommon" required>
                                             <option value="" disabled selected>Select your option</option>
-                                            <option value="">Direct</option>
-                                            <option value="">InDirect</option>
+                                            <option value="">Direct Manpower</option>
+                                            <option value="">InDirect Manpower</option>
                                     </select>
                             </td>
                             <td class="col-xs-1 text-center">
@@ -176,19 +190,19 @@
                              <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total</label>
+                                        <label class="form-label">Total Indirect Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">&nbsp;</label>
+                                        <label class="form-label">Total Direct Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total Contractor: 22</label>
+                                        <label class="form-label">Total Contractor's Manpower: 22</label>
                                     </div>
                                 </div>
                             </div>
@@ -249,22 +263,23 @@
                              <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total</label>
+                                        <label class="form-label">Total Indirect Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">&nbsp;</label>
+                                        <label class="form-label">Total Direct Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total Sub Contractor: 45</label>
+                                        <label class="form-label">Total Contractor's Manpower: 22</label>
                                     </div>
                                 </div>
                             </div>
+                            
                             
 
                             <br/>
@@ -344,8 +359,17 @@
                                 <textarea class="form-control" rows="5" style="height: 200px;"></textarea>
                             </div>
 
+                            <div class="col-md-12">
+                                {{Form::label('Prepared By',__('Prepared By'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                <input class="form-control" type="textbox" />
+                            </div>
 
+                            <div class="col-md-12">
+                                {{Form::label('Title',__('Title'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                <input class="form-control" type="textbox" />
+                            </div>
 
+                            <br/>
 
                             <div class="card-footer text-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
