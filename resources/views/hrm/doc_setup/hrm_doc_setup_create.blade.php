@@ -30,8 +30,8 @@
             <label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label>
             <div class="choose-file ">
                 <label for="document" class="form-label">
-                    <input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" required>.
-                    {{-- <img id="image" class="mt-3" style="width:25%;"/> --}}
+                    <input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" required>
+                    <img id="image" class="mt-3" style="width:25%;"/>
                     <br>
                     <span class="show_document_file" style="color:green;"></span>
                 </label>
@@ -74,8 +74,8 @@
     document.getElementById('document').onchange = function () {
         $(".show_document_file").show();
         $(".show_document_file").html(this.files[0].name);
-        // var src = URL.createObjectURL(this.files[0])
-        // document.getElementById('image').src = src
+        var src = URL.createObjectURL(this.files[0])
+        document.getElementById('image').src = src
     }
 
     $('.forms_doc').validate({
