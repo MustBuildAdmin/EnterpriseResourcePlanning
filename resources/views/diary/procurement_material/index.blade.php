@@ -99,8 +99,8 @@ h3, .h3 {
                         <td>{{$data->fax}}</td>
                         <td>{{$data->email}}</td>
                         <td>{{$data->lead_time}}</td>
-                        <td>{{$data->target_delivery_date}}</td>
-                        <td>{{$data->target_approval_date}}</td>
+                        <td>{{ Utility::site_date_format($data->target_delivery_date,\Auth::user()->id) }}</td>
+                        <td>{{ Utility::site_date_format($data->target_approval_date,\Auth::user()->id) }}</td>
                         <td>{{$data->status}}</td>
                         @if(Gate::check('edit procurement material') || Gate::check('delete procurement material'))
                         <td>

@@ -4,12 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-  /* pagination */
-.pagination {
-	height: 36px;
-	margin: 18px 0;
-	color: #6c58bF;
-}
 
 .table-responsive {
     overflow-x: auto;
@@ -17,135 +11,6 @@
     background: #fff;
     max-width: 1072px !important;
    
-}
-
-.pagination ul {
-	display: inline-block;
-	*display: inline;
-       /* IE7 inline-block hack */
-	*zoom: 1;
-	margin-left: 0;
-	color: #ffffff;
-	margin-bottom: 0;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.pagination li {
-	display: inline;
-	color: #6c58bF;
-}
-
-.pagination a {
-	float: left;
-	padding: 0 14px;
-	line-height: 34px;
-	color: #6c58bF;
-	text-decoration: none;
-	border: 1px solid #ddd;
-	border-left-width: 0;
-}
-
-.pagination a:hover,
-   .pagination .active a {
-	background-color: var(--tblr-pagination-active-bg);
-	color: #ffffff;
-}
-
-.pagination a:focus {
-	background-color: #ffffff;
-	color: #ffffff;
-}
-
-.pagination .active a {
-	color: #ffffff;
-	cursor: default;
-}
-
-.pagination .disabled span,
-   .pagination .disabled a,
-   .pagination .disabled a:hover {
-	color: #999999;
-	background-color: transparent;
-	cursor: default;
-}
-
-.pagination li:first-child a {
-	border-left-width: 1px;
-	-webkit-border-radius: 3px 0 0 3px;
-	-moz-border-radius: 3px 0 0 3px;
-	border-radius: 3px 0 0 3px;
-}
-
-.pagination li:last-child a {
-	-webkit-border-radius: 0 3px 3px 0;
-	-moz-border-radius: 0 3px 3px 0;
-	border-radius: 0 3px 3px 0;
-}
-
-.pagination-centered {
-	text-align: center;
-}
-
-.pagination-right {
-	text-align: right;
-}
-
-.pager {
-	margin-left: 0;
-	margin-bottom: 18px;
-	list-style: none;
-	text-align: center;
-	color: #6c58bF;
-	*zoom: 1;
-}
-
-.pager:before,
-   .pager:after {
-	display: table;
-	content: "";
-}
-
-.pager:after {
-	clear: both;
-}
-
-.pager li {
-	display: inline;
-	color: #6c58bF;
-}
-
-.pager a {
-	display: inline-block;
-	padding: 5px 14px;
-	color: #6c58bF;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-}
-
-.pager a:hover {
-	text-decoration: none;
-	background-color: #f5f5f5;
-}
-
-.pager .next a {
-	float: right;
-}
-
-.pager .previous a {
-	float: left;
-}
-
-.pager .disabled a,
-   .pager .disabled a:hover {
-	color: #999999;
 }
 
 .dataTables_wrapper .dataTables_paginate {
@@ -244,11 +109,11 @@ h3, .h3 {
                 <tr>
                   <td>{{$loop->iteration}}</td>
                   <td>{{$bulk_data->issued_by}}</td>
-                  <td>{{$bulk_data->issued_date}}</td>
+                  <td>{{ Utility::site_date_format($bulk_data->issued_date,\Auth::user()->id) }}</td>
                   <td>{{$bulk_data->sca_reference}}</td>
                   <td>{{$bulk_data->vo_reference}}</td>
                   <td>{{$bulk_data->reference}}</td>
-                  <td>{{$bulk_data->vo_date}}</td>
+                  <td>{{ Utility::site_date_format($bulk_data->vo_date,\Auth::user()->id) }}</td>
                   <td>{{$bulk_data->claimed_omission_cost}}</td>
                   <td>{{$bulk_data->claimed_addition_cost}}</td>
                   <td>{{$bulk_data->claimed_net_amount}}</td>
@@ -298,7 +163,7 @@ h3, .h3 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
-{{-- <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script> --}}
+
 <script>
   $(document).on('keypress', function (e) {
     if (e.which == 13) {
@@ -372,7 +237,8 @@ h3, .h3 {
               ]
           });
         
-        
+      
+
           $(document).on("keyup", '.claimed_omission_cost', function (e) {
            
            var u1 = $('.claimed_omission_cost').val();
@@ -383,85 +249,7 @@ h3, .h3 {
            }
          });
 
-         $(document).on("keyup", '.claimed_addition_cost', function (e) {
-           
-           var n1 = $('.claimed_addition_cost').val();
-           var n2 = $('.claimed_omission_cost').val();
-           var n3 = $('.claimed_net_amount').val();
-
-
-           if(n1.indexOf('-') !== -1){
-             var r  = "(" + '' + ")";
-             $('.claimed_addition_cost').val(r);
-           }
-
-           if (n1.indexOf('(') !== -1) {
-            console.log("n1",n1);
-               n1_minus = 'minus';
-               var c = n1.slice(1,-1);
-           }
-           else{
-            console.log("n11",n1);
-               n1_minus = '+';
-               var c = n1;
-           }
-
-           if (n2.indexOf('(') !== -1) {
-               n2_minus = 'minus';
-               var cc   = n2.slice(1,-1);
-           }
-           else{
-               n2_minus = '+';
-               var cc   = n2;
-           }
-
-           if(n1_minus == 'minus' && n2_minus == 'minus'){
-            var r = parseInt(c) + parseInt(cc);
-           
-            }
-           else if(n1_minus == "minus"){
-                var r = cc - c;
-            }
-            else if(n2_minus == "minus"){
-                var r = cc - c;
-            }
-            else{
-                var r = parseInt(c) + parseInt(cc);
-            }
-
-            
-            if(cc>c && n2_minus == 'minus'){
-                var r = cc- c;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
-                console.log("1");
-            }else if(cc>c && n2_minus == 'minus'){
-                var r = cc - c;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
-                console.log("2");
-            }else if(cc>c && n1_minus == 'minus'){
-                var r = c - cc;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
-                console.log("3");
-            }else if(cc<c && n2_minus == 'minus'){
-                var r = c - cc;
-                var r  =r
-                $('.claimed_net_amount').val(r);
-                console.log("4");
-            }else if(cc<c && n1_minus == 'minus'){
-                var r = c - cc;
-                var r  ="(" + r + ")" ;
-                $('.claimed_net_amount').val(r);
-                console.log("5");
-            }
-            else{
-              $('.claimed_net_amount').val(r);
-              console.log("6");
-            }
-
-        });
+        
 
         $(document).on("keyup", '.approved_omission_cost', function (e) {
            
@@ -474,83 +262,142 @@ h3, .h3 {
 
          });
 
-         $(document).on("keyup", '.approved_net_cost', function (ev) {
+         $(document).on("keyup", '.claimed_addition_cost', function (e) {
            
-           var m1 = $('.approved_addition_cost').val();
-           var m2 = $('.approved_omission_cost').val();
-           var m3 = $('.approved_net_cost').val();
+           var additional_cost = $('.claimed_addition_cost').val();
+           var omission_cost = $('.claimed_omission_cost').val();
 
-
-           if(m1.indexOf('-') !== -1){
-             var q  = "(" + '' + ")";
-             $('.approved_addition_cost').val(q);
+           if(additional_cost.indexOf('-') !== -1){
+               var add_bracket  = "(" + '' + ")";
+               $('.claimed_addition_cost').val(add_bracket);
            }
 
-           if (m1.indexOf('(') !== -1) {
-            
-               m1_minus = 'minus';
-               var d = m1.slice(1,-1);
+           if (additional_cost.indexOf('(') !== -1) {
+               additional_cost_minus = 'minus';
+               additional_cost_remove_bracket = additional_cost.slice(1,-1);
            }
            else{
-            
-              m1_minus = '+';
-               var d = m1;
+               additional_cost_minus = 'plus';
+               var additional_cost_remove_bracket = additional_cost;
            }
 
-           if (m2.indexOf('(') !== -1) {
-               m2_minus = 'minus';
-               var dd   = m2.slice(1,-1);
+           if (omission_cost.indexOf('(') !== -1) {
+               omission_cost_minus = 'minus';
+               omission_cost_remove_bracket   = omission_cost.slice(1,-1);
            }
            else{
-               m2_minus = '+';
-               var dd   = m2;
+               omission_cost_minus = 'plus';
+               omission_cost_remove_bracket   = omission_cost;
            }
 
-           if(m1_minus == 'minus' && m2_minus == 'minus'){
-            var q = parseInt(d) + parseInt(dd);
+           if(additional_cost_minus == 'minus' && omission_cost_minus == 'minus'){
+               var get_value = parseInt(additional_cost_remove_bracket) + parseInt(omission_cost_remove_bracket);
+               var value = "-"+get_value;
+           }
+           else if(omission_cost_minus == "minus"){
+               var value = -omission_cost_remove_bracket + parseInt(additional_cost_remove_bracket);
+           }
+           else if(additional_cost_minus == "minus"){
+               var value = omission_cost_remove_bracket - additional_cost_remove_bracket;
+           }
+           else{
+               var value = parseInt(additional_cost_remove_bracket) + parseInt(omission_cost_remove_bracket);
+           }
+
+           if(isNaN(value)){
+               console.log("Nan");
+           }else{
+               if(String(value).indexOf('-') !== -1){
+                   add_bracket_value_get = value.toString().replace('-','');
+                   var add_bracket_value  = "(" + add_bracket_value_get + ")";
+               }
+               else{
+                   var add_bracket_value = value;
+               }
+           }
+
+           $('.claimed_net_amount').val(add_bracket_value);
+       });
+
+       $(document).on("keyup", '.approved_addition_cost', function (e) {
            
-            }
-           else if(m1_minus == "minus"){
-                var q = dd - d;
-            }
-            else if(n2_minus == "minus"){
-                var q = dd - d;
-            }
-            else{
-                var q = parseInt(d) + parseInt(dd);
-            }
+           var app_additional_cost = $('.approved_addition_cost').val();
+           var app_omission_cost = $('.approved_omission_cost').val();
 
-            
-            if(dd>d && m2_minus == 'minus'){
-                var q = dd- d;
-                var q  ="(" + q + ")" ;
-                $('.approved_net_cost').val(r);
-                console.log("1");
-            }else if(dd>d && m2_minus == 'minus'){
-                var q = dd - d;
-                var q  ="(" + q + ")" ;
-                $('.approved_net_cost').val(r);
-                console.log("2");
-            }else if(dd>d && m1_minus == 'minus'){
-                var q = d - dd;
-                var q  ="(" + q + ")" ;
-                $('.approved_net_cost').val(q);
-                console.log("3");
-            }else if(dd<d && m2_minus == 'minus'){
-                var q = dd - d;
-                var q  ="(" + q + ")" ;
-                $('.approved_net_cost').val(q);
-                console.log("4");
-            }else if(dd<d && m1_minus == 'minus'){
-                var q = d - dd;
-                var q  ="(" + q + ")" ;
-                $('.approved_net_cost').val(q);
-                console.log("5");
-            }else{
-              $('.approved_net_cost').val(q);
-              console.log("6");
-            }
+           if(app_additional_cost.indexOf('-') !== -1){
+               var app_add_bracket  = "(" + '' + ")";
+               $('.approved_addition_cost').val(app_add_bracket);
+           }
 
+           if (app_additional_cost.indexOf('(') !== -1) {
+               app_additional_cost_minus = 'minus';
+               app_additional_cost_remove_bracket = app_additional_cost.slice(1,-1);
+           }
+           else{
+                app_additional_cost_minus = 'plus';
+                var app_additional_cost_remove_bracket = app_additional_cost;
+           }
+
+           if (app_omission_cost.indexOf('(') !== -1) {
+               app_omission_cost_minus = 'minus';
+               app_omission_cost_remove_bracket   = app_omission_cost.slice(1,-1);
+           }
+           else{
+               app_omission_cost_minus = 'plus';
+               app_omission_cost_remove_bracket   = app_omission_cost;
+           }
+
+           if(app_additional_cost_minus == 'minus' && app_omission_cost_minus == 'minus'){
+               var app_get_value = parseInt(app_additional_cost_remove_bracket) + parseInt(app_omission_cost_remove_bracket);
+               var app_value = "-"+app_get_value;
+           }
+           else if(app_omission_cost_minus == "minus"){
+               var app_value = -app_omission_cost_remove_bracket + parseInt(app_additional_cost_remove_bracket);
+           }
+           else if(app_additional_cost_minus == "minus"){
+               var app_value = app_omission_cost_remove_bracket - app_additional_cost_remove_bracket;
+           }
+           else{
+               var app_value = parseInt(app_additional_cost_remove_bracket) + parseInt(app_omission_cost_remove_bracket);
+           }
+
+           if(isNaN(app_value)){
+               console.log("Nan");
+           }else{
+               if(String(app_value).indexOf('-') !== -1){
+                   app_add_bracket_value_get = app_value.toString().replace('-','');
+                   var app_add_bracket_value  = "(" + app_add_bracket_value_get + ")";
+               }
+               else{
+                   var app_add_bracket_value = value;
+               }
+           }
+
+           $('.approved_net_cost').val(app_add_bracket_value);
+       });
+
+       $(document).on("paste", '.impact_time', function (event) {
+            if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+                event.preventDefault();
+            }
+        });
+
+        $(document).on("keypress", '.impact_time', function (event) {
+            if(event.which < 48 || event.which >58){
+                return false;
+            }
+        });
+
+        $(document).on("paste", '.granted_eot', function (event) {
+            if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+                event.preventDefault();
+            }
+        });
+
+        $(document).on("keypress", '.granted_eot', function (event) {
+            if(event.which < 48 || event.which >58){
+                return false;
+            }
         });
 
 });

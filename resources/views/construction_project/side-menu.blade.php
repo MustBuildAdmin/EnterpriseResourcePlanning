@@ -219,35 +219,35 @@
                 </li>
 
                 {{-- Dairy --}}
-                <li class="">
+                <li class="{{ (Request::route()->getName() == 'drawing_list' || Request::route()->getName() == 'daily_reports' || Request::route()->getName() == 'show_project_specification' || Request::route()->getName() == 'variation_scope_change' || Request::route()->getName() == 'show_consultant_direction' || Request::route()->getName() == 'rfi_show_info' || Request::route()->getName() == 'procurement_material') ? ' active' : '' }}">
                     <a href="{{route('diary')}}"  data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
                         aria-controls="pageSubmenuDairy"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Diary') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuDairy">
-                        <li class="">
+                        <li class="{{ (Request::segment(1) == 'drawing_list')?'active':''}}">
                             <a href="{{ route('drawing_list') }}" class="dropdown-item">{{ __('Drawing') }}</a>
                         </li>
-                        <li class="">
+                        <li class="{{ (Request::segment(1) == 'daily_reports')?'active':''}}">
                             <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                         </li>
                         @can('manage project specification')
-                        <li class="">
+                        <li class="{{ (Request::segment(1) == 'show_project_specification')?'active':''}}">
                             <a href="{{ route('show_project_specification') }}" class="dropdown-item">{{ __('Project Specifications Summary') }}</a>
                         </li>
                         @endcan
                         @can('manage vochange')
-                        <li class="">
+                        <li class="{{ (Request::segment(1) == 'variation_scope_change')?'active':''}}">
                             <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
                         </li>
                         @endcan
                         @can('manage directions')
-                        <li class="">
+                        <li class="{{ (Request::segment(1) == 'show_consultant_direction')?'active':''}}">
                             <a href="{{ route('show_consultant_direction') }}" class="dropdown-item">{{ __('Directions') }}</a>
                         </li>
                         @endcan
                         @can('manage RFI')
-                        <li class="">
+                        <li class="{{ (Request::segment(1) == 'rfi_show_info')?'active':''}}">
                             <a href="{{ route('rfi_show_info') }}" class="dropdown-item">{{ __('RFI') }}</a>
                         </li>
                         @endcan
@@ -255,7 +255,7 @@
                             <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
                         </li>
                         @can('manage procurement material')
-                        <li class="">
+                        <li class="{{ (Request::segment(1) == 'procurement_material')?'active':''}}">
                             <a  href="{{ route('procurement_material') }}" class="dropdown-item">{{ __('Procurement Material Supply Log') }}</a>
                         </li>
                         @endcan
