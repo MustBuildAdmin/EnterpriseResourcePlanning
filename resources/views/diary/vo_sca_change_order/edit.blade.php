@@ -68,14 +68,14 @@
           <div class="row">
             <div class="col-6 mb-3">
               <div class="form-group">
-                <label for="Input">{{__('Reference')}} <span style='color:red;'>*</span></label>
-                <input type="text" value="@if($id!='' && $dairy_data->reference!=''){{$dairy_data->reference}}@endif" name="reference" class="form-control" placeholder="{{__('Reference')}}" required>
+                <label for="Input">{{__('Reference')}}</label>
+                <input type="text" value="@if($id!='' && $dairy_data->reference!=''){{$dairy_data->reference}}@endif" name="reference" class="form-control" placeholder="{{__('Reference')}}" >
               </div>
             </div>
             <div class="col-6 mb-3">
               <div class="form-group">
-                <label for="Input">{{__('Date')}} <span style='color:red;'>*</span></label>
-                <input name="vo_date" value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif" type="date" class="form-control" placeholder="Text input" required>
+                <label for="Input">{{__('Date')}}</label>
+                <input name="vo_date" value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif" type="date" class="form-control" placeholder="Text input" >
               </div>
             </div>
           </div>

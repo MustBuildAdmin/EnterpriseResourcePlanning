@@ -201,7 +201,7 @@ Route::any('update_project_specification','DiaryController@update_project_specif
 );
 
 
-Route::any('show_project_specification','DiaryController@show_project_specification')->name('show_project_specification')->middleware(
+Route::get('show_project_specification','DiaryController@show_project_specification')->name('show_project_specification')->middleware(
     [
         'auth',
         'XSS',

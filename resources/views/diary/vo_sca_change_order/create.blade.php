@@ -53,14 +53,14 @@
           <div class="row">
             <div class="col-6 mb-3">
               <div class="form-group">
-                <label for="Input">{{__('Referene')}} <span style='color:red;'>*</span></label>
-                <input type="text" name="reference" class="form-control" placeholder="{{__('Referene')}}" required>
+                <label for="Input">{{__('Referene')}}</label>
+                <input type="text" name="reference" class="form-control" placeholder="{{__('Referene')}}">
               </div>
             </div>
             <div class="col-6 mb-3">
               <div class="form-group">
-                <label for="Input">{{__('Date')}} <span style='color:red;'>*</span></label>
-                <input name="vo_date" type="date" class="form-control" placeholder="Text input" required>
+                <label for="Input">{{__('Date')}}</label>
+                <input name="vo_date" type="date" class="form-control" placeholder="Text input">
               </div>
             </div>
           </div>
