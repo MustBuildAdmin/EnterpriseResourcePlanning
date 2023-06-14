@@ -28802,14 +28802,14 @@ table.dataTable>tbody>tr {
 }
 
 .sitereportmain .table-responsive {
-     /* overflow-x: auto; */
+    /* overflow-x: auto; */
     -webkit-overflow-scrolling: touch;
     /* background: #fff; */
     /* max-width: 1072px; */
     /* overflow: auto; */
     float: left;
     margin: 0 auto;
-    width: 1150px;
+    width: 1037px;
 }
 
 
@@ -28826,6 +28826,9 @@ table.dataTable>tbody>tr {
     margin: 6px 0 0 0;
 }
 
+.dropdownselectlist {
+    margin: 0 0 1% 0;
+}
 
 @media (max-width: 768px) {
 #sidebar ul li .icon{

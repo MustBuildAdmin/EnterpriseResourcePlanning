@@ -54,6 +54,13 @@
                                         <option value="">Clear</option>
                                         <option value="">Dusty</option>
                                         <option value="">Muddy</option>
+                                        <option value="">Windy</option>
+                                        <option value="">Cool</option>
+                                        <option value="">Fog</option>
+                                        <option value="">Warm</option>
+                                        <option value="">Rain</option>
+                                        <option value="">Cold</option>
+                                        <option value="">Hot</option>
                                 </select>
                             </div>
                           </div>
@@ -67,6 +74,13 @@
                                         <option value="">Clear</option>
                                         <option value="">Dusty</option>
                                         <option value="">Muddy</option>
+                                        <option value="">Windy</option>
+                                        <option value="">Cool</option>
+                                        <option value="">Fog</option>
+                                        <option value="">Warm</option>
+                                        <option value="">Rain</option>
+                                        <option value="">Cold</option>
+                                        <option value="">Hot</option>
                                 </select>
                             </div>
                           </div>
@@ -109,21 +123,21 @@
                          &nbsp;
                         </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-12 l-section">
 
-                        <h2>Contractors</h2>
+                        <h2>Contractors Personnel</h2>
                         <br/>
 
 
                         
 
 
-                        <table class="table tableadd">
+                        <table class="table tableadd form">
                            
                         <thead>
                         <tr>
                             <tr>
-                            <th>Posistion Name</th>
+                            <th>Posistion</th>
                             <th>No Of Person per Posistion</th>
                             <th></th>
                             <th></th>
@@ -142,8 +156,8 @@
                             <td class="col-xs-5">
                             <select class="form-control addbutton addCommon" required>
                                             <option value="" disabled selected>Select your option</option>
-                                            <option value="">Direct</option>
-                                            <option value="">InDirect</option>
+                                            <option value="">Direct Manpower</option>
+                                            <option value="">InDirect Manpower</option>
                                     </select>
                             </td>
                             <td class="col-xs-1 text-center">
@@ -176,19 +190,19 @@
                              <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total</label>
+                                        <label class="form-label">Total Indirect Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">&nbsp;</label>
+                                        <label class="form-label">Total Direct Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total Contractor: 22</label>
+                                        <label class="form-label">Total Contractor's Manpower: 22</label>
                                     </div>
                                 </div>
                             </div>
@@ -197,13 +211,13 @@
                             <br/>
 
 
-                <div class="col-md-12">
+                <div class="col-md-12 l-section">
 
                         <h2>Sub Contractors</h2>
                         <br/>
 
 
-                        <table class="table tableadd">
+                        <table class="table tableadd form">
                         <thead>
                             <tr>
                             <th>Posistion Name</th>
@@ -249,35 +263,35 @@
                              <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total</label>
+                                        <label class="form-label">Total Indirect Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">&nbsp;</label>
+                                        <label class="form-label">Total Direct Manpower:  45</label>
                                     </div>
                                     </div>
                                     <div class="col-sm-6 col-md-4">
                                     <div class="mb-3">
                                         <label class="form-label">&nbsp;</label>
-                                        <label class="form-label">Total Sub Contractor: 45</label>
+                                        <label class="form-label">Total Contractor's Manpower: 22</label>
                                     </div>
                                 </div>
                             </div>
                             
+                            
 
                             <br/>
+ 
 
-
-
-                        <div class="col-md-12">
+                        <div class="col-md-12 l-section">
 
                             <h2>Major Equipment on Project</h2>
                             <br/>
 
 
-                            <table class="table tableadd">
+                            <table class="table tableadd form">
                             <thead>
                                 <tr>
                                 <th>Equipment Name</th>
@@ -345,8 +359,17 @@
                                 <textarea class="form-control" rows="5" style="height: 200px;"></textarea>
                             </div>
 
+                            <div class="col-md-12">
+                                {{Form::label('Prepared By',__('Prepared By'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                <input class="form-control" type="textbox" />
+                            </div>
 
+                            <div class="col-md-12">
+                                {{Form::label('Title',__('Title'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                <input class="form-control" type="textbox" />
+                            </div>
 
+                            <br/>
 
                             <div class="card-footer text-end">
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -500,13 +523,16 @@ div#choices_multiple1_chosen {
 
 
                                     
-    function formatRows(main, prefer, common) {
-    return '<tr><td class="col-xs-3"><input placeholder="Enter POSISTION Name" type="text" value="' +main+ '" class="form-control editable" /></td>' +
-            '<td class="col-xs-3"><input placeholder="Enter NO OF PERSON PER POSISTION" type="text" value="' +prefer+ '" class="form-control editable" /></td>' +
-            '<td class="col-xs-3"><select placeholder="Please select your option" type="text" value="' +common+ '" class="form-control editable" /> <option value="" disabled="" selected="">Select your option</option> <option value="">Direct</option><option value="">InDirect</option> </select></td>' +
-            '<td class="col-xs-1 text-center"><a class="bttoncreate" href="#" onClick="deleteRow(this)">' +
-            '<i class="ti ti-trash text-white" aria-hidden="true"></a></td></tr>';
+  function formatRows(main, prefer, common) {
+    return '<tr><td class="col-md-3"><input placeholder="Enter POSISTION Name" type="text" value="' +main+ '" class="form-control editable" disabled/></td>' +
+            '<td class="col-md-3"><input placeholder="Enter NO OF PERSON PER POSISTION" type="text" value="' +prefer+ '" class="form-control editable" disabled/></td>' +
+            '<td class="col-md-3"><select placeholder="Please select your option" type="text" value="' +common+ '" class="form-control editable"  disabled/> <option value="" disabled="" selected="">Select your option</option> <option value="">Direct</option><option value="">InDirect</option> </select></td>' +
+            '<td class="col-md-1 text-center"><a class="bttoncreate c-link js-toggleForm" onClick="formedit(this)"><img class="imageedit" src="assets/images/icons/edit.png"/> </a>' +
+            '<a class="bttoncreate" href="#" onClick="deleteRow(this)"> <i class="ti ti-trash text-white" aria-hidden="true" /></a></td></tr>';
     };
+
+
+    
 
     function deleteRow(trash) {
     $(trash).closest('tr').remove();
@@ -575,10 +601,23 @@ var enableFormEdit = function(selector){
 disableFormEdit(form_ele);
 
 
+function formedit () {
+
+  //  alert("hi");
+
+    $('.form').removeClass('form--disabled').addClass('form--enabled');
+    $('.form' + ' input, ' + selector + ' select, ' + selector + ' button ').prop('disabled', false);
+
+}
+
+
 $('.js-toggleForm').click(function(){
    // get the status of form
   var form_status = $(form_ele).hasClass('form--disabled') ? 'disabled' : 'enabled';
   
+
+
+
   // check if disabled or enabled
   switch (form_status){
     case 'disabled':

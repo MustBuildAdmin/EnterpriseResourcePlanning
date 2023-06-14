@@ -49,8 +49,8 @@
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="input">{{__('Mobile/HP')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="mobile_hp_no" value="{{$data->mobile_hp_no}}" class="form-control number" placeholder="{{__('Mobile/HP')}}" required>
+							<label for="input">{{__('Mobile/HP')}}</label>
+							<input type="text" name="mobile_hp_no" value="{{$data->mobile_hp_no}}" class="form-control number" placeholder="{{__('Mobile/HP')}}" >
 						</div>
 					</div>
 				</div>
@@ -58,14 +58,14 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="input">{{__('Telephone')}} <span style='color:red;'>*</span></label>
-							<input type="tel" maxlength="16"  name="tel" value="{{$data->tel}}"  class="form-control number" placeholder="{{__('Telephone')}}" required>
+							<label for="input">{{__('Telephone')}}</label>
+							<input type="tel" maxlength="16"  name="tel" value="{{$data->tel}}"  class="form-control number" placeholder="{{__('Telephone')}}" >
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label for="input">{{__('Fax')}} <span style='color:red;'>*</span></label>
-							<input type="text" maxlength="16" name="fax" value="{{$data->fax}}"  class="form-control number" placeholder="{{__('Fax')}}" required>
+							<label for="input">{{__('Fax')}}</label>
+							<input type="text" maxlength="16" name="fax" value="{{$data->fax}}"  class="form-control number" placeholder="{{__('Fax')}}" >
 						</div>
 					</div>
 				</div>
@@ -162,10 +162,10 @@
 							<label for="input">{{__('Status')}} <span style='color:red;'>*</span></label>
 							<select class="form-select" aria-label="Default select example" name="status">
 								<option selected="" disabled="">Status</option>
-								<option value="Comment" @if('Comment'==$data->status){ selected } @endif>Comment</option>
+								<option value="Approved With Comment" @if('Approved With Comment'==$data->status){ selected } @endif>Approved With Comment</option>
 								<option value="Approved" @if('Approved'==$data->status){ selected } @endif>Approved</option>
-								<option value="Rejected" @if('Rejected'==$data->status){ selected } @endif>Rejected To Resubmit</option>
-								<option value="Subject" @if('Subject'==$data->status){ selected } @endif>Approvied Subject to Additional Info</option>
+								<option value="Rejected To Resubmit" @if('Rejected To Resubmit'==$data->status){ selected } @endif>Rejected To Resubmit</option>
+								<option value="Approved Subject to Additional Info" @if('Approved Subject to Additional Info'==$data->status){ selected } @endif>Approved Subject to Additional Info</option>
 								<option value="Pending" @if('Pending'==$data->status){ selected } @endif>Pending</option>
 							</select>
 						</div>
