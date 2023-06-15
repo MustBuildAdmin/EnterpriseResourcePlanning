@@ -201,7 +201,7 @@ Route::any('update_project_specification','DiaryController@update_project_specif
 );
 
 
-Route::any('show_project_specification','DiaryController@show_project_specification')->name('show_project_specification')->middleware(
+Route::get('show_project_specification','DiaryController@show_project_specification')->name('show_project_specification')->middleware(
     [
         'auth',
         'XSS',
@@ -313,6 +313,37 @@ Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary
     /* Drawing List */
 
     Route::any('drawing_list','DiaryController@drawing_list')->name('drawing_list')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+
+    
+Route::any('ConstructionDrawingsedit','DiaryController@ConstructionDrawingsedit')->name('ConstructionDrawingsedit')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscreate')->name('ConstructionDrawingscreate')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+    Route::any('shopdrawing_listedit','DiaryController@shopdrawing_listedit')->name('shopdrawing_listedit')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::any('shopdrawing_listcreate','DiaryController@shopdrawing_listcreate')->name('shopdrawing_listcreate')->middleware(
         [
             'auth',
             'XSS',
@@ -2893,6 +2924,8 @@ Route::get(
         'XSS',
     ]
 );
+Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth','XSS',]);
+Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')->middleware(['auth','XSS',]);
 // task progress update for construction part
     Route::any(
         'con_taskupdate', [
@@ -2917,6 +2950,10 @@ Route::get(
         'XSS',
     ]
 );
+
+Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
+Route::any('add_particular_task/{task_id}/{get_date}', 'ProjectTaskController@add_particular_task')->name('add_particular_task')->middleware(['auth','XSS',]);
+Route::any('edit_particular_task/{task_progress_id}/{task_id}', 'ProjectTaskController@edit_particular_task')->name('edit_particular_task')->middleware(['auth','XSS',]);
 
 Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
 Route::get('edit_task_progress', 'ProjectTaskController@edit_task_progress')->name('edit_task_progress')->middleware(['auth','XSS',]);

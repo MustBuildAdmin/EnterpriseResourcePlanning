@@ -102,6 +102,7 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
+            return;
             // dd($request->all());
             $project = new Project();
             $project->project_name = $request->project_name;
@@ -1656,6 +1657,8 @@ class ProjectController extends Controller
         $get_all_dates    = [];
         $fileNameToStore1 = '';
         $url              = '';
+        $task_id          = $request->task_id;
+        $task             = Con_task::where('main_id',$task_id)->first();
 
         if(\Auth::user()->type == 'company'){
             $get_holiday = Holiday::where('created_by',\Auth::user()->id)->get();
@@ -1668,85 +1671,93 @@ class ProjectController extends Controller
             $get_all_dates[] = $this->getBetweenDates($check_holiday->date, $check_holiday->end_date);
         }
 
-        $holiday_merge = $this->array_flatten($get_all_dates);
+        $holiday_merge    = $this->array_flatten($get_all_dates);
+        $date1            = date_create($task->start_date);
+        $date2            = date_create($task->end_date);
+        $diff             = date_diff($date1,$date2);
+        $file_id_array    = array();
 
-        $task_id = $request->task_id;
-        $task    = Con_task::where('main_id',$task_id)->first();
-        $date1   = date_create($task->start_date);
-        $date2   = date_create($task->end_date);
-        $diff    = date_diff($date1,$date2);
-
-        $no_working_days = $diff->format("%a");
-        $no_working_days = $no_working_days+1; // include the last day
+        $no_working_days  = $diff->format("%a");
+        $no_working_days  = $no_working_days+1; // include the last day
         // $no_working_days=$task->duration;
 
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' This is holiday Your Record has been not recorded! Please Contact Your Company.'));
         }
         else{
-            if (!empty($request->attachment_file_name)) {
-                $filenameWithExt1 = $request->file("attachment_file_name")->getClientOriginalName();
-                $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
-                $extension1       = $request->file("attachment_file_name")->getClientOriginalExtension();
-                $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
-                $dir              = "uploads/task_particular_list/";
+            if($request->attachment_file_name != null){
+                foreach($request->attachment_file_name as $file_req){
 
-                $image_path = $dir . $filenameWithExt1;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
-                }
+                    $filenameWithExt1 = $file_req->getClientOriginalName();
+                    $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                    $extension1       = $file_req->getClientOriginalExtension();
+                    $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+                    $dir              = "uploads/task_particular_list/";
+                    $image_path       = $dir . $filenameWithExt1;
 
-                $path = Utility::upload_file($request,"attachment_file_name",$fileNameToStore1,$dir,[]);
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
 
-                if ($path["flag"] == 1) {
-                    $url = $path["url"];
+                    $path = Utility::multi_upload_file($file_req,"file_req",$fileNameToStore1,$dir,[]);
+
+                    if ($path["flag"] == 1) {
+                        $url = $path["url"];
+
+                        $file_insert = array(
+                            'task_id'    => $task_id,
+                            'project_id' => $task->project_id,
+                            'filename'   => $fileNameToStore1,
+                            'file_path'  => $url
+                        );
+                        $file_insert_id = DB::table('task_progress_file')->insertGetId($file_insert);
+                        $file_id_array[] = $file_insert_id;
+                    }
+                    else {
+                        return redirect()->back()->with("error", __($path["msg"]));
+                    }
                 }
-                else {
-                    return redirect()->back()->with("error", __($path["msg"]));
-                }
+                $implode_file_id = count($file_id_array) != 0 ? implode(',',$file_id_array) : 0;
             }
             else{
-                $check_file_name  = Task_progress::where('task_id',$task_id)
-                    ->where('project_id',$task->project_id)
-                    ->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
-                if($check_file_name != null){
-                    $fileNameToStore1 = $check_file_name->filename;
-                    $url              = $check_file_name->path_location;
+                $get_file_id = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
+                if($get_file_id != null){
+                    $implode_file_id = $get_file_id->file_id;
+                }
+                else{
+                    $implode_file_id = 0;
                 }
             }
 
+            $date_status = strtotime($task->end_date) > time() ? 'As Per Time' : 'Overdue';
+
             if(\Auth::user()->type == 'company'){
-                if($task->users != null){
-                    $assign_to  = $task->users;
-                }
-                else{
-                    $assign_to  = null;
-                }
+                $assign_to = $task->users != null ? $task->users : null;
             }
             else{
                 $assign_to  = \Auth::user()->id;
             }
 
             // insert details
-            $array=array(
-                'task_id'        => $task_id,
-                'assign_to'      => $assign_to,
-                'percentage'     => $request->percentage,
-                'description'    => $request->description,
-                'user_id'        => $request->user_id,
-                'project_id'     => $task->project_id,
-                'filename'       => $fileNameToStore1,
-                'path_location'  => $url,
-                'created_at'     => $request->get_date, //Planned Date
-                'record_date'    => date('Y-m-d H:m:s') //Actual Date
+            $array = array(
+                'task_id'     => $task_id,
+                'assign_to'   => $assign_to,
+                'percentage'  => $request->percentage,
+                'description' => $request->description,
+                'user_id'     => $request->user_id,
+                'project_id'  => $task->project_id,
+                'date_status' => $date_status,
+                'file_id'     => $implode_file_id,
+                'created_at'  => $request->get_date, //Planned Date
+                'record_date' => date('Y-m-d H:m:s') //Actual Date
             );
 
-            $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
+            $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
             if($check_data == null){
                 Task_progress::insert($array);
             }
             else{
-                Task_progress::where('task_id',$task_id)->where('user_id',$request->user_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+                Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
             }
 
             $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');
@@ -1758,7 +1769,6 @@ class ProjectController extends Controller
 
             return redirect()->back()->with('success', __('Task successfully Updated.'));
         }
-
     }
     public function taskpersentage_update($project_id)
     {
