@@ -102,7 +102,6 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
-            return;
             // dd($request->all());
             $project = new Project();
             $project->project_name = $request->project_name;
@@ -192,9 +191,9 @@ class ProjectController extends Controller
                 if (file_exists(public_path($pathname))){
                     unlink(public_path($pathname));
                 }
-              
+
                 $responseBody = json_decode($responseBody, true);
-                
+
                 if(isset($responseBody['data']['data'])){
 
                     foreach($responseBody['data']['data'] as $key=>$value){
@@ -1664,7 +1663,7 @@ class ProjectController extends Controller
         else{
             $get_holiday = Holiday::where('created_by',\Auth::user()->creatorId())->get();
         }
-      
+
         foreach($get_holiday as $check_holiday){
             $get_all_dates[] = $this->getBetweenDates($check_holiday->date, $check_holiday->end_date);
         }
@@ -1691,17 +1690,17 @@ class ProjectController extends Controller
                 $extension1       = $request->file("attachment_file_name")->getClientOriginalExtension();
                 $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
                 $dir              = "uploads/task_particular_list/";
-    
+
                 $image_path = $dir . $filenameWithExt1;
                 if (\File::exists($image_path)) {
                     \File::delete($image_path);
                 }
-                
+
                 $path = Utility::upload_file($request,"attachment_file_name",$fileNameToStore1,$dir,[]);
-    
+
                 if ($path["flag"] == 1) {
                     $url = $path["url"];
-                } 
+                }
                 else {
                     return redirect()->back()->with("error", __($path["msg"]));
                 }
@@ -1778,34 +1777,34 @@ class ProjectController extends Controller
     function getBetweenDates($startDate, $endDate) {
         $array = array();
         $interval = new DateInterval('P1D');
-     
+
         $realEnd = new DateTime($endDate);
         $realEnd->add($interval);
-     
+
         $period = new DatePeriod(new DateTime($startDate), $interval, $realEnd);
-     
+
         $array = [];
         foreach($period as $date) {
             array_push($array,$date->format('Y-m-d'));
         }
-     
+
         return $array;
     }
 
-    function array_flatten($array) { 
-        if (!is_array($array)) { 
-            return FALSE; 
-        } 
-        $result = array(); 
-        foreach ($array as $key => $value) { 
-            if (is_array($value)) { 
-                $result = array_merge($result, $this->array_flatten($value)); 
-            } 
-            else { 
-                $result[$key] = $value; 
-            } 
-        } 
-        return $result; 
-    } 
+    function array_flatten($array) {
+        if (!is_array($array)) {
+            return FALSE;
+        }
+        $result = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, $this->array_flatten($value));
+            }
+            else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
 
 }
