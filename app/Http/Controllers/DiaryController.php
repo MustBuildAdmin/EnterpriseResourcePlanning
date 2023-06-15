@@ -1029,7 +1029,7 @@ class DiaryController extends Controller
             if(\Auth::user()->can('manage project specification')){
 
                 $project_id = Session::get('project_id');
-                $dairy_data = ProjectSpecification::where('user_id',Auth::id())->where('project_id',$project_id)->orderBy('id', 'DESC')->get();
+                $dairy_data = ProjectSpecification::where('user_id',Auth::id())->where('project_id',$project_id)->orderBy('id', 'ASC')->get();
                 return view('diary.project_specification.index',compact('project_id','dairy_data'));
         
             }else{
@@ -1883,6 +1883,55 @@ class DiaryController extends Controller
         }
 
     }
+
+
+    public function ConstructionDrawingsedit(Request $request)
+    {
+        try {
+              
+            return view("diary.Construction_DrawingsList.edit");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function ConstructionDrawingscreate(Request $request)
+    {
+        try {
+              
+            return view("diary.Construction_DrawingsList.create");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
+    public function shopdrawing_listedit(Request $request)
+    {
+        try {
+              
+            return view("diary.shop_drawings.edit");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
+    public function shopdrawing_listcreate(Request $request)
+    {
+        try {
+              
+            return view("diary.shop_drawings.create");
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+
 
     public function check_duplicate_diary_email(Request $request){
     
