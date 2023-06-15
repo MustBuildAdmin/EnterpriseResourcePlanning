@@ -1,8 +1,8 @@
 <table class="table" id="example2">
     <thead>
     <tr>
-        <th scope="col">{{__('Projects')}}</th>
         <th scope="col">{{__('Tasks')}}</th>
+        <th scope="col">{{__('Status')}}</th>
         <th scope="col">{{__('Progress')}}</th>
         <th scope="col">{{__('Start Date')}}</th>
         <th scope="col">{{__('End Date')}}</th>
@@ -14,27 +14,32 @@
         @forelse ($tasks as $task)
             @if($task->instance_id == $task->pro_instance_id)
                 <tr>
-                    <td>
-                        <span class="d-flex text-sm text-center justify-content-between">
-                            <p class="m-0">{{ $task->project_name }}</p>
-                            <span class="me-5 badge p-2 px-3 rounded bg-{{ (\Auth::user()->checkProject($task->project_id) == 'Owner') ? 'success' : 'warning'  }}">
-                                {{ __(\Auth::user()->checkProject($task->project_id)) }}
-                            </span>
-                        </span>
-                    </td>
-                    <td>
+                    <td style="width:40%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
                         <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
                     </td>
-                    <td>
-                        <span class="h6 text-sm font-weight-bold mb-0">{{ $task->progress }}</span>
+                    <td style="width:10%;">
+                        @if (strtotime($task->end_date) < time() && $task->progress <= 100)
+                            <span class="badge badge-success" style="background-color:#DC3545;">Pending</span>
+                        @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
+                            <span class="badge badge-success" style="background-color:#28A745;">Completed</span>
+                        @else
+                            <span class="badge badge-info" style="background-color:#007bff;">In-Progress</span>
+                        @endif
                     </td>
-                    <td class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
+                    <td style="width:10%;">
+                        @if ($task->progress >= 100)
+                            <span class="badge badge-success" style="background-color:#28A745;">{{$task->progress}} %</span>
+                        @else
+                            <span class="badge badge-info" style="background-color:#007bff;">{{$task->progress}} %</span>
+                        @endif
+                    </td>
+                    <td style="width:10%;" class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
                     </td>
-                    <td class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+                    <td style="width:10%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($task->end_date,\Auth::user()->id) }}
                     </td>
-                    <td>
+                    <td style="width:10%;">
                         <div class="avatar-group">
                             @if($task->users()->count() > 0)
                                 @if($users = $task->users()) 
@@ -58,7 +63,7 @@
                             @endif
                         </div>
                     </td>
-                    <td class="text-center w-15">
+                    <td style="width:10%;" class="text-center w-15">
                         <div class="actions">
                             <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" title="{{__('Edit')}}" class="btn btn-sm btn-primary">
                                 <i class="ti ti-pencil"></i>

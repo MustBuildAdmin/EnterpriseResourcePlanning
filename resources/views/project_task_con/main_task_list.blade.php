@@ -1,36 +1,45 @@
 <table class="table" id="example3">
     <thead>
     <tr>
-        <th scope="col">{{__('Projects')}}</th>
         <th scope="col">{{__('Tasks')}}</th>
+        <th scope="col">{{__('Status')}}</th>
+        <th scope="col">{{__('Progress')}}</th>
         <th scope="col">{{__('Start Date')}}</th>
         <th scope="col">{{__('End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
-        <th scope="col">{{__('Progress')}}</th>
+        
     </tr>
     </thead>
     <tbody class="list">
         @if(count($show_parent_task) > 0)
             @foreach($show_parent_task as $show_parent)
                 <tr>
-                    <td>
-                        <span class="d-flex text-sm text-center justify-content-between">
-                            <p class="m-0">{{ $show_parent->project_name }}</p>
-                            <span class="me-5 badge p-2 px-3 rounded bg-{{ (\Auth::user()->checkProject($show_parent->project_id) == 'Owner') ? 'success' : 'warning'  }}">
-                                {{ __(\Auth::user()->checkProject($show_parent->project_id)) }}
-                            </span>
-                        </span>
-                    </td>
-                    <td>
+                    <td style="width:40%;" class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
                         <span class="h6 text-sm font-weight-bold mb-0">{{ $show_parent->text }}</span>
                     </td>
-                    <td class="{{ (strtotime($show_parent->start_date) < time()) ? 'text-danger' : '' }}">
+                    <td style="width:10%;">
+                        @if (strtotime($show_parent->end_date) < time() && $show_parent->progress <= 100)
+                            <span class="badge badge-success" style="background-color:#DC3545;">Pending</span>
+                        @elseif(strtotime($show_parent->end_date) < time() && $show_parent->progress >= 100)
+                            <span class="badge badge-success" style="background-color:#28A745;">Completed</span>
+                        @else
+                            <span class="badge badge-info" style="background-color:#007bff;">In-Progress</span>
+                        @endif
+                    </td>
+                    <td style="width:10%;">
+                        @if ($show_parent->progress >= 100)
+                            <span class="badge badge-success" style="background-color:#28A745;">{{$show_parent->progress}} %</span>
+                        @else
+                            <span class="badge badge-info" style="background-color:#007bff;">{{$show_parent->progress}} %</span>
+                        @endif
+                    </td>
+                    <td  style="width:10%;"class="{{ (strtotime($show_parent->start_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($show_parent->start_date,\Auth::user()->id) }}
                     </td>
-                    <td class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
+                    <td  style="width:10%;"class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($show_parent->end_date,\Auth::user()->id) }}
                     </td>
-                    <td>
+                    <td style="width:10%;">
                         <div class="avatar-group">
                             @if($show_parent->users()->count() > 0)
                                 @if($users = $show_parent->users()) 
@@ -53,9 +62,6 @@
                                 {{ __('-') }}
                             @endif
                         </div>
-                    </td>
-                    <td>
-                        {{ $show_parent->progress }}
                     </td>
                 </tr>
             @endforeach
