@@ -181,13 +181,7 @@ class ProjectTaskController extends Controller
 
         $get_user_id    = $request->user_id;
         $get_start_date = $request->start_date;
-
-        if($request->end_date != ""){
-            $get_end_date = $request->end_date;
-        }
-        else{
-            $get_end_date = date('Y-m-d');
-        }
+        $get_end_date   = $request->end_date;      
 
         $usr = Auth::user();
 
