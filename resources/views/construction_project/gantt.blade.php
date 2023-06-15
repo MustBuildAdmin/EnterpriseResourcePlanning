@@ -20,7 +20,7 @@
 <script src="{{asset('assets/js/js/taskText.js')}}"></script>
 
 
-<style> 	
+<style>
     html,
     body,
     .gantt-container {
@@ -70,7 +70,7 @@
     .gantt_cal_light >.gantt_cal_ltitle {
          font-size: 13px !important;
     }
-    
+
 </style>
 
 @php
@@ -84,7 +84,7 @@ $holidays=implode(':',$holidays);
 @endphp
 {{-- @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"]) --}}
                         <div class="col d-flex flex-column">
-                          
+
                             <div class="align" style='display: flex'>
                                 {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;']) }}
                                 {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
@@ -93,10 +93,10 @@ $holidays=implode(':',$holidays);
                                         <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze
                                     </a>
                                 {!! Form::close() !!}
-                                <button class="btn btn-outline-primary w-20" name="undo" aria-current="page">Undo</button>
-                                <button class="btn btn-outline-primary w-20" name="redo">Redo</button>
-                                <button class="btn btn-outline-primary w-20" name="indent">Indent</button>
-                                <button class="btn btn-outline-primary w-20" name="outdent">Outdent</button>
+                                <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page">Undo</button>
+                                <button class="btn btn-outline-primary action w-20" name="redo">Redo</button>
+                                <button class="btn btn-outline-primary action w-20" name="indent">Indent</button>
+                                <button class="btn btn-outline-primary action w-20" name="outdent">Outdent</button>
                                 <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
                                     onclick="gantt.ext.fullscreen.toggle();">Fullscreen</button>
                                 <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="closeAll()">Collaspe
@@ -111,7 +111,7 @@ $holidays=implode(':',$holidays);
                                     <option value="quarter">quarter</option>
                                     <option value="year">year</option>
                                 </select>
-                                
+
                                 <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()">Zoom
                                     In</button>
                                 <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()">Zoom
@@ -187,7 +187,7 @@ $holidays=implode(':',$holidays);
 <script type="text/javascript">
     // check freeze status
         $( document ).ready(function() {
-        
+
 
                 // check freeze status
 
@@ -206,7 +206,7 @@ $holidays=implode(':',$holidays);
             });
 
     // check freeze status
-		//zoom 
+		//zoom
 
 		var selectOption = document.getElementById("zoomscale");
 		selectOption.onchange = function (event) {
@@ -320,7 +320,7 @@ $holidays=implode(':',$holidays);
 			predecessors: { type: "predecessor", map_to: "auto", formatter: linksFormatter }
 		};
 
-    
+
 
 
 
@@ -338,7 +338,7 @@ $holidays=implode(':',$holidays);
 				name: "end_date", label: "End Date", width: 80, align: "center",
 				editor: editors.end_date, resize: true
 			},
-			
+
 			{
 				name: "place", label: "Place", width: 80, align: "center",
 				editor: editors.end_date, resize: true
