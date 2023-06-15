@@ -102,7 +102,7 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
-            return;
+            // return;
             // dd($request->all());
             $project = new Project();
             $project->project_name = $request->project_name;
