@@ -102,6 +102,7 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
+            return;
             // dd($request->all());
             $project = new Project();
             $project->project_name = $request->project_name;
@@ -191,23 +192,11 @@ class ProjectController extends Controller
                 if (file_exists(public_path($pathname))){
                     unlink(public_path($pathname));
                 }
+              
                 $responseBody = json_decode($responseBody, true);
+                
                 if(isset($responseBody['data']['data'])){
-                    // $gant_data_parent=new GanttPlan();
-                    // $TenDigitRandomNumber = rand(1000000000,9999999999);
 
-                    // $gant_data_parent->task_id=$project->id.$TenDigitRandomNumber;
-                    // $gant_data_parent->project_id=$project->id;
-                    // $gant_data_parent->text=$request->project_name;
-                    // $gant_data_parent->start_date=date("Y-m-d H:i:s", strtotime($request->start_date));
-                    // $gant_data_parent->end_date=date("Y-m-d H:i:s", strtotime($request->end_date));
-                    // $gant_data_parent->duration=$request->estimated_days;
-                    // $gant_data_parent->progress=0;
-                    // $gant_data_parent->parent=0;
-                    // $gant_data_parent->is_active=1;
-                    // $gant_data_parent->is_open=true;
-                    // $gant_data_parent->save();
-                    // $i=0;
                     foreach($responseBody['data']['data'] as $key=>$value){
                         $task= new Con_task();
                         $task->project_id=$project->id;
@@ -240,25 +229,6 @@ class ProjectController extends Controller
                         }
 
                         $task->save();
-
-                        // $gant_data=new GanttPlan();
-                        // $gant_data->task_id=$value['id'];
-                        // $gant_data->project_id=$project->id;
-                        // $gant_data->text=$value['text'];
-                        // $gant_data->start_date==$raw['Start'];
-                        // $gant_data->end_date==$raw['Finish'];
-                        // $gant_data->duration=$value['duration'];
-                        // $gant_data->progress=$value['progress'];
-                        // if($i==0){
-                        //     $gant_data->parent=$gant_data_parent->task_id;
-                        // }else{
-                        //     $gant_data->parent=$value['parent'];
-                        // }
-
-                        // $gant_data->is_active=1;
-                        // $gant_data->is_open=true;
-                        // $gant_data->save();
-                        // $i++;
                     }
 
                     foreach($responseBody['data']['links'] as $key=>$value){
@@ -293,6 +263,9 @@ class ProjectController extends Controller
                         if(isset($value['source'])){
 
                             $link->source=$value['source'];
+                        }
+                        if(isset($value['lag'])){
+                            $link->lag=$value['lag'];
                         }
                         if(isset($value['target'])){
                             $link->target=$value['target'];
@@ -335,21 +308,7 @@ class ProjectController extends Controller
                     }
                     $responseBody = json_decode($responseBody, true);
                     if(isset($responseBody['data']['data'])){
-                        // $gant_data_parent=new GanttPlan();
-                        // $TenDigitRandomNumber = mt_rand(1000000000,9999999999);
 
-                        // $gant_data_parent->task_id=$project->id.$TenDigitRandomNumber;
-                        // $gant_data_parent->project_id=$project->id;
-                        // $gant_data_parent->text=$request->project_name;
-                        // $gant_data_parent->start_date=date("Y-m-d H:i:s", strtotime($request->start_date));
-                        // $gant_data_parent->end_date=date("Y-m-d H:i:s", strtotime($request->end_date));
-                        // $gant_data_parent->duration=$request->estimated_days;
-                        // $gant_data_parent->progress=0;
-                        // $gant_data_parent->parent=0;
-                        // $gant_data_parent->is_active=1;
-                        // $gant_data_parent->is_open=true;
-                        // $gant_data_parent->save();
-                        // $i=0;
                         foreach($responseBody['data']['data'] as $key=>$value){
                             $task= new Con_task();
                             $task->project_id=$project->id;
@@ -382,24 +341,7 @@ class ProjectController extends Controller
                             }
 
                             $task->save();
-                            // $gant_data=new GanttPlan();
-                            // $gant_data->task_id=$value['id'];
-                            // $gant_data->project_id=$project->id;
-                            // $gant_data->text=$value['text'];
-                            // $gant_data->start_date==$raw['Start'];
-                            // $gant_data->end_date==$raw['Finish'];
-                            // $gant_data->duration=$value['duration'];
-                            // $gant_data->progress=$value['progress'];
-                            // if($i==0){
-                            //     $gant_data->parent=$gant_data_parent->task_id;
-                            // }else{
-                            //     $gant_data->parent=$value['parent'];
-                            // }
 
-                            // $gant_data->is_active=1;
-                            // $gant_data->is_open=true;
-                            // $gant_data->save();
-                            // $i++;
                         }
 
                         foreach($responseBody['data']['links'] as $key=>$value){
@@ -432,6 +374,9 @@ class ProjectController extends Controller
                             $link->id=$value['id'];
                             if(isset($value['type'])){
                                 $link->type=$value['type'];
+                            }
+                            if(isset($value['lag'])){
+                                $link->type=$value['lag'];
                             }
                             if(isset($value['source'])){
 
@@ -1177,8 +1122,8 @@ class ProjectController extends Controller
         $project = Project::find($projectID);
         if($project){
             $instance_id=Session::get('project_instance');
-            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('created_at','ASC')->get();
-            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('created_at','ASC')->get();
+            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
+            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
             return response()->json([
                 "data" => $task,
                 "links" => $link,

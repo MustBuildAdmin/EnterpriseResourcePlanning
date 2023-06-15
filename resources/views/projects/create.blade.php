@@ -6,7 +6,71 @@
         width: 75%!important;
         height: fit-content;
     }
+    .wrappers{
+        display: flex;
+        justify-content: center;
+    }
+    .cards {
+        display: flex;
+        padding: 24px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .loader{
+        border-radius: 50%;
+        position: relative;
+        display: inline-block;
+        height: 0px;
+        width: 0px;
+    }
+
+    .loader span{
+        position: absolute;
+        display: block;
+        background: #ddd;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        top: -20px;
+        perspective: 100000px;
+    }
+    .loader span:nth-child(1) {
+        left:30px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: 0s;
+        background: #ff756f;
+    }
+    .loader span:nth-child(2) {
+        left:6px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .2s;
+        background: #ffde6f;
+    }
+    .loader span:nth-child(3) {
+        left:-20px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .4s;
+        background: #01de6f;
+    }
+    .loader span:nth-child(4) {
+        left: -44px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .6s;
+        background: #6f75ff;
+    }
+
+    @keyframes bounce2 {
+        0%, 56%, 100% {
+            transform: translateY(0px);
+        }
+        25% {
+            transform: translateY(-30px);
+        }
+    }
 </style>
+
 {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_project_form', 'class' => 'create_project_form']) }}
 <div class="modal-body">
     <div class="row">
@@ -188,6 +252,22 @@
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
     <input type="submit" id="create_project" value="{{__('Create')}}" class="btn  btn-primary">
+    
+</div>
+<div class="hide" style='display:none;'>
+<center>
+    <section class="wrappers loader_show_hide">
+        <div class="cards">
+            <div class="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            </div>
+        </div>
+    </section>
+</center>
+<br><h3 style="text-align: center;padding: 2px;background-color: #206bc4;color: white;">Loading... , kindly don't close the pop-up window</h3><br>
 </div>
 {{Form::close()}}
 
@@ -205,6 +285,12 @@ $(document).on("change", '#start_date', function () {
     $('#end_date').val('');
     $('#end_date').attr('min',start);
 });
+// $(document).on("click", '#create_project', function () {
+    
+//     $('.hide').show();
+//     return true;
+//     // $('#create_project').attr('disabled','true');
+// });
 $(document).on("change", '#end_date', function () {
     var start=$('#start_date').val();
     var End=$('#end_date').val();
@@ -261,6 +347,6 @@ $(document).on("change", '#end_date', function () {
     $(document).ready(function() {
         $('.chosen-select').chosen();
     });
-
+    
 
   </script>
