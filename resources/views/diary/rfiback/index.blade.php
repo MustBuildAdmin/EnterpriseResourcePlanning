@@ -71,8 +71,8 @@ h3, .h3 {
                 <tr>
                     <th>{{__('Sno')}}</th>
                     <th>{{__('RFI Reference No')}}</th>
-                    {{-- <th>{{__('Issue Date')}}</th>
-                    <th>{{__('Description')}}</th> --}}
+                    <th>{{__('Issue Date')}}</th>
+                    <th>{{__('Description')}}</th>
                     {{-- <th>{{__('Consultant-1')}}</th>
                     <th>{{__('Consultant-2')}}</th>
                     <th>{{__('Consultant-3')}}</th>
@@ -86,16 +86,11 @@ h3, .h3 {
                 </thead>
                 <tbody> 
                     @foreach ($dairy_data as $key=>$data) 
-                    @php $consulatant=$data->consulatant_data; @endphp 
-                    @if($consulatant != null) 
-                        @php $bulk_consulatant = json_decode($consulatant); @endphp 
-                    @else 
-                        @php $bulk_consulatant = array(); @endphp 
-                    @endif 
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$data->contractor_name}}</td>
-                 
+                        <td>{{$data->reference_no}}</td>
+                        <td>{{ Utility::site_date_format($data->issue_date,\Auth::user()->id)}}</td>
+                        <td>{{$data->description}}</td>
                         @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">

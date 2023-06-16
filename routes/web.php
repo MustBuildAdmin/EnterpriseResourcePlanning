@@ -129,7 +129,16 @@ Route::post('delete_consultant_direction/{id}','DiaryController@delete_consultan
 ); 
 
 
-Route::any('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
+Route::get('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
+Route::get('get_name_of_consultant','DiaryController@get_name_of_consultant')->name('get_name_of_consultant')->middleware(
     [
         'auth',
         'XSS',

@@ -245,6 +245,9 @@ h3, .h3 {
            if(u1.indexOf('-') !== -1){
              var s  = "(" + '' + ")";
              $('.claimed_omission_cost').val(s);
+           
+
+             
            }
          });
 

@@ -674,7 +674,7 @@ class DiaryController extends Controller
 
            
             $delete_invoice = ConsultantsDirectionMulti::where('consultant_id','=',$request->id)->delete();
-        
+     
             if (count($request->initiator_reference) >= 0) {
                 foreach ($request->initiator_reference as $item => $v) {
                 // dd($initiator_file_name[$item]);
@@ -696,20 +696,6 @@ class DiaryController extends Controller
                 }else{
                     $set_initiator_file_name=null;
                 }
-
-              
-
-                // if(isset($request->replier_reference[$item])){
-                //     $set_replier_reference=$request->replier_reference[$item];
-                // }else{
-                //     $set_replier_reference=null;
-                // }
-
-                // if(isset($request->replier_date[$item])){
-                //     $set_replier_date=$request->replier_date[$item];
-                // }else{
-                //     $set_replier_date=null;
-                // }
 
 
                 if(isset($request->replier_status[$item])){
@@ -772,7 +758,7 @@ class DiaryController extends Controller
             if(\Auth::user()->can('manage RFI')){
 
                 $project_id = Session::get('project_id');
-                $dairy_data = RFIStatusSave::where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->orderBy('rfi_status_save.id', 'DESC')->groupBy('rfi_status_save.id')->get();
+                $dairy_data=RFIStatusSave::where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->get();
                 return view('diary.rfi.index',compact('project_id','dairy_data'));
 
             }else{
@@ -795,7 +781,10 @@ class DiaryController extends Controller
                 $project_name = Project::select('project_name')
                 ->where('id', $project)
                 ->first();
+               
+                
                 return view('diary.rfi.create',compact('project','project_name'));
+
 
             }else{
 
@@ -813,12 +802,11 @@ class DiaryController extends Controller
         try {
 
             
+
             $data=array("user_id"=>Auth::id(),
                         "project_id"=>Session::get('project_id'),
-                        "reference_no"=>$request->reference_no,
-                        "issue_date"=>$request->issue_date,
-                        "description"=>$request->description,
-
+                        "contractor_name"=>$request->contractor_name,
+                        "consulatant_data"=>json_encode($request->rfijson),
             );
           
             RFIStatusSave::insert($data);
@@ -841,15 +829,21 @@ class DiaryController extends Controller
 
                 $project_id = $request["project_id"];
 
-                $project_name = Project::select('project_name')
+                $project = Project::select('project_name')
                 ->where("id", $project_id)
                 ->first();
                 
-                $data=RFIStatusSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
+                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
+                $contractor=RFIStatusSave::where('user_id', '=', Auth::id())->where('id',$request->id)->where('project_id', $project_id)->get()->pluck('consulatant_data');
+                $contractor_name=json_decode($contractor);
+                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->first();
 
-                $rfs_dir_multi = RFIStatusSubSave::where('rfi_id','=',$data->id)->get();
+                $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->get();
+              
+              
+                // $rfs_dir_multi = RFIStatusSubSave::where('rfi_id','=',$get_dairy_data->id)->get();
         
-                return view('diary.rfi.edit',compact('data','project_name','project_id','rfs_dir_multi'));
+                return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
 
             }else{
 
@@ -870,126 +864,277 @@ class DiaryController extends Controller
         try {
            
 
-            $fileNameToStore1='';
-            $url='';
+            // "consulatant_data"=>json_encode($request->rfijson)
 
-            if (!empty($request->attachment_file)) {
-                $filenameWithExt1 = $request->file("attachment_file")->getClientOriginalName();
-                $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
-                $extension1 = $request->file("attachment_file")->getClientOriginalExtension();
-                $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
-
-                $dir = "uploads/request_for_info";
-
-                $image_path = $dir . $filenameWithExt1;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
-                }
-                $url = "";
-                $path = Utility::upload_file($request,"attachment_file",$fileNameToStore1,$dir,[]);
-
-                if ($path["flag"] == 1) {
-                    $url = $path["url"];
             
-                } else {
-                    return redirect()->back()->with("error", __($path["msg"]));
+
+                if($request->select_the_consultants!=null){
+                    $select_the_consultant_value = implode(',', $request->select_the_consultants);
+                }else{
+                    $select_the_consultant_value = Null;
                 }
+
+               
+
+                // if (!empty($request->attachment_one)) {
+                //     $filenameWithExt1 = $request->file("attachment_one")->getClientOriginalName();
+                //     $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                //     $extension1 = $request->file("attachment_one")->getClientOriginalExtension();
+                //     $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
+    
+                //     $dir = "uploads/RFI";
+    
+                //     $image_path = $dir . $filenameWithExt1;
+                //     if (\File::exists($image_path)) {
+                //         \File::delete($image_path);
+                //     }
+                //     $url = "";
+                //     $path = Utility::upload_file($request,"attachment_one",$fileNameToStore1,$dir,[]);
+    
+                //     if ($path["flag"] == 1) {
+                //         $url = $path["url"];
+                //     } else {
+                //         return redirect()->back()->with("error", __($path["msg"]));
+                //     }
+                // }else{
+                //     $check_attach_file=RFIStatusSave::select('attachment_one','attachment_one_path')
+                //                          ->where('id',$request->edit_id)
+                //                          ->where('user_id',Auth::id())
+                //                          ->where('project_id',$request->project_id)
+                //                          ->first();
+                                                                         
+                //     $filenameWithExt1=$check_attach_file->attachment_one;
+                //     $url=$check_attach_file->attachment_one_path;
+                             
+                // }
+
+                $save_rfi_one=array(
+
+                    "user_id"=>Auth::id(),
+                    "project_id"=>Session::get('project_id'),
+                    "contractor_name"=>$request->contractor_name,
+                    "consulatant_data"=>json_encode($request->data),
+                    "reference_no"=>$request->reference_no,
+                    "requested_date"=>$request->requested_date,
+                    "required_date"=>$request->required_date,
+                    "priority"=>$request->priority,
+                    "cost_impact"=>$request->cost_impact,
+                    "time_impact"=>$request->time_impact,
+                    "description"=>$request->description,
+                    "select_the_consultants"=>$select_the_consultant_value,
+                    "attachment_one"=>"dflgdl.png",
+                    "attachment_one_path"=>'ghgfh',
+                    // "attachment_one"=>$fileNameToStore1,
+                    // "attachment_one_path"=>$url,
+                    // "date_of_replied_data"=>'',
+                );
+
+
+              
+
+            RFIStatusSave::where('id',$request->edit_id)
+            ->where('user_id',Auth::id())
+            ->where('project_id',Session::get('project_id'))
+            ->update($save_rfi_one);
+
+            // $attachments_two = [];
+
+            // if (!empty($request->attachments_two)) {
+            //     if ($request->hasfile("attachments_two")) {
+            //         foreach ($request->file("attachments_two") as $file) {
+            //             $name = $file->getClientOriginalName();
+            //             $file->move(public_path("uploads/RFI"), $name);
+            //             // $initiator_file_name[] = $name;
+            //             array_push($attachments_two,$name);
+            //         }
+            //         $check_replier_file=RFIStatusSubSave::select('attachments_two')->where('rfi_id',$request->id)->get();
+            //         if(count($check_replier_file)!=0){
+            //             foreach ($check_replier_file as $file) {
+            //                 array_push($attachments_two,$file->attachments_two);
+                            
+            //             }
+            //         }
+                   
+            //         }
+            // }else{
+            //         $check_replier_file=RFIStatusSubSave::select('attachments_two')->where('consultant_id',$request->id)->get();
+            //         if(count($check_replier_file)!=0){
+            //             foreach ($check_replier_file as $file) {
+            //                 $replier_file_name[] = $file->attachments_two;
+                            
+            //             }
+            //         }
+            // }
+
+               
+
+                $in_id =  DB::table('dr_rfi_main_sub_save')
+                ->where('id', '=', $request->edit_id)
+                ->where('user_id',Auth::id())
+                ->where('project_id',Session::get('project_id'))
+                ->get('id');
+
+                $invoice_id = trim($in_id, '[{"id:"}]');
+
+
+        //   dd($request->name_of_consulatant);
                 
-            }else{
-                $check_attach_file=RFIStatusSave::select('attachment_file')->where('id',$request->id)
-                                                  ->where('project_id',Session::get('project_id'))->first();
-                                                                     
-                $fileNameToStore1=$check_attach_file->attachment_file;
-                         
+        // if($request->name_of_consulatant!=null){
+        //     $select_name_consultant = implode(',', $request->name_of_consulatant);
+        // }else{
+        //     $select_name_consultant = Null;
+        // }
+
+       
+        // dd(array_unique($check_arra));
+        // dd($setdata);
+
+        $delete_invoice = RFIStatusSubSave::where('rfi_id','=',$request->edit_id)->delete();
+       
+        for($i=1; $i<=$request->multi_total_count;$i++) {
+            $name_of_consulatant_var = 'name_of_consulatant'.$i;
+            $replied_date_var        = 'replied_date'.$i;
+            $status_var              = 'status'.$i;
+            $remarks_var             = 'remarks'.$i;
+            if(isset($request->$replied_date_var)){
+
+                $name_of_consulatant_set   = $request->$name_of_consulatant_var;
+                $replied_date_set          = $request->$replied_date_var;
+                $status_set                = $request->$status_var;
+                $remarks_set               = $request->$remarks_var;
+    
+                if($name_of_consulatant_set!=null){
+                    $select_name_consultant = implode(',', $name_of_consulatant_set);
+                }else{
+                    $select_name_consultant = Null;
+                }
+    
+                $multi_insert_array = array(
+                    "user_id"            => Auth::id(),
+                    "project_id"         => Session::get('project_id'),
+                    "rfi_id"             => $invoice_id,
+                    'name_of_consultant' => $select_name_consultant,
+                    'replied_date'       => $replied_date_set,
+                    'status'             => $status_set,
+                    'remarks'            => $remarks_set
+                );
+    
+                RFIStatusSubSave::insert($multi_insert_array);
+
             }
+            
+           
+        }
 
-            $save_rfi=array("reference_no"=>$request->reference_no,
-                            "issue_date"=>$request->issue_date,
-                            "description"=>$request->description,
-                            "consultant_date1"=>$request->consultant_date1,
-                            "consultant_date2"=>$request->consultant_date2,
-                            "consultant_date3"=>$request->consultant_date3,
-                            "consultant_date4"=>$request->consultant_date4,
-                            "consultant_date5"=>$request->consultant_date5,
-                            "consultant_date6"=>$request->consultant_date6,
-                            "rfi_status"=>$request->rfi_status,
-                            "remark1"=>$request->remark1,
-                            "attachment_file"=>$fileNameToStore1,
-                      );
+//         if (count($request->replied_date) >= 0) {
+//             foreach ($request->replied_date as $item => $v) {
+       
+//                 // dd($initiator_file_name[$item]);
+             
+              
 
-            RFIStatusSave::where('id',$request->id)
-                           ->where('user_id',Auth::id())
-                           ->where('project_id',Session::get('project_id'))
-                           ->update($save_rfi);
+//                 if($request->name_of_consulatant[$item]!=null){
+//                     $select_the_consultant_value = $request->name_of_consulatant[$item];
+//                 }else{
+//                     $select_the_consultant_value = Null;
+//                 }
 
-            $in_id = DB::table("rfi_status_save")->where('user_id',Auth::id())
-                                                ->where('project_id',Session::get('project_id'))
-                                                ->where('id', '=', $request->id)
-                                                ->get('id');
+//                 // if(isset($check_arra[$item])){
+//                 //     $set_name_of_consultant=$check_arra[$item];
+                  
+//                 // }else{
+//                 //     $set_name_of_consultant=null;
+//                 // }
 
-            $invoice_id = trim($in_id, '[{"id:"}]');
+               
 
-            $delete_invoice = RFIStatusSubSave::where('rfi_id','=',$request->id)->delete();
-                if(isset($request->submit_date)){
 
-                
-                    if (count($request->submit_date) > 0) {
-                        foreach ($request->submit_date as $item => $v) {
-                        // dd($initiator_file_name[$item]);
+
+//                 if(isset($request->replied_date[$item])){
+//                     $set_replied_date=$request->replied_date[$item];
+//                 }else{
+//                     $set_replied_date=null;
+//                 }
+
+
+//                 if(isset($request->status[$item])){
+//                     $set_replier_status=$request->status[$item];
+//                 }else{
+//                     $set_replier_status=null;
+//                 }
+
+
+//                 if(isset($request->remarks[$item])){
+//                     $set_remarks=$request->remarks[$item];
+//                 }else{
+//                     $set_remarks=null;
+//                 }
+
+//                 // if(isset($replier_file_name[$item])){
+//                 //     $set_replier_file_name=$replier_file_name[$item];
+//                 // }else{
+//                 //     $set_replier_file_name=null;
+//                 // }
+// // dd($request->replied_date[$item]);
+//                 $save_rfi_two=array(
+
+//                     "user_id"=>Auth::id(),
+//                     "project_id"=>Session::get('project_id'),
+//                     "rfi_id"=>$invoice_id,
+//                     "name_of_consultant"=>$select_the_consultant_value,
+//                     "replied_date"=>$set_replied_date,
+//                     "status"=>$set_replier_status,
+//                     "remarks"=>$set_remarks,
+//                     // // "attachments_two"=>"fdgdgd.png",
+//                     // // "attachments_two_path"=>"folderfdgdgd.png",
+//                     // "attachments_two"=>$replier_file_name,
+//                     // "attachments_two_path"=>"kkkkk",
+//                     // "date_of_replied_data"=>'',
+//                 );
                     
-                            if(isset($request->submit_date[$item])){
-                                $set_submit_date=$request->submit_date[$item];
-                            }else{
-                                $set_submit_date=null;
-                            }
+            
+//                     if ($request->increment < 0) {
+//                         RFIStatusSubSave::insert($save_rfi_two);
+                       
+//                     } else {
+//                         RFIStatusSubSave::insert($save_rfi_two);
+                       
+//                     }
+//                     // }
+//                 }
+//             }
 
-                            if(isset($request->return_date[$item])){
-                                $set_return_date=$request->return_date[$item];
-                            }else{
-                                $set_return_date=null;
-                            }
-
-                            if(isset($request->status_of_return[$item])){
-                                $set_status_of_return=$request->status_of_return[$item];
-                            }else{
-                                $set_status_of_return=null;
-                            }
-
-                            if(isset($request->remarks[$item])){
-                                $set_initiator_remarks=$request->remarks[$item];
-                            }else{
-                                $set_initiator_remarks=null;
-                            }
-
-
-                            $data2 = [
-                                "rfi_id" => $invoice_id,
-                                "submit_date" =>$set_submit_date,
-                                "return_date" =>$set_return_date,
-                                "status_of_return" =>$set_status_of_return,
-                                "remarks" =>$set_initiator_remarks,
-                                
-                            ];
-                            
-                        
-                    
-                            if ($request->increment < 0) {
-                                RFIStatusSubSave::insert($data2);
-                            
-                            } else {
-                                RFIStatusSubSave::insert($data2);
-                            
-                            }
-                            // }
-                        }
-                    }
-
-                }
+     
 
             return redirect()->back()->with("success", __("RFI updated successfully."));
 
         } catch (Exception $e) {
             return $e->getMessage();
+        }
+    }
+
+
+    public function get_name_of_consultant(Request $request){
+        try{
+
+            $get_dairy=RFIStatusSave::where('project_id',Session::get('project_id'))->where('user_id',Auth::id())->where('id',$request->id)->first();
+            $decode=json_decode($get_dairy->consulatant_data);
+            $html='';
+
+            foreach($decode as $conkey =>$con){
+              
+                $html.='<option value="'.$con.'" >'.$con.'</option>';
+            }
+          
+
+            return $html;
+
+        
+
+        }catch (Exception $e) {
+
+            return $e->getMessage();
+
         }
     }
 
