@@ -146,7 +146,7 @@
 
 <div class="wrapper">
     <!-- Sidebar  -->
-    <nav id="sidebar">
+    <nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
                 @can('manage client')
@@ -193,7 +193,7 @@
     </nav>
 
       <!-- Page Content  -->
-<div id="content" class="main">
+      <div id="content" class="page-wrapper">
 <div class="collapseToggle">
 <span id="toggleIcon" class="fa fa-chevron-left"></span>
 </div>

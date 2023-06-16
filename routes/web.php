@@ -2961,6 +2961,10 @@ Route::get(
 );
 
 Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
+Route::any('add_particular_task/{task_id}/{get_date}', 'ProjectTaskController@add_particular_task')->name('add_particular_task')->middleware(['auth','XSS',]);
+Route::any('edit_particular_task/{task_progress_id}/{task_id}', 'ProjectTaskController@edit_particular_task')->name('edit_particular_task')->middleware(['auth','XSS',]);
+
+Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
 Route::get('edit_task_progress', 'ProjectTaskController@edit_task_progress')->name('edit_task_progress')->middleware(['auth','XSS',]);
 
 Route::get(

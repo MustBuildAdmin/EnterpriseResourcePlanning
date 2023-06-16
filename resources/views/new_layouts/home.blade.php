@@ -2,7 +2,7 @@
 <main class="page-wrapper">
 	<section> {{--
 		<aside class="col-2">
-			<nav id="sidebar">
+		<nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
 				<div class="custom-menu">
 					<button type="button" id="sidebarCollapse" class="btn btn-primary"> <i class="fa fa-bars"></i> <span class="sr-only">Toggle Menu</span> </button>
 				</div>

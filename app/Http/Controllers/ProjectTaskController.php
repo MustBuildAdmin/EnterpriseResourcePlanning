@@ -181,13 +181,7 @@ class ProjectTaskController extends Controller
 
         $get_user_id    = $request->user_id;
         $get_start_date = $request->start_date;
-
-        if($request->end_date != ""){
-            $get_end_date = $request->end_date;
-        }
-        else{
-            $get_end_date = date('Y-m-d');
-        }
+        $get_end_date   = $request->end_date;      
 
         $usr = Auth::user();
 
@@ -569,15 +563,20 @@ class ProjectTaskController extends Controller
             $get_popup_data_con = Con_task::where('main_id',$task_id)->first();
 
             if(\Auth::user()->type != 'company'){
-                $get_task_progress = Task_progress::select('task_progress.*','pro.project_name')
-                ->Join('projects as pro','pro.id','task_progress.project_id')
-                ->where('task_id',$task_id)->where('user_id',\Auth::user()->id)
-                ->where('project_id',$get_popup_data_con->project_id)->get();
+                $get_task_progress = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
+                    ->leftjoin("task_progress_file as file",\DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
+                    ->where('task_progress.task_id',$task_id)->where('user_id',\Auth::user()->id)
+                    ->where('task_progress.project_id',$get_popup_data_con->project_id)
+                    ->groupBy('task_progress.id')
+                    ->get();
+                
             }else{
-                $get_task_progress = Task_progress::select('task_progress.*','pro.project_name')
-                ->Join('projects as pro','pro.id','task_progress.project_id')
-                ->where('task_id',$task_id)->where('project_id',$get_popup_data_con->project_id)
-                ->get();
+                $get_task_progress = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
+                    ->leftjoin("task_progress_file as file",\DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
+                    ->where('task_progress.task_id',$task_id)
+                    ->where('task_progress.project_id',$get_popup_data_con->project_id)
+                    ->groupBy('task_progress.id')
+                    ->get();
             }
 
             if(date('Y-m-d') >= $get_date){
@@ -613,6 +612,58 @@ class ProjectTaskController extends Controller
         }
 
         return view('construction_project.task_particular_list',compact('task_id','data'));
+    }
+
+    public function add_particular_task(Request $request){
+        $task_id      = $request->task_id;
+        $get_date     = $request->get_date;
+        $get_con_task = Con_task::where('main_id',$task_id)->first();
+       
+        $data = array(
+            'get_date'   => $get_date,
+            'con_data'   => $get_con_task
+        );
+
+        return view("construction_project.add_task_particular",compact("data", "task_id"));
+    }
+
+    public function edit_particular_task(Request $request){
+        
+        $task_progress_id = $request->task_progress_id;
+        $task_id          = $request->task_id;
+        $user_id          = \Auth::user()->id;
+        $project_id       = Session::get('project_id');
+        $task             = Con_task::where('main_id',$task_id)->first();
+        $check_data       = $get_task_progress = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
+                                ->leftjoin("task_progress_file as file",\DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
+                                ->where('task_progress.id',$task_progress_id)
+                                ->where('task_progress.task_id',$task_id)
+                                ->where('task_progress.project_id',$task->project_id)
+                                ->groupBy('task_progress.id')
+                                ->first();
+
+        if($check_data != null){
+            $data = [
+                'get_date'    => date('Y-m-d',strtotime($check_data->created_at)),
+                'percentage'  => $check_data->percentage,
+                'description' => $check_data->description,
+                'filename'    => $check_data->filename,
+                'file_id'     => $check_data->file_id,
+                'con_data'    => $task
+            ];
+        }
+        else{
+            $data = [
+                'get_date'    => "",
+                'percentage'  => "",
+                'description' => "",
+                'filename'    => "",
+                'file_id'     => "",
+                'con_data'    => $task
+            ];
+        }
+
+        return view("construction_project.edit_task_particular",compact("data", "task_id"));
     }
 
     public function edit_task_progress(Request $request){
