@@ -158,7 +158,7 @@
                     </div>
                 </div>
 
-                @foreach ($get_content as $key => $mutli_data) 
+                @forelse ($get_content as $key => $mutli_data) 
 
                 <h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
                 <hr>
@@ -228,7 +228,77 @@
                         <tr id="rfi_create">
                     </table>
             </div>
-            @endforeach
+            @empty
+            
+            <h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
+            <hr>
+            <div class="row">
+                <input type="text" id="multi_total_count" name="multi_total_count" value="1">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Input">{{__('Name of Consultant')}}</label>
+                        <select name="name_of_consulatant1[]" id="choices-multiple2" class="chosen-select" required multiple>
+                            <option value="" disabled>{{__('Select Name of Consultant')}}</option>
+                            @foreach ($consulatant_data as $con =>$co)
+                                <option @if(str_contains($mutli_data->name_of_consultant ?? '',$co))  selected @endif value="{{$co}}">{{$co}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Input">{{__('Replied Date')}}</label>
+                        <input type="date" name="replied_date1" class="form-control" value="{{$get_sub_table->replied_date ?? ''}}"/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Input">{{__('Status')}}</label>
+                        @if($get_sub_table==null)
+                        <select name="status1" class="form-control">
+                            <option value="">{{__('Select Status')}}</option>
+                            <option value="Clear">{{__('Clear')}}</option>
+                            <option value="Close">{{__('Close')}}</option>
+                            <option value="Pending">{{__('Pending')}}</option>
+                            <option value="Rejected">{{__('Rejected')}}</option>
+                            <option value="Withdrawn">{{__('Withdrawn')}}</option>
+                        </select>
+                        @else
+                        <select name="status1" class="form-control">
+                            <option value="">{{__('Select Status')}}</option>
+                            <option value="Clear" @if('Clear'==$mutli_data['status'] ?? ''){ selected }@endif>{{__('Clear')}}</option>
+                            <option value="Close" @if('Close'==$mutli_data['status'] ?? ''){ selected }@endif>{{__('Close')}}</option>
+                            <option value="Pending" @if('Pending'==$mutli_data['status'] ?? ''){ selected }@endif>{{__('Pending')}}</option>
+                            <option value="Rejected" @if('Rejected'==$mutli_data['status'] ?? ''){ selected }@endif>{{__('Rejected')}}</option>
+                            <option value="Withdrawn" @if('Withdrawn'==$mutli_data['status'] ?? ''){ selected }@endif>{{__('Withdrawn')}}</option>
+                        </select>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Input">{{__('Remarks')}}</label>
+                       <textarea name="remarks1" class="form-control" >{{$mutli_data->remarks ?? ''}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Input">{{__('Attachments')}}</label>
+                    <input type="file" name="attachments_two1[]" class="form-control" value="{{$mutli_data->attachments_two ?? ''}}">
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <div class="row">
+                
+                <table class="table" id="dynamic_add_rfi">
+                    <tr id="rfi_create">
+                </table>
+        </div>
+            @endforelse
             <div class="col-md-12 mt-3 float-end floatrght">
                 <button type="button" name="add" id="dynamic-rfi" class="btn btn-outline-primary">{{__('Add More')}}</button>
             </div>
@@ -300,7 +370,7 @@
                                 '<textarea name="remarks' + i + '" class="form-control"></textarea>'+
                             '</div></div>'+
                             '<div class="col-md-6"><div class="form-group"><label for="Input">Attachments</label>'+
-                                '<input type="file" name="attachments_two' + i + '" class="form-control">'+
+                                '<input type="file" name="attachments_two' + i + '[]" class="form-control">'+
                             '</div></div></div>'+
                             '<div class="col-md-12 mt-3">'+
                                 '<button type="button" class="btn btn-outline-danger remove-input-field">Delete</button>'+

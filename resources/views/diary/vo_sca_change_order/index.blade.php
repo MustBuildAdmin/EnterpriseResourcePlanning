@@ -83,11 +83,12 @@ h3, .h3 {
                   <th>{{__('VO Description')}}</th>
                   <th>{{__('Reference')}}</th>
                   <th>{{__('Date')}}</th>
-                  <th>{{__('Omission Cost')}}</th>
-                  <th>{{__('Addition Cost')}}</th>
-                  <th>{{__('Net Amount')}}</th>
-                  <th>{{__('Omission Cost')}}</th>
-                  <th>{{__('Addition Cost')}}</th>
+                  <th>{{__('Contractor Cliamed Omission Cost')}}</th>
+                  <th>{{__('Contractor Cliamed  Addition Cost')}}</th>
+                  <th>{{__('Contractor Cliamed Net Amount')}}</th>
+                  <th>{{__('Consultant Certified Omission Cost')}}</th>
+                  <th>{{__('Consultant Certified Addition Cost')}}</th>
+                  <th>{{__('Consultant Certified Net Amount')}}</th>
                   {{-- <th>{{__('Net Amount')}}
                   </th>  --}}
                   {{-- <th>{{__('Impact/Lead Time')}}</th>
@@ -119,8 +120,7 @@ h3, .h3 {
                   <td>{{$bulk_data->claimed_net_amount}}</td>
                   <td>{{$bulk_data->approved_omission_cost}}</td>
                   <td>{{$bulk_data->approved_addition_cost}}</td>
-                  {{-- <td>{{$bulk_data->approved_net_cost}}
-                  </td> --}}
+                  <td>{{$bulk_data->approved_net_cost}}</td>
                   {{-- <td>{{$bulk_data->impact_time}}</td>
                   <td>{{$bulk_data->granted_eot}}</td>
                   <td>{{$bulk_data->remarks}}</td> --}}
@@ -169,7 +169,58 @@ h3, .h3 {
         swal.closeModal();
     }
 });
+(function ($) {
+    // Behind the scenes method deals with browser
+    // idiosyncrasies and such
+    $.caretTo = function (el, index) {
+        if (el.createTextRange) { 
+            var range = el.createTextRange(); 
+            range.move("character", index); 
+            range.select(); 
+        } else if (el.selectionStart != null) { 
+            el.focus(); 
+            el.setSelectionRange(index, index); 
+        }
+    };
 
+    // The following methods are queued under fx for more
+    // flexibility when combining with $.fn.delay() and
+    // jQuery effects.
+
+    // Set caret to a particular index
+    $.fn.caretTo = function (index, offset) {
+        return this.queue(function (next) {
+            if (isNaN(index)) {
+                var i = $(this).val().indexOf(index);
+                
+                if (offset === true) {
+                    i += index.length;
+                } else if (offset) {
+                    i += offset;
+                }
+                
+                $.caretTo(this, i);
+            } else {
+                $.caretTo(this, index);
+            }
+            
+            next();
+        });
+    };
+
+    // Set caret to beginning of an element
+    $.fn.caretToStart = function () {
+        return this.caretTo(0);
+    };
+
+    // Set caret to the end of an element
+    $.fn.caretToEnd = function () {
+        return this.queue(function (next) {
+            $.caretTo(this, $(this).val().length);
+            next();
+        });
+    };
+}(jQuery));
   $(document).ready(function() {
           $('#example2').DataTable({
               dom: 'Bfrtip',
@@ -189,7 +240,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12]
                       }
                   },
                   {
@@ -214,7 +265,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12]
                       }
                   },
                   {
@@ -229,7 +280,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12]
                       }
                   },
                   'colvis'
@@ -238,87 +289,34 @@ h3, .h3 {
         
       
 
-          $(document).on("keyup", '.claimed_omission_cost', function (e) {
+        //   $(document).on("keyup", '.claimed_omission_cost', function (e) {
            
-           var u1 = $('.claimed_omission_cost').val();
+        //    var u1 = $('.claimed_omission_cost').val();
 
-           if(u1.indexOf('-') !== -1){
-             var s  = "(" + '' + ")";
-             $('.claimed_omission_cost').val(s);
+        //    if(u1.indexOf('-') !== -1){
+        //      var s  = "(" + '' + ")";
+        //      $('.claimed_omission_cost').val(s);
            
+          
+      
+            
 
              
-           }
-         });
+        //    }
+        //  });
 
         
 
-        $(document).on("keyup", '.approved_omission_cost', function (e) {
-           
-            var v1 = $('.approved_omission_cost').val();
-
-            if(v1.indexOf('-') !== -1){
-              var p  = "(" + '' + ")";
-              $('.approved_omission_cost').val(p);
-            }
-
-         });
+      
 
          $(document).on("keyup", '.claimed_addition_cost', function (e) {
            
            var additional_cost = $('.claimed_addition_cost').val();
            var omission_cost = $('.claimed_omission_cost').val();
-
-           if(additional_cost.indexOf('-') !== -1){
-               var add_bracket  = "(" + '' + ")";
-               $('.claimed_addition_cost').val(add_bracket);
-           }
-
-           if (additional_cost.indexOf('(') !== -1) {
-               additional_cost_minus = 'minus';
-               additional_cost_remove_bracket = additional_cost.slice(1,-1);
-           }
-           else{
-               additional_cost_minus = 'plus';
-               var additional_cost_remove_bracket = additional_cost;
-           }
-
-           if (omission_cost.indexOf('(') !== -1) {
-               omission_cost_minus = 'minus';
-               omission_cost_remove_bracket   = omission_cost.slice(1,-1);
-           }
-           else{
-               omission_cost_minus = 'plus';
-               omission_cost_remove_bracket   = omission_cost;
-           }
-
-           if(additional_cost_minus == 'minus' && omission_cost_minus == 'minus'){
-               var get_value = parseInt(additional_cost_remove_bracket) + parseInt(omission_cost_remove_bracket);
-               var value = "-"+get_value;
-           }
-           else if(omission_cost_minus == "minus"){
-               var value = -omission_cost_remove_bracket + parseInt(additional_cost_remove_bracket);
-           }
-           else if(additional_cost_minus == "minus"){
-               var value = omission_cost_remove_bracket - additional_cost_remove_bracket;
-           }
-           else{
-               var value = parseInt(additional_cost_remove_bracket) + parseInt(omission_cost_remove_bracket);
-           }
-
-           if(isNaN(value)){
-               console.log("Nan");
-           }else{
-               if(String(value).indexOf('-') !== -1){
-                   add_bracket_value_get = value.toString().replace('-','');
-                   var add_bracket_value  = "(" + add_bracket_value_get + ")";
-               }
-               else{
-                   var add_bracket_value = value;
-               }
-           }
-
-           $('.claimed_net_amount').val(add_bracket_value);
+           var get_value = parseInt(omission_cost) + parseInt(additional_cost);
+       
+       
+           $('.claimed_net_amount').val(get_value);
        });
 
        $(document).on("keyup", '.approved_addition_cost', function (e) {
@@ -326,56 +324,9 @@ h3, .h3 {
            var app_additional_cost = $('.approved_addition_cost').val();
            var app_omission_cost = $('.approved_omission_cost').val();
 
-           if(app_additional_cost.indexOf('-') !== -1){
-               var app_add_bracket  = "(" + '' + ")";
-               $('.approved_addition_cost').val(app_add_bracket);
-           }
+           var app_get_value = parseInt(app_omission_cost) + parseInt(app_additional_cost);
 
-           if (app_additional_cost.indexOf('(') !== -1) {
-               app_additional_cost_minus = 'minus';
-               app_additional_cost_remove_bracket = app_additional_cost.slice(1,-1);
-           }
-           else{
-                app_additional_cost_minus = 'plus';
-                var app_additional_cost_remove_bracket = app_additional_cost;
-           }
-
-           if (app_omission_cost.indexOf('(') !== -1) {
-               app_omission_cost_minus = 'minus';
-               app_omission_cost_remove_bracket   = app_omission_cost.slice(1,-1);
-           }
-           else{
-               app_omission_cost_minus = 'plus';
-               app_omission_cost_remove_bracket   = app_omission_cost;
-           }
-
-           if(app_additional_cost_minus == 'minus' && app_omission_cost_minus == 'minus'){
-               var app_get_value = parseInt(app_additional_cost_remove_bracket) + parseInt(app_omission_cost_remove_bracket);
-               var app_value = "-"+app_get_value;
-           }
-           else if(app_omission_cost_minus == "minus"){
-               var app_value = -app_omission_cost_remove_bracket + parseInt(app_additional_cost_remove_bracket);
-           }
-           else if(app_additional_cost_minus == "minus"){
-               var app_value = app_omission_cost_remove_bracket - app_additional_cost_remove_bracket;
-           }
-           else{
-               var app_value = parseInt(app_additional_cost_remove_bracket) + parseInt(app_omission_cost_remove_bracket);
-           }
-
-           if(isNaN(app_value)){
-               console.log("Nan");
-           }else{
-               if(String(app_value).indexOf('-') !== -1){
-                   app_add_bracket_value_get = app_value.toString().replace('-','');
-                   var app_add_bracket_value  = "(" + app_add_bracket_value_get + ")";
-               }
-               else{
-                   var app_add_bracket_value = app_value;
-               }
-           }
-
-           $('.approved_net_cost').val(app_add_bracket_value);
+           $('.approved_net_cost').val(app_get_value);
        });
 
        $(document).on("paste", '.impact_time', function (event) {
