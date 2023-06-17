@@ -147,7 +147,7 @@
 
 
     <!-- Sidebar  -->
-    <nav id="sidebar">
+    <nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
                 {{-- <li>
@@ -389,7 +389,7 @@
     </nav>
 
     <!-- Page Content  -->
-    <div id="content" class="main">
+    <div id="content" class="page-wrapper">
         
     
     <div class="collapseToggle hrm">
