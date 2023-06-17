@@ -3037,31 +3037,32 @@ class Utility extends Model
                     $key_name =>$validation
                 ]);
 
-                if($validator->fails()){
+                // if($validator->fails()){
 
-                    $res = [
-                        'flag' => 0,
-                        'msg' => $validator->messages()->first(),
-                    ];
+                //     $res = [
+                //         'flag' => 0,
+                //         'msg' => $validator->messages()->first(),
+                //     ];
 
-                    return $res;
-                } else {
+                //     return $res;
+                // } else {
 
-                    $name = $name;
+                $name = $name;
 
-                    if($settings['storage_setting']=='local')
-                    {
+                if($settings['storage_setting']=='local')
+                {
 //                    dd(\Storage::disk(),$path);
-                        $request->$key_name->move(storage_path($path), $name);
-                        $path = $path.$name;
-                    }
-                    else if($settings['storage_setting'] == 'wasabi'){
 
-                        $path = \Storage::disk('wasabi')->putFileAs(
-                            $path,
-                            $file,
-                            $name
-                        );
+                    $request->$key_name->move(storage_path($path), $name);
+                    $path = $path.$name;
+                }
+                else if($settings['storage_setting'] == 'wasabi'){
+
+                    $path = \Storage::disk('wasabi')->putFileAs(
+                        $path,
+                        $file,
+                        $name
+                    );
 
                         // $path = $path.$name;
 
@@ -3092,7 +3093,7 @@ class Utility extends Model
                         'url'  => $path
                     ];
                     return $res;
-                }
+                // }
 
             }else{
                 $res = [

@@ -64,7 +64,7 @@ class DucumentUploadController extends Controller
         {
             $validator = \Validator::make(
                 $request->all(), [
-                    'name' => 'required',
+                    'name' => 'required|unique:ducument_uploads',
                     'document' => 'mimes:jpeg,png,jpg,svg,pdf,doc|max:20480',
                 ]
             );
@@ -78,17 +78,18 @@ class DucumentUploadController extends Controller
             $document              = new DucumentUpload();
             $document->name        = $request->name;
             // $document->document    = !empty($request->document) ? $fileNameToStore : '';
-            if(!empty($request->document))
+            if(!empty($request->inputimage))
             {
-                $fileName = time() . "_" . $request->document->getClientOriginalName();
+                
+                $fileName = time() . "_" . $request->inputimage->getClientOriginalName();
                 $document->document = $fileName;
-                $dir        = 'uploads/documentUpload';
-                $path = Utility::upload_file($request,'document',$fileName,$dir,[]);
+                $dir        = '/app/public/uploads/documentUpload';
+                $path = Utility::upload_file($request,'inputimage',$fileName,$dir,[]);
                 if($path['flag']==0){
                     return redirect()->back()->with('error', __($path['msg']));
                 }
-                // $request->document  = $fileName;
-                // $document->save();
+                $request->document  = $fileName;
+                $document->save();
             }
             $document->role        = $request->role;
             $document->description = $request->description;
@@ -101,6 +102,7 @@ class DucumentUploadController extends Controller
         {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
+    
     }
 
 
@@ -149,20 +151,21 @@ class DucumentUploadController extends Controller
             $document->name = $request->name;
             $document->role        = $request->role;
             $document->description = $request->description;
-            if(!empty($request->document))
+            if(!empty($request->inputimage))
             {
 
-                $filenameWithExt = $request->file('document')->getClientOriginalName();
+                $filenameWithExt = $request->inputimage->getClientOriginalName();
                 $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension       = $request->file('document')->getClientOriginalExtension();
+                $extension       = $request->inputimage->getClientOriginalExtension();
                 $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                $dir = 'uploads/documentUpload/';
+                $document->document = $fileNameToStore;
+                $dir = '/app/public/uploads/documentUpload';
                 $image_path = $dir . $fileNameToStore;
                 if (\File::exists($image_path)) {
                     \File::delete($image_path);
                 }
                 $url = '';
-                $path = \Utility::upload_file($request,'document',$fileNameToStore,$dir,[]);
+                $path = \Utility::upload_file($request,'inputimage',$fileNameToStore,$dir,[]);
                 if($path['flag'] == 1){
                     $url = $path['url'];
                 }else{
