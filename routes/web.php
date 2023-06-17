@@ -86,7 +86,7 @@ Route::get(
 
 
 
-Route::any('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
+Route::get('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
@@ -226,7 +226,7 @@ Route::any('delete_project_specification','DiaryController@delete_project_specif
 );
 
 
-Route::any('variation_scope_change','DiaryController@variation_scope_change')->name('variation_scope_change')->middleware(
+Route::get('variation_scope_change','DiaryController@variation_scope_change')->name('variation_scope_change')->middleware(
     [
         'auth',
         'XSS',
@@ -268,7 +268,7 @@ Route::any('delete_variation_scope_change','DiaryController@delete_variation_sco
     ]
 );
 
-Route::any('procurement_material','DiaryController@procurement_material')->name('procurement_material')->middleware(
+Route::get('procurement_material','DiaryController@procurement_material')->name('procurement_material')->middleware(
     [
         'auth',
         'XSS',

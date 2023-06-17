@@ -69,10 +69,14 @@
                     @empty
                         
                     @endforelse
-                    
+                    <div class="col-md-3 pull-right">
+                        <button class="btn btn-primary" type="button" id="dynamic-procure">{{__('Add Consultant')}}</button>
+                    </div>
+                    <table class="table" id="dynamicprocure"> 
+                    </table>
                 </div>
 
-                
+               
                 
                 <div class="row">
                     <div class="col-md-6">
@@ -400,5 +404,19 @@
             $('#multi_total_count').val(count-1);
             $(this).parents('tr').remove();
         });
+
+       
+    var j = 12;
+    var k = 12;
+    var g = 12;
+    $(document).on("click", "#dynamic-procure", function () {
+       
+        $("#dynamicprocure").append('<tr><td><div class=""><div class="row"><div class="col-md-4"><div class="form-group"><label for="InputLIst">Consultant No.'+  ++k +'</label><input type="text" name="data[consultant_'+ ++j +']" class="form-control" placeholder="Consultant No. '+ ++g +'" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">Consultant No. '+ ++k +'</label><input type="text" name="data[consultant_' + ++j + ']" placeholder="Consultant No. '+ ++g +'" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">Consultant No. '+ ++k +'</label><input type="text" name="data[consultant_' + ++j + ']" class="form-control" placeholder="Consultant No. '+ ++g +'" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocure"> Remove Consultant </button></div></div></td></tr>');
+    });
+    $(document).on('click', '#removedynamicprocure', function () {
+        $(this).parents('tr').remove();
+    });
+    
+
     });
   </script>

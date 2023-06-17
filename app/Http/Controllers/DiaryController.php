@@ -368,7 +368,6 @@ class DiaryController extends Controller
                 ->where('consultant_directions.user_id',Auth::id())
                 ->orderBy('consultant_directions.id', 'DESC')
                 ->groupBy('consultant_directions.id')
-              
                 ->get();
 
                 $returnHTML = view("diary.show_consultant_direction",compact("project_id", "dairy_data"))->render();
@@ -758,7 +757,10 @@ class DiaryController extends Controller
             if(\Auth::user()->can('manage RFI')){
 
                 $project_id = Session::get('project_id');
+
                 $dairy_data=RFIStatusSave::where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->get();
+
+
                 return view('diary.rfi.index',compact('project_id','dairy_data'));
 
             }else{
@@ -922,8 +924,6 @@ class DiaryController extends Controller
                     // "date_of_replied_data"=>'',
                 );
 
-
-              
 
                 RFIStatusSave::where('id',$request->edit_id)
                 ->where('user_id',Auth::id())
@@ -1742,6 +1742,7 @@ class DiaryController extends Controller
                         "user_id" => Auth::id(),
                         "submission_date" =>$request->submission_date[$item],
                         "actual_reply_date" =>$request->actual_reply_date[$item],
+                        "no_of_submission"  =>$request->no_of_submission[$item],
     
                     ];
                     ProcurementMaterialSub::insert($data2);
@@ -1891,6 +1892,7 @@ class DiaryController extends Controller
                                 "user_id" => Auth::id(),
                                 "submission_date" =>$request->submission_date[$item],
                                 "actual_reply_date" =>$request->actual_reply_date[$item],
+                                "no_of_submission"  =>$request->no_of_submission[$item],
             
                             ];
                             

@@ -59,7 +59,7 @@ h3, .h3 {
 </style>
 <div class="row">
   <div class="col-md-8">
-     <h2>{{__('VO or Change Order or Scope Change Authorization Summary')}}</h2> 
+     <h2>{{__('VO / Change Order/ SCA')}}</h2> 
   </div>
     @can('create vochange')
     <div class="col-md-4 float-end floatrght">
