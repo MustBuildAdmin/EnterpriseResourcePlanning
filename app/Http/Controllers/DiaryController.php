@@ -124,7 +124,7 @@ class DiaryController extends Controller
                     "consultants_direction_multi","consultants_direction_multi.consultant_id","=","consultant_directions.id")
                 ->where("consultant_directions.project_id", Session::get('project_id'))
                 ->where('consultant_directions.user_id',Auth::id())
-                ->orderBy('consultant_directions.id', 'DESC')
+                ->orderBy('consultant_directions.id', 'ASC')
                 ->groupBy('consultant_directions.id')
                 ->get();
     
