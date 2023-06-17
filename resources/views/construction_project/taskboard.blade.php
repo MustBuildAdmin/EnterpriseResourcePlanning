@@ -77,9 +77,9 @@
                             @if(\Auth::user()->type == 'company')
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                     <div class="btn-box">
-                                        {{ Form::label('users', __('Users'),['class'=>'form-label'])}}
-                                        <select class="select form-select" name="users" id="users">
-                                            <option value="" class="">{{ __('All Users') }}</option>
+                                        {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label'])}}
+                                        <select class="select form-select users" name="users" id="users">
+                                            <option value="" class="">{{ __('Assigned To') }}</option>
                                             @foreach ($user_data as $users)
                                                 <option value="{{$users->id}}">{{$users->name}}</option>
                                             @endforeach
@@ -107,6 +107,18 @@
                                     
                                     {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date')) }}
 
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
+                                <div class="btn-box">
+                                    {{ Form::label('status', __('Status'),['class'=>'form-label'])}}
+                                    <select onchange="status_task(this)" name="status_task" id="status_task" class="form-control">
+                                        <option value="">Select Status</option>
+                                        <option value="1">Today Task</option>
+                                        <option value="2">All Task</option>
+                                        <option value="3">Pending Task</option>
+                                        <option value="4">Completed Task</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-auto float-end ms-2 mt-4">
@@ -180,7 +192,7 @@
         alltask();
     });
 
-    function alltask(start_date,end_date,user_id){
+    function alltask(start_date,end_date,user_id,status_task){
         $(".loader_show_hide").show();
         $("#show_search_function").show();
         $("#all_task_append").html("");
@@ -188,9 +200,10 @@
             url : '{{route("get_all_task")}}',
             type : 'GET',
             data : {
-                'start_date' : start_date,
-                'end_date'   : end_date,
-                'user_id'    : user_id
+                'start_date'  : start_date,
+                'end_date'    : end_date,
+                'user_id'     : user_id,
+                'status_task' : status_task
             },
             cache:true,
             success : function(data) {
@@ -207,11 +220,13 @@
     }
 
     function submit_button(){
-        start_date = $(".start_date").val();
-        end_date   = $(".end_date").val();
-        user_id    = $("#users").val();
+        start_date  = $(".start_date").val();
+        end_date    = $(".end_date").val();
+        user_id     = $("#users").val();
+        status_task = $("#status_task").val();
+        
 
-        alltask(start_date,end_date,user_id);
+        alltask(start_date,end_date,user_id,status_task);
     }
 
     function maintask(){
@@ -235,5 +250,23 @@
                 alert("Request: "+JSON.stringify(request));
             }
         });
+    }
+
+    function status_task(get_this){
+        status = $(get_this).val();
+
+        if(status == 1){
+            $(".end_date").val("");
+            $(".start_date").val("");
+            $(".users").val("");
+        }
+        else if(status == ""){
+            $(".end_date").val("{{date('Y-m-d')}}");
+        }
+        else{
+            $(".end_date").val("");
+            $(".start_date").val("");
+            $(".users").val("");
+        }
     }
 </script>
