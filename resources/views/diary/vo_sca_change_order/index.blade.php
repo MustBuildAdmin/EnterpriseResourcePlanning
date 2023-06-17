@@ -233,20 +233,22 @@ h3, .h3 {
                       title: 'VO or Change Order or Scope Change Authorization Summary',
                       titleAttr: 'Excel',
                       text: '<i class="fa fa-file-excel-o"></i>',
-      
+                      orientation: 'landscape',
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
                       }
                   },
                   {
                       extend: 'pdfHtml5',
                       title: 'VO or Change Order or Scope Change Authorization Summary',
                       titleAttr: 'PDF',
+                      pagesize: 'A3',
+                      orientation: 'landscape',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
@@ -273,7 +275,7 @@ h3, .h3 {
                       title: 'VO or Change Order or Scope Change Authorization Summary',
                       titleAttr: 'Print',
                       text: '<i class="fa fa-print"></i>',
-      
+                      orientation: 'landscape',
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'

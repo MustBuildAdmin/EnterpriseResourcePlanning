@@ -162,7 +162,7 @@ $('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_
 			allowLatin         : false,  
 });
 
-$('.claimed_addition_cost,approved_addition_cost').alphanum({
+$('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			allow              : '',    // Allow extra characters
 			allowUpper         : false,  // Allow upper case characters
 			allowLower         : false,  // Allow lower case characters
