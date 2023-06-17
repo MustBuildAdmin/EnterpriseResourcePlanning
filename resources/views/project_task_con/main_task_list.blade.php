@@ -28,9 +28,9 @@
                     </td>
                     <td style="width:10%;">
                         @if ($show_parent->progress >= 100)
-                            <span class="badge badge-success" style="background-color:#28A745;">{{$show_parent->progress}} %</span>
+                            <span class="badge badge-success" style="background-color:#28A745;">{{$show_parent->progress}}%</span>
                         @else
-                            <span class="badge badge-info" style="background-color:#007bff;">{{$show_parent->progress}} %</span>
+                            <span class="badge badge-info" style="background-color:#007bff;">{{$show_parent->progress}}%</span>
                         @endif
                     </td>
                     <td  style="width:10%;"class="{{ (strtotime($show_parent->start_date) < time()) ? 'text-danger' : '' }}">
