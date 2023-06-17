@@ -181,7 +181,8 @@ class ProjectTaskController extends Controller
 
         $get_user_id    = $request->user_id;
         $get_start_date = $request->start_date;
-        $get_end_date   = $request->end_date;      
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
 
         $usr = Auth::user();
 
@@ -201,6 +202,26 @@ class ProjectTaskController extends Controller
                         ->where(function ($query) use ($get_start_date, $get_end_date) {
                             $query->whereDate('con_tasks.end_date', '>', $get_end_date);
                         });
+                }
+                else if($status_task == "1"){
+                    // Today Task
+                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                        ->where('con_tasks.project_id', $project_id)
+                        ->orderBy('con_tasks.start_date','ASC');
+                }
+                else if($status_task == "2"){
+                    // All Task
+                    $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                }
+                else if($status_task == "3"){
+                    // Pending Task
+                    $tasks->where('project_id', $project_id)
+                        ->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', "<", date('Y-m-d'));
+                }
+                else if($status_task == "4"){
+                    // Completed Task
+                    $tasks->where('project_id', $project_id)->where('progress','>','100');
                 }
                 else{
                     $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
@@ -233,6 +254,26 @@ class ProjectTaskController extends Controller
                 }
                 else if($project_id != 0 && $get_end_date != null){
                     $tasks->whereDate('con_tasks.end_date', ">", $get_end_date)->where('con_tasks.project_id', $project_id);
+                }
+                else if($status_task == "1"){
+                    // Today Task
+                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                        ->where('con_tasks.project_id', $project_id)
+                        ->orderBy('con_tasks.start_date','ASC');
+                }
+                else if($status_task == "2"){
+                    // All Task
+                    $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                }
+                else if($status_task == "3"){
+                    // Pending Task
+                    $tasks->where('project_id', $project_id)
+                    ->where('progress','<','100')
+                    ->whereDate('con_tasks.end_date', "<", date('Y-m-d'));
+                }
+                else if($status_task == "4"){
+                    // Completed Task
+                    $tasks->where('project_id', $project_id)->where('progress','>','100');
                 }
                 else if($project_id != 0){
                     $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
@@ -306,6 +347,36 @@ class ProjectTaskController extends Controller
                 ]
             );
         }
+    }
+
+    public function edit_assigned_to(Request $request){
+        if(Session::has('project_id')){
+            $project_id = Session::get('project_id');
+        }
+        else{
+            $project_id = 0;
+        }
+        $task_main_id = $request->task_id;
+        $con_task = $get_popup_data_con = Con_task::Select('con_tasks.*','projects.project_name','projects.description')
+                    ->join('projects','projects.id','con_tasks.project_id')
+                    ->where('main_id',$task_main_id)->first();
+    
+        $assigned_to =  User::select("users.name", "users.id")
+            ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
+            ->where('project.project_id',$project_id)
+            ->groupBy('users.id')
+            ->get();
+
+        $total_pecentage = Task_progress::where('task_id',$task_main_id)->sum('percentage');
+
+        return view('project_task_con.edit_assigned_to', compact('task_main_id','con_task','assigned_to','total_pecentage'));
+    }
+
+    public function update_assigned_to(Request $request){
+        $task_main_id = $request->task_main_id; 
+        $assigned_to = implode(',',$request->users);
+        DB::table('con_tasks')->where('main_id',$task_main_id)->update(['users'=>$assigned_to]);
+        return redirect()->back()->with('success', __('Assigned To Updated.'));
     }
 
     // For Taskboard View
@@ -560,7 +631,7 @@ class ProjectTaskController extends Controller
             $get_con_task = Con_task::where('main_id',$task_id)->first();
             $end_date     = $get_con_task->end_date != null ? explode(" ",$get_con_task->end_date) : array();
 
-            $get_popup_data_con = Con_task::where('main_id',$task_id)->first();
+            $get_popup_data_con = Con_task::Select('con_tasks.*','projects.project_name','projects.description')->join('projects','projects.id','con_tasks.project_id')->where('main_id',$task_id)->first();
 
             if(\Auth::user()->type != 'company'){
                 $get_task_progress = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
@@ -578,6 +649,8 @@ class ProjectTaskController extends Controller
                     ->groupBy('task_progress.id')
                     ->get();
             }
+
+            $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');
 
             if(date('Y-m-d') >= $get_date){
                 $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)->select('percentage','description')->first();
@@ -611,7 +684,7 @@ class ProjectTaskController extends Controller
             }
         }
 
-        return view('construction_project.task_particular_list',compact('task_id','data'));
+        return view('construction_project.task_particular_list',compact('task_id','data','total_pecentage'));
     }
 
     public function add_particular_task(Request $request){
