@@ -942,79 +942,83 @@ class DiaryController extends Controller
 
 
                 $delete_invoice = RFIStatusSubSave::where('rfi_id','=',$request->edit_id)->delete();
-        
-       
-        for($i=1; $i<=$request->multi_total_count;$i++) {
-            $name_of_consulatant_var = 'name_of_consulatant'.$i;
-            $replied_date_var        = 'replied_date'.$i;
-            $status_var              = 'status'.$i;
-            $remarks_var             = 'remarks'.$i;
-            $file_var                = 'attachments_two'.$i;
-           
-            if(isset($request->$replied_date_var)){
 
-                $name_of_consulatant_set   = $request->$name_of_consulatant_var;
-                $replied_date_set          = $request->$replied_date_var;
-                $status_set                = $request->$status_var;
-                $remarks_set               = $request->$remarks_var;
-                $file_set                  = $request->$file_var;
-               
-              
-                if($name_of_consulatant_set!=null){
-                    $select_name_consultant = implode(',', $name_of_consulatant_set);
-                }else{
-                    $select_name_consultant = Null;
-                }
-
-                $attachments_two = [];
-           
-
-                if (!empty($file_set)) {
-                    if ($request->hasfile($file_var)) {
-                        foreach ($request->file($file_var) as $file) {
-                            $name = $file->getClientOriginalName();
-                            $file->move(public_path("files/1"), $name);
-                            // $initiator_file_name[] = $name;
-                            array_push($attachments_two,$name);
-                        }
-                        $check_replier_file=RFIStatusSubSave::select('attachments_two')->where('rfi_id',$request->id)->get();
-                        if(count($check_replier_file)!=0){
-                            foreach ($check_replier_file as $file) {
-                                array_push($attachments_two,$file->attachments_two);
-                                
-                            }
-                        }
-                       
-                        }
-                }else{
-                        $check_replier_file=RFIStatusSubSave::select('attachments_two')->where('rfi_id',$request->id)->get();
-                        if(count($check_replier_file)!=0){
-                            foreach ($check_replier_file as $file) {
-                                $attachments_two[] = $file->attachments_two;
-                                
-                            }
-                        }
-                }
-             
-               
             
-                $multi_insert_array = array(
-                    "user_id"            => Auth::id(),
-                    "project_id"         => Session::get('project_id'),
-                    "rfi_id"             => $invoice_id,
-                    'name_of_consultant' => $select_name_consultant,
-                    'replied_date'       => $replied_date_set,
-                    'status'             => $status_set,
-                    'remarks'            => $remarks_set,
-                    'attachments_two'    =>$attachments_two,
-                );
-    
-                RFIStatusSubSave::insert($multi_insert_array);
+                for($i=1; $i<=$request->multi_total_count;$i++) {
+                    $name_of_consulatant_var = 'name_of_consulatant'.$i;
+                    $replied_date_var        = 'replied_date'.$i;
+                    $status_var              = 'status'.$i;
+                    $remarks_var             = 'remarks'.$i;
+                    $file_var                = 'attachments_two'.$i;
+                
+                    if(isset($request->$replied_date_var)){
 
-            }
+                        $name_of_consulatant_set   = $request->$name_of_consulatant_var;
+                        $replied_date_set          = $request->$replied_date_var;
+                        $status_set                = $request->$status_var;
+                        $remarks_set               = $request->$remarks_var;
+                        $file_set                  = $request->$file_var;
+                    
+                    
+                        if($name_of_consulatant_set!=null){
+                            $select_name_consultant = implode(',', $name_of_consulatant_set);
+                        }else{
+                            $select_name_consultant = Null;
+                        }
+
+
+                        if (!empty($file_set)) {
+                            $filenameWithExt = $request->file($file_var)->getClientOriginalName();
+                            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                            $extension = $request->file($file_var)->getClientOriginalExtension();
+                            $fileNameToStore =$filename . "_" . time() . "." . $extension;
             
-           
-        }
+                            $dir = "uploads/RFI";
+            
+                            $image_path = $dir . $filenameWithExt;
+                            if (\File::exists($image_path)) {
+                                \File::delete($image_path);
+                            }
+                            $url1 = "";
+                            $path1= Utility::upload_file($request,$file_var,$fileNameToStore,$dir,[]);
+            
+                            if ($path1["flag"] == 1) {
+                                $url1 = $path1["url"];
+                            } else {
+                                return redirect()->back()->with("error", __($path1["msg"]));
+                            }
+                        }else{
+                            $check_attach_file=RFIStatusSubSave::select('attachments_two','attachments_two')
+                                                ->where('id',$request->id)
+                                                ->where('user_id',Auth::id())
+                                                ->where('project_id',$request->project_id)
+                                                ->first();
+                                                                                
+                            $filenameWithExt=$check_attach_file->attachments_two ?? '';
+                            $url1=$check_attach_file->attachments_two_path ?? '';
+                                    
+                        }
+                    
+                    
+                    
+                        $multi_insert_array = array(
+                            "user_id"            => Auth::id(),
+                            "project_id"         => Session::get('project_id'),
+                            "rfi_id"             => $invoice_id,
+                            'name_of_consultant' => $select_name_consultant,
+                            'replied_date'       => $replied_date_set,
+                            'status'             => $status_set,
+                            'remarks'            => $remarks_set,
+                            'attachments_two'    =>$filenameWithExt,
+                            'attachments_two_path'=>$url1,
+                        );
+            
+                        RFIStatusSubSave::insert($multi_insert_array);
+
+                    }
+                    
+                
+                }
 
             return redirect()->back()->with("success", __("RFI updated successfully."));
 

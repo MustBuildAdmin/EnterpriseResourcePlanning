@@ -15,7 +15,7 @@
             @csrf
             <div class="container">
                 <input type="hidden" name="project_id" value="{{$project}}" />
-                <input type="text" name="edit_id" id="edit_id" value="{{$get_dairy->id}}">
+                <input type="hidden" name="edit_id" id="edit_id" value="{{$get_dairy->id}}">
                 <div class="row">
                   
                     @if($get_dairy != null)
@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <div class="col-md-4">
                             <label for="InputLIst">{{__('Contractor')}}</label>
-                            <input type="text" name="contractor_name" class="form-control"  placeholder="{{__('Contractor')}}" value="{{$get_dairy->contractor_name}}" required />
+                            <input type="text" name="contractor_name" class="form-control"  placeholder="{{__('Contractor')}}" value="{{$get_dairy->contractor_name}}"  />
                         </div>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
                     @forelse ($consulatant_data as $conkey =>$con)
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="InputLIst">{{__('Consultant No.')}} {{$con_row}}</label>
-                                <input type="text" name="data[{{$conkey}}]" class="form-control {{$conkey}}" value="{{$con}}" placeholder="{{__('Consultant No.')}} {{$con_row}}" />
+                                <label for="InputLIst">{{__('Consultant No.')}}{{$con_row}} @if($loop->iteration==1) <span style='color:red;'>*</span> @endif</label>
+                                <input type="text" name="data[{{$conkey}}]" class="form-control {{$conkey}}" value="{{$con}}" placeholder="{{__('Consultant No.')}} {{$con_row}}"  @if($loop->iteration==1) required @endif/>
                             </div>
                         </div>
                     @php
@@ -163,7 +163,7 @@
                 <h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
                 <hr>
                 <div class="row">
-                    <input type="text" id="multi_total_count" name="multi_total_count" value="1">
+                    <input type="hidden" id="multi_total_count" name="multi_total_count" value="1">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="Input">{{__('Name of Consultant')}}</label>
@@ -217,7 +217,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="Input">{{__('Attachments')}}</label>
-                        <input type="file" name="attachments_two1" class="form-control" value="{{$mutli_data->attachments_two ?? ''}}">
+                        <input type="file" name="attachments_two1" class="form-control" >
+                        <span>{{$mutli_data->attachments_two ?? ''}}</span>
                         </div>
                     </div>
                 </div>
@@ -233,7 +234,7 @@
             <h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
             <hr>
             <div class="row">
-                <input type="text" id="multi_total_count" name="multi_total_count" value="1">
+                <input type="hidden" id="multi_total_count" name="multi_total_count" value="1">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="Input">{{__('Name of Consultant')}}</label>
@@ -287,7 +288,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="Input">{{__('Attachments')}}</label>
-                    <input type="file" name="attachments_two1[]" class="form-control" value="{{$mutli_data->attachments_two ?? ''}}">
+                    <input type="file" name="attachments_two1" class="form-control" value="">
+                    <span>{{$mutli_data->attachments_two ?? ''}}</span>
                     </div>
                 </div>
             </div>
@@ -370,7 +372,7 @@
                                 '<textarea name="remarks' + i + '" class="form-control"></textarea>'+
                             '</div></div>'+
                             '<div class="col-md-6"><div class="form-group"><label for="Input">Attachments</label>'+
-                                '<input type="file" name="attachments_two' + i + '[]" class="form-control">'+
+                                '<input type="file" name="attachments_two' + i + '" class="form-control">'+
                             '</div></div></div>'+
                             '<div class="col-md-12 mt-3">'+
                                 '<button type="button" class="btn btn-outline-danger remove-input-field">Delete</button>'+

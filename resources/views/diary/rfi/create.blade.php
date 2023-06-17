@@ -10,7 +10,7 @@
 					<div class="form-group">
 						<div class="col-md-4">
 							<label for="InputLIst">{{__('Contractor:')}}</label>
-							<input type="text" name="contractor_name" class="form-control" placeholder="{{__('Contractor')}}" required> 
+							<input type="text" name="contractor_name" class="form-control" placeholder="{{__('Contractor')}}" > 
                         </div>
 					</div>
 				</div>
@@ -24,8 +24,8 @@
 				<div class="row">
 					<div class="col-md-4">
 						<div class="form-group">
-							<label for="InputLIst">{{__('Consultant No. 1')}}</label>
-							<input type="text" name="rfijson[consultant_1]" class="form-control consultant_1" placeholder="{{__('Consultant No. 1')}}">
+							<label for="InputLIst">{{__('Consultant No. 1')}}</label><span style='color:red;'>*</span>
+							<input type="text" name="rfijson[consultant_1]" class="form-control consultant_1" placeholder="{{__('Consultant No. 1')}}" required>
                          </div>
 					</div>
 					<div class="col-md-4">
