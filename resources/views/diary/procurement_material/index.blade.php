@@ -142,7 +142,7 @@ h3, .h3 {
         var j = 0;
         $(document).on("click", "#dynamic-procurement", function () {
             ++j;
-            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-4"><div class="form-group"><label for="InputLIst">Submission Date :</label><input type="date" name="submission_date[]" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">Actual Reply Date :</label><input type="date" name="actual_reply_date[]" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">No of Submissions</label><input type="text" name="no_of_submission[]" class="form-control" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button></div></div></td></tr>');
+            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-4"><div class="form-group"><label for="InputLIst">Submission Date :</label><input type="date" name="submission_date[]" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">Actual Reply Date :</label><input type="date" name="actual_reply_date[]" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">No of Submissions</label><input type="text" name="no_of_submission[]" placeholder="No of Submissions" class="form-control number" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button></div></div></td></tr>');
         });
         $(document).on('click', '#removedynamicprocurement', function () {
             $(this).parents('tr').remove();
@@ -228,6 +228,7 @@ $(document).on('keypress', function (e) {
         swal.closeModal();
     }
 });
+
 </script>
 
 

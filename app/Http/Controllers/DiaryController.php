@@ -1628,6 +1628,11 @@ class DiaryController extends Controller
     public function procurement_material(){
        
         try {
+
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
+
             if(\Auth::user()->can('manage procurement material')){
 
                 $project_id = Session::get('project_id');

@@ -123,7 +123,7 @@
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('No of Submissions')}}</label>
-											<input type="text" name="no_of_submission[]" class="form-control"> 
+											<input type="text" name="no_of_submission[]" placeholder="{{__('No of Submissions')}}" class="form-control number"> 
 										</div>
 									</div>
 								</div>
