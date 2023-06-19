@@ -8,6 +8,7 @@
     margin:20px;
 }
 </style>
+<script src="{{ asset('WizardSteps/js/jquery.steps.js') }}"></script>
 <div class="page-wrapper">
 
 
@@ -20,7 +21,7 @@
       <div class="col-md-6">
 
       @can('create project')
-                <a href="#" data-size="lg"    style="
+                <a href="#" data-size="xl"    style="
                 float: right;" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
                     data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
                     <button type="button" class="btn btn-primary w-20"

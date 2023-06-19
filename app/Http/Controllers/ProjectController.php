@@ -65,13 +65,15 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('create project'))
         {
-          $setting  = Utility::settings(\Auth::user()->creatorId());
-          $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
-          $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
-          $clients->prepend('Select Client', '');
-          $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
-          $users->prepend('Select User', '');
+            $setting  = Utility::settings(\Auth::user()->creatorId());
+            $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+            $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+            $clients->prepend('Select Client', '');
+            $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+            $users->prepend('Select User', '');
+            
             return view('projects.create', compact('clients','users','setting','repoter'));
+            // return view('projects.create_backup', compact('clients','users','setting','repoter'));
         }
         else
         {
