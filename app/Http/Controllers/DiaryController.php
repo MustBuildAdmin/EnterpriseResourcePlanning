@@ -828,7 +828,7 @@ class DiaryController extends Controller
 
             if(\Auth::user()->can('edit RFI')){
 
-                $project_id = $request["project_id"];
+                $project_id = Session::get('project_id');
 
                 $project = Project::select('project_name')
                 ->where("id", $project_id)
@@ -959,7 +959,7 @@ class DiaryController extends Controller
                     
                        
                         if($name_of_consulatant_set!=null){
-                            $select_name_consultant = implode(',',$name_of_consulatant_set);
+                            $select_name_consultant = implode(',',array_filter($name_of_consulatant_set));
                         }else{
                             $select_name_consultant = Null;
                         }
