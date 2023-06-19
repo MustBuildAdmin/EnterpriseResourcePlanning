@@ -1,6 +1,6 @@
 {{Form::open(array('url'=>'vender','method'=>'post'))}}
 <style>
-    .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address, 
+    .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address, .billing_city, .shipping_city, 
     .billing_address {
         margin-top : 15px;
     }
@@ -21,10 +21,10 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
-                {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}<span style="font-size: 12px;color: #e12323;"> (With Country Code)</span><span style='color:red;'>*</span>
+                {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{-- <input class="form-control" name="contact" type="number" id="contact" maxlength="16"  placeholder="+91 111 111 1111" required > --}}
-                    {{Form::number('contact',null,array('class'=>'form-control','maxlength' => '16','Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
+                    {{Form::text('contact',null,array('class'=>'form-control','maxlength' => '13','Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group">
+            <div class="form-group billing_city">
                 {{Form::label('billing_city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required', 'placeholder'=>'City'))}}
@@ -98,7 +98,7 @@
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group billing_phone">
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{Form::number('billing_phone',null,array('class'=>'form-control','maxlength' => 35,'Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
+                {{Form::text('billing_phone',null,array('class'=>'form-control','maxlength' => 13,'Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
                 {{-- {{Form::text('billing_phone',null,array('class'=>'form-control'))}} --}}
 
             </div>
@@ -159,7 +159,7 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="form-group">
+                <div class="form-group shipping_city">
                     {{Form::label('shipping_city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <div class="form-icon-user">
@@ -173,7 +173,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group shipping_phone">
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    {{Form::number('shipping_phone',null,array('class'=>'form-control','maxlength' => 35,'Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
+                    {{Form::text('shipping_phone',null,array('class'=>'form-control','maxlength' => 13,'Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
                     {{-- {{Form::text('shipping_phone',null,array('class'=>'form-control'))}} --}}
 
                 </div>

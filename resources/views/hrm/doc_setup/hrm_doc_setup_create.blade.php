@@ -4,7 +4,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('name',__('Name*'),['class'=>'form-label'])}}
-                {{Form::text('name',null,array('class'=>'form-control get_name','required'=>'required'))}}
+                {{Form::text('name',null,array('class'=>'form-control','required'=>'required'))}}
                 <br>
                 <span class="invalid-name show_duplicate_error" role="alert" style="display: none;">
                     <strong class="text-danger">Name Already Exist!</strong>
@@ -30,10 +30,11 @@
             <label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label>
             <div class="choose-file ">
                 <label for="document" class="form-label">
-                    <input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" required>
+                    <input name="inputimage" type="file" class="form-control document_setup" name="document" id="document" data-filename="document_create" required>
                     <img id="image" class="mt-3" style="width:25%;"/>
                     <br>
                     <span class="show_document_file" style="color:green;"></span>
+                    <span class="show_document_error" style="color:red;"></span>
                 </label>
             </div>
         </div>
@@ -69,6 +70,22 @@
                 }
             });
         });
+        $(document).on('change', '.document_setup', function(){
+            var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(".show_document_file").hide();
+                $(".show_document_error").html("Upload only doc, pdf, jpeg, png and xls");
+                $(".submit_button").prop('disabled',true);
+                return false;
+            } else{
+                $(".show_document_file").show();
+                $(".show_document_error").hide();
+                $(".submit_button").prop('disabled',false);
+                return true;
+            }
+
+        });
+        
     });
 
     document.getElementById('document').onchange = function () {
@@ -94,19 +111,6 @@
             return false;
         }   
     }, "Invalid file size, please select a file less than or equal to 20mb size");
-
-    jQuery.validator.addMethod("accept", function(value, element, param) {
-        var extension = value.substr(value.lastIndexOf("."));
-        var allowedExtensionsRegx = /(\.jpg|\.jpeg|\.png|\.doc|\.pdf|\.exls)$/i;
-        var isAllowed = allowedExtensionsRegx.test(extension);
-
-        if(isAllowed){
-            return true;
-        }else{
-            $(".show_document_file").hide();
-            return false;
-        }
-    }, "File must be png|jpeg|jpg|doc|pdf|exls");
 
 </script>
 
