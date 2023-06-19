@@ -1,3 +1,11 @@
+<style>
+  .mt-2 {
+    margin-top: 0.8rem !important;
+  }
+  .disabled{
+    background-color: #fff !important;
+  }
+  </style>
 <div class="modal-body">
   <div class="row">
     <form method="POST" action="{{route('update_variation_scope_change')}}" enctype="multipart/form-data"> 
@@ -77,17 +85,17 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="Input">{{__('Omission Cost')}} <span style='color:red;'>*</span></label>
-                <input name="claimed_omission_cost" placeholder="{{__('Omission Cost')}}" value="@if($id!='' && $dairy_data->claimed_omission_cost!=''){{$dairy_data->claimed_omission_cost}}@endif" type="text" class="form-control claimed_omission_cost" required>
+                <label for="Input">{{__('Omission Cost')}}</label>
+                <input name="claimed_omission_cost" placeholder="{{__('Omission Cost')}}" value="@if($id!='' && $dairy_data->claimed_omission_cost!=''){{$dairy_data->claimed_omission_cost}}@endif" type="text" class="form-control claimed_omission_cost" >
               </div>
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Addition Cost')}} <span style='color:red;'>*</span></label>
-              <input name="claimed_addition_cost" placeholder="{{__('Addition Cost')}}" value="@if($id!='' && $dairy_data->claimed_addition_cost!=''){{$dairy_data->claimed_addition_cost}}@endif" type="text" class="form-control claimed_addition_cost" required>
+              <label for="Input">{{__('Addition Cost')}}</label>
+              <input name="claimed_addition_cost" placeholder="{{__('Addition Cost')}}" value="@if($id!='' && $dairy_data->claimed_addition_cost!=''){{$dairy_data->claimed_addition_cost}}@endif" type="text" class="form-control claimed_addition_cost" >
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Net Amount')}} <span style='color:red;'>*</span></label>
-              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="text" class="form-control claimed_net_amount" required>
+              <label for="Input">{{__('Net Amount')}}</label>
+              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="text" class="form-control claimed_net_amount" >
             </div>
           </div>
         </div>
@@ -96,31 +104,43 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="Input">{{__('Omission Cost')}} <span style='color:red;'>*</span></label>
-                <input name="approved_omission_cost" placeholder="{{__('Omission Cost')}}"  value="@if($id!='' && $dairy_data->approved_omission_cost!=''){{$dairy_data->approved_omission_cost}}@endif" type="text" class="form-control approved_omission_cost" required>
+                <label for="Input">{{__('Omission Cost')}}</label>
+                <input name="approved_omission_cost" placeholder="{{__('Omission Cost')}}"  value="@if($id!='' && $dairy_data->approved_omission_cost!=''){{$dairy_data->approved_omission_cost}}@endif" type="text" class="form-control approved_omission_cost" >
               </div>
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Addition Cost')}} <span style='color:red;'>*</span></label>
-              <input name="approved_addition_cost" placeholder="{{__('Addition Cost')}}" value="@if($id!='' && $dairy_data->approved_addition_cost!=''){{$dairy_data->approved_addition_cost}}@endif" type="text" class="form-control approved_addition_cost" required>
+              <label for="Input">{{__('Addition Cost')}}</label>
+              <input name="approved_addition_cost" placeholder="{{__('Addition Cost')}}" value="@if($id!='' && $dairy_data->approved_addition_cost!=''){{$dairy_data->approved_addition_cost}}@endif" type="text" class="form-control approved_addition_cost" >
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Net Amount')}} <span style='color:red;'>*</span><</label>
-              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="text" class="form-control approved_net_cost" required>
+              <label for="Input">{{__('Net Amount')}}</label>
+              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="text" class="form-control approved_net_cost" >
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
-            <label class="form-group">{{__('Impact/Lead Time')}} <span style='color:red;'>*</span></label>
+          <div class="col-md-5">
+            <label class="form-group">{{__('Impact/Lead Time')}}</label>
             <div class="form-group">
-              <input name="impact_time" placeholder="{{__('Impact/Lead Time')}}" value="@if($id!='' && $dairy_data->impact_time!=''){{$dairy_data->impact_time}}@endif" type="text" class="form-control" required>
+              <input name="impact_time" placeholder="{{__('Impact/Lead Time')}}" value="@if($id!='' && $dairy_data->impact_time!=''){{$dairy_data->impact_time}}@endif" type="text" class="form-control impact_time" >
             </div>
           </div>
-          <div class="col-md-6">
-            <label class="form-group">{{__('Granted EOT(in days)')}} <span style='color:red;'>*</span></label>
+          <div class="col-md-1">
+            <label class="form-group"></label>
+            <div class="form-group mt-2">
+              <input name="" placeholder="" value="{{__('Days')}}" type="text" class="form-control disabled" disabled>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label class="form-group">{{__('Granted EOT(in days)')}}</label>
             <div class="form-group">
-              <input name="granted_eot" value="@if($id!='' && $dairy_data->granted_eot!=''){{$dairy_data->granted_eot}}@endif" type="date" class="form-control" required>
+              <input name="granted_eot" value="@if($id!='' && $dairy_data->granted_eot!=''){{$dairy_data->granted_eot}}@endif" type="text" class="form-control impact_time" placeholder="{{__('Granted EOT(in days)')}}">
+            </div>
+          </div>
+          <div class="col-md-1">
+            <label class="form-group"></label>
+            <div class="form-group mt-2">
+              <input name="impact_time" placeholder="" value="{{__('Days')}}" type="text" class="form-control disabled" disabled>
             </div>
           </div>
         </div>
@@ -132,7 +152,7 @@
         </div>
         <div class="col-xs-6">
           <div class="form-group">
-            <label for="InputATTACHMENTS:">{{__('Attachments)')}} <span style='color:red;'>*</span></label>
+            <label for="InputATTACHMENTS:">{{__('Attachments)')}}</label>
             <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input">
             <span>{{$get_dairy_data->attachment_file}}</span>
           </div>

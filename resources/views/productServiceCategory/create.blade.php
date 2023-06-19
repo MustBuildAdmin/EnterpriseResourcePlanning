@@ -19,6 +19,23 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary category_submit">
 </div>
 {{ Form::close() }}
+<script>
+$(document).ready(function() {
+    $(".category_submit").click(function() {
+        var valid = true;
+        $('[required]').each(function() {
+            if ($(this).is(':invalid') || !$(this).val()) {
+                valid = false;
+            }
+        });
+        if (!valid) {
+            $(".category_submit").attr('disabled', false);
+        }else{
+            $(".category_submit").hide();
+        }        
+    })   
+});
+</script>

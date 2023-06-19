@@ -26,7 +26,11 @@ class TaskController extends Controller
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         if(isset($request->users)){
-            $implode_users = implode(',', json_decode($request->users));
+            if(is_array($request->users)){
+                $implode_users = implode(',', json_decode($request->users));
+            }else{
+                $implode_users = $request->users;
+            }
             $task->users = $implode_users;
         }
  
@@ -49,7 +53,11 @@ class TaskController extends Controller
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         if(isset($request->users)){
-            $implode_users = implode(',', json_decode($request->users));
+            if(is_array($request->users)){
+                $implode_users = implode(',', json_decode($request->users));
+            }else{
+                $implode_users = $request->users;
+            }
             $task->users = $implode_users;
         }
         $task->save();

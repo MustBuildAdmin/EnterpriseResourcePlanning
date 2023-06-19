@@ -1,3 +1,11 @@
+<style>
+  .mt-2 {
+    margin-top: 0.8rem !important;
+  }
+  .disabled{
+    background-color: #fff !important;
+  }
+  </style>
 <div class="modal-body">
   <div class="row">
     <form method="POST" action="{{route('save_variation_scope_change')}}" enctype="multipart/form-data"> @csrf <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
@@ -62,17 +70,17 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="Input">{{__('Omission Cost')}} <span style='color:red;'>*</span></label>
-                <input name="claimed_omission_cost" placeholder="{{__('Omission Cost')}}" type="text" class="form-control claimed_omission_cost" required>
+                <label for="Input">{{__('Omission Cost')}}</label>
+                <input  pattern="[^0-9]*" name="claimed_omission_cost" placeholder="{{__('Omission Cost')}}" type="text" class="form-control claimed_omission_cost" >
               </div>
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Addition Cost')}} <span style='color:red;'>*</span></label>
-              <input name="claimed_addition_cost" placeholder="{{__('Addition Cost')}}" type="text" class="form-control claimed_addition_cost" required>
+              <label for="Input">{{__('Addition Cost')}}</label>
+              <input name="claimed_addition_cost" placeholder="{{__('Addition Cost')}}" type="text" class="form-control claimed_addition_cost" >
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Net Amount')}} <span style='color:red;'>*</span></label>
-              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" type="text" class="form-control claimed_net_amount" required>
+              <label for="Input">{{__('Net Amount')}}</label>
+              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" type="text" class="form-control claimed_net_amount" >
             </div>
           </div>
         </div>
@@ -81,31 +89,43 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="Input">{{__('Omission Cost')}} <span style='color:red;'>*</span></label>
-                <input name="approved_omission_cost" placeholder="{{__('Omission Cost')}}" type="text" class="form-control approved_omission_cost" required>
+                <label for="Input">{{__('Omission Cost')}}</label>
+                <input name="approved_omission_cost" placeholder="{{__('Omission Cost')}}" type="text" class="form-control approved_omission_cost" >
               </div>
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Addition Cost')}} <span style='color:red;'>*</span></label>
-              <input name="approved_addition_cost" placeholder="{{__('Addition Cost')}}" type="text" class="form-control approved_addition_cost" required>
+              <label for="Input">{{__('Addition Cost')}}</label>
+              <input name="approved_addition_cost" placeholder="{{__('Addition Cost')}}" type="text" class="form-control approved_addition_cost">
             </div>
             <div class="col-md-4">
-              <label for="Input">{{__('Net Amount')}} <span style='color:red;'>*</span></label>
-              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" type="text" class="form-control approved_net_cost" required>
+              <label for="Input">{{__('Net Amount')}}</label>
+              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" type="text" class="form-control approved_net_cost" >
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
-            <label class="form-group">{{__('Impact/Lead Time')}} <span style='color:red;'>*</span></label>
+          <div class="col-md-5">
+            <label class="form-group">{{__('Impact/Lead Time')}}</label>
             <div class="form-group">
-              <input name="impact_time" type="text" class="form-control" placeholder="{{__('Impact/Lead Time')}}" required>
+              <input name="impact_time" type="text" class="form-control impact_time" placeholder="{{__('Impact/Lead Time')}}" > 
             </div>
           </div>
-          <div class="col-md-6">
-            <label class="form-group">{{__('Granted EOT(in days)')}} <span style='color:red;'>*</span></label>
+          <div class="col-md-1">
+            <label class="form-group"></label>
+            <div class="form-group mt-2">
+              <input name="" placeholder="" value="{{__('Days')}}" type="text" class="form-control disabled" disabled>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label class="form-group">{{__('Granted EOT(in days)')}}</label>
             <div class="form-group">
-              <input name="granted_eot" type="date" class="form-control" required>
+              <input name="granted_eot" type="text" class="form-control granted_eot" placeholder="{{__('Granted EOT(in days)')}}">
+            </div>
+          </div>
+          <div class="col-md-1">
+            <label class="form-group"></label>
+            <div class="form-group mt-2">
+              <input name="" placeholder="" value="{{__('Days')}}" type="text" class="form-control disabled" disabled>
             </div>
           </div>
         </div>
@@ -117,8 +137,8 @@
         </div>
         <div class="col-xs-6">
           <div class="form-group">
-            <label for="InputATTACHMENTS:">{{__('Attachments')}} <span style='color:red;'>*</span></label>
-            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input" required>
+            <label for="InputATTACHMENTS:">{{__('Attachments')}}</label>
+            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input" >
           </div>
         </div>
       </div>
