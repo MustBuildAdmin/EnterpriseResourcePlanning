@@ -453,8 +453,8 @@ $holidays=implode(':',$holidays);
 		gantt.init("gantt_here");
 		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
 
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/erpnew/public/");
+        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",

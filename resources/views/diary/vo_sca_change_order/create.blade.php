@@ -53,14 +53,14 @@
           <div class="row">
             <div class="col-6 mb-3">
               <div class="form-group">
-                <label for="Input">{{__('Referene')}} <span style='color:red;'>*</span></label>
-                <input type="text" name="reference" class="form-control" placeholder="{{__('Referene')}}" required>
+                <label for="Input">{{__('Referene')}}</label>
+                <input type="text" name="reference" class="form-control" placeholder="{{__('Referene')}}">
               </div>
             </div>
             <div class="col-6 mb-3">
               <div class="form-group">
-                <label for="Input">{{__('Date')}} <span style='color:red;'>*</span></label>
-                <input name="vo_date" type="date" class="form-control" placeholder="Text input" required>
+                <label for="Input">{{__('Date')}}</label>
+                <input name="vo_date" type="date" class="form-control" placeholder="Text input">
               </div>
             </div>
           </div>
@@ -150,3 +150,15 @@
     </form>
   </div>
 </div>
+
+<script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
+<script>
+$('.claimed_omission_cost,.claimed_addition_cost,.claimed_net_amount,.approved_omission_cost,.approved_addition_cost,.approved_net_cost').alphanum({
+			allow              : '(,),-',    // Allow extra characters
+			allowUpper         : false,  // Allow upper case characters
+			allowLower         : false,  // Allow lower case characters
+			forceUpper         : false, // Convert lower case characters to upper case
+			forceLower         : false, // Convert upper case characters to lower case
+			allowLatin         : false,  
+});
+</script>

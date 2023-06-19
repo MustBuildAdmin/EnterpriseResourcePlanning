@@ -102,6 +102,7 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
+            // return;
             // dd($request->all());
             $project = new Project();
             $project->project_name = $request->project_name;
@@ -191,23 +192,11 @@ class ProjectController extends Controller
                 if (file_exists(public_path($pathname))){
                     unlink(public_path($pathname));
                 }
-                $responseBody = json_decode($responseBody, true);
-                if(isset($responseBody['data']['data'])){
-                    // $gant_data_parent=new GanttPlan();
-                    // $TenDigitRandomNumber = rand(1000000000,9999999999);
 
-                    // $gant_data_parent->task_id=$project->id.$TenDigitRandomNumber;
-                    // $gant_data_parent->project_id=$project->id;
-                    // $gant_data_parent->text=$request->project_name;
-                    // $gant_data_parent->start_date=date("Y-m-d H:i:s", strtotime($request->start_date));
-                    // $gant_data_parent->end_date=date("Y-m-d H:i:s", strtotime($request->end_date));
-                    // $gant_data_parent->duration=$request->estimated_days;
-                    // $gant_data_parent->progress=0;
-                    // $gant_data_parent->parent=0;
-                    // $gant_data_parent->is_active=1;
-                    // $gant_data_parent->is_open=true;
-                    // $gant_data_parent->save();
-                    // $i=0;
+                $responseBody = json_decode($responseBody, true);
+
+                if(isset($responseBody['data']['data'])){
+
                     foreach($responseBody['data']['data'] as $key=>$value){
                         $task= new Con_task();
                         $task->project_id=$project->id;
@@ -240,25 +229,6 @@ class ProjectController extends Controller
                         }
 
                         $task->save();
-
-                        // $gant_data=new GanttPlan();
-                        // $gant_data->task_id=$value['id'];
-                        // $gant_data->project_id=$project->id;
-                        // $gant_data->text=$value['text'];
-                        // $gant_data->start_date==$raw['Start'];
-                        // $gant_data->end_date==$raw['Finish'];
-                        // $gant_data->duration=$value['duration'];
-                        // $gant_data->progress=$value['progress'];
-                        // if($i==0){
-                        //     $gant_data->parent=$gant_data_parent->task_id;
-                        // }else{
-                        //     $gant_data->parent=$value['parent'];
-                        // }
-
-                        // $gant_data->is_active=1;
-                        // $gant_data->is_open=true;
-                        // $gant_data->save();
-                        // $i++;
                     }
 
                     foreach($responseBody['data']['links'] as $key=>$value){
@@ -293,6 +263,9 @@ class ProjectController extends Controller
                         if(isset($value['source'])){
 
                             $link->source=$value['source'];
+                        }
+                        if(isset($value['lag'])){
+                            $link->lag=$value['lag'];
                         }
                         if(isset($value['target'])){
                             $link->target=$value['target'];
@@ -335,21 +308,7 @@ class ProjectController extends Controller
                     }
                     $responseBody = json_decode($responseBody, true);
                     if(isset($responseBody['data']['data'])){
-                        // $gant_data_parent=new GanttPlan();
-                        // $TenDigitRandomNumber = mt_rand(1000000000,9999999999);
 
-                        // $gant_data_parent->task_id=$project->id.$TenDigitRandomNumber;
-                        // $gant_data_parent->project_id=$project->id;
-                        // $gant_data_parent->text=$request->project_name;
-                        // $gant_data_parent->start_date=date("Y-m-d H:i:s", strtotime($request->start_date));
-                        // $gant_data_parent->end_date=date("Y-m-d H:i:s", strtotime($request->end_date));
-                        // $gant_data_parent->duration=$request->estimated_days;
-                        // $gant_data_parent->progress=0;
-                        // $gant_data_parent->parent=0;
-                        // $gant_data_parent->is_active=1;
-                        // $gant_data_parent->is_open=true;
-                        // $gant_data_parent->save();
-                        // $i=0;
                         foreach($responseBody['data']['data'] as $key=>$value){
                             $task= new Con_task();
                             $task->project_id=$project->id;
@@ -382,24 +341,7 @@ class ProjectController extends Controller
                             }
 
                             $task->save();
-                            // $gant_data=new GanttPlan();
-                            // $gant_data->task_id=$value['id'];
-                            // $gant_data->project_id=$project->id;
-                            // $gant_data->text=$value['text'];
-                            // $gant_data->start_date==$raw['Start'];
-                            // $gant_data->end_date==$raw['Finish'];
-                            // $gant_data->duration=$value['duration'];
-                            // $gant_data->progress=$value['progress'];
-                            // if($i==0){
-                            //     $gant_data->parent=$gant_data_parent->task_id;
-                            // }else{
-                            //     $gant_data->parent=$value['parent'];
-                            // }
 
-                            // $gant_data->is_active=1;
-                            // $gant_data->is_open=true;
-                            // $gant_data->save();
-                            // $i++;
                         }
 
                         foreach($responseBody['data']['links'] as $key=>$value){
@@ -432,6 +374,9 @@ class ProjectController extends Controller
                             $link->id=$value['id'];
                             if(isset($value['type'])){
                                 $link->type=$value['type'];
+                            }
+                            if(isset($value['lag'])){
+                                $link->type=$value['lag'];
                             }
                             if(isset($value['source'])){
 
@@ -1177,8 +1122,8 @@ class ProjectController extends Controller
         $project = Project::find($projectID);
         if($project){
             $instance_id=Session::get('project_instance');
-            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('created_at','ASC')->get();
-            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('created_at','ASC')->get();
+            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
+            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
             return response()->json([
                 "data" => $task,
                 "links" => $link,
@@ -1712,6 +1657,8 @@ class ProjectController extends Controller
         $get_all_dates    = [];
         $fileNameToStore1 = '';
         $url              = '';
+        $task_id          = $request->task_id;
+        $task             = Con_task::where('main_id',$task_id)->first();
 
         if(\Auth::user()->type == 'company'){
             $get_holiday = Holiday::where('created_by',\Auth::user()->id)->get();
@@ -1719,90 +1666,98 @@ class ProjectController extends Controller
         else{
             $get_holiday = Holiday::where('created_by',\Auth::user()->creatorId())->get();
         }
-      
+
         foreach($get_holiday as $check_holiday){
             $get_all_dates[] = $this->getBetweenDates($check_holiday->date, $check_holiday->end_date);
         }
 
-        $holiday_merge = $this->array_flatten($get_all_dates);
+        $holiday_merge    = $this->array_flatten($get_all_dates);
+        $date1            = date_create($task->start_date);
+        $date2            = date_create($task->end_date);
+        $diff             = date_diff($date1,$date2);
+        $file_id_array    = array();
 
-        $task_id = $request->task_id;
-        $task    = Con_task::where('main_id',$task_id)->first();
-        $date1   = date_create($task->start_date);
-        $date2   = date_create($task->end_date);
-        $diff    = date_diff($date1,$date2);
-
-        $no_working_days = $diff->format("%a");
-        $no_working_days = $no_working_days+1; // include the last day
+        $no_working_days  = $diff->format("%a");
+        $no_working_days  = $no_working_days+1; // include the last day
         // $no_working_days=$task->duration;
 
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' This is holiday Your Record has been not recorded! Please Contact Your Company.'));
         }
         else{
-            if (!empty($request->attachment_file_name)) {
-                $filenameWithExt1 = $request->file("attachment_file_name")->getClientOriginalName();
-                $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
-                $extension1       = $request->file("attachment_file_name")->getClientOriginalExtension();
-                $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
-                $dir              = "uploads/task_particular_list/";
-    
-                $image_path = $dir . $filenameWithExt1;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
+            if($request->attachment_file_name != null){
+                foreach($request->attachment_file_name as $file_req){
+
+                    $filenameWithExt1 = $file_req->getClientOriginalName();
+                    $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                    $extension1       = $file_req->getClientOriginalExtension();
+                    $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+                    $dir              = "uploads/task_particular_list/";
+                    $image_path       = $dir . $filenameWithExt1;
+
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+
+                    $path = Utility::multi_upload_file($file_req,"file_req",$fileNameToStore1,$dir,[]);
+
+                    if ($path["flag"] == 1) {
+                        $url = $path["url"];
+
+                        $file_insert = array(
+                            'task_id'    => $task_id,
+                            'project_id' => $task->project_id,
+                            'filename'   => $fileNameToStore1,
+                            'file_path'  => $url
+                        );
+                        $file_insert_id = DB::table('task_progress_file')->insertGetId($file_insert);
+                        $file_id_array[] = $file_insert_id;
+                    }
+                    else {
+                        return redirect()->back()->with("error", __($path["msg"]));
+                    }
                 }
-                
-                $path = Utility::upload_file($request,"attachment_file_name",$fileNameToStore1,$dir,[]);
-    
-                if ($path["flag"] == 1) {
-                    $url = $path["url"];
-                } 
-                else {
-                    return redirect()->back()->with("error", __($path["msg"]));
-                }
+                $implode_file_id = count($file_id_array) != 0 ? implode(',',$file_id_array) : 0;
             }
             else{
-                $check_file_name  = Task_progress::where('task_id',$task_id)
-                    ->where('project_id',$task->project_id)
-                    ->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
-                if($check_file_name != null){
-                    $fileNameToStore1 = $check_file_name->filename;
-                    $url              = $check_file_name->path_location;
+                $get_file_id = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
+                if($get_file_id != null){
+                    $implode_file_id = $get_file_id->file_id;
+                }
+                else{
+                    $implode_file_id = 0;
                 }
             }
 
+            $date_status = strtotime($task->end_date) > time() ? 'As Per Time' : 'Overdue';
+
             if(\Auth::user()->type == 'company'){
-                if($task->users != null){
-                    $assign_to  = $task->users;
-                }
-                else{
-                    $assign_to  = null;
-                }
+                $assign_to = $task->users != null ? $task->users : null;
             }
             else{
                 $assign_to  = \Auth::user()->id;
             }
 
             // insert details
-            $array=array(
-                'task_id'        => $task_id,
-                'assign_to'      => $assign_to,
-                'percentage'     => $request->percentage,
-                'description'    => $request->description,
-                'user_id'        => $request->user_id,
-                'project_id'     => $task->project_id,
-                'filename'       => $fileNameToStore1,
-                'path_location'  => $url,
-                'created_at'     => $request->get_date, //Planned Date
-                'record_date'    => date('Y-m-d H:m:s') //Actual Date
+            $array = array(
+                'task_id'     => $task_id,
+                'assign_to'   => $assign_to,
+                'percentage'  => $request->percentage,
+                'description' => $request->description,
+                'user_id'     => $request->user_id,
+                'project_id'  => $task->project_id,
+                'date_status' => $date_status,
+                'file_id'     => $implode_file_id,
+                'created_at'  => $request->get_date, //Planned Date
+                'record_date' => date('Y-m-d H:m:s') //Actual Date
             );
 
-            $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->where('user_id',$request->user_id)->first();
+            $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
             if($check_data == null){
                 Task_progress::insert($array);
             }
             else{
-                Task_progress::where('task_id',$task_id)->where('user_id',$request->user_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+                Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
             }
 
             $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');
@@ -1814,7 +1769,6 @@ class ProjectController extends Controller
 
             return redirect()->back()->with('success', __('Task successfully Updated.'));
         }
-
     }
     public function taskpersentage_update($project_id)
     {
@@ -1833,34 +1787,34 @@ class ProjectController extends Controller
     function getBetweenDates($startDate, $endDate) {
         $array = array();
         $interval = new DateInterval('P1D');
-     
+
         $realEnd = new DateTime($endDate);
         $realEnd->add($interval);
-     
+
         $period = new DatePeriod(new DateTime($startDate), $interval, $realEnd);
-     
+
         $array = [];
         foreach($period as $date) {
             array_push($array,$date->format('Y-m-d'));
         }
-     
+
         return $array;
     }
 
-    function array_flatten($array) { 
-        if (!is_array($array)) { 
-            return FALSE; 
-        } 
-        $result = array(); 
-        foreach ($array as $key => $value) { 
-            if (is_array($value)) { 
-                $result = array_merge($result, $this->array_flatten($value)); 
-            } 
-            else { 
-                $result[$key] = $value; 
-            } 
-        } 
-        return $result; 
-    } 
+    function array_flatten($array) {
+        if (!is_array($array)) {
+            return FALSE;
+        }
+        $result = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, $this->array_flatten($value));
+            }
+            else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
 
 }

@@ -1,4 +1,5 @@
-@include('new_layouts.header') @include('construction_project.side-menu') <h2>CONTRACTOR AS-BUILT DRAWINGS LIST</h2>
+@include('new_layouts.header') @include('construction_project.side-menu')
+ <h2>SHOP DRAWINGS</h2>
 <div class="maindailyreport Drawingsreport">
   <div class="row">
     <div class="row row-cards">
@@ -8,8 +9,8 @@
             <div class="row row-cards">
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Issued by</label>
-                  <input type="Text" class="form-control" placeholder="Issued by">
+                  <label class="form-label">Drawing Reference No.</label>
+                  <label class="form-label form-control disabledmode">A/xx-001</label>
                   <!-- <select name="reporting_to[]" id='choices-multiple1' class='chosen-select' required>
                     <option value="" disabled>Select your option</option>
                     <option value="">Maincontractor</option>
@@ -20,73 +21,58 @@
 
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Drawing SI No</label>
-                  <input type="Text" class="form-control" placeholder="Drawing SI No">
+                  <label class="form-label">Description</label>
+                  <input type="Text" class="form-control" placeholder="Description">
                 </div>
               </div>
 
 
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Drawing Reference</label>
-                  <input type="Text" class="form-control" placeholder="Drawing Reference">
+                  <label class="form-label">Submitted to Consultant</label>
+                  <input type="Text" class="form-control" placeholder="Submitted to Consultant">
                 </div>
               </div>
 
 
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Drawing No</label>
-                  <label class="form-label form-control disabledmode">A/xx-001</label>
+                  <label class="form-label">Schedule Submission Date</label>
+                  <input type="date" class="form-control" placeholder="Schedule Submission Date">
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Drawing Views</label>
-                  <input type="Text" class="form-control" placeholder="Drawing Views">
+                  <label class="form-label">Submission</label>
+                  <input type="Text" class="form-control" placeholder="Submission">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Drawing Description</label>
-                  <input type="Text" class="form-control" placeholder="Drawing Description">
+                  <label class="form-label">Expected Approval Date</label>
+                  <input type="date" class="form-control" placeholder="Expected Approval Date">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Issue Date</label>
-                  <input type="Date" class="form-control" placeholder="Issue Date">
+                  <label class="form-label">Actual Approval Date</label>
+                  <input type="Date" class="form-control" placeholder="Actual Approval Date">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Scale</label>
-                  <input type="Text" class="form-control" placeholder="Scale">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Size</label>
-                  <input type="Text" class="form-control" placeholder="Size">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Revision</label>
-                  <select  class='form-control' required>
-                    <option value="" disabled selected="selected">Select your option</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                    <option value="">4</option>
-                    <option value="">5</option>
-                    <option value="">6</option>
-                    <option value="">7</option>
-                    <option value="">8</option>
-                    <option value="">9</option>
+                  <label class="form-label">STATUS as of last return</label>
+                  <select class='form-control'>
+                    <option value="" disabled>Select your option</option>
+                    <option value="">A</option>
+                    <option value="">C</option>
+                    <option value="">B</option>
+                    <option value="">D</option>
+                    <option value="">E</option>
                   </select>
                 </div>
               </div>
+              
               <div class="card-footer text-end"> &nbsp; </div>
         </form>
       </div>

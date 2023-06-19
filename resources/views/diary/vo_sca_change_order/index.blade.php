@@ -4,12 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-  /* pagination */
-.pagination {
-	height: 36px;
-	margin: 18px 0;
-	color: #6c58bF;
-}
 
 .table-responsive {
     overflow-x: auto;
@@ -17,135 +11,6 @@
     background: #fff;
     max-width: 1072px !important;
    
-}
-
-.pagination ul {
-	display: inline-block;
-	*display: inline;
-       /* IE7 inline-block hack */
-	*zoom: 1;
-	margin-left: 0;
-	color: #ffffff;
-	margin-bottom: 0;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.pagination li {
-	display: inline;
-	color: #6c58bF;
-}
-
-.pagination a {
-	float: left;
-	padding: 0 14px;
-	line-height: 34px;
-	color: #6c58bF;
-	text-decoration: none;
-	border: 1px solid #ddd;
-	border-left-width: 0;
-}
-
-.pagination a:hover,
-   .pagination .active a {
-	background-color: var(--tblr-pagination-active-bg);
-	color: #ffffff;
-}
-
-.pagination a:focus {
-	background-color: #ffffff;
-	color: #ffffff;
-}
-
-.pagination .active a {
-	color: #ffffff;
-	cursor: default;
-}
-
-.pagination .disabled span,
-   .pagination .disabled a,
-   .pagination .disabled a:hover {
-	color: #999999;
-	background-color: transparent;
-	cursor: default;
-}
-
-.pagination li:first-child a {
-	border-left-width: 1px;
-	-webkit-border-radius: 3px 0 0 3px;
-	-moz-border-radius: 3px 0 0 3px;
-	border-radius: 3px 0 0 3px;
-}
-
-.pagination li:last-child a {
-	-webkit-border-radius: 0 3px 3px 0;
-	-moz-border-radius: 0 3px 3px 0;
-	border-radius: 0 3px 3px 0;
-}
-
-.pagination-centered {
-	text-align: center;
-}
-
-.pagination-right {
-	text-align: right;
-}
-
-.pager {
-	margin-left: 0;
-	margin-bottom: 18px;
-	list-style: none;
-	text-align: center;
-	color: #6c58bF;
-	*zoom: 1;
-}
-
-.pager:before,
-   .pager:after {
-	display: table;
-	content: "";
-}
-
-.pager:after {
-	clear: both;
-}
-
-.pager li {
-	display: inline;
-	color: #6c58bF;
-}
-
-.pager a {
-	display: inline-block;
-	padding: 5px 14px;
-	color: #6c58bF;
-	background-color: #fff;
-	border: 1px solid #ddd;
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-}
-
-.pager a:hover {
-	text-decoration: none;
-	background-color: #f5f5f5;
-}
-
-.pager .next a {
-	float: right;
-}
-
-.pager .previous a {
-	float: left;
-}
-
-.pager .disabled a,
-   .pager .disabled a:hover {
-	color: #999999;
 }
 
 .dataTables_wrapper .dataTables_paginate {
@@ -193,11 +58,11 @@ h3, .h3 {
 }
 </style>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-8">
      <h2>{{__('VO or Change Order or Scope Change Authorization Summary')}}</h2> 
   </div>
     @can('create vochange')
-    <div class="col-md-6 float-end floatrght">
+    <div class="col-md-4 float-end floatrght">
         <a href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Vo/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
         <i class="ti ti-plus"></i>
         </a>
@@ -244,11 +109,11 @@ h3, .h3 {
                 <tr>
                   <td>{{$loop->iteration}}</td>
                   <td>{{$bulk_data->issued_by}}</td>
-                  <td>{{$bulk_data->issued_date}}</td>
+                  <td>{{ Utility::site_date_format($bulk_data->issued_date,\Auth::user()->id) }}</td>
                   <td>{{$bulk_data->sca_reference}}</td>
                   <td>{{$bulk_data->vo_reference}}</td>
                   <td>{{$bulk_data->reference}}</td>
-                  <td>{{$bulk_data->vo_date}}</td>
+                  <td>{{ Utility::site_date_format($bulk_data->vo_date,\Auth::user()->id) }}</td>
                   <td>{{$bulk_data->claimed_omission_cost}}</td>
                   <td>{{$bulk_data->claimed_addition_cost}}</td>
                   <td>{{$bulk_data->claimed_net_amount}}</td>
@@ -332,7 +197,17 @@ h3, .h3 {
                       title: 'VO or Change Order or Scope Change Authorization Summary',
                       titleAttr: 'PDF',
                       text: '<i class="fa fa-file-pdf-o"></i>',
-      
+                      customize: function(doc) {
+                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
+                        doc.styles.tableBodyEven.alignment = 'center';
+                        doc.styles.tableBodyEven.noWrap = true;
+                        doc.styles.tableBodyOdd.alignment = 'center';
+                        doc.styles.tableBodyOdd.noWrap = true;
+                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.defaultStyle.fontSize = 9;
+                        doc.defaultStyle.alignment = 'center';
+                        doc.styles.tableHeader.alignment = 'center';
+                        },
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'
@@ -360,83 +235,169 @@ h3, .h3 {
                   'colvis'
               ]
           });
+        
+      
 
-    $(document).on("keypress", '.claimed_omission_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+          $(document).on("keyup", '.claimed_omission_cost', function (e) {
+           
+           var u1 = $('.claimed_omission_cost').val();
 
-    $(document).on("change", '.claimed_omission_cost', function (event) {
-        $value = $(".claimed_omission_cost").val();
-        if(isNaN($value)){
-        $(".claimed_omission_cost").val('');
-        }
-    });
-    $(document).on("keypress", '.claimed_addition_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if(u1.indexOf('-') !== -1){
+             var s  = "(" + '' + ")";
+             $('.claimed_omission_cost').val(s);
+           }
+         });
 
-    $(document).on("change", '.claimed_addition_cost', function (event) {
-        $value = $(".claimed_addition_cost").val();
-        if(isNaN($value)){
-        $(".claimed_addition_cost").val('');
-        }
-    });
+        
 
-    $(document).on("keypress", '.claimed_net_amount', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+        $(document).on("keyup", '.approved_omission_cost', function (e) {
+           
+            var v1 = $('.approved_omission_cost').val();
 
-    $(document).on("change", '.claimed_net_amount', function (event) {
-        $value = $(".claimed_net_amount").val();
-        if(isNaN($value)){
-        $(".claimed_net_amount").val('');
-        }
-    });
+            if(v1.indexOf('-') !== -1){
+              var p  = "(" + '' + ")";
+              $('.approved_omission_cost').val(p);
+            }
 
-    $(document).on("keypress", '.approved_omission_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+         });
 
-    $(document).on("change", '.approved_omission_cost', function (event) {
-        $value = $(".approved_omission_cost").val();
-        if(isNaN($value)){
-        $(".approved_omission_cost").val('');
-        }
-    });
-    
-    $(document).on("keypress", '.approved_addition_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+         $(document).on("keyup", '.claimed_addition_cost', function (e) {
+           
+           var additional_cost = $('.claimed_addition_cost').val();
+           var omission_cost = $('.claimed_omission_cost').val();
 
-    $(document).on("change", '.approved_addition_cost', function (event) {
-        $value = $(".approved_addition_cost").val();
-        if(isNaN($value)){
-        $(".approved_addition_cost").val('');
-        }
-    });
+           if(additional_cost.indexOf('-') !== -1){
+               var add_bracket  = "(" + '' + ")";
+               $('.claimed_addition_cost').val(add_bracket);
+           }
 
-    $(document).on("keypress", '.approved_net_cost', function (event) {
-        if(event.which <= 48 || event.which >=57){
-            event.preventDefault();
-        }
-    });
+           if (additional_cost.indexOf('(') !== -1) {
+               additional_cost_minus = 'minus';
+               additional_cost_remove_bracket = additional_cost.slice(1,-1);
+           }
+           else{
+               additional_cost_minus = 'plus';
+               var additional_cost_remove_bracket = additional_cost;
+           }
 
-    $(document).on("change", '.approved_net_cost', function (event) {
-        $value = $(".approved_net_cost").val();
-        if(isNaN($value)){
-        $(".approved_net_cost").val('');
-        }
-    });
+           if (omission_cost.indexOf('(') !== -1) {
+               omission_cost_minus = 'minus';
+               omission_cost_remove_bracket   = omission_cost.slice(1,-1);
+           }
+           else{
+               omission_cost_minus = 'plus';
+               omission_cost_remove_bracket   = omission_cost;
+           }
+
+           if(additional_cost_minus == 'minus' && omission_cost_minus == 'minus'){
+               var get_value = parseInt(additional_cost_remove_bracket) + parseInt(omission_cost_remove_bracket);
+               var value = "-"+get_value;
+           }
+           else if(omission_cost_minus == "minus"){
+               var value = -omission_cost_remove_bracket + parseInt(additional_cost_remove_bracket);
+           }
+           else if(additional_cost_minus == "minus"){
+               var value = omission_cost_remove_bracket - additional_cost_remove_bracket;
+           }
+           else{
+               var value = parseInt(additional_cost_remove_bracket) + parseInt(omission_cost_remove_bracket);
+           }
+
+           if(isNaN(value)){
+               console.log("Nan");
+           }else{
+               if(String(value).indexOf('-') !== -1){
+                   add_bracket_value_get = value.toString().replace('-','');
+                   var add_bracket_value  = "(" + add_bracket_value_get + ")";
+               }
+               else{
+                   var add_bracket_value = value;
+               }
+           }
+
+           $('.claimed_net_amount').val(add_bracket_value);
+       });
+
+       $(document).on("keyup", '.approved_addition_cost', function (e) {
+           
+           var app_additional_cost = $('.approved_addition_cost').val();
+           var app_omission_cost = $('.approved_omission_cost').val();
+
+           if(app_additional_cost.indexOf('-') !== -1){
+               var app_add_bracket  = "(" + '' + ")";
+               $('.approved_addition_cost').val(app_add_bracket);
+           }
+
+           if (app_additional_cost.indexOf('(') !== -1) {
+               app_additional_cost_minus = 'minus';
+               app_additional_cost_remove_bracket = app_additional_cost.slice(1,-1);
+           }
+           else{
+                app_additional_cost_minus = 'plus';
+                var app_additional_cost_remove_bracket = app_additional_cost;
+           }
+
+           if (app_omission_cost.indexOf('(') !== -1) {
+               app_omission_cost_minus = 'minus';
+               app_omission_cost_remove_bracket   = app_omission_cost.slice(1,-1);
+           }
+           else{
+               app_omission_cost_minus = 'plus';
+               app_omission_cost_remove_bracket   = app_omission_cost;
+           }
+
+           if(app_additional_cost_minus == 'minus' && app_omission_cost_minus == 'minus'){
+               var app_get_value = parseInt(app_additional_cost_remove_bracket) + parseInt(app_omission_cost_remove_bracket);
+               var app_value = "-"+app_get_value;
+           }
+           else if(app_omission_cost_minus == "minus"){
+               var app_value = -app_omission_cost_remove_bracket + parseInt(app_additional_cost_remove_bracket);
+           }
+           else if(app_additional_cost_minus == "minus"){
+               var app_value = app_omission_cost_remove_bracket - app_additional_cost_remove_bracket;
+           }
+           else{
+               var app_value = parseInt(app_additional_cost_remove_bracket) + parseInt(app_omission_cost_remove_bracket);
+           }
+
+           if(isNaN(app_value)){
+               console.log("Nan");
+           }else{
+               if(String(app_value).indexOf('-') !== -1){
+                   app_add_bracket_value_get = app_value.toString().replace('-','');
+                   var app_add_bracket_value  = "(" + app_add_bracket_value_get + ")";
+               }
+               else{
+                   var app_add_bracket_value = app_value;
+               }
+           }
+
+           $('.approved_net_cost').val(app_add_bracket_value);
+       });
+
+       $(document).on("paste", '.impact_time', function (event) {
+            if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+                event.preventDefault();
+            }
+        });
+
+        $(document).on("keypress", '.impact_time', function (event) {
+            if(event.which < 48 || event.which >58){
+                return false;
+            }
+        });
+
+        $(document).on("paste", '.granted_eot', function (event) {
+            if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
+                event.preventDefault();
+            }
+        });
+
+        $(document).on("keypress", '.granted_eot', function (event) {
+            if(event.which < 48 || event.which >58){
+                return false;
+            }
+        });
 
 });
       
