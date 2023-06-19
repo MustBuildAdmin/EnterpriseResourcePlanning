@@ -89,8 +89,8 @@ h3, .h3 {
                     <td>{{$loop->iteration}}</td>
                     <td>{{$data->contractor_name ?? '-'}}</td>
                     <td>{{$data->reference_no ?? '-'}}</td>
-                    <td>{{$data->requested_date ?? '-'}}</td>
-                    <td>{{$data->required_date ?? '-'}}</td>
+                    <td>{{ Utility::site_date_format($data->requested_date ?? '-',\Auth::user()->id) }}</td>
+                    <td>{{ Utility::site_date_format($data->required_date ?? '-',\Auth::user()->id) }}</td>
                     <td>{{$data->priority ?? '-'}}</td>
                     <td>{{$data->cost_impact ?? '-'}}</td>
                     <td>{{$data->time_impact ?? '-'}}</td>

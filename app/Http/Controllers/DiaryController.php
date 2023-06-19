@@ -803,8 +803,7 @@ class DiaryController extends Controller
     public function rfi_info_main_save(Request $request){
         try {
 
-            
-
+         
             $data=array("user_id"=>Auth::id(),
                         "project_id"=>Session::get('project_id'),
                         "contractor_name"=>$request->contractor_name,
@@ -864,10 +863,10 @@ class DiaryController extends Controller
 
     public function update_rfi_info_status(Request $request){
         try {
-           
+          
 
                 if($request->select_the_consultants!=null){
-                    $select_the_consultant_value = implode(',', $request->select_the_consultants);
+                    $select_the_consultant_value = implode(',', array_filter($request->select_the_consultants));
                 }else{
                     $select_the_consultant_value = Null;
                 }
@@ -941,9 +940,8 @@ class DiaryController extends Controller
 
 
 
-                $delete_invoice = RFIStatusSubSave::where('rfi_id','=',$request->edit_id)->delete();
+                $delete_invoice = RFIStatusSubSave::where('rfi_id','=',$request->edit_id)->where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->delete();
 
-            
                 for($i=1; $i<=$request->multi_total_count;$i++) {
                     $name_of_consulatant_var = 'name_of_consulatant'.$i;
                     $replied_date_var        = 'replied_date'.$i;
@@ -959,9 +957,9 @@ class DiaryController extends Controller
                         $remarks_set               = $request->$remarks_var;
                         $file_set                  = $request->$file_var;
                     
-                    
+                       
                         if($name_of_consulatant_set!=null){
-                            $select_name_consultant = implode(',', $name_of_consulatant_set);
+                            $select_name_consultant = implode(',',  array_filter($request->name_of_consulatant_set));
                         }else{
                             $select_name_consultant = Null;
                         }
@@ -1005,6 +1003,7 @@ class DiaryController extends Controller
                             "user_id"            => Auth::id(),
                             "project_id"         => Session::get('project_id'),
                             "rfi_id"             => $invoice_id,
+                            "multi_total_count"  => $request->multi_total_count,
                             'name_of_consultant' => $select_name_consultant,
                             'replied_date'       => $replied_date_set,
                             'status'             => $status_set,
