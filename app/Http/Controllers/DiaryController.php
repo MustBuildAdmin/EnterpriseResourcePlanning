@@ -959,7 +959,7 @@ class DiaryController extends Controller
                     
                        
                         if($name_of_consulatant_set!=null){
-                            $select_name_consultant = implode(',',  array_filter($request->name_of_consulatant_set));
+                            $select_name_consultant = implode(',',$name_of_consulatant_set);
                         }else{
                             $select_name_consultant = Null;
                         }
