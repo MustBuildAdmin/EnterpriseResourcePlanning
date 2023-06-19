@@ -153,7 +153,7 @@
 
 <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
 <script>
-$('.claimed_omission_cost,.claimed_addition_cost,.claimed_net_amount,.approved_omission_cost,.approved_addition_cost,.approved_net_cost').alphanum({
+$('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_net_cost').alphanum({
 			allow              : '(,),-',    // Allow extra characters
 			allowUpper         : false,  // Allow upper case characters
 			allowLower         : false,  // Allow lower case characters
@@ -161,4 +161,14 @@ $('.claimed_omission_cost,.claimed_addition_cost,.claimed_net_amount,.approved_o
 			forceLower         : false, // Convert upper case characters to lower case
 			allowLatin         : false,  
 });
+
+$('.claimed_addition_cost,.approved_addition_cost').alphanum({
+			allow              : '',    // Allow extra characters
+			allowUpper         : false,  // Allow upper case characters
+			allowLower         : false,  // Allow lower case characters
+			forceUpper         : false, // Convert lower case characters to upper case
+			forceLower         : false, // Convert upper case characters to lower case
+			allowLatin         : false,  
+});
+
 </script>

@@ -12,7 +12,7 @@
 }
 
 .table-responsive .bg-primary {
-	background: #206bc4 !important;
+    background: #206bc4 !important;
 }
 
 div.dt-buttons .dt-button {
@@ -65,20 +65,20 @@ h3, .h3 {
     
         <div class="card-header card-body table-border-style">
             @can('manage RFI')
-            <div class="table">
-              <table class="table" id="example2">
-                <thead class="">
+            <div class="table-responsive" style="width:100%;">
+              <table class="table" id="example2" >
+                <thead class="table">
                 <tr>
                     <th>{{__('Sno')}}</th>
+                    <th>{{__('Contractor')}}</th>
                     <th>{{__('RFI Reference No')}}</th>
-                    <th>{{__('Issue Date')}}</th>
+                    <th>{{__('Requested Date')}}</th>
+                    <th>{{__('Required Date')}}</th>
+                    <th>{{__('Priority')}}</th>
+                    <th>{{__('Cost Impact')}}</th>
+                    <th>{{__('Time impact')}}</th>
                     <th>{{__('Description')}}</th>
-                    {{-- <th>{{__('Consultant-1')}}</th>
-                    <th>{{__('Consultant-2')}}</th>
-                    <th>{{__('Consultant-3')}}</th>
-                    <th>{{__('Consultant-4')}}</th>
-                    <th>{{__('Consultant-5')}}</th>
-                    <th>{{__('Consultant-6')}}</th> --}}
+                   
                     @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                     <th>{{__('Action')}}</th>
                     @endif
@@ -86,16 +86,21 @@ h3, .h3 {
                 </thead>
                 <tbody> 
                     @foreach ($dairy_data as $key=>$data) 
-                    <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$data->reference_no}}</td>
-                        <td>{{ Utility::site_date_format($data->issue_date,\Auth::user()->id)}}</td>
-                        <td>{{$data->description}}</td>
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{$data->contractor_name ?? '-'}}</td>
+                    <td>{{$data->reference_no ?? '-'}}</td>
+                    <td>{{ Utility::site_date_format($data->requested_date ?? '-',\Auth::user()->id) }}</td>
+                    <td>{{ Utility::site_date_format($data->required_date ?? '-',\Auth::user()->id) }}</td>
+                    <td>{{$data->priority ?? '-'}}</td>
+                    <td>{{$data->cost_impact ?? '-'}}</td>
+                    <td>{{$data->time_impact ?? '-'}}</td>
+                    <td>{{$data->description ?? '-'}}</td>
+                 
                         @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 @can('edit RFI')
-                                    <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
+                                    <a href="#"  class="btn btn-md backgroundnone" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
                                 @endcan
                                 @can('delete RFI')
                                     {!! Form::open(['method' => 'POST', 'route' => ['delete_rfi_status', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
@@ -158,13 +163,14 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3, 4, 5, 6 ,7, 8]
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     title: 'RFI-Request For Information Status',
                     titleAttr: 'PDF',
+                    pagesize: 'A4',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
@@ -184,13 +190,14 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3, 4, 5, 6 ,7, 8]
                     }
                 },
                 {
                     extend: 'print',
                     title: 'RFI-Request For Information Status',
                     titleAttr: 'Print',
+                    orientation: 'landscape',
                     text: '<i class="fa fa-print"></i>',
     
                     exportOptions: {
@@ -199,7 +206,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3]
+                        columns: [0, 1, 2, 3, 4, 5, 6 ,7, 8]
                     }
                 },
                 'colvis'
