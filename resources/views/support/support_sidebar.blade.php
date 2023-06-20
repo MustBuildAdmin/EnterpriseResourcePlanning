@@ -157,7 +157,7 @@
 @endphp
 
 <div class="wrapper">
-    <nav id="sidebar">
+<nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
                 @if( Gate::check('show hrm dashboard') || Gate::check('show project dashboard') || Gate::check('show account dashboard'))
@@ -995,7 +995,7 @@
         </div>
     </nav>
     <!-- Page Content  -->
-    <div id="content" class="main">
+    <div id="content" class="page-wrapper">
         <div class="collapseToggle">
             <span id="toggleIcon" class="fa fa-chevron-left"></span>
         </div>
