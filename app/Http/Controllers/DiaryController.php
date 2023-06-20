@@ -826,7 +826,7 @@ class DiaryController extends Controller
 
         try {
 
-            if(\Auth::user()->can('edit RFI')){
+            // if(\Auth::user()->can('edit RFI')){
 
                 $project_id = Session::get('project_id');
 
@@ -835,8 +835,14 @@ class DiaryController extends Controller
                 ->first();
                 
                 $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
-                $contractor=RFIStatusSave::where('user_id', '=', Auth::id())->where('id',$request->id)->where('project_id', $project_id)->get()->pluck('consulatant_data');
-                $contractor_name=json_decode($contractor);
+                $contractor=RFIStatusSave::where('user_id', '=', Auth::id())->where('id',$request->id)->where('project_id', $project_id)->first();
+            
+                if($contractor!=null){
+                    $contractor_name=json_decode($contractor);
+                }else{
+                    $contractor_name=array();
+                }
+              
                 $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->first();
 
                 $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->get();
@@ -846,11 +852,11 @@ class DiaryController extends Controller
         
                 return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
 
-            }else{
+            // }else{
 
-                return redirect()->back()->with('error', __('Permission denied.'));
+            //     return redirect()->back()->with('error', __('Permission denied.'));
 
-            }
+            // }
 
         } catch (Exception $e) {
 
