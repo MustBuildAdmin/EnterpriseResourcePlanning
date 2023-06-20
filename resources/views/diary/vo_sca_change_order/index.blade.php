@@ -62,10 +62,15 @@ h3, .h3 {
      <h2>{{__('VO / Change Order/ SCA')}}</h2> 
   </div>
     @can('create vochange')
-    <div class="col-md-4 float-end floatrght">
-        <a href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Vo/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
-        <i class="ti ti-plus"></i>
-        </a>
+    <div class="col-auto ms-auto d-print-none">
+      <div class="input-group-btn">
+          <a class="btn btn-primary" href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Vo/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+              <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
+          </a>
+          <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+            <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+          </a>
+      </div>
     </div>
     @endcan
     <div class="col-xl-12 mt-3">

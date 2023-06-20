@@ -15,6 +15,8 @@ use App\Models\RFIStatusSubSave;
 use App\Models\ProjectSpecification;
 use App\Models\ProcurementMaterial;
 use App\Models\ProcurementMaterialSub;
+use App\Models\SiteReport;
+use App\Models\SiteReportSub;
 use File;
 use DB;
 use Session;
@@ -107,6 +109,13 @@ class DiaryController extends Controller
 
                 $project_id = Session::get('project_id');
 
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
                 $project_name = Project::select("project_name")
                 ->where("id", $project_id)
                 ->first();
@@ -123,7 +132,7 @@ class DiaryController extends Controller
                 ->leftJoin(
                     "consultants_direction_multi","consultants_direction_multi.consultant_id","=","consultant_directions.id")
                 ->where("consultant_directions.project_id", Session::get('project_id'))
-                ->where('consultant_directions.user_id',Auth::id())
+                ->where('consultant_directions.user_id',$user_id)
                 ->orderBy('consultant_directions.id', 'ASC')
                 ->groupBy('consultant_directions.id')
                 ->get();
@@ -145,7 +154,7 @@ class DiaryController extends Controller
 
             if(\Auth::user()->can('create directions')){
 
-                $project = $request["project_id"];
+                $project = Session::get('project_id');
 
                 $project_name = Project::select("project_name")
                     ->where("id", $project)
@@ -168,7 +177,14 @@ class DiaryController extends Controller
 
             if(\Auth::user()->can('edit directions')){
 
-                $project = $request["project_id"];
+                $project = Session::get('project_id');
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
 
                 $project_name = Project::select("project_name")
                     ->where("id", $project)
@@ -176,7 +192,7 @@ class DiaryController extends Controller
     
                 $consult_dir = ConsultantDirection::where('id', '=', $request->id)
                                                     ->where('project_id', Session::get('project_id'))
-                                                    ->where('user_id', Auth::id())
+                                                    ->where('user_id', $user_id)
                                                     ->first();
     
                 $consult_dir_multi = ConsultantsDirectionMulti::where("consultant_id","=",$consult_dir->id)->get();
@@ -200,6 +216,14 @@ class DiaryController extends Controller
     {
         try {
             unset($request["_token"]);
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
 
             $data = [
                 "month_year" => $request->month_year,
@@ -246,7 +270,7 @@ class DiaryController extends Controller
                 "file_name" => $fileNameToStore1,
                 "file_path" => $url,
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "diary_data" => json_encode($data),
                 "status" => 0,
             ];
@@ -269,6 +293,13 @@ class DiaryController extends Controller
         try {
             
             unset($request["_token"]);
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
 
             $data = [
                 "month_year" => $request->month_year,
@@ -318,7 +349,7 @@ class DiaryController extends Controller
                 "file_name" => $fileNameToStore1,
                 "file_path" => $url,
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "diary_data" => json_encode($data),
                 "status" => 0,
             ];
@@ -326,7 +357,7 @@ class DiaryController extends Controller
 
             ConcretePouring::where('id',$request->edit_id)
                             ->where('project_id',Session::get('project_id'))
-                            ->where('user_id', Auth::id())
+                            ->where('user_id', $user_id)
                             ->update($all_data);
 
             return redirect()->back()->with("success",__("diary updated successfully."));
@@ -406,7 +437,14 @@ class DiaryController extends Controller
 
             if(\Auth::user()->can('delete directions')){
 
-                ConsultantDirection::where('id', $request->id)->where('user_id',Auth::id())->where('project_id',$request->project_id)->delete();
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
+                ConsultantDirection::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();
 
                 ConsultantsDirectionMulti::where('consultant_id',$request->id)->delete();
 
@@ -427,6 +465,14 @@ class DiaryController extends Controller
     {
         try {
             unset($request["_token"]);
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
 
             if (!empty($request->attach_file_name)) {
                 $filenameWithExt1 = $request->file("attach_file_name")->getClientOriginalName();
@@ -450,7 +496,7 @@ class DiaryController extends Controller
                     return redirect()->back()->with("error", __($path["msg"]));
                 }
                 $data = [
-                    "user_id" => Auth::id(),
+                    "user_id" => $user_id,
                     "project_id" => $request->project_id,
                     "issued_by" => $request->issued_by,
                     "issued_date" => $request->issued_date,
@@ -553,6 +599,14 @@ class DiaryController extends Controller
         try {
           
             unset($request["_token"]);
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
           
             if (!empty($request->attach_file_name)) {
                 $filenameWithExt1 = $request->file("attach_file_name")->getClientOriginalName();
@@ -579,7 +633,7 @@ class DiaryController extends Controller
             }else{
                 $check_attach_file=ConsultantDirection::select('attach_file_name','file_path')
                                                         ->where('id',$request->id)
-                                                        ->where('user_id',Auth::id())
+                                                        ->where('user_id',$user_id)
                                                         ->where('project_id',$request->project_id)
                                                         ->first();              
                                                                      
@@ -590,7 +644,7 @@ class DiaryController extends Controller
           
            
             $data = [
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "project_id" => $request->project_id,
                 "issued_by" => $request->issued_by,
                 "issued_date" => $request->issued_date,
@@ -601,13 +655,13 @@ class DiaryController extends Controller
             ];
 
             ConsultantDirection::where('project_id',$request->project_id)
-                                 ->where('user_id',Auth::id())
+                                 ->where('user_id',$user_id)
                                  ->where('id', $request->id)
                                  ->update($data);
 
             $in_id = DB::table('consultant_directions')
                 ->where('id', '=', $request->id)
-                ->where('user_id',Auth::id())
+                ->where('user_id',$user_id)
                 ->where('project_id',$request->project_id)
                 ->get('id');
 
@@ -758,7 +812,14 @@ class DiaryController extends Controller
 
                 $project_id = Session::get('project_id');
 
-                $dairy_data=RFIStatusSave::where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->get();
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
+                $dairy_data=RFIStatusSave::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->get();
 
 
                 return view('diary.rfi.index',compact('project_id','dairy_data'));
@@ -804,7 +865,14 @@ class DiaryController extends Controller
         try {
 
          
-            $data=array("user_id"=>Auth::id(),
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
+            $data=array("user_id"=>$user_id,
                         "project_id"=>Session::get('project_id'),
                         "contractor_name"=>$request->contractor_name,
                         "consulatant_data"=>json_encode($request->rfijson),
@@ -826,31 +894,44 @@ class DiaryController extends Controller
 
         try {
 
-            if(\Auth::user()->can('edit RFI')){
+            // if(\Auth::user()->can('edit RFI')){
 
                 $project_id = Session::get('project_id');
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
 
                 $project = Project::select('project_name')
                 ->where("id", $project_id)
                 ->first();
                 
-                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
-                $contractor=RFIStatusSave::where('user_id', '=', Auth::id())->where('id',$request->id)->where('project_id', $project_id)->get()->pluck('consulatant_data');
-                $contractor_name=json_decode($contractor);
-                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->first();
+                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',$user_id)->where('id',$request->id)->first();
+                $contractor=RFIStatusSave::where('user_id', '=',$user_id)->where('id',$request->id)->where('project_id', $project_id)->first();
+            
+                if($contractor!=null){
+                    $contractor_name=json_decode($contractor);
+                }else{
+                    $contractor_name=array();
+                }
+              
+                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->first();
 
-                $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->get();
+                $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->get();
               
               
                 // $rfs_dir_multi = RFIStatusSubSave::where('rfi_id','=',$get_dairy_data->id)->get();
         
                 return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
 
-            }else{
+            // }else{
 
-                return redirect()->back()->with('error', __('Permission denied.'));
+            //     return redirect()->back()->with('error', __('Permission denied.'));
 
-            }
+            // }
 
         } catch (Exception $e) {
 
@@ -869,6 +950,13 @@ class DiaryController extends Controller
                     $select_the_consultant_value = implode(',', array_filter($request->select_the_consultants));
                 }else{
                     $select_the_consultant_value = Null;
+                }
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
                 }
 
             
@@ -895,7 +983,7 @@ class DiaryController extends Controller
                 }else{
                     $check_attach_file=RFIStatusSave::select('attachment_one','attachment_one_path')
                                          ->where('id',$request->id)
-                                         ->where('user_id',Auth::id())
+                                         ->where('user_id',$user_id)
                                          ->where('project_id',$request->project_id)
                                          ->first();
                                                                          
@@ -906,7 +994,7 @@ class DiaryController extends Controller
 
                 $save_rfi_one=array(
 
-                    "user_id"=>Auth::id(),
+                    "user_id"=>$user_id,
                     "project_id"=>Session::get('project_id'),
                     "contractor_name"=>$request->contractor_name,
                     "consulatant_data"=>json_encode($request->data),
@@ -925,14 +1013,14 @@ class DiaryController extends Controller
 
 
                 RFIStatusSave::where('id',$request->edit_id)
-                ->where('user_id',Auth::id())
+                ->where('user_id',$user_id)
                 ->where('project_id',Session::get('project_id'))
                 ->update($save_rfi_one);
 
                 
                 $in_id =  DB::table('dr_rfi_main_sub_save')
                 ->where('id', '=', $request->edit_id)
-                ->where('user_id',Auth::id())
+                ->where('user_id',$$user_id)
                 ->where('project_id',Session::get('project_id'))
                 ->get('id');
 
@@ -940,7 +1028,7 @@ class DiaryController extends Controller
 
 
 
-                $delete_invoice = RFIStatusSubSave::where('rfi_id','=',$request->edit_id)->where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->delete();
+                $delete_invoice = RFIStatusSubSave::where('rfi_id','=',$request->edit_id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->delete();
 
                 for($i=1; $i<=$request->multi_total_count;$i++) {
                     $name_of_consulatant_var = 'name_of_consulatant'.$i;
@@ -988,7 +1076,7 @@ class DiaryController extends Controller
                         }else{
                             $check_attach_file=RFIStatusSubSave::select('attachments_two','attachments_two')
                                                 ->where('id',$request->id)
-                                                ->where('user_id',Auth::id())
+                                                ->where('user_id',$user_id)
                                                 ->where('project_id',$request->project_id)
                                                 ->first();
                                                                                 
@@ -1000,7 +1088,7 @@ class DiaryController extends Controller
                     
                     
                         $multi_insert_array = array(
-                            "user_id"            => Auth::id(),
+                            "user_id"            =>$user_id,
                             "project_id"         => Session::get('project_id'),
                             "rfi_id"             => $invoice_id,
                             "multi_total_count"  => $request->multi_total_count,
@@ -1030,7 +1118,14 @@ class DiaryController extends Controller
     public function get_name_of_consultant(Request $request){
         try{
 
-            $get_dairy=RFIStatusSave::where('project_id',Session::get('project_id'))->where('user_id',Auth::id())->where('id',$request->id)->first();
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
+            $get_dairy=RFIStatusSave::where('project_id',Session::get('project_id'))->where('user_id',$user_id)->where('id',$request->id)->first();
             $decode=json_decode($get_dairy->consulatant_data);
             $html='';
 
@@ -1056,8 +1151,15 @@ class DiaryController extends Controller
         try{
 
             if(\Auth::user()->can('delete RFI')){
+
+                 if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
            
-                RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
+                RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
 
                 RFIStatusSubSave::where("rfi_id", $request->id)->delete();
 
@@ -1086,8 +1188,15 @@ class DiaryController extends Controller
 
             if(\Auth::user()->can('manage project specification')){
 
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+                
                 $project_id = Session::get('project_id');
-                $dairy_data = ProjectSpecification::where('user_id',Auth::id())->where('project_id',$project_id)->orderBy('id', 'ASC')->get();
+                $dairy_data = ProjectSpecification::where('user_id',$user_id)->where('project_id',$project_id)->orderBy('id', 'ASC')->get();
                 return view('diary.project_specification.index',compact('project_id','dairy_data'));
         
             }else{
@@ -1119,6 +1228,7 @@ class DiaryController extends Controller
                 $project_name = Project::select('project_name')
                 ->where("id", $project_id)
                 ->first();
+                
 
                 return view('diary.project_specification.create',compact('project_name','project_id'));
         
@@ -1168,9 +1278,15 @@ class DiaryController extends Controller
                 
             }
 
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
            
             $save_data = [
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "project_id" =>$request->project_id,
                 "reference_no" =>$request->reference_no,
                 "description" =>$request->description,
@@ -1205,10 +1321,17 @@ class DiaryController extends Controller
                 $project_name = Project::select('project_name')
                 ->where('id', $project_id)
                 ->first();
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
                 
                 $data=ProjectSpecification::where('project_id',$project_id)
                                             ->where('id',$request->id)
-                                            ->where('user_id',Auth::id())
+                                            ->where('user_id',$user_id)
                                             ->first();
 
                 return view('diary.project_specification.edit',compact('data','project_name','project_id'));
@@ -1251,20 +1374,34 @@ class DiaryController extends Controller
                 } else {
                     return redirect()->back()->with("error", __($path["msg"]));
                 }
+
+               
+
             }else{
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
                 $check_attach_file=ProjectSpecification::select('attachment_file_name')
                                      ->where('id',$request->id)
-                                     ->where('user_id',Auth::id())
+                                     ->where('user_id',$user_id)
                                      ->where('project_id',$request->project_id)
                                      ->first();
                                                                      
                 $filenameWithExt1=$check_attach_file->attachment_file_name;
                          
             }
-          
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
            
             $update_data = [
-                "user_id" =>Auth::id(),
+                "user_id" =>$user_id,
                 "project_id" =>$request->project_id,
                 "reference_no" =>$request->reference_no,
                 "description" =>$request->description,
@@ -1276,7 +1413,7 @@ class DiaryController extends Controller
             ];
 
             ProjectSpecification::where('id', $request->id)
-                                  ->where('user_id',Auth::id())
+                                  ->where('user_id',$user_id)
                                   ->where('project_id',$request->project_id)
                                   ->update($update_data);
 
@@ -1301,9 +1438,16 @@ class DiaryController extends Controller
 
                 $project_id = Session::get('project_id');
 
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
                 ProjectSpecification::where('id', $request->id)
                 ->where('project_id',$request->project_id)
-                ->where('user_id',Auth::id())
+                ->where('user_id',$user_id)
                 ->delete();
 
                 return redirect()->back()->with("success", "Project specification summary record deleted successfully.");
@@ -1331,8 +1475,15 @@ class DiaryController extends Controller
 
             if(\Auth::user()->can('manage vochange')){
 
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
                 $project_id = Session::get('project_id');
-                $dairy_data = DB::table('variation_scope')->where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->orderBy('id', 'DESC')->get();
+                $dairy_data = DB::table('variation_scope')->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->orderBy('id', 'DESC')->get();
                 return view("diary.vo_sca_change_order.index",compact("project_id","dairy_data"));
 
             }else{
@@ -1376,11 +1527,18 @@ class DiaryController extends Controller
                 $project = Session::get('project_id');
 
                 $id = $request["id"];
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
            
     
                 if ($id != null) {
                     $get_dairy_data =  DB::table('variation_scope')->where('project_id', $project)
-                        ->where('user_id', Auth::id())
+                        ->where('user_id', $user_id)
                         ->where('project_id',$project)
                         ->where('id', $id)
                         ->first();
@@ -1415,6 +1573,13 @@ class DiaryController extends Controller
          
            unset($request["_token"]);
 
+           if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
             $data = [
                 "issued_by" => $request->issued_by,
                 "issued_date" => $request->issued_date,
@@ -1463,7 +1628,7 @@ class DiaryController extends Controller
             $all_data = [
                 "attachment_file" => $fileNameToStore1,
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "data" => json_encode($data),
                 "status" => 0,
             ];
@@ -1486,6 +1651,13 @@ class DiaryController extends Controller
         try {
 
             unset($request["_token"]);
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
 
             $data = [
                 "issued_by" => $request->issued_by,
@@ -1531,20 +1703,20 @@ class DiaryController extends Controller
                 }
                 
             }else{
-                $check_file_name=DB::table('variation_scope')->select('attachment_file')->where('id',$request->id)->where('user_id',Auth::id())->where('project_id',Session::get('project_id'))->first();
+                $check_file_name=DB::table('variation_scope')->select('attachment_file')->where('id',$request->id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
                 $fileNameToStore1=$check_file_name->attachment_file;
             }
 
             $all_data = [
                 "attachment_file" => $fileNameToStore1,
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "data" => json_encode($data),
                 "status" => 0,
             ];
 
 
-            DB::table('variation_scope')->where('id',$request->id)->where('project_id',Session::get('project_id'))->where('user_id',Auth::id())->update($all_data);
+            DB::table('variation_scope')->where('id',$request->id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->update($all_data);
 
          
             return redirect()->back()->with("success",__("Vo/Change Order created successfully."));
@@ -1561,7 +1733,14 @@ class DiaryController extends Controller
         try {
             if(\Auth::user()->can('delete vochange')){
 
-                DB::table('variation_scope')->where('id',$request->id)->where('project_id',Session::get('project_id'))->where('user_id',Auth::id())->delete();
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
+                DB::table('variation_scope')->where('id',$request->id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->delete();
             
                 return redirect()->back()->with("success", "Project specification summary record deleted successfully.");
 
@@ -1605,7 +1784,14 @@ class DiaryController extends Controller
     {
         try {
 
-            return view("diary.daily_reports.edit");
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+            $project_id=Session::get('project_id');
+            return view("diary.daily_reports.edit",compact('project_id'));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -1617,7 +1803,16 @@ class DiaryController extends Controller
     {
         try {
 
-            return view("diary.daily_reports.index");
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+            $project_id=Session::get('project_id');
+            $data=SiteReport::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->get();
+
+            return view("diary.daily_reports.index",compact('data','project_id'));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -1689,6 +1884,13 @@ class DiaryController extends Controller
         $fileNameToStore='';
         $url='';
 
+        if(\Auth::user()->type != 'company'){
+            $user_id = Auth::user()->creatorId();
+        }
+        else{
+            $user_id = \Auth::user()->id;
+        }
+
         if (!empty($request->filename)) {
             $filenameWithExt = $request->file("filename")->getClientOriginalName();
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -1715,7 +1917,7 @@ class DiaryController extends Controller
           
             $data = [
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "description" => $request->description,
                 "ram_ref_no" => $request->ram_ref_no,
                 "location" => $request->location,
@@ -1743,7 +1945,7 @@ class DiaryController extends Controller
                     $data2 = [
                         "procurement_id" => $id,
                         "project_id" => Session::get('project_id'),
-                        "user_id" => Auth::id(),
+                        "user_id" => $user_id,
                         "submission_date" =>$request->submission_date[$item],
                         "actual_reply_date" =>$request->actual_reply_date[$item],
                         "no_of_submission"  =>$request->no_of_submission[$item],
@@ -1769,13 +1971,21 @@ class DiaryController extends Controller
 
             if(\Auth::user()->can('edit procurement material')){
 
-                $project_id = $request["project_id"];
+                $project_id = Session::get('project_id');
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+    
 
                 $project_name = Project::select('project_name')
                 ->where("id", $project_id)
                 ->first();
                 
-                $data=ProcurementMaterial::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
+                $data=ProcurementMaterial::where('project_id',$project_id)->where('user_id',$user_id)->where('id',$request->id)->first();
 
                 $pro_material_mutli = ProcurementMaterialSub::where('procurement_id','=',$data->id)->get();
         
@@ -1797,6 +2007,12 @@ class DiaryController extends Controller
        
         try {
            
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
 
             $fileNameToStore1='';
             $url='';
@@ -1826,8 +2042,11 @@ class DiaryController extends Controller
                 }
                 
             }else{
-                $check_attach_file=ProcurementMaterial::select('filename','file_location')->where('id',$request->id)
-                                                  ->where('project_id',Session::get('project_id'))->first();
+                $check_attach_file=ProcurementMaterial::select('filename','file_location')
+                                    ->where('id',$request->id)
+                                    ->where('user_id',$user_id)
+                                    ->where('project_id',Session::get('project_id'))
+                                    ->first();
                                                                      
                 $fileNameToStore1=$check_attach_file->filename;
                 $url=$check_attach_file->file_location;    
@@ -1835,7 +2054,7 @@ class DiaryController extends Controller
 
             $data = [
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "description" => $request->description,
                 "ram_ref_no" => $request->ram_ref_no,
                 "location" => $request->location,
@@ -1857,11 +2076,11 @@ class DiaryController extends Controller
           
 
             ProcurementMaterial::where('id',$request->id)
-                ->where('user_id',Auth::id())
+                ->where('user_id',$user_id)
                 ->where('project_id',Session::get('project_id'))
                 ->update($data);
 
-            $in_id = ProcurementMaterial::where('user_id',Auth::id())
+            $in_id = ProcurementMaterial::where('user_id',$user_id)
                                                 ->where('project_id',Session::get('project_id'))
                                                 ->where('id', '=', $request->id)
                                                 ->get('id');
@@ -1893,7 +2112,7 @@ class DiaryController extends Controller
                             $data2 = [
                                 "procurement_id" => $invoice_id,
                                 "project_id" => Session::get('project_id'),
-                                "user_id" => Auth::id(),
+                                "user_id" => $user_id,
                                 "submission_date" =>$request->submission_date[$item],
                                 "actual_reply_date" =>$request->actual_reply_date[$item],
                                 "no_of_submission"  =>$request->no_of_submission[$item],
@@ -1930,10 +2149,17 @@ class DiaryController extends Controller
         try {
 
             if(\Auth::user()->can('delete procurement material')){
-           
-                ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
 
-                ProcurementMaterialSub::where("procurement_id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",Auth::id())->delete();
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+           
+                ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
+
+                ProcurementMaterialSub::where("procurement_id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
 
                 return redirect()->back()->with("success", "Procurement Material deleted successfully.");
 
@@ -1988,6 +2214,8 @@ class DiaryController extends Controller
     public function shopdrawing_listcreate(Request $request)
     {
         try {
+
+           
               
             return view("diary.shop_drawings.create");
 
@@ -2032,6 +2260,66 @@ class DiaryController extends Controller
           }
         
        
+    }
+
+    public function save_site_reports(Request $request){
+
+        try {
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+              
+            if($request->weather!=null){
+                $select_weather = implode(',', array_filter($request->weather));
+            }else{
+                $select_weather = Null;
+            }
+
+            if($request->site_conditions!=null){
+                $select_site_conditions = implode(',', array_filter($request->site_conditions));
+            }else{
+                $select_site_conditions = Null;
+            }
+
+           $data = [
+            "project_id" => Session::get('project_id'),
+            "user_id" => $user_id,
+            "contractor_name" => $request->contractor_name,
+            "con_date" => $request->con_date,
+            "con_day" => $request->con_day,
+            "weather" => $select_weather,
+            "site_conditions" => $select_site_conditions,
+            "temperature" => $request->temperature,
+            "min_input" => $request->min_input,
+            "degree" => $request->degree,
+            "remarks" => $request->remarks,
+            "prepared_by" => $request->prepared_by,
+            "title" => $request->title,
+            ];
+
+            // $data1 = [
+            //     "procurement_id" => $invoice_id,
+            //     "project_id" => Session::get('project_id'),
+            //     "user_id" => Auth::id(),
+            //     "submission_date" =>$request->submission_date[$item],
+            //     "actual_reply_date" =>$request->actual_reply_date[$item],
+            //     "no_of_submission"  =>$request->no_of_submission[$item],
+    
+            //     ];
+            
+        
+            SiteReport::insert($data);
+            return redirect()->back()->with("success", "Site report added successfully.");
+        //    SiteReportSub::insert($data1);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
     }
     
 }

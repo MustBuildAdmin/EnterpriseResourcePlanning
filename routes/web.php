@@ -311,6 +311,13 @@ Route::any('delete_procurement_material','DiaryController@delete_procurement_mat
     ]
 );
 
+Route::any('save_site_reports','DiaryController@save_site_reports')->name('save_site_reports')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary_email')->name('check_duplicate_diary_email')->middleware(
     [
         'auth',
@@ -370,7 +377,7 @@ Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscre
     );
 
     
-    Route::any('daily_reportscreate','DiaryController@daily_reportscreate')->name('daily_reportscreate')->middleware(
+    Route::get('daily_reportscreate','DiaryController@daily_reportscreate')->name('daily_reportscreate')->middleware(
         [
             'auth',
             'XSS',
