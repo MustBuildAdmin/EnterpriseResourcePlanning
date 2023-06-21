@@ -72,7 +72,108 @@
     .gantt_cal_light >.gantt_cal_ltitle {
          font-size: 13px !important;
     }
+    .gantt_grid_data{
+    overflow: auto !important;
+}
 
+.normal {
+	border: 2px solid green;
+}
+
+.low {
+	border: 2px solid yellow;
+}
+
+.custom_row {
+	background: rgb(245, 248, 245);
+}
+
+.gantt_control {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+}
+.gantt_control input ,.gantt_control button{
+        background: white;
+        border-radius: 2px;
+        border: none;
+ }
+    html,
+    body {
+        height: 100%;
+        font-family: 'Open Sans', sans-serif !important;
+    }
+    .main-content {
+        height: 600px;
+        height: calc(100vh - 50px);
+    }
+    .gantt_cal_light {
+        height: 440px !important;
+        width: 42% !important;
+    }
+    .gantt_control {
+        height: 50px;
+        padding: 10px;
+        width: 100%;
+        background-color: rgb(169, 22, 214);
+        display: block;
+        color: rgb(99, 17, 175);
+    }
+    .gantt_task_progress {
+			text-align: left;
+			padding-left: 10px;
+			box-sizing: border-box;
+			color: white;
+			font-weight: bold;
+	}
+    textarea.editor_description {
+        max-width: 100%;
+        height: 100px !important;
+    }
+    .gantt_cal_larea {
+        height: 84% !important;
+        overflow:visible;
+    }
+    .gantt_cal_chosen,
+    .gantt_cal_chosen select{
+        width: 400px;
+    }
+
+    .align{
+    display: flex;
+    justify-content: flex-end;
+    }
+.freezebtn{
+    margin-right:5px;
+}
+    .gantt-fullscreen {
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+			width: 30px;
+			height: 30px;
+			padding: 2px;
+			font-size: 32px;
+			background: transparent;
+			cursor: pointer;
+			opacity: 0.5;
+			text-align: center;
+			-webkit-transition: background-color 0.5s, opacity 0.5s;
+			transition: background-color 0.5s, opacity 0.5s;
+		}
+
+		.gantt-fullscreen:hover {
+			background: rgba(150, 150, 150, 0.5);
+			opacity: 1;
+		}
+
+        .gantt_task_cell.week_end {
+			background-color: #d6d6d6;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #d6d6d6;
+		}
 </style>
 
 @php
@@ -370,6 +471,11 @@ $holidays=implode(':',$holidays);
 			freeSlackColumn,
 			{ name: "add" }
 		];
+        gantt.config.lightbox.sections = [
+                { name:"description", height:200, map_to:"text", type:"my_editor", focus:true},
+                { name:"users",height:60, type:"multiselect", options:gantt.serverList("people"), map_to:"users"},
+                { name:"time", height:72, type:"duration", map_to:"auto"}
+            ];
 
 		gantt.templates.progress_text = function (start, end, task) {
 			return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
@@ -405,7 +511,101 @@ $holidays=implode(':',$holidays);
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
 		gantt.init("gantt_here");
 		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+        set_data = "";
 
+gantt.form_blocks["my_editor"] = {
+    render: function (sns) {
+        $.ajax({
+            url : '{{route("projects.get_member")}}',
+            type : 'GET',
+            async: false,
+            data : {
+                'project_id' : "<?php echo $project->id; ?>"
+            },
+            success : function(data) {
+                set_data += data['1'];
+            }
+        });
+        return set_data;
+    },
+    set_value: function (node, value, task) {
+        node.querySelector(".editor_description").value = value || "";
+    },
+    get_value: function (node, task) {
+        return node.querySelector(".editor_description").value;
+    },
+    focus: function (node) {
+        var a = node.querySelector(".editor_description");
+        a.select();
+        a.focus();
+    }
+};
+gantt.form_blocks["multiselect"] = {
+                render: function (sns) {
+                    var height = (sns.height || "23") + "px";
+                    var html = "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect' style='height:" + height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
+                    if (sns.options) {
+                        $.ajax({
+                            url : '{{route("projects.get_member")}}',
+                            type : 'GET',
+                            async: false,
+                            data : {
+                                'project_id' : "<?php echo $project->id; ?>"
+                            },
+                            success : function(multi_data) {
+                                $.each(multi_data['0'], function(multi_key, multi_value) {
+                                    html += "<option value='" + multi_value.key + "'>" + multi_value.label + "</option>";
+                                });
+                            }
+                        });
+                    }
+                    html += "</select></div>";
+                    return html;
+                },
+                set_value: function (node, value, ev, sns) {
+                    node.style.overflow = "visible";
+                    node.parentNode.style.overflow = "visible";
+                    node.style.display = "inline-block";
+                    var select = $(node.firstChild);
+
+                    if (value) {
+                        value = (value + "").split(",");
+
+                        select.val(value);
+                    }
+                    else {
+                        select.val([]);
+                    }
+
+                    select.chosen();
+                    if(sns.onchange){
+                        select.change(function(){
+                            sns.onchange.call(this);
+                        })
+                    }
+                    select.trigger('chosen:updated');
+                    select.trigger("change");
+                },
+                get_value: function (node, ev) {
+                    var value = $(node.firstChild).val();
+                    return value;
+                },
+                focus: function (node) {
+                    $(node.firstChild).focus();
+                }
+            };
+
+            gantt.locale.labels.section_users = "Users";
+
+            function findUser(id){
+                var list = gantt.serverList("people");
+                for(var i = 0; i < list.length; i++){
+                    if(list[i].key == id){
+                        return list[i];
+                    }
+                }
+                return null;
+            }
         // holidays
             gantt.config.work_time = true;
             gantt.config.details_on_create = false;
