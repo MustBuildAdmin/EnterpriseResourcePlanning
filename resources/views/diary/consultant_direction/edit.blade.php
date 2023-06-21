@@ -92,11 +92,11 @@
                         <textarea  class="form-control" name="replier_remark[]" placeholder="{{__('Remarks/ Notes')}}">{{ $mutli_data['replier_remark'] }}</textarea>
                       </div>
                     </div>
-                    <div class="col-md-12 mt-3">
+                    {{-- <div class="col-md-12 mt-3">
                       <label for="InputRemarks">{{__('Attachment')}}</label>
                       <input  type="file" name="replier_file_name[]" id="" class="form-control"  />
                       <span>{{ $mutli_data['replier_file_name'] }}</span>
-                    </div>
+                    </div> --}}
                   </div>
                   @if(!empty($initiator_date))
                   <div class="col-md-12 mt-3">

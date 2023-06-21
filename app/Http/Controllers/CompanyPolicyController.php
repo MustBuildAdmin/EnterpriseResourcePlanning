@@ -215,11 +215,13 @@ class CompanyPolicyController extends Controller
     }
 
 
-    public function destroy(CompanyPolicy $companyPolicy)
+    public function destroy($id)
     {
+        
 
         if(\Auth::user()->can('delete document'))
         {
+            $companyPolicy = CompanyPolicy::find($id);
             if($companyPolicy->created_by == \Auth::user()->creatorId())
             {
                 $companyPolicy->delete();

@@ -86,7 +86,7 @@ Route::get(
 
 
 
-Route::any('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
+Route::get('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
@@ -129,7 +129,16 @@ Route::post('delete_consultant_direction/{id}','DiaryController@delete_consultan
 ); 
 
 
-Route::any('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
+Route::get('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
+Route::get('get_name_of_consultant','DiaryController@get_name_of_consultant')->name('get_name_of_consultant')->middleware(
     [
         'auth',
         'XSS',
@@ -217,7 +226,7 @@ Route::any('delete_project_specification','DiaryController@delete_project_specif
 );
 
 
-Route::any('variation_scope_change','DiaryController@variation_scope_change')->name('variation_scope_change')->middleware(
+Route::get('variation_scope_change','DiaryController@variation_scope_change')->name('variation_scope_change')->middleware(
     [
         'auth',
         'XSS',
@@ -259,7 +268,7 @@ Route::any('delete_variation_scope_change','DiaryController@delete_variation_sco
     ]
 );
 
-Route::any('procurement_material','DiaryController@procurement_material')->name('procurement_material')->middleware(
+Route::get('procurement_material','DiaryController@procurement_material')->name('procurement_material')->middleware(
     [
         'auth',
         'XSS',
@@ -2926,6 +2935,8 @@ Route::get(
 );
 Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth','XSS',]);
 Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')->middleware(['auth','XSS',]);
+Route::get('edit_assigned_to', 'ProjectTaskController@edit_assigned_to')->name('edit_assigned_to')->middleware(['auth','XSS',]);
+Route::any('update_assigned_to/{task_main_id}', 'ProjectTaskController@update_assigned_to')->name('update_assigned_to')->middleware(['auth','XSS',]);
 // task progress update for construction part
     Route::any(
         'con_taskupdate', [
@@ -2954,8 +2965,6 @@ Route::get(
 Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
 Route::any('add_particular_task/{task_id}/{get_date}', 'ProjectTaskController@add_particular_task')->name('add_particular_task')->middleware(['auth','XSS',]);
 Route::any('edit_particular_task/{task_progress_id}/{task_id}', 'ProjectTaskController@edit_particular_task')->name('edit_particular_task')->middleware(['auth','XSS',]);
-
-Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth','XSS',]);
 Route::get('edit_task_progress', 'ProjectTaskController@edit_task_progress')->name('edit_task_progress')->middleware(['auth','XSS',]);
 
 Route::get(

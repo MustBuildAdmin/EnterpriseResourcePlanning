@@ -108,16 +108,22 @@
 							<h4 style="text-align: center;">{{__('Date Replied By Consultant:')}}</h4>
 							<div class="">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="form-group">
 											<label for="InputLIst">{{__('Submission Date')}}</label>
 											<input type="date" name="submission_date[]" class="form-control"> 
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('Actual Reply Date')}}</label>
 											<input type="date" name="actual_reply_date[]" class="form-control"> 
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="input">{{__('No of Submissions')}}</label>
+											<input type="text" name="no_of_submission[]" placeholder="{{__('No of Submissions')}}" class="form-control number"> 
 										</div>
 									</div>
 								</div>

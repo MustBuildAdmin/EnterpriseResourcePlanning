@@ -1,4 +1,11 @@
+
 @include('new_layouts.header')
+<style>
+    tr.highlighted {
+  padding-top: 10px; 
+  padding-bottom:10px
+}
+</style>
     <div class="page-wrapper">
         @include('construction_project.side-menu')
             <div class="row">
@@ -7,14 +14,45 @@
                 </div>
             </div>
 
+            <div class="card-body table-border-style">
+                <div class="table-responsive">
+                    <table style="width: 100%; border-collapse:separate; border-spacing: 40px 2em;">
+                        <tr class="highlighted">
+                            <td style="width: 15%; font-weight:bold;">Project Name:</td>
+                            <td style="width: 35%">{{ $data['con_data']->project_name }}</td>
+
+                            <td style="width: 15%; font-weight:bold;">Description:</td>
+                            <td style="width: 35%">{{$data['con_data']->description != null ? $data['con_data']->description : '-'}}</td>
+                        </tr>
+
+                        <tr class="highlighted">
+                            <td style="font-weight:bold;">Task Start Date:</td>
+                            <td style="">{{Utility::site_date_format($data['con_data']->start_date,\Auth::user()->id)}}</td>
+
+                            <td style="font-weight:bold;">Task End Date:</td>
+                            <td style="">{{Utility::site_date_format($data['con_data']->end_date,\Auth::user()->id)}}</td>
+                        </tr>
+
+                        <tr class="highlighted">
+                            <td style="font-weight:bold;">Task Overall Percentage:</td>
+                            <td style="">{{ $total_pecentage }}%</td>
+
+                            <td style="font-weight:bold;"></td>
+                            <td style=""></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <br>
             <div class="col-md-6 float-end floatrght">
                 @php
                     $get_date = $data['get_date'];
                 @endphp
-                <a href="#" data-size="xl" data-url="{{ route('add_particular_task',["task_id"=>$task_id, "get_date"=>$get_date]) }}" 
+                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('add_particular_task',["task_id"=>$task_id, "get_date"=>$get_date]) }}" 
                     data-ajax-popup="true" data-title="{{__('Create Consultants Directions Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
                     <i class="ti ti-plus"></i>
                 </a>
+                <a href="{{ route('taskBoard.view',['list']) }}" class="floatrght btn btn-danger mb-3" style="margin-right: 15px;">Back</a>
             </div>
             <br>
             <br>
@@ -50,13 +88,17 @@
                                             -
                                         @endif
                                     </td>
-                                    <td><span class="badge badge-info" style="background-color:#007bff;">{{$task_progress->percentage}} %</span></td>
+                                    <td><span class="badge badge-info" style="background-color:#007bff;">{{$task_progress->percentage}}%</span></td>
                                     <td>
                                         @php
                                             $file_explode = explode(',',$task_progress->filename);
                                         @endphp
                                         @forelse ($file_explode as $file_show)
-                                            <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}</span> <br>
+                                            @if($file_show != "")
+                                                <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}</span> <br>
+                                            @else
+                                                -
+                                            @endif
                                         @empty
                                         @endforelse
                                     </td>
