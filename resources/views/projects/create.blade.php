@@ -52,7 +52,10 @@
                             <span id="project_image_error" class="error" for="project_image"></span>
                         </div>
                     </div>
+                </section>
 
+                <h3>{{ __('Project Members') }}</h3>
+                <section>
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
@@ -67,10 +70,6 @@
                             </div>
                         </div>
                     </div>
-                </section>
-
-                <h3>{{ __('Project Members') }}</h3>
-                <section>
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
