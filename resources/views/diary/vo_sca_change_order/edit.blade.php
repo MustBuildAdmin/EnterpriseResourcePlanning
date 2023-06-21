@@ -95,7 +95,8 @@
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="text" class="form-control claimed_net_amount" >
+              <input name="" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="text" class="form-control claimed_net" disabled>
+              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="hidden" class="form-control claimed_net_amount" >
             </div>
           </div>
         </div>
@@ -114,7 +115,8 @@
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="text" class="form-control approved_net_cost" >
+              <input name="" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="text" class="form-control approved_net" disabled>
+              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="hidden" class="form-control approved_net_cost" >
             </div>
           </div>
         </div>

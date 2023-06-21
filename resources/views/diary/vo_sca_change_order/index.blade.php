@@ -253,6 +253,7 @@ h3, .h3 {
        
        
            $('.claimed_net_amount').val(get_value);
+           $('.claimed_net').val(get_value);
        });
 
        $(document).on("keyup", '.approved_addition_cost', function (e) {
@@ -263,6 +264,7 @@ h3, .h3 {
            var app_get_value = parseInt(app_omission_cost) + parseInt(app_additional_cost);
 
            $('.approved_net_cost').val(app_get_value);
+           $('.approved_net').val(app_get_value);
        });
 
        $(document).on("paste", '.impact_time', function (event) {

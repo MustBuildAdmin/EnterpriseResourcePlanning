@@ -38,10 +38,21 @@
               <input name="element_of_casting" value="" required type="text" id="element_of_casting" class="form-control" placeholder="Enter your Element of Casting " />
             </div>
           </div>
-          <div class="col-md-12 mb-3">
+          <div class="col-md-6 mb-3">
             <div class="form-group">
               <label for="InputGrade">{{__('Grade of Concrete')}} <span style='color:red;'>*</span></label>
-              <input name="grade_of_concrete" value="" required type="text" id="grade_of_concrete" class="form-control" placeholder="Enter your Grade of Concrete" />
+              <select name="grade_of_concrete" class="form-control" id="grade_of_concrete">
+                <option value="">{{__('Select Grade of Concrete')}}</option>
+                <option value="M10">M10</option>
+                <option value="M15">M15</option>
+                <option value="M20">M20</option>
+                <option value="M25">M25</option>
+                <option value="M30">M30</option>
+                <option value="M35">M35</option>
+                <option value="M40">M40</option>
+                <option value="M45">M45</option>
+                <option value="M50">M50</option>
+              </select>
             </div>
           </div>
           <label style="text-align: center; font-weight: 700">{{__('Poured')}}</label>
@@ -90,8 +101,8 @@
             </div>
           </div>
           <div class="col-md-12 mb-3">
-            <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-            <input name="file_name"  type="file" id="file_name" class="form-control" required/>
+            <label for="InputRemarks">{{__('Attachment')}}</label>
+            <input name="file_name"  type="file" id="file_name" class="form-control"/>
           </div>
         </div>
         <div class="modal-footer">

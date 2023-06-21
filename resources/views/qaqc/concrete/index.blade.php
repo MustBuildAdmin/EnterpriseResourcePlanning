@@ -82,7 +82,8 @@ h3, .h3 {
                   {{-- <th>{{__('7 days Test Fall on')}}</th>
                   <th>{{__('28 days Test Fall on')}}</th> --}}
                   <th>{{__('28 days Result')}}</th>
-                  {{-- <th>{{__('Remarks')}}</th> --}}
+                  <th>{{__('Remarks')}}</th>
+                  <th>{{__('Attachment')}}</th>
                   @if(Gate::check('edit concrete') || Gate::check('delete concrete'))
                   <th>{{__('Action')}}</th>
                   @endif
@@ -106,7 +107,8 @@ h3, .h3 {
                   {{-- <td>{{$bulk_data->testing_fall ?? '-'}}</td>
                   <td>{{$bulk_data->days_testing_falls ?? '-'}}</td> --}}
                   <td>{{$bulk_data->days_testing_result ?? '-'}}</td>
-                  {{-- <td>{{$bulk_data->remarks}}</td> --}}
+                  <td>{{$bulk_data->remarks ?? '-'}}</td>
+                  <td>{{$bulk_data->file_name ?? '-'}}</td>
                   @if(Gate::check('edit concrete') || Gate::check('delete concrete'))
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
@@ -184,16 +186,19 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6]
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                     }
                 },
                 {
                     extend: 'pdfHtml5',
                     title: 'Concrete Pouring Record',
                     titleAttr: 'PDF',
+                    pagesize: 'A3',
+                      orientation: 'landscape',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
+                        doc.content[1].table.widths = [20,70,90,90,70,70,90,90,110];
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = true;
                         doc.styles.tableBodyOdd.alignment = 'center';
@@ -210,7 +215,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6]
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                     }
                 },
                 {
@@ -225,7 +230,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6]
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                     }
                 },
                 'colvis'

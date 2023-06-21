@@ -909,8 +909,8 @@ class DiaryController extends Controller
                 ->where("id", $project_id)
                 ->first();
                 
-                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',$user_id)->where('id',$request->id)->first();
-                $contractor=RFIStatusSave::where('user_id', '=',$user_id)->where('id',$request->id)->where('project_id', $project_id)->first();
+                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
+                $contractor=RFIStatusSave::where('user_id', '=', Auth::id())->where('id',$request->id)->where('project_id', $project_id)->first();
             
                 if($contractor!=null){
                     $contractor_name=json_decode($contractor);
@@ -918,7 +918,7 @@ class DiaryController extends Controller
                     $contractor_name=array();
                 }
               
-                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->first();
+                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->first();
 
                 $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->get();
               

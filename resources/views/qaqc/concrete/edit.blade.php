@@ -47,8 +47,19 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputDate">{{__('Date of Casting')}} <span style='color:red;'>*</span></label>
-              <input name="date_of_casting" value="@if($id!='' && $dairy_data->date_of_casting!=''){{$dairy_data->date_of_casting}}@endif" id="date_of_casting" required type="date" class="form-control" placeholder="Enter your Date of Casting" />
-            </div>
+              <select name="grade_of_concrete" class="form-control" id="grade_of_concrete">
+                <option value="">{{__('Select Date of Casting')}}</option>
+                <option value="M10" @if( 'M10'==$dairy_data->date_of_casting){ selected }@endif>M10</option>
+                <option value="M15" @if( 'M15'==$dairy_data->date_of_casting){ selected }@endif>M15</option>
+                <option value="M20" @if( 'M20'==$dairy_data->date_of_casting){ selected }@endif>M20</option>
+                <option value="M25" @if( 'M25'==$dairy_data->date_of_casting){ selected }@endif>M25</option>
+                <option value="M30" @if( 'M30'==$dairy_data->date_of_casting){ selected }@endif>M30</option>
+                <option value="M35" @if( 'M35'==$dairy_data->date_of_casting){ selected }@endif>M35</option>
+                <option value="M40" @if( 'M40'==$dairy_data->date_of_casting){ selected }@endif>M40</option>
+                <option value="M45" @if( 'M45'==$dairy_data->date_of_casting){ selected }@endif>M45</option>
+                <option value="M50" @if( 'M50'==$dairy_data->date_of_casting){ selected }@endif>M50</option>
+              </select>
+              </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
@@ -108,7 +119,7 @@
             </div>
           </div>
           <div class="col-md-12 mb-3">
-            <label for="InputRemarks">{{__('Attachment')}}<span style='color:red;'>*</span></label>
+            <label for="InputRemarks">{{__('Attachment')}}</label>
             <input name="file_name"  type="file" id="file_name" class="form-control"  />
             <span>{{$get_dairy_data->file_name ?? ''}}</span>
       

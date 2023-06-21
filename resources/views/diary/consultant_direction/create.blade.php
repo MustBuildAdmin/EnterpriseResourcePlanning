@@ -2,6 +2,9 @@
   textarea {
     resize: vertical;
   }
+  .bold{
+    font-weight: bold;
+  }
 </style>
 <div class="modal-body">
   <div class="row">
@@ -11,8 +14,8 @@
         <div class="container">
           <div class="row">
             <div class="col form-group ">
-              <label for="InputIssued">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY for the project of:')}}</label>
-              <span>{{$project_name->project_name}}</span>
+              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY')}}</label> <span>for the project of:</span>
+              <span class="bold">{{$project_name->project_name}}</span>
             </div>
           </div>
           <hr style="border: 1px solid black" />
