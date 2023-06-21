@@ -25,6 +25,7 @@ class TaskController extends Controller
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
+        
         if(isset($request->users)){
             if(is_array($request->users)){
                 $implode_users = implode(',', json_decode($request->users));
@@ -35,7 +36,12 @@ class TaskController extends Controller
         }
  
         $task->save();
- 
+        $check_parent=Con_task::where('project_id',Session::get('project_id'))->where(['parent'=>$task->id])->get();
+        if(count($check_parent)>0){
+            $task->type="project";
+        }else{
+            $task->type="task";
+        }
         return response()->json([
             "action"=> "inserted",
             "tid" => $row_id
