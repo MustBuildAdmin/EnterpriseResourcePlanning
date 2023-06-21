@@ -220,7 +220,10 @@ class ProjectController extends Controller
                         }
                         if(isset($value['parent'])){
                             $task->parent=$value['parent'];
+                            $task->type="project";
                             // $task->predecessors=$value['parent'];
+                        }else{
+                            $task->type="task";
                         }
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
@@ -333,6 +336,9 @@ class ProjectController extends Controller
                             if(isset($value['parent'])){
                                 $task->parent=$value['parent'];
                                 $task->predecessors=$value['parent'];
+                                $task->type="project";
+                            }else{
+                                $task->type="task";
                             }
                             if(isset($value['$raw'])){
                                 $raw=$value['$raw'];
