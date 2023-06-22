@@ -34,7 +34,7 @@
               <div class="col">
                 <div class="form-group">
                   <label for="InputIssued">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-                  <input name="issued_date"  min="{{ date('Y-m-d', strtotime("+1 day")) }}" type="date" class="form-control" value="{{$consult_dir->issued_date}}" placeholder="{{__('Issued Date')}}" />
+                  <input name="issued_date"   max="{{ date('Y-m-d') }}" type="date" class="form-control" value="{{$consult_dir->issued_date}}" placeholder="{{__('Issued Date')}}" />
                 </div>
               </div>
               <div class="col">
@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-12 mt-3">
                   <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-                  <input name="attach_file_name"  type="file"  class="form-control"/>
+                  <input name="attach_file_name"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf"/>
                   <span>{{$consult_dir->attach_file_name}}</span>
                 </div>
               </div>
@@ -70,12 +70,12 @@
                     <div class="col">
                       <div class="form-group">
                         <label for="Inputdate">{{__('Date')}}</label>
-                        <input type="date"  min="{{ date('Y-m-d', strtotime("+1 day")) }}" value="{{$mutli_data['initiator_date']}}"  name="initiator_date[]" class="form-control" placeholder="Enter your  Date" />
+                        <input type="date"   max="{{ date('Y-m-d') }}" value="{{$mutli_data['initiator_date']}}"  name="initiator_date[]" class="form-control" placeholder="Enter your  Date" />
                       </div>
                     </div>
                     <div class="col-md-12 mt-3">
                       <label for="InputRemarks">{{__('Attachment')}}</label>
-                      <input name="initiator_file_name[]"  type="file" id="" class="form-control" multiple />
+                      <input name="initiator_file_name[]"  type="file" id="" class="form-control" multiple accept="image/*, .png, .jpeg, .jpg ,pdf"/>
                       <span>{{$mutli_data['initiator_file_name']}}</span>
                     </div>
                   </div>
@@ -141,7 +141,7 @@
                   '<div class="col">'+
                     '<div class="form-group">'+
                       '<label for="Inputdate">Date:</label>'+
-                        '<input type="date" min="{{ date('Y-m-d', strtotime("+1 day")) }}" name="initiator_date[' + i +']" class="form-control" placeholder="Enter your  Date"/>'+
+                        '<input type="date"  max="{{ date('Y-m-d') }}" name="initiator_date[' + i +']" class="form-control" placeholder="Enter your  Date"/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="col-md-12 mt-3">'+
@@ -167,7 +167,7 @@
                     '</div>'+
                     '<div class="col-md-12 mt-3">'+
                       '<label for="InputRemarks">Attachment</label>'+
-                      '<input  type="file"  name="replier_file_name[' + i +']" id="concreteFile" class="form-control" />'+
+                      '<input  type="file"  name="replier_file_name[' + i +']" id="concreteFile" class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf"/>'+
                     '</div>'+
                 '</div>'+
               '<div class="col-md-12 mt-3">'+

@@ -34,7 +34,7 @@
             <div class="col">
               <div class="form-group">
                 <label for="InputIssued">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-                <input name="issued_date"  min="{{ date('Y-m-d', strtotime("+1 day")) }}" type="date" class="form-control" placeholder="{{__('Issued Date')}}" required/>
+                <input name="issued_date"  max="{{ date('Y-m-d') }}" type="date" class="form-control" placeholder="{{__('Issued Date')}}" required/>
               </div>
             </div>
             <div class="col">
@@ -50,7 +50,7 @@
               </div>
               <div class="col-md-12 mt-3">
                 <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-                <input name="attach_file_name" required type="file" id="concreteFile" class="form-control" required/>
+                <input name="attach_file_name" required type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
               </div>
             </div>
           </div>
@@ -68,12 +68,12 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="Inputdate">{{__('Date')}}</label>
-                      <input type="date"  min="{{ date('Y-m-d', strtotime("+1 day")) }}" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" />
+                      <input type="date" max="{{ date('Y-m-d') }}" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" />
                     </div>
                   </div>
                   <div class="col-md-12 mt-3">
                     <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input name="initiator_file_name[]"  type="file"  class="form-control"  />
+                    <input name="initiator_file_name[]"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" />
                   </div>
                 </div>
                 {{-- <h4 style="text-align: center; font-weight: 700;">Replier:</h4>
