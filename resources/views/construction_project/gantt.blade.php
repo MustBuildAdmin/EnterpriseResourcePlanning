@@ -37,7 +37,9 @@
     .gantt_task_cell.week_end {
         background-color: #EFF5FD;
     }
-
+    .gantt_cal_light{
+        height: 313px !important;
+    }
     .gantt_task_row.gantt_selected .gantt_task_cell.week_end {
         background-color: #F8EC9C;
     }
@@ -82,6 +84,7 @@ foreach ($project_holidays as $key => $value) {
 }
 $holidays=implode(':',$holidays);
 @endphp
+@include('construction_project.side-menu')
 {{-- @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"]) --}}
                         <div class="col d-flex flex-column">
 
@@ -90,34 +93,34 @@ $holidays=implode(':',$holidays);
                                 {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                                     <a href="#" class="btn btn-outline-primary w-20 freeze_button" data-bs-toggle="tooltip" title="{{ __('Click to change freeze status') }}" data-original-title="{{ __('Delete') }}"
                                         data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                                        <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze
+                                        {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
+                                        Freeze
                                     </a>
                                 {!! Form::close() !!}
-                                <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page">Undo</button>
-                                <button class="btn btn-outline-primary action w-20" name="redo">Redo</button>
-                                <button class="btn btn-outline-primary action w-20" name="indent">Indent</button>
-                                <button class="btn btn-outline-primary action w-20" name="outdent">Outdent</button>
+                                <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
+                                <button class="btn btn-outline-primary action w-20" name="redo" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Redo</button>
+                                <button class="btn btn-outline-primary action w-20" name="indent" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Indent</button>
+                                <button class="btn btn-outline-primary action w-20" name="outdent" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Outdent</button>
                                 <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
-                                    onclick="gantt.ext.fullscreen.toggle();">Fullscreen</button>
-                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="closeAll()">Collaspe
+                                    onclick="gantt.ext.fullscreen.toggle();" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Fullscreen</button>
+                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="closeAll()" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Collaspe
                                     All</button>
-                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="openAll()">Expand
+                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="openAll()" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Expand
                                     All</button>
-                                <select class="form-control" id="zoomscale" style='width:14%;'>
-                                    <option value="">Select a option</option>
-                                    <option value="day">day</option>
-                                    <option value="week">week</option>
-                                    <option value="month">month</option>
-                                    <option value="quarter">quarter</option>
-                                    <option value="year">year</option>
-                                </select>
-
-                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()">Zoom
+                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
                                     In</button>
-                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()">Zoom
+                                <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
                                     Out</button>
-                                <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)">Show Critical
+                                <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                     Path</button>
+                                    <select class="form-control" id="zoomscale" style='width:14%;'>
+                                        <option value="">Select a option</option>
+                                        <option value="day">day</option>
+                                        <option value="week">week</option>
+                                        <option value="month">month</option>
+                                        <option value="quarter">quarter</option>
+                                        <option value="year">year</option>
+                                    </select>
                               </div>
                               <div class="row">
                                 <div class="col-12">
@@ -320,10 +323,6 @@ $holidays=implode(':',$holidays);
 			predecessors: { type: "predecessor", map_to: "auto", formatter: linksFormatter }
 		};
 
-
-
-
-
 		gantt.config.columns = [
 			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true },
 			{
@@ -336,6 +335,10 @@ $holidays=implode(':',$holidays);
 			},
 			{
 				name: "end_date", label: "End Date", width: 80, align: "center",
+				editor: editors.end_date, resize: true
+			},
+            {
+				name: "duration", label: "Duration", width: 80, align: "center",
 				editor: editors.end_date, resize: true
 			},
 
@@ -376,6 +379,32 @@ $holidays=implode(':',$holidays);
 			if (task.type == gantt.config.types.project)
 				return "hide_project_progress_drag";
 		};
+
+        // ###############################################
+        var weekScaleTemplate = function (date) {
+            var dateToStr = gantt.date.date_to_str("%d %M");
+            var weekNum = gantt.date.date_to_str("(week %W)");
+            var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
+            return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
+        };
+
+        gantt.config.scales = [
+            {unit: "month", step: 1, format: "%F, %Y"},
+            {unit: "week", step: 1, format: weekScaleTemplate},
+            {unit: "day", step: 1, format: "%D, %d"}
+        ];
+
+        gantt.templates.timeline_cell_class = function (task, date) {
+            if (!gantt.isWorkTime(date))
+                return "week_end";
+            return "";
+        };
+
+        // holidays end
+		gantt.config.bar_height = 100;
+		gantt.config.date_format = "%Y-%m-%d %H:%i";
+		gantt.init("gantt_here");
+		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
 
         // holidays
             gantt.config.work_time = true;
@@ -427,34 +456,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        // ###############################################
-        var weekScaleTemplate = function (date) {
-            var dateToStr = gantt.date.date_to_str("%d %M");
-            var weekNum = gantt.date.date_to_str("(week %W)");
-            var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
-            return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
-        };
-
-        gantt.config.scales = [
-            {unit: "month", step: 1, format: "%F, %Y"},
-            {unit: "week", step: 1, format: weekScaleTemplate},
-            {unit: "day", step: 1, format: "%D, %d"}
-        ];
-
-        gantt.templates.timeline_cell_class = function (task, date) {
-            if (!gantt.isWorkTime(date))
-                return "week_end";
-            return "";
-        };
-
-        // holidays end
-		gantt.config.bar_height = 100;
-		gantt.config.date_format = "%Y-%m-%d %H:%i";
-		gantt.init("gantt_here");
-		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
-
-        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        var dp = new gantt.dataProcessor("/erpnew/public/");
+        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        //var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
