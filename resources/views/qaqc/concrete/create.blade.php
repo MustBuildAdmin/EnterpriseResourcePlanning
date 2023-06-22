@@ -2,6 +2,11 @@
   .form-check {
     margin: 8px 12px !important;
   }
+  .disable{
+    background-color: unset !important;
+    color:black !important;
+    font-weight:bold;
+  }
 </style>
 <div class="modal-body">
   <div class="row">
@@ -41,7 +46,7 @@
           <div class="col-md-6 mb-3">
             <div class="form-group">
               <label for="InputGrade">{{__('Grade of Concrete')}} <span style='color:red;'>*</span></label>
-              <select name="grade_of_concrete" class="form-control" id="grade_of_concrete">
+              <select name="grade_of_concrete" class="form-control" id="grade_of_concrete" required>
                 <option value="">{{__('Select Grade of Concrete')}}</option>
                 <option value="M10">M10</option>
                 <option value="M15">M15</option>
@@ -75,23 +80,37 @@
               <input name="testing_fall"  type="hidden" class="form-control" id="testing_fall"  />
             </div>
           </div>
-          <div class="col-6 mb-3">
+          <div class="col-5 mb-3">
             <div class="form-group">
               <label for="InputAverage">{{__('Total Result (Average)')}}</label>
-              <input name="total_result" value=""  type="text" id="total_result" class="form-control" placeholder="Enter your Total Result (Average)" />
+              <input name="" value=""  type="text" id="total_result" class="form-control total_result" placeholder="Enter your Total Result (Average)" />
+              <input name="total_result" value=""  type="hidden" id="total_result_back" class="form-control total_result" placeholder="Enter your Total Result (Average)" />
+            </div>
+          </div>
+          <div class="col-1 mb-3">
+            <div class="form-group">
+              <label for="Inputdays"></label>
+              <input disabled id=""  type="text"class="form-control disable" placeholder="{{__('N/mm2')}}" />
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Testing Falls on')}}</label>
-              <input name="days_testing_falls_on" value=""  type="date" class="form-control" id="days_testing_falls_on" disabled />
+              <input name="days_testing_falls_on" value=""  type="date" class="form-control" id="days_testing_falls_on" disabled/>
               <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  />
             </div>
           </div>
-          <div class="col-6 mb-3">
+          <div class="col-5 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Result (Average)')}}</label>
-              <input name="days_testing_result" id="days_testing_result" value=""  type="text" id="days_testing_result" class="form-control" placeholder="Enter your 28 days Result (Average)" />
+              <input name=""  value=""  type="text"  id="days_testing_result" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+              <input name="days_testing_result"  value="" id="days_testing_result_back"  type="hidden"  class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+            </div>
+          </div>
+          <div class="col-1 mb-3">
+            <div class="form-group">
+              <label for="Inputdays"></label>
+              <input disabled id=""  type="text"class="form-control disable" placeholder="{{__('N/mm2')}}" />
             </div>
           </div>
           <div class="col-md-12 mb-3">
@@ -102,7 +121,7 @@
           </div>
           <div class="col-md-12 mb-3">
             <label for="InputRemarks">{{__('Attachment')}}</label>
-            <input name="file_name"  type="file" id="file_name" class="form-control"/>
+            <input name="file_name"  type="file" id="file_name" class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf"/>
           </div>
         </div>
         <div class="modal-footer">
@@ -115,37 +134,69 @@
 </div>
 
 <script>
+
+$(document).ready(function() {
+  $("#total_result").removeAttr("disabled");
+  $("#days_testing_result").removeAttr("disabled");
+});
+
 $(document).on("change", '#actual', function() {
 
-var selectedDate = this.value;
-var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
-var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
-var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
-var twentyEigth = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
+  var selectedDate = this.value;
+  var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
+  var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
+  var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
+  var twentyEigth = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
 
-$("#testing_fall_on").val(seventhDate);
-$("#testing_fall").val(seventhDate);
-$("#days_testing_falls_on").val(twentyEigthData);
-$("#days_testing_falls").val(twentyEigthData);
-
-let text1 = "To be tested on:";
-let text2 = seventh;
-let result = text1.concat(" ", text2);
-$("#total_result").val(result);
+  $("#testing_fall_on").val(seventhDate);
+  $("#testing_fall").val(seventhDate);
+  $("#days_testing_falls_on").val(twentyEigthData);
+  $("#days_testing_falls").val(twentyEigthData);
 
 
-let text3 = "To be tested on:";
-let text4 = twentyEigth;
-let result1 = text3.concat(" ", text4);
-$("#days_testing_result").val(result1);
+  var dt = new Date();
+
+  year  = dt.getFullYear();
+  month = (dt.getMonth() + 1).toString().padStart(2, "0");
+  day   = dt.getDate().toString().padStart(2, "0");
+
+  var currentDate= day + '-' + month + '-' + year;
+
+  if(currentDate===seventh){
+      $("#total_result").removeAttr("disabled");
+  }else{
+      $("#total_result").attr("disabled", "disabled");
+  }
+
+  if(currentDate===twentyEigth){
+    $("#days_testing_result").removeAttr("disabled");
+  }else{
+    $("#days_testing_result").attr("disabled", "disabled");
+  }
+
+});
+
+$(document).on("keyup", '#days_testing_result', function() {
+  var copy_val= $('#days_testing_result').val();
+  $('#days_testing_result_back').val(copy_val);
+});
+
+$(document).on("keyup", '#total_result', function() {
+  var copy_value= $('#total_result').val();
+  $('#total_result_back').val(copy_value);
 });
 
 
-$(".chosen-select").chosen({
-    disable_search_threshold: 10,
-    no_results_text: "Oops, nothing found!",
-    width: "95%"
+</script>
+<script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
+<script>
+$('.total_result,.days_testing_result').alphanum({
+			allow              : '',    // Allow extra characters
+			allowUpper         : false,  // Allow upper case characters
+			allowLower         : false,  // Allow lower case characters
+			forceUpper         : false, // Convert lower case characters to upper case
+			forceLower         : false, // Convert upper case characters to lower case
+			allowLatin         : false,  
 });
-$('#employee').trigger("chosen:updated");
 </script>
 

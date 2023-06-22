@@ -11,6 +11,15 @@
 	padding-top: 0.25em;
 }
 
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    max-width: 1072px !important;
+   
+}
+
 .table-responsive .bg-primary {
 	background: #206bc4 !important;
 }
@@ -69,7 +78,7 @@ h3, .h3 {
       <div class="card table-card">
         <div class="card-header card-body table-border-style">
           @can('manage concrete')
-          <div class="table">
+          <div class="table-responsive">
             <table class="table" id="example2">
               <thead class="">
                 <tr>
@@ -79,8 +88,8 @@ h3, .h3 {
                   <th>{{__('Grade of Concrete')}}</th>
                   <th>{{__('Theoretical')}}</th>
                   <th>{{__('Actual')}}</th>
-                  {{-- <th>{{__('7 days Test Fall on')}}</th>
-                  <th>{{__('28 days Test Fall on')}}</th> --}}
+                  <th>{{__('7 days Test Fall on')}}</th>
+                  <th>{{__('28 days Test Fall on')}}</th>
                   <th>{{__('28 days Result')}}</th>
                   <th>{{__('Remarks')}}</th>
                   <th>{{__('Attachment')}}</th>
@@ -104,11 +113,11 @@ h3, .h3 {
                   <td>{{$bulk_data->grade_of_concrete}}</td>
                   <td>{{ Utility::site_date_format($bulk_data->theoretical,\Auth::user()->id)}}</td>
                   <td>{{ Utility::site_date_format($bulk_data->actual,\Auth::user()->id) }}</td>
-                  {{-- <td>{{$bulk_data->testing_fall ?? '-'}}</td>
-                  <td>{{$bulk_data->days_testing_falls ?? '-'}}</td> --}}
+                  <td>{{ Utility::site_date_format($bulk_data->testing_fall,\Auth::user()->id ?? '-')}}</td>
+                  <td>{{ Utility::site_date_format($bulk_data->days_testing_falls,\Auth::user()->id ?? '-') }}</td>
                   <td>{{$bulk_data->days_testing_result ?? '-'}}</td>
                   <td>{{$bulk_data->remarks ?? '-'}}</td>
-                  <td>{{$bulk_data->file_name ?? '-'}}</td>
+                  <td>{{$data->file_name ?? '-'}}</td>
                   @if(Gate::check('edit concrete') || Gate::check('delete concrete'))
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
@@ -186,7 +195,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                     }
                 },
                 {
@@ -198,7 +207,7 @@ h3, .h3 {
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
-                        doc.content[1].table.widths = [20,70,90,90,70,70,90,90,110];
+                       
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = true;
                         doc.styles.tableBodyOdd.alignment = 'center';
@@ -215,7 +224,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                     }
                 },
                 {
@@ -230,7 +239,7 @@ h3, .h3 {
                             page: 'all', // 'all', 'current'
                             search: 'none' // 'none', 'applied', 'removed'
                         },
-                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
                     }
                 },
                 'colvis'

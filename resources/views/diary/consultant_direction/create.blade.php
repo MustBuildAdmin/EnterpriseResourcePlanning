@@ -34,7 +34,7 @@
             <div class="col">
               <div class="form-group">
                 <label for="InputIssued">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-                <input name="issued_date" type="date" class="form-control" placeholder="{{__('Issued Date')}}" required/>
+                <input name="issued_date"  min="{{ date('Y-m-d', strtotime("+1 day")) }}" type="date" class="form-control" placeholder="{{__('Issued Date')}}" required/>
               </div>
             </div>
             <div class="col">
@@ -68,7 +68,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="Inputdate">{{__('Date')}}</label>
-                      <input type="date" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" />
+                      <input type="date"  min="{{ date('Y-m-d', strtotime("+1 day")) }}" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" />
                     </div>
                   </div>
                   <div class="col-md-12 mt-3">

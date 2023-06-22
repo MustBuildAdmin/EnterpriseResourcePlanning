@@ -161,9 +161,9 @@ class QualityAssuranceController extends Controller
                 "theoretical" => $request->theoretical,
                 "actual" => $request->actual,
                 "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result,
+                "total_result" => $request->total_result." N/mm2",
                 "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result,
+                "days_testing_result" => $request->days_testing_result." N/mm2",
                 "remarks" => $request->remarks,
             ];
 
@@ -237,9 +237,9 @@ class QualityAssuranceController extends Controller
                 "theoretical" => $request->theoretical,
                 "actual" => $request->actual,
                 "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result,
+                "total_result" => $request->total_result." N/mm2",
                 "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result,
+                "days_testing_result" => $request->days_testing_result." N/mm2",
                 "remarks" => $request->remarks,
             ];
 

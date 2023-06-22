@@ -30,7 +30,7 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Input">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-              <input type="date" name="issued_date" class="form-control" placeholder="Text input" required>
+              <input type="date" name="issued_date"  max="{{ date('Y-m-d') }}" class="form-control" placeholder="Text input"  required>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Input">{{__('Date')}}</label>
-                <input name="vo_date" type="date" class="form-control" placeholder="Text input">
+                <input name="vo_date" max="{{ date('Y-m-d') }}" type="date" class="form-control" placeholder="Text input">
               </div>
             </div>
           </div>
@@ -172,5 +172,4 @@ $('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			forceLower         : false, // Convert upper case characters to lower case
 			allowLatin         : false,  
 });
-
 </script>

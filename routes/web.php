@@ -325,6 +325,22 @@ Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary
     ]
 );
 
+Route::any('diary_download_file', 'DiaryController@diary_download_file')->name('diary_download_file')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('vo_change_download_file', 'DiaryController@vo_change_download_file')->name('vo_change_download_file')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
 
     /* Drawing List */
 

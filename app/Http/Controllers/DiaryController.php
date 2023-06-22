@@ -17,6 +17,7 @@ use App\Models\ProcurementMaterial;
 use App\Models\ProcurementMaterialSub;
 use App\Models\SiteReport;
 use App\Models\SiteReportSub;
+use App\Models\Vochange;
 use File;
 use DB;
 use Session;
@@ -34,69 +35,7 @@ class DiaryController extends Controller
         }
     }
 
-    public function filterDiaryView(Request $request)
-    {
-        if (\Auth::user()->can("manage project")) {
-            $usr = Auth::user();
-            if (\Auth::user()->type == "client") {
-                $user_projects = Project::where("client_id", \Auth::user()->id)
-                    ->where("created_by", \Auth::user()->creatorId())
-                    ->pluck("id", "id")
-                    ->toArray();
-            } else {
-                $user_projects = $usr
-                    ->projects()
-                    ->pluck("project_id", "project_id")
-                    ->toArray();
-            }
-            if ($request->ajax() && $request->has("view") && $request->has("sort")) {
-                $sort = explode("-", $request->sort);
-                $projects = Project::whereIn("id",array_keys($user_projects))->orderBy($sort[0], $sort[1]);
 
-                if (!empty($request->keyword)) {
-                    $projects
-                        ->where("project_name", "LIKE", $request->keyword . "%")
-                        ->orWhereRaw(
-                            'FIND_IN_SET("' . $request->keyword . '",tags)'
-                        );
-                }
-                if (!empty($request->status)) {
-                    $projects->whereIn("status", $request->status);
-                }
-                $projects = $projects->get();
-                $returnHTML = view("diary." . $request->view,compact("projects", "user_projects"))->render();
-
-                return response()->json([
-                    "success" => true,
-                    "html" => $returnHTML,
-                ]);
-            }
-        } else {
-            return redirect()->route("diary.concrete_pouring")->with("success", __("Designation  successfully created."));
-        }
-    }
-
-    public function show($view = "grid", Request $request)
-    {
-        try {
-
-            $project_id = $request->id;
-
-            $dairy_data = ConcretePouring::where('user_id',Auth::id())->where('project_id',$project_id)->get();
-
-            $dairy_list = DairyList::select("id", "diary_name")
-                        ->where("status", "0")
-                        ->get();
-
-            return view("diary.show",compact("project_id", "dairy_list", "dairy_data"));
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    
-    
     public function show_consultant_direction(Request $request)
     {
         try {
@@ -212,225 +151,7 @@ class DiaryController extends Controller
         }
     }
 
-    public function save_concrete_pouring(Request $request)
-    {
-        try {
-            unset($request["_token"]);
-
-            if(\Auth::user()->type != 'company'){
-                $user_id = Auth::user()->creatorId();
-            }
-            else{
-                $user_id = \Auth::user()->id;
-            }
-
-
-            $data = [
-                "month_year" => $request->month_year,
-                "date_of_casting" => $request->date_of_casting,
-                "element_of_casting" => $request->element_of_casting,
-                "grade_of_concrete" => $request->grade_of_concrete,
-                "theoretical" => $request->theoretical,
-                "actual" => $request->actual,
-                "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result,
-                "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result,
-                "remarks" => $request->remarks,
-            ];
-
-            $fileNameToStore1='';
-            $url='';
-
-            if (!empty($request->file_name)) {
-                $filenameWithExt1 = $request->file("file_name")->getClientOriginalName();
-                $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
-                $extension1 = $request->file("file_name")->getClientOriginalExtension();
-                $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
-
-                $dir = "uploads/concrete_pouring";
-
-                $image_path = $dir . $filenameWithExt1;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
-                }
-                $url = "";
-                $path = Utility::upload_file($request,"file_name",$fileNameToStore1,$dir,[]);
-
-                if ($path["flag"] == 1) {
-                    $url = $path["url"];
-            
-                } else {
-                    return redirect()->back()->with("error", __($path["msg"]));
-                }
-                
-            }
-
-            $all_data = [
-                "file_name" => $fileNameToStore1,
-                "file_path" => $url,
-                "project_id" => Session::get('project_id'),
-                "user_id" => $user_id,
-                "diary_data" => json_encode($data),
-                "status" => 0,
-            ];
-
-
-            ConcretePouring::insert($all_data);
-
-         
-            return redirect()->back()->with("success",__("Concrete Pouring created successfully."));
-           
-
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function update_concrete_pouring(Request $request)
-    {
-        try {
-            
-            unset($request["_token"]);
-
-            if(\Auth::user()->type != 'company'){
-                $user_id = Auth::user()->creatorId();
-            }
-            else{
-                $user_id = \Auth::user()->id;
-            }
-
-            $data = [
-                "month_year" => $request->month_year,
-                "date_of_casting" => $request->date_of_casting,
-                "element_of_casting" => $request->element_of_casting,
-                "grade_of_concrete" => $request->grade_of_concrete,
-                "theoretical" => $request->theoretical,
-                "actual" => $request->actual,
-                "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result,
-                "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result,
-                "remarks" => $request->remarks,
-            ];
-
-           
-        
-            if (!empty($request->file_name)) {
-                $filenameWithExt1 = $request->file("file_name")->getClientOriginalName();
-                $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
-                $extension1 = $request->file("file_name")->getClientOriginalExtension();
-                $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
-
-                $dir = "uploads/concrete_pouring";
-
-                $image_path = $dir . $filenameWithExt1;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
-                }
-                $url = "";
-                $path = Utility::upload_file($request,"file_name",$fileNameToStore1,$dir,[]);
-
-                if ($path["flag"] == 1) {
-                    $url = $path["url"];
-            
-                } else {
-                    return redirect()->back()->with("error", __($path["msg"]));
-                }
-                
-            }else{
-                $check_file_name=DB::table('dairy')->select('file_name','file_path')->where('id',$request->edit_id)->where('project_id',$request->project_id)->first();
-                $fileNameToStore1=$check_file_name->file_name;
-                $url=$check_file_name->file_path;
-            }
-
-            $all_data = [
-                "file_name" => $fileNameToStore1,
-                "file_path" => $url,
-                "project_id" => Session::get('project_id'),
-                "user_id" => $user_id,
-                "diary_data" => json_encode($data),
-                "status" => 0,
-            ];
-
-
-            ConcretePouring::where('id',$request->edit_id)
-                            ->where('project_id',Session::get('project_id'))
-                            ->where('user_id', $user_id)
-                            ->update($all_data);
-
-            return redirect()->back()->with("success",__("diary updated successfully."));
-           
-
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function diary_display_table(Request $request)
-    {
-        try {
-            if ($request->dairy_id == 1) {
-
-                $project_id = $request->project_id;
-
-                $dairy_data = ConcretePouring::where('user_id',Auth::id())->where('project_id',$request->project_id)->orderBy('id', 'DESC')->get();
-
-                $returnHTML = view("diary.congret",compact("dairy_data", "project_id"))->render();
-
-            } elseif ($request->dairy_id == 2) {
-
-                $project_id = $request->project_id;
-
-                $dairy_data = ConsultantDirection::select(
-                    "consultant_directions.id",
-                    "consultant_directions.issued_by",
-                    "consultant_directions.issued_date",
-                    "consultant_directions.ad_ae_ref",
-                    "consultant_directions.ad_ae_decs",
-                    "consultant_directions.attach_file_name",
-                    "consultants_direction_multi.initiator_reference",
-                    "consultants_direction_multi.initiator_date")
-                ->leftJoin(
-                    "consultants_direction_multi","consultants_direction_multi.consultant_id","=","consultant_directions.id")
-                ->where("consultant_directions.project_id", $project_id)
-                ->where('consultant_directions.user_id',Auth::id())
-                ->orderBy('consultant_directions.id', 'DESC')
-                ->groupBy('consultant_directions.id')
-                ->get();
-
-                $returnHTML = view("diary.show_consultant_direction",compact("project_id", "dairy_data"))->render();
-
-            }else if($request->dairy_id == 10){
-                $project_id = $request->project_id;
-                $dairy_data = ProjectSpecification::where('user_id',Auth::id())->where('project_id',$request->project_id)->orderBy('id', 'DESC')->get();
-                $returnHTML = view("diary.show_project_specification",compact("project_id","dairy_data"))->render();
-            }else if($request->dairy_id == 12){
-                $project_id = $request->project_id;
-                $dairy_data = RFIStatusSave::where('user_id',Auth::id())->where('project_id',$request->project_id)->orderBy('rfi_status_save.id', 'DESC')->groupBy('rfi_status_save.id')->get();
-                $returnHTML = view("diary.show_rfs",compact("project_id","dairy_data"))->render();
-            }else if($request->dairy_id == 13){
-                $project_id = $request->project_id;
-                $dairy_data = DB::table('variation_scope')->where('user_id',Auth::id())->where('project_id',$request->project_id)->orderBy('id', 'DESC')->get();
-                $returnHTML = view("diary.show_vo_change",compact("project_id","dairy_data"))->render();
-            }
-            else {
-                $project_id = $request->project_id;
-                $dairy_data = ConcretePouring::where('user_id',Auth::id())->where('project_id',$request->project_id)->orderBy('id', 'DESC')->get();
-                $returnHTML = view("diary.show_consultant_direction",compact("dairy_data", "project_id"))->render();
-            }
-            return response()->json([
-                "success" => true,
-                "html" => $returnHTML,
-            ]);
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    
+   
     public function delete_consultant_direction(Request $request)
     {
         try {
@@ -2320,6 +2041,49 @@ class DiaryController extends Controller
             return $e->getMessage();
         }
 
+    }
+
+    public function diary_download_file(Request $request){
+        $id = $request->id;
+        $ducumentUpload = ProjectSpecification::find($id);
+        $documentPath=\App\Models\Utility::get_file('uploads/project_direction_summary');
+
+        $ducumentUpload = ProjectSpecification::find($id);
+        if($ducumentUpload != null)
+        {
+            $file_path = $documentPath . '/' . $ducumentUpload->attachment_file_name ;
+            $filename  = $ducumentUpload->attachment_file_name;
+
+            return \Response::download($file_path, $filename, ['Content-Length: ' . $file_path]);
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('File is not exist.'));
+        }
+    }
+
+    public function vo_change_download_file(Request $request){
+
+ 
+        $id = 5;
+        $ducumentUpload = Vochange::find($id);
+
+        $documentPath=\App\Models\Utility::get_file('uploads/variation_scope');
+       
+        $ducumentUpload = Vochange::find($id);
+        if($ducumentUpload != null)
+        {
+            $file_path = $documentPath . '/' .$ducumentUpload->attachment_file;
+        
+            $filename  = $ducumentUpload->attachment_file;
+            // return \Response::download($file_path);
+            return \Response::download($file_path, $filename, ['Content-Length: ' . $file_path]);
+            // return \Response::download($file_path, ['Content-Length: ' . $file_path]);
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('File is not exist.'));
+        }
     }
     
 }

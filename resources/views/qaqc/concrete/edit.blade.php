@@ -2,6 +2,15 @@
   .form-check {
     margin: 8px 12px !important;
   }
+  .disable{
+    background-color: unset !important;
+    color:black !important;
+    font-weight:bold;
+  }
+  #contrete_file{
+    height: 23px;
+    width: 10%;
+  }
 </style>
 <div class="modal-body">
   <div class="row">
@@ -47,18 +56,7 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputDate">{{__('Date of Casting')}} <span style='color:red;'>*</span></label>
-              <select name="grade_of_concrete" class="form-control" id="grade_of_concrete">
-                <option value="">{{__('Select Date of Casting')}}</option>
-                <option value="M10" @if( 'M10'==$dairy_data->date_of_casting){ selected }@endif>M10</option>
-                <option value="M15" @if( 'M15'==$dairy_data->date_of_casting){ selected }@endif>M15</option>
-                <option value="M20" @if( 'M20'==$dairy_data->date_of_casting){ selected }@endif>M20</option>
-                <option value="M25" @if( 'M25'==$dairy_data->date_of_casting){ selected }@endif>M25</option>
-                <option value="M30" @if( 'M30'==$dairy_data->date_of_casting){ selected }@endif>M30</option>
-                <option value="M35" @if( 'M35'==$dairy_data->date_of_casting){ selected }@endif>M35</option>
-                <option value="M40" @if( 'M40'==$dairy_data->date_of_casting){ selected }@endif>M40</option>
-                <option value="M45" @if( 'M45'==$dairy_data->date_of_casting){ selected }@endif>M45</option>
-                <option value="M50" @if( 'M50'==$dairy_data->date_of_casting){ selected }@endif>M50</option>
-              </select>
+              <input name="date_of_casting" id="date_of_casting" required type="date" value="@if($id!='' && $dairy_data->date_of_casting!=''){{$dairy_data->date_of_casting}}@endif"  class="form-control" placeholder="Enter your Date of Casting" />
               </div>
           </div>
           <div class="col-6 mb-3">
@@ -70,7 +68,18 @@
           <div class="col-md-12 mb-3">
             <div class="form-group">
               <label for="InputGrade">{{__('Grade of Concrete')}} <span style='color:red;'>*</span></label>
-              <input name="grade_of_concrete" value="@if($id!='' && $dairy_data->grade_of_concrete!=''){{$dairy_data->grade_of_concrete}}@endif" required type="text" id="grade_of_concrete" class="form-control" placeholder="Enter your Grade of Concrete" />
+              <select name="grade_of_concrete" class="form-control" id="grade_of_concrete" required>
+                <option value="">{{__('Select Date of Casting')}}</option>
+                <option value="M10" @if( 'M10'==$dairy_data->grade_of_concrete){ selected }@endif>M10</option>
+                <option value="M15" @if( 'M15'==$dairy_data->grade_of_concrete){ selected }@endif>M15</option>
+                <option value="M20" @if( 'M20'==$dairy_data->grade_of_concrete){ selected }@endif>M20</option>
+                <option value="M25" @if( 'M25'==$dairy_data->grade_of_concrete){ selected }@endif>M25</option>
+                <option value="M30" @if( 'M30'==$dairy_data->grade_of_concrete){ selected }@endif>M30</option>
+                <option value="M35" @if( 'M35'==$dairy_data->grade_of_concrete){ selected }@endif>M35</option>
+                <option value="M40" @if( 'M40'==$dairy_data->grade_of_concrete){ selected }@endif>M40</option>
+                <option value="M45" @if( 'M45'==$dairy_data->grade_of_concrete){ selected }@endif>M45</option>
+                <option value="M50" @if( 'M50'==$dairy_data->grade_of_concrete){ selected }@endif>M50</option>
+              </select>
             </div>
           </div>
           <label style="text-align: center; font-weight: 700">{{__('Poured')}}</label>
@@ -93,10 +102,17 @@
               <input name="testing_fall"  type="hidden" class="form-control" id="testing_fall"  value="@if($id!='' && $dairy_data->testing_fall!=''){{$dairy_data->testing_fall}}@endif" />
             </div>
           </div>
-          <div class="col-6 mb-3">
+          <div class="col-5  mb-3">
             <div class="form-group">
               <label for="InputAverage">{{__('Total Result (Average)')}}</label>
-              <input name="total_result" value="@if($id!='' && $dairy_data->total_result!=''){{$dairy_data->total_result}}@endif"  type="text" id="total_result" class="form-control" placeholder="Enter your Total Result (Average)" />
+              <input name="" value="@if($id!='' && $dairy_data->total_result!='') {{rtrim(str_replace('N/mm2','', $dairy_data->total_result))}} @endif"  type="text" id="total_result" class="form-control total_result" disabled placeholder="Enter your Total Result (Average)" />
+              <input name="total_result" value="@if($id!='' && $dairy_data->total_result!='') {{rtrim(str_replace('N/mm2','', $dairy_data->total_result))}} @endif"  type="hidden" id="total_result_back" class="form-control total_result"  />
+            </div>
+          </div>
+          <div class="col-1 mb-3">
+            <div class="form-group">
+              <label for="Inputdays"></label>
+              <input disabled id=""  type="text"class="form-control disable" placeholder="{{__('N/mm2')}}" />
             </div>
           </div>
           <div class="col-6 mb-3">
@@ -106,10 +122,17 @@
               <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif"  />
             </div>
           </div>
-          <div class="col-6 mb-3">
+          <div class="col-5 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Result (Average)')}}</label>
-              <input name="days_testing_result" value="@if($id!='' && $dairy_data->days_testing_result!=''){{$dairy_data->days_testing_result}}@endif"  type="text" id="days_testing_result" class="form-control" placeholder="Enter your 28 days Result (Average)" />
+              <input name="" value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif"  type="text" id="days_testing_result" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+              <input name="days_testing_result"  value=""  type="hidden"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif" id="days_testing_result_back" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+            </div>
+          </div>
+          <div class="col-1 mb-3">
+            <div class="form-group">
+              <label for="Inputdays"></label>
+              <input disabled id=""  type="text"class="form-control disable" placeholder="{{__('N/mm2')}}" />
             </div>
           </div>
           <div class="col-md-12 mb-3">
@@ -118,11 +141,21 @@
               <textarea name="remarks"  id="remarks" type="text" class="form-control" placeholder="Enter your Remarks">@if($id!='' && $dairy_data->remarks!=''){{$dairy_data->remarks}}@endif</textarea>
             </div>
           </div>
-          <div class="col-md-12 mb-3">
-            <label for="InputRemarks">{{__('Attachment')}}</label>
-            <input name="file_name"  type="file" id="file_name" class="form-control"  />
-            <span>{{$get_dairy_data->file_name ?? ''}}</span>
-      
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="input">{{__('Attachments')}}<span style='color:red;'>*</span></label>
+              <input name="file_name"  type="file" id="file_name" class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" />
+              <span>{{$get_dairy_data->file_name ?? ''}}</span>
+               {{-- @php 
+                  $documentPath=\App\Models\Utility::get_file('uploads/concrete_pouring'); 
+               @endphp
+              <br>
+              <table>
+                <tr>
+                  <td>{{$get_dairy_data->file_name ?? ''}} <a id="contrete_file" class="btn btn-primary" download href="{{ $documentPath . '/' . $get_dairy_data->file_name }}"> <i class="ti ti-download text-white"></i> </a></td>
+                </tr>
+              </table> --}}
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -135,62 +168,68 @@
 </div>
 
 <script>
+
+$(document).ready(function() {
+  $("#total_result").removeAttr("disabled");
+  $("#days_testing_result").removeAttr("disabled");
+});
+
 $(document).on("change", '#actual', function() {
 
-var selectedDate = this.value;
-var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
-var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
-var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
-var twenty = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
+  var selectedDate = this.value;
+  var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
+  var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
+  var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
+  var twenty = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
+  var twentyEigth = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
 
-$("#testing_fall_on").val(seventhDate);
-$("#testing_fall").val(seventhDate);
-$("#days_testing_falls_on").val(twentyEigthData);
-$("#days_testing_falls").val(twentyEigthData);
-$("#total_result").val(seventh);
-var dt = new Date();
+  $("#testing_fall_on").val(seventhDate);
+  $("#testing_fall").val(seventhDate);
+  $("#days_testing_falls_on").val(twentyEigthData);
+  $("#days_testing_falls").val(twentyEigthData);
 
-year  = dt.getFullYear();
-month = (dt.getMonth() + 1).toString().padStart(2, "0");
-day   = dt.getDate().toString().padStart(2, "0");
+  var dt = new Date();
 
-var currentDate= day + '-' + month + '-' + year;
+  year  = dt.getFullYear();
+  month = (dt.getMonth() + 1).toString().padStart(2, "0");
+  day   = dt.getDate().toString().padStart(2, "0");
 
-if(currentDate===seventh){
-  $("#testing_fall_on").prop('required',true);
-}else{
-  $("#testing_fall_on").prop('required',false);
-}
+  var currentDate= day + '-' + month + '-' + year;
+  if(currentDate===seventh){
+      $("#total_result").removeAttr("disabled");
+  }else{
+      $("#total_result").attr("disabled", "disabled");
+  }
 
-if(currentDate===twenty){
-  $("#days_testing_falls_on").prop('required',true);
-}else{
-  $("#days_testing_falls_on").prop('required',false);
-}
-
-if(currentDate===twenty){
-  $("#total_result").prop('required',true);
-}else{
-  $("#total_result").prop('required',false);
-}
-
-if(currentDate===twenty){
-  $("#days_testing_result").prop('required',true);
-}else{
-  $("#days_testing_result").prop('required',false);
-}
+  if(currentDate===twentyEigth){
+    $("#days_testing_result").removeAttr("disabled");
+  }else{
+    $("#days_testing_result").attr("disabled", "disabled");
+  }
 
 });
 
-$("#concreteFile").dropzone({
-url: "/file/post"
+$(document).on("keyup", '#days_testing_result', function() {
+  var copy_val= $('#days_testing_result').val();
+  $('#days_testing_result_back').val(copy_val);
 });
 
-$(".chosen-select").chosen({
-    disable_search_threshold: 10,
-    no_results_text: "Oops, nothing found!",
-    width: "95%"
+$(document).on("keyup", '#total_result', function() {
+  var copy_value= $('#total_result').val();
+  $('#total_result_back').val(copy_value);
 });
-$('#employee').trigger("chosen:updated");
+
+
+</script>
+<script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
+<script>
+$('.total_result,.days_testing_result').alphanum({
+			allow              : '',    // Allow extra characters
+			allowUpper         : false,  // Allow upper case characters
+			allowLower         : false,  // Allow lower case characters
+			forceUpper         : false, // Convert lower case characters to upper case
+			forceLower         : false, // Convert upper case characters to lower case
+			allowLatin         : false,  
+});
 </script>
 

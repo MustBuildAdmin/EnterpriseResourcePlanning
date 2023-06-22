@@ -45,7 +45,7 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Input">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-              <input type="date" value="@if($id!='' && $dairy_data->issued_date!=''){{$dairy_data->issued_date}}@endif" name="issued_date" class="form-control" placeholder="Text input" required>
+              <input max="{{ date('Y-m-d') }}" type="date" value="@if($id!='' && $dairy_data->issued_date!=''){{$dairy_data->issued_date}}@endif" name="issued_date" class="form-control" placeholder="Text input" required>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Input">{{__('Date')}}</label>
-                <input name="vo_date" value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif" type="date" class="form-control" placeholder="Text input" >
+                <input max="{{ date('Y-m-d') }}" name="vo_date" value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif" type="date" class="form-control" placeholder="Text input" >
               </div>
             </div>
           </div>
