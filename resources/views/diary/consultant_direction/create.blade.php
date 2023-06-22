@@ -50,7 +50,7 @@
               </div>
               <div class="col-md-12 mt-3">
                 <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-                <input name="attach_file_name" required type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
+                <input name="attach_file_name"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
               </div>
             </div>
           </div>
