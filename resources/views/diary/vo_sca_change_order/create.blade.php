@@ -30,7 +30,7 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Input">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-              <input type="date" name="issued_date" class="form-control" placeholder="Text input" required>
+              <input type="date" name="issued_date"  max="{{ date('Y-m-d') }}" class="form-control" placeholder="Text input"  required>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Input">{{__('Date')}}</label>
-                <input name="vo_date" type="date" class="form-control" placeholder="Text input">
+                <input name="vo_date" max="{{ date('Y-m-d') }}" type="date" class="form-control" placeholder="Text input">
               </div>
             </div>
           </div>
@@ -80,7 +80,8 @@
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" type="text" class="form-control claimed_net_amount" >
+              <input name="" placeholder="{{__('Net Amount')}}" type="text" class="form-control claimed_net" disabled>
+              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" type="hidden" class="form-control claimed_net_amount" >
             </div>
           </div>
         </div>
@@ -99,7 +100,8 @@
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" type="text" class="form-control approved_net_cost" >
+              <input name="" placeholder="{{__('Net Amount')}}" type="text" class="form-control approved_net" disabled>
+              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" type="hidden" class="form-control approved_net_cost" >
             </div>
           </div>
         </div>
@@ -170,5 +172,4 @@ $('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			forceLower         : false, // Convert upper case characters to lower case
 			allowLatin         : false,  
 });
-
 </script>

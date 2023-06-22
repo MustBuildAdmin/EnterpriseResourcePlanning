@@ -53,13 +53,20 @@ h3, .h3 {
   <div class="col-md-6">
      <h2>{{__('RFI-Request For Information Status')}}</h2> 
   </div>
-    <div class="col-md-6 float-end floatrght">
-        @can('create RFI')
-            <a class="floatrght btn btn-primary mb-3" href="#" data-size="xl" data-url="{{ route('rfi_info_status',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create RFI')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
-                <i class="ti ti-plus"></i>
+   
+    @can('create RFI')
+    <div class="col-auto ms-auto d-print-none">
+        <div class="input-group-btn">
+            <a href="#" data-size="xl" data-url="{{ route('rfi_info_status',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create RFI')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
+                <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
             </a>
-        @endcan
+            <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+            </a>
+        </div>
     </div>
+    @endcan
+  
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
     

@@ -90,13 +90,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Target Delivery Date')}} <span style='color:red;'>*</span></label>
-							<input type="date" value="{{$data->target_delivery_date}}"  name="target_delivery_date" class="form-control" placeholder="{{__('Target Delivery Date')}}" required>
+							<input type="date" min="{{ date('Y-m-d', strtotime("+1 day")) }}" value="{{$data->target_delivery_date}}"  name="target_delivery_date" class="form-control" placeholder="{{__('Target Delivery Date')}}" required>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Target Date of Approval')}} <span style='color:red;'>*</span></label>
-							<input type="date" value="{{$data->target_approval_date}}" name="target_approval_date" class="form-control" placeholder="{{__('Target Date of Approval')}}" required>
+							<input type="date" min="{{ date('Y-m-d', strtotime("+1 day")) }}" value="{{$data->target_approval_date}}" name="target_approval_date" class="form-control" placeholder="{{__('Target Date of Approval')}}" required>
 						</div>
 					</div>
 				</div>
@@ -111,7 +111,7 @@
 					<tr>
 						<td>
 							<h4 style="text-align: center;">{{__('Date Replied By Consultant:')}}</h4>
-							<div class="">
+							
 								<div class="row">
 									<div class="col-md-4">
 										<div class="form-group">
@@ -128,37 +128,35 @@
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('No of Submissions')}}</label>
-											<input type="text" name="no_of_submission[]"  value="{{$mutli_data['no_of_submission']}}" placeholder="{{__('No of Submissions')}}"  class="form-control number"> 
+											<input type="text" name=""  value="{{$mutli_data['no_of_submission']}}" placeholder="{{__('No of Submissions')}}"  class="form-control number" disabled> 
+											<input type="hidden" name="no_of_submission[]"  value="{{$mutli_data['no_of_submission']}}"   class="form-control number"> 
 										</div>
 									</div>
 								</div>
-							</div>
+							
 						</td>
 					</tr> 
 					@empty
 					<tr>
 						<td>
 							<h4 style="text-align: center;">{{__('Date Replied By Consultant:')}}</h4>
-							
-								<div class="">
-									<div class="row">
-										<div class="col-md-4">
-											<div class="form-group">
-												<label for="InputLIst">{{__('Submission Date')}}</label>
-												<input type="date" name="submission_date[]" class="form-control"> 
-											</div>
+								<div class="row">
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="InputLIst">{{__('Submission Date')}}</label>
+											<input type="date" name="submission_date[]" class="form-control"> 
 										</div>
-										<div class="col-md-4">
-											<div class="form-group">
-												<label for="input">{{__('Actual Reply Date')}}</label>
-												<input type="date" name="actual_reply_date[]" class="form-control"> 
-											</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="input">{{__('Actual Reply Date')}}</label>
+											<input type="date" name="actual_reply_date[]" class="form-control"> 
 										</div>
-										<div class="col-md-4">
-											<div class="form-group">
-												<label for="input">{{__('No of Submissions')}}</label>
-												<input type="text" name="no_of_submission[]" class="form-control number"> 
-											</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label for="input">{{__('No of Submissions')}}</label>
+											<input type="text" name="no_of_submission[]" class="form-control number"> 
 										</div>
 									</div>
 								</div>

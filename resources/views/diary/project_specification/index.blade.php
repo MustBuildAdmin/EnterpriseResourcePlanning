@@ -50,10 +50,15 @@ h3, .h3 {
      <h2>{{__('Project Specifications Summary')}}</h2> 
   </div>
 @can('create directions')
-<div class="col-md-6 float-end floatrght">
-    <a href="#" data-size="xl" data-url="{{ route('add_project_specification',["project_id"=>$project_id]) }}"  data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
-    <i class="ti ti-plus"></i>
-    </a>
+<div class="col-auto ms-auto d-print-none">
+  <div class="input-group-btn">
+      <a href="#" data-size="xl" data-url="{{ route('add_project_specification',["project_id"=>$project_id]) }}"  data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
+          <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
+      </a>
+      <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+        <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+      </a>
+  </div>
 </div>
 @endcan
 <div class="col-xl-12 mt-3">
@@ -156,6 +161,8 @@ h3, .h3 {
                       extend: 'pdfHtml5',
                       title: 'Project Specifications Summary',
                       titleAttr: 'PDF',
+                      pagesize: 'A3',
+                      orientation: 'landscape',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
