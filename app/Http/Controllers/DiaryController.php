@@ -1204,7 +1204,7 @@ class DiaryController extends Controller
                 }
 
                 $project_id = Session::get('project_id');
-                $dairy_data = DB::table('variation_scope')->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->orderBy('id', 'DESC')->get();
+                $dairy_data = DB::table('variation_scope')->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->orderBy('id', 'ASC')->get();
                 return view("diary.vo_sca_change_order.index",compact("project_id","dairy_data"));
 
             }else{
