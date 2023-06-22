@@ -413,6 +413,8 @@ $holidays=implode(':',$holidays);
             gantt.config.duration_unit = "day";
             gantt.config.row_height = 30;
             gantt.config.min_column_width = 40;
+            gantt.config.autosize = "xy";
+
 
                 // weekdays appending
                 var weekend_list=$('#weekends').val();
