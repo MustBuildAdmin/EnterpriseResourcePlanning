@@ -189,6 +189,27 @@ $(document).on("keyup", '#total_result', function() {
   $('#total_result_back').val(copy_value);
 });
 
+$(document).on("change", '#month_year', function() {
+
+var month=$('#month_year').val();
+// $('#date_of_casting').val("");
+var datee = new Date(month+'-01');
+
+var get_month = month.slice(5);
+var get_year  = month.slice(0,-3);
+
+var date = new Date(), y = datee.getFullYear(), m = datee.getMonth();
+var firstDay = new Date(y, m, 1);
+var lastDay = new Date(y, m + 1, 0);
+var firstDayvalue=moment(firstDay).format("YYYY-MM-DD");
+var lastDayvalue=moment(lastDay).format("YYYY-MM-DD");
+$('#date_of_casting').attr("min",firstDayvalue);
+$('#date_of_casting').attr("max",lastDayvalue);
+$('#date_of_casting').val(firstDayvalue);
+
+});
+
+
 
 </script>
 <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
