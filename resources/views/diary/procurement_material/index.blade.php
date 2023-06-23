@@ -50,13 +50,20 @@ h3, .h3 {
   <div class="col-md-6">
      <h2>{{__('Procurement Material Supply Log')}}</h2> 
   </div>
-    <div class="col-md-6 float-end floatrght">
+ 
         @can('create procurement material')
-            <a class="floatrght btn btn-primary mb-3" href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-sm btn-primary">
-                <i class="ti ti-plus"></i>
-            </a>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="input-group-btn">
+                <a href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
+                    <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
+                </a>
+                <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                  <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+                </a>
+            </div>
+        </div>    
         @endcan
-    </div>
+  
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
     
@@ -139,10 +146,39 @@ h3, .h3 {
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var j = 0;
+        var j = 1;
         $(document).on("click", "#dynamic-procurement", function () {
             ++j;
-            $("#dynamicprocurement").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-4"><div class="form-group"><label for="InputLIst">Submission Date :</label><input type="date" name="submission_date[]" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">Actual Reply Date :</label><input type="date" name="actual_reply_date[]" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">No of Submissions</label><input type="text" name="no_of_submission[]" placeholder="No of Submissions" class="form-control number" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button></div></div></td></tr>');
+            $("#dynamicprocurement").append('<tr>'+
+                '<td>'+
+                    '<h4 style="text-align: center;">Date Replied By Consultant :</h4>'+
+                    '<div class="row">'+
+                        '<div class="col-md-4">'+
+                            '<div class="form-group">'+
+                                '<label for="InputLIst">Submission Date :</label>'+
+                                '<input type="date" name="submission_date[]" class="form-control" value="">'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-md-4">'+
+                            '<div class="form-group">'+
+                                '<label for="input">Actual Reply Date :</label>'+
+                                '<input type="date" name="actual_reply_date[]" class="form-control" value="">'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-4">'+
+                                '<div class="form-group">'+
+                                    '<label for="input">No of Submissions</label>'+
+                                    '<input type="text" name="" placeholder="No of Submissions" class="form-control number" value="'+j+'" disabled>'+
+                                    '<input type="hidden" name="no_of_submission[]" placeholder="No of Submissions" class="form-control number" value="'+j+'">'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-md-3 pull-right">'+
+                            '<button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button>'+
+                        '</div>'+
+                    '</div>'+
+                '</td>'+
+            '</tr>');
         });
         $(document).on('click', '#removedynamicprocurement', function () {
             $(this).parents('tr').remove();

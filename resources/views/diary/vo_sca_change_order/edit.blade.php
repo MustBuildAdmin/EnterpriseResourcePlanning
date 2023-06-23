@@ -45,7 +45,7 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Input">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-              <input type="date" value="@if($id!='' && $dairy_data->issued_date!=''){{$dairy_data->issued_date}}@endif" name="issued_date" class="form-control" placeholder="Text input" required>
+              <input max="{{ date('Y-m-d') }}" type="date" value="@if($id!='' && $dairy_data->issued_date!=''){{$dairy_data->issued_date}}@endif" name="issued_date" class="form-control" placeholder="Text input" required>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Input">{{__('Date')}}</label>
-                <input name="vo_date" value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif" type="date" class="form-control" placeholder="Text input" >
+                <input max="{{ date('Y-m-d') }}" name="vo_date" value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif" type="date" class="form-control" placeholder="Text input" >
               </div>
             </div>
           </div>
@@ -95,7 +95,8 @@
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="text" class="form-control claimed_net_amount" >
+              <input name="" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="text" class="form-control claimed_net" disabled>
+              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="hidden" class="form-control claimed_net_amount" >
             </div>
           </div>
         </div>
@@ -114,7 +115,8 @@
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="text" class="form-control approved_net_cost" >
+              <input name="" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="text" class="form-control approved_net" disabled>
+              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="hidden" class="form-control approved_net_cost" >
             </div>
           </div>
         </div>
@@ -153,7 +155,7 @@
         <div class="col-xs-6">
           <div class="form-group">
             <label for="InputATTACHMENTS:">{{__('Attachments)')}}</label>
-            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input">
+            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg ,pdf">
             <span>{{$get_dairy_data->attachment_file}}</span>
           </div>
         </div>
@@ -161,13 +163,20 @@
       <div class="col-xs-9"></div>
       <div class="modal-footer">
         <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-        <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
+        <input type="submit" id="edit_vo_change" value="{{__('Update')}}" class="btn  btn-primary">
       </div>
     </form>
   </div>
 </div>
 <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
 <script>
+
+$(document).ready(function() {
+    $(document).on('submit', 'form', function() {
+        $('#edit_vo_change').attr('disabled', 'disabled');
+    });
+});
+
 $('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_net_cost').alphanum({
 			allow              : '(,),-',    // Allow extra characters
 			allowUpper         : false,  // Allow upper case characters
