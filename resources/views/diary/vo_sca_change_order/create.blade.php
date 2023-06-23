@@ -147,7 +147,7 @@
       <div class="col-xs-9"></div>
       <div class="modal-footer">
         <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-        <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+        <input type="submit" id="vo_change" value="{{__('Create')}}" class="btn  btn-primary">
       </div>
     </form>
   </div>
@@ -155,6 +155,13 @@
 
 <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
 <script>
+
+$(document).ready(function() {
+    $(document).on('submit', 'form', function() {
+        $('#vo_change').attr('disabled', 'disabled');
+    });
+});
+
 $('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_net_cost').alphanum({
 			allow              : '(,),-',    // Allow extra characters
 			allowUpper         : false,  // Allow upper case characters
@@ -172,4 +179,5 @@ $('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			forceLower         : false, // Convert upper case characters to lower case
 			allowLatin         : false,  
 });
+
 </script>

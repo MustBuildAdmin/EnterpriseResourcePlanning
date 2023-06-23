@@ -114,7 +114,7 @@
             <div class="row">
               <div class="modal-footer">
                 <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-                <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
+                <input type="submit" id="update_directions" value="{{__('Update')}}" class="btn  btn-primary">
               </div>
             </div>
           </form>
@@ -124,6 +124,11 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
+
+    $(document).on('submit', 'form', function() {
+          $('#update_directions').attr('disabled', 'disabled');
+    });
+
     var i = 0;
     $("#edit_data").on('click', '#dynamic-ar', function () {
         ++i;

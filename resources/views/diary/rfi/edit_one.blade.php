@@ -49,7 +49,10 @@
 							<label for="InputLIst">{{__('Consultant No.')}}{{$con_row}} @if($loop->iteration==1) <span style='color:red;'>*</span> @endif</label>
 							<input type="text" name="data[{{$conkey}}]" class="form-control {{$conkey}}" value="{{$con}}" placeholder="{{__('Consultant No.')}} {{$con_row}}" @if($loop->iteration==1) required @endif/> 
                         </div>
-					</div> @php $con_row++; @endphp @empty @endforelse
+					</div> 
+                    @php $con_row++; @endphp 
+                    @empty 
+                    @endforelse
 					<div class="col-md-3 pull-right">
 						<button class="btn btn-primary" type="button" id="dynamic-procure">{{__('Add Consultant')}}</button>
 					</div>
@@ -65,7 +68,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Requested Date')}}</label>
-							<input type="date" name="requested_date" value="{{$get_dairy->requested_date  ?? ''}}" class="form-control" placeholder="{{__('Referene')}}" /> 
+							<input type="date" name="requested_date" value="" class="form-control" placeholder="{{__('Referene')}}" /> 
                         </div>
 					</div>
 				</div>
@@ -73,7 +76,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Required Date')}}</label>
-							<input type="date" name="required_date" value="{{$get_dairy->required_date  ?? ''}}" class="form-control" placeholder="{{__('RFI Reference No')}}" /> 
+							<input type="date" name="required_date" value="" class="form-control" placeholder="{{__('RFI Reference No')}}" /> 
                         </div>
 					</div>
 					<div class="col-md-6">
@@ -81,9 +84,9 @@
 							<label for="Input">{{__('Priority')}}</label>
 							<select name="priority" class="form-control">
 								<option value="">{{__('Select Priority')}}</option>
-								<option value="High" @if( 'High'==$get_dairy[ 'priority']){ selected }@endif>{{__('High')}}</option>
-								<option value="Normal" @if( 'Normal'==$get_dairy[ 'priority']){ selected }@endif>{{__('Normal')}}</option>
-								<option value="Unknown" @if( 'Unknown'==$get_dairy[ 'priority']){ selected }@endif>{{__('Unknown')}}</option>
+								<option value="High">{{__('High')}}</option>
+								<option value="Normal">{{__('Normal')}}</option>
+								<option value="Unknown">{{__('Unknown')}}</option>
 							</select>
 						</div>
 					</div>
@@ -94,8 +97,8 @@
 							<label for="Input">{{__('Cost Impact')}}</label>
 							<select name="cost_impact" class="form-control">
 								<option value="">{{__('Select Cost Impact')}}</option>
-								<option value="Yes" @if( 'Yes'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('Yes')}}</option>
-								<option value="No" @if( 'No'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('No')}}</option>
+								<option value="Yes">{{__('Yes')}}</option>
+								<option value="No">{{__('No')}}</option>
 							</select>
 						</div>
 					</div>
@@ -104,8 +107,8 @@
 							<label for="Input">{{__('Time impact')}}</label>
 							<select name="time_impact" class="form-control">
 								<option value="">{{__('Select Time impact')}}</option>
-								<option value="Yes" @if( 'Yes'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('Yes')}}</option>
-								<option value="No" @if( 'No'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('No')}}</option>
+								<option value="Yes">{{__('Yes')}}</option>
+								<option value="No">{{__('No')}}</option>
 							</select>
 						</div>
 					</div>
@@ -114,7 +117,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label for="Input">{{__('Description')}}</label>
-							<textarea name="description" class="form-control" row="3" placeholder="{{__('Description')}}">{{$get_dairy->description ?? ''}}</textarea>
+							<textarea name="description" class="form-control" row="3" placeholder="{{__('Description')}}"></textarea>
 						</div>
 					</div>
 				</div>
@@ -125,7 +128,7 @@
 							<select name="select_the_consultants[]" id="choices-multiple1" class='chosen-select' required multiple>
 								<option value="" disabled>{{__('Select the Consultants')}}</option> 
                                 @foreach ($consulatant_data as $conkey =>$con)
-								<option @if(str_contains($get_dairy->select_the_consultants,$con)) selected @endif value="{{$con}}">{{$con}}</option> 
+								<option value="{{$con}}">{{$con}}</option> 
                                 @endforeach 
                             </select>
 						</div>
@@ -134,12 +137,10 @@
 						<div class="form-group">
 							<label for="Input">{{__('Attachments')}}</label>
 							<input type="file" id="attachment_one" name="attachment_one" class="form-control">
-							<div>{{$get_dairy->attachment_one}}</div>
 						</div>
 					</div>
 				</div> 
                 @php $key_count=1; @endphp 
-                @foreach ($get_content as $key => $mutli_data)
 				<h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
 				<hr>
 				<div class="row">
@@ -149,7 +150,7 @@
 							<select name="name_of_consulatant{{$key_count}}[]" id="choices-multiple2" class="chosen-select" required multiple>
 								<option value="" disabled>{{__('Select Name of Consultant')}}</option> 
                                 @foreach ($consulatant_data as $con =>$co)
-								<option @if(str_contains($mutli_data->name_of_consultant ?? '',$co)) selected @endif value="{{$co}}">{{$co}}</option> 
+								<option value="{{$co}}">{{$co}}</option> 
                                 @endforeach 
                             </select>
 						</div>
@@ -157,12 +158,12 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="Input">{{__('Replied Date')}}</label>
-							<input type="date" name="replied_date{{$key_count}}" class="form-control" value="{{$get_sub_table->replied_date ?? ''}}" /> 
+							<input type="date" name="replied_date{{$key_count}}" class="form-control" /> 
                         </div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
-							<label for="Input">{{__('Status')}}</label> @if($get_sub_table==null)
+							<label for="Input">{{__('Status')}}</label> 
 							<select name="status{{$key_count}}" class="form-control">
 								<option value="">{{__('Select Status')}}</option>
 								<option value="Clear">{{__('Clear')}}</option>
@@ -170,16 +171,7 @@
 								<option value="Pending">{{__('Pending')}}</option>
 								<option value="Rejected">{{__('Rejected')}}</option>
 								<option value="Withdrawn">{{__('Withdrawn')}}</option>
-							</select> @else
-							<select name="status{{$key_count}}" class="form-control">
-								<option value="">{{__('Select Status')}}</option>
-								<option value="Clear" @if( 'Clear'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Clear')}}</option>
-								<option value="Close" @if( 'Close'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Close')}}</option>
-								<option value="Pending" @if( 'Pending'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Pending')}}</option>
-								<option value="Rejected" @if( 'Rejected'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Rejected')}}</option>
-								<option value="Withdrawn" @if( 'Withdrawn'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Withdrawn')}}</option>
-							</select> 
-                            @endif 
+							</select>
                         </div>
 					</div>
 				</div>
@@ -187,21 +179,17 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Remarks')}}</label>
-							<textarea name="remarks{{$key_count}}" class="form-control">{{$mutli_data->remarks ?? ''}}</textarea>
+							<textarea name="remarks{{$key_count}}" class="form-control"></textarea>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Attachments')}}</label>
-							<input type="file" name="attachments_two{{$key_count}}" class="form-control"> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
+							<input type="file" name="attachments_two{{$key_count}}" class="form-control"> 
                         </div>
 					</div>
 				</div> 
-                @php $key_count++; @endphp
-				<br>
-				<br> 
               
-				</div> @endforeach
 				<div class="row">
 					<table class="table" id="dynamic_add_rfi">
 						<tr id="rfi_create">

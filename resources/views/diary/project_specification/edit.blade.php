@@ -75,9 +75,16 @@
         <div class="col-xs-3">
             <div class="modal-footer">
                 <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-                <input type="submit" value="{{__('Update')}}" class="btn  btn-primary"> 
+                <input type="submit" id="edit_project" value="{{__('Update')}}" class="btn  btn-primary"> 
             </div>
         </div>
       </form>
     </div>
   </div>
+<script>
+    $(document).ready(function() {
+        $(document).on('submit', 'form', function() {
+            $('#edit_project').attr('disabled', 'disabled');
+        });
+    });
+</script>

@@ -118,10 +118,17 @@
           <div class="row">
             <div class="modal-footer">
               <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-              <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+              <input type="submit" value="{{__('Create')}}" id="add_directions" class="btn  btn-primary">
             </div>
           </div>
       </form>
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function() {
+      $(document).on('submit', 'form', function() {
+          $('#add_directions').attr('disabled', 'disabled');
+      });
+  });
+</script>
