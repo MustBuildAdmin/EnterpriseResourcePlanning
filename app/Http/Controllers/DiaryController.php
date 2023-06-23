@@ -643,13 +643,10 @@ class DiaryController extends Controller
 
                 $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->get();
 
-                if($get_content==null){
+                
                    
-                    return view('diary.rfi.edit_one',compact('get_dairy','project','project_id'));
-                }else{
-                   
-                    return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
-                }
+                return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
+            
               
             
             }else{
