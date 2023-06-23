@@ -80,12 +80,6 @@ Route::get(
 );
 
 
-
-
-
-
-
-
 Route::get('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
     [
         'auth',

@@ -126,7 +126,7 @@
         </div>
         <div class="modal-footer">
           <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-          <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+          <input type="submit" id="create_concrete" value="{{__('Create')}}" class="btn  btn-primary">
         </div>
       </form>
     </div>
@@ -138,6 +138,9 @@
 $(document).ready(function() {
   $("#total_result").removeAttr("disabled");
   $("#days_testing_result").removeAttr("disabled");
+  $(document).on('submit', 'form', function() {
+        $('#create_concrete').attr('disabled', 'disabled');
+  });
 });
 
 $(document).on("change", '#actual', function() {

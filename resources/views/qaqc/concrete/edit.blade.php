@@ -160,7 +160,7 @@
         </div>
         <div class="modal-footer">
           <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-          <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
+          <input type="submit" id="edit_concrete" value="{{__('Update')}}" class="btn  btn-primary">
         </div>
       </form>
     </div>
@@ -170,6 +170,9 @@
 <script>
 
 $(document).ready(function() {
+  $(document).on('submit', 'form', function() {
+    $('#edit_concrete').attr('disabled', 'disabled');
+  });
   $("#total_result").removeAttr("disabled");
   $("#days_testing_result").removeAttr("disabled");
 });

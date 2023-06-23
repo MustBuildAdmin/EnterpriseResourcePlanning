@@ -170,6 +170,9 @@
 
 <script>
 	$(document).ready(function(){
+		$(document).on('submit', 'form', function() {
+            $('#create_procurement').attr('disabled', 'disabled');
+        });
         $(document).on("keyup", '#email', function () {
             $.ajax({
                 url : '{{ route("check_duplicate_diary_email") }}',
