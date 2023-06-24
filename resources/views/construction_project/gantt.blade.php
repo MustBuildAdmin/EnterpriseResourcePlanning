@@ -241,6 +241,7 @@ $holidays=implode(':',$holidays);
 
                                         <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button>
                                         <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
+                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> --}}
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -478,18 +479,18 @@ $holidays=implode(':',$holidays);
 				editor: editors.end_date, resize: true
 			},
 
-			{
-				name: "place", label: "Place", width: 80, align: "center",
-				editor: editors.end_date, resize: true
-			},
-			{
-				name: "location", label: "Location", width: 80, align: "center",
-				editor: editors.end_date, resize: true
-			},
-			{
-				name: "material", label: "Material Qunatity", width: 110, align: "center",
-				editor: editors.end_date, resize: true
-			},
+			// {
+			// 	name: "place", label: "Place", width: 80, align: "center",
+			// 	editor: editors.end_date, resize: true
+			// },
+			// {
+			// 	name: "location", label: "Location", width: 80, align: "center",
+			// 	editor: editors.end_date, resize: true
+			// },
+			// {
+			// 	name: "material", label: "Material Qunatity", width: 110, align: "center",
+			// 	editor: editors.end_date, resize: true
+			// },
 			{
 				name: "predecessors", label: "Predecessors", width: 110, align: "left",
 				editor: editors.predecessors, resize: true, template: function (task) {
@@ -502,7 +503,7 @@ $holidays=implode(':',$holidays);
 					return labels.join(", ")
 				}
 			},
-			totalSlackColumn,
+			// totalSlackColumn,
 			freeSlackColumn,
 			{ name: "add" }
 		];
@@ -595,7 +596,6 @@ $holidays=implode(':',$holidays);
                 }
 
 
-
         //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
         var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
@@ -621,6 +621,4 @@ $holidays=implode(':',$holidays);
                 }
             };
         });
-
-
-    </script>
+</script>
