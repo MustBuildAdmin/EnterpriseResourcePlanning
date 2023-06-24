@@ -262,17 +262,18 @@
 							<input type="file" name="attachments_two1" class="form-control" value=""> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
                         </div>
 					</div>
-				</div> @endforelse
+				</div> 
+				@endforelse
+				<button class="btn btn-primary float-end" type="button" id="dynamic-rfi">{{__('Add More')}}</button>
+				<br><br>
 				<div class="row">
 					<table class="table" id="dynamic_add_rfi">
 						<tr id="rfi_create">
 					</table>
 				</div>
 				<input type="hidden" id="multi_total_count" name="multi_total_count" value="{{$key_count}}">
-				<div class="col-md-12 mt-3 float-end floatrght">
-					<button type="button" name="add" id="dynamic-rfi" class="btn btn-outline-primary">{{__('Add More')}}</button>
-				</div>
 			</div>
+			<br><br>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal" />
 				<input type="submit" value="{{__('Update')}}" class="btn btn-primary" /> </div>
@@ -317,7 +318,7 @@
                         '<td>'+
                             '<h4 style="text-align: center; font-weight: 700">Date Replied by the Consultants</h4><hr><div class="row">'+
                             '<div class="col-md-4"><div class="form-group"><label for="Input">Name of Consultant</label>'+
-                                '<select name="name_of_consulatant' + i + '[]"   class="chosen-select name_of_consulatant_' + i + '" multiple style="width: 343px;">'+
+                                '<select name="name_of_consulatant' + i + '[]"   class="chosen-select name_of_consulatant_' + i + '" multiple style="width: 309px;">'+
                                     '<option value="Select the Consultants" >Select the Consultants</option>"'+data+'"'+
                                 '</select>'+
                             '</div></div>'+
@@ -340,14 +341,11 @@
                             '<div class="col-md-6"><div class="form-group"><label for="Input">Attachments</label>'+
                                 '<input type="file" name="attachments_two' + i + '" class="form-control">'+
                             '</div></div></div>'+
-                            '<div class="col-md-12 mt-3">'+
-                                '<button type="button" class="btn btn-outline-danger remove-input-field">Delete</button>'+
-                            '</div>'+
+                                '<button class="btn btn-danger remove-input-field float-end" type="button" >Delete</button>'+
                         '</td>'+
                     '</tr>');
 
-                 
-
+            
                     setTimeout(function() {
                         $myid = $('.name_of_consulatant_' + i);
                         $myid.show().chosen();

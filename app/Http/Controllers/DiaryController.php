@@ -847,7 +847,7 @@ class DiaryController extends Controller
                 $user_id = \Auth::user()->id;
             }
 
-            $get_dairy=RFIStatusSave::where('project_id',Session::get('project_id'))->where('user_id',$user_id)->where('id',$request->id)->first();
+            $get_dairy=RFIStatusSave::where('project_id',Session::get('project_id'))->where('user_id',$user_id)->where('id',$request->id)->get();
             $decode=json_decode($get_dairy->consulatant_data);
             $html='';
 
