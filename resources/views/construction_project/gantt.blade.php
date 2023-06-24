@@ -31,6 +31,7 @@
         padding: 0px;
         margin: 0px;
         overflow: hidden;
+        background: #fff;
     }
 
     .status_line {
