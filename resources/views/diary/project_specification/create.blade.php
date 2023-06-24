@@ -52,7 +52,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="input">{{__('Attachments')}}</label>
-                <input type="file" class="form-control" name="attachment_file_name"  accept="image/*, .png, .jpeg, .jpg ,pdf">
+                <input type="file" class="form-control" name="attachment_file_name"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
               </div>
             </div>
           </div>

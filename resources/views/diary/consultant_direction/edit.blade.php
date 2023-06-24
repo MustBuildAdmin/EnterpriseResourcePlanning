@@ -50,7 +50,7 @@
                 </div>
                 <div class="col-md-12 mt-3">
                   <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-                  <input name="attach_file_name"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf"/>
+                  <input name="attach_file_name"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>
                   <span>{{$consult_dir->attach_file_name}}</span>
                 </div>
               </div>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="col-md-12 mt-3">
                       <label for="InputRemarks">{{__('Attachment')}}</label>
-                      <input name="initiator_file_name[]"  type="file" id="" class="form-control" multiple accept="image/*, .png, .jpeg, .jpg ,pdf"/>
+                      <input name="initiator_file_name[]"  type="file" id="" class="form-control" multiple accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>
                       <span>{{$mutli_data['initiator_file_name']}}</span>
                     </div>
                   </div>
@@ -151,7 +151,7 @@
                   '</div>'+
                   '<div class="col-md-12 mt-3">'+
                       '<label for="InputRemarks">Attachment</label>'+
-                      '<input name="initiator_file_name[' + i +']"  type="file" id="" class="form-control" />'+
+                      '<input name="initiator_file_name[' + i +']"  type="file" id="" class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>'+
                   '</div>'+
                 '</div>'+
                 '<div class="row">'+

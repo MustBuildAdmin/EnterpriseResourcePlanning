@@ -49,12 +49,15 @@
 							<label for="InputLIst">{{__('Consultant No.')}}{{$con_row}} @if($loop->iteration==1) <span style='color:red;'>*</span> @endif</label>
 							<input type="text" name="data[{{$conkey}}]" class="form-control {{$conkey}}" value="{{$con}}" placeholder="{{__('Consultant No.')}} {{$con_row}}" @if($loop->iteration==1) required @endif/> 
                         </div>
-					</div> @php $con_row++; @endphp @empty @endforelse
-					<div class="col-md-3 pull-right">
-						<button class="btn btn-primary" type="button" id="dynamic-procure">{{__('Add Consultant')}}</button>
-					</div>
-					<table class="table" id="dynamicprocure"> </table>
+					</div> 
+					@php $con_row++; @endphp 
+					@empty 
+					@endforelse
+					
 				</div>
+				<button class="btn btn-primary float-end" type="button" id="dynamic-procure">{{__('Add Consultant')}}</button>
+				
+				<table class="table" id="dynamicprocure"> </table>
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -139,7 +142,7 @@
 					</div>
 				</div> 
                 @php $key_count=1; @endphp 
-                @foreach ($get_content as $key => $mutli_data)
+                @forelse ($get_content as $key => $mutli_data)
 				<h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
 				<hr>
 				<div class="row">
@@ -193,32 +196,90 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Attachments')}}</label>
-							<input type="file" name="attachments_two{{$key_count}}" class="form-control"> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
+							<input type="file" name="attachments_two{{$key_count}}" class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
                         </div>
 					</div>
 				</div> 
                 @php $key_count++; @endphp
 				<br>
 				<br> 
-              
-				</div> @endforeach
+                @empty
+				<h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
+				<hr>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="Input">{{__('Name of Consultant')}}</label>
+							<select name="name_of_consulatant1[]" id="choices-multiple2" class="chosen-select" required multiple>
+								<option value="" disabled>{{__('Select Name of Consultant')}}</option> 
+                                @foreach ($consulatant_data as $con =>$co)
+								<option @if(str_contains($mutli_data->name_of_consultant ?? '',$co)) selected @endif value="{{$co}}">{{$co}}</option> 
+                                @endforeach 
+                            </select>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="Input">{{__('Replied Date')}}</label>
+							<input type="date" name="replied_date1" class="form-control" value="{{$get_sub_table->replied_date ?? ''}}" /> 
+                        </div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="Input">{{__('Status')}}</label> 
+                            @if($get_sub_table==null)
+							<select name="status1" class="form-control">
+								<option value="">{{__('Select Status')}}</option>
+								<option value="Clear">{{__('Clear')}}</option>
+								<option value="Close">{{__('Close')}}</option>
+								<option value="Pending">{{__('Pending')}}</option>
+								<option value="Rejected">{{__('Rejected')}}</option>
+								<option value="Withdrawn">{{__('Withdrawn')}}</option>
+							</select> 
+                            @else
+							<select name="status1" class="form-control">
+								<option value="">{{__('Select Status')}}</option>
+								<option value="Clear" @if( 'Clear'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Clear')}}</option>
+								<option value="Close" @if( 'Close'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Close')}}</option>
+								<option value="Pending" @if( 'Pending'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Pending')}}</option>
+								<option value="Rejected" @if( 'Rejected'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Rejected')}}</option>
+								<option value="Withdrawn" @if( 'Withdrawn'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Withdrawn')}}</option>
+							</select> 
+                            @endif 
+                        </div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="Input">{{__('Remarks')}}</label>
+							<textarea name="remarks1" class="form-control">{{$mutli_data->remarks ?? ''}}</textarea>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="Input">{{__('Attachments')}}</label>
+							<input type="file" name="attachments_two1" class="form-control" value="" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
+                        </div>
+					</div>
+				</div> 
+				@endforelse
+				<button class="btn btn-primary float-end" type="button" id="dynamic-rfi">{{__('Add More')}}</button>
+				<br><br>
 				<div class="row">
 					<table class="table" id="dynamic_add_rfi">
 						<tr id="rfi_create">
 					</table>
 				</div>
 				<input type="hidden" id="multi_total_count" name="multi_total_count" value="{{$key_count}}">
-				<div class="col-md-12 mt-3 float-end floatrght">
-					<button type="button" name="add" id="dynamic-rfi" class="btn btn-outline-primary">{{__('Add More')}}</button>
-				</div>
 			</div>
+			<br><br>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal" />
-				<input type="submit" value="{{__('Update')}}" class="btn btn-primary" /> </div>
+				<input type="submit" value="{{__('Update')}}" class="btn btn-primary" id="edit_rfi"/> </div>
 		</form>
 	</div>
 </div>
-
 <script type="text/javascript">
     $(document).on("click", ".remove-input-field", function () {
         $(this).parents("tr").remove();
@@ -257,7 +318,7 @@
                         '<td>'+
                             '<h4 style="text-align: center; font-weight: 700">Date Replied by the Consultants</h4><hr><div class="row">'+
                             '<div class="col-md-4"><div class="form-group"><label for="Input">Name of Consultant</label>'+
-                                '<select name="name_of_consulatant' + i + '[]"   class="chosen-select name_of_consulatant_' + i + '" multiple style="width: 343px;">'+
+                                '<select name="name_of_consulatant' + i + '[]"   class="chosen-select name_of_consulatant_' + i + '" multiple style="width: 309px;">'+
                                     '<option value="Select the Consultants" >Select the Consultants</option>"'+data+'"'+
                                 '</select>'+
                             '</div></div>'+
@@ -280,14 +341,11 @@
                             '<div class="col-md-6"><div class="form-group"><label for="Input">Attachments</label>'+
                                 '<input type="file" name="attachments_two' + i + '" class="form-control">'+
                             '</div></div></div>'+
-                            '<div class="col-md-12 mt-3">'+
-                                '<button type="button" class="btn btn-outline-danger remove-input-field">Delete</button>'+
-                            '</div>'+
+                                '<button class="btn btn-danger remove-input-field float-end" type="button" >Delete</button>'+
                         '</td>'+
                     '</tr>');
 
-                 
-
+            
                     setTimeout(function() {
                         $myid = $('.name_of_consulatant_' + i);
                         $myid.show().chosen();
@@ -313,12 +371,43 @@
     var g = 12;
     $(document).on("click", "#dynamic-procure", function () {
        
-        $("#dynamicprocure").append('<tr><td><div class=""><div class="row"><div class="col-md-4"><div class="form-group"><label for="InputLIst">Consultant No.'+  ++k +'</label><input type="text" name="data[consultant_'+ ++j +']" class="form-control" placeholder="Consultant No. '+ ++g +'" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">Consultant No. '+ ++k +'</label><input type="text" name="data[consultant_' + ++j + ']" placeholder="Consultant No. '+ ++g +'" class="form-control" value=""></div></div><div class="col-md-4"><div class="form-group"><label for="input">Consultant No. '+ ++k +'</label><input type="text" name="data[consultant_' + ++j + ']" class="form-control" placeholder="Consultant No. '+ ++g +'" value=""></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="removedynamicprocure"> Remove Consultant </button></div></div></td></tr>');
+        $("#dynamicprocure").append(
+			'<tr>'+
+				'<td>'+
+					'<div class="">'+
+						'<div class="row">'+
+							'<div class="col-md-4">'+
+								'<div class="form-group">'+
+									'<label for="InputLIst">Consultant No.'+  ++k +'</label>'+
+									'<input type="text" name="data[consultant_'+ ++j +']" class="form-control" placeholder="Consultant No. '+ ++g +'" value="">'+
+								'</div>'+
+							'</div>'+
+							'<div class="col-md-4">'+
+								'<div class="form-group">'+
+									'<label for="input">Consultant No. '+ ++k +'</label>'+
+									'<input type="text" name="data[consultant_' + ++j + ']" placeholder="Consultant No. '+ ++g +'" class="form-control" value="">'+
+								'</div>'+
+							'</div>'+
+							'<div class="col-md-4">'+
+								'<div class="form-group">'+
+									'<label for="input">Consultant No. '+ ++k +'</label>'+
+									'<input type="text" name="data[consultant_' + ++j + ']" class="form-control" placeholder="Consultant No. '+ ++g +'" value="">'+
+								'</div>'+
+							'</div>'+
+						'</div>'+
+						'<button class="btn btn-secondary float-end" type="button" id="removedynamicprocure"> Remove Consultant </button>'+
+					'</div>'+
+			'</td>'+
+			'</tr>'
+													);
     });
     $(document).on('click', '#removedynamicprocure', function () {
         $(this).parents('tr').remove();
     });
     
+	$(document).on('submit', 'form', function() {
+        $('#edit_rfi').attr('disabled', 'disabled');
+    });
 
     });
   </script>
