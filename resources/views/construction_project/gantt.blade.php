@@ -341,13 +341,14 @@ $holidays=implode(':',$holidays);
 			drag_timeline: true,
 			critical_path: true,
 			keyboard_navigation: true,
+            auto_scheduling: true
 		});
 
 		gantt.ext.fullscreen.getFullscreenElement = function () {
 			return document.getElementById("additional_elements");
 		}
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
-
+        gantt.config.auto_scheduling = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
 		var today = new Date(2018, 3, 5);
