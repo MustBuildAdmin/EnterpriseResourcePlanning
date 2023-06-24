@@ -523,12 +523,6 @@ $holidays=implode(':',$holidays);
             return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
         };
 
-        gantt.config.scales = [
-            {unit: "month", step: 1, format: "%F, %Y"},
-            {unit: "week", step: 1, format: weekScaleTemplate},
-            {unit: "day", step: 1, format: "%D, %d"}
-        ];
-
         gantt.templates.timeline_cell_class = function (task, date) {
             if (!gantt.isWorkTime(date))
                 return "week_end";
