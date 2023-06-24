@@ -543,7 +543,6 @@ $holidays=implode(':',$holidays);
 
         // holidays end
 		gantt.config.bar_height = 100;
-		gantt.config.date_format = "%Y-%m-%d %H:%i";
 		gantt.init("gantt_here");
 
 		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
