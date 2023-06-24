@@ -147,7 +147,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Attachement')}} <span style='color:red;'>*</span></label>
-							<input type="file" name="filename" class="form-control imgs" placeholder="Text input">
+							<input type="file" name="filename" class="form-control imgs" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" placeholder="Text input">
 						</div>
 					</div>
 				</div>

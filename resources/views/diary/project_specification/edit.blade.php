@@ -59,7 +59,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="input">{{__('Attachments')}}<span style='color:red;'>*</span></label>
-                <input type="file" class="form-control" name="attachment_file_name" accept="image/*, .png, .jpeg, .jpg ,pdf"> @php $documentPath=\App\Models\Utility::get_file('uploads/project_direction_summary'); @endphp
+                <input type="file" class="form-control" name="attachment_file_name" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"> @php $documentPath=\App\Models\Utility::get_file('uploads/project_direction_summary'); @endphp
                 <br>
                 <table>
                   <tr>

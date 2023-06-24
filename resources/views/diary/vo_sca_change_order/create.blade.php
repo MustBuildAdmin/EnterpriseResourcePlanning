@@ -140,7 +140,7 @@
         <div class="col-xs-6">
           <div class="form-group">
             <label for="InputATTACHMENTS:">{{__('Attachments')}}</label>
-            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg ,pdf">
+            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
           </div>
         </div>
       </div>

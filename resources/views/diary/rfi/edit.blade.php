@@ -196,7 +196,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Attachments')}}</label>
-							<input type="file" name="attachments_two{{$key_count}}" class="form-control"> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
+							<input type="file" name="attachments_two{{$key_count}}" class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
                         </div>
 					</div>
 				</div> 
@@ -259,7 +259,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Attachments')}}</label>
-							<input type="file" name="attachments_two1" class="form-control" value=""> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
+							<input type="file" name="attachments_two1" class="form-control" value="" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"> <span>{{$mutli_data->attachments_two ?? ''}}</span> 
                         </div>
 					</div>
 				</div> 
@@ -276,7 +276,7 @@
 			<br><br>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal" />
-				<input type="submit" value="{{__('Update')}}" class="btn btn-primary" /> </div>
+				<input type="submit" value="{{__('Update')}}" class="btn btn-primary" id="edit_rfi"/> </div>
 		</form>
 	</div>
 </div>
@@ -405,6 +405,9 @@
         $(this).parents('tr').remove();
     });
     
+	$(document).on('submit', 'form', function() {
+        $('#edit_rfi').attr('disabled', 'disabled');
+    });
 
     });
   </script>
