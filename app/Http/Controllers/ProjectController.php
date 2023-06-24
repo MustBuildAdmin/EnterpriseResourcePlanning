@@ -71,8 +71,9 @@ class ProjectController extends Controller
             $clients->prepend('Select Client', '');
             $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
             $users->prepend('Select User', '');
-            
-            return view('projects.create', compact('clients','users','setting','repoter'));
+            $country=Utility::getcountry();
+
+            return view('projects.create', compact('clients','users','setting','repoter','country'));
             // return view('projects.create_backup', compact('clients','users','setting','repoter'));
         }
         else
@@ -139,6 +140,12 @@ class ProjectController extends Controller
             $var=rand('100000','555555').date('dmyhisa').$request->client_id.$request->project_name;
             $instance_id=Hash::make($var);
             $project->instance_id=$instance_id;
+            $project->country = $request->country;
+            $project->state = $request->state;
+            $project->city = $request->city;
+            $project->zipcode = $request->zip;
+            $project->latitude = $request->latitude;
+            $project->longitude = $request->longitude;
             ///---------end-----------------
             $project->save();
             $insert_data=array(
@@ -162,6 +169,33 @@ class ProjectController extends Controller
                     Project_holiday::insert($insert);
                 }
 
+                $holiday_date = $request->holiday_date;
+
+                foreach($holiday_date as $holi_key => $holi_value){
+                    $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())->where('date',$holi_value)->first();
+                    if($holidays_list == null){
+                        $holiday_insert=array(
+                            'project_id'=>$project->id,
+                            'date'=>$holi_value,
+                            'description'=>$request->holiday_description[$holi_key],
+                            'created_by'=>\Auth::user()->creatorId()
+                        );
+
+                        Project_holiday::insert($holiday_insert);
+                    }
+                    else{
+                        if($holidays_list->date != $holi_value){
+                            $holiday_insert=array(
+                                'project_id'=>$project->id,
+                                'date'=>$holi_value,
+                                'description'=>$request->holiday_description[$holi_key],
+                                'created_by'=>\Auth::user()->creatorId()
+                            );
+    
+                            Project_holiday::insert($holiday_insert);
+                        }
+                    }
+                }
             }
             if(isset($request->file)){
                if($request->file_status=='MP'){
@@ -403,8 +437,6 @@ class ProjectController extends Controller
                }
             }
 
-
-
             if(\Auth::user()->type=='company'){
 
                 ProjectUser::create(
@@ -413,9 +445,9 @@ class ProjectController extends Controller
                         'user_id' => Auth::user()->id,
                     ]
                 );
-
-                if($request->user){
-                    foreach($request->user as $key => $value) {
+                
+                if($request->reportto){
+                    foreach($request->reportto as $key => $value) {
                         ProjectUser::create(
                             [
                                 'project_id' => $project->id,
@@ -424,7 +456,6 @@ class ProjectController extends Controller
                         );
                     }
                 }
-
 
             }else{
                 ProjectUser::create(
@@ -441,8 +472,8 @@ class ProjectController extends Controller
                     ]
                 );
 
-                if($request->user){
-                    foreach($request->user as $key => $value) {
+                if($request->reportto){
+                    foreach($request->reportto as $key => $value) {
                         ProjectUser::create(
                             [
                                 'project_id' => $project->id,
@@ -473,7 +504,8 @@ class ProjectController extends Controller
             }else{
                 Session::put('project_id',$project->id);
                 Session::put('project_instance',$project->instance_id);
-                return redirect('project_holiday')->with('success', __('Project Add Successfully'));
+                return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
+                // return redirect('project_holiday')->with('success', __('Project Add Successfully'));
             }
 
         }
