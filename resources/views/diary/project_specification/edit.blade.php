@@ -1,3 +1,9 @@
+<style>
+  #project_file{
+    height: 23px;
+    width: 10%;
+  }
+</style>
 <div class="modal-body">
     <div class="row">
       <form action="{{ route('update_project_specification') }}" method="POST"  enctype="multipart/form-data" > 
@@ -53,8 +59,15 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="input">{{__('Attachments')}}<span style='color:red;'>*</span></label>
-                <input type="file" class="form-control" name="attachment_file_name" >
-                <span>{{$data->attachment_file_name}}</span>
+                <input type="file" class="form-control" name="attachment_file_name" accept="image/*, .png, .jpeg, .jpg ,pdf"> @php $documentPath=\App\Models\Utility::get_file('uploads/project_direction_summary'); @endphp
+                <br>
+                <table>
+                  <tr>
+                    <td> {{$data->attachment_file_name}}
+                      {{-- <a id="project_file" class="btn btn-primary" download href="{{ $documentPath . '/' . $data->attachment_file_name }}"> <i class="ti ti-download text-white"></i> </a> --}}
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
@@ -62,9 +75,16 @@
         <div class="col-xs-3">
             <div class="modal-footer">
                 <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-                <input type="submit" value="{{__('Update')}}" class="btn  btn-primary"> 
+                <input type="submit" id="edit_project" value="{{__('Update')}}" class="btn  btn-primary"> 
             </div>
         </div>
       </form>
     </div>
   </div>
+<script>
+    $(document).ready(function() {
+        $(document).on('submit', 'form', function() {
+            $('#edit_project').attr('disabled', 'disabled');
+        });
+    });
+</script>

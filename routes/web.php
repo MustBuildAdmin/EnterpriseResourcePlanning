@@ -80,12 +80,6 @@ Route::get(
 );
 
 
-
-
-
-
-
-
 Route::get('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
     [
         'auth',
@@ -311,12 +305,35 @@ Route::any('delete_procurement_material','DiaryController@delete_procurement_mat
     ]
 );
 
+Route::any('save_site_reports','DiaryController@save_site_reports')->name('save_site_reports')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary_email')->name('check_duplicate_diary_email')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
+
+Route::any('diary_download_file', 'DiaryController@diary_download_file')->name('diary_download_file')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('vo_change_download_file', 'DiaryController@vo_change_download_file')->name('vo_change_download_file')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
 
 
     /* Drawing List */
@@ -370,7 +387,7 @@ Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscre
     );
 
     
-    Route::any('daily_reportscreate','DiaryController@daily_reportscreate')->name('daily_reportscreate')->middleware(
+    Route::get('daily_reportscreate','DiaryController@daily_reportscreate')->name('daily_reportscreate')->middleware(
         [
             'auth',
             'XSS',

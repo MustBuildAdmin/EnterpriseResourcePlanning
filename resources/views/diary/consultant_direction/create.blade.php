@@ -2,6 +2,9 @@
   textarea {
     resize: vertical;
   }
+  .bold{
+    font-weight: bold;
+  }
 </style>
 <div class="modal-body">
   <div class="row">
@@ -11,8 +14,8 @@
         <div class="container">
           <div class="row">
             <div class="col form-group ">
-              <label for="InputIssued">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY for the project of:')}}</label>
-              <span>{{$project_name->project_name}}</span>
+              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY')}}</label> <span>for the project of:</span>
+              <span class="bold">{{$project_name->project_name}}</span>
             </div>
           </div>
           <hr style="border: 1px solid black" />
@@ -31,7 +34,7 @@
             <div class="col">
               <div class="form-group">
                 <label for="InputIssued">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-                <input name="issued_date" type="date" class="form-control" placeholder="{{__('Issued Date')}}" required/>
+                <input name="issued_date"  max="{{ date('Y-m-d') }}" type="date" class="form-control" placeholder="{{__('Issued Date')}}" required/>
               </div>
             </div>
             <div class="col">
@@ -47,7 +50,7 @@
               </div>
               <div class="col-md-12 mt-3">
                 <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-                <input name="attach_file_name" required type="file" id="concreteFile" class="form-control" required/>
+                <input name="attach_file_name"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
               </div>
             </div>
           </div>
@@ -65,12 +68,12 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="Inputdate">{{__('Date')}}</label>
-                      <input type="date" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" />
+                      <input type="date" max="{{ date('Y-m-d') }}" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" />
                     </div>
                   </div>
                   <div class="col-md-12 mt-3">
                     <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input name="initiator_file_name[]"  type="file"  class="form-control"  />
+                    <input name="initiator_file_name[]"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" />
                   </div>
                 </div>
                 {{-- <h4 style="text-align: center; font-weight: 700;">Replier:</h4>
@@ -115,10 +118,17 @@
           <div class="row">
             <div class="modal-footer">
               <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-              <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+              <input type="submit" value="{{__('Create')}}" id="add_directions" class="btn  btn-primary">
             </div>
           </div>
       </form>
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function() {
+      $(document).on('submit', 'form', function() {
+          $('#add_directions').attr('disabled', 'disabled');
+      });
+  });
+</script>

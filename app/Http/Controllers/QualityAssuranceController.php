@@ -37,9 +37,16 @@ class QualityAssuranceController extends Controller
 
             if(\Auth::user()->can('manage concrete')){
 
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
                 $project_id = Session::get('project_id');
 
-                $dairy_data = ConcretePouring::where('user_id',Auth::id())->where('project_id',$project_id)->get();
+                $dairy_data = ConcretePouring::where('user_id',$user_id)->where('project_id',$project_id)->get();
     
         
                 return view('qaqc.concrete.index',compact("project_id","dairy_data"));
@@ -96,11 +103,18 @@ class QualityAssuranceController extends Controller
                 $project =  Session::get('project_id');
 
                 $id = $request["id"];
+
+                    if(\Auth::user()->type != 'company'){
+                        $user_id = Auth::user()->creatorId();
+                    }
+                    else{
+                        $user_id = \Auth::user()->id;
+                    }
        
 
                 if ($id != null) {
                     $get_dairy_data = ConcretePouring::where('project_id', $project)
-                        ->where('user_id', Auth::id())
+                        ->where('user_id', $user_id)
                         ->where('project_id',$project)
                         ->where('id', $id)
                         ->first();
@@ -132,6 +146,13 @@ class QualityAssuranceController extends Controller
         try {
             unset($request["_token"]);
 
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
             $data = [
                 "month_year" => $request->month_year,
                 "date_of_casting" => $request->date_of_casting,
@@ -140,9 +161,9 @@ class QualityAssuranceController extends Controller
                 "theoretical" => $request->theoretical,
                 "actual" => $request->actual,
                 "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result,
+                "total_result" => $request->total_result." N/mm2",
                 "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result,
+                "days_testing_result" => $request->days_testing_result." N/mm2",
                 "remarks" => $request->remarks,
             ];
 
@@ -177,7 +198,7 @@ class QualityAssuranceController extends Controller
                 "file_name" => $fileNameToStore1,
                 "file_path" => $url,
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "diary_data" => json_encode($data),
                 "status" => 0,
             ];
@@ -201,6 +222,13 @@ class QualityAssuranceController extends Controller
             
             unset($request["_token"]);
 
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+
             $data = [
                 "month_year" => $request->month_year,
                 "date_of_casting" => $request->date_of_casting,
@@ -209,9 +237,9 @@ class QualityAssuranceController extends Controller
                 "theoretical" => $request->theoretical,
                 "actual" => $request->actual,
                 "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result,
+                "total_result" => $request->total_result." N/mm2",
                 "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result,
+                "days_testing_result" => $request->days_testing_result." N/mm2",
                 "remarks" => $request->remarks,
             ];
 
@@ -249,7 +277,7 @@ class QualityAssuranceController extends Controller
                 "file_name" => $fileNameToStore1,
                 "file_path" => $url,
                 "project_id" => Session::get('project_id'),
-                "user_id" => Auth::id(),
+                "user_id" => $user_id,
                 "diary_data" => json_encode($data),
                 "status" => 0,
             ];
@@ -257,7 +285,7 @@ class QualityAssuranceController extends Controller
 
             ConcretePouring::where('id',$request->edit_id)
                             ->where('project_id',Session::get('project_id'))
-                            ->where('user_id', Auth::id())
+                            ->where('user_id', $user_id)
                             ->update($all_data);
 
             return redirect()->back()->with("success",__("diary updated successfully."));
@@ -275,7 +303,14 @@ class QualityAssuranceController extends Controller
 
             if(\Auth::user()->can('delete concrete')){
 
-                ConcretePouring::where('id', $request->id)->where('user_id',Auth::id())->where('project_id',$request->project_id)->delete();
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
+                ConcretePouring::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();
 
                 return redirect()->back()->with("success", "Concrete pouring record deleted successfully.");
 

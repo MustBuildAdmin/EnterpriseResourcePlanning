@@ -53,14 +53,21 @@ class Project extends Model
     // Make new attribute for directly get image
     public function getImgImageAttribute()
     {
-        if(\Storage::exists($this->project_image) && !empty($this->project_image))
-        {
-            return $this->attributes['img_image'] = 'src=' . asset(\Storage::url($this->project_image));
+        if($this->project_image != null){
+            if(\Storage::exists($this->project_image) && !empty($this->project_image))
+            {
+                return $this->attributes['img_image'] = 'src=' . asset(\Storage::url($this->project_image));
+            }
+            else
+            {
+                return $this->attributes['img_image'] = 'avatar=' . $this->project_name;
+            }
         }
         else
         {
             return $this->attributes['img_image'] = 'avatar=' . $this->project_name;
         }
+        
     }
 
     public static function projectHrs($project_id, $task_id = '')
