@@ -73,7 +73,7 @@
                   </div>
                   <div class="col-md-12 mt-3">
                     <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input name="initiator_file_name[]"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" />
+                    <input name="initiator_file_name[]"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" />
                   </div>
                 </div>
                 {{-- <h4 style="text-align: center; font-weight: 700;">Replier:</h4>
