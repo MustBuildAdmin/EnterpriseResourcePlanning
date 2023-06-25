@@ -19,7 +19,8 @@
           <div class="col-6">
             <div class="form-group">
               <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
-              <label for="InputDate">{{__('Project')}}:</label> {{$project_name->project_name}}
+              <label for="InputDate">{{__('Project')}}:</label> 
+              <b>{{$project_name->project_name}}</b>
             </div>
           </div>
           <div class="col-6 mb-3">
@@ -226,13 +227,6 @@
       }
 
   });
-
-  document.getElementById('document').onchange = function () {
-          $(".show_document_file").show();
-          $(".show_document_file").html(this.files[0].name);
-          var src = URL.createObjectURL(this.files[0])
-          document.getElementById('image').src = src
-  }
 
 </script>
 <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>

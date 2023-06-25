@@ -75,7 +75,8 @@
                     </div>
                     <div class="col-md-12 mt-3">
                       <label for="InputRemarks">{{__('Attachment')}}</label>
-                      <input name="initiator_file_name[]"  type="file" id="" class="form-control" multiple accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>
+                      <input name="initiator_file_name[]"  type="file" id="" class="form-control file_input" multiple accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>
+                      <span class="show_document_error" style="color:red;"></span>
                       <span>{{$mutli_data['initiator_file_name']}}</span>
                     </div>
                   </div>

@@ -183,7 +183,8 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Attachement')}} <span style='color:red;'>*</span></label>
-							<input type="file" name="filename" class="form-control imgs" placeholder="Text input" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+							<input type="file" name="filename" class="form-control document_setup" placeholder="Text input" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+							<span class="show_document_error" style="color:red;"></span>
 							<span>{{$data->filename}}</span>
 						</div>
 					</div>
@@ -199,7 +200,7 @@
 			</div>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-				<input type="submit" value="{{__('Update')}}" class="btn  btn-primary" id="edit_procurement"> 
+				<input type="submit" value="{{__('Update')}}" class="btn btn-primary add" id="edit_procurement"> 
 			</div>
 		</form>
 	</div>

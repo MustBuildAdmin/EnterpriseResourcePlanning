@@ -181,6 +181,7 @@ h3, .h3 {
             dom: 'Bfrtip',
             searching: true,
             info: true,
+            info: true,
             paging: true,
             buttons: [
                 {

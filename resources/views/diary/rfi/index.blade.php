@@ -157,6 +157,7 @@ h3, .h3 {
             searching: true,
             info: true,
             paging: true,
+            responsive:true,
             buttons: [
                 {
                     extend: 'excelHtml5',
