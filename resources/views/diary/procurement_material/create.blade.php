@@ -6,7 +6,8 @@
 				<input type="hidden" name="project_id" value="{{$project_id}}">
 				<div class="row">
 					<div class="form-group">
-						<label for="InputLIst">{{__('PROCUREMENT, MATERIAL SUPPLIER & SUPPLY LOG STATUS for the project of:')}}</label> {{$project_name->project_name}} 
+						<label for="InputLIst"><b>PROCUREMENT, MATERIAL SUPPLIER & SUPPLY LOG STATUS</b> for the project of:</label> 
+						<b>{{$project_name->project_name}}</b>
 					</div>
 				</div>
 				<hr style="border: 1px solid black;">

@@ -140,6 +140,7 @@ h3, .h3 {
               dom: 'Bfrtip',
               searching: true,
               info: true,
+              responsive:true,
               paging: true,
               info: true,
               buttons: [
@@ -164,6 +165,7 @@ h3, .h3 {
                       titleAttr: 'PDF',
                       pagesize: 'A3',
                       orientation: 'landscape',
+                      pageSize: 'LEGAL',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 

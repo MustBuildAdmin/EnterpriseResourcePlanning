@@ -156,6 +156,9 @@ h3, .h3 {
                     extend: 'pdfHtml5',
                     title: 'Consultants Directions Summary',
                     titleAttr: 'PDF',
+                    orientation : 'landscape',
+                    pagesize: 'A3',
+                    pageSize: 'LEGAL',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 

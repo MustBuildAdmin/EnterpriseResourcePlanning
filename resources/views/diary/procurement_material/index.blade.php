@@ -193,7 +193,6 @@ h3, .h3 {
             info: true,
             paging: true,
             responsive:true,
-            scrollX: true,
             buttons: [
                 {
                     extend: 'excelHtml5',
@@ -216,7 +215,7 @@ h3, .h3 {
                     titleAttr: 'PDF',
                     orientation : 'landscape',
                     pagesize: 'A3',
-                    orientation: 'landscape',
+                    pageSize: 'LEGAL',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 

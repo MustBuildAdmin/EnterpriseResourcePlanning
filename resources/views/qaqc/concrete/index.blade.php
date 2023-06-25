@@ -203,8 +203,9 @@ h3, .h3 {
                     extend: 'pdfHtml5',
                     title: 'Concrete Pouring Record',
                     titleAttr: 'PDF',
+                    pageSize: 'LEGAL',
                     pagesize: 'A3',
-                      orientation: 'landscape',
+                    orientation: 'landscape',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
