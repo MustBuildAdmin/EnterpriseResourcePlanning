@@ -50,7 +50,8 @@
               </div>
               <div class="col-md-12 mt-3">
                 <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-                <input name="attach_file_name"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
+                <input name="attach_file_name"  type="file"  class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
+                <span class="show_document_error" style="color:red;"></span>
               </div>
             </div>
           </div>
@@ -73,7 +74,8 @@
                   </div>
                   <div class="col-md-12 mt-3">
                     <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input name="initiator_file_name[]"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" />
+                    <input name="initiator_file_name[]"  type="file"  class="form-control file_input" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" />
+                    <span class="show_document_error" style="color:red;"></span>
                   </div>
                 </div>
                 {{-- <h4 style="text-align: center; font-weight: 700;">Replier:</h4>

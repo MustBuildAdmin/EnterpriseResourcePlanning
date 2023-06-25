@@ -27,8 +27,8 @@
       <div class="container">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="InputLIst">{{__('VARIATIONS/SCOPE CHANGE AUTHORIZATION for the project of')}}:</label>
-            <span>{{$project_name->project_name}}</span>
+            <label for="InputLIst"><b>VARIATIONS/SCOPE CHANGE AUTHORIZATION</b> for the project of:</label>
+            <b><span>{{$project_name->project_name}}</span></b>
           </div>
         </div>
         <hr style="border: 1px solid black;">
@@ -155,7 +155,8 @@
         <div class="col-xs-6">
           <div class="form-group">
             <label for="InputATTACHMENTS:">{{__('Attachments)')}}</label>
-            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+            <input type="file" name="attachment_file" class="form-control document_setup" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+            <span class="show_document_error" style="color:red;"></span>
             <span>{{$get_dairy_data->attachment_file}}</span>
           </div>
         </div>
@@ -163,7 +164,7 @@
       <div class="col-xs-9"></div>
       <div class="modal-footer">
         <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-        <input type="submit" id="edit_vo_change" value="{{__('Update')}}" class="btn  btn-primary">
+        <input type="submit" id="edit_vo_change" value="{{__('Update')}}" class="btn btn-primary add">
       </div>
     </form>
   </div>
