@@ -433,7 +433,7 @@
                                                 </div>
                                                 @if(((\Auth::user()->id == $file->user_id) || (\Auth::user()->type == 'company'))&&($contract->status=='accept'))
                                                     <div class="col-auto actions">
-                                                        <div class="action-btn bg-danger ms-2">
+                                                        <div class="ms-2">
                                                             {!! Form::open(['method' => 'DELETE', 'route' => ['contracts.file.delete', $contract->id, $file->id]]) !!}
                                                             <a href="#!" class="mx-3 btn btn-sm  align-items-center bs-pass-para ">
                                                                 <i class="ti ti-trash text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('Delete')}}" ></i>
@@ -495,7 +495,7 @@
                                         </div>
                                         @if(((\Auth::user()->id == $comment->user_id) || (\Auth::user()->type == 'company'))&&($contract->status == 'accept'))
                                             <div class="col-auto actions">
-                                                <div class="action-btn bg-danger ms-2">
+                                                <div class="ms-2">
                                                     {!! Form::open(['method' => 'DELETE', 'route' => ['comment_store.destroy',  $comment->id]]) !!}
                                                     <a href="#!" class="mx-3 btn btn-sm  align-items-center bs-pass-para ">
                                                         <i class="ti ti-trash text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('Delete')}}"></i>
@@ -554,7 +554,7 @@
                                             </div>
                                             @if(((\Auth::user()->id == $note->user_id) || (\Auth::user()->type == 'company'))&&($contract->status == 'accept'))
                                                 <div class="col-auto actions">
-                                                    <div class="action-btn bg-danger ms-2">
+                                                    <div class="ms-2">
                                                         {!! Form::open(['method' => 'DELETE', 'route' => ['note_store.destroy',  $note->id]]) !!}
                                                         <a href="#!" class="mx-3 btn btn-sm  align-items-center bs-pass-para ">
                                                             <i class="ti ti-trash text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('Delete')}}"></i>
