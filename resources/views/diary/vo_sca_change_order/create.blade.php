@@ -161,7 +161,42 @@ $(document).ready(function() {
     $(document).on('submit', 'form', function() {
         $('#vo_change').attr('disabled', 'disabled');
     });
+
 });
+
+
+$(function() {
+
+$(".claimed_omission_cost,.claimed_addition_cost").on("keydown keyup", sum);
+
+  function sum() {
+    let omission_cost = -Math.abs($(".claimed_omission_cost").val());
+    omission_cost = isNaN(omission_cost) ? '' : omission_cost;
+    $(".claimed_omission_cost").val(omission_cost);
+    $(".claimed_net").val(Number(omission_cost) + Number($(".claimed_addition_cost").val()));
+    $(".claimed_net_amount").val(Number(omission_cost) + Number($(".claimed_addition_cost").val()));
+
+  }
+
+});
+
+$(function() {
+
+$(".approved_omission_cost,.approved_addition_cost").on("keydown keyup", sum);
+
+  function sum() {
+    let approved_omission = -Math.abs($(".approved_omission_cost").val());
+    approved_omission = isNaN(approved_omission) ? '' : approved_omission;
+    $(".approved_omission_cost").val(approved_omission);
+    $(".approved_net").val(Number(approved_omission) + Number($(".approved_addition_cost").val()));
+    $(".approved_net_cost").val(Number(approved_omission) + Number($(".approved_addition_cost").val()));
+
+  }
+
+});
+
+
+
 
 $('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_net_cost').alphanum({
 			allow              : '(,),-',    // Allow extra characters
@@ -180,5 +215,6 @@ $('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			forceLower         : false, // Convert upper case characters to lower case
 			allowLatin         : false,  
 });
+
 
 </script>

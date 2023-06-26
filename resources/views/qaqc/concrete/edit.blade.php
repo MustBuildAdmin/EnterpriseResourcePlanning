@@ -146,7 +146,7 @@
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Result (Average)')}}</label>
               <input name="" placeholder="{{__('28 days Result (Average)')}}"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif"  type="text" id="days_testing_result" class="form-control days_testing_result" @if($format_date==$today_result) @else disabled @endif/>
-              <input name="days_testing_result"  value=""  type="hidden"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif" id="days_testing_result_back" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+              <input name="days_testing_result" type="hidden"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif" id="days_testing_result_back" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
             </div>
           </div>
           <div class="col-1 mb-3">

@@ -244,7 +244,7 @@ class QualityAssuranceController extends Controller
             ];
 
            
-        
+       
             if (!empty($request->file_name)) {
                 $filenameWithExt1 = $request->file("file_name")->getClientOriginalName();
                 $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);

@@ -56,7 +56,7 @@ h3, .h3 {
                     <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
                 </a>
                 <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
-                  <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+                  <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
                 </a>
             </div>
         </div>

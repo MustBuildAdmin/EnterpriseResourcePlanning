@@ -100,8 +100,8 @@
                   <label class="form-label">&nbsp;</label>
                   <select name="degree" class="form-control addbutton" >
                     <option value="" disabled selected>Select your option</option>
-                    <option value="">Fahrenheit</option>
-                    <option value="">Celsius</option>
+                    <option value="Fahrenheit">Fahrenheit</option>
+                    <option value="Celsius">Celsius</option>
                   </select>
                 </div>
               </div>
@@ -113,7 +113,7 @@
                   <thead>
                     <tr>
                     <tr>
-                      <th>Posistion</th>
+                      <th>Position</th>
                       <th>No Of Person per Position</th>
                       <th></th>
                       <th></th>
@@ -130,8 +130,8 @@
                       <td class="col-xs-5">
                         <select class="form-control first_option_0"  name="first_option[]">
                           <option value="" disabled selected>Select your option</option>
-                          <option value="Direct Manpower">Direct</option>
-                          <option value="InDirect Manpower">InDirect</option>
+                          <option value="Direct Manpower">Direct Manpower</option>
+                          <option value="InDirect Manpower">InDirect Manpower</option>
                         </select>
                       </td>
                       <td class="col-xs-1 text-center">
@@ -173,8 +173,8 @@
               <table class="table tableadd form">
                 <thead>
                   <tr>
-                    <th>Posistion Name</th>
-                    <th>No Of Person per Posistion</th>
+                    <th>Position Name</th>
+                    <th>No Of Person per Position</th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -188,10 +188,10 @@
                       <input name="no_of_persons[]"  class="form-control addPrefer2" type="text" placeholder="Enter No Of Person Per Position" />
                     </td>
                     <td class="col-xs-5">
-                      <select class="type_method" class="form-control addbutton addCommon2"  name="option_method[]">
+                      <select  class="form-control addbutton addCommon2"  name="option_method[]">
                         <option value="" disabled selected>Select your option</option>
-                        <option value="">Direct</option>
-                        <option value="">InDirect</option>
+                        <option value="Direct Manpower">Direct Manpower</option>
+                        <option value="InDirect Manpower">InDirect Manpower</option>
                       </select>
                     </td>
                     <td class="col-xs-1 text-center">
@@ -243,13 +243,13 @@
                       <input name="position_name[]" class="form-control addMain3" type="text" placeholder="Enter Equipment Name" />
                     </td>
                     <td class="col-xs-3">
-                      <input name="no_of_persons[]" class="form-control addPrefer3" type="text" placeholder="Enter NO OF PERSON PER POSISTION" />
+                      <input name="no_of_persons[]" class="form-control addPrefer3" type="text" placeholder="Enter No Of Person Per Position" />
                     </td>
                     <td class="col-xs-5">
                       <select class="form-control addbutton addCommon3" name="option_method[]">
                         <option value="" disabled selected>Select your option</option>
-                        <option value="">Direct</option>
-                        <option value="">InDirect</option>
+                        <option value="Direct Manpower">Direct Manpower</option>
+                        <option value="InDirect Manpower">InDirect Manpower</option>
                       </select>
                     </td>
                     <td class="col-xs-1 text-center">
@@ -286,7 +286,8 @@
             </div>
             <br />
             <div class="card-footer text-end">
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary" id="daily_report_create">{{__('Save')}}</button>
+              <a href="{{ route('daily_reports') }}"  class="btn btn-light" >{{__('Cancel')}}</a>
             </div>
         </form>
       </div>
@@ -301,6 +302,11 @@
 <script>
     $(document).ready(function() {
         $(".chosen-select").chosen();
+
+      $(document).on('submit', 'form', function() {
+        $('#daily_report_create').attr('disabled', 'disabled');
+      });
+
     });
 </script>
 
@@ -312,7 +318,7 @@
   
         ++i;
   
-        $("#dynamicTable").append('<tr><td><input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position_'+i+'" /></td><td><input type="text" name="first_person[]" placeholder="Enter No of Person Per Position" class="form-control first_person_'+i+'" /></td><td><select class="form-control first_option_'+i+'" name="first_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-tr bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+        $("#dynamicTable").append('<tr><td><input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position_'+i+'" /></td><td><input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person_'+i+'" /></td><td><select class="form-control first_option_'+i+'" name="first_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-tr bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
     });
       
     $(document).on('click', '.remove-tr', function(){  
@@ -327,6 +333,5 @@ var days = new Date(con_date);
 $('.con_day').val(weekday[days.getDay()]);
 
 });
-
 
 </script>

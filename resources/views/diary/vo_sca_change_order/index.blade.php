@@ -68,7 +68,7 @@ h3, .h3 {
               <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
           </a>
           <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
-            <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+            <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
           </a>
       </div>
     </div>
@@ -245,51 +245,6 @@ h3, .h3 {
               ]
           });
         
-        $(document).on("keyup", '.claimed_omission_cost', function (e) {
-          let claimed_omission_cost = $('.claimed_omission_cost').val();
-        
-          if(claimed_omission_cost> 0) {
-            let resultx = -Math.abs(claimed_omission_cost); 
-            $('.claimed_omission_cost').val(resultx);
-          }
-         
-       });
-
-       $(document).on("keyup", '.approved_omission_cost', function (e) {
-          let approved_omission_cost = $('.approved_omission_cost').val();
-        
-          if(approved_omission_cost> 0) {
-            let resulty = -Math.abs(approved_omission_cost); 
-            $('.approved_omission_cost').val(resulty);
-          }
-         
-       });
-
-        $(document).on("keyup", '.claimed_addition_cost', function (e) {
-           
-           var additional_cost = $('.claimed_addition_cost').val();
-           var omission_cost = $('.claimed_omission_cost').val();
-           var get_value = parseInt(omission_cost) + parseInt(additional_cost);
-       
-           get_value = isNaN(get_value) ? '' : get_value;
-
-           $('.claimed_net_amount').val(get_value);
-           $('.claimed_net').val(get_value);
-
-           
-       });
-
-       $(document).on("keyup", '.approved_addition_cost', function (e) {
-           
-           var app_additional_cost = $('.approved_addition_cost').val();
-           var app_omission_cost = $('.approved_omission_cost').val();
-
-           var app_get_value = parseInt(app_omission_cost) + parseInt(app_additional_cost);
-           app_get_value = app_get_value = isNaN(app_get_value) ? '' : app_get_value;
-
-           $('.approved_net_cost').val(app_get_value);
-           $('.approved_net').val(app_get_value);
-       });
 
        $(document).on("paste", '.impact_time', function (event) {
             if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
