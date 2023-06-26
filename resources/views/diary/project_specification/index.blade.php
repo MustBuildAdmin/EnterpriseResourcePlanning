@@ -69,7 +69,7 @@ h3, .h3 {
           <table class="table" id="example2">
             <thead class="">
               <tr>
-                <th>{{__('Sno')}}</th>
+                <th>{{__('S.No')}}</th>
                 <th>{{__('Reference No')}}</th>
                 <th>{{__('Description')}}</th>
                 <th>{{__('Location')}}</th>

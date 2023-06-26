@@ -12,13 +12,13 @@
       <div class="container">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="InputLIst"><b>VARIATIONS/SCOPE CHANGE AUTHORIZATION</b> for the project of:</label>
-            <span><b>{{$project_name->project_name}}</b></span>
+            <label for="InputLIst">{{__('Variations/Scope Change Authorization for the project of')}}:</label>
+            <span>{{$project_name->project_name}}</span>
           </div>
         </div>
         <hr style="border: 1px solid black;">
         <div class="col-xs-12">
-          <h3 style="text-align: center;">{{__('VARIATIONS/SCOPE CHANGE AUTHORIZATION')}}</h3>
+          <h3 style="text-align: center;">{{__('Variations/Scope Change Authorization')}}</h3>
         </div>
         <div class="row">
           <div class="col-6 mb-3">
