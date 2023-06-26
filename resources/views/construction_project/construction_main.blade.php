@@ -106,8 +106,16 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row g-2 justify-content-between">
-                                        <div class="col-auto"><span
-                                                class="badge rounded-pill bg-{{ \App\Models\Project::$status_color[$project->status] }}">{{ __(\App\Models\Project::$project_status[$project->status]) }}</span>
+                                        <div class="col-auto">
+                                            @php
+                                                if ($project->status != ""){
+                                                    $status_set = $project->status;
+                                                }
+                                                else{
+                                                    $status_set = 'in_progress';
+                                                }
+                                            @endphp
+                                            <span class="badge rounded-pill bg-{{ \App\Models\Project::$status_color[$status_set] }}">{{ __(\App\Models\Project::$project_status[$status_set]) }}</span>
                                         </div>
 
                                     </div>
