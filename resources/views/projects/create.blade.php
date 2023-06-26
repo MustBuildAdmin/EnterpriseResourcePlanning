@@ -17,7 +17,10 @@
                         <div class="col-sm-12 col-md-12">
                             <div class="form-group">
                                 {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                {{ Form::text('project_name', null, ['class' => 'form-control','required'=>'required']) }}
+                                {{ Form::text('project_name', null, ['class' => 'form-control project_name','required'=>'required']) }}
+                                <span class="invalid-name show_duplicate_error" role="alert" style="display: none;">
+                                    <strong class="text-danger">Project Name Already Exist!</strong>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -222,7 +225,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             {{ Form::label('boq', __('Upload a BOQ File Here'), ['class' => 'form-label boq_file']) }}
-                            <input type='file' name='file' id='file' accept=".xlsx, .xls, .csv">
+                            <input type='file' name='boq_file' id='boq_file' accept=".xlsx, .xls, .csv">
                         </div>
                     </div>
                 </section>
@@ -455,5 +458,26 @@
 
     $('#commonModal').on('hidden.bs.modal', function () {
         location.reload();
+    });
+
+    $(document).on("keyup", '.project_name', function () {
+        $(".show_duplicate_error").css('display','none');
+        $.ajax({
+            url : '{{ route("checkDuplicateProject") }}',
+            type : 'GET',
+            data : { 'get_name' : $(".project_name").val(),'form_name' : "ProjectCreate" },
+            success : function(data) {
+                if(data == 1){
+                    $(".show_duplicate_error").css('display','none');
+                }
+                else{
+                    $(".show_duplicate_error").css('display','block');
+                }
+            },
+            error : function(request,error)
+            {
+                alert("Request: "+JSON.stringify(request));
+            }
+        });
     });
 </script>

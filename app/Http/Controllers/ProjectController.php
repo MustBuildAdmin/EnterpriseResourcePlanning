@@ -515,6 +515,25 @@ class ProjectController extends Controller
         }
     }
 
+    public function checkDuplicateProject(Request $request){
+        $form_name  = $request->form_name;
+        $check_name = $request->get_name;
+
+        if($form_name == "ProjectCreate"){
+            $get_check_val = Project::where('project_name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+        }
+        else{
+            $get_check_val = "Not Empty";
+        }
+        
+        if($get_check_val == null){
+            return 1; //Success
+        }
+        else{
+            return 0; //Error
+        }
+    }
+
 
 
     public function loadproject(Project $project)
