@@ -229,7 +229,7 @@
                             <a href="{{ route('drawing_list') }}" class="dropdown-item">{{ __('Drawing') }}</a>
                         </li>
                         <li class="{{ (Request::segment(1) == 'daily_reports')?'active':''}}">
-                            <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
+                            <a href="#" class="dropdown-item">{{ __('Site Reports') }}</a>
                             {{-- {{ route('daily_reports') }} --}}
                         </li>
                         @can('manage project specification')
