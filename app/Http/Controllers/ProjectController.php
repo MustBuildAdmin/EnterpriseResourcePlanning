@@ -704,21 +704,35 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('edit project'))
         {
-          $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
-          $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
-          $users->prepend('Select User', '');
-          $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
-          $project = Project::findOrfail($project->id);
-          $setting  = Utility::settings(\Auth::user()->creatorId());
-          if($project->created_by == \Auth::user()->creatorId())
-          {
-              return view('projects.edit', compact('project', 'clients','users','repoter','setting'));
-          }
-          else
-          {
-              return response()->json(['error' => __('Permission denied.')], 401);
-          }
-            return view('projects.edit',compact('project','users','repoter','setting'));
+            $clients = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '=', 'client')->get()->pluck('name', 'id');
+            $users   = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+            $users->prepend('Select User', '');
+            $repoter=User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'client')->get()->pluck('name', 'id');
+            $project = Project::findOrfail($project->id);
+            $setting  = Utility::settings(\Auth::user()->creatorId());
+            $country  = Utility::getcountry();
+
+            $project_holidays = Project_holiday::where('project_id',$project->id)->orderBy('date','ASC')->get();
+
+            if($project->country != null){
+                $statelist = Utility::getstate($project->country);
+            }
+            else{
+                $statelist = array();
+            }
+
+            if($project->created_by == \Auth::user()->creatorId())
+            {
+                return view('projects.edit', compact('project', 'clients','users','repoter','setting','country','statelist','project_holidays'));
+                // return view('projects.edit_backup',compact('project','users','repoter','setting','clients'));
+            }
+            else
+            {
+                return response()->json(['error' => __('Permission denied.')], 401);
+            }
+
+            return view('projects.edit',compact('project','users','repoter','setting','country','statelist','project_holidays'));
+            // return view('projects.edit_backup',compact('project','users','repoter','setting'));
         }
         else
         {
@@ -738,60 +752,79 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('edit project'))
         {
-            $validator = \Validator::make(
-                $request->all(), [
-                                'project_name' => 'required',
-                                'status'=>'required'
+            if($request->freeze_status != 1){
 
-                            ]
-            );
-            if($validator->fails())
-            {
-                return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
-            }
-            $project = Project::find($project->id);
-            $project->project_name = $request->project_name;
-            $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
-            $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
-            if($request->hasFile('project_image'))
-            {
-                Utility::checkFileExistsnDelete([$project->project_image]);
-                $imageName = time() . '.' . $request->project_image->extension();
-                $request->file('project_image')->storeAs('projects', $imageName);
-                $project->project_image      = 'projects/'.$imageName;
-            }
-            if(isset($request->holidays)){
-                $project->holidays= $request->holidays;
-            }
-            if(isset($request->non_working_days)){
-                $project->non_working_days=implode(',',$request->non_working_days);
-            }
+                $validator = \Validator::make(
+                    $request->all(), [
+                                    'project_name' => 'required',
+                                    'status'=>'required'
 
-            $project->budget = $request->budget;
-            $project->client_id = $request->client;
-            $project->description = $request->description;
-            $project->status = $request->status;
-            $project->estimated_days = $request->estimated_days;
-            // $project->estimated_hrs = $request->estimated_hrs;
-            $project->report_to = implode(',',$request->reportto);
-            // $project->report_time =  Utility::utc_time_convert($request->report_time);
-            $project->report_time=$request->report_time;
-            $project->tags = $request->tag;
-            $project->save();
-            if($project->holidays==0){
-                $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
-                foreach ($holidays_list as $key => $value) {
-                    $insert=array(
-                        'project_id'=>$project->id,
-                        'date'=>$value->date,
-                        'description'=>$value->occasion,
-                        'created_by'=>\Auth::user()->creatorId()
-                    );
-                    Project_holiday::insert($insert);
+                                ]
+                );
+                if($validator->fails())
+                {
+                    return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
+                }
+                
+                $project = Project::find($project->id);
+                $project->project_name = $request->project_name;
+                $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
+                $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
+                if($request->hasFile('project_image'))
+                {
+                    Utility::checkFileExistsnDelete([$project->project_image]);
+                    $imageName = time() . '.' . $request->project_image->extension();
+                    $request->file('project_image')->storeAs('projects', $imageName);
+                    $project->project_image      = 'projects/'.$imageName;
+                }
+                if(isset($request->holidays)){
+                    $project->holidays= $request->holidays;
+                }
+                if(isset($request->non_working_days)){
+                    $project->non_working_days=implode(',',$request->non_working_days);
                 }
 
+                $project->budget = $request->budget;
+                $project->client_id = $request->client;
+                $project->description = $request->description;
+                $project->status = $request->status;
+                $project->estimated_days = $request->estimated_days;
+                // $project->estimated_hrs = $request->estimated_hrs;
+                $project->report_to = implode(',',$request->reportto);
+                // $project->report_time =  Utility::utc_time_convert($request->report_time);
+                $project->report_time=$request->report_time;
+                $project->tags = $request->tag;
+                $project->country = $request->country;
+                $project->state = $request->state;
+                $project->city = $request->city;
+                $project->zipcode = $request->zip;
+                $project->latitude = $request->latitude;
+                $project->longitude = $request->longitude;
+                $project->save();
+
+                if($project->holidays==0){
+                    $holiday_date = $request->holiday_date;
+                    
+                    foreach ($holiday_date as $holi_key => $holi_value) {
+                        $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())->where('date',$holi_value)->first();
+                        $project_holidays_list = Project_holiday::where('project_id',$project->id)->where('date',$holi_value)->first();
+                        if($project_holidays_list == null){
+                            $insert = array(
+                                'project_id'=>$project->id,
+                                'date'=>$holi_value,
+                                'description'=>$request->holiday_description[$holi_key],
+                                'created_by'=>\Auth::user()->creatorId()
+                            );
+                            Project_holiday::insert($insert);
+                        }
+                    }
+                }
+
+                return redirect()->route('construction_main')->with('success', __('Project Updated Successfully'));
             }
-            return redirect()->route('construction_main')->with('success', __('Project Updated Successfully'));
+            else{
+                return redirect()->route('construction_main')->with('eror', __('Your Project was Freezed! Cannot modfiy the data'));
+            }
         }
         else
         {

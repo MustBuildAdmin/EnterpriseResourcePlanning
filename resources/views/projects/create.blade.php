@@ -124,17 +124,6 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                <select name="status" id="status" class="form-control main-element" required>
-                                    <option value=''>Choose Status</option>
-                                    @foreach(\App\Models\Project::$project_status as $k => $v)
-                                        <option value="{{$k}}">{{__($v)}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
                                 {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
                                 <input type="file" class="form-control" id="project_image"  name="project_image">
                             </div>
@@ -195,8 +184,8 @@
                                 <tbody>
                                     <tr data-count_id="1" id="1">
                                         <td><input type='checkbox' disabled/></td>
-                                        <td style="width: 30%;"><input type="date" class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]" required></td>
-                                        <td style="width: 70%;"><input type="text" class="form-control holiday_description" id="holiday_description1" name="holiday_description[]" required></td>
+                                        <td style="width: 30%;"><input type="date" class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]"></td>
+                                        <td style="width: 70%;"><input type="text" class="form-control holiday_description" id="holiday_description1" name="holiday_description[]"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -248,8 +237,8 @@
     $(document).on("click", '.addmore', function () {
         var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
             "<td><input type='checkbox' class='case'/></td>";
-            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]' required/></td>"+
-            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]' required/></td>"+
+            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]'/></td>"+
+            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]'/></td>"+
         "</tr>";
 
         console.log("data",data);
@@ -341,7 +330,7 @@
             swalWithBootstrapButtons.fire({
                 title: 'Are you sure?',
                 text: "Do You Want Create Project?",
-                icon: 'warning',
+                icon: 'success',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',

@@ -68,7 +68,7 @@
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 @can('edit project')
-                                                    <a href="#!" data-size="lg"
+                                                    <a href="#!" data-size="xl"
                                                         data-url="{{ route('projects.edit', $project->id) }}"
                                                         data-ajax-popup="true" class="dropdown-item"
                                                         data-bs-original-title="{{ __('Edit User') }}">
@@ -86,7 +86,7 @@
                                                     {!! Form::close() !!}
                                                 @endcan
                                                 @can('edit project')
-                                                    <a href="#!" data-size="lg"
+                                                    <a href="#!" data-size="xl"
                                                         data-url="{{ route('invite.project.member.view', $project->id) }}"
                                                         data-ajax-popup="true" class="dropdown-item"
                                                         data-bs-original-title="{{ __('Invite User') }}">
