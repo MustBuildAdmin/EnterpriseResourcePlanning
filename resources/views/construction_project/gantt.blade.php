@@ -20,7 +20,8 @@
 <script src="{{asset('assets/js/js/slack.js')}}"></script>
 <script src="{{asset('assets/js/js/dynamicProgress.js')}}"></script>
 <script src="{{asset('assets/js/js/taskText.js')}}"></script>
-
+<script src="{{asset('assets/js/js/highlight.js')}}"></script>
+<script src="{{asset('assets/js/js/slackrow.js')}}"></script>
 
 <style>
     html,
@@ -30,6 +31,7 @@
         padding: 0px;
         margin: 0px;
         overflow: hidden;
+        background: #fff;
     }
 
     .status_line {
@@ -143,6 +145,66 @@
 
 
     /* // progress tect end */
+
+    /* highlight  */
+    .drag_date {
+			color: #454545;
+			font-size: 13px;
+			text-align: center;
+			z-index: 1;
+		}
+
+		.drag_date.drag_move_start {
+			margin-left: -15px;
+		}
+
+		.drag_date.drag_move_end {
+			margin-left: 15px;
+		}
+
+		.drag_move_vertical, .drag_move_horizontal {
+			background-color: #9DE19E;
+			opacity: 0.7;
+			box-sizing: border-box;
+		}
+
+		.drag_move_vertical {
+			border-right: 1px #6AC666 solid;
+			border-left: 1px #6AC666 solid;
+		}
+
+		.drag_move_horizontal {
+			border-top: 1px #6AC666 solid;
+			border-bottom: 1px #6AC666 solid;
+		}
+    /* hightlight end*/
+
+    /* slack :start */
+    .gantt_task_cell.week_end {
+			background-color: #EFF5FD;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #F8EC9C;
+		}
+
+		.slack {
+			position: absolute;
+			border-radius: 0;
+			opacity: 0.7;
+
+			border: none;
+			border-right: 1px solid #b6b6b6;
+			margin-left: -2px;
+			background: #b6b6b6;
+			background: repeating-linear-gradient(
+					45deg, #FFFFFF,
+					#FFFFFF 5px,
+					#b6b6b6 5px,
+					#b6b6b6 10px
+			);
+		}
+    /* slack end */
 </style>
 
 @php
@@ -179,6 +241,8 @@ $holidays=implode(':',$holidays);
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
                                         <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button>
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
+                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> --}}
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -341,13 +405,14 @@ $holidays=implode(':',$holidays);
 			drag_timeline: true,
 			critical_path: true,
 			keyboard_navigation: true,
+            auto_scheduling: true
 		});
 
 		gantt.ext.fullscreen.getFullscreenElement = function () {
 			return document.getElementById("additional_elements");
 		}
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
-
+        gantt.config.auto_scheduling = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
 		var today = new Date(2018, 3, 5);
@@ -416,18 +481,18 @@ $holidays=implode(':',$holidays);
 				editor: editors.end_date, resize: true
 			},
 
-			{
-				name: "place", label: "Place", width: 80, align: "center",
-				editor: editors.end_date, resize: true
-			},
-			{
-				name: "location", label: "Location", width: 80, align: "center",
-				editor: editors.end_date, resize: true
-			},
-			{
-				name: "material", label: "Material Qunatity", width: 110, align: "center",
-				editor: editors.end_date, resize: true
-			},
+			// {
+			// 	name: "place", label: "Place", width: 80, align: "center",
+			// 	editor: editors.end_date, resize: true
+			// },
+			// {
+			// 	name: "location", label: "Location", width: 80, align: "center",
+			// 	editor: editors.end_date, resize: true
+			// },
+			// {
+			// 	name: "material", label: "Material Qunatity", width: 110, align: "center",
+			// 	editor: editors.end_date, resize: true
+			// },
 			{
 				name: "predecessors", label: "Predecessors", width: 110, align: "left",
 				editor: editors.predecessors, resize: true, template: function (task) {
@@ -440,7 +505,7 @@ $holidays=implode(':',$holidays);
 					return labels.join(", ")
 				}
 			},
-			totalSlackColumn,
+			// totalSlackColumn,
 			freeSlackColumn,
 			{ name: "add" }
 		];
@@ -458,12 +523,6 @@ $holidays=implode(':',$holidays);
             return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
         };
 
-        gantt.config.scales = [
-            {unit: "month", step: 1, format: "%F, %Y"},
-            {unit: "week", step: 1, format: weekScaleTemplate},
-            {unit: "day", step: 1, format: "%D, %d"}
-        ];
-
         gantt.templates.timeline_cell_class = function (task, date) {
             if (!gantt.isWorkTime(date))
                 return "week_end";
@@ -478,7 +537,6 @@ $holidays=implode(':',$holidays);
 
         // holidays end
 		gantt.config.bar_height = 100;
-		gantt.config.date_format = "%Y-%m-%d %H:%i";
 		gantt.init("gantt_here");
 
 		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
@@ -533,9 +591,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/erpnew/public/");
+        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
@@ -559,6 +616,4 @@ $holidays=implode(':',$holidays);
                 }
             };
         });
-
-
-    </script>
+</script>

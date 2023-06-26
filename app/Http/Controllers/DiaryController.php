@@ -540,7 +540,7 @@ class DiaryController extends Controller
                     $user_id = \Auth::user()->id;
                 }
 
-                $dairy_data=RFIStatusSave::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->get();
+                $dairy_data=RFIStatusSave::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->orderBy("id", "asc")->get();
 
 
                 return view('diary.rfi.index',compact('project_id','dairy_data'));
@@ -630,8 +630,8 @@ class DiaryController extends Controller
                 ->where("id", $project_id)
                 ->first();
                 
-                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
-                $contractor=RFIStatusSave::where('user_id', '=', Auth::id())->where('id',$request->id)->where('project_id', $project_id)->first();
+                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',$user_id)->where('id',$request->id)->first();
+                $contractor=RFIStatusSave::where('user_id', '=', $user_id)->where('id',$request->id)->where('project_id', $project_id)->first();
             
                 if($contractor!=null){
                     $contractor_name=json_decode($contractor);
@@ -639,17 +639,14 @@ class DiaryController extends Controller
                     $contractor_name=array();
                 }
               
-                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->first();
+                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->first();
 
-                $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->get();
+                $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->orderBy("id", "ASC")->get();
 
-                if($get_content==null){
+             
                    
-                    return view('diary.rfi.edit_one',compact('get_dairy','project','project_id'));
-                }else{
-                   
-                    return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
-                }
+                return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
+            
               
             
             }else{
@@ -799,7 +796,7 @@ class DiaryController extends Controller
                                 return redirect()->back()->with("error", __($path1["msg"]));
                             }
                         }else{
-                            $check_attach_file=RFIStatusSubSave::select('attachments_two','attachments_two')
+                            $check_attach_file=RFIStatusSubSave::select('attachments_two','attachments_two_path')
                                                 ->where('id',$request->id)
                                                 ->where('user_id',$user_id)
                                                 ->where('project_id',$request->project_id)
@@ -1559,8 +1556,14 @@ class DiaryController extends Controller
                 ->where('id', $project_id)
                 ->first();
 
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
 
-                $dairy_data = ProcurementMaterial::get();
+                $dairy_data = ProcurementMaterial::where('project_id',$project_id)->where('user_id',$user_id)->get();
 
                 
             

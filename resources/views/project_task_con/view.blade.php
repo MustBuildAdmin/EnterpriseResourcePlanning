@@ -145,14 +145,14 @@
                                         <p class="card-text small text-muted">{{ $file->file_size }}</p>
                                     </div>
                                     <div class="col-auto actions">
-                                        <div class="action-btn bg-secondary ms-2">
+                                        <div class=" ms-2">
                                             <a href="{{asset(Storage::url('tasks/'.$file->file))}}" download class="mx-3 btn btn-sm  align-items-center" role="button">
                                                 <i class="ti ti-download text-white"></i>
                                             </a>
                                         </div>
                                         @auth('web')
-                                            <div class="action-btn bg-danger ms-2">
-                                                <a href="#" class="mx-3 btn btn-sm  align-items-center delete-comment-file" data-url="{{ route('comment.destroy.file',[$task->project_id,$task->id,$file->id]) }}">
+                                            <div class="ms-2">
+                                                <a href="#" class="mx-3 align-items-center delete-comment-file" data-url="{{ route('comment.destroy.file',[$task->project_id,$task->id,$file->id]) }}">
                                                     <i data-bs-toggle="tooltip" title="{{__('Delete')}}" class="ti ti-trash text-white"></i>
                                                 </a>
                                             </div>

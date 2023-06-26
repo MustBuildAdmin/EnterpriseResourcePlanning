@@ -5,7 +5,8 @@
 				<input type="hidden" name="project_id" value="{{$project}}">
 				<div class="row">
 					<div class="form-group">
-						<label for="InputLIst">{{__('REQUEST FOR INFORMATION (RFI) STATUS for the project of:')}}</label> {{$project_name->project_name}} 
+						<label for="InputLIst"><b>REQUEST FOR INFORMATION (RFI) STATUS</b> for the project of:</label> 
+						<b>{{$project_name->project_name}}</b>
                     </div>
 					<div class="form-group">
 						<div class="col-md-4">
@@ -104,8 +105,15 @@
 			</div>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary"> 
+				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary" id="create_rfi"> 
             </div>
 		</form>
 	</div>
 </div>
+<script>
+$(document).ready(function() {
+    $(document).on('submit', 'form', function() {
+        $('#create_rfi').attr('disabled', 'disabled');
+    });
+});
+</script>
