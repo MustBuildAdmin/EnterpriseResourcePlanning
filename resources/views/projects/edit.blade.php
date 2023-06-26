@@ -500,4 +500,8 @@
     $(document).ready(function() {
         $('.chosen-select').chosen();
     });
+
+    $('#commonModal').on('hidden.bs.modal', function () {
+        location.reload();
+    });
 </script>
