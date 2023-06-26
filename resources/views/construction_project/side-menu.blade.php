@@ -239,7 +239,7 @@
                         @endcan
                         @can('manage vochange')
                         <li class="{{ (Request::segment(1) == 'variation_scope_change')?'active':''}}">
-                            <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
+                            <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO / Change Order') }}</a>
                         </li>
                         @endcan
                         @can('manage directions')

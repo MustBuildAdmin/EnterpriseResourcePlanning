@@ -64,7 +64,7 @@ h3, .h3 {
     @can('create vochange')
     <div class="col-auto ms-auto d-print-none">
       <div class="input-group-btn">
-          <a class="btn btn-primary" href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Vo/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+          <a class="btn btn-primary" href="#" data-size="xl" data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create VO/Change Order')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
               <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
           </a>
           <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
@@ -81,16 +81,16 @@ h3, .h3 {
             <table class="table" id="example2">
               <thead class="">
                 <tr>
-                  <th>{{__('Sno')}}</th>
+                  <th>{{__('S.No')}}</th>
                   <th>{{__('Issued By')}}</th>
                   <th>{{__('Issued Date')}}</th>
                   <th>{{__('VO/SCA Reference')}}</th>
                   <th>{{__('VO Description')}}</th>
                   <th>{{__('Reference')}}</th>
                   <th>{{__('Date')}}</th>
-                  <th>{{__('Contractor Cliamed Omission Cost')}}</th>
-                  <th>{{__('Contractor Cliamed  Addition Cost')}}</th>
-                  <th>{{__('Contractor Cliamed Net Amount')}}</th>
+                  <th>{{__('Contractor Claimed Omission Cost')}}</th>
+                  <th>{{__('Contractor Claimed  Addition Cost')}}</th>
+                  <th>{{__('Contractor Claimed Net Amount')}}</th>
                   <th>{{__('Consultant Certified Omission Cost')}}</th>
                   <th>{{__('Consultant Certified Addition Cost')}}</th>
                   <th>{{__('Consultant Certified Net Amount')}}</th>

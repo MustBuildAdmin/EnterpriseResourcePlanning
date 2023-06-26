@@ -27,13 +27,13 @@
       <div class="container">
         <div class="col-xs-12">
           <div class="form-group">
-            <label for="InputLIst"><b>VARIATIONS/SCOPE CHANGE AUTHORIZATION</b> for the project of:</label>
-            <b><span>{{$project_name->project_name}}</span></b>
+            <label for="InputLIst">{{__('Variations/Scope Change Authorization for the project of')}}:</label>
+            <span>{{$project_name->project_name}}</span>
           </div>
         </div>
         <hr style="border: 1px solid black;">
         <div class="col-xs-12">
-          <h3 style="text-align: center;">{{__('VARIATIONS/SCOPE CHANGE AUTHORIZATION')}}</h3>
+          <h3 style="text-align: center;">{{__('Variations/Scope Change Authorization')}}</h3>
         </div>
         <div class="row">
           <div class="col-6 mb-3">
@@ -147,16 +147,21 @@
           </div>
         </div>
         <div class="col-xs-12">
-          <label class="form-group">{{__('Remarks)')}}</label>
+          <label class="form-group">{{__('Remarks')}}</label>
           <div class="form-group">
             <textarea name="remarks" class="form-control" placeholder="{{__('Remarks')}}">@if($id!='' && $dairy_data->remarks!=''){{$dairy_data->remarks}}@endif</textarea>
           </div>
         </div>
         <div class="col-xs-6">
           <div class="form-group">
+<<<<<<< HEAD
             <label for="InputATTACHMENTS:">{{__('Attachments)')}}</label>
             <input type="file" name="attachment_file" class="form-control document_setup" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
             <span class="show_document_error" style="color:red;"></span>
+=======
+            <label for="InputATTACHMENTS:">{{__('Attachments')}}</label>
+            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg ,pdf">
+>>>>>>> 0554d06 (Dairy page arabic translate)
             <span>{{$get_dairy_data->attachment_file}}</span>
           </div>
         </div>
