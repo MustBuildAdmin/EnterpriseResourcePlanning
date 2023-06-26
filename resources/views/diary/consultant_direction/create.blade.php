@@ -14,7 +14,7 @@
         <div class="container">
           <div class="row">
             <div class="col form-group ">
-              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY')}}</label> <span>for the project of:</span>
+              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY for the project of')}}</label> <span>:</span>
               <span class="bold">{{$project_name->project_name}}</span>
             </div>
           </div>
@@ -58,7 +58,7 @@
           <table class="table" id="dynamicAddRemove">
             <tr>
               <td>
-                <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action &  Reply')}}</h4>
+                <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action & Reply')}}</h4>
                 <div class="row mb-5">
                   <div class="col">
                     <div class="form-group">
