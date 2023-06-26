@@ -56,7 +56,7 @@ h3, .h3 {
             <a href="{{ route('daily_reportscreate') }}" class="btn btn-primary">
                 <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
             </a>
-            <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+            <a  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
               <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
             </a>
         </div>
@@ -102,10 +102,10 @@ h3, .h3 {
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 {{-- @can('edit procurement material') --}}
-                                    <a class="btn btn-md bg-primary backgroundnone" href="{{ url('daily_reportsedit') }}"   title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
+                                    <a class="btn btn-md bg-primary backgroundnone" href="{{route('daily_reportsedit',\Crypt::encrypt($data_report->id))}}"   title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
                                 {{-- @endcan --}}
                                 {{-- @can('delete procurement material') --}}
-                                    {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material', $data_report->id],'id'=>'delete-form-'.$data_report->id]) !!} 
+                                    {!! Form::open(['method' => 'POST', 'route' => ['delete_site_reports', $data_report->id],'id'=>'delete-form-'.$data_report->id]) !!} 
                                     {{ Form::hidden('id',$data_report->id, ['class' => 'form-control']) }}
                                     {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                         <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
@@ -203,5 +203,11 @@ $(document).ready(function() {
             'colvis'
         ]
     });
+});
+
+$(document).on('keypress', function (e) {
+      if (e.which == 13) {
+          swal.closeModal();
+      }
 });
 </script>

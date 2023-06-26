@@ -1513,7 +1513,10 @@ class DiaryController extends Controller
                 $user_id = \Auth::user()->id;
             }
             $project_id=Session::get('project_id');
-            return view("diary.daily_reports.edit",compact('project_id'));
+
+            $data=SiteReport::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
+
+            return view("diary.daily_reports.edit",compact('project_id','data'));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -2029,6 +2032,110 @@ class DiaryController extends Controller
             "title" => $request->title,
             ];
 
+            SiteReport::insert($data);
+
+            $in_id = SiteReport::where('user_id',$user_id)
+            ->where('project_id',Session::get('project_id'))
+            ->where('id', '=', $request->edit_id)
+            ->get('id');
+
+            $invoice_id = trim($in_id, '[{"id:"}]');
+
+            $delete_invoice = SiteReportSub::where('site_id','=',$request->id)->delete();
+
+            if(isset($request->first_position)){
+
+                if (count($request->first_position) > 0) {
+
+                    foreach ($request->first_position as $item => $v) {
+
+                        if(isset($request->first_position[$item])){
+                            $set_first_position=$request->first_position[$item];
+                        }else{
+                            $set_first_position=null;
+                        }
+
+                        if(isset($request->first_person[$item])){
+                            $set_first_person=$request->first_person[$item];
+                        }else{
+                            $set_first_person=null;
+                        }
+
+                        if(isset($request->first_option[$item])){
+                            $set_first_option=$request->first_option[$item];
+                        }else{
+                            $set_first_option=null;
+                        }
+
+                        $data2 = [
+                        "site_id" => $invoice_id,
+                        "project_id" => Session::get('project_id'),
+                        "user_id" => $user_id,
+                        "position_name" =>$set_first_position,
+                        "no_of_persons" =>$set_first_person,
+                        "option_method"  =>$set_first_option,
+                        ];
+
+                        if ($request->increment < 0) {
+                            SiteReportSub::insert($data2);
+                        } else {
+                            SiteReportSub::insert($data2);
+                        }
+
+                    }
+                }
+
+            }
+
+
+      
+            return redirect()->back()->with("success", "Site report added successfully.");
+      
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+    public function update_site_reports(Request $request){
+
+        try {
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+              
+            if($request->weather!=null){
+                $select_weather = implode(',', array_filter($request->weather));
+            }else{
+                $select_weather = Null;
+            }
+
+            if($request->site_conditions!=null){
+                $select_site_conditions = implode(',', array_filter($request->site_conditions));
+            }else{
+                $select_site_conditions = Null;
+            }
+
+           $data = [
+            "project_id" =>Session::get('project_id'),
+            "user_id" => $user_id,
+            "contractor_name" => $request->contractor_name,
+            "con_date" => $request->con_date,
+            "con_day" => $request->con_day,
+            "weather" => $select_weather,
+            "site_conditions" => $select_site_conditions,
+            "temperature" => $request->temperature,
+            "min_input" => $request->min_input,
+            "degree" => $request->degree,
+            "remarks" => $request->remarks,
+            "prepared_by" => $request->prepared_by,
+            "title" => $request->title,
+            ];
+
             // $data1 = [
             //     "procurement_id" => $invoice_id,
             //     "project_id" => Session::get('project_id'),
@@ -2040,8 +2147,8 @@ class DiaryController extends Controller
             //     ];
             
         
-            SiteReport::insert($data);
-            return redirect()->back()->with("success", "Site report added successfully.");
+            SiteReport::where('id',$request->edit_id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->update($data);
+            return redirect()->back()->with("success", "Site report updated successfully.");
         //    SiteReportSub::insert($data1);
 
         } catch (Exception $e) {
@@ -2049,7 +2156,7 @@ class DiaryController extends Controller
         }
 
     }
-
+    
     public function diary_download_file(Request $request){
         $id = $request->id;
         $ducumentUpload = ProjectSpecification::find($id);
@@ -2092,5 +2199,37 @@ class DiaryController extends Controller
             return redirect()->back()->with('error', __('File is not exist.'));
         }
     }
+
+    public function delete_site_reports(Request $request)
+    {
+        try {
+
+            // if(\Auth::user()->can('delete directions')){
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
+                SiteReport::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();
+
+                SiteReportSub::where('site_id',$request->id)->delete();
+
+                return redirect()->back()->with("success", "Consultants directions record deleted successfully.");
+
+            // }else{
+
+                // return redirect()->back()->with('error', __('Permission denied.'));
+
+            // }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    
     
 }
