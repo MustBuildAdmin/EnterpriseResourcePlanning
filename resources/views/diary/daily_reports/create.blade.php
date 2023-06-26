@@ -287,7 +287,7 @@
             <br />
             <div class="card-footer text-end">
               <button type="submit" class="btn btn-primary" id="daily_report_create">{{__('Save')}}</button>
-              <input type="button" value="{{__('Cancel')}}" class="btn btn-light" >
+              <a href="{{ route('daily_reports') }}"  class="btn btn-light" >{{__('Cancel')}}</a>
             </div>
         </form>
       </div>

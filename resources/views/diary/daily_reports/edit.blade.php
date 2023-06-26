@@ -29,13 +29,13 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">Contractor Name</label>
-                  <input type="text" class="form-control" name="contractor_name" placeholder="Username" value="{{$data->contractor_name}}">
+                  <input type="text" class="form-control" name="contractor_name" placeholder="Username" value="{{$data->contractor_name ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">Date</label>
-                  <input type="date" name="con_date" class="form-control" id="con_date" placeholder="Email" value="{{$data->con_date}}">
+                  <input type="date" name="con_date" class="form-control" id="con_date" placeholder="Email" value="{{$data->con_date ?? ''}}">
                 </div>
               </div>
               <div class="col-md-4">
@@ -48,6 +48,7 @@
                 <div class="mb-3">
                   <label class="form-label">weather</label>
                   <div class="dropdownrpt">
+                   @if(isset($data->weather))
                     <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
                       <option value="" disabled>Select your option</option>
                       <option @if(str_contains($data->weather,'Clear')) selected @endif value="Clear">Clear</option>
@@ -61,6 +62,23 @@
                       <option @if(str_contains($data->weather,'Cold')) selected @endif value="Cold">Cold</option>
                       <option @if(str_contains($data->weather,'Hot')) selected @endif value="Hot">Hot</option>
                     </select>
+                    @else
+                    <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
+                      <option value="" disabled>Select your option</option>
+                      <option value="Clear">Clear</option>
+                      <option value="Dusty">Dusty</option>
+                      <option value="Muddy">Muddy</option>
+                      <option value="Windy">Windy</option>
+                      <option value="Cool">Cool</option>
+                      <option value="Fog">Fog</option>
+                      <option value="Warm">Warm</option>
+                      <option value="Rain">Rain</option>
+                      <option value="Cold">Cold</option>
+                      <option value="Hot">Hot</option>
+                    </select>
+                    @endif
+                 
+                   
                   </div>
                 </div>
               </div>
@@ -68,6 +86,7 @@
                 <div class="mb-3">
                   <label class="form-label">Site conditions</label>
                   <div class="dropdownrpt">
+                    @if(isset($data->site_conditions))
                     <select name="site_conditions[]" id='choices-multiple1' class='chosen-select'  multiple>
                       <option value="" disabled>Select your option</option>
                       <option @if(str_contains($data->site_conditions,'Dusty')) selected @endif value="Clear">Clear</option>
@@ -81,49 +100,74 @@
                       <option @if(str_contains($data->site_conditions,'Cold')) selected @endif value="Cold">Cold</option>
                       <option @if(str_contains($data->site_conditions,'Hot')) selected @endif value="Hot">Hot</option>
                     </select>
+                    @else
+                    <select name="site_conditions[]" id='choices-multiple1' class='chosen-select'  multiple>
+                      <option value="" disabled>Select your option</option>
+                      <option  value="Clear">Clear</option>
+                      <option value="Dusty">Dusty</option>
+                      <option value="Muddy">Muddy</option>
+                      <option value="Windy">Windy</option>
+                      <option value="Cool">Cool</option>
+                      <option value="Fog">Fog</option>
+                      <option  value="Warm">Warm</option>
+                      <option value="Rain">Rain</option>
+                      <option value="Cold">Cold</option>
+                      <option  value="Hot">Hot</option>
+                    </select>
+                    @endif
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
                   <label class="form-label">Day</label>
-                  <input type="text" class="form-control con_day" value="{{$data->con_day}}" disabled>
-                  <input type="hidden"  class="con_day" name="con_day" value="{{$data->con_day}}">
+                  <input type="text" class="form-control con_day" value="{{$data->con_day ?? ''}}" disabled>
+                  <input type="hidden"  class="con_day" name="con_day" value="{{$data->con_day ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">Temperature (Maximum)</label>
-                  <input name="temperature" type="text" class="form-control" placeholder="Maximum" value="{{$data->temperature}}">
+                  <input name="temperature" type="text" class="form-control" placeholder="Maximum" value="{{$data->temperature ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">Minimum</label>
-                  <input name="min_input" type="text" class="form-control" placeholder="Minimum"  value="{{$data->min_input}}">
+                  <input name="min_input" type="text" class="form-control" placeholder="Minimum"  value="{{$data->min_input ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-2">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
+                  @if(isset($data->degree))
                   <select name="degree" class="form-control addbutton" >
                     <option value="" disabled selected>Select your option</option>
-                    <option @if( 'Fahrenheit'==$data[ 'degree']){ selected }@endif value="Fahrenheit">Fahrenheit</option>
-                    <option @if( 'Fahrenheit'==$data[ 'Celsius']){ selected }@endif value="Celsius">Celsius</option>
+                    <option @if( 'Fahrenheit'==$data->degree){ selected }@endif value="Fahrenheit">Fahrenheit</option>
+                    <option @if( 'Celsius'==$data->degree){ selected }@endif value="Celsius">Celsius</option>
                   </select>
+                  @else
+                  <select name="degree" class="form-control addbutton" >
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="Fahrenheit">Fahrenheit</option>
+                    <option value="Celsius">Celsius</option>
+                  </select>
+                  @endif
                 </div>
               </div>
               <div class="card-footer text-end"> &nbsp; </div>
               <div class="col-md-12 l-section">
                 <h2>Contractors Personnel</h2>
                 <br />
+                @if(isset($data_sub))
+                @if($data_sub->position==null || $data_sub->position==null || $data_sub->position==null)
                 <table class="table tableadd form" id="dynamicTable">
                   <thead>
                     <tr>
                     <tr>
                       <th>Position</th>
                       <th>No Of Person per Position</th>
-                      <th></th>
+                      <th>Manpower</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -151,6 +195,45 @@
                     </tr>
                   </tbody>
                 </table>
+                @endif
+                @else
+                <table class="table tableadd form" id="dynamicTable">
+                  <thead>
+                    <tr>
+                    <tr>
+                      <th>Position</th>
+                      <th>No Of Person per Position</th>
+                      <th>Manpower</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($data_sub as $mutli_data)
+                    <tr id="addRow">
+                      <td class="col-xs-3">
+                        <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="Enter Position Name" value="" />
+                      </td>
+                      <td class="col-xs-3">
+                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="Enter No Of Person Per Position" />
+                      </td>
+                      <td class="col-xs-5">
+                        <select class="form-control first_option_0"  name="first_option[]">
+                          <option value="" disabled selected>Select your option</option>
+                          <option value="Direct Manpower">Direct Manpower</option>
+                          <option value="InDirect Manpower">InDirect Manpower</option>
+                        </select>
+                      </td>
+                      <td class="col-xs-1 text-center">
+                        <!-- <span class="c-link"><i class="bttoncreate fa fa-edit  js-toggleForm"></i></span> -->
+                        <span class="addBtn bttoncreate">
+                          <i class="fa fa-plus"></i>
+                        </span>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+                @endif
               </div>
               <div class="card-footer text-end"> &nbsp; </div>
             </div>
@@ -183,7 +266,7 @@
                   <tr>
                     <th>Position Name</th>
                     <th>No Of Person per Position</th>
-                    <th></th>
+                    <th>Manpower</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -295,7 +378,7 @@
             <br />
             <div class="card-footer text-end">
               <button type="submit" class="btn btn-primary" id="update_daily_report">{{__('Update')}}</button>
-              <input type="button" value="{{__('Cancel')}}" class="btn btn-light" >
+              <a href="{{ route('daily_reports') }}"  class="btn btn-light" >{{__('Cancel')}}</a>
             </div>
         </form>
       </div>

@@ -1494,6 +1494,10 @@ class DiaryController extends Controller
     {
         try {
 
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
+
             return view("diary.daily_reports.create");
 
         } catch (Exception $e) {
@@ -1514,9 +1518,15 @@ class DiaryController extends Controller
             }
             $project_id=Session::get('project_id');
 
-            $data=SiteReport::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
+            $data=SiteReport::where('id', '=', $request->edit_id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
+            $data_sub=SiteReportSub::where('site_id', '=', $request->edit_id)
+            ->where('project_id', Session::get('project_id'))
+            ->where('user_id', $user_id)
+            ->get();
 
-            return view("diary.daily_reports.edit",compact('project_id','data'));
+            dd($data_sub);
+
+            return view("diary.daily_reports.edit",compact('project_id','data','data_sub'));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -2034,14 +2044,8 @@ class DiaryController extends Controller
 
             SiteReport::insert($data);
 
-            $in_id = SiteReport::where('user_id',$user_id)
-            ->where('project_id',Session::get('project_id'))
-            ->where('id', '=', $request->edit_id)
-            ->get('id');
-
-            $invoice_id = trim($in_id, '[{"id:"}]');
-
-            $delete_invoice = SiteReportSub::where('site_id','=',$request->id)->delete();
+            $id = DB::getPdo()->lastInsertId();
+           
 
             if(isset($request->first_position)){
 
@@ -2068,7 +2072,7 @@ class DiaryController extends Controller
                         }
 
                         $data2 = [
-                        "site_id" => $invoice_id,
+                        "site_id" => $id,
                         "project_id" => Session::get('project_id'),
                         "user_id" => $user_id,
                         "position_name" =>$set_first_position,
