@@ -97,8 +97,8 @@ class ProjectController extends Controller
                 $request->all(), [
                                 'project_name' => 'required',
                                 // 'project_image' => 'required',
-                                'non_working_days'=>'required',
-                                'status'=>'required'
+                                'non_working_days'=>'required'
+                                // 'status'=>'required'
                             ]
             );
             if($validator->fails())
