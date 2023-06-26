@@ -154,14 +154,9 @@
         </div>
         <div class="col-xs-6">
           <div class="form-group">
-<<<<<<< HEAD
             <label for="InputATTACHMENTS:">{{__('Attachments)')}}</label>
             <input type="file" name="attachment_file" class="form-control document_setup" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
             <span class="show_document_error" style="color:red;"></span>
-=======
-            <label for="InputATTACHMENTS:">{{__('Attachments')}}</label>
-            <input type="file" name="attachment_file" class="form-control imgs" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg ,pdf">
->>>>>>> 0554d06 (Dairy page arabic translate)
             <span>{{$get_dairy_data->attachment_file}}</span>
           </div>
         </div>
