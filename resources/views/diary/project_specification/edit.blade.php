@@ -13,8 +13,8 @@
             <input type="hidden" name="id" value="{{$data->id}}">
           <div class="row">
             <div class="form-group">
-              <label for="InputLIst">{{__('SPECIFICATIONS for the project of')}}:</label>
-              {{$project_name->project_name}}
+              <label for="InputLIst"><b>SPECIFICATIONS</b> for the project of:</label>
+              <b>{{$project_name->project_name}}</b>
             </div>
           </div>
           <hr style="border: 1px solid black;">
@@ -59,7 +59,9 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="input">{{__('Attachments')}}<span style='color:red;'>*</span></label>
-                <input type="file" class="form-control" name="attachment_file_name" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"> @php $documentPath=\App\Models\Utility::get_file('uploads/project_direction_summary'); @endphp
+                <input type="file" class="form-control document_setup" name="attachment_file_name" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"> 
+                <span class="show_document_error" style="color:red;"></span>
+                @php $documentPath=\App\Models\Utility::get_file('uploads/project_direction_summary'); @endphp
                 <br>
                 <table>
                   <tr>
@@ -75,7 +77,7 @@
         <div class="col-xs-3">
             <div class="modal-footer">
                 <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-                <input type="submit" id="edit_project" value="{{__('Update')}}" class="btn  btn-primary"> 
+                <input type="submit" id="edit_project" value="{{__('Update')}}" class="btn btn-primary add"> 
             </div>
         </div>
       </form>

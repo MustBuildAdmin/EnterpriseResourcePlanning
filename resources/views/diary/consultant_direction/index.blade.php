@@ -70,7 +70,7 @@ h3, .h3 {
                 <table class="table" id="example2">
                     <thead class="">
                     <tr>
-                        <th>{{__('Sno')}}</th>
+                        <th>{{__('S.No')}}</th>
                         <th>{{__('Issued By')}}</th>
                         <th>{{__('Issued Date')}}</th>
                         <th>{{__('AD/ED Reference')}}</th>
@@ -156,6 +156,9 @@ h3, .h3 {
                     extend: 'pdfHtml5',
                     title: 'Consultants Directions Summary',
                     titleAttr: 'PDF',
+                    orientation : 'landscape',
+                    pagesize: 'A3',
+                    pageSize: 'LEGAL',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
@@ -198,9 +201,42 @@ h3, .h3 {
         });
     });
 
-$(document).on('keypress', function (e) {
-    if (e.which == 13) {
-        swal.closeModal();
-    }
-});
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            swal.closeModal();
+        }
+    });
+
+
+    $(document).on('change', '.document_setup', function(){
+          var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+          if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+              $(".show_document_file").hide();
+              $(".show_document_error").html("Upload only pdf, jpeg, jpg, png, gif");
+              $(".add").prop('disabled',true);
+              return false;
+          } else{
+              $(".show_document_file").show();
+              $(".show_document_error").hide();
+              $(".add").prop('disabled',false);
+              return true;
+          }
+
+    });
+
+    $(document).on('change', '.file_input', function(){
+          var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+          if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+              $(".show_document_file").hide();
+              $(".show_document_error").html("Upload only pdf, jpeg, jpg, png, gif");
+              $(".add").prop('disabled',true);
+              return false;
+          } else{
+              $(".show_document_file").show();
+              $(".show_document_error").hide();
+              $(".add").prop('disabled',false);
+              return true;
+          }
+
+    });
 </script>

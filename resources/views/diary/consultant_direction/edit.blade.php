@@ -16,7 +16,7 @@
             <div class="row">
               <input name="id" type="hidden" class="form-control" value="{{$consult_dir->id}}" placeholder="Enter your  Issued By" />
               <div class="col form-group ">
-                <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY')}}</label> <span>for the project of:</span>
+                <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY for the project of')}}</label> <span>:</span>
                 <span class="bold">{{$project_name->project_name}}</span>
               </div>
             </div>
@@ -59,7 +59,7 @@
               @foreach ($consult_dir_multi as $key => $mutli_data) 
               <tr>
                 <td>
-                  <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action &  Reply')}}</h4>
+                  <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action & Reply')}}</h4>
                   <div class="row mb-5">
                     <div class="col">
                       <div class="form-group">
@@ -75,7 +75,8 @@
                     </div>
                     <div class="col-md-12 mt-3">
                       <label for="InputRemarks">{{__('Attachment')}}</label>
-                      <input name="initiator_file_name[]"  type="file" id="" class="form-control" multiple accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>
+                      <input name="initiator_file_name[]"  type="file" id="" class="form-control file_input" multiple accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>
+                      <span class="show_document_error" style="color:red;"></span>
                       <span>{{$mutli_data['initiator_file_name']}}</span>
                     </div>
                   </div>
