@@ -229,7 +229,7 @@ abbr[title] {
     display: block;
     margin: 0.5em;
     min-height: 28em;
-    overflow: hidden;
+    overflow: auto;
     position: relative;
     width: auto;
 
