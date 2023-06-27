@@ -220,6 +220,7 @@ class ProjectController extends Controller
                   CURLOPT_FOLLOWLOCATION => true,
                   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                   CURLOPT_CUSTOMREQUEST => 'POST',
+                  CURLOPT_SSL_VERIFYPEER => false,
                   CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                 ));
 
@@ -337,6 +338,7 @@ class ProjectController extends Controller
                       CURLOPT_FOLLOWLOCATION => true,
                       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                       CURLOPT_CUSTOMREQUEST => 'POST',
+                      CURLOPT_SSL_VERIFYPEER => false,
                       CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
                     ));
 
@@ -517,7 +519,7 @@ class ProjectController extends Controller
 
     public function checkDuplicateProject(Request $request){
         $form_name  = $request->form_name;
-        $check_name = $request->get_name;
+        $check_name = $request->project_name;
 
         if($form_name == "ProjectCreate"){
             $get_check_val = Project::where('project_name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
@@ -527,10 +529,12 @@ class ProjectController extends Controller
         }
         
         if($get_check_val == null){
-            return 1; //Success
+            echo 'true';
+            // return 1; //Success
         }
         else{
-            return 0; //Error
+            echo 'false';
+            // return 0; //Error
         }
     }
 
