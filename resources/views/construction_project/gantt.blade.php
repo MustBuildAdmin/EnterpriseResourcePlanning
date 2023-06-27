@@ -709,12 +709,11 @@ $holidays=implode(':',$holidays);
                     node.parentNode.style.overflow = "visible";
                     node.style.display = "inline-block";
                     var select = $(node.firstChild);
-                    console.log(value,"valuevalue");
-                    console.log(typeof(value))
 
                     if (value) {
-                        value = value.split(",");
-                        console.log(value,"1")
+                        if(value!=''){
+                            value = value.split(",");
+                        }
                         select.val([]);
                         select.val(value);
                     }
@@ -809,8 +808,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        // var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
+        // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
         // var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
