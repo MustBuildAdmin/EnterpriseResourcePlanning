@@ -253,10 +253,9 @@ class ProjectController extends Controller
                         if(isset($value['progress'])){
                             $task->progress=$value['progress'];
                         }
-                        if(isset($value['parent'])){
-                            $task->parent=$value['parent'];
+                        $check_parent=Con_task::where('project_id',Session::get('project_id'))->where(['parent'=>$task->id])->get();
+                        if(count($check_parent)>0){
                             $task->type="project";
-                            // $task->predecessors=$value['parent'];
                         }else{
                             $task->type="task";
                         }
@@ -372,6 +371,9 @@ class ProjectController extends Controller
                             if(isset($value['parent'])){
                                 $task->parent=$value['parent'];
                                 $task->predecessors=$value['parent'];
+                            }
+                            $check_parent=Con_task::where('project_id',Session::get('project_id'))->where(['parent'=>$task->id])->get();
+                            if(count($check_parent)>0){
                                 $task->type="project";
                             }else{
                                 $task->type="task";
@@ -1191,6 +1193,7 @@ class ProjectController extends Controller
                         $tmp['name']         = $task->name;
                         $tmp['start']        = $task->start_date;
                         $tmp['end']          = $task->end_date;
+                        $tmp['type']          = $task->type;
                         $tmp['custom_class'] = (empty($task->priority_color) ? '#ecf0f1' : $task->priority_color);
                         $tmp['progress']     = str_replace('%', '', $task->taskProgress()['percentage']);
                         $tmp['extra']        = [
@@ -1297,8 +1300,10 @@ class ProjectController extends Controller
                 $task             = ProjectTask::find($id);
                 $task->start_date = $request->start;
                 $task->end_date   = $request->end;
+                
+               
+              
                 $task->save();
-
                 return response()->json(
                     [
                         'is_success' => true,

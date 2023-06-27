@@ -34,7 +34,12 @@ class TaskController extends Controller
             }
             $task->users = $implode_users;
         }
-
+        $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$task->id])->get();
+        if(count($check_parent)>0){
+            $task->type="project";
+        }else{
+            $task->type="task";
+        }
         $task->save();
         return response()->json([
             "action"=> "inserted",
@@ -69,6 +74,12 @@ class TaskController extends Controller
                 $implode_users = $request->users;
             }
             $task->users = $implode_users;
+        }
+        $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$task->id])->get();
+        if(count($check_parent)>0){
+            $task->type="project";
+        }else{
+            $task->type="task";
         }
         $task->save();
 

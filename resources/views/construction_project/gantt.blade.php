@@ -710,12 +710,11 @@ $holidays=implode(':',$holidays);
                     node.parentNode.style.overflow = "visible";
                     node.style.display = "inline-block";
                     var select = $(node.firstChild);
-                    console.log(value,"valuevalue");
-                    console.log(typeof(value))
 
                     if (value) {
-                        value = value.split(",");
-                        console.log(value,"1")
+                        if(value!=''){
+                            value = value.split(",");
+                        }
                         select.val([]);
                         select.val(value);
                     }
