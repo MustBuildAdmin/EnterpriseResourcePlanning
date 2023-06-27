@@ -300,52 +300,75 @@
         }
     });
 
-    var form = $("#create_project_form");
 
-    form.children("div").steps({
-        headerTag: "h3",
-        bodyTag: "section",
-        transitionEffect: "slideLeft",
-        onStepChanging: function (event, currentIndex, newIndex)
-        {
-            if(currentIndex == 2){
-                form.validate().settings.ignore = ":disabled";
+    $(function ()
+    {
+
+        var form = $("#create_project_form");
+
+        form.validate({
+            rules: {
+                project_name: {
+                    required: true,
+                    remote: {
+                        url: '{{ route("checkDuplicateProject") }}',
+                        data: { 'form_name' : "ProjectCreate" },
+                        type: "GET"
+                    }
+                }
+            },
+            messages: {
+                project_name: {
+                    remote: "Project Name already in use!"
+                }
             }
-            else{
+        });
+
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                if(currentIndex == 2){
+                    form.validate().settings.ignore = ":disabled";
+                }
+                else{
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                }
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex)
+            {
                 form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                })
+                swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "Do You Want Create Project?",
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                    else if (result.dismiss === Swal.DismissReason.cancel) {
+                    }
+                });
             }
-            return form.valid();
-        },
-        onFinishing: function (event, currentIndex)
-        {
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
-        },
-        onFinished: function (event, currentIndex)
-        {
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-            })
-            swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: "Do You Want Create Project?",
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-                else if (result.dismiss === Swal.DismissReason.cancel) {
-                }
-            });
-        }
+        });
     });
 
     $(document).on("change", '#file_status', function () {
