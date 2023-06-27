@@ -91,7 +91,7 @@
                             @if(\Auth::user()->type == 'company')
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-0">
                                     <div class="btn-box">
-                                        {{ Form::label('start_date', __('Start Date'),['class'=>'form-label'])}}
+                                        {{ Form::label('start_date', __('Planned Start Date'),['class'=>'form-label'])}}
                                         {{ Form::date('start_date', null, array('class' => 'form-control month-btn start_date')) }}
                                     </div>
                                 </div>
@@ -100,9 +100,9 @@
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
                                 <div class="btn-box">
                                     @if(\Auth::user()->type == 'company')
-                                        {{ Form::label('end_date', __('End Date'),['class'=>'form-label'])}}
+                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
                                     @else
-                                        {{ Form::label('end_date', __('Date'),['class'=>'form-label'])}}
+                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
                                     @endif
                                     
                                     {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date')) }}

@@ -7,7 +7,7 @@
                 <div class="row min-750" id="taskboard_view">
                     <div class="col-2">
                         <div class="form-group">
-                            {{ Form::label('name', __('Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
+                            {{ Form::label('name', __('Planned Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
                             {{ Form::date('get_date', $data['get_date'], array('class' => 'form-control month-btn','id' => 'get_date', 
                                 'min' => date('Y-m-d',strtotime($data['con_data']->start_date)),
                                 'max' => date('Y-m-d',strtotime($data['con_data']->end_date))
@@ -18,7 +18,7 @@
 
                     <div class="col-2">
                         <div class="form-group">
-                            {{ Form::label('name', __('Percentage'),['class' => 'form-label']) }}<span class="text-danger">*</span>
+                            {{ Form::label('name', __('Actual Progress As per a Day'),['class' => 'form-label']) }}<span class="text-danger">*</span>
                             {{ Form::number('percentage', $data['percentage'], ['class' => 'form-control','id' => 'percentage','required'=>'required','max'=>'100','min'=>'1']) }}
                             {{ Form::hidden('task_id', $task_id, ['class' => 'form-control','id'=>'task_id']) }}
                             {{ Form::hidden('user_id', \Auth::user()->id, ['class' => 'form-control']) }}

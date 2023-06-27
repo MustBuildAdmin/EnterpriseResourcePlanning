@@ -26,15 +26,15 @@
                         </tr>
 
                         <tr class="highlighted">
-                            <td style="font-weight:bold;">Task Start Date:</td>
+                            <td style="font-weight:bold;">Planned Start Date:</td>
                             <td style="">{{Utility::site_date_format($data['con_data']->start_date,\Auth::user()->id)}}</td>
 
-                            <td style="font-weight:bold;">Task End Date:</td>
+                            <td style="font-weight:bold;">Planned End Date:</td>
                             <td style="">{{Utility::site_date_format($data['con_data']->end_date,\Auth::user()->id)}}</td>
                         </tr>
 
                         <tr class="highlighted">
-                            <td style="font-weight:bold;">Task Overall Percentage:</td>
+                            <td style="font-weight:bold;">Actual Progress:</td>
                             <td style="">{{ $total_pecentage }}%</td>
 
                             <td style="font-weight:bold;"></td>
@@ -65,7 +65,7 @@
                             <th scope="col">{{__('Planned Date')}}</th>
                             <th scope="col">{{__('Actual Date')}}</th>
                             <th scope="col">{{__('Status')}}</th>
-                            <th scope="col">{{__('Percentage')}}</th>
+                            <th scope="col">{{__('Actual Progress as per a Day')}}</th>
                             <th scope="col">{{__('FileName')}}</th>
                             <th scope="col">{{__('Description')}}</th>
                             <th scope="col">{{__('Action')}}</th>
