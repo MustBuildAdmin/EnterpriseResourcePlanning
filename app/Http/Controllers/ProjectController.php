@@ -34,6 +34,8 @@ use DateInterval;
 use DateTime;
 use DatePeriod;
 use DB;
+use App\Jobs\Projecttypetask;
+
 class ProjectController extends Controller
 {
     /**
@@ -253,12 +255,8 @@ class ProjectController extends Controller
                         if(isset($value['progress'])){
                             $task->progress=$value['progress'];
                         }
-                        $check_parent=Con_task::where('project_id',Session::get('project_id'))->where(['parent'=>$task->id])->get();
-                        if(count($check_parent)>0){
-                            $task->type="project";
-                        }else{
-                            $task->type="task";
-                        }
+                        
+                       
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
                             if(isset($raw['Finish'])){
@@ -372,12 +370,8 @@ class ProjectController extends Controller
                                 $task->parent=$value['parent'];
                                 $task->predecessors=$value['parent'];
                             }
-                            $check_parent=Con_task::where('project_id',Session::get('project_id'))->where(['parent'=>$task->id])->get();
-                            if(count($check_parent)>0){
-                                $task->type="project";
-                            }else{
-                                $task->type="task";
-                            }
+                           
+                           
                             if(isset($value['$raw'])){
                                 $raw=$value['$raw'];
                                 if(isset($raw['Finish'])){
@@ -488,7 +482,8 @@ class ProjectController extends Controller
                 }
 
             }
-
+             // type project or task 
+            Projecttypetask::dispatch(Session::get('project_id'));
 
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
