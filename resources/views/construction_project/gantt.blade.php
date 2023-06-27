@@ -681,7 +681,7 @@ $holidays=implode(':',$holidays);
                             },
                             success : function(multi_data) {
                                 $.each(multi_data['0'], function(multi_key, multi_value) {
-                                    html += "<option value='" + multi_value.key + "'>" + multi_value.label + "</option>";
+                                    html += "<option value=" + multi_value.key + ">" + multi_value.label + "</option>";
                                 });
                             }
                         });
@@ -694,10 +694,13 @@ $holidays=implode(':',$holidays);
                     node.parentNode.style.overflow = "visible";
                     node.style.display = "inline-block";
                     var select = $(node.firstChild);
+                    console.log(value,"valuevalue");
+                    console.log(typeof(value))
 
                     if (value) {
-                        value = (value + "").split(",");
-
+                        value = value.split(",");
+                        console.log(value,"1")
+                        select.val([]);
                         select.val(value);
                     }
                     else {
@@ -791,8 +794,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
-        // var dp = new gantt.dataProcessor("/erpnew/public/");
+        // var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
+        var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
