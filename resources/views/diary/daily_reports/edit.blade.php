@@ -22,7 +22,7 @@
             <div class="row row-cards">
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Daily Report No</label>
+                  <label class="form-label">Daily Report No {{$data->id ?? ''}}</label>
                   <label class="form-label form-control disabledmode">Daily Report No</label>
                 </div>
               </div>
@@ -159,8 +159,7 @@
               <div class="col-md-12 l-section">
                 <h2>Contractors Personnel</h2>
                 <br />
-                @if(isset($data_sub))
-                @if($data_sub->position==null || $data_sub->position==null || $data_sub->position==null)
+           
                 <table class="table tableadd form" id="dynamicTable">
                   <thead>
                     <tr>
@@ -172,49 +171,13 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @foreach ($data_sub as $display_sub)
                     <tr id="addRow">
                       <td class="col-xs-3">
-                        <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="Enter Position Name" />
+                        <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub['position_name'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="Enter No Of Person Per Position" />
-                      </td>
-                      <td class="col-xs-5">
-                        <select class="form-control first_option_0"  name="first_option[]">
-                          <option value="" disabled selected>Select your option</option>
-                          <option value="Direct Manpower">Direct Manpower</option>
-                          <option value="InDirect Manpower">InDirect Manpower</option>
-                        </select>
-                      </td>
-                      <td class="col-xs-1 text-center">
-                        <!-- <span class="c-link"><i class="bttoncreate fa fa-edit  js-toggleForm"></i></span> -->
-                        <span class="addBtn bttoncreate">
-                          <i class="fa fa-plus"></i>
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                @endif
-                @else
-                <table class="table tableadd form" id="dynamicTable">
-                  <thead>
-                    <tr>
-                    <tr>
-                      <th>Position</th>
-                      <th>No Of Person per Position</th>
-                      <th>Manpower</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data_sub as $mutli_data)
-                    <tr id="addRow">
-                      <td class="col-xs-3">
-                        <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="Enter Position Name" value="" />
-                      </td>
-                      <td class="col-xs-3">
-                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="Enter No Of Person Per Position" />
+                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub['position_name'] ?? ''}}" />
                       </td>
                       <td class="col-xs-5">
                         <select class="form-control first_option_0"  name="first_option[]">
@@ -233,7 +196,8 @@
                     @endforeach
                   </tbody>
                 </table>
-                @endif
+               
+             
               </div>
               <div class="card-footer text-end"> &nbsp; </div>
             </div>
@@ -319,6 +283,7 @@
             <div class="col-md-12 l-section">
               <h2>Major Equipment on Project</h2>
               <br />
+            
               <table class="table tableadd form">
                 <thead>
                   <tr>
@@ -329,12 +294,14 @@
                   </tr>
                 </thead>
                 <tbody>
+                  @foreach ($data_sub as $display_sub)
+                
                   <tr id="addRow3">
                     <td class="col-xs-3">
-                      <input name="position_name[]" class="form-control addMain3" type="text" placeholder="Enter Equipment Name" />
+                      <input name="position_name[]" class="form-control addMain3" type="text" placeholder="Enter Equipment Name" value="{{$display_sub['position_name'] ?? ''}}" />
                     </td>
                     <td class="col-xs-3">
-                      <input name="no_of_persons[]" class="form-control addPrefer3" type="text" placeholder="Enter No Of Person Per Position" />
+                      <input name="no_of_persons[]" class="form-control addPrefer3" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub->no_of_persons ?? ''}}"/>
                     </td>
                     <td class="col-xs-5">
                       <select class="form-control addbutton addCommon3" name="option_method[]">
@@ -349,8 +316,10 @@
                       </span>
                     </td>
                   </tr>
+                  @endforeach
                 </tbody>
               </table>
+           
             </div>
             <div class="col-md-4 form-group">
               <label name="document" for="" class="form-label">{{__('Document')}}
@@ -365,15 +334,15 @@
             </div>
             <div class="col-md-12">
               {{Form::label('Remarks',__('Remarks'),array('class'=>'form-label')) }}
-              <textarea name="remarks" class="form-control" rows="5" style="height: 200px;">{{$data->remarks}}</textarea>
+              <textarea name="remarks" class="form-control" rows="5" style="height: 200px;">{{$data->remarks ?? ''}}</textarea>
             </div>
             <div class="col-md-12">
               {{Form::label('Prepared By',__('Prepared By'),array('class'=>'form-label')) }}
-              <input name="prepared_by" class="form-control" type="text" value="{{$data->prepared_by}}"/>
+              <input name="prepared_by" class="form-control" type="text" value="{{$data->prepared_by ?? ''}}"/>
             </div>
             <div class="col-md-12">
               {{Form::label('Title',__('Title'),array('class'=>'form-label')) }}
-              <input name="title" class="form-control" type="text" value="{{$data->title}}" />
+              <input name="title" class="form-control" type="text" value="{{$data->title ?? ''}}" />
             </div>
             <br />
             <div class="card-footer text-end">

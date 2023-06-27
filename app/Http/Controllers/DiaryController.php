@@ -19,6 +19,7 @@ use App\Models\SiteReport;
 use App\Models\SiteReportSub;
 use App\Models\Vochange;
 use File;
+use Illuminate\Support\Facades\Crypt;
 use DB;
 use Session;
 
@@ -1517,15 +1518,19 @@ class DiaryController extends Controller
                 $user_id = \Auth::user()->id;
             }
             $project_id=Session::get('project_id');
-
-            $data=SiteReport::where('id', '=', $request->edit_id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
-            $data_sub=SiteReportSub::where('site_id', '=', $request->edit_id)
+            
+            $decode_id=Crypt::decryptString($request->id);
+            $edit_id = trim($decode_id, '[{"id:;"}]');
+         
+          
+            $data=SiteReport::where('id', '=', $edit_id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
+         
+            $data_sub=SiteReportSub::where('site_id', '=', $edit_id)
             ->where('project_id', Session::get('project_id'))
             ->where('user_id', $user_id)
             ->get();
 
-            dd($data_sub);
-
+          
             return view("diary.daily_reports.edit",compact('project_id','data','data_sub'));
 
         } catch (Exception $e) {
@@ -2152,6 +2157,68 @@ class DiaryController extends Controller
             
         
             SiteReport::where('id',$request->edit_id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->update($data);
+
+          
+
+        $in_id = SiteReport::where('user_id',$user_id)
+                                            ->where('project_id',Session::get('project_id'))
+                                            ->where('id', '=', $request->edit_id)
+                                            ->get('id');
+
+        $invoice_id = trim($in_id, '[{"id:"}]');
+
+        $delete_invoice = SiteReportSub::where('site_id','=',$request->edit_id)->delete();
+
+            if(isset($request->first_position)){
+
+            
+                if (count($request->first_position) > 0) {
+
+                    foreach ($request->first_position as $item => $v) {
+                   
+                
+                        if(isset($request->first_position[$item])){
+                            $set_first_position=$request->first_position[$item];
+                        }else{
+                            $set_first_position=null;
+                        }
+
+                        if(isset($request->first_person[$item])){
+                            $set_first_person=$request->first_person[$item];
+                        }else{
+                            $set_first_person=null;
+                        }
+
+                        if(isset($request->first_option[$item])){
+                            $set_first_option=$request->first_option[$item];
+                        }else{
+                            $set_first_option=null;
+                        }
+
+                        $data2 = [
+                            "site_id" => $invoice_id,
+                            "project_id" => Session::get('project_id'),
+                            "user_id" => $user_id,
+                            "position_name" =>$set_first_position,
+                            "no_of_persons" =>$set_first_person,
+                            "option_method"  =>$set_first_option,
+        
+                        ];
+                        
+                    
+                        if ($request->increment < 0) {
+                            SiteReportSub::insert($data2);
+                        
+                        } else {
+                            SiteReportSub::insert($data2);
+                        
+                        }
+                        
+                    }
+                }
+
+            }
+
             return redirect()->back()->with("success", "Site report updated successfully.");
         //    SiteReportSub::insert($data1);
 

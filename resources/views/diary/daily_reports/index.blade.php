@@ -65,7 +65,7 @@ h3, .h3 {
     <div class="card table-card">
       <div class="card-header card-body table-border-style">
         @can('manage project specification')
-        <div class="table">
+        <div class="responsive">
           <table class="table" id="example2">
             <thead>
               <tr>
@@ -100,7 +100,7 @@ h3, .h3 {
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
                           {{-- @can('edit procurement material') --}}
-                              <a class="btn btn-md bg-primary backgroundnone" href="{{route('daily_reportsedit',\Crypt::encrypt($data_report->id))}}"   title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
+                              <a class="btn btn-md bg-primary backgroundnone" href="{{route('daily_reportsedit',Crypt::encrypt($data_report->id))}}"   title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
                           {{-- @endcan --}}
                           {{-- @can('delete procurement material') --}}
                               {!! Form::open(['method' => 'POST', 'route' => ['delete_site_reports', $data_report->id],'id'=>'delete-form-'.$data_report->id]) !!} 
