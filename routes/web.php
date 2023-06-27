@@ -486,6 +486,7 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
     ]
 );
 
+Route::get('checkDuplicateProject', 'ProjectController@checkDuplicateProject')->name('checkDuplicateProject')->middleware(['auth','XSS','revalidate',]);
 
 
 Route::get('/paymentPage', 'Auth\RegisteredUserController@paymentPage');
