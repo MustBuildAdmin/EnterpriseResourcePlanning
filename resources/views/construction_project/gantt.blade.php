@@ -13,7 +13,6 @@
 <script src="{{asset('assets/js/js/criticalPath.js')}}"></script>
 <script src="{{asset('assets/js/js/overlay.js')}}"></script>
 <script src="{{asset('assets/js/js/export.js')}}"></script>
-<script src="{{asset('assets/js/js/fittoscreen.js')}}"></script>
 <script src="{{asset('assets/js/js/lightBox.js')}}"></script>
 <script src="{{asset('assets/js/js/expandAndCollapse.js')}}"></script>
 <script src="{{asset('assets/js/js/taskPostion.js')}}"></script>
@@ -73,6 +72,8 @@
     .gantt_task_line {
         background-color: #4e6da0;
         border: 1px solid #4e6da0;
+
+    }
     .gantt_cal_light >.gantt_cal_ltitle {
          font-size: 13px !important;
     }
@@ -794,7 +795,6 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        // var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
         // var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
