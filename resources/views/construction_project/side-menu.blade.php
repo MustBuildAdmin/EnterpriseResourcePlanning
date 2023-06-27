@@ -174,11 +174,11 @@
                             </li>
                         @endcan
 
-                        @can('view expense')
+                        <!-- @can('view expense')
                             <li class="">
                                 <a href="{{ route('projects.expenses.index',$project_id) }}" class="dropdown-item">{{ __('Expense') }}</a>
                             </li>
-                        @endcan
+                        @endcan -->
                         <li class="">
                             <a href="{{ route('project_report.view_task_report',$project_id) }}" class="dropdown-item">{{ __('Task Report') }}</a>
                         </li>
@@ -239,7 +239,7 @@
                         @endcan
                         @can('manage vochange')
                         <li class="{{ (Request::segment(1) == 'variation_scope_change')?'active':''}}">
-                            <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO/Change Order') }}</a>
+                            <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO / Change Order') }}</a>
                         </li>
                         @endcan
                         @can('manage directions')

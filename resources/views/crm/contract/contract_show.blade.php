@@ -1,7 +1,7 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 <link rel="stylesheet" href="{{asset('assets/css/plugins/dropzone.min.css')}}">
-<div class="page-wrapper"> 
+<div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Contract Detail'])
 
 	<div class="float-end d-flex align-items-center">
@@ -189,9 +189,9 @@
                                                         {{-- {{ number_format(\File::size(storage_path('uploads/lead_files/' . $file->file_path)) / 1048576, 2) . ' ' . __('MB') }} --}}
                                                     </p>
                                                 </div>
-                                                <div class="action-btn bg-warning ">
+                                                <div class="">
                                                     <a href="{{$attachments . '/' . $file->files }}"
-                                                       class=" btn btn-sm d-inline-flex align-items-center"
+                                                       class=" btn  d-inline-flex align-items-center"
                                                        download="" data-bs-toggle="tooltip" title="Download">
                                                         <span class="text-white"> <i class="ti ti-download"></i></span>
                                                     </a>
@@ -200,7 +200,7 @@
                                                     <div class="col-auto actions">
                                                         <div class="action-btn bg-danger ms-2">
                                                             {!! Form::open(['method' => 'DELETE', 'route' => ['contracts.file.delete', $contract->id, $file->id]]) !!}
-                                                            <a href="#!" class="mx-3 btn btn-sm  align-items-center bs-pass-para ">
+                                                            <a href="#!" class="mx-3  align-items-center bs-pass-para ">
                                                                 <i class="ti ti-trash text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('Delete')}}" ></i>
                                                             </a>
                                                             {!! Form::close() !!}
@@ -339,7 +339,7 @@
         </div>
     </div>
 	</div>
-	
+
 @include('new_layouts.footer')
 <script>
     $(document).on("click", ".status", function() {

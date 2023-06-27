@@ -540,7 +540,7 @@ class DiaryController extends Controller
                     $user_id = \Auth::user()->id;
                 }
 
-                $dairy_data=RFIStatusSave::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->get();
+                $dairy_data=RFIStatusSave::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->orderBy("id", "asc")->get();
 
 
                 return view('diary.rfi.index',compact('project_id','dairy_data'));
@@ -630,8 +630,8 @@ class DiaryController extends Controller
                 ->where("id", $project_id)
                 ->first();
                 
-                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('id',$request->id)->first();
-                $contractor=RFIStatusSave::where('user_id', '=', Auth::id())->where('id',$request->id)->where('project_id', $project_id)->first();
+                $get_dairy=RFIStatusSave::where('project_id',$project_id)->where('user_id',$user_id)->where('id',$request->id)->first();
+                $contractor=RFIStatusSave::where('user_id', '=', $user_id)->where('id',$request->id)->where('project_id', $project_id)->first();
             
                 if($contractor!=null){
                     $contractor_name=json_decode($contractor);
@@ -639,17 +639,14 @@ class DiaryController extends Controller
                     $contractor_name=array();
                 }
               
-                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',Auth::id())->where('rfi_id',$request->id)->first();
+                $get_sub_table=RFIStatusSubSave::where('project_id',$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->first();
 
-                $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->get();
+                $get_content = RFIStatusSubSave::where("project_id",$project_id)->where('user_id',$user_id)->where('rfi_id',$request->id)->orderBy("id", "ASC")->get();
 
-                if($get_content==null){
+             
                    
-                    return view('diary.rfi.edit_one',compact('get_dairy','project','project_id'));
-                }else{
-                   
-                    return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
-                }
+                return view('diary.rfi.edit',compact('get_dairy','project','project_id','contractor_name','contractor','get_sub_table','get_content'));
+            
               
             
             }else{
@@ -799,7 +796,7 @@ class DiaryController extends Controller
                                 return redirect()->back()->with("error", __($path1["msg"]));
                             }
                         }else{
-                            $check_attach_file=RFIStatusSubSave::select('attachments_two','attachments_two')
+                            $check_attach_file=RFIStatusSubSave::select('attachments_two','attachments_two_path')
                                                 ->where('id',$request->id)
                                                 ->where('user_id',$user_id)
                                                 ->where('project_id',$request->project_id)
@@ -1497,6 +1494,10 @@ class DiaryController extends Controller
     {
         try {
 
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
+
             return view("diary.daily_reports.create");
 
         } catch (Exception $e) {
@@ -1516,7 +1517,16 @@ class DiaryController extends Controller
                 $user_id = \Auth::user()->id;
             }
             $project_id=Session::get('project_id');
-            return view("diary.daily_reports.edit",compact('project_id'));
+
+            $data=SiteReport::where('id', '=', $request->edit_id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
+            $data_sub=SiteReportSub::where('site_id', '=', $request->edit_id)
+            ->where('project_id', Session::get('project_id'))
+            ->where('user_id', $user_id)
+            ->get();
+
+            dd($data_sub);
+
+            return view("diary.daily_reports.edit",compact('project_id','data','data_sub'));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -1559,8 +1569,14 @@ class DiaryController extends Controller
                 ->where('id', $project_id)
                 ->first();
 
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
 
-                $dairy_data = ProcurementMaterial::get();
+                $dairy_data = ProcurementMaterial::where('project_id',$project_id)->where('user_id',$user_id)->get();
 
                 
             
@@ -2026,6 +2042,104 @@ class DiaryController extends Controller
             "title" => $request->title,
             ];
 
+            SiteReport::insert($data);
+
+            $id = DB::getPdo()->lastInsertId();
+           
+
+            if(isset($request->first_position)){
+
+                if (count($request->first_position) > 0) {
+
+                    foreach ($request->first_position as $item => $v) {
+
+                        if(isset($request->first_position[$item])){
+                            $set_first_position=$request->first_position[$item];
+                        }else{
+                            $set_first_position=null;
+                        }
+
+                        if(isset($request->first_person[$item])){
+                            $set_first_person=$request->first_person[$item];
+                        }else{
+                            $set_first_person=null;
+                        }
+
+                        if(isset($request->first_option[$item])){
+                            $set_first_option=$request->first_option[$item];
+                        }else{
+                            $set_first_option=null;
+                        }
+
+                        $data2 = [
+                        "site_id" => $id,
+                        "project_id" => Session::get('project_id'),
+                        "user_id" => $user_id,
+                        "position_name" =>$set_first_position,
+                        "no_of_persons" =>$set_first_person,
+                        "option_method"  =>$set_first_option,
+                        ];
+
+                        if ($request->increment < 0) {
+                            SiteReportSub::insert($data2);
+                        } else {
+                            SiteReportSub::insert($data2);
+                        }
+
+                    }
+                }
+
+            }
+
+
+      
+            return redirect()->back()->with("success", "Site report added successfully.");
+      
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+    public function update_site_reports(Request $request){
+
+        try {
+
+            if(\Auth::user()->type != 'company'){
+                $user_id = Auth::user()->creatorId();
+            }
+            else{
+                $user_id = \Auth::user()->id;
+            }
+              
+            if($request->weather!=null){
+                $select_weather = implode(',', array_filter($request->weather));
+            }else{
+                $select_weather = Null;
+            }
+
+            if($request->site_conditions!=null){
+                $select_site_conditions = implode(',', array_filter($request->site_conditions));
+            }else{
+                $select_site_conditions = Null;
+            }
+
+           $data = [
+            "project_id" =>Session::get('project_id'),
+            "user_id" => $user_id,
+            "contractor_name" => $request->contractor_name,
+            "con_date" => $request->con_date,
+            "con_day" => $request->con_day,
+            "weather" => $select_weather,
+            "site_conditions" => $select_site_conditions,
+            "temperature" => $request->temperature,
+            "min_input" => $request->min_input,
+            "degree" => $request->degree,
+            "remarks" => $request->remarks,
+            "prepared_by" => $request->prepared_by,
+            "title" => $request->title,
+            ];
+
             // $data1 = [
             //     "procurement_id" => $invoice_id,
             //     "project_id" => Session::get('project_id'),
@@ -2037,8 +2151,8 @@ class DiaryController extends Controller
             //     ];
             
         
-            SiteReport::insert($data);
-            return redirect()->back()->with("success", "Site report added successfully.");
+            SiteReport::where('id',$request->edit_id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->update($data);
+            return redirect()->back()->with("success", "Site report updated successfully.");
         //    SiteReportSub::insert($data1);
 
         } catch (Exception $e) {
@@ -2046,7 +2160,7 @@ class DiaryController extends Controller
         }
 
     }
-
+    
     public function diary_download_file(Request $request){
         $id = $request->id;
         $ducumentUpload = ProjectSpecification::find($id);
@@ -2089,5 +2203,37 @@ class DiaryController extends Controller
             return redirect()->back()->with('error', __('File is not exist.'));
         }
     }
+
+    public function delete_site_reports(Request $request)
+    {
+        try {
+
+            // if(\Auth::user()->can('delete directions')){
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
+                }
+
+                SiteReport::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();
+
+                SiteReportSub::where('site_id',$request->id)->delete();
+
+                return redirect()->back()->with("success", "Consultants directions record deleted successfully.");
+
+            // }else{
+
+                // return redirect()->back()->with('error', __('Permission denied.'));
+
+            // }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    
     
 }

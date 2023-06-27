@@ -14,7 +14,7 @@
         <div class="container">
           <div class="row">
             <div class="col form-group ">
-              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY')}}</label> <span>for the project of:</span>
+              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY for the project of')}}</label> <span>:</span>
               <span class="bold">{{$project_name->project_name}}</span>
             </div>
           </div>
@@ -50,14 +50,15 @@
               </div>
               <div class="col-md-12 mt-3">
                 <label for="InputRemarks">{{__('Attachment')}} <span style='color:red;'>*</span></label>
-                <input name="attach_file_name"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
+                <input name="attach_file_name"  type="file"  class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>
+                <span class="show_document_error" style="color:red;"></span>
               </div>
             </div>
           </div>
           <table class="table" id="dynamicAddRemove">
             <tr>
               <td>
-                <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action &  Reply')}}</h4>
+                <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action & Reply')}}</h4>
                 <div class="row mb-5">
                   <div class="col">
                     <div class="form-group">
@@ -73,7 +74,8 @@
                   </div>
                   <div class="col-md-12 mt-3">
                     <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input name="initiator_file_name[]"  type="file"  class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" />
+                    <input name="initiator_file_name[]"  type="file"  class="form-control file_input" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" />
+                    <span class="show_document_error" style="color:red;"></span>
                   </div>
                 </div>
                 {{-- <h4 style="text-align: center; font-weight: 700;">Replier:</h4>

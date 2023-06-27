@@ -24,6 +24,7 @@
 <script src="{{asset('assets/js/js/slackrow.js')}}"></script>
 
 <style>
+
     html,
     body,
     .gantt-container {
@@ -31,6 +32,7 @@
         padding: 0px;
         margin: 0px;
         overflow: hidden;
+        background: #fff;
     }
 
     .status_line {
@@ -71,7 +73,6 @@
     .gantt_task_line {
         background-color: #4e6da0;
         border: 1px solid #4e6da0;
-    }
     .gantt_cal_light >.gantt_cal_ltitle {
          font-size: 13px !important;
     }
@@ -205,7 +206,107 @@
 		}
     /* slack end */
 </style>
+<style>
+.gantt_grid_data{
+    overflow: auto !important;
+}
 
+.normal {
+	border: 2px solid green;
+}
+
+.low {
+	border: 2px solid yellow;
+}
+
+.custom_row {
+	background: rgb(245, 248, 245);
+}
+
+.gantt_control {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+}
+.gantt_control input ,.gantt_control button{
+        background: white;
+        border-radius: 2px;
+        border: none;
+ }
+    html,
+    body {
+        height: 100%;
+        font-family: 'Open Sans', sans-serif !important;
+    }
+    .main-content {
+        height: 600px;
+        height: calc(100vh - 50px);
+    }
+    .gantt_cal_light {
+        height: 440px !important;
+        width: 42% !important;
+    }
+    .gantt_control {
+        height: 50px;
+        padding: 10px;
+        width: 100%;
+        background-color: rgb(169, 22, 214);
+        display: block;
+        color: rgb(99, 17, 175);
+    }
+    .gantt_task_progress {
+			text-align: left;
+			padding-left: 10px;
+			box-sizing: border-box;
+			color: white;
+			font-weight: bold;
+	}
+    textarea.editor_description {
+        max-width: 100%;
+        height: 100px !important;
+    }
+    .gantt_cal_larea {
+        height: 84% !important;
+        overflow:visible;
+    }
+    .gantt_cal_chosen,
+    .gantt_cal_chosen select{
+        width: 400px;
+    }
+
+
+.freezebtn{
+    margin-right:5px;
+}
+    .gantt-fullscreen {
+			position: absolute;
+			bottom: 20px;
+			right: 20px;
+			width: 30px;
+			height: 30px;
+			padding: 2px;
+			font-size: 32px;
+			background: transparent;
+			cursor: pointer;
+			opacity: 0.5;
+			text-align: center;
+			-webkit-transition: background-color 0.5s, opacity 0.5s;
+			transition: background-color 0.5s, opacity 0.5s;
+		}
+
+		.gantt-fullscreen:hover {
+			background: rgba(150, 150, 150, 0.5);
+			opacity: 1;
+		}
+
+        .gantt_task_cell.week_end {
+			background-color: #d6d6d6;
+		}
+
+		.gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+			background-color: #d6d6d6;
+		}
+</style>
 @php
 $holidays=array();
 
@@ -226,10 +327,10 @@ $holidays=implode(':',$holidays);
                                     <div class='col-md-12' style='display: flex;'>
                                         {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
                                         {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                                            <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change freeze status') }}" data-original-title="{{ __('Delete') }}"
+                                            <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
                                                 data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                                 {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
-                                                Freeze
+                                                Set Baseline
                                             </a>
                                         {!! Form::close() !!}
                                         <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
@@ -276,7 +377,7 @@ $holidays=implode(':',$holidays);
                                     @if($project)
                                     <input type='hidden' value='0' id='project_id'>
                                     <div class="card-body" style='max-height:512px;overflow:auto;'>
-                                        <div id="gantt_here" style='width:100%; height:391px; position: relative;' onload="script();"></div>
+                                        <div id="gantt_here" style='width:100%; height:491px; position: relative;' onload="script();"></div>
                                     </div>
                                     @else
                                     <h1>404</h1>
@@ -285,7 +386,7 @@ $holidays=implode(':',$holidays);
 
                                             @if($project)
                                             <input type='hidden' value='0' id='project_id'>
-                                            <div class="card-body" style='max-height:391px;overflow:auto;'>
+                                            <div class="card-body" style='max-height:491px;overflow:auto;'>
                                             <div class="gantt_control" >
 
                                             </div>
@@ -404,13 +505,14 @@ $holidays=implode(':',$holidays);
 			drag_timeline: true,
 			critical_path: true,
 			keyboard_navigation: true,
+            auto_scheduling: true
 		});
 
 		gantt.ext.fullscreen.getFullscreenElement = function () {
 			return document.getElementById("additional_elements");
 		}
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
-
+        gantt.config.auto_scheduling = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
 		var today = new Date(2018, 3, 5);
@@ -521,12 +623,6 @@ $holidays=implode(':',$holidays);
             return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
         };
 
-        gantt.config.scales = [
-            {unit: "month", step: 1, format: "%F, %Y"},
-            {unit: "week", step: 1, format: weekScaleTemplate},
-            {unit: "day", step: 1, format: "%D, %d"}
-        ];
-
         gantt.templates.timeline_cell_class = function (task, date) {
             if (!gantt.isWorkTime(date))
                 return "week_end";
@@ -541,10 +637,112 @@ $holidays=implode(':',$holidays);
 
         // holidays end
 		gantt.config.bar_height = 100;
-		gantt.config.date_format = "%Y-%m-%d %H:%i";
 		gantt.init("gantt_here");
+        set_data = "";
+        gantt.form_blocks["my_editor"] = {
+                render: function (sns) {
+                    $.ajax({
+                        url : '{{route("projects.get_member")}}',
+                        type : 'GET',
+                        async: false,
+                        data : {
+                            'project_id' : "<?php echo $project->id; ?>"
+                        },
+                        success : function(data) {
+                            set_data += data['1'];
+                        }
+                    });
+                    return set_data;
+                },
+                set_value: function (node, value, task) {
+                    node.querySelector(".editor_description").value = value || "";
+                },
+                get_value: function (node, task) {
+                    return node.querySelector(".editor_description").value;
+                },
+                focus: function (node) {
+                    var a = node.querySelector(".editor_description");
+                    a.select();
+                    a.focus();
+                }
+            };
+
+            gantt.form_blocks["multiselect"] = {
+                render: function (sns) {
+                    var height = (sns.height || "23") + "px";
+                    var html = "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect' style='height:" + height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
+                    if (sns.options) {
+                        $.ajax({
+                            url : '{{route("projects.get_member")}}',
+                            type : 'GET',
+                            async: false,
+                            data : {
+                                'project_id' : "<?php echo $project->id; ?>"
+                            },
+                            success : function(multi_data) {
+                                $.each(multi_data['0'], function(multi_key, multi_value) {
+                                    html += "<option value=" + multi_value.key + ">" + multi_value.label + "</option>";
+                                });
+                            }
+                        });
+                    }
+                    html += "</select></div>";
+                    return html;
+                },
+                set_value: function (node, value, ev, sns) {
+                    node.style.overflow = "visible";
+                    node.parentNode.style.overflow = "visible";
+                    node.style.display = "inline-block";
+                    var select = $(node.firstChild);
+                    console.log(value,"valuevalue");
+                    console.log(typeof(value))
+
+                    if (value) {
+                        value = value.split(",");
+                        console.log(value,"1")
+                        select.val([]);
+                        select.val(value);
+                    }
+                    else {
+                        select.val([]);
+                    }
+
+                    select.chosen();
+                    if(sns.onchange){
+                        select.change(function(){
+                            sns.onchange.call(this);
+                        })
+                    }
+                    select.trigger('chosen:updated');
+                    select.trigger("change");
+                },
+                get_value: function (node, ev) {
+                    var value = $(node.firstChild).val();
+                    return value;
+                },
+                focus: function (node) {
+                    $(node.firstChild).focus();
+                }
+            };
+
+            gantt.locale.labels.section_users = "Users";
+
+            function findUser(id){
+                var list = gantt.serverList("people");
+                for(var i = 0; i < list.length; i++){
+                    if(list[i].key == id){
+                        return list[i];
+                    }
+                }
+                return null;
+            }
 
 		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+        gantt.config.lightbox.sections = [
+                { name:"description", height:200, map_to:"text", type:"my_editor", focus:true},
+                { name:"users",height:60, type:"multiselect", options:gantt.serverList("people"), map_to:"users"},
+                { name:"time", height:72, type:"duration", map_to:"auto"}
+            ];
 
         // holidays
             gantt.config.work_time = true;
@@ -596,8 +794,9 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        var dp = new gantt.dataProcessor("/erpnew/public/");
+        // var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
+        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        // var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",

@@ -69,7 +69,7 @@ h3, .h3 {
                 <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
             </a>
             <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
-              <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+              <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
             </a>
         </div>
     </div>  
@@ -181,6 +181,7 @@ h3, .h3 {
             dom: 'Bfrtip',
             searching: true,
             info: true,
+            info: true,
             paging: true,
             buttons: [
                 {
@@ -202,8 +203,9 @@ h3, .h3 {
                     extend: 'pdfHtml5',
                     title: 'Concrete Pouring Record',
                     titleAttr: 'PDF',
+                    pageSize: 'LEGAL',
                     pagesize: 'A3',
-                      orientation: 'landscape',
+                    orientation: 'landscape',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 

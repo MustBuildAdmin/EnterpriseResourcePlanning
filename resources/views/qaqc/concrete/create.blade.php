@@ -19,7 +19,8 @@
           <div class="col-6">
             <div class="form-group">
               <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
-              <label for="InputDate">{{__('Project')}}:</label> {{$project_name->project_name}}
+              <label for="InputDate">{{__('Project')}}:</label> 
+              <b>{{$project_name->project_name}}</b>
             </div>
           </div>
           <div class="col-6 mb-3">
@@ -80,11 +81,12 @@
               <input name="testing_fall"  type="hidden" class="form-control" id="testing_fall"  />
             </div>
           </div>
+         
           <div class="col-5 mb-3">
             <div class="form-group">
               <label for="InputAverage">{{__('Total Result (Average)')}}</label>
-              <input name="" value=""  type="text" id="total_result" class="form-control total_result" placeholder="Enter your Total Result (Average)" />
-              <input name="total_result" value=""  type="hidden" id="total_result_back" class="form-control total_result" placeholder="Enter your Total Result (Average)" />
+              <input name="" value=""  type="text" id="total_result" class="form-control total_result" placeholder="{{__('Total Result (Average)')}}" />
+              <input name="total_result" value=""  type="hidden" id="total_result_back" class="form-control total_result" placeholder="{{__('Total Result (Average)')}}" />
             </div>
           </div>
           <div class="col-1 mb-3">
@@ -121,7 +123,8 @@
           </div>
           <div class="col-md-12 mb-3">
             <label for="InputRemarks">{{__('Attachment')}}</label>
-            <input name="file_name"  type="file" id="file_name" class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf"/>
+            <input name="file_name"  type="file" id="file_name" class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg ,.pdf,.gif"/>
+            <span class="show_document_error" style="color:red;"></span>
           </div>
         </div>
         <div class="modal-footer">
@@ -135,60 +138,95 @@
 
 <script>
 
-$(document).ready(function() {
-  $("#total_result").removeAttr("disabled");
-  $("#days_testing_result").removeAttr("disabled");
-  $(document).on('submit', 'form', function() {
-        $('#create_concrete').attr('disabled', 'disabled');
-  });
-});
-
-$(document).on("change", '#actual', function() {
-
-  var selectedDate = this.value;
-  var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
-  var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
-  var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
-  var twentyEigth = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
-
-  $("#testing_fall_on").val(seventhDate);
-  $("#testing_fall").val(seventhDate);
-  $("#days_testing_falls_on").val(twentyEigthData);
-  $("#days_testing_falls").val(twentyEigthData);
-
-
-  var dt = new Date();
-
-  year  = dt.getFullYear();
-  month = (dt.getMonth() + 1).toString().padStart(2, "0");
-  day   = dt.getDate().toString().padStart(2, "0");
-
-  var currentDate= day + '-' + month + '-' + year;
-
-  if(currentDate===seventh){
-      $("#total_result").removeAttr("disabled");
-  }else{
-      $("#total_result").attr("disabled", "disabled");
-  }
-
-  if(currentDate===twentyEigth){
-    $("#days_testing_result").removeAttr("disabled");
-  }else{
+  $(document).ready(function() {
+    $(document).on('submit', 'form', function() {
+          $('#create_concrete').attr('disabled', 'disabled');
+    });
+    $("#total_result").attr("disabled", "disabled");
     $("#days_testing_result").attr("disabled", "disabled");
-  }
+  });
 
-});
+  $(document).on("change", '#actual', function() {
 
-$(document).on("keyup", '#days_testing_result', function() {
-  var copy_val= $('#days_testing_result').val();
-  $('#days_testing_result_back').val(copy_val);
-});
+    var selectedDate = this.value;
+    var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
+    var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
+    var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
+    var twentyEigth = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
 
-$(document).on("keyup", '#total_result', function() {
-  var copy_value= $('#total_result').val();
-  $('#total_result_back').val(copy_value);
-});
+    $("#testing_fall_on").val(seventhDate);
+    $("#testing_fall").val(seventhDate);
+    $("#days_testing_falls_on").val(twentyEigthData);
+    $("#days_testing_falls").val(twentyEigthData);
 
+
+    var dt = new Date();
+
+    year  = dt.getFullYear();
+    month = (dt.getMonth() + 1).toString().padStart(2, "0");
+    day   = dt.getDate().toString().padStart(2, "0");
+
+    var currentDate= day + '-' + month + '-' + year;
+
+    if(currentDate===seventh){
+        $("#total_result").removeAttr("disabled");
+    }else{
+        $("#total_result").attr("disabled", "disabled");
+    }
+
+    if(currentDate===twentyEigth){
+      $("#days_testing_result").removeAttr("disabled");
+    }else{
+      $("#days_testing_result").attr("disabled", "disabled");
+    }
+
+  });
+
+  $(document).on("keyup", '#days_testing_result', function() {
+    var copy_val= $('#days_testing_result').val();
+    $('#days_testing_result_back').val(copy_val);
+  });
+
+  $(document).on("keyup", '#total_result', function() {
+    var copy_value= $('#total_result').val();
+    $('#total_result_back').val(copy_value);
+  });
+
+  $(document).on("change", '#month_year', function() {
+
+  var month=$('#month_year').val();
+  // $('#date_of_casting').val("");
+  var datee = new Date(month+'-01');
+
+  var get_month = month.slice(5);
+  var get_year  = month.slice(0,-3);
+
+  var date = new Date(), y = datee.getFullYear(), m = datee.getMonth();
+  var firstDay = new Date(y, m, 1);
+  var lastDay = new Date(y, m + 1, 0);
+  var firstDayvalue=moment(firstDay).format("YYYY-MM-DD");
+  var lastDayvalue=moment(lastDay).format("YYYY-MM-DD");
+  $('#date_of_casting').attr("min",firstDayvalue);
+  $('#date_of_casting').attr("max",lastDayvalue);
+  $('#date_of_casting').val(firstDayvalue);
+
+  });
+
+  $(document).on('change', '.document_setup', function(){
+      var fileExtension = ['jpeg', 'jpg', 'png', 'pdf','gif'];
+      if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+          $(".show_document_file").hide();
+          $(".show_document_error").html("Upload only pdf, jpeg, jpg, png, gif");
+          $("#create_concrete").prop('disabled',true);
+          return false;
+      } else{
+          $(".show_document_file").show();
+          $(".show_document_error").hide();
+          $("#create_concrete").prop('disabled',false);
+          return true;
+      }
+
+  });
 
 </script>
 <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>

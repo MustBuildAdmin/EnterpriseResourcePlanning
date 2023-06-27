@@ -2,7 +2,7 @@
 @include('new_layouts.header')
 <style>
     tr.highlighted {
-  padding-top: 10px; 
+  padding-top: 10px;
   padding-bottom:10px
 }
 </style>
@@ -48,7 +48,7 @@
                 @php
                     $get_date = $data['get_date'];
                 @endphp
-                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('add_particular_task',["task_id"=>$task_id, "get_date"=>$get_date]) }}" 
+                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('add_particular_task',["task_id"=>$task_id, "get_date"=>$get_date]) }}"
                     data-ajax-popup="true" data-title="{{__('Create Consultants Directions Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="floatrght btn btn-primary mb-3">
                     <i class="ti ti-plus"></i>
                 </a>
@@ -105,7 +105,7 @@
                                     <td>{{$task_progress->description}}</td>
                                     <td>
                                         <div class="actions">
-                                            <a class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_particular_task',["task_progress_id"=>$task_progress->id,"task_id"=>$task_id]) }}" 
+                                            <a class="backgroundnone" data-url="{{ route('edit_particular_task',["task_progress_id"=>$task_progress->id,"task_id"=>$task_id]) }}"
                                                 data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Consultants Directions Summary')}}">
                                                 <i class="ti ti-pencil text-white"></i>
                                             </a>

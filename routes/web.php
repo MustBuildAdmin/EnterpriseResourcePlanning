@@ -312,6 +312,22 @@ Route::any('save_site_reports','DiaryController@save_site_reports')->name('save_
     ]
 );
 
+Route::any('update_site_reports','DiaryController@update_site_reports')->name('update_site_reports')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('delete_site_reports','DiaryController@delete_site_reports')->name('delete_site_reports')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
 Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary_email')->name('check_duplicate_diary_email')->middleware(
     [
         'auth',
@@ -393,9 +409,9 @@ Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscre
             'XSS',
         ]
     );
+  
 
-
-    Route::any('daily_reportsedit','DiaryController@daily_reportsedit')->name('daily_reportsedit')->middleware(
+    Route::any('daily_reportsedit/{id}','DiaryController@daily_reportsedit')->name('daily_reportsedit')->middleware(
         [
             'auth',
             'XSS',
@@ -470,6 +486,7 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
     ]
 );
 
+Route::get('checkDuplicateProject', 'ProjectController@checkDuplicateProject')->name('checkDuplicateProject')->middleware(['auth','XSS','revalidate',]);
 
 
 Route::get('/paymentPage', 'Auth\RegisteredUserController@paymentPage');

@@ -12,6 +12,9 @@
     width: 10%;
   }
 </style>
+  @php
+    use Illuminate\Support\Carbon;
+  @endphp
 <div class="modal-body">
   <div class="row">
     <div class="container">
@@ -41,7 +44,8 @@
             <div class="form-group">
               <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
               <input type="hidden" name="edit_id" id="edit_id" value="{{$id}}">
-              <label for="InputDate">{{__('Project')}}:</label> {{$project_name->project_name}}
+              <label for="InputDate">{{__('Project')}}:</label> 
+              <b>{{$project_name->project_name}}</b>
             </div>
           </div>
           <div class="col-6 mb-3">
@@ -102,10 +106,18 @@
               <input name="testing_fall"  type="hidden" class="form-control" id="testing_fall"  value="@if($id!='' && $dairy_data->testing_fall!=''){{$dairy_data->testing_fall}}@endif" />
             </div>
           </div>
+          @php
+          $date = Carbon::createFromFormat('Y-m-d', $dairy_data->actual);
+          $daysAdd = 7;
+          $date = $date->addDays($daysAdd);
+          $format=$date->format('Y-m-d');
+          $today_date = Carbon::now();
+          $today=$today_date->format('Y-m-d');
+          @endphp
           <div class="col-5  mb-3">
             <div class="form-group">
               <label for="InputAverage">{{__('Total Result (Average)')}}</label>
-              <input name="" value="@if($id!='' && $dairy_data->total_result!='') {{rtrim(str_replace('N/mm2','', $dairy_data->total_result))}} @endif"  type="text" id="total_result" class="form-control total_result" disabled placeholder="Enter your Total Result (Average)" />
+              <input name="" value="@if($id!='' && $dairy_data->total_result!='') {{rtrim(str_replace('N/mm2','', $dairy_data->total_result))}} @endif"  type="text" id="total_result" class="form-control total_result"  placeholder="{{__('Total Result (Average)')}}" @if($format==$today) @else disabled @endif/>
               <input name="total_result" value="@if($id!='' && $dairy_data->total_result!='') {{rtrim(str_replace('N/mm2','', $dairy_data->total_result))}} @endif"  type="hidden" id="total_result_back" class="form-control total_result"  />
             </div>
           </div>
@@ -122,11 +134,19 @@
               <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif"  />
             </div>
           </div>
+          @php
+          $pastdate = Carbon::createFromFormat('Y-m-d', $dairy_data->actual);
+          $dayAdd = 28;
+          $pastdate = $pastdate->addDays($dayAdd);
+          $format_date=$pastdate->format('Y-m-d');
+          $today_da = Carbon::now();
+          $today_result=$today_da->format('Y-m-d');
+          @endphp
           <div class="col-5 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Result (Average)')}}</label>
-              <input name="" value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif"  type="text" id="days_testing_result" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
-              <input name="days_testing_result"  value=""  type="hidden"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif" id="days_testing_result_back" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+              <input name="" placeholder="{{__('28 days Result (Average)')}}"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif"  type="text" id="days_testing_result" class="form-control days_testing_result" @if($format_date==$today_result) @else disabled @endif/>
+              <input name="days_testing_result" type="hidden"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif" id="days_testing_result_back" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
             </div>
           </div>
           <div class="col-1 mb-3">
@@ -144,7 +164,8 @@
           <div class="col-md-12">
             <div class="form-group">
               <label for="input">{{__('Attachments')}}<span style='color:red;'>*</span></label>
-              <input name="file_name"  type="file" id="file_name" class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" />
+              <input name="file_name"  type="file" id="file_name" class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg ,.pdf,.gif" />
+              <span class="show_document_error" style="color:red;"></span>
               <span>{{$get_dairy_data->file_name ?? ''}}</span>
                {{-- @php 
                   $documentPath=\App\Models\Utility::get_file('uploads/concrete_pouring'); 
@@ -169,59 +190,93 @@
 
 <script>
 
-$(document).ready(function() {
-  $(document).on('submit', 'form', function() {
-    $('#edit_concrete').attr('disabled', 'disabled');
+  $(document).ready(function() {
+    $(document).on('submit', 'form', function() {
+      $('#edit_concrete').attr('disabled', 'disabled');
+    });
   });
-  $("#total_result").removeAttr("disabled");
-  $("#days_testing_result").removeAttr("disabled");
-});
 
-$(document).on("change", '#actual', function() {
+  $(document).on("change", '#actual', function() {
 
-  var selectedDate = this.value;
-  var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
-  var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
-  var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
-  var twenty = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
-  var twentyEigth = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
+    var selectedDate = this.value;
+    var seventhDate = moment(selectedDate).add(7, "d").format("YYYY-MM-DD");
+    var seventh = moment(selectedDate).add(7, "d").format("DD-MM-YYYY");
+    var twentyEigthData = moment(selectedDate).add(28, "d").format("YYYY-MM-DD");
+    var twenty = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
+    var twentyEigth = moment(selectedDate).add(28, "d").format("DD-MM-YYYY");
 
-  $("#testing_fall_on").val(seventhDate);
-  $("#testing_fall").val(seventhDate);
-  $("#days_testing_falls_on").val(twentyEigthData);
-  $("#days_testing_falls").val(twentyEigthData);
+    $("#testing_fall_on").val(seventhDate);
+    $("#testing_fall").val(seventhDate);
+    $("#days_testing_falls_on").val(twentyEigthData);
+    $("#days_testing_falls").val(twentyEigthData);
 
-  var dt = new Date();
+    var dt = new Date();
 
-  year  = dt.getFullYear();
-  month = (dt.getMonth() + 1).toString().padStart(2, "0");
-  day   = dt.getDate().toString().padStart(2, "0");
+    year  = dt.getFullYear();
+    month = (dt.getMonth() + 1).toString().padStart(2, "0");
+    day   = dt.getDate().toString().padStart(2, "0");
 
-  var currentDate= day + '-' + month + '-' + year;
-  if(currentDate===seventh){
-      $("#total_result").removeAttr("disabled");
-  }else{
-      $("#total_result").attr("disabled", "disabled");
-  }
+    var currentDate= day + '-' + month + '-' + year;
+    if(currentDate===seventh){
+        $("#total_result").removeAttr("disabled");
+    }else{
+        $("#total_result").attr("disabled", "disabled");
+    }
 
-  if(currentDate===twentyEigth){
-    $("#days_testing_result").removeAttr("disabled");
-  }else{
-    $("#days_testing_result").attr("disabled", "disabled");
-  }
+    if(currentDate===twentyEigth){
+      $("#days_testing_result").removeAttr("disabled");
+    }else{
+      $("#days_testing_result").attr("disabled", "disabled");
+    }
 
-});
+  });
 
-$(document).on("keyup", '#days_testing_result', function() {
-  var copy_val= $('#days_testing_result').val();
-  $('#days_testing_result_back').val(copy_val);
-});
+  $(document).on("keyup", '#days_testing_result', function() {
+    var copy_val= $('#days_testing_result').val();
+    $('#days_testing_result_back').val(copy_val);
+  });
 
-$(document).on("keyup", '#total_result', function() {
-  var copy_value= $('#total_result').val();
-  $('#total_result_back').val(copy_value);
-});
+  $(document).on("keyup", '#total_result', function() {
+    var copy_value= $('#total_result').val();
+    $('#total_result_back').val(copy_value);
+  });
 
+  $(document).on("change", '#month_year', function() {
+
+  var month=$('#month_year').val();
+  // $('#date_of_casting').val("");
+  var datee = new Date(month+'-01');
+
+  var get_month = month.slice(5);
+  var get_year  = month.slice(0,-3);
+
+  var date = new Date(), y = datee.getFullYear(), m = datee.getMonth();
+  var firstDay = new Date(y, m, 1);
+  var lastDay = new Date(y, m + 1, 0);
+  var firstDayvalue=moment(firstDay).format("YYYY-MM-DD");
+  var lastDayvalue=moment(lastDay).format("YYYY-MM-DD");
+  $('#date_of_casting').attr("min",firstDayvalue);
+  $('#date_of_casting').attr("max",lastDayvalue);
+  $('#date_of_casting').val(firstDayvalue);
+
+  });
+
+
+  $(document).on('change', '.document_setup', function(){
+        var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            $(".show_document_file").hide();
+            $(".show_document_error").html("Upload only pdf, jpeg, jpg, png, gif");
+            $("#edit_concrete").prop('disabled',true);
+            return false;
+        } else{
+            $(".show_document_file").show();
+            $(".show_document_error").hide();
+            $("#edit_concrete").prop('disabled',false);
+            return true;
+        }
+
+    });
 
 </script>
 <script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
