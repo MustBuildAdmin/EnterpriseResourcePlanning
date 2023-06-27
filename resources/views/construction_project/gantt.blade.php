@@ -327,10 +327,10 @@ $holidays=implode(':',$holidays);
                                     <div class='col-md-12' style='display: flex;'>
                                         {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
                                         {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                                            <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change freeze status') }}" data-original-title="{{ __('Delete') }}"
+                                            <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
                                                 data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                                 {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
-                                                Freeze
+                                                Set Baseline
                                             </a>
                                         {!! Form::close() !!}
                                         <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
@@ -681,7 +681,7 @@ $holidays=implode(':',$holidays);
                             },
                             success : function(multi_data) {
                                 $.each(multi_data['0'], function(multi_key, multi_value) {
-                                    html += "<option value='" + multi_value.key + "'>" + multi_value.label + "</option>";
+                                    html += "<option value=" + multi_value.key + ">" + multi_value.label + "</option>";
                                 });
                             }
                         });
@@ -694,10 +694,13 @@ $holidays=implode(':',$holidays);
                     node.parentNode.style.overflow = "visible";
                     node.style.display = "inline-block";
                     var select = $(node.firstChild);
+                    console.log(value,"valuevalue");
+                    console.log(typeof(value))
 
                     if (value) {
-                        value = (value + "").split(",");
-
+                        value = value.split(",");
+                        console.log(value,"1")
+                        select.val([]);
                         select.val(value);
                     }
                     else {
@@ -791,8 +794,9 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        var dp = new gantt.dataProcessor("/erpnew/public/");
+        // var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
+        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        // var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
