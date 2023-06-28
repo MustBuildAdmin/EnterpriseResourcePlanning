@@ -78,8 +78,8 @@
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                     <div class="btn-box">
                                         {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label'])}}
-                                        <select class="select form-select users" name="users" id="users">
-                                            <option value="" class="">{{ __('Assigned To') }}</option>
+                                        <select class="select form-select chosen-select" name="users" id="users" multiple>
+                                            <option value="" class="" disabled>{{ __('Assigned To') }}</option>
                                             @foreach ($user_data as $users)
                                                 <option value="{{$users->id}}">{{$users->name}}</option>
                                             @endforeach
@@ -115,7 +115,6 @@
                                     <select onchange="status_task(this)" name="status_task" id="status_task" class="form-control">
                                         <option value="">Select Status</option>
                                         <option value="1">Today Task</option>
-                                        <option value="2">All Task</option>
                                         <option value="3">Pending Task</option>
                                         <option value="4">Completed Task</option>
                                     </select>
@@ -188,6 +187,9 @@
 @include('new_layouts.footer')
 
 <script>
+    $(document).ready(function() {
+        $(".chosen-select").chosen();
+    });
     $(function () {
         alltask();
     });
@@ -222,7 +224,7 @@
     function submit_button(){
         start_date  = $(".start_date").val();
         end_date    = $(".end_date").val();
-        user_id     = $("#users").val();
+        user_id     = JSON.stringify($("#users").val());
         status_task = $("#status_task").val();
         
 
