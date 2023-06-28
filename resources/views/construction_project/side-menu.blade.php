@@ -142,32 +142,37 @@
         padding-top: 0.25em;
     }
 </style>
+@php
+    if(Session::has('project_id')){
+        $project_id = Session::get('project_id');
+    }
+    else{
+        $project_id = 0;
+    }
 
+    $setting  = Utility::settings(\Auth::user()->creatorId());
+@endphp
 <div class="wrapper">
     <!-- Sidebar  -->
     <nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
+                <li class="">
+                    <a href="{{ route('projects.show', $project_id) }}" 
+                       ><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
+                        <span class="list">{{ __('Dashboard') }}</span>
+                    </a>
+                
+                </li>
                 {{-- Planning --}}
                 <li class="">
                     <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuplanning" role="button" aria-expanded="false"
                         aria-controls="pageSubmenuplanning"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Planning') }}</span>
                     </a>
-                    @php
-                        if(Session::has('project_id')){
-                            $project_id = Session::get('project_id');
-                        }
-                        else{
-                            $project_id = 0;
-                        }
-
-                        $setting  = Utility::settings(\Auth::user()->creatorId());
-                    @endphp
+                 
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuplanning">
-                        <li class="">
-                            <a href="{{ route('projects.show', $project_id) }}" class="dropdown-item">{{ __('Dashboard') }}</a>
-                        </li>
+                       
                         @can('view grant chart')
                             <li class="">
                                 <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gantt Chart') }}</a>
@@ -228,10 +233,11 @@
                         <li class="{{ (Request::segment(1) == 'drawing_list')?'active':''}}">
                             <a href="{{ route('drawing_list') }}" class="dropdown-item">{{ __('Drawing') }}</a>
                         </li>
+                        @can('manage site reports')
                         <li class="{{ (Request::segment(1) == 'daily_reports')?'active':''}}">
-                            <a href="#" class="dropdown-item">{{ __('Site Reports') }}</a>
-                            {{-- {{ route('daily_reports') }} --}}
+                            <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                         </li>
+                        @endcan
                         @can('manage project specification')
                         <li class="{{ (Request::segment(1) == 'show_project_specification')?'active':''}}">
                             <a href="{{ route('show_project_specification') }}" class="dropdown-item">{{ __('Project Specifications Summary') }}</a>

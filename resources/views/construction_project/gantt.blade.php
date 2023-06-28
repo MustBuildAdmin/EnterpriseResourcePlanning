@@ -13,7 +13,6 @@
 <script src="{{asset('assets/js/js/criticalPath.js')}}"></script>
 <script src="{{asset('assets/js/js/overlay.js')}}"></script>
 <script src="{{asset('assets/js/js/export.js')}}"></script>
-<script src="{{asset('assets/js/js/fittoscreen.js')}}"></script>
 <script src="{{asset('assets/js/js/lightBox.js')}}"></script>
 <script src="{{asset('assets/js/js/expandAndCollapse.js')}}"></script>
 <script src="{{asset('assets/js/js/taskPostion.js')}}"></script>
@@ -24,7 +23,7 @@
 <script src="{{asset('assets/js/js/slackrow.js')}}"></script>
 
 <style>
-    
+
     html,
     body,
     .gantt-container {
@@ -73,6 +72,8 @@
     .gantt_task_line {
         background-color: #4e6da0;
         border: 1px solid #4e6da0;
+
+    }
     .gantt_cal_light >.gantt_cal_ltitle {
          font-size: 13px !important;
     }
@@ -274,7 +275,7 @@
         width: 400px;
     }
 
-   
+
 .freezebtn{
     margin-right:5px;
 }
@@ -340,7 +341,7 @@ $holidays=implode(':',$holidays);
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
-                                        <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button>
+                                        <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
                                         {{-- <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> --}}
                                     </div>
@@ -354,10 +355,10 @@ $holidays=implode(':',$holidays);
                                             All</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="openAll()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Expand
                                             All</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
+                                        <!-- <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
                                             In</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
-                                            Out</button>
+                                            Out</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
@@ -496,8 +497,8 @@ $holidays=implode(':',$holidays);
 		gantt.config.open_tree_initially = true;
 
 		gantt.plugins({
-			quick_info: true,
-			tooltip: true,
+			quick_info: false,
+			tooltip: false,
 			multiselect: true,
 			undo: true,
 			fullscreen: true,
@@ -513,6 +514,8 @@ $holidays=implode(':',$holidays);
 		}
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
         gantt.config.auto_scheduling = true;
+        gantt.config.auto_scheduling_strict = true;
+	gantt.config.auto_scheduling_compatibility = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
 		var today = new Date(2018, 3, 5);
@@ -634,6 +637,19 @@ $holidays=implode(':',$holidays);
         };
 
         // progress end
+        gantt.attachEvent("onBeforeAutoSchedule", function () {
+		gantt.message("Recalculating project schedule...");
+		return true;
+	});
+	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
+		if(task && predecessor){
+			gantt.message({
+				text: "<b>" + task.text + "</b> has been rescheduled to " + gantt.templates.task_date(new_date) + " due to <b>" + predecessor.text + "</b> constraint",
+				expire: 4000
+			});
+		}
+	});
+
 
         // holidays end
 		gantt.config.bar_height = 100;
@@ -694,12 +710,11 @@ $holidays=implode(':',$holidays);
                     node.parentNode.style.overflow = "visible";
                     node.style.display = "inline-block";
                     var select = $(node.firstChild);
-                    console.log(value,"valuevalue");
-                    console.log(typeof(value))
 
                     if (value) {
-                        value = value.split(",");
-                        console.log(value,"1")
+                        if(value!=''){
+                            value = value.split(",");
+                        }
                         select.val([]);
                         select.val(value);
                     }
@@ -794,7 +809,6 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        // var dp = new gantt.dataProcessor("http://127.0.0.1:8000/");
         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
         // var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);

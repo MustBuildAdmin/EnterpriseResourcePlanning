@@ -34,6 +34,8 @@ use DateInterval;
 use DateTime;
 use DatePeriod;
 use DB;
+use App\Jobs\Projecttypetask;
+
 class ProjectController extends Controller
 {
     /**
@@ -253,13 +255,8 @@ class ProjectController extends Controller
                         if(isset($value['progress'])){
                             $task->progress=$value['progress'];
                         }
-                        if(isset($value['parent'])){
-                            $task->parent=$value['parent'];
-                            $task->type="project";
-                            // $task->predecessors=$value['parent'];
-                        }else{
-                            $task->type="task";
-                        }
+                        
+                       
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
                             if(isset($raw['Finish'])){
@@ -372,10 +369,9 @@ class ProjectController extends Controller
                             if(isset($value['parent'])){
                                 $task->parent=$value['parent'];
                                 $task->predecessors=$value['parent'];
-                                $task->type="project";
-                            }else{
-                                $task->type="task";
                             }
+                           
+                           
                             if(isset($value['$raw'])){
                                 $raw=$value['$raw'];
                                 if(isset($raw['Finish'])){
@@ -486,7 +482,8 @@ class ProjectController extends Controller
                 }
 
             }
-
+             // type project or task 
+            Projecttypetask::dispatch(Session::get('project_id'));
 
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -1191,6 +1188,7 @@ class ProjectController extends Controller
                         $tmp['name']         = $task->name;
                         $tmp['start']        = $task->start_date;
                         $tmp['end']          = $task->end_date;
+                        $tmp['type']          = $task->type;
                         $tmp['custom_class'] = (empty($task->priority_color) ? '#ecf0f1' : $task->priority_color);
                         $tmp['progress']     = str_replace('%', '', $task->taskProgress()['percentage']);
                         $tmp['extra']        = [
@@ -1297,8 +1295,10 @@ class ProjectController extends Controller
                 $task             = ProjectTask::find($id);
                 $task->start_date = $request->start;
                 $task->end_date   = $request->end;
+                
+               
+              
                 $task->save();
-
                 return response()->json(
                     [
                         'is_success' => true,
