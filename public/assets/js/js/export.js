@@ -7,7 +7,7 @@ function show_result(info) {
         });
     else
         gantt.message({
-            text: "Stored at <a href='" + info.url + "'>export.dhtlmx.com</a>",
+            text: "<a href='" + info.url + "'>Click to download</a>",
             expire: -1
         });
 }

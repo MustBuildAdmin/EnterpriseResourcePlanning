@@ -34,6 +34,8 @@ use DateInterval;
 use DateTime;
 use DatePeriod;
 use DB;
+use App\Jobs\Projecttypetask;
+
 class ProjectController extends Controller
 {
     /**
@@ -220,6 +222,7 @@ class ProjectController extends Controller
                   CURLOPT_FOLLOWLOCATION => true,
                   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                   CURLOPT_CUSTOMREQUEST => 'POST',
+                  CURLOPT_SSL_VERIFYPEER => false,
                   CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                 ));
 
@@ -252,13 +255,8 @@ class ProjectController extends Controller
                         if(isset($value['progress'])){
                             $task->progress=$value['progress'];
                         }
-                        if(isset($value['parent'])){
-                            $task->parent=$value['parent'];
-                            $task->type="project";
-                            // $task->predecessors=$value['parent'];
-                        }else{
-                            $task->type="task";
-                        }
+                        
+                       
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
                             if(isset($raw['Finish'])){
@@ -337,6 +335,7 @@ class ProjectController extends Controller
                       CURLOPT_FOLLOWLOCATION => true,
                       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                       CURLOPT_CUSTOMREQUEST => 'POST',
+                      CURLOPT_SSL_VERIFYPEER => false,
                       CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
                     ));
 
@@ -370,10 +369,9 @@ class ProjectController extends Controller
                             if(isset($value['parent'])){
                                 $task->parent=$value['parent'];
                                 $task->predecessors=$value['parent'];
-                                $task->type="project";
-                            }else{
-                                $task->type="task";
                             }
+                           
+                           
                             if(isset($value['$raw'])){
                                 $raw=$value['$raw'];
                                 if(isset($raw['Finish'])){
@@ -484,7 +482,8 @@ class ProjectController extends Controller
                 }
 
             }
-
+             // type project or task 
+            Projecttypetask::dispatch(Session::get('project_id'));
 
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -517,7 +516,7 @@ class ProjectController extends Controller
 
     public function checkDuplicateProject(Request $request){
         $form_name  = $request->form_name;
-        $check_name = $request->get_name;
+        $check_name = $request->project_name;
 
         if($form_name == "ProjectCreate"){
             $get_check_val = Project::where('project_name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
@@ -527,10 +526,12 @@ class ProjectController extends Controller
         }
         
         if($get_check_val == null){
-            return 1; //Success
+            echo 'true';
+            // return 1; //Success
         }
         else{
-            return 0; //Error
+            echo 'false';
+            // return 0; //Error
         }
     }
 
@@ -1187,6 +1188,7 @@ class ProjectController extends Controller
                         $tmp['name']         = $task->name;
                         $tmp['start']        = $task->start_date;
                         $tmp['end']          = $task->end_date;
+                        $tmp['type']          = $task->type;
                         $tmp['custom_class'] = (empty($task->priority_color) ? '#ecf0f1' : $task->priority_color);
                         $tmp['progress']     = str_replace('%', '', $task->taskProgress()['percentage']);
                         $tmp['extra']        = [
@@ -1293,8 +1295,10 @@ class ProjectController extends Controller
                 $task             = ProjectTask::find($id);
                 $task->start_date = $request->start;
                 $task->end_date   = $request->end;
+                
+               
+              
                 $task->save();
-
                 return response()->json(
                     [
                         'is_success' => true,

@@ -13,7 +13,6 @@
 <script src="{{asset('assets/js/js/criticalPath.js')}}"></script>
 <script src="{{asset('assets/js/js/overlay.js')}}"></script>
 <script src="{{asset('assets/js/js/export.js')}}"></script>
-<script src="{{asset('assets/js/js/fittoscreen.js')}}"></script>
 <script src="{{asset('assets/js/js/lightBox.js')}}"></script>
 <script src="{{asset('assets/js/js/expandAndCollapse.js')}}"></script>
 <script src="{{asset('assets/js/js/taskPostion.js')}}"></script>
@@ -24,7 +23,7 @@
 <script src="{{asset('assets/js/js/slackrow.js')}}"></script>
 
 <style>
-    
+
     html,
     body,
     .gantt-container {
@@ -73,6 +72,8 @@
     .gantt_task_line {
         background-color: #4e6da0;
         border: 1px solid #4e6da0;
+
+    }
     .gantt_cal_light >.gantt_cal_ltitle {
          font-size: 13px !important;
     }
@@ -274,7 +275,7 @@
         width: 400px;
     }
 
-   
+
 .freezebtn{
     margin-right:5px;
 }
@@ -327,10 +328,10 @@ $holidays=implode(':',$holidays);
                                     <div class='col-md-12' style='display: flex;'>
                                         {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
                                         {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                                            <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change freeze status') }}" data-original-title="{{ __('Delete') }}"
+                                            <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
                                                 data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                                 {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
-                                                Freeze
+                                                Set Baseline
                                             </a>
                                         {!! Form::close() !!}
                                         <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
@@ -340,7 +341,7 @@ $holidays=implode(':',$holidays);
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
-                                        <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button>
+                                        <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
                                         {{-- <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> --}}
                                     </div>
@@ -354,10 +355,10 @@ $holidays=implode(':',$holidays);
                                             All</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="openAll()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Expand
                                             All</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
+                                        <!-- <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
                                             In</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
-                                            Out</button>
+                                            Out</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
@@ -496,8 +497,8 @@ $holidays=implode(':',$holidays);
 		gantt.config.open_tree_initially = true;
 
 		gantt.plugins({
-			quick_info: true,
-			tooltip: true,
+			quick_info: false,
+			tooltip: false,
 			multiselect: true,
 			undo: true,
 			fullscreen: true,
@@ -513,6 +514,8 @@ $holidays=implode(':',$holidays);
 		}
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
         gantt.config.auto_scheduling = true;
+        gantt.config.auto_scheduling_strict = true;
+	gantt.config.auto_scheduling_compatibility = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
 		var today = new Date(2018, 3, 5);
@@ -634,6 +637,19 @@ $holidays=implode(':',$holidays);
         };
 
         // progress end
+        gantt.attachEvent("onBeforeAutoSchedule", function () {
+		gantt.message("Recalculating project schedule...");
+		return true;
+	});
+	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
+		if(task && predecessor){
+			gantt.message({
+				text: "<b>" + task.text + "</b> has been rescheduled to " + gantt.templates.task_date(new_date) + " due to <b>" + predecessor.text + "</b> constraint",
+				expire: 4000
+			});
+		}
+	});
+
 
         // holidays end
 		gantt.config.bar_height = 100;
@@ -681,7 +697,7 @@ $holidays=implode(':',$holidays);
                             },
                             success : function(multi_data) {
                                 $.each(multi_data['0'], function(multi_key, multi_value) {
-                                    html += "<option value='" + multi_value.key + "'>" + multi_value.label + "</option>";
+                                    html += "<option value=" + multi_value.key + ">" + multi_value.label + "</option>";
                                 });
                             }
                         });
@@ -696,8 +712,10 @@ $holidays=implode(':',$holidays);
                     var select = $(node.firstChild);
 
                     if (value) {
-                        value = (value + "").split(",");
-
+                        if(value!=''){
+                            value = value.split(",");
+                        }
+                        select.val([]);
                         select.val(value);
                     }
                     else {
@@ -791,8 +809,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        var dp = new gantt.dataProcessor("/erpnew/public/");
+        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        // var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",

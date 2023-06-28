@@ -27,14 +27,19 @@ class TaskController extends Controller
         $task->parent = $request->parent;
 
         if(isset($request->users)){
-            if(is_array($request->users)){
+            if(gettype($request->users)=='array'){
                 $implode_users = implode(',', json_decode($request->users));
             }else{
                 $implode_users = $request->users;
             }
             $task->users = $implode_users;
         }
-
+        $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$task->id])->get();
+        if(count($check_parent)>0){
+            $task->type="project";
+        }else{
+            $task->type="task";
+        }
         $task->save();
         return response()->json([
             "action"=> "inserted",
@@ -63,12 +68,18 @@ class TaskController extends Controller
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         if(isset($request->users)){
-            if(is_array($request->users)){
+            if(gettype($request->users)=='array'){
                 $implode_users = implode(',', json_decode($request->users));
             }else{
                 $implode_users = $request->users;
             }
             $task->users = $implode_users;
+        }
+        $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$task->id])->get();
+        if(count($check_parent)>0){
+            $task->type="project";
+        }else{
+            $task->type="task";
         }
         $task->save();
 
