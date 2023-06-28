@@ -45,26 +45,33 @@
                     </td>
                     <td style="width:10%;">
                         <div class="avatar-group">
-                            @if($task->users()->count() > 0)
-                                @if($users = $task->users()) 
-                                    @foreach($users as $key => $user)
-                                        @if($key<3)
-                                            <a href="#" class="avatar rounded-circle avatar-sm">
-                                                <img data-original-title="{{(!empty($user)?$user->name:'')}}" @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif title="{{ $user->name }}" class="hweb">
-                                            </a>
-                                        @else
-                                            @break
-                                        @endif
-                                    @endforeach
-                                @endif
-                                @if(count($users) > 3)
+                            @php
+                                if($task->users != ""){
+                                    $users_data = json_decode($task->users);
+                                }
+                                else{
+                                    $users_data = array();
+                                }
+                            @endphp
+                            @forelse ($users_data as $key => $get_user)
+                                @php
+                                    $user_db = DB::table('users')->where('id',$get_user)->first();
+                                @endphp
+                               
+                                @if($key<3)
                                     <a href="#" class="avatar rounded-circle avatar-sm">
-                                        <img  data-original-title="{{(!empty($user)?$user->name:'')}}" @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif class="hweb">
+                                        <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
+                                            @if($user_db->avatar) 
+                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
+                                            @else 
+                                                src="{{asset('/storage/uploads/avatar/avatar.png')}}"
+                                            @endif 
+                                        title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
                                     </a>
                                 @endif
-                            @else
+                            @empty
                                 {{ __('-') }}
-                            @endif
+                            @endforelse
                         </div>
                     </td>
                     @if(\Auth::user()->type == 'company')
@@ -96,6 +103,7 @@
             searching: true,
             info: true,
             paging: true,
+            bSort: false,
         });
     }
 </script>
