@@ -2,14 +2,58 @@
 
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
-    <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
-    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
-<style>
-    .table-responsive {
-        max-width: none !important;
-    }
-</style>
+    <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   
+    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
+    <style>
+  
+        .dataTables_wrapper .dataTables_paginate {
+            float: right;
+            text-align: right;
+            padding-top: 0.25em;
+        }
+        
+        .table-responsive .bg-primary {
+            background: #206bc4 !important;
+        }
+        
+        div.dt-buttons .dt-button {
+            background-color: #ffa21d;
+            color: #fff;
+            width: 29px;
+            height: 28px;
+            border-radius: 4px;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        div.dt-buttons .dt-button:hover {
+            background-color: #ffa21d;
+            color: #fff;
+            width: 29px;
+            height: 28px;
+            border-radius: 4px;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        h3, .h3 {
+            font-size: 1rem !important;
+        }
+
+        .table-responsive {
+            max-width: none !important;
+        }
+    </style>
 @include('construction_project.side-menu')
 
 
@@ -107,7 +151,7 @@
                                    data-original-title="{{ __('Reset') }}">
                                     <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off"></i></span>
                             </a>
-                            <a href="{{route('send_report_con')}}"><input type='button' class='btnalginment form-control btn-primary' name='send_report' value='Send Report' style='width: 60%;float: right;background: #206bc4;color: #fff;'></a>
+                            {{-- <a href="{{route('send_report_con')}}"><input type='button' class='btnalginment form-control btn-primary' name='send_report' value='Send Report' style='width: 60%;float: right;background: #206bc4;color: #fff;'></a> --}}
                         </div>
                     </div>
                     {{ Form::close() }}
@@ -125,7 +169,7 @@
   <div class="card table-card">
       <div class="">
           <div class="table-responsive">
-              <table class="table datatable" id="example">
+              <table class="table" id="example2">
                   <thead class="">
                       <tr>
                           <th>{{__('Task Name')}}</th>
@@ -134,7 +178,7 @@
                           {{-- <th>{{__('Actual End Date')}}</th>
                           <th>{{__('Actual End Date')}}</th> --}}
                           <th>{{__('Projects Members')}}</th>
-                          {{-- <th class="hide_user">{{__('Projects Members')}}</th> --}}
+                          <th class="hide_user" style="display: none;">{{__('Projects Members')}}</th>
                           <th>{{__('Progress')}}</th>
                         
                       </tr>
@@ -174,18 +218,18 @@
                                       @endif
                                   </div>
                               </td>
-                              <td class="hide_user">
-                                  @php
+                              <td class="hide_user" style="display: none;">
+                                @php
                                   $split_user=array();
-                              @endphp
-                             @if($users = $project->users())
-                                  @foreach ($users as $value)
-                                      @php
-                                          $split_user[]=$value->name;
-                                      @endphp
-                                  @endforeach
-                                  {{ implode(",",$split_user)}}
-                              @endif
+                                @endphp
+                                @if($users = $project->users())
+                                    @foreach ($users as $value)
+                                        @php
+                                            $split_user[]=$value->name;
+                                        @endphp
+                                    @endforeach
+                                    {{ implode(",",$split_user)}}
+                                @endif
                                   
                               </td>
                              
@@ -200,14 +244,7 @@
                           </tr>
                       @endforeach
                   @else
-                          <tr>
-                              <td></td>
-                              <td></td>
-                              <td><h6 class="text-center">{{__('No Task Found.')}}</h6></td>
-                              <td></td>
-                              {{-- <td class="hide_user"></td> --}}
-                              <td></td>
-                          </tr>
+                         
                   @endif
 
                   </tbody>
@@ -219,6 +256,14 @@
 </div>
 
 @include('new_layouts.footer')
+
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+
 <script>
   $(document).ready(function() {
   
@@ -288,44 +333,76 @@
   });
   </script>
   
-  <script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-  <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
-  
   <script>
-  $(document).ready(function() {
-      $('#example2').DataTable({
-          dom: 'Bfrtip',
-          searching: false,
-          info: false,
-          paging: false,
-          buttons: [
-  
-              {
-  
-                  extend: 'excelHtml5',
-                  title: 'Task Report',
-                  titleAttr: 'Excel',
-                  text: '<i class="fa fa-file-excel-o"></i>',
-  
-                  exportOptions: {
-                      modifier: {
-                          order: 'index', // 'current', 'applied','index', 'original'
-                          page: 'all', // 'all', 'current'
-                          search: 'none' // 'none', 'applied', 'removed'
-                      },
-                      columns: [0, 1, 2, 4, 5]
-                  }
-              },
-  
-              'colvis'
-          ]
-      });
-  });
-  
+    $(document).ready(function() {
+        $('#example2').DataTable({
+            dom: 'Bfrtip',
+              searching: true,
+              info: true,
+              responsive:true,
+              paging: true,
+              info: true,
+              buttons: [
+                  {
+                      extend: 'excelHtml5',
+                      title: 'Task Report',
+                      titleAttr: 'Excel',
+                      text: '<i class="fa fa-file-excel-o"></i>',
+      
+                      exportOptions: {
+                          modifier: {
+                              order: 'index', // 'current', 'applied','index', 'original'
+                              page: 'all', // 'all', 'current'
+                              search: 'none' // 'none', 'applied', 'removed'
+                          },
+                          columns: [0, 1, 2, 4, 5]
+                      }
+                  },
+                  {
+                      extend: 'pdfHtml5',
+                      title: 'Task Report',
+                      titleAttr: 'PDF',
+                      pagesize: 'A4',
+                      text: '<i class="fa fa-file-pdf-o"></i>',
+                      customize: function(doc) {
+                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
+                        doc.styles.tableBodyEven.alignment = 'center';
+                        doc.styles.tableBodyEven.noWrap = true;
+                        doc.styles.tableBodyOdd.alignment = 'center';
+                        doc.styles.tableBodyOdd.noWrap = true;
+                        doc.styles.tableHeader.fontSize = 12;  
+                        doc.defaultStyle.fontSize = 12;
+                        doc.defaultStyle.alignment = 'center';
+                        doc.styles.tableHeader.alignment = 'center';
+                        },
+      
+                      exportOptions: {
+                          modifier: {
+                              order: 'index', // 'current', 'applied','index', 'original'
+                              page: 'all', // 'all', 'current'
+                              search: 'none' // 'none', 'applied', 'removed'
+                          },
+                          columns: [0, 1, 2, 4, 5]
+                      }
+                  },
+                  {
+                      extend: 'print',
+                      title: 'Task Report',
+                      titleAttr: 'Print',
+                      text: '<i class="fa fa-print"></i>',
+      
+                      exportOptions: {
+                          modifier: {
+                              order: 'index', // 'current', 'applied','index', 'original'
+                              page: 'all', // 'all', 'current'
+                              search: 'none' // 'none', 'applied', 'removed'
+                          },
+                          columns: [0, 1, 2, 4, 5]
+                      }
+                  },
+                  'colvis'
+              ]
+         
+        });
+    });
   </script>
-
-  

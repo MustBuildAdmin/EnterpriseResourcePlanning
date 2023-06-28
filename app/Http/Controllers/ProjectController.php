@@ -1814,6 +1814,10 @@ class ProjectController extends Controller
                     }
                 }
                 $implode_file_id = count($file_id_array) != 0 ? implode(',',$file_id_array) : 0;
+
+                if($request->existing_file_id != ""){
+                    $implode_file_id = $request->existing_file_id.','.$implode_file_id;
+                }
             }
             else{
                 $get_file_id = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();

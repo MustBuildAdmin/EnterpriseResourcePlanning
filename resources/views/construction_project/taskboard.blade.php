@@ -91,8 +91,8 @@
                             @if(\Auth::user()->type == 'company')
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-0">
                                     <div class="btn-box">
-                                        {{ Form::label('start_date', __('Start Date'),['class'=>'form-label'])}}
-                                        {{ Form::date('start_date', null, array('class' => 'form-control month-btn start_date')) }}
+                                        {{ Form::label('start_date', __('Planned Start Date'),['class'=>'form-label'])}}
+                                        {{ Form::date('start_date', null, array('class' => 'form-control month-btn start_date','onchange' => 'start_date_change()')) }}
                                     </div>
                                 </div>
                             @endif
@@ -100,12 +100,12 @@
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
                                 <div class="btn-box">
                                     @if(\Auth::user()->type == 'company')
-                                        {{ Form::label('end_date', __('End Date'),['class'=>'form-label'])}}
+                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
                                     @else
-                                        {{ Form::label('end_date', __('Date'),['class'=>'form-label'])}}
+                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
                                     @endif
                                     
-                                    {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date')) }}
+                                    {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date','onchange' => 'end_date_change()')) }}
 
                                 </div>
                             </div>
@@ -258,15 +258,23 @@
         if(status == 1){
             $(".end_date").val("");
             $(".start_date").val("");
-            $(".users").val("");
         }
         else if(status == ""){
             $(".end_date").val("{{date('Y-m-d')}}");
         }
-        else{
-            $(".end_date").val("");
-            $(".start_date").val("");
-            $(".users").val("");
+    }
+
+    function start_date_change(){
+        status = $("#status_task").val();
+        if(status == 1){
+            $("#status_task").val("");
+        }
+    }
+
+    function end_date_change(){
+        status = $("#status_task").val();
+        if(status == 1){
+            $("#status_task").val("");
         }
     }
 </script>

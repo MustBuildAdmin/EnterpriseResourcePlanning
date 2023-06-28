@@ -3,9 +3,9 @@
     <tr>
         <th scope="col">{{__('Tasks')}}</th>
         <th scope="col">{{__('Status')}}</th>
-        <th scope="col">{{__('Progress')}}</th>
-        <th scope="col">{{__('Start Date')}}</th>
-        <th scope="col">{{__('End Date')}}</th>
+        <th scope="col">{{__('Actual Progress')}}</th>
+        <th scope="col">{{__('Planned Start Date')}}</th>
+        <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
         
     </tr>
