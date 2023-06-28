@@ -252,10 +252,11 @@ class ProjectTaskController extends Controller
                 if(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null && $status_task != null){
                     foreach($json_user_id as $get_user_id){
                         if($get_user_id != ""){
-                            $tasks->whereIn("con_tasks.users",$json_user_id);
+                            $tasks->whereJsonContains("con_tasks.users",$get_user_id);
                         }
                     }
-                    $$tasks->where(function ($query) use ($get_start_date, $get_end_date) {
+
+                    $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
                         $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
                         $query->whereDate('con_tasks.end_date', '<', $get_end_date);
                     });
@@ -283,9 +284,10 @@ class ProjectTaskController extends Controller
                 else if(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null){
                     foreach($json_user_id as $get_user_id){
                         if($get_user_id != ""){
-                            $tasks->whereRaw("find_in_set('" . $get_user_id . "',users)");
+                            $tasks->whereJsonContains("con_tasks.users",$get_user_id);
                         }
                     }
+
                     $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
                         $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
                         $query->whereDate('con_tasks.end_date', '<', $get_end_date);
@@ -294,9 +296,10 @@ class ProjectTaskController extends Controller
                 else if(count($json_user_id) != 0 && $status_task != null){
                     foreach($json_user_id as $get_user_id){
                         if($get_user_id != ""){
-                            $tasks->whereRaw("find_in_set('" . $get_user_id . "',users)");
+                            $tasks->whereJsonContains("con_tasks.users",$get_user_id);
                         }
                     }
+                    
                     if($status_task == "1"){
                         $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
                         ->orderBy('con_tasks.start_date','ASC');
@@ -320,9 +323,9 @@ class ProjectTaskController extends Controller
                 else if(count($json_user_id) != 0){
                     foreach($json_user_id as $get_user_id){
                         if($get_user_id != ""){
-                            $tasks->whereRaw("find_in_set('" . $get_user_id . "',users)");
+                            $tasks->whereJsonContains("con_tasks.users",$get_user_id);
                         }
-                }
+                    }
                 }
                 else if($project_id != 0 && $status_task == "2"){
                     $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
@@ -347,8 +350,6 @@ class ProjectTaskController extends Controller
             }
 
             $tasks = $tasks->get();
-
-            // dd($tasks);
 
             $returnHTML = view('project_task_con.all_task_list', compact('tasks','get_end_date'))->render();
 
