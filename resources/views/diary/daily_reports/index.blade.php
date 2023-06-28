@@ -56,7 +56,7 @@ h3, .h3 {
           <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
       </a>
       <a href=""  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
-        <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+        <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
       </a>
   </div>
 </div>
@@ -79,6 +79,8 @@ h3, .h3 {
                 <th>{{__('Temparture')}}</th>
                 <th>{{__('Minimum')}}</th>
                 <th>{{__('Degree')}}</th>
+                {{-- <th>{{__('Document')}}</th> --}}
+                <th>{{__('Remarks')}}</th>
                 <th>{{__('Prepared By')}}</th>
                 <th>{{__('Title')}}</th>
                 <th style="width:25%;">{{__('Action')}}</th>
@@ -97,6 +99,20 @@ h3, .h3 {
                   <td>{{$data_report->temperature}}</td>
                   <td>{{$data_report->min_input}}</td>
                   <td>{{$data_report->degree}}</td> 
+                  {{-- <td>
+                    @php
+                    $file_explode = explode(',',$data_report->file_name);
+                    @endphp
+                    @forelse ($file_explode as $file_show)
+                    @if($file_show != "")
+                        <span class="">{{$file_show}}</span> <br>
+                    @else
+                        -
+                    @endif
+                    @empty
+                    @endforelse
+                  </td>  --}}
+                  <td>{{$data_report->remarks}}</td> 
                   <td>{{$data_report->prepared_by}}</td>
                   <td>{{$data_report->title}}</td>
                   <td>
@@ -158,14 +174,15 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8 , 9 ,10 ,11]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8 , 9 ,10 ,11, 12]
                       }
                   },
                   {
                       extend: 'pdfHtml5',
                       title: 'Site Reports',
                       titleAttr: 'PDF',
-                      pagesize: 'A4',
+                      pagesize: 'A3',
+                      orientation: 'landscape',
                       pageSize: 'LEGAL',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
@@ -186,7 +203,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6 ,7, 8 , 9 ,10 ,11]
+                          columns: [0, 1, 2, 3, 4, 5, 6 ,7, 8 , 9 ,10 ,11 ,12]
                       }
                   },
                   {
@@ -201,7 +218,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6,7, 8 , 9 ,10 ,11]
+                          columns: [0, 1, 2, 3, 4, 5, 6,7, 8 , 9 ,10 ,11 ,12]
                       }
                   },
                   'colvis'

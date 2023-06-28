@@ -233,10 +233,11 @@
                         <li class="{{ (Request::segment(1) == 'drawing_list')?'active':''}}">
                             <a href="{{ route('drawing_list') }}" class="dropdown-item">{{ __('Drawing') }}</a>
                         </li>
+                        @can('manage site reports')
                         <li class="{{ (Request::segment(1) == 'daily_reports')?'active':''}}">
                             <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
-                            {{-- {{ route('daily_reports') }} --}}
                         </li>
+                        @endcan
                         @can('manage project specification')
                         <li class="{{ (Request::segment(1) == 'show_project_specification')?'active':''}}">
                             <a href="{{ route('show_project_specification') }}" class="dropdown-item">{{ __('Project Specifications Summary') }}</a>

@@ -22,7 +22,7 @@ use File;
 use Illuminate\Support\Facades\Crypt;
 use DB;
 use Session;
-
+use Redirect;
 class DiaryController extends Controller
 {
     public function index($view = "grid")
@@ -1320,6 +1320,7 @@ class DiaryController extends Controller
                 "granted_eot" => $request->granted_eot,
                 "remarks" => $request->remarks,
             ];
+         
 
             $fileNameToStore1='';
             $url='';
@@ -1541,7 +1542,13 @@ class DiaryController extends Controller
                 $edit_id = trim($decode_id, '[{"id:;"}]');
              
               
-                $data=SiteReport::where('id', '=', $edit_id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
+                $data=SiteReport::select('dr_site_reports.*',\DB::raw('group_concat(file.file_name) as file_name,group_concat(file.id) as file_id'))
+                ->leftjoin("dr_site_multi_files as file",\DB::raw("FIND_IN_SET(file.id,dr_site_reports.file_id)"),">",\DB::raw("'0'"))
+                ->where('dr_site_reports.id',$edit_id)
+                ->where('dr_site_reports.project_id', Session::get('project_id'))
+                ->where('dr_site_reports.user_id', $user_id)
+                ->groupBy('dr_site_reports.id')
+                ->first();
              
                 $data_sub=SiteReportSub::where('site_id', '=', $edit_id)
                 ->where('project_id', Session::get('project_id'))
@@ -1562,7 +1569,8 @@ class DiaryController extends Controller
                 ->where('user_id', $user_id)
                 ->where('type','major_equipment_on_project')
                 ->get();
-    
+
+                  
               
                 return view("diary.daily_reports.edit",compact('project_id','data','data_sub','data_sub1','data_sub2','project_name'));
              
@@ -1589,7 +1597,11 @@ class DiaryController extends Controller
                 $user_id = \Auth::user()->id;
             }
             $project_id=Session::get('project_id');
-            $data=SiteReport::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->get();
+
+            $data=SiteReport::where('project_id', Session::get('project_id'))
+                            ->where('user_id', $user_id)
+                            ->get();
+                        
 
             return view("diary.daily_reports.index",compact('data','project_id'));
 
@@ -2090,10 +2102,8 @@ class DiaryController extends Controller
 
                     if ($path["flag"] == 1) {
                         $url = $path["url"];
-                        $user = SiteReport::create($userData);
-                        $lastId = $user->value('id');
+                       
                         $file_insert = array(
-                            'site_file_id'    => $sid,
                             'file_name'   => $fileNameToStore1,
                             'file_location'  => $url
                         );
@@ -2105,16 +2115,10 @@ class DiaryController extends Controller
                     }
                 }
                 $implode_file_id = count($file_id_array) != 0 ? implode(',',$file_id_array) : 0;
+            }else{
+                $implode_file_id = 0;
             }
-            else{
-                $get_file_id = SiteReport::where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
-                if($get_file_id != null){
-                    $implode_file_id = $get_file_id->file_id;
-                }
-                else{
-                    $implode_file_id = 0;
-                }
-            }
+            
 
 
            $data = [
@@ -2127,6 +2131,12 @@ class DiaryController extends Controller
             "site_conditions" => $select_site_conditions,
             "temperature" => $request->temperature,
             "min_input" => $request->min_input,
+            "total_in_power_one" => $request->total_in_power_one,
+            "total_di_power_one" => $request->total_di_power_one,
+            "total_con_power_one" => $request->total_con_power_one,
+            "total_in_power_two" => $request->total_in_power_two,
+            "total_di_power_two" => $request->total_di_power_two,
+            "total_con_power_two" => $request->total_con_power_two,
             "degree" => $request->degree,
             "remarks" => $request->remarks,
             "prepared_by" => $request->prepared_by,
@@ -2174,7 +2184,7 @@ class DiaryController extends Controller
                         ];
 
                      
-                            SiteReportSub::insert($data_first);
+                        SiteReportSub::insert($data_first);
                        
 
                     }
@@ -2217,7 +2227,7 @@ class DiaryController extends Controller
                         ];
 
                      
-                            SiteReportSub::insert($data_second);
+                        SiteReportSub::insert($data_second);
                        
 
                     }
@@ -2261,7 +2271,7 @@ class DiaryController extends Controller
                         ];
 
                      
-                            SiteReportSub::insert($data_second);
+                        SiteReportSub::insert($data_second);
                        
 
                     }
@@ -2269,9 +2279,7 @@ class DiaryController extends Controller
 
             }
 
-
-      
-            return redirect()-back()->with("success", "Site report created successfully.");
+            return redirect()->route('daily_reports')->with("success", "Site report created successfully.");
       
 
         } catch (Exception $e) {
@@ -2301,6 +2309,56 @@ class DiaryController extends Controller
             }else{
                 $select_site_conditions = Null;
             }
+          
+            $file_id_array    = array();
+            if($request->attachements != null){
+              
+                foreach($request->attachements as $file_req){
+
+                    $filenameWithExt1 = $file_req->getClientOriginalName();
+                    $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                    $extension1       = $file_req->getClientOriginalExtension();
+                    $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+                    $dir              = "uploads/site_reports/";
+                    $image_path       = $dir . $filenameWithExt1;
+
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+
+                    $path = Utility::multi_upload_file($file_req,"file_req",$fileNameToStore1,$dir,[]);
+                  
+                    if ($path["flag"] == 1) {
+                        $url = $path["url"];
+                     
+                        $file_insert = array(
+                            'file_name'   => $fileNameToStore1,
+                            'file_location'  => $url
+                        );
+                        $file_insert_id = DB::table('dr_site_multi_files')->insertGetId($file_insert);
+                        $file_id_array[] = $file_insert_id;
+                    
+                    }
+                    else {
+                        return redirect()->back()->with("error", __($path["msg"]));
+                    }
+                }
+               
+                $implode_file_id = count($file_id_array) != 0 ? implode(',',$file_id_array) : 0;
+                if($request->existing_file_id != ""){
+                    $implode_file_id = $request->existing_file_id.','.$implode_file_id;
+                }
+            }
+            else{
+                $get_file_id = SiteReport::where('id',$request->edit_id)->where('user_id',$user_id)->where('project_id',Session::get('project_id'))->first();
+                if($get_file_id != null){
+                    $implode_file_id = $get_file_id->file_id;
+                }
+                else{
+                    $implode_file_id = 0;
+                }
+            }
+
 
            $data = [
             "project_id" =>Session::get('project_id'),
@@ -2312,10 +2370,17 @@ class DiaryController extends Controller
             "site_conditions" => $select_site_conditions,
             "temperature" => $request->temperature,
             "min_input" => $request->min_input,
+            "total_in_power_one" => $request->total_in_power_one,
+            "total_di_power_one" => $request->total_di_power_one,
+            "total_con_power_one" => $request->total_con_power_one,
+            "total_in_power_two" => $request->total_in_power_two,
+            "total_di_power_two" => $request->total_di_power_two,
+            "total_con_power_two" => $request->total_con_power_two,
             "degree" => $request->degree,
             "remarks" => $request->remarks,
             "prepared_by" => $request->prepared_by,
             "title" => $request->title,
+            "file_id"=> $implode_file_id,
             ];
 
         
@@ -2418,7 +2483,7 @@ class DiaryController extends Controller
                         ];
 
                      
-                            SiteReportSub::insert($data_second);
+                        SiteReportSub::insert($data_second);
                        
 
                     }
@@ -2471,8 +2536,7 @@ class DiaryController extends Controller
             }
 
 
-            return redirect()->back()->with("success", "Site report updated successfully.");
-        //    SiteReportSub::insert($data1);
+            return redirect()->route('daily_reports')->with("success", "Site report created successfully.");
 
         } catch (Exception $e) {
             return $e->getMessage();

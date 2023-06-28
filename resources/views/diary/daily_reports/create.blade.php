@@ -83,7 +83,7 @@
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Minimum')}}</label>
-                  <input name="min_input" type="text" class="form-control" placeholder="{{__('Minimum')}}">
+                  <input name="min_input" type="text" class="form-control minimum" placeholder="{{__('Minimum')}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-2">
@@ -141,19 +141,19 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="total_in_power_one" id="total_in_power_one"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="" id="total_di_power_one_dis" disabled><input type="hidden" class="form-control" name="total_di_power_one" id="total_di_power_one"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="total_di_power_one" id="total_di_power_one"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="" id="total_in_power_one_dis" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="total_con_power_one" id="total_con_power_one"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="" id="total_con_power_one_dis" disabled><input type="hidden" class="form-control" name="total_con_power_one" id="total_con_power_one"></label>
                 </div>
               </div>
             </div>
@@ -180,9 +180,9 @@
                     </td>
                     <td class="col-xs-5">
                       <select  class="form-control second_option" id="second_option_0"  name="second_option[]">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="Direct Manpower">Direct Manpower</option>
-                        <option value="InDirect Manpower">InDirect Manpower</option>
+                        <option value="" disabled selected>{{__('Select your option')}}</option>
+                        <option value="Direct Manpower">{{__('Direct Manpower')}}</option>
+                        <option value="InDirect Manpower">{{__('InDirect Manpower')}}</option>
                       </select>
                     </td>
                     <td class="col-xs-1 text-center">
@@ -199,19 +199,19 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="total_in_power_two" id="total_in_power_two"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="" id="total_di_power_two_dis" disabled><input type="hidden" class="form-control" name="total_di_power_two" id="total_di_power_two"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="total_di_power_two" id="total_di_power_two"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="" id="total_in_power_two_dis" disabled><input type="hidden" class="form-control" name="total_in_power_two" id="total_in_power_two"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="total_con_power_two" id="total_con_power_two"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="" id="total_con_power_two_dis" disabled><input type="hidden" class="form-control" name="total_con_power_two" id="total_con_power_two"></label>
                 </div>
               </div>
             </div>
@@ -278,7 +278,7 @@
             <br />
             <div class="card-footer text-end">
               <button type="submit" class="btn btn-primary" id="daily_report_create">{{__('Save')}}</button>
-              <a href="{{ route('daily_reports') }}"  class="btn btn-light" >{{__('Cancel')}}</a>
+              <a href="{{ route('daily_reports') }}"  class="btn btn-light" >{{__('Back')}}</a>
             </div>
         </form>
       </div>
@@ -290,6 +290,8 @@
 
 @include('new_layouts.footer')
 
+<script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         $(".chosen-select").chosen();
@@ -299,17 +301,35 @@
       });
 
     });
-</script>
 
 
-<script type="text/javascript">
   var i = 0;
     
     $(".addBtn").click(function(){
   
         ++i;
   
-        $("#dynamicTable").append('<tr><td><input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position" id="first_position_'+i+'"/></td><td><input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person" id="first_person_'+i+'" /></td><td><select class="form-control first_option" id="first_option_'+i+'" name="first_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-tr bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+        $("#dynamicTable").append(
+          '<tr>'+
+            '<td>'+
+              '<input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position" id="first_position_'+i+'"/>'+
+            '</td>'+
+            '<td>'+
+              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person" id="first_person_'+i+'" />'+
+            '</td>'+
+            '<td>'+
+              '<select class="form-control first_option" id="first_option_'+i+'" name="first_option[]">'+
+                '<option value="" disabled selected>Select your option</option>'+
+                '<option value="Direct Manpower">Direct Manpower</option>'+
+                '<option value="InDirect Manpower">InDirect Manpower</option>'+
+              '</select>'+
+            '</td>'+
+            '<td>'+
+              '<span class="remove-tr bttoncreate">'+
+                '<i class="fa fa-trash"></i>'+
+              '</span>'+
+            '</td>'+
+          '</tr>');
     });
       
     $(document).on('click', '.remove-tr', function(){  
@@ -322,7 +342,27 @@
   
         ++j;
   
-        $("#dynamicTable2").append('<tr><td><input type="text" name="second_position[]" placeholder="Enter Position Name" class="form-control second_position" id="second_position_'+j+'" /></td><td><input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position" class="form-control second_person" id="second_person_'+j+'" /></td><td><select id="second_option_'+i+'" class="form-control second_option" name="second_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-ca bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+        $("#dynamicTable2").append(
+          '<tr>'+
+            '<td>'+
+                '<input type="text" name="second_position[]" placeholder="Enter Position Name" class="form-control second_position" id="second_position_'+j+'" />'+
+            '</td>'+
+            '<td>'+
+                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position" class="form-control second_person" id="second_person_'+j+'" />'+
+            '</td>'+
+            '<td>'+
+                '<select id="second_option_'+i+'" class="form-control second_option" name="second_option[]" >'+
+                '<option value="" disabled selected>Select your option</option>'+
+                '<option value="Direct Manpower">Direct Manpower</option>'+
+                '<option value="InDirect Manpower">InDirect Manpower</option>'+
+                '</select>'+
+            '</td>'+
+            '<td>'+
+                '<span class="remove-ca bttoncreate">'+
+                '<i class="fa fa-trash"></i>'+
+                '</span>'+
+            '</td>'+
+          '</tr>');
     });
       
     $(document).on('click', '.remove-ca', function(){  
@@ -333,73 +373,132 @@
   
     ++K;
 
-    $("#dynamicTable3").append('<tr><td><input type="text" name="third_position[]" placeholder="Enter Position Name" id="third_position_'+K+'" class="form-control third_position" /></td><td><input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/></td><td><select class="form-control third_option" id="third_option_'+K+'" name="third_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-ba bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+    $("#dynamicTable3").append(
+      '<tr>'+
+        '<td>'+
+            '<input type="text" name="third_position[]" placeholder="Enter Position Name" id="third_position_'+K+'" class="form-control third_position" />'+
+        '</td>'+
+        '<td>'+
+            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/>'+
+        '</td>'+
+        '<td>'+
+            '<select class="form-control third_option" id="third_option_'+K+'" name="third_option[]">'+
+            '<option value="" disabled selected>Select your option</option>'+
+            '<option value="Direct Manpower">Direct Manpower</option>'+
+            '<option value="InDirect Manpower">InDirect Manpower</option>'+
+            '</select>'+
+        '</td>'+
+        '<td>'+
+            '<span class="remove-ba bttoncreate">'+
+            '<i class="fa fa-trash"></i>'+
+            '</span>'+
+        '</td>'+
+      '</tr>');
     });
 
     $(document).on('click', '.remove-ba', function(){  
       $(this).parents('tr').remove();
     });  
 
- $(document).on('change', '#con_date', function() {
-  var con_date=$(this).val();
-  var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  $(document).on('change', '#con_date', function() {
+    var con_date=$(this).val();
+    var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-  var days = new Date(con_date);
-  $('.con_day').val(weekday[days.getDay()]);
+    var days = new Date(con_date);
+    $('.con_day').val(weekday[days.getDay()]);
 
-  });
-
-//   $(function() {
-
-// $(".first_person,first_option").on("keydown keyup change", sum);
-// alert("fgfg");
-//   function sum() {
-   
-//     var priceSum = 0;
-// $('.first_person').each(function(){
-//   priceSum += parseFloat(this.value);
-// });
-
-  
-
-//     $("#total_in_power").val(priceSum);
-  
-
-//   }
-
-// });
-
-$(document).on('change', '.first_option', function() {
+    });
 
 
-  var total = 0;
-  
-  $('.first_person').each(function(){
-    total += parseFloat($(this).val());
-  }) 
-  
+    function add_personal() {
+          var a = parseInt($("#total_di_power_one").val());
+          a = isNaN(a) ? '' : a;
+          var b = parseInt($("#total_in_power_one").val());
+          b = isNaN(b) ? '' : b;
+          var c = a + b;
+          c = isNaN(c) ? '' : c;
+          $("#total_con_power_one").val(c);
+          $("#total_con_power_one_dis").val(c);
+    };
+
+    $(document).on('change', '.first_option', function() {
+
+      var total = 0;
+      var direct_val=0;
+      var indirect_val=0;
+      var direct_val_total=0;
+      var indirect_val_total=0;
+        $(".first_option :selected").each(function(index) {
+            first_option = $(this).val();
+            if(first_option == "Direct Manpower"){
+              direct_val =  $(this).closest("tr").find(".first_person").val();
+              direct_val_total += parseFloat(direct_val); 
+              direct_val_total = isNaN(direct_val_total) ? '' : direct_val_total;
+              $('#total_di_power_one').val(direct_val_total);
+              $('#total_di_power_one_dis').val(direct_val_total);
+            
+            }
+            else if(first_option == "InDirect Manpower"){
+                indirect_val =  $(this).closest("tr").find(".first_person").val();
+                indirect_val_total += parseFloat(indirect_val);
+                indirect_val_total = isNaN(indirect_val_total) ? '' : indirect_val_total;
+                $('#total_in_power_one').val(indirect_val_total);
+                $('#total_in_power_one_dis').val(indirect_val_total);
+              
+            }
+            add_personal();
+        });
+    });
 
 
-$(".first_option :selected").map(function(i, el) {
-    return $(el).val();
-
-    if($(el).val()=='Direct Manpower'){
-      $(".first_person").closest("tr").addClass("intro");
-      alert($(el).val());
-      $("#total_di_power_one").val(total);
-    }else{
-      alert($(el).val());
-      $("#total_in_power_one").val(total);
-    }
-
-}).get();
+    function add_sub_contract() {
+          var d = parseInt($("#total_di_power_two").val());
+          d = isNaN(d) ? '' : d;
+          var e = parseInt($("#total_in_power_two").val());
+          e = isNaN(e) ? '' : e;
+          var f  = d + e;
+          f = isNaN(f) ? '' : f;
+          $("#total_con_power_two").val(f);
+          $("#total_con_power_two_dis").val(f);
+    };
 
 
+    $(document).on('change', '.second_option', function() {
 
+    var total_two = 0;
+    var direct_val_two=0;
+    var indirect_val_two=0;
+    var direct_val_total_two=0;
+    var indirect_val_total_two=0;
+      $(".second_option :selected").each(function(index) {
+          second_option = $(this).val();
+          if(second_option == "Direct Manpower"){
+            direct_val_two =  $(this).closest("tr").find(".second_person").val();
+            direct_val_total_two += parseFloat(direct_val_two); 
+            direct_val_total_two = isNaN(direct_val_total_two) ? '' : direct_val_total_two;
+            $('#total_di_power_two').val(direct_val_total_two);
+            $('#total_di_power_two_dis').val(direct_val_total_two);
+          
+          }
+          else if(second_option == "InDirect Manpower"){
+            indirect_val_two =  $(this).closest("tr").find(".second_person").val();
+            indirect_val_total_two += parseFloat(indirect_val_two);
+            indirect_val_total_two = isNaN(indirect_val_total_two) ? '' : indirect_val_total_two;
+            $('#total_in_power_two').val(indirect_val_total_two);
+            $('#total_in_power_two_dis').val(indirect_val_total_two);
+            
+          }
+          add_sub_contract();
+      });
+    });
 
-  
-});
-
-
+    $('.first_person,.second_person,.third_person,.minimum').alphanum({
+          allow              : '',    // Allow extra characters
+          allowUpper         : false,  // Allow upper case characters
+          allowLower         : false,  // Allow lower case characters
+          forceUpper         : false, // Convert lower case characters to upper case
+          forceLower         : false, // Convert upper case characters to lower case
+          allowLatin         : false,  
+    });
 
 </script>

@@ -115,7 +115,7 @@
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Minimum')}}</label>
-                  <input name="min_input" type="text" class="form-control" placeholder="Minimum"  value="{{$data->min_input ?? ''}}">
+                  <input name="min_input" type="text" class="form-control minimum" placeholder="Minimum"  value="{{$data->min_input ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-2">
@@ -124,8 +124,8 @@
                   @if(isset($data->degree))
                   <select name="degree" class="form-control addbutton" >
                     <option value="" disabled selected>{{__('Select your option')}}</option>
-                    <option @if( 'Fahrenheit'==$data->degree){ selected }@endif value="Fahrenheit">{{__('Fahrenheit')}}</option>
-                    <option @if( 'Celsius'==$data->degree){ selected }@endif value="Celsius">{{__('Celsius')}}</option>
+                    <option @if('Fahrenheit'==$data->degree){ selected }@endif value="Fahrenheit">{{__('Fahrenheit')}}</option>
+                    <option @if('Celsius'==$data->degree){ selected }@endif value="Celsius">{{__('Celsius')}}</option>
                   </select>
                   @else
                   <select name="degree" class="form-control addbutton" >
@@ -144,7 +144,6 @@
                 <table class="table tableadd form" id="dynamicTable">
                   <thead>
                     <tr>
-                    <tr>
                       <th>{{__('Position')}}</th>
                       <th>{{__('No Of Person per Position')}}</th>
                       <th></th>
@@ -152,7 +151,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($data_sub as $display_sub)
+                    @foreach ($data_sub as $sub_key=>$display_sub)
                     <tr id="addRow">
                       <td class="col-xs-3">
                         <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub['position_name'] ?? ''}}"/>
@@ -167,12 +166,20 @@
                           <option value="InDirect Manpower" @if( 'InDirect Manpower'==$display_sub[ 'option_method']){ selected }@endif>{{__('InDirect Manpower')}}</option>
                         </select>
                       </td>
-                      <td class="col-xs-1 text-center">
-                        <!-- <span class="c-link"><i class="bttoncreate fa fa-edit  js-toggleForm"></i></span> -->
-                        <span class="addBtn bttoncreate">
-                          <i class="fa fa-plus"></i>
-                        </span>
-                      </td>
+                      @if ($sub_key == 0)
+                        <td class="col-xs-1 text-center">
+                          <span class="addBtn bttoncreate">
+                            <i class="fa fa-plus"></i>
+                          </span>
+                        </td>
+                      @else
+                        <td class="col-xs-1 text-center">
+                          <span class="remove-tr bttoncreate">
+                            <i class="fa fa-trash"></i>
+                          </span>
+                        </td>
+                      @endif
+                      
                     </tr>
                     @endforeach
                   </tbody>
@@ -186,19 +193,19 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: 45</label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="" id="total_di_power_one_dis" value="{{$data->total_di_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_one" id="total_di_power_one" value="{{$data->total_di_power_one ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: 45</label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="" id="total_in_power_one_dis" value="{{$data->total_in_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one" value="{{$data->total_in_power_one ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: 22</label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="" id="total_con_power_one_dis" value="{{$data->total_con_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_one" id="total_con_power_one" value="{{$data->total_con_power_one ?? ''}}"></label>
                 </div>
               </div>
             </div>
@@ -206,31 +213,40 @@
             <div class="col-md-12 l-section">
               <h2>{{__('Sub Contractors')}}</h2>
               <br />
-              <table class="table tableadd form">
+              <table class="table tableadd form" id="dynamicTable2">
                 <thead>
-                  @foreach ($data_sub1 as $display_sub_con)
-                <tr id="">
-                    <td class="col-xs-3">
-                      <input name="second_position[]" class="form-control second_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub_con['position_name'] ?? ''}}"/>
-                    </td>
-                    <td class="col-xs-3">
-                      <input name="second_person[]"  class="form-control second_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub_con['no_of_persons'] ?? ''}}"/>
-                    </td>
-                    <td class="col-xs-5">
-                      <select  class="form-control second_option_0"  name="second_option[]">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="Direct Manpower" @if( 'Direct Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>Direct Manpower</option>
-                        <option value="InDirect Manpower" @if( 'InDirect Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>InDirect Manpower</option>
-                      </select>
-                    </td>
-                    <td class="col-xs-1 text-center">
-                      <span class="addBtn2 bttoncreate">
-                        <i class="fa fa-plus"></i>
-                      </span>
-                    </td>
-                  </tr>
-                  @endforeach
-                </tbody>
+                  <tbody>
+                    @foreach ($data_sub1 as $sub_con_key=> $display_sub_con)
+                    <tr id="">
+                      <td class="col-xs-3">
+                        <input name="second_position[]" class="form-control second_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub_con['position_name'] ?? ''}}"/>
+                      </td>
+                      <td class="col-xs-3">
+                        <input name="second_person[]"  class="form-control second_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub_con['no_of_persons'] ?? ''}}"/>
+                      </td>
+                      <td class="col-xs-5">
+                        <select  class="form-control second_option_0"  name="second_option[]">
+                          <option value="" disabled selected>{{__('Select your option')}}</option>
+                          <option value="Direct Manpower" @if( 'Direct Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>Direct Manpower</option>
+                          <option value="InDirect Manpower" @if( 'InDirect Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>InDirect Manpower</option>
+                        </select>
+                      </td>
+                      @if ($sub_con_key == 0)
+                      <td class="col-xs-1 text-center">
+                        <span class="addBtn2 bttoncreate">
+                          <i class="fa fa-plus"></i>
+                        </span>
+                      </td>
+                      @else
+                      <td class="col-xs-1 text-center">
+                        <span class="remove-ca bttoncreate">
+                          <i class="fa fa-trash"></i>
+                        </span>
+                      </td>
+                      @endif
+                    </tr>
+                    @endforeach
+                  </tbody>
               </table>
               <div class="card-footer text-end"> &nbsp; </div>
             </div>
@@ -238,19 +254,19 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: 45</label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="" id="total_di_power_two_dis" value="{{$data->total_di_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_two" id="total_di_power_two" value="{{$data->total_di_power_two ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: 45</label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="" id="total_in_power_two_dis" value="{{$data->total_in_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_two" id="total_in_power_two" value="{{$data->total_in_power_two ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: 22</label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="" id="total_con_power_two_dis" value="{{$data->total_con_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_two" id="total_con_power_two" value="{{$data->total_con_power_two ?? ''}}"></label>
                 </div>
               </div>
             </div>
@@ -259,7 +275,7 @@
               <h2>{{__('Major Equipment on Project')}}</h2>
               <br />
             
-              <table class="table tableadd form">
+              <table class="table tableadd form" id="dynamicTable3">
                 <thead>
                   <tr>
                     <th>{{__('Equipment Name')}}</th>
@@ -270,7 +286,7 @@
                 </thead>
                 <tbody>
                   @foreach ($data_sub2 as $key =>$display_major_equi)
-                <tr id="">
+                  <tr id="">
                     <td class="col-xs-3">
                       <input name="third_position[]" class="form-control third_position_0" type="text" placeholder="Enter Equipment Name" value="{{$display_major_equi['position_name'] ?? ''}}"/>
                     </td>
@@ -280,15 +296,24 @@
                     <td class="col-xs-5">
                       <select class="form-control third_option_0" name="third_option[]">
                         <option value="" disabled selected>{{__('Select your option')}}</option>
-                        <option value="Direct Manpower"  @if('Direct Manpower'==$display_major_equi[ 'option_method']){ selected }@endif>{{__('Direct Manpower')}}</option>
-                        <option value="InDirect Manpower" @if('InDirect Manpower'==$display_major_equi[ 'option_method']){ selected }@endif>{{__('InDirect Manpower')}}</option>
+                        <option value="Direct Manpower"  @if('Direct Manpower'==$display_major_equi['option_method']){ selected }@endif>{{__('Direct Manpower')}}</option>
+                        <option value="InDirect Manpower" @if('InDirect Manpower'==$display_major_equi['option_method']){ selected }@endif>{{__('InDirect Manpower')}}</option>
                       </select>
                     </td>
-                    <td class="col-xs-1 text-center">
-                      <span class="addBtn3 bttoncreate">
-                        <i class="fa fa-plus"></i>
-                      </span>
-                    </td>
+                    @if($key == 0)
+                      <td class="col-xs-1 text-center">
+                        <span class="addBtn3 bttoncreate">
+                          <i class="fa fa-plus"></i>
+                        </span>
+                      </td>
+                    @else
+                      <td class="col-xs-1 text-center">
+                        <span class="remove-ba bttoncreate">
+                          <i class="fa fa-trash"></i>
+                        </span>
+                      </td>
+                    @endif
+                    
                   </tr>
                   @endforeach
                 </tbody>
@@ -300,7 +325,19 @@
               </label>
               <div class="choose-file ">
                 <label for="document" class="form-label">
-                  <input name="attachements" type="file" class="form-control" name="document" id="document" data-filename="document_create"  multiple>
+                  <input name="attachements[]" type="file" class="form-control" name="document" id="document" data-filename="document_create"  multiple>
+                  <input type="hidden" name="existing_file_id" value="{{$data->file_id ?? ''}}">
+                  @php
+                      $file_explode = explode(',',$data->file_name);
+                  @endphp
+                  @forelse ($file_explode as $file_show)
+                      @if($file_show != "")
+                          <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}</span> <br>
+                      @else
+                          -
+                      @endif
+                  @empty
+                  @endforelse
                   <br>
                   <span class="show_document_file" style="color:green;"></span>
                 </label>
@@ -321,7 +358,7 @@
             <br />
             <div class="card-footer text-end">
               <button type="submit" class="btn btn-primary" id="update_daily_report">{{__('Update')}}</button>
-              <a href="{{ route('daily_reports') }}"  class="btn btn-light" >{{__('Cancel')}}</a>
+              <a href="{{ route('daily_reports') }}"  class="btn btn-light" >{{__('Back')}}</a>
             </div>
         </form>
       </div>
@@ -333,6 +370,7 @@
 
 @include('new_layouts.footer')
 
+<script src="{{ asset('assets/js/jquery.alphanum.js') }}"></script>
 <script>
     $(document).ready(function() {
         $(".chosen-select").chosen();
@@ -342,19 +380,34 @@
       });
 
     });
-</script>
 
-
-
-  
-<script type="text/javascript">
-  var i = 0;
+    var i = 0;
     
     $(".addBtn").click(function(){
   
         ++i;
   
-        $("#dynamicTable").append('<tr><td><input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position" id="first_position_'+i+'"/></td><td><input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person" id="first_person_'+i+'" /></td><td><select class="form-control first_option" id="first_option_'+i+'" name="first_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-tr bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+        $("#dynamicTable").append(
+          '<tr>'+
+            '<td>'+
+              '<input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position" id="first_position_'+i+'"/>'+
+            '</td>'+
+            '<td>'+
+              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person" id="first_person_'+i+'" />'+
+            '</td>'+
+            '<td>'+
+              '<select class="form-control first_option" id="first_option_'+i+'" name="first_option[]">'+
+                '<option value="" disabled selected>Select your option</option>'+
+                '<option value="Direct Manpower">Direct Manpower</option>'+
+                '<option value="InDirect Manpower">InDirect Manpower</option>'+
+              '</select>'+
+            '</td>'+
+            '<td>'+
+              '<span class="remove-tr bttoncreate">'+
+                '<i class="fa fa-trash"></i>'+
+              '</span>'+
+            '</td>'+
+          '</tr>');
     });
       
     $(document).on('click', '.remove-tr', function(){  
@@ -367,7 +420,27 @@
   
         ++j;
   
-        $("#dynamicTable2").append('<tr><td><input type="text" name="second_position[]" placeholder="Enter Position Name" class="form-control second_position" id="second_position_'+j+'" /></td><td><input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position" class="form-control second_person" id="second_person_'+j+'" /></td><td><select id="second_option_'+i+'" class="form-control second_option" name="second_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-ca bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+        $("#dynamicTable2").append(
+          '<tr>'+
+            '<td>'+
+                '<input type="text" name="second_position[]" placeholder="Enter Position Name" class="form-control second_position" id="second_position_'+j+'" />'+
+            '</td>'+
+            '<td>'+
+                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position" class="form-control second_person" id="second_person_'+j+'" />'+
+            '</td>'+
+            '<td>'+
+                '<select id="second_option_'+i+'" class="form-control second_option" name="second_option[]" >'+
+                '<option value="" disabled selected>Select your option</option>'+
+                '<option value="Direct Manpower">Direct Manpower</option>'+
+                '<option value="InDirect Manpower">InDirect Manpower</option>'+
+                '</select>'+
+            '</td>'+
+            '<td>'+
+                '<span class="remove-ca bttoncreate">'+
+                '<i class="fa fa-trash"></i>'+
+                '</span>'+
+            '</td>'+
+          '</tr>');
     });
       
     $(document).on('click', '.remove-ca', function(){  
@@ -378,12 +451,33 @@
   
     ++K;
 
-    $("#dynamicTable3").append('<tr><td><input type="text" name="third_position[]" placeholder="Enter Position Name" id="third_position_'+K+'" class="form-control third_position" /></td><td><input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/></td><td><select class="form-control third_option" id="third_option_'+K+'" name="third_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-ba bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+    $("#dynamicTable3").append(
+      '<tr>'+
+        '<td>'+
+            '<input type="text" name="third_position[]" placeholder="Enter Position Name" id="third_position_'+K+'" class="form-control third_position" />'+
+        '</td>'+
+        '<td>'+
+            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/>'+
+        '</td>'+
+        '<td>'+
+            '<select class="form-control third_option" id="third_option_'+K+'" name="third_option[]">'+
+            '<option value="" disabled selected>Select your option</option>'+
+            '<option value="Direct Manpower">Direct Manpower</option>'+
+            '<option value="InDirect Manpower">InDirect Manpower</option>'+
+            '</select>'+
+        '</td>'+
+        '<td>'+
+            '<span class="remove-ba bttoncreate">'+
+            '<i class="fa fa-trash"></i>'+
+            '</span>'+
+        '</td>'+
+      '</tr>');
     });
 
     $(document).on('click', '.remove-ba', function(){  
       $(this).parents('tr').remove();
     });  
+
 
  $(document).on('change', '#con_date', function() {
   var con_date=$(this).val();
@@ -394,57 +488,97 @@
 
   });
 
-//   $(function() {
-
-// $(".first_person,first_option").on("keydown keyup change", sum);
-// alert("fgfg");
-//   function sum() {
-   
-//     var priceSum = 0;
-// $('.first_person').each(function(){
-//   priceSum += parseFloat(this.value);
-// });
-
   
+  function add_personal() {
+          var a = parseInt($("#total_di_power_one").val());
+          a = isNaN(a) ? '' : a;
+          var b = parseInt($("#total_in_power_one").val());
+          b = isNaN(b) ? '' : b;
+          var c = a + b;
+          c = isNaN(c) ? '' : c;
+          $("#total_con_power_one").val(c);
+          $("#total_con_power_one_dis").val(c);
+    };
 
-//     $("#total_in_power").val(priceSum);
-  
+    $(document).on('change', '.first_option', function() {
 
-//   }
-
-// });
-
-$(document).on('change', '.first_option', function() {
-
-
-  var total = 0;
-  
-  $('.first_person').each(function(){
-    total += parseFloat($(this).val());
-  }) 
-  
- 
-  $(".first_option option:selected").each(function () {
-   var $this = $(this);
-  
-    var selText = $this.val();
-    if(selText=='Direct Manpower'){
-      $(".first_person").closest("td").addClass("intro");
-      alert(selText);
-      $("#total_di_power").val(total);
-    }else{
-      alert(selText);
-      $("#total_di_power").val(total);
-    }
-   
-   
-});
+      var total = 0;
+      var direct_val=0;
+      var indirect_val=0;
+      var direct_val_total=0;
+      var indirect_val_total=0;
+        $(".first_option :selected").each(function(index) {
+            first_option = $(this).val();
+            if(first_option == "Direct Manpower"){
+              direct_val =  $(this).closest("tr").find(".first_person").val();
+              direct_val_total += parseFloat(direct_val); 
+              direct_val_total = isNaN(direct_val_total) ? '' : direct_val_total;
+              $('#total_di_power_one').val(direct_val_total);
+              $('#total_di_power_one_dis').val(direct_val_total);
+            
+            }
+            else if(first_option == "InDirect Manpower"){
+                indirect_val =  $(this).closest("tr").find(".first_person").val();
+                indirect_val_total += parseFloat(indirect_val);
+                indirect_val_total = isNaN(indirect_val_total) ? '' : indirect_val_total;
+                $('#total_in_power_one').val(indirect_val_total);
+                $('#total_in_power_one_dis').val(indirect_val_total);
+              
+            }
+            add_personal();
+        });
+    });
 
 
+    function add_sub_contract() {
+          var d = parseInt($("#total_di_power_two").val());
+          d = isNaN(d) ? '' : d;
+          var e = parseInt($("#total_in_power_two").val());
+          e = isNaN(e) ? '' : e;
+          var f  = d + e;
+          f = isNaN(f) ? '' : f;
+          $("#total_con_power_two").val(f);
+          $("#total_con_power_two_dis").val(f);
+    };
 
 
+    $(document).on('change', '.second_option', function() {
 
-  
+    var total_two = 0;
+    var direct_val_two=0;
+    var indirect_val_two=0;
+    var direct_val_total_two=0;
+    var indirect_val_total_two=0;
+      $(".second_option :selected").each(function(index) {
+          second_option = $(this).val();
+          if(second_option == "Direct Manpower"){
+            direct_val_two =  $(this).closest("tr").find(".second_person").val();
+            direct_val_total_two += parseFloat(direct_val_two); 
+            direct_val_total_two = isNaN(direct_val_total_two) ? '' : direct_val_total_two;
+            $('#total_di_power_two').val(direct_val_total_two);
+            $('#total_di_power_two_dis').val(direct_val_total_two);
+          
+          }
+          else if(second_option == "InDirect Manpower"){
+            indirect_val_two =  $(this).closest("tr").find(".second_person").val();
+            indirect_val_total_two += parseFloat(indirect_val_two);
+            indirect_val_total_two = isNaN(indirect_val_total_two) ? '' : indirect_val_total_two;
+            $('#total_in_power_two').val(indirect_val_total_two);
+            $('#total_in_power_two_dis').val(indirect_val_total_two);
+            
+          }
+          add_sub_contract();
+      });
+    });
+
+
+$('.first_person,.second_person,.third_person,.minimum').alphanum({
+			allow              : '',    // Allow extra characters
+			allowUpper         : false,  // Allow upper case characters
+			allowLower         : false,  // Allow lower case characters
+			forceUpper         : false, // Convert lower case characters to upper case
+			forceLower         : false, // Convert upper case characters to lower case
+			allowLatin         : false,  
 });
 
 </script>
