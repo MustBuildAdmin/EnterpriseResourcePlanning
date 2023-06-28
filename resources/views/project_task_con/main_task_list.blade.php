@@ -85,7 +85,7 @@
             searching: true,
             info: true,
             paging: true,
-            bSort: false,
+            // bSort: false,
         });
     });
 </script>

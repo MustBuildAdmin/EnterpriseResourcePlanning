@@ -438,7 +438,12 @@ class ProjectTaskController extends Controller
 
     public function update_assigned_to(Request $request){
         $task_main_id = $request->task_main_id; 
-        $assigned_to = implode(',',$request->users);
+        if($request->users != null){
+            $assigned_to = json_encode($request->users);
+        }
+        else{
+            $assigned_to = null;
+        }
         DB::table('con_tasks')->where('main_id',$task_main_id)->update(['users'=>$assigned_to]);
         return redirect()->back()->with('success', __('Assigned To Updated.'));
     }
