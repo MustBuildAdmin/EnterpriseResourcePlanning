@@ -184,6 +184,11 @@ class ProjectTaskController extends Controller
         $get_end_date   = $request->end_date;
         $status_task    = $request->status_task;
 
+        // 1 > Today Task
+        // 2 > All Task
+        // 3 > Pending Task
+        // 4 > Completed Task
+
         $usr = Auth::user();
 
         $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -197,36 +202,45 @@ class ProjectTaskController extends Controller
                         ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)")
                         ->whereNotIn('con_tasks.id',$get_task_id);
 
+                if($project_id != 0 && $get_end_date != null && $status_task != null){
+                    $tasks->where('project_id', $project_id)
+                    ->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.end_date', '>', $get_end_date);
+                    });
+
+                    if($status_task == "2"){
+                        $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                    }
+                    else if($status_task == "3"){
+                        $tasks->where('project_id', $project_id)->where('progress','<','100');
+                    }
+                    else if($status_task == "4"){
+                        $tasks->where('project_id', $project_id)->where('progress','>','100');
+                    }
+                }
                 if($project_id != 0 && $get_end_date != null){
                     $tasks->where('project_id', $project_id)
-                        ->where(function ($query) use ($get_start_date, $get_end_date) {
-                            $query->whereDate('con_tasks.end_date', '>', $get_end_date);
-                        });
+                    ->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.end_date', '>', $get_end_date);
+                    });
                 }
-                else if($status_task == "1"){
-                    // Today Task
+                else if($project_id != 0 && $status_task == "1"){
                     $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
                         ->where('con_tasks.project_id', $project_id)
                         ->orderBy('con_tasks.start_date','ASC');
                 }
-                else if($status_task == "2"){
-                    // All Task
+                else if($project_id != 0 && $status_task == "2"){
                     $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
                 }
-                else if($status_task == "3"){
-                    // Pending Task
-                    $tasks->where('project_id', $project_id)
-                        ->where('progress','<','100')
-                        ->whereDate('con_tasks.end_date', "<", date('Y-m-d'));
+                else if($project_id != 0 && $status_task == "3"){
+                    $tasks->where('project_id', $project_id)->where('progress','<','100')->whereDate('con_tasks.end_date', "<", date('Y-m-d'));
                 }
-                else if($status_task == "4"){
-                    // Completed Task
+                else if($project_id != 0 && $status_task == "4"){
                     $tasks->where('project_id', $project_id)->where('progress','>','100');
                 }
                 else{
-                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
-                        ->where('con_tasks.project_id', $project_id)
-                        ->orderBy('con_tasks.start_date','ASC');
+                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                    ->orderBy('con_tasks.start_date','ASC');
                 }
             }
             else{
@@ -237,41 +251,91 @@ class ProjectTaskController extends Controller
                         ->whereNotNull('pro.instance_id')
                         ->whereNotIn('con_tasks.id',$get_task_id);
 
-                if($project_id != 0 && $get_user_id != null && $get_start_date != null && $get_end_date != null){
+                if($project_id != 0 && $get_user_id != null && $get_start_date != null && $get_end_date != null && $status_task != null){
                     $tasks->where('project_id', $project_id)
-                        ->whereRaw("find_in_set('" . $get_user_id . "',users)")
-                        ->where(function ($query) use ($get_start_date, $get_end_date) {
-                            $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                            $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                        });
+                    ->whereRaw("find_in_set('" . $get_user_id . "',users)")
+                    ->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                        $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                    });
+
+                    if($status_task == "2"){
+                        $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                    }
+                    else if($status_task == "3"){
+                        $tasks->where('project_id', $project_id)->where('progress','<','100');
+                    }
+                    else if($status_task == "4"){
+                        $tasks->where('project_id', $project_id)->where('progress','=>','100');
+                    }
+                        
+                }
+                else if($project_id != 0 && $get_start_date != null && $get_end_date != null && $status_task != null){
+                    $tasks->where('project_id', $project_id)
+                    ->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                        $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                    });
+
+                    if($status_task == "2"){
+                        $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                    }
+                    else if($status_task == "3"){
+                        $tasks->where('project_id', $project_id)->where('progress','<','100');
+                    }
+                    else if($status_task == "4"){
+                        $tasks->where('project_id', $project_id)->where('progress','=>','100');
+                    }
+                }
+                else if($project_id != 0 && $get_user_id != null && $get_start_date != null && $get_end_date != null){
+                    $tasks->where('project_id', $project_id)
+                    ->whereRaw("find_in_set('" . $get_user_id . "',users)")
+                    ->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                        $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                    });
+                }
+                else if($project_id != 0 && $get_user_id != null && $status_task != null){
+                    $tasks->where('project_id', $project_id)->whereRaw("find_in_set('" . $get_user_id . "',users)");
+
+                    if($status_task == "1"){
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                        ->orderBy('con_tasks.start_date','ASC');
+                    }
+                    else if($status_task == "2"){
+                        $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                    }
+                    else if($status_task == "3"){
+                        $tasks->where('project_id', $project_id)->where('progress','<','100');
+                    }
+                    else if($status_task == "4"){
+                        $tasks->where('project_id', $project_id)->where('progress','=>','100');
+                    }
                 }
                 else if($project_id != 0 && $get_start_date != null && $get_end_date != null){
                     $tasks->where('project_id', $project_id)
-                        ->where(function ($query) use ($get_start_date, $get_end_date) {
-                            $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                            $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                        });
+                    ->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                        $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                    });
                 }
                 else if($project_id != 0 && $get_end_date != null){
                     $tasks->whereDate('con_tasks.end_date', ">", $get_end_date)->where('con_tasks.project_id', $project_id);
                 }
-                else if($status_task == "1"){
-                    // Today Task
-                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
-                        ->where('con_tasks.project_id', $project_id)
-                        ->orderBy('con_tasks.start_date','ASC');
+                if($project_id != 0 && $get_user_id != null){
+                    $tasks->where('project_id', $project_id)->whereRaw("find_in_set('" . $get_user_id . "',users)");
                 }
-                else if($status_task == "2"){
-                    // All Task
+                else if($project_id != 0 && $status_task == "1"){
+                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                    ->orderBy('con_tasks.start_date','ASC');
+                }
+                else if($project_id != 0 && $status_task == "2"){
                     $tasks->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
                 }
-                else if($status_task == "3"){
-                    // Pending Task
-                    $tasks->where('project_id', $project_id)
-                    ->where('progress','<','100')
-                    ->whereDate('con_tasks.end_date', "<", date('Y-m-d'));
+                else if($project_id != 0 && $status_task == "3"){
+                    $tasks->where('project_id', $project_id)->where('progress','<','100');
                 }
-                else if($status_task == "4"){
+                else if($project_id != 0 && $status_task == "4"){
                     // Completed Task
                     $tasks->where('project_id', $project_id)->where('progress','>','100');
                 }
@@ -707,7 +771,7 @@ class ProjectTaskController extends Controller
         $user_id          = \Auth::user()->id;
         $project_id       = Session::get('project_id');
         $task             = Con_task::where('main_id',$task_id)->first();
-        $check_data       = $get_task_progress = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
+        $check_data       = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename, group_concat(file.id) as file_id'))
                                 ->leftjoin("task_progress_file as file",\DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
                                 ->where('task_progress.id',$task_progress_id)
                                 ->where('task_progress.task_id',$task_id)
