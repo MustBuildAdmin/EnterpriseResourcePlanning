@@ -318,7 +318,7 @@ class ProjectTaskController extends Controller
                     });
                 }
                 else if($get_end_date != null){
-                    $tasks->whereDate('con_tasks.end_date', ">", $get_end_date);
+                    $tasks->whereDate('con_tasks.end_date', "<=", $get_end_date);
                 }
                 else if(count($json_user_id) != 0){
                     foreach($json_user_id as $get_user_id){
