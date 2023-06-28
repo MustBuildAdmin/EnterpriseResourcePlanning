@@ -49,14 +49,14 @@ h3, .h3 {
   <div class="col-md-6">
      <h2>{{__('Site Reports')}}</h2> 
   </div>
-@can('create directions')
+@can('create site reports')
 <div class="col-auto ms-auto d-print-none">
   <div class="input-group-btn">
-      <a href="{{ route('daily_reportscreate') }}" title="{{__('Create')}}" class="btn btn-primary">
+      <a href="{{ route('daily_reportscreate') }}" title="{{__('Create Site Report')}}" class="btn btn-primary">
           <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
       </a>
       <a href=""  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
-        <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+        <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
       </a>
   </div>
 </div>
@@ -64,8 +64,8 @@ h3, .h3 {
 <div class="col-xl-12 mt-3">
     <div class="card table-card">
       <div class="card-header card-body table-border-style">
-        @can('manage project specification')
-        <div class="table">
+        @can('manage site reports')
+        <div class="responsive">
           <table class="table" id="example2">
             <thead>
               <tr>
@@ -78,6 +78,9 @@ h3, .h3 {
                 <th>{{__('Day')}}</th>
                 <th>{{__('Temparture')}}</th>
                 <th>{{__('Minimum')}}</th>
+                <th>{{__('Degree')}}</th>
+                {{-- <th>{{__('Document')}}</th> --}}
+                <th>{{__('Remarks')}}</th>
                 <th>{{__('Prepared By')}}</th>
                 <th>{{__('Title')}}</th>
                 <th style="width:25%;">{{__('Action')}}</th>
@@ -89,26 +92,41 @@ h3, .h3 {
                   <td>{{$loop->iteration}}</td>
                   <td>{{$data_report->id}}</td>
                   <td>{{$data_report->contractor_name}}</td>
-                  <td>{{$data_report->con_date}}</td>
+                  <td>{{ Utility::site_date_format($data_report->con_date,\Auth::user()->id) }}</td>
                   <td>{{$data_report->weather}}</td>
                   <td>{{$data_report->site_conditions}}</td>  
                   <td>{{$data_report->con_day}}</td>
                   <td>{{$data_report->temperature}}</td>
                   <td>{{$data_report->min_input}}</td>
+                  <td>{{$data_report->degree}}</td> 
+                  {{-- <td>
+                    @php
+                    $file_explode = explode(',',$data_report->file_name);
+                    @endphp
+                    @forelse ($file_explode as $file_show)
+                    @if($file_show != "")
+                        <span class="">{{$file_show}}</span> <br>
+                    @else
+                        -
+                    @endif
+                    @empty
+                    @endforelse
+                  </td>  --}}
+                  <td>{{$data_report->remarks}}</td> 
                   <td>{{$data_report->prepared_by}}</td>
                   <td>{{$data_report->title}}</td>
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
-                          {{-- @can('edit procurement material') --}}
-                              <a class="btn btn-md bg-primary backgroundnone" href="{{route('daily_reportsedit',\Crypt::encrypt($data_report->id))}}"   title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
-                          {{-- @endcan --}}
-                          {{-- @can('delete procurement material') --}}
+                          @can('edit site reports')
+                              <a class="btn btn-md bg-primary backgroundnone" href="{{route('daily_reportsedit',Crypt::encrypt($data_report->id))}}"   title="{{__('Edit Site Report')}}" data-title="{{__('Edit Site Report')}}"><i class="ti ti-pencil text-white"></i></a>
+                          @endcan
+                          @can('delete site reports')
                               {!! Form::open(['method' => 'POST', 'route' => ['delete_site_reports', $data_report->id],'id'=>'delete-form-'.$data_report->id]) !!} 
                               {{ Form::hidden('id',$data_report->id, ['class' => 'form-control']) }}
                               {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                   <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
                               {!! Form::close() !!} 
-                          {{-- @endcan --}}
+                          @endcan
                       </div>
                   </td>
               </tr>
@@ -146,7 +164,7 @@ h3, .h3 {
               buttons: [
                   {
                       extend: 'excelHtml5',
-                      title: 'Project Specifications Summary',
+                      title: 'Site Reports',
                       titleAttr: 'Excel',
                       text: '<i class="fa fa-file-excel-o"></i>',
       
@@ -156,12 +174,12 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6]
+                          columns: [0, 1, 2, 3, 4, 5, 6, 7, 8 , 9 ,10 ,11, 12]
                       }
                   },
                   {
                       extend: 'pdfHtml5',
-                      title: 'Project Specifications Summary',
+                      title: 'Site Reports',
                       titleAttr: 'PDF',
                       pagesize: 'A3',
                       orientation: 'landscape',
@@ -185,12 +203,12 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6]
+                          columns: [0, 1, 2, 3, 4, 5, 6 ,7, 8 , 9 ,10 ,11 ,12]
                       }
                   },
                   {
                       extend: 'print',
-                      title: 'Project Specifications Summary',
+                      title: 'Site Reports',
                       titleAttr: 'Print',
                       text: '<i class="fa fa-print"></i>',
       
@@ -200,7 +218,7 @@ h3, .h3 {
                               page: 'all', // 'all', 'current'
                               search: 'none' // 'none', 'applied', 'removed'
                           },
-                          columns: [0, 1, 2, 3, 4, 5, 6]
+                          columns: [0, 1, 2, 3, 4, 5, 6,7, 8 , 9 ,10 ,11 ,12]
                       }
                   },
                   'colvis'
