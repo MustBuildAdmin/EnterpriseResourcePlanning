@@ -7,7 +7,7 @@
                 <div class="row min-750" id="taskboard_view">
                     <div class="col-6">
                         <div class="form-group">
-                            {{ Form::label('name', __('Planned Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
+                            {{ Form::label('name', __('Planned Start to End Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
                             {{ Form::date('get_date', $data['get_date'], array('class' => 'form-control month-btn','id' => 'get_date', 
                                 'min' => date('Y-m-d',strtotime($data['con_data']->start_date)),
                                 'max' => date('Y-m-d',strtotime($data['con_data']->end_date))
@@ -38,10 +38,12 @@
                             </div>
                         </div>
                    </div>
-                   <div class="pull-right">
-                    <input type="submit" value="{{__('Submit')}}" class="btn btn-primary">
-                    <a href="{{url('taskboard/list')}}" class="btn btn-danger">Back</a>
-                  </div>
+                    <div class="row">
+                        <div class="modal-footer">
+                            <a data-bs-dismiss="modal" class="btn btn-danger">{{__('Back')}}</a>
+                            <input type="submit" value="{{__('Submit')}}" class="btn  btn-primary">
+                        </div>
+                    </div>
             </form>
         </div>
     </div>
