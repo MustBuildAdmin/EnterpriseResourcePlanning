@@ -5,7 +5,7 @@
       width: 100% !important;
   }
 </style>
-<h2>Contractor's daily construction report</h2>
+<h2>{{__('Contractors daily construction report')}}</h2>
 <div class="maindailyreport">
   <div class="row">
     <div class="row row-cards">
@@ -17,64 +17,57 @@
           <input type="hidden" name="edit_id" value="{{$data->id ?? ''}}">
           @endif
           @endif
-          <input type="text"  value="{{Session::get('project_id')}}">
           <div class="card-body">
             <div class="row row-cards">
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Daily Report No {{$data->id ?? ''}}</label>
-                  <label class="form-label form-control disabledmode">Daily Report No</label>
+                  <label class="form-label">{{__('Daily Report No')}}</label>
+                  <label class="form-label form-control disabledmode">{{__('Daily Report No')}}  {{$data->id ?? ''}}</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Contractor Name</label>
+                  <label class="form-label">{{__('Contractor Name')}}</label>
                   <input type="text" class="form-control" name="contractor_name" placeholder="Username" value="{{$data->contractor_name ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Date</label>
+                  <label class="form-label">{{__('Date')}}</label>
                   <input type="date" name="con_date" class="form-control" id="con_date" placeholder="Email" value="{{$data->con_date ?? ''}}">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Project Name</label>
-                  <label class="form-label form-control disabledmode">construction report</label>
+                  <label class="form-label">{{__('Project Name')}}</label>
+                  <label class="form-label form-control disabledmode">{{$project_name->project_name}}</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">weather</label>
+                  <label class="form-label">{{__('Weather')}}</label>
                   <div class="dropdownrpt">
                    @if(isset($data->weather))
                     <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
-                      <option value="" disabled>Select your option</option>
-                      <option @if(str_contains($data->weather,'Clear')) selected @endif value="Clear">Clear</option>
-                      <option @if(str_contains($data->weather,'Dusty')) selected @endif value="Dusty">Dusty</option>
-                      <option @if(str_contains($data->weather,'Muddy')) selected @endif value="Muddy">Muddy</option>
-                      <option @if(str_contains($data->weather,'Windy')) selected @endif value="Windy">Windy</option>
-                      <option @if(str_contains($data->weather,'Cool')) selected @endif value="Cool">Cool</option>
-                      <option @if(str_contains($data->weather,'Fog')) selected @endif value="Fog">Fog</option>
-                      <option @if(str_contains($data->weather,'Warm')) selected @endif value="Warm">Warm</option>
-                      <option @if(str_contains($data->weather,'Rain')) selected @endif value="Rain">Rain</option>
-                      <option @if(str_contains($data->weather,'Cold')) selected @endif value="Cold">Cold</option>
-                      <option @if(str_contains($data->weather,'Hot')) selected @endif value="Hot">Hot</option>
+                      <option value="" disabled>{{__('Select your option')}}</option>
+                      <option @if(str_contains($data->weather,'Windy')) selected @endif value="Windy">{{__('Windy')}}</option>
+                      <option @if(str_contains($data->weather,'Cool')) selected @endif value="Cool">{{__('Cool')}}</option>
+                      <option @if(str_contains($data->weather,'Fog')) selected @endif value="Fog">{{__('Fog')}}</option>
+                      <option @if(str_contains($data->weather,'Warm')) selected @endif value="Warm">{{__('Warm')}}</option>
+                      <option @if(str_contains($data->weather,'Rain')) selected @endif value="Rain">{{__('Rain')}}</option>
+                      <option @if(str_contains($data->weather,'Cold')) selected @endif value="Cold">{{__('Cold')}}</option>
+                      <option @if(str_contains($data->weather,'Hot')) selected @endif value="Hot">{{__('Hot')}}</option>
                     </select>
                     @else
                     <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
                       <option value="" disabled>Select your option</option>
-                      <option value="Clear">Clear</option>
-                      <option value="Dusty">Dusty</option>
-                      <option value="Muddy">Muddy</option>
-                      <option value="Windy">Windy</option>
-                      <option value="Cool">Cool</option>
-                      <option value="Fog">Fog</option>
-                      <option value="Warm">Warm</option>
-                      <option value="Rain">Rain</option>
-                      <option value="Cold">Cold</option>
-                      <option value="Hot">Hot</option>
+                      <option value="Windy">{{__('Windy')}}</option>
+                      <option value="Cool">{{__('Cool')}}</option>
+                      <option value="Fog">{{__('Fog')}}</option>
+                      <option value="Warm">{{__('Warm')}}</option>
+                      <option value="Rain">{{__('Rain')}}</option>
+                      <option value="Cold">{{__('Cold')}}</option>
+                      <option value="Hot">{{__('Hot')}}</option>
                     </select>
                     @endif
                  
@@ -84,35 +77,23 @@
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Site conditions</label>
+                  <label class="form-label">{{__('Site conditions')}}</label>
                   <div class="dropdownrpt">
                     @if(isset($data->site_conditions))
                     <select name="site_conditions[]" id='choices-multiple1' class='chosen-select'  multiple>
-                      <option value="" disabled>Select your option</option>
-                      <option @if(str_contains($data->site_conditions,'Dusty')) selected @endif value="Clear">Clear</option>
-                      <option @if(str_contains($data->site_conditions,'Dusty')) selected @endif value="Dusty">Dusty</option>
-                      <option @if(str_contains($data->site_conditions,'Muddy')) selected @endif value="Muddy">Muddy</option>
-                      <option @if(str_contains($data->site_conditions,'Windy')) selected @endif value="Windy">Windy</option>
-                      <option @if(str_contains($data->site_conditions,'Cool')) selected @endif value="Cool">Cool</option>
-                      <option @if(str_contains($data->site_conditions,'Fog')) selected @endif value="Fog">Fog</option>
-                      <option @if(str_contains($data->site_conditions,'Warm')) selected @endif value="Warm">Warm</option>
-                      <option @if(str_contains($data->site_conditions,'Rain')) selected @endif value="Rain">Rain</option>
-                      <option @if(str_contains($data->site_conditions,'Cold')) selected @endif value="Cold">Cold</option>
-                      <option @if(str_contains($data->site_conditions,'Hot')) selected @endif value="Hot">Hot</option>
+                      <option value="" disabled>{{__('Select your option')}}</option>
+                      <option @if(str_contains($data->site_conditions,'Clear')) selected @endif value="Clear">{{__('Clear')}}</option>
+                      <option @if(str_contains($data->site_conditions,'Dusty')) selected @endif value="Dusty">{{__('Dusty')}}</option>
+                      <option @if(str_contains($data->site_conditions,'Muddy')) selected @endif value="Muddy">{{__('Muddy')}}</option>
+                      <option @if(str_contains($data->site_conditions,'Windy')) selected @endif value="Windy">{{__('Windy')}}</option>
                     </select>
                     @else
                     <select name="site_conditions[]" id='choices-multiple1' class='chosen-select'  multiple>
-                      <option value="" disabled>Select your option</option>
-                      <option  value="Clear">Clear</option>
-                      <option value="Dusty">Dusty</option>
-                      <option value="Muddy">Muddy</option>
-                      <option value="Windy">Windy</option>
-                      <option value="Cool">Cool</option>
-                      <option value="Fog">Fog</option>
-                      <option  value="Warm">Warm</option>
-                      <option value="Rain">Rain</option>
-                      <option value="Cold">Cold</option>
-                      <option  value="Hot">Hot</option>
+                      <option value="" disabled>{{__('Select your option')}}</option>
+                      <option value="Clear">{{__('Clear')}}</option>
+                      <option value="Dusty">{{__('Dusty')}}</option>
+                      <option value="Muddy">{{__('Muddy')}}</option>
+                      <option value="Windy">{{__('Windy')}}</option>
                     </select>
                     @endif
                   </div>
@@ -120,20 +101,20 @@
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
-                  <label class="form-label">Day</label>
+                  <label class="form-label">{{__('Day')}}</label>
                   <input type="text" class="form-control con_day" value="{{$data->con_day ?? ''}}" disabled>
                   <input type="hidden"  class="con_day" name="con_day" value="{{$data->con_day ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
-                  <label class="form-label">Temperature (Maximum)</label>
+                  <label class="form-label">{{__('Temperature (Maximum)')}}</label>
                   <input name="temperature" type="text" class="form-control" placeholder="Maximum" value="{{$data->temperature ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
-                  <label class="form-label">Minimum</label>
+                  <label class="form-label">{{__('Minimum')}}</label>
                   <input name="min_input" type="text" class="form-control" placeholder="Minimum"  value="{{$data->min_input ?? ''}}">
                 </div>
               </div>
@@ -142,31 +123,31 @@
                   <label class="form-label">&nbsp;</label>
                   @if(isset($data->degree))
                   <select name="degree" class="form-control addbutton" >
-                    <option value="" disabled selected>Select your option</option>
-                    <option @if( 'Fahrenheit'==$data->degree){ selected }@endif value="Fahrenheit">Fahrenheit</option>
-                    <option @if( 'Celsius'==$data->degree){ selected }@endif value="Celsius">Celsius</option>
+                    <option value="" disabled selected>{{__('Select your option')}}</option>
+                    <option @if( 'Fahrenheit'==$data->degree){ selected }@endif value="Fahrenheit">{{__('Fahrenheit')}}</option>
+                    <option @if( 'Celsius'==$data->degree){ selected }@endif value="Celsius">{{__('Celsius')}}</option>
                   </select>
                   @else
                   <select name="degree" class="form-control addbutton" >
-                    <option value="" disabled selected>Select your option</option>
-                    <option value="Fahrenheit">Fahrenheit</option>
-                    <option value="Celsius">Celsius</option>
+                    <option value="" disabled selected>{{__('Select your option')}}</option>
+                    <option value="Fahrenheit">{{__('Fahrenheit')}}</option>
+                    <option value="Celsius">{{__('Celsius')}}</option>
                   </select>
                   @endif
                 </div>
               </div>
               <div class="card-footer text-end"> &nbsp; </div>
               <div class="col-md-12 l-section">
-                <h2>Contractors Personnel</h2>
+                <h2>{{__('Contractors Personnel')}}</h2>
                 <br />
            
                 <table class="table tableadd form" id="dynamicTable">
                   <thead>
                     <tr>
                     <tr>
-                      <th>Position</th>
-                      <th>No Of Person per Position</th>
-                      <th>Manpower</th>
+                      <th>{{__('Position')}}</th>
+                      <th>{{__('No Of Person per Position')}}</th>
+                      <th></th>
                       <th></th>
                     </tr>
                   </thead>
@@ -177,13 +158,13 @@
                         <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub['position_name'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub['position_name'] ?? ''}}" />
+                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub['no_of_persons'] ?? ''}}" />
                       </td>
                       <td class="col-xs-5">
                         <select class="form-control first_option_0"  name="first_option[]">
-                          <option value="" disabled selected>Select your option</option>
-                          <option value="Direct Manpower">Direct Manpower</option>
-                          <option value="InDirect Manpower">InDirect Manpower</option>
+                          <option value="" disabled selected>{{__('Select your option')}}</option>
+                          <option value="Direct Manpower" @if( 'Direct Manpower'==$display_sub[ 'option_method']){ selected }@endif>{{__('Direct Manpower')}}</option>
+                          <option value="InDirect Manpower" @if( 'InDirect Manpower'==$display_sub[ 'option_method']){ selected }@endif>{{__('InDirect Manpower')}}</option>
                         </select>
                       </td>
                       <td class="col-xs-1 text-center">
@@ -205,48 +186,41 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">Total Indirect Manpower: 45</label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: 45</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">Total Direct Manpower: 45</label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: 45</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">Total Contractor's Manpower: 22</label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: 22</label>
                 </div>
               </div>
             </div>
             <br />
             <div class="col-md-12 l-section">
-              <h2>Sub Contractors</h2>
+              <h2>{{__('Sub Contractors')}}</h2>
               <br />
               <table class="table tableadd form">
                 <thead>
-                  <tr>
-                    <th>Position Name</th>
-                    <th>No Of Person per Position</th>
-                    <th>Manpower</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr id="addRow2">
+                  @foreach ($data_sub1 as $display_sub_con)
+                <tr id="">
                     <td class="col-xs-3">
-                      <input name="position[]" class="form-control addMain2" type="text" placeholder="Enter Position Name" />
+                      <input name="second_position[]" class="form-control second_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub_con['position_name'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-3">
-                      <input name="no_of_persons[]"  class="form-control addPrefer2" type="text" placeholder="Enter No Of Person Per Position" />
+                      <input name="second_person[]"  class="form-control second_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub_con['no_of_persons'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-5">
-                      <select class="form-control addbutton addCommon2"  name="option_method[]">
+                      <select  class="form-control second_option_0"  name="second_option[]">
                         <option value="" disabled selected>Select your option</option>
-                        <option value="Direct Manpower">Direct Manpower</option>
-                        <option value="InDirect Manpower">InDirect Manpower</option>
+                        <option value="Direct Manpower" @if( 'Direct Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>Direct Manpower</option>
+                        <option value="InDirect Manpower" @if( 'InDirect Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>InDirect Manpower</option>
                       </select>
                     </td>
                     <td class="col-xs-1 text-center">
@@ -255,6 +229,7 @@
                       </span>
                     </td>
                   </tr>
+                  @endforeach
                 </tbody>
               </table>
               <div class="card-footer text-end"> &nbsp; </div>
@@ -263,51 +238,50 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">Total Indirect Manpower: 45</label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: 45</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">Total Direct Manpower: 45</label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: 45</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">Total Contractor's Manpower: 22</label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: 22</label>
                 </div>
               </div>
             </div>
             <br />
             <div class="col-md-12 l-section">
-              <h2>Major Equipment on Project</h2>
+              <h2>{{__('Major Equipment on Project')}}</h2>
               <br />
             
               <table class="table tableadd form">
                 <thead>
                   <tr>
-                    <th>Equipment Name</th>
-                    <th>No Of Equipment</th>
+                    <th>{{__('Equipment Name')}}</th>
+                    <th>{{__('No Of Equipment')}}</th>
                     <th></th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($data_sub as $display_sub)
-                
-                  <tr id="addRow3">
+                  @foreach ($data_sub2 as $key =>$display_major_equi)
+                <tr id="">
                     <td class="col-xs-3">
-                      <input name="position_name[]" class="form-control addMain3" type="text" placeholder="Enter Equipment Name" value="{{$display_sub['position_name'] ?? ''}}" />
+                      <input name="third_position[]" class="form-control third_position_0" type="text" placeholder="Enter Equipment Name" value="{{$display_major_equi['position_name'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-3">
-                      <input name="no_of_persons[]" class="form-control addPrefer3" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub->no_of_persons ?? ''}}"/>
+                      <input name="third_person[]" class="form-control third_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_major_equi['no_of_persons'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-5">
-                      <select class="form-control addbutton addCommon3" name="option_method[]">
-                        <option value="" disabled selected>Select your option</option>
-                        <option value="Direct Manpower">Direct Manpower</option>
-                        <option value="InDirect Manpower">InDirect Manpower</option>
+                      <select class="form-control third_option_0" name="third_option[]">
+                        <option value="" disabled selected>{{__('Select your option')}}</option>
+                        <option value="Direct Manpower"  @if('Direct Manpower'==$display_major_equi[ 'option_method']){ selected }@endif>{{__('Direct Manpower')}}</option>
+                        <option value="InDirect Manpower" @if('InDirect Manpower'==$display_major_equi[ 'option_method']){ selected }@endif>{{__('InDirect Manpower')}}</option>
                       </select>
                     </td>
                     <td class="col-xs-1 text-center">
@@ -371,6 +345,8 @@
 </script>
 
 
+
+  
 <script type="text/javascript">
   var i = 0;
     
@@ -378,21 +354,97 @@
   
         ++i;
   
-        $("#dynamicTable").append('<tr><td><input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position_'+i+'" /></td><td><input type="text" name="first_person[]" placeholder="Enter No of Person Per Position" class="form-control first_person_'+i+'" /></td><td><select class="form-control first_option_'+i+'" name="first_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-tr bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+        $("#dynamicTable").append('<tr><td><input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position" id="first_position_'+i+'"/></td><td><input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person" id="first_person_'+i+'" /></td><td><select class="form-control first_option" id="first_option_'+i+'" name="first_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-tr bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
     });
       
     $(document).on('click', '.remove-tr', function(){  
         $(this).parents('tr').remove();
     });  
 
+    var j = 0;
+    
+    $(".addBtn2").click(function(){
+  
+        ++j;
+  
+        $("#dynamicTable2").append('<tr><td><input type="text" name="second_position[]" placeholder="Enter Position Name" class="form-control second_position" id="second_position_'+j+'" /></td><td><input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position" class="form-control second_person" id="second_person_'+j+'" /></td><td><select id="second_option_'+i+'" class="form-control second_option" name="second_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-ca bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+    });
+      
+    $(document).on('click', '.remove-ca', function(){  
+        $(this).parents('tr').remove();
+    });  
+    var K = 0;
+    $(".addBtn3").click(function(){
+  
+    ++K;
+
+    $("#dynamicTable3").append('<tr><td><input type="text" name="third_position[]" placeholder="Enter Position Name" id="third_position_'+K+'" class="form-control third_position" /></td><td><input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/></td><td><select class="form-control third_option" id="third_option_'+K+'" name="third_option[]" ><option value="" disabled selected>Select your option</option><option value="Direct Manpower">Direct Manpower</option><option value="InDirect Manpower">InDirect Manpower</option></select></td><td><span class="remove-ba bttoncreate"><i class="fa fa-trash"></i></span></td></tr>');
+    });
+
+    $(document).on('click', '.remove-ba', function(){  
+      $(this).parents('tr').remove();
+    });  
+
  $(document).on('change', '#con_date', function() {
   var con_date=$(this).val();
   var weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-var days = new Date(con_date);
-$('.con_day').val(weekday[days.getDay()]);
+  var days = new Date(con_date);
+  $('.con_day').val(weekday[days.getDay()]);
 
+  });
+
+//   $(function() {
+
+// $(".first_person,first_option").on("keydown keyup change", sum);
+// alert("fgfg");
+//   function sum() {
+   
+//     var priceSum = 0;
+// $('.first_person').each(function(){
+//   priceSum += parseFloat(this.value);
+// });
+
+  
+
+//     $("#total_in_power").val(priceSum);
+  
+
+//   }
+
+// });
+
+$(document).on('change', '.first_option', function() {
+
+
+  var total = 0;
+  
+  $('.first_person').each(function(){
+    total += parseFloat($(this).val());
+  }) 
+  
+ 
+  $(".first_option option:selected").each(function () {
+   var $this = $(this);
+  
+    var selText = $this.val();
+    if(selText=='Direct Manpower'){
+      $(".first_person").closest("td").addClass("intro");
+      alert(selText);
+      $("#total_di_power").val(total);
+    }else{
+      alert(selText);
+      $("#total_di_power").val(total);
+    }
+   
+   
 });
 
+
+
+
+
+  
+});
 
 </script>
