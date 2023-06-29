@@ -255,7 +255,11 @@ class ProjectController extends Controller
                         if(isset($value['progress'])){
                             $task->progress=$value['progress'];
                         }
-                        
+                        if(isset($value['parent'])){
+                            $task->parent=$value['parent'];
+                            $task->predecessors=$value['parent'];
+                        }
+                       
                        
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
@@ -483,7 +487,7 @@ class ProjectController extends Controller
 
             }
              // type project or task 
-            Projecttypetask::dispatch(Session::get('project_id'));
+            Projecttypetask::dispatch($project->id);
 
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());

@@ -39,10 +39,7 @@ class Projecttypetask implements ShouldQueue
                 ->from('task_progress')
                 ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
             })->get();
-            $actual_current_progress=Con_task::where('project_id',$project_id)->orderBy('id','ASC')->pluck('progress')->first();
-            $actual_current_progress=round($actual_current_progress);
-            $actual_remaining_progress=100-$actual_current_progress;
-            $actual_remaining_progress=round($actual_remaining_progress);
+          
             // current progress amount
             $taskdata=array();
             foreach ($project_task as $key => $value) {
