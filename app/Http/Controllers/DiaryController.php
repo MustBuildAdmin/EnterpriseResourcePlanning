@@ -1496,6 +1496,10 @@ class DiaryController extends Controller
     {
         try {
 
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
+
             if(\Auth::user()->can('create site reports')){
 
                 $project_id=Session::get('project_id');
@@ -1522,6 +1526,10 @@ class DiaryController extends Controller
     {
         try {
 
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
+            
             if(\Auth::user()->can('edit site reports')){
 
                 if(\Auth::user()->type != 'company'){
@@ -1590,6 +1598,10 @@ class DiaryController extends Controller
     {
         try {
 
+            if(Session::has('project_id')==null){
+                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+            }
+            
             if(\Auth::user()->type != 'company'){
                 $user_id = Auth::user()->creatorId();
             }
