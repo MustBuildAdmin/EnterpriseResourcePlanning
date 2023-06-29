@@ -33,16 +33,25 @@ class Projecttypetask implements ShouldQueue
     public function handle(): void
     {
             $project_id=$this->podcast;
+            // $project_task=Con_task::where('project_id',$project_id)->get();
+            // foreach ($project_task as $key => $value) {
+            //     $task = Con_task::where('main_id',$value->main_id);
+            //     $check_parent=Con_task::where('project_id',$project_id)->where(['parent'=>$value->id])->first();
+            //     if($check_parent){
+            //         $task->type="project";
+            //     }else{
+            //         $task->type="task";
+            //     }
+            //     $task->save();
+            // }
             $project_task=Con_task::where('project_id',$project_id)->get();
             foreach ($project_task as $key => $value) {
-                $task = Con_task::where('main_id',$value->main_id);
                 $check_parent=Con_task::where('project_id',$project_id)->where(['parent'=>$value->id])->first();
                 if($check_parent){
-                    $task->type="project";
+                    Con_task::where('main_id',$value->main_id)->update('type','project');
                 }else{
-                    $task->type="task";
+                    Con_task::where('main_id',$value->main_id)->update('type','task');
                 }
-                $task->save();
             }
     }
 }
