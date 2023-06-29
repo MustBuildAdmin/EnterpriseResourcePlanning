@@ -48,10 +48,11 @@ class Projecttypetask implements ShouldQueue
             foreach ($project_task as $key => $value) {
                 $check_parent=Con_task::where('project_id',$project_id)->where(['parent'=>$value->id])->first();
                 if($check_parent){
-                    Con_task::where('main_id',$value->main_id)->update('type','project');
+                    Con_task::where('main_id',$value->main_id)->update( ['type'=>'project']);
                 }else{
-                    Con_task::where('main_id',$value->main_id)->update('type','task');
+                    Con_task::where('main_id',$value->main_id)->update(['type'=>'task']);
                 }
             }
+         
     }
 }
