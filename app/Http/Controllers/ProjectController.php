@@ -199,17 +199,18 @@ class ProjectController extends Controller
                     }
                 }
             }
-            $first_insert=array(
-                'project_id'=>$project->id,
-                'text'=>$request->project_name,
-                'instance_id'=>$instance_id,
-                'id'=>0,
-                'start_date'=>$request->start_date,
-                'end_date'=>$request->end_date,
-                'duration'=>$request->estimated_days,
-                'type'=>'project',
-            );
-            Con_task::insert($first_insert);
+
+            // $first_insert=array(
+            //     'project_id'=>$project->id,
+            //     'text'=>$request->project_name,
+            //     'instance_id'=>$instance_id,
+            //     'id'=>0,
+            //     'start_date'=>$request->start_date,
+            //     'end_date'=>$request->end_date,
+            //     'duration'=>$request->estimated_days,
+            //     'type'=>'project',
+            // );
+            // Con_task::insert($first_insert);
 
             if(isset($request->file)){
                if($request->file_status=='MP'){
@@ -325,9 +326,10 @@ class ProjectController extends Controller
                         }
                         $link->save();
                     }
-                    $lowest=Con_task::where('project_id',$project->id)->min('start_date');
-                    $max=Con_task::where('project_id',$project->id)->max('end_date');
-                    Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$lowest,'end_date'=>$max]);
+                    // $first_record=Con_task::where('project_id',$project->id)->where('id','1')->first();
+                    // if($first_record){
+                    //     Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$first_record->start_date,'end_date'=>$first_record->end_date,'duration'=>$first_record->end_date]);
+                    // }
                 }
 
                 // $project->project_json=json_encode($responseBody);
@@ -449,9 +451,12 @@ class ProjectController extends Controller
                     }
 
                     // end
-                    $lowest=Con_task::where('project_id',$project->id)->min('start_date');
-                    $max=Con_task::where('project_id',$project->id)->max('end_date');
-                    Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$lowest,'end_date'=>$max]);
+                    // $first_record=Con_task::where('project_id',$project->id)->where('id','1')->first();
+                    // $max=Con_task::where('project_id',$project->id)->max('id');
+                    // if($first_record){
+                    //     Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$first_record->start_date,'end_date'=>$first_record->end_date,'duration'=>$first_record->end_date,'id'=>]);
+                    // }
+
 
                }
 
@@ -505,18 +510,18 @@ class ProjectController extends Controller
 
             }
              // type project or task
-             Projecttypetask::dispatch($project->id);
-            // $project_task=Con_task::where('project_id',$project->id)->get();
-            // foreach ($project_task as $key => $value) {
-            //     $task = Con_task::where('main_id',$value->main_id);
-            //     $check_parent=Con_task::where('project_id',$project->id)->where(['parent'=>$value->id])->first();
-            //     if($check_parent){
-            //         $task->type="project";
-            //     }else{
-            //         $task->type="task";
-            //     }
-            //     $task->save();
-            // }
+             //Projecttypetask::dispatch($project->id);
+            $project_task=Con_task::where('project_id',$project->id)->get();
+            foreach ($project_task as $key => $value) {
+                $task = Con_task::where('main_id',$value->main_id);
+                $check_parent=Con_task::where('project_id',$project->id)->where(['parent'=>$value->id])->first();
+                if($check_parent){
+                    $task->type="project";
+                }else{
+                    $task->type="task";
+                }
+                $task->save();
+            }
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
             if(isset($setting['project_notification']) && $setting['project_notification'] ==1){
