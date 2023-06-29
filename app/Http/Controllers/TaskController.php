@@ -27,13 +27,11 @@ class TaskController extends Controller
         $task->parent = $request->parent;
 
         if(isset($request->users)){
-            // if(gettype($request->users)=='array'){
-            //     $implode_users = implode(',', json_decode($request->users));
-            // }else{
+            if(gettype($request->users)=='array'){
                 $implode_users = implode(',', json_decode($request->users));
-            // }
-            // echo $implode_users;
-            // exit;
+            }else{
+                $implode_users = $request->users;
+            }
             $task->users = $implode_users;
         }
         $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$task->id])->get();
@@ -70,11 +68,10 @@ class TaskController extends Controller
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
         if(isset($request->users)){
-            echo gettype($request->users);
             if(gettype($request->users)=='array'){
                 $implode_users = implode(',', json_decode($request->users));
             }else{
-                $implode_users = implode(',', json_decode($request->users));
+                $implode_users = $request->users;
             }
             $task->users = $implode_users;
         }
