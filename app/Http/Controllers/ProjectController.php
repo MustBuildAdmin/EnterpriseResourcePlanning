@@ -510,17 +510,17 @@ class ProjectController extends Controller
 
             }
              // type project or task
-             //Projecttypetask::dispatch($project->id);
-            $project_task=Con_task::where('project_id',$project->id)->get();
-            foreach ($project_task as $key => $value) {
-                $task = Con_task::where('main_id',$value->main_id);
-                $check_parent=Con_task::where('project_id',$project->id)->where(['parent'=>$value->id])->first();
-                if($check_parent){
-                    Con_task::where('main_id',$value->main_id)->update('type','project');
-                }else{
-                    Con_task::where('main_id',$value->main_id)->update('type','task');
-                }
-            }
+            Projecttypetask::dispatch($project->id);
+            // $project_task=Con_task::where('project_id',$project->id)->get();
+            // foreach ($project_task as $key => $value) {
+            //     $task = Con_task::where('main_id',$value->main_id);
+            //     $check_parent=Con_task::where('project_id',$project->id)->where(['parent'=>$value->id])->first();
+            //     if($check_parent){
+            //         Con_task::where('main_id',$value->main_id)->update('type','project');
+            //     }else{
+            //         Con_task::where('main_id',$value->main_id)->update('type','task');
+            //     }
+            // }
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
             if(isset($setting['project_notification']) && $setting['project_notification'] ==1){
