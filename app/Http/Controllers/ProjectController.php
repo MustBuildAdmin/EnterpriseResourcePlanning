@@ -516,11 +516,10 @@ class ProjectController extends Controller
                 $task = Con_task::where('main_id',$value->main_id);
                 $check_parent=Con_task::where('project_id',$project->id)->where(['parent'=>$value->id])->first();
                 if($check_parent){
-                    $task->type="project";
+                    Con_task::where('main_id',$value->main_id)->update('type','project');
                 }else{
-                    $task->type="task";
+                    Con_task::where('main_id',$value->main_id)->update('type','task');
                 }
-                $task->save();
             }
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
