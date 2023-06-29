@@ -208,20 +208,18 @@ class ProjectTaskController extends Controller
 
                 if($get_end_date != null && $status_task != null){
                     $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                        $query->whereDate('con_tasks.end_date', '>', $get_end_date);
+                        $query->whereDate('con_tasks.end_date', '>=', $get_end_date);
                     });
 
                     if($status_task == "3"){
                         $tasks->where('progress','<','100');
                     }
                     else if($status_task == "4"){
-                        $tasks->where('progress','>','100');
+                        $tasks->where('progress','>=','100');
                     }
                 }
                 else if($get_end_date != null){
-                    $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                        $query->whereDate('con_tasks.end_date', '>', $get_end_date);
-                    });
+                    $tasks->whereDate('con_tasks.end_date', "<=", $get_end_date);
                 }
                 else if($status_task == "1"){
                     $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
@@ -231,7 +229,7 @@ class ProjectTaskController extends Controller
                     $tasks->where('progress','<','100')->whereDate('con_tasks.end_date', "<", date('Y-m-d'));
                 }
                 else if($status_task == "4"){
-                    $tasks->where('progress','>','100');
+                    $tasks->where('progress','>=','100');
                 }
                 else{
                     $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
@@ -267,7 +265,7 @@ class ProjectTaskController extends Controller
                         $tasks->where('progress','<','100');
                     }
                     else if($status_task == "4"){
-                        $tasks->where('progress','=>','100');
+                        $tasks->where('progress','>=','100');
                     }
                 }
                 else if($get_start_date != null && $get_end_date != null && $status_task != null){
@@ -280,7 +278,7 @@ class ProjectTaskController extends Controller
                         $tasks->where('progress','<','100');
                     }
                     else if($status_task == "4"){
-                        $tasks->where('progress','=>','100');
+                        $tasks->where('progress','>=','100');
                     }
                 }
                 else if(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null){
@@ -296,6 +294,17 @@ class ProjectTaskController extends Controller
                         $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
                         $query->whereDate('con_tasks.end_date', '<', $get_end_date);
                     });
+                }
+                else if(count($json_user_id) != 0 && $get_end_date != null){
+                    $tasks->where(function ($query) use ($json_user_id) {
+                        foreach($json_user_id as $get_user_id){
+                            if($get_user_id != ""){
+                                $query->orwhereJsonContains('con_tasks.users', $get_user_id);
+                            }
+                        }
+                    });
+
+                    $tasks->whereDate('con_tasks.end_date', "<=", $get_end_date);
                 }
                 else if(count($json_user_id) != 0 && $status_task != null){
                     $tasks->where(function ($query) use ($json_user_id) {
@@ -343,7 +352,7 @@ class ProjectTaskController extends Controller
                     $tasks->where('progress','<','100');
                 }
                 else if($status_task == "4"){
-                    $tasks->where('progress','>','100');
+                    $tasks->where('progress','>=','100');
                 }
                 else{
                     $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')

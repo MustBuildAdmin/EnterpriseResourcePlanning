@@ -22,7 +22,7 @@
                         </a>
                     </td>
                     <td style="width:10%;">
-                        @if (strtotime($task->end_date) < time() && $task->progress <= 100)
+                        @if (strtotime($task->end_date) < time() && $task->progress < 100)
                             <span class="badge badge-success" style="background-color:#DC3545;">Pending</span>
                         @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
                             <span class="badge badge-success" style="background-color:#28A745;">Completed</span>
