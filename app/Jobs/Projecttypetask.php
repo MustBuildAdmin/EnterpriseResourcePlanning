@@ -33,19 +33,12 @@ class Projecttypetask implements ShouldQueue
     public function handle(): void
     {
             $project_id=$this->podcast;
-            $project=Project::where('id',$project_id)->first();
-            $project_task=Con_task::where('project_id',$project_id)->whereIn('main_id', function($query){
-                $query->select('task_id')
-                ->from('task_progress')
-                ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
-            })->get();
-          
-            // current progress amount
+            $project_task=Con_task::where('project_id',$project_id)->get();
             $taskdata=array();
             foreach ($project_task as $key => $value) {
                 $task = Con_task::find($value->id);
-                $check_parent=Con_task::where('project_id',$project_id)->where(['parent'=>$value->id])->get();
-                if(count($check_parent)>0){
+                $check_parent=Con_task::where('project_id',$project_id)->where(['parent'=>$value->id])->first();
+                if($check_parent){
                     $task->type="project";
                 }else{
                     $task->type="task";
