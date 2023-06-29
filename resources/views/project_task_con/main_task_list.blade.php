@@ -18,7 +18,7 @@
                         <span class="h6 text-sm font-weight-bold mb-0">{{ $show_parent->text }}</span>
                     </td>
                     <td style="width:10%;">
-                        @if (strtotime($show_parent->end_date) < time() && $show_parent->progress <= 100)
+                        @if (strtotime($show_parent->end_date) < time() && $show_parent->progress < 100)
                             <span class="badge badge-success" style="background-color:#DC3545;">Pending</span>
                         @elseif(strtotime($show_parent->end_date) < time() && $show_parent->progress >= 100)
                             <span class="badge badge-success" style="background-color:#28A745;">Completed</span>
