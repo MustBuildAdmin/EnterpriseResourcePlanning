@@ -77,7 +77,7 @@
                             @if(\Auth::user()->type == 'company')
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                     <div class="btn-box">
-                                        {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label'])}}
+                                        {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label assigned_to'])}}
                                         <select class="select form-select chosen-select" name="users" id="users" multiple>
                                             <option value="" class="" disabled>{{ __('Assigned To') }}</option>
                                             @foreach ($user_data as $users)
@@ -235,6 +235,11 @@
         $(".loader_show_hide").show();
         $("#show_search_function").hide();
         $("#main_task_append").html("");  
+
+        $(".start_date").val("");
+        $("#status_task").val("");
+        $('.chosen-select option').prop('selected', false).trigger('chosen:updated');
+
         $.ajax({
             url : '{{route("main_task_list")}}',
             type : 'GET',
