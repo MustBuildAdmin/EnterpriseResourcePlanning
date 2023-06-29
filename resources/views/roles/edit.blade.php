@@ -24,7 +24,7 @@
                     <a class="nav-link" id="pills-crm-tab" data-bs-toggle="pill" href="#crm" role="tab" aria-controls="pills-profile" aria-selected="false">{{__('CRM')}}</a>
                 </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-project-tab" data-bs-toggle="pill" href="#project1" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Project')}}</a>
+                    <a class="nav-link" id="pills-project-tab" data-bs-toggle="pill" href="#project1" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Construction')}}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-hrmpermission-tab" data-bs-toggle="pill" href="#hrmpermission" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('HRM')}}</a>
@@ -482,7 +482,7 @@
                         $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','bug report','bug status'];
                     @endphp --}}
                      @php
-                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','project specification','procurement material','vochange','RFI','concrete'];
+                     $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','project specification','procurement material','vochange','RFI','concrete','site reports'];
                     @endphp
                     <div class="col-md-12">
                         <div class="form-group">

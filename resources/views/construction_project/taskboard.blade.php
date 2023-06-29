@@ -78,8 +78,8 @@
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                     <div class="btn-box">
                                         {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label'])}}
-                                        <select class="select form-select users" name="users" id="users">
-                                            <option value="" class="">{{ __('Assigned To') }}</option>
+                                        <select class="select form-select chosen-select" name="users" id="users" multiple>
+                                            <option value="" class="" disabled>{{ __('Assigned To') }}</option>
                                             @foreach ($user_data as $users)
                                                 <option value="{{$users->id}}">{{$users->name}}</option>
                                             @endforeach
@@ -91,8 +91,8 @@
                             @if(\Auth::user()->type == 'company')
                                 <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-0">
                                     <div class="btn-box">
-                                        {{ Form::label('start_date', __('Start Date'),['class'=>'form-label'])}}
-                                        {{ Form::date('start_date', null, array('class' => 'form-control month-btn start_date')) }}
+                                        {{ Form::label('start_date', __('Planned Start Date'),['class'=>'form-label'])}}
+                                        {{ Form::date('start_date', null, array('class' => 'form-control month-btn start_date','onchange' => 'start_date_change()')) }}
                                     </div>
                                 </div>
                             @endif
@@ -100,12 +100,12 @@
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
                                 <div class="btn-box">
                                     @if(\Auth::user()->type == 'company')
-                                        {{ Form::label('end_date', __('End Date'),['class'=>'form-label'])}}
+                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
                                     @else
-                                        {{ Form::label('end_date', __('Date'),['class'=>'form-label'])}}
+                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
                                     @endif
                                     
-                                    {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date')) }}
+                                    {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date','onchange' => 'end_date_change()')) }}
 
                                 </div>
                             </div>
@@ -115,7 +115,6 @@
                                     <select onchange="status_task(this)" name="status_task" id="status_task" class="form-control">
                                         <option value="">Select Status</option>
                                         <option value="1">Today Task</option>
-                                        <option value="2">All Task</option>
                                         <option value="3">Pending Task</option>
                                         <option value="4">Completed Task</option>
                                     </select>
@@ -188,6 +187,9 @@
 @include('new_layouts.footer')
 
 <script>
+    $(document).ready(function() {
+        $(".chosen-select").chosen();
+    });
     $(function () {
         alltask();
     });
@@ -222,7 +224,7 @@
     function submit_button(){
         start_date  = $(".start_date").val();
         end_date    = $(".end_date").val();
-        user_id     = $("#users").val();
+        user_id     = JSON.stringify($("#users").val());
         status_task = $("#status_task").val();
         
 
@@ -233,6 +235,11 @@
         $(".loader_show_hide").show();
         $("#show_search_function").hide();
         $("#main_task_append").html("");  
+
+        $(".start_date").val("");
+        $("#status_task").val("");
+        $('.chosen-select option').prop('selected', false).trigger('chosen:updated');
+
         $.ajax({
             url : '{{route("main_task_list")}}',
             type : 'GET',
@@ -258,15 +265,23 @@
         if(status == 1){
             $(".end_date").val("");
             $(".start_date").val("");
-            $(".users").val("");
         }
         else if(status == ""){
             $(".end_date").val("{{date('Y-m-d')}}");
         }
-        else{
-            $(".end_date").val("");
-            $(".start_date").val("");
-            $(".users").val("");
+    }
+
+    function start_date_change(){
+        status = $("#status_task").val();
+        if(status == 1){
+            $("#status_task").val("");
+        }
+    }
+
+    function end_date_change(){
+        status = $("#status_task").val();
+        if(status == 1){
+            $("#status_task").val("");
         }
     }
 </script>

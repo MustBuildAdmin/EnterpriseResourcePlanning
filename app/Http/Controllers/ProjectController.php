@@ -193,12 +193,25 @@ class ProjectController extends Controller
                                 'description'=>$request->holiday_description[$holi_key],
                                 'created_by'=>\Auth::user()->creatorId()
                             );
-    
+
                             Project_holiday::insert($holiday_insert);
                         }
                     }
                 }
             }
+
+            // $first_insert=array(
+            //     'project_id'=>$project->id,
+            //     'text'=>$request->project_name,
+            //     'instance_id'=>$instance_id,
+            //     'id'=>0,
+            //     'start_date'=>$request->start_date,
+            //     'end_date'=>$request->end_date,
+            //     'duration'=>$request->estimated_days,
+            //     'type'=>'project',
+            // );
+            // Con_task::insert($first_insert);
+
             if(isset($request->file)){
                if($request->file_status=='MP'){
                 $path='projectfiles/';
@@ -222,6 +235,7 @@ class ProjectController extends Controller
                   CURLOPT_FOLLOWLOCATION => true,
                   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                   CURLOPT_CUSTOMREQUEST => 'POST',
+                  CURLOPT_SSL_VERIFYPEER => false,
                   CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                 ));
 
@@ -258,8 +272,8 @@ class ProjectController extends Controller
                             $task->parent=$value['parent'];
                             $task->predecessors=$value['parent'];
                         }
-                       
-                       
+
+
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
                             if(isset($raw['Finish'])){
@@ -312,6 +326,10 @@ class ProjectController extends Controller
                         }
                         $link->save();
                     }
+                    // $first_record=Con_task::where('project_id',$project->id)->where('id','1')->first();
+                    // if($first_record){
+                    //     Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$first_record->start_date,'end_date'=>$first_record->end_date,'duration'=>$first_record->end_date]);
+                    // }
                 }
 
                 // $project->project_json=json_encode($responseBody);
@@ -338,6 +356,7 @@ class ProjectController extends Controller
                       CURLOPT_FOLLOWLOCATION => true,
                       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                       CURLOPT_CUSTOMREQUEST => 'POST',
+                      CURLOPT_SSL_VERIFYPEER => false,
                       CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
                     ));
 
@@ -372,8 +391,8 @@ class ProjectController extends Controller
                                 $task->parent=$value['parent'];
                                 $task->predecessors=$value['parent'];
                             }
-                           
-                           
+
+
                             if(isset($value['$raw'])){
                                 $raw=$value['$raw'];
                                 if(isset($raw['Finish'])){
@@ -432,9 +451,15 @@ class ProjectController extends Controller
                     }
 
                     // end
+                    // $first_record=Con_task::where('project_id',$project->id)->where('id','1')->first();
+                    // $max=Con_task::where('project_id',$project->id)->max('id');
+                    // if($first_record){
+                    //     Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$first_record->start_date,'end_date'=>$first_record->end_date,'duration'=>$first_record->end_date,'id'=>]);
+                    // }
 
 
                }
+
             }
 
             if(\Auth::user()->type=='company'){
@@ -445,7 +470,7 @@ class ProjectController extends Controller
                         'user_id' => Auth::user()->id,
                     ]
                 );
-                
+
                 if($request->reportto){
                     foreach($request->reportto as $key => $value) {
                         ProjectUser::create(
@@ -484,9 +509,18 @@ class ProjectController extends Controller
                 }
 
             }
-             // type project or task 
+             // type project or task
             Projecttypetask::dispatch($project->id);
-
+            // $project_task=Con_task::where('project_id',$project->id)->get();
+            // foreach ($project_task as $key => $value) {
+            //     $task = Con_task::where('main_id',$value->main_id);
+            //     $check_parent=Con_task::where('project_id',$project->id)->where(['parent'=>$value->id])->first();
+            //     if($check_parent){
+            //         Con_task::where('main_id',$value->main_id)->update('type','project');
+            //     }else{
+            //         Con_task::where('main_id',$value->main_id)->update('type','task');
+            //     }
+            // }
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
             if(isset($setting['project_notification']) && $setting['project_notification'] ==1){
@@ -518,7 +552,7 @@ class ProjectController extends Controller
 
     public function checkDuplicateProject(Request $request){
         $form_name  = $request->form_name;
-        $check_name = $request->get_name;
+        $check_name = $request->project_name;
 
         if($form_name == "ProjectCreate"){
             $get_check_val = Project::where('project_name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
@@ -526,12 +560,14 @@ class ProjectController extends Controller
         else{
             $get_check_val = "Not Empty";
         }
-        
+
         if($get_check_val == null){
-            return 1; //Success
+            echo 'true';
+            // return 1; //Success
         }
         else{
-            return 0; //Error
+            echo 'false';
+            // return 0; //Error
         }
     }
 
@@ -785,7 +821,7 @@ class ProjectController extends Controller
                 {
                     return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
                 }
-                
+
                 $project = Project::find($project->id);
                 $project->project_name = $request->project_name;
                 $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
@@ -824,7 +860,7 @@ class ProjectController extends Controller
 
                 if($project->holidays==0){
                     $holiday_date = $request->holiday_date;
-                    
+
                     foreach ($holiday_date as $holi_key => $holi_value) {
                         $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())->where('date',$holi_value)->first();
                         $project_holidays_list = Project_holiday::where('project_id',$project->id)->where('date',$holi_value)->first();
@@ -1295,9 +1331,9 @@ class ProjectController extends Controller
                 $task             = ProjectTask::find($id);
                 $task->start_date = $request->start;
                 $task->end_date   = $request->end;
-                
-               
-              
+
+
+
                 $task->save();
                 return response()->json(
                     [
@@ -1814,6 +1850,10 @@ class ProjectController extends Controller
                     }
                 }
                 $implode_file_id = count($file_id_array) != 0 ? implode(',',$file_id_array) : 0;
+
+                if($request->existing_file_id != ""){
+                    $implode_file_id = $request->existing_file_id.','.$implode_file_id;
+                }
             }
             else{
                 $get_file_id = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();

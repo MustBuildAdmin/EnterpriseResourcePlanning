@@ -3,9 +3,9 @@
     <tr>
         <th scope="col">{{__('Tasks')}}</th>
         <th scope="col">{{__('Status')}}</th>
-        <th scope="col">{{__('Progress')}}</th>
-        <th scope="col">{{__('Start Date')}}</th>
-        <th scope="col">{{__('End Date')}}</th>
+        <th scope="col">{{__('Actual Progress')}}</th>
+        <th scope="col">{{__('Planned Start Date')}}</th>
+        <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
         
     </tr>
@@ -18,7 +18,7 @@
                         <span class="h6 text-sm font-weight-bold mb-0">{{ $show_parent->text }}</span>
                     </td>
                     <td style="width:10%;">
-                        @if (strtotime($show_parent->end_date) < time() && $show_parent->progress <= 100)
+                        @if (strtotime($show_parent->end_date) < time() && $show_parent->progress < 100)
                             <span class="badge badge-success" style="background-color:#DC3545;">Pending</span>
                         @elseif(strtotime($show_parent->end_date) < time() && $show_parent->progress >= 100)
                             <span class="badge badge-success" style="background-color:#28A745;">Completed</span>
@@ -41,26 +41,33 @@
                     </td>
                     <td style="width:10%;">
                         <div class="avatar-group">
-                            @if($show_parent->users()->count() > 0)
-                                @if($users = $show_parent->users()) 
-                                    @foreach($users as $key => $user)
-                                        @if($key<3)
-                                            <a href="#" class="avatar rounded-circle avatar-sm">
-                                                <img data-original-title="{{(!empty($user)?$user->name:'')}}" @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif title="{{ $user->name }}" class="hweb">
-                                            </a>
-                                        @else
-                                            @break
-                                        @endif
-                                    @endforeach
-                                @endif
-                                @if(count($users) > 3)
+                            @php
+                                if($show_parent->users != ""){
+                                    $users_data = json_decode($show_parent->users);
+                                }
+                                else{
+                                    $users_data = array();
+                                }
+                            @endphp
+                            @forelse ($users_data as $key => $get_user)
+                                @php
+                                    $user_db = DB::table('users')->where('id',$get_user)->first();
+                                @endphp
+                               
+                                @if($key<3)
                                     <a href="#" class="avatar rounded-circle avatar-sm">
-                                        <img  data-original-title="{{(!empty($user)?$user->name:'')}}" @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif class="hweb">
+                                        <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
+                                            @if($user_db->avatar)
+                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
+                                            @else
+                                                src="{{asset('/storage/uploads/avatar/avatar.png')}}"
+                                            @endif
+                                        title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
                                     </a>
                                 @endif
-                            @else
+                            @empty
                                 {{ __('-') }}
-                            @endif
+                            @endforelse
                         </div>
                     </td>
                 </tr>
@@ -78,6 +85,7 @@
             searching: true,
             info: true,
             paging: true,
+            // bSort: false,
         });
     });
 </script>
