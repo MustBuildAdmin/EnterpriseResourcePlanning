@@ -77,7 +77,7 @@
                             @if(\Auth::user()->type == 'company')
                                 <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
                                     <div class="btn-box">
-                                        {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label assigned_to'])}}
+                                        {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label'])}}
                                         <select class="select form-select chosen-select" name="users" id="users" multiple>
                                             <option value="" class="" disabled>{{ __('Assigned To') }}</option>
                                             @foreach ($user_data as $users)
