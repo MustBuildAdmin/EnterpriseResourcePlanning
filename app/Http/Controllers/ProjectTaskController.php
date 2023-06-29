@@ -297,6 +297,17 @@ class ProjectTaskController extends Controller
                         $query->whereDate('con_tasks.end_date', '<', $get_end_date);
                     });
                 }
+                else if(count($json_user_id) != 0 && $get_end_date != null){
+                    $tasks->where(function ($query) use ($json_user_id) {
+                        foreach($json_user_id as $get_user_id){
+                            if($get_user_id != ""){
+                                $query->orwhereJsonContains('con_tasks.users', $get_user_id);
+                            }
+                        }
+                    });
+
+                    $tasks->whereDate('con_tasks.end_date', "<=", $get_end_date);
+                }
                 else if(count($json_user_id) != 0 && $status_task != null){
                     $tasks->where(function ($query) use ($json_user_id) {
                         foreach($json_user_id as $get_user_id){

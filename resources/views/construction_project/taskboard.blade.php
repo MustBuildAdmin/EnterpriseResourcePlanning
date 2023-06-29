@@ -235,6 +235,11 @@
         $(".loader_show_hide").show();
         $("#show_search_function").hide();
         $("#main_task_append").html("");  
+
+        $(".start_date").val("");
+        $("#status_task").val("");
+        $('.chosen-select option').prop('selected', false).trigger('chosen:updated');
+
         $.ajax({
             url : '{{route("main_task_list")}}',
             type : 'GET',
