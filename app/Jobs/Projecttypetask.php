@@ -34,9 +34,8 @@ class Projecttypetask implements ShouldQueue
     {
             $project_id=$this->podcast;
             $project_task=Con_task::where('project_id',$project_id)->get();
-            $taskdata=array();
             foreach ($project_task as $key => $value) {
-                $task = Con_task::find($value->id);
+                $task = Con_task::where('main_id',$value->main_id);
                 $check_parent=Con_task::where('project_id',$project_id)->where(['parent'=>$value->id])->first();
                 if($check_parent){
                     $task->type="project";

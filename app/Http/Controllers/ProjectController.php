@@ -193,12 +193,24 @@ class ProjectController extends Controller
                                 'description'=>$request->holiday_description[$holi_key],
                                 'created_by'=>\Auth::user()->creatorId()
                             );
-    
+
                             Project_holiday::insert($holiday_insert);
                         }
                     }
                 }
             }
+            $first_insert=array(
+                'project_id'=>$project->id,
+                'text'=>$request->project_name,
+                'instance_id'=>$instance_id,
+                'id'=>0,
+                'start_date'=>$request->start_date,
+                'end_date'=>$request->end_date,
+                'duration'=>$request->estimated_days,
+                'type'=>'project',
+            );
+            Con_task::insert($first_insert);
+
             if(isset($request->file)){
                if($request->file_status=='MP'){
                 $path='projectfiles/';
@@ -259,8 +271,8 @@ class ProjectController extends Controller
                             $task->parent=$value['parent'];
                             $task->predecessors=$value['parent'];
                         }
-                       
-                       
+
+
                         if(isset($value['$raw'])){
                             $raw=$value['$raw'];
                             if(isset($raw['Finish'])){
@@ -313,6 +325,9 @@ class ProjectController extends Controller
                         }
                         $link->save();
                     }
+                    $lowest=Con_task::where('project_id',$project->id)->min('start_date');
+                    $max=Con_task::where('project_id',$project->id)->max('end_date');
+                    Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$lowest,'end_date'=>$max]);
                 }
 
                 // $project->project_json=json_encode($responseBody);
@@ -374,8 +389,8 @@ class ProjectController extends Controller
                                 $task->parent=$value['parent'];
                                 $task->predecessors=$value['parent'];
                             }
-                           
-                           
+
+
                             if(isset($value['$raw'])){
                                 $raw=$value['$raw'];
                                 if(isset($raw['Finish'])){
@@ -434,9 +449,12 @@ class ProjectController extends Controller
                     }
 
                     // end
-
+                    $lowest=Con_task::where('project_id',$project->id)->min('start_date');
+                    $max=Con_task::where('project_id',$project->id)->max('end_date');
+                    Con_task::where('project_id',$project->id)->where('id','0')->update(['start_date'=>$lowest,'end_date'=>$max]);
 
                }
+
             }
 
             if(\Auth::user()->type=='company'){
@@ -447,7 +465,7 @@ class ProjectController extends Controller
                         'user_id' => Auth::user()->id,
                     ]
                 );
-                
+
                 if($request->reportto){
                     foreach($request->reportto as $key => $value) {
                         ProjectUser::create(
@@ -486,9 +504,19 @@ class ProjectController extends Controller
                 }
 
             }
-             // type project or task 
-            Projecttypetask::dispatch($project->id);
-
+             // type project or task
+             Projecttypetask::dispatch($project->id);
+            // $project_task=Con_task::where('project_id',$project->id)->get();
+            // foreach ($project_task as $key => $value) {
+            //     $task = Con_task::where('main_id',$value->main_id);
+            //     $check_parent=Con_task::where('project_id',$project->id)->where(['parent'=>$value->id])->first();
+            //     if($check_parent){
+            //         $task->type="project";
+            //     }else{
+            //         $task->type="task";
+            //     }
+            //     $task->save();
+            // }
             //Slack Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
             if(isset($setting['project_notification']) && $setting['project_notification'] ==1){
@@ -528,7 +556,7 @@ class ProjectController extends Controller
         else{
             $get_check_val = "Not Empty";
         }
-        
+
         if($get_check_val == null){
             echo 'true';
             // return 1; //Success
@@ -789,7 +817,7 @@ class ProjectController extends Controller
                 {
                     return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
                 }
-                
+
                 $project = Project::find($project->id);
                 $project->project_name = $request->project_name;
                 $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
@@ -828,7 +856,7 @@ class ProjectController extends Controller
 
                 if($project->holidays==0){
                     $holiday_date = $request->holiday_date;
-                    
+
                     foreach ($holiday_date as $holi_key => $holi_value) {
                         $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())->where('date',$holi_value)->first();
                         $project_holidays_list = Project_holiday::where('project_id',$project->id)->where('date',$holi_value)->first();
@@ -1299,9 +1327,9 @@ class ProjectController extends Controller
                 $task             = ProjectTask::find($id);
                 $task->start_date = $request->start;
                 $task->end_date   = $request->end;
-                
-               
-              
+
+
+
                 $task->save();
                 return response()->json(
                     [
