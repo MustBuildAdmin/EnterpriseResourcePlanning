@@ -364,7 +364,7 @@ $holidays=implode(':',$holidays);
                                         <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
-                                                <option value="">Select Timesheet</option>
+                                                <option value="">Select Timescale</option>
                                                 <option value="day">day</option>
                                                 <option value="week">week</option>
                                                 <option value="month">month</option>
