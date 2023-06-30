@@ -11,3 +11,7 @@ function openAll() {
     });
     gantt.render();
 }
+function toggleChart(){
+    gantt.config.show_chart = !gantt.config.show_chart;
+    gantt.render()
+}

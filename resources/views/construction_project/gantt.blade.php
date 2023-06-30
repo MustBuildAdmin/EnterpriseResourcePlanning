@@ -345,7 +345,7 @@ $holidays=implode(':',$holidays);
 
                                         <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
-                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> --}}
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> 
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -361,6 +361,7 @@ $holidays=implode(':',$holidays);
                                             In</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
                                             Out</button> -->
+
                                         <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
@@ -510,6 +511,7 @@ $holidays=implode(':',$holidays);
 			keyboard_navigation: true,
             auto_scheduling: true
 		});
+       
 
 		gantt.ext.fullscreen.getFullscreenElement = function () {
 			return document.getElementById("additional_elements");
