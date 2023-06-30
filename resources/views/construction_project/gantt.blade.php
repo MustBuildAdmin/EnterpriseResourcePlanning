@@ -343,9 +343,9 @@ $holidays=implode(':',$holidays);
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
-                                       <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> --> 
+                                       <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> 
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -373,7 +373,7 @@ $holidays=implode(':',$holidays);
                                             </select>
                                     </div>
                                 </div>
-                              
+
                             </div>
                               <div class="row">
                                 <div class="col-12">
@@ -812,8 +812,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-         var dp = new gantt.dataProcessor("/erp_ui/public/");
+        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        // var dp = new gantt.dataProcessor("/erp_ui/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
