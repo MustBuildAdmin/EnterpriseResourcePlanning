@@ -66,7 +66,7 @@
                 <table>
                   <tr>
                     <td> {{$data->attachment_file_name}}
-                      {{-- <a id="project_file" class="btn btn-primary" download href="{{ $documentPath . '/' . $data->attachment_file_name }}"> <i class="ti ti-download text-white"></i> </a> --}}
+                      <a id="project_file" class="btn btn-primary" download href="{{ $documentPath . '/' . $data->attachment_file_name }}"> <i class="ti ti-download text-white"></i> </a>
                     </td>
                   </tr>
                 </table>
@@ -88,5 +88,8 @@
         $(document).on('submit', 'form', function() {
             $('#edit_project').attr('disabled', 'disabled');
         });
+
+        var src = URL.createObjectURL(this.files[0])
+        document.getElementById('project_file').src = src
     });
 </script>
