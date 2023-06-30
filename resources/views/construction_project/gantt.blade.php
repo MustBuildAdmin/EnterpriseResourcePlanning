@@ -361,6 +361,7 @@ $holidays=implode(':',$holidays);
                                             In</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
                                             Out</button> -->
+
                                         <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
@@ -511,6 +512,7 @@ $holidays=implode(':',$holidays);
 			keyboard_navigation: true,
             auto_scheduling: true
 		});
+
 
 		gantt.ext.fullscreen.getFullscreenElement = function () {
 			return document.getElementById("additional_elements");
