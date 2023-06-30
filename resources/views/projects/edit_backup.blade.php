@@ -167,7 +167,7 @@
             <div class="form-file mb-3">
                 <input type="file" class="form-control" id="project_image" name="project_image" >
             </div>
-            <span id="project_image_error" class="error" for="project_image"></span>
+            <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
 
             <img id="image"  src="{{asset(Storage::url($project->project_image))}}" class="avatar avatar-xl" alt="">
         </div>

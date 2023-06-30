@@ -101,7 +101,7 @@
             <div class="form-file mb-3">
                 <input type="file" class="form-control" id="project_image"  name="project_image" required>
             </div>
-            <span id="project_image_error" class="error" for="project_image"></span>
+            <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
         </div>
         <div class="col-sm-6 col-md-6">
             <div class="form-group">

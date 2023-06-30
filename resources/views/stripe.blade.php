@@ -428,7 +428,7 @@
 
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="error" style="display: none;">
+                                                <div class="invalid-feedback" style="display: none;">
                                                     <div class='alert-danger alert'>
                                                         {{ __('Please correct the errors and try again.') }}</div>
                                                 </div>

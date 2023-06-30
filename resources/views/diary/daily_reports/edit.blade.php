@@ -5,7 +5,7 @@
       width: 100% !important;
   }
 </style>
-<h2>{{__('Contractors daily construction report')}}</h2>
+<h2>{{__('Contractors Daily Construction Report')}}</h2>
 <div class="maindailyreport">
   <div class="row">
     <div class="row row-cards">
@@ -50,8 +50,10 @@
                    @if(isset($data->weather))
                     <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
                       <option value="" disabled>{{__('Select your option')}}</option>
+                      <option @if(str_contains($data->weather,'Clear')) selected @endif value="Windy">{{__('Clear')}}</option>
                       <option @if(str_contains($data->weather,'Windy')) selected @endif value="Windy">{{__('Windy')}}</option>
                       <option @if(str_contains($data->weather,'Cool')) selected @endif value="Cool">{{__('Cool')}}</option>
+                      <option @if(str_contains($data->weather,'Overcast')) selected @endif value="Overcast">{{__('Overcast')}}</option>
                       <option @if(str_contains($data->weather,'Fog')) selected @endif value="Fog">{{__('Fog')}}</option>
                       <option @if(str_contains($data->weather,'Warm')) selected @endif value="Warm">{{__('Warm')}}</option>
                       <option @if(str_contains($data->weather,'Rain')) selected @endif value="Rain">{{__('Rain')}}</option>
@@ -60,9 +62,11 @@
                     </select>
                     @else
                     <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
-                      <option value="" disabled>Select your option</option>
+                      <option value="" disabled>{{__('Select your option')}}</option>
+                      <option value="Clear">{{__('Clear')}}</option>
                       <option value="Windy">{{__('Windy')}}</option>
                       <option value="Cool">{{__('Cool')}}</option>
+                      <option value="Overcast">{{__('Overcast')}}</option>
                       <option value="Fog">{{__('Fog')}}</option>
                       <option value="Warm">{{__('Warm')}}</option>
                       <option value="Rain">{{__('Rain')}}</option>
@@ -85,7 +89,6 @@
                       <option @if(str_contains($data->site_conditions,'Clear')) selected @endif value="Clear">{{__('Clear')}}</option>
                       <option @if(str_contains($data->site_conditions,'Dusty')) selected @endif value="Dusty">{{__('Dusty')}}</option>
                       <option @if(str_contains($data->site_conditions,'Muddy')) selected @endif value="Muddy">{{__('Muddy')}}</option>
-                      <option @if(str_contains($data->site_conditions,'Windy')) selected @endif value="Windy">{{__('Windy')}}</option>
                     </select>
                     @else
                     <select name="site_conditions[]" id='choices-multiple1' class='chosen-select'  multiple>
@@ -93,7 +96,6 @@
                       <option value="Clear">{{__('Clear')}}</option>
                       <option value="Dusty">{{__('Dusty')}}</option>
                       <option value="Muddy">{{__('Muddy')}}</option>
-                      <option value="Windy">{{__('Windy')}}</option>
                     </select>
                     @endif
                   </div>
@@ -108,14 +110,14 @@
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
-                  <label class="form-label">{{__('Temperature (Maximum)')}}</label>
-                  <input name="temperature" type="text" class="form-control" placeholder="Maximum" value="{{$data->temperature ?? ''}}">
+                  <label class="form-label">{{__('Temperature (Minimum)')}}</label>
+                  <input name="min_input" type="text" class="form-control minimum" placeholder="{{__('Temperature (Minimum)')}}"  value="{{$data->min_input ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
-                  <label class="form-label">{{__('Minimum')}}</label>
-                  <input name="min_input" type="text" class="form-control minimum" placeholder="Minimum"  value="{{$data->min_input ?? ''}}">
+                  <label class="form-label">{{__('Temperature (Maximum)')}}</label>
+                  <input name="temperature" type="text" class="form-control temperature" placeholder="{{__('Temperature (Maximum)')}}" value="{{$data->temperature ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-2">
@@ -154,10 +156,10 @@
                     @foreach ($data_sub as $sub_key=>$display_sub)
                     <tr id="addRow">
                       <td class="col-xs-3">
-                        <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub['position_name'] ?? ''}}"/>
+                        <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="{{__('Enter Position Name')}}" value="{{$display_sub['position_name'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub['no_of_persons'] ?? ''}}" />
+                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}" value="{{$display_sub['no_of_persons'] ?? ''}}" />
                       </td>
                       <td class="col-xs-5">
                         <select class="form-control first_option_0"  name="first_option[]">
@@ -193,19 +195,19 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="" id="total_di_power_one_dis" value="{{$data->total_di_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_one" id="total_di_power_one" value="{{$data->total_di_power_one ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control" name="" id="total_di_power_one_dis" value="{{$data->total_di_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_one" id="total_di_power_one" value="{{$data->total_di_power_one ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="" id="total_in_power_one_dis" value="{{$data->total_in_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one" value="{{$data->total_in_power_one ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control" name="" id="total_in_power_one_dis" value="{{$data->total_in_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one" value="{{$data->total_in_power_one ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="" id="total_con_power_one_dis" value="{{$data->total_con_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_one" id="total_con_power_one" value="{{$data->total_con_power_one ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control" name="" id="total_con_power_one_dis" value="{{$data->total_con_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_one" id="total_con_power_one" value="{{$data->total_con_power_one ?? ''}}"></label>
                 </div>
               </div>
             </div>
@@ -219,10 +221,10 @@
                     @foreach ($data_sub1 as $sub_con_key=> $display_sub_con)
                     <tr id="">
                       <td class="col-xs-3">
-                        <input name="second_position[]" class="form-control second_position_0" type="text" placeholder="Enter Position Name" value="{{$display_sub_con['position_name'] ?? ''}}"/>
+                        <input name="second_position[]" class="form-control second_position_0" type="text" placeholder="{{__('Enter Position Name')}}" value="{{$display_sub_con['position_name'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="second_person[]"  class="form-control second_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_sub_con['no_of_persons'] ?? ''}}"/>
+                        <input name="second_person[]"  class="form-control second_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}" value="{{$display_sub_con['no_of_persons'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-5">
                         <select  class="form-control second_option_0"  name="second_option[]">
@@ -254,19 +256,19 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" class="form-control" name="" id="total_di_power_two_dis" value="{{$data->total_di_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_two" id="total_di_power_two" value="{{$data->total_di_power_two ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control" name="" id="total_di_power_two_dis" value="{{$data->total_di_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_two" id="total_di_power_two" value="{{$data->total_di_power_two ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" class="form-control" name="" id="total_in_power_two_dis" value="{{$data->total_in_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_two" id="total_in_power_two" value="{{$data->total_in_power_two ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" placeholder="{{__('Total Indirect Manpower')}}" class="form-control" name="" id="total_in_power_two_dis" value="{{$data->total_in_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_two" id="total_in_power_two" value="{{$data->total_in_power_two ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" class="form-control" name="" id="total_con_power_two_dis" value="{{$data->total_con_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_two" id="total_con_power_two" value="{{$data->total_con_power_two ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input placeholder="{{__('Total Contractors Manpower')}}" type="text" class="form-control" name="" id="total_con_power_two_dis" value="{{$data->total_con_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_two" id="total_con_power_two" value="{{$data->total_con_power_two ?? ''}}"></label>
                 </div>
               </div>
             </div>
@@ -280,25 +282,24 @@
                   <tr>
                     <th>{{__('Equipment Name')}}</th>
                     <th>{{__('No Of Equipment')}}</th>
-                    <th></th>
-                    <th></th>
+                    <th>{{__('Hour/Day')}}</th>
+                    <th>{{__('Total Hours/Day')}}</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach ($data_sub2 as $key =>$display_major_equi)
                   <tr id="">
                     <td class="col-xs-3">
-                      <input name="third_position[]" class="form-control third_position_0" type="text" placeholder="Enter Equipment Name" value="{{$display_major_equi['position_name'] ?? ''}}"/>
+                      <input name="third_position[]" class="form-control third_position_0" type="text" placeholder="{{__('Enter Equipment Name')}}" value="{{$display_major_equi['position_name'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-3">
-                      <input name="third_person[]" class="form-control third_person_0" type="text" placeholder="Enter No Of Person Per Position" value="{{$display_major_equi['no_of_persons'] ?? ''}}"/>
+                      <input name="third_person[]" class="form-control third_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}"  value="{{$display_major_equi['no_of_persons'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-5">
-                      <select class="form-control third_option_0" name="third_option[]">
-                        <option value="" disabled selected>{{__('Select your option')}}</option>
-                        <option value="Direct Manpower"  @if('Direct Manpower'==$display_major_equi['option_method']){ selected }@endif>{{__('Direct Manpower')}}</option>
-                        <option value="InDirect Manpower" @if('InDirect Manpower'==$display_major_equi['option_method']){ selected }@endif>{{__('InDirect Manpower')}}</option>
-                      </select>
+                      <input name="hours[]" class="form-control hours" id="hours_0" type="text" placeholder="{{__('Enter No Of Hours/Day')}}" value="{{$display_major_equi['hours'] ?? ''}}"/>
+                    </td>
+                    <td class="col-xs-3">
+                      <input class="form-control total_hours_sub" id="total_hours_sub_0" type="text" placeholder="{{__('Enter No of Hours/Day')}}"  value="{{$display_major_equi['total_hours'] ?? ''}}" disabled/><input name="total_hours[]" class="form-control total_hours" id="total_hours_0" type="hidden" placeholder="Enter Total Hours/Day"  value="{{$display_major_equi['total_hours'] ?? ''}}"/>
                     </td>
                     @if($key == 0)
                       <td class="col-xs-1 text-center">
@@ -345,15 +346,17 @@
             </div>
             <div class="col-md-12">
               {{Form::label('Remarks',__('Remarks'),array('class'=>'form-label')) }}
-              <textarea name="remarks" class="form-control" rows="5" style="height: 200px;">{{$data->remarks ?? ''}}</textarea>
+              <textarea name="remarks" placeholder="{{__('Remarks')}}" class="form-control" rows="5" style="height: 200px;">{{$data->remarks ?? ''}}</textarea>
             </div>
-            <div class="col-md-12">
+            <div class="row">
+            <div class="col-md-6">
               {{Form::label('Prepared By',__('Prepared By'),array('class'=>'form-label')) }}
-              <input name="prepared_by" class="form-control" type="text" value="{{$data->prepared_by ?? ''}}"/>
+              <input name="prepared_by" placeholder="{{__('Prepared By')}}" class="form-control" type="text" value="{{$data->prepared_by ?? ''}}"/>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6">
               {{Form::label('Title',__('Title'),array('class'=>'form-label')) }}
-              <input name="title" class="form-control" type="text" value="{{$data->title ?? ''}}" />
+              <input name="title" placeholder="{{__('Title')}}" class="form-control" type="text" value="{{$data->title ?? ''}}" />
+            </div>
             </div>
             <br />
             <div class="card-footer text-end">
@@ -460,11 +463,10 @@
             '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/>'+
         '</td>'+
         '<td>'+
-            '<select class="form-control third_option" id="third_option_'+K+'" name="third_option[]">'+
-            '<option value="" disabled selected>Select your option</option>'+
-            '<option value="Direct Manpower">Direct Manpower</option>'+
-            '<option value="InDirect Manpower">InDirect Manpower</option>'+
-            '</select>'+
+          '<input type="text" name="hours[]" placeholder="Enter No Of Hours/Day" class="form-control hours" id="hours'+K+'"/>'+
+        '</td>'+
+        '<td>'+
+          '<input type="text" name="" placeholder="Enter Total No Of Hours/Day" class="form-control total_hours_sub" id="total_hours_sub'+K+'" disabled/><input type="hidden" name="total_hours[]" placeholder="Enter Total No Of Hours/Day" class="form-control total_hours" id="total_hours'+K+'"/>'+
         '</td>'+
         '<td>'+
             '<span class="remove-ba bttoncreate">'+
@@ -572,13 +574,28 @@
     });
 
 
-$('.first_person,.second_person,.third_person,.minimum').alphanum({
-			allow              : '',    // Allow extra characters
-			allowUpper         : false,  // Allow upper case characters
-			allowLower         : false,  // Allow lower case characters
-			forceUpper         : false, // Convert lower case characters to upper case
-			forceLower         : false, // Convert upper case characters to lower case
-			allowLatin         : false,  
-});
+  $('.first_person,.second_person,.third_person,.minimum,.temperature').alphanum({
+        allow              : '',    // Allow extra characters
+        allowUpper         : false,  // Allow upper case characters
+        allowLower         : false,  // Allow lower case characters
+        forceUpper         : false, // Convert lower case characters to upper case
+        forceLower         : false, // Convert upper case characters to lower case
+        allowLatin         : false,  
+  });
+
+
+    $(document).on('keyup', '.third_person,.hours', function() {
+          
+          var third_person=0;
+      
+          var third_person = $(this).closest("tr").find(".third_person").val();
+          var hours =  $(this).closest("tr").find(".hours").val();
+      
+          var mul_val=third_person*hours;
+      
+          $(this).closest("tr").find(".total_hours").val(mul_val);
+          $(this).closest("tr").find(".total_hours_sub").val(mul_val);
+      
+    });
 
 </script>
