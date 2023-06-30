@@ -23,7 +23,9 @@
 <script src="{{asset('assets/js/js/slackrow.js')}}"></script>
 
 <style>
-
+.gantt_task_line.gantt_critical_task .gantt_task_content {
+    color: red !important;
+}
     html,
     body,
     .gantt-container {
@@ -566,7 +568,7 @@ $holidays=implode(':',$holidays);
 		};
 
 		gantt.config.columns = [
-			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true },
+			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
 			{
 				name: "text", label: "Task Name",width: 150, editor: editors.text,
 				resize: true
