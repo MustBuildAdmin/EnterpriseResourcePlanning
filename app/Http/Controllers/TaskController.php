@@ -34,6 +34,8 @@ class TaskController extends Controller
             }
             $task->users = $implode_users;
         }
+        // update  the type
+        Con_task::where('project_id', Session::get('project_id'))->where('id',$request->parent)->update(['type'=>'project']);
         $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$task->id])->get();
         if(count($check_parent)>0){
             $task->type="project";
@@ -50,9 +52,18 @@ class TaskController extends Controller
     public function destroy($id){
         $project=Session::get('project_id');
         $task = Con_task::find($id);
+        $row=Con_task::where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance'),'id'=>$id])->first();
         $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->delete();
-
+         // checking whether its having parent or not
+         $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$row->parent])->first();
+         if($check_parent){
+             // update  the type
+             Con_task::where('project_id', Session::get('project_id'))->where('id',$row->parent)->update(['type'=>'project']);
+         }else{
+              // update  the type
+              Con_task::where('project_id', Session::get('project_id'))->where('id',$row->parent)->update(['type'=>'task']);
+         }
         return response()->json([
             "action"=> "deleted"
         ]);
@@ -76,6 +87,8 @@ class TaskController extends Controller
             $task->users = $implode_users;
         }
         $check_parent=Con_task::where('project_id', Session::get('project_id'))->where(['parent'=>$task->id])->get();
+        // update  the type
+        Con_task::where('project_id', Session::get('project_id'))->where('id',$request->parent)->update(['type'=>'project']);
         if(count($check_parent)>0){
             $task->type="project";
         }else{
