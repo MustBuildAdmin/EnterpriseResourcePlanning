@@ -14,7 +14,10 @@
 </head>
 <style>
 .error{
-    color: red;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 85.714285%;
+    color: #d63939;
 }
 </style>
 <body>

@@ -23,7 +23,9 @@
 <script src="{{asset('assets/js/js/slackrow.js')}}"></script>
 
 <style>
-
+.gantt_task_line.gantt_critical_task .gantt_task_content {
+    color: red !important;
+}
     html,
     body,
     .gantt-container {
@@ -362,7 +364,7 @@ $holidays=implode(':',$holidays);
                                         <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
-                                                <option value="">Select Timesheet</option>
+                                                <option value="">Select Timescale</option>
                                                 <option value="day">day</option>
                                                 <option value="week">week</option>
                                                 <option value="month">month</option>
@@ -566,7 +568,7 @@ $holidays=implode(':',$holidays);
 		};
 
 		gantt.config.columns = [
-			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true },
+			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
 			{
 				name: "text", label: "Task Name",width: 150, editor: editors.text,
 				resize: true

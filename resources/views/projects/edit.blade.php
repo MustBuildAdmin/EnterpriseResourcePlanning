@@ -144,7 +144,7 @@
                                 {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
                                 <input type="file" class="form-control" id="project_image"  name="project_image">
                             </div>
-                            <span id="project_image_error" class="error" for="project_image"></span>
+                            <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
 
                             @if($project->project_image != null)
                                 <img id="image"  src="{{asset(Storage::url($project->project_image))}}" class="avatar avatar-xl" alt="">
