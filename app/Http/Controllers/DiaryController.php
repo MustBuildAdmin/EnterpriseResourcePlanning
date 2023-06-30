@@ -2266,10 +2266,16 @@ class DiaryController extends Controller
                             $set_third_person=null;
                         }
 
-                        if(isset($request->third_option[$item])){
-                            $set_third_option=$request->third_option[$item];
+                        if(isset($request->hours[$item])){
+                            $set_hours=$request->hours[$item];
                         }else{
-                            $set_third_option=null;
+                            $set_hours=null;
+                        }
+
+                        if(isset($request->total_hours[$item])){
+                            $set_total_hours=$request->total_hours[$item];
+                        }else{
+                            $set_total_hours=null;
                         }
 
                         $data_second = [
@@ -2279,7 +2285,8 @@ class DiaryController extends Controller
                         "user_id" => $user_id,
                         "position_name" =>$set_third_position,
                         "no_of_persons" =>$set_third_person,
-                        "option_method"  =>$set_third_option,
+                        "hours"         =>$set_hours,
+                        "total_hours"  =>$set_total_hours,
                         ];
 
                      
@@ -2522,10 +2529,17 @@ class DiaryController extends Controller
                             $set_third_person=null;
                         }
 
-                        if(isset($request->third_option[$item])){
-                            $set_third_option=$request->third_option[$item];
+                    
+                        if(isset($request->hours[$item])){
+                            $set_hours=$request->hours[$item];
                         }else{
-                            $set_third_option=null;
+                            $set_hours=null;
+                        }
+
+                        if(isset($request->total_hours[$item])){
+                            $set_total_hours=$request->total_hours[$item];
+                        }else{
+                            $set_total_hours=null;
                         }
 
                         $data_second = [
@@ -2535,7 +2549,8 @@ class DiaryController extends Controller
                         "user_id" => $user_id,
                         "position_name" =>$set_third_position,
                         "no_of_persons" =>$set_third_person,
-                        "option_method"  =>$set_third_option,
+                        "hours"  =>$set_hours,
+                        "total_hours"  =>$set_total_hours,
                         ];
 
                      

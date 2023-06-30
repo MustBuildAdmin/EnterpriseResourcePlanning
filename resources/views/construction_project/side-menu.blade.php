@@ -250,13 +250,17 @@
 
                         @can('manage project specification')
                             <li class="{{ (Request::segment(1) == 'show_project_specification')?'active':''}}">
-                                <a href="{{ route('show_project_specification') }}" class="dropdown-item">{{ __('Project Specifications Summary') }}</a>
+                                <a href="{{ route('show_project_specification') }}"  class="list-unstyled">
+                                    <span class="list">{{ __('Project Specifications Summary') }}</span>
+                                </a>
                             </li>
                         @endcan
 
                         @can('manage procurement material')
                             <li class="{{ (Request::segment(1) == 'procurement_material')?'active':''}}">
-                                <a  href="{{ route('procurement_material') }}" class="dropdown-item">{{ __('Procurement Material Supply Log') }}</a>
+                                <a href="{{ route('procurement_material') }}"   class="list-unstyled">
+                                    <span class="list">{{ __('Procurement Material Supply Log') }}</span>
+                                </a>
                             </li>
                         @endcan
 
