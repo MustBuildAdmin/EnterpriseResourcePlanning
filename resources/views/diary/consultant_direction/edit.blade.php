@@ -55,7 +55,7 @@
                 </div>
               </div>
             </div>
-            <table class="table" id="dynamicAddRemove"> 
+            <table class="table"> 
               @foreach ($consult_dir_multi as $key => $mutli_data) 
               <tr>
                 <td>
@@ -107,6 +107,8 @@
          
             </table> 
             @endforeach 
+            <table class="table" id="dynamicAddRemove"> 
+                    </table>
             @if(!empty($initiator_date))
             <div class="col-md-12 mt-3">
               <button type="button" name="add" id="dynamic-ar" class="btn btn-outline-primary">{{__('Add More')}}</button>
@@ -141,24 +143,24 @@
                   '<div class="col">'+
                     '<div class="form-group">'+
                       '<label for="InputReference">Reference:</label>'+
-                      '<input type="text" name="initiator_reference[' + i +']" class="form-control" placeholder="Enter your  Reference"/>'+
+                      '<input type="text" name="initiator_reference[' + i +']" class="form-control" placeholder="Enter your  Reference" required/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="col">'+
                     '<div class="form-group">'+
                       '<label for="Inputdate">Date:</label>'+
-                        '<input type="date"  max="{{ date('Y-m-d') }}" name="initiator_date[' + i +']" class="form-control" placeholder="Enter your  Date"/>'+
+                        '<input type="date"  max="{{ date('Y-m-d') }}" name="initiator_date[' + i +']" class="form-control" placeholder="Enter your  Date" required/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="col-md-12 mt-3">'+
                       '<label for="InputRemarks">Attachment</label>'+
-                      '<input name="initiator_file_name[' + i +']"  type="file" id="" class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif"/>'+
+                      '<input name="initiator_file_name[' + i +']"  type="file" id="" class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" required/>'+
                   '</div>'+
                 '</div>'+
                 '<div class="row">'+
                   '<div class="col form-group">'+
                     '<label for="InputRemarks">Status:</label>'+
-                        '<select name="replier_status[' + i +']" class="form-control" aria-label="Default select example">'+
+                        '<select name="replier_status[' + i +']" class="form-control" aria-label="Default select example" required>'+
                           '<option selected disabled>Status</option>'+
                           '<option value="clear">Clear</option>'+
                           '<option value="pending">Pending</option>'+
@@ -168,12 +170,12 @@
                     '<div class="col-12 mt-3">'+
                       '<div class="form-group">'+
                         '<label for="InputRemarks">Remarks/ Notes:</label>'+
-                        '<textarea type="text" class="form-control" name="replier_remark[' + i +']" placeholder="Enter your Remarks/ Notes"></textarea>'+
+                        '<textarea type="text" class="form-control" name="replier_remark[' + i +']" placeholder="Enter your Remarks/ Notes" required></textarea>'+
                         '</div>'+
                     '</div>'+
                     '<div class="col-md-12 mt-3">'+
                       '<label for="InputRemarks">Attachment</label>'+
-                      '<input  type="file"  name="replier_file_name[' + i +']" id="concreteFile" class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf"/>'+
+                      '<input  type="file"  name="replier_file_name[' + i +']" id="concreteFile" class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>'+
                     '</div>'+
                 '</div>'+
               '<div class="col-md-12 mt-3">'+

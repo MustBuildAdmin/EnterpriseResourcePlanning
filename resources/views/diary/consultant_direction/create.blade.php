@@ -63,18 +63,18 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="InputReference">{{__('Reference')}}</label>
-                      <input type="text" name="initiator_reference[]" class="form-control" placeholder="{{__('Reference')}}" />
+                      <input type="text" name="initiator_reference[]" class="form-control" placeholder="{{__('Reference')}}" required/>
                     </div>
                   </div>
                   <div class="col">
                     <div class="form-group">
                       <label for="Inputdate">{{__('Date')}}</label>
-                      <input type="date" max="{{ date('Y-m-d') }}" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" />
+                      <input type="date" max="{{ date('Y-m-d') }}" name="initiator_date[]" class="form-control" placeholder="{{__('Date')}}" required/>
                     </div>
                   </div>
                   <div class="col-md-12 mt-3">
                     <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input name="initiator_file_name[]"  type="file"  class="form-control file_input" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" />
+                    <input name="initiator_file_name[]"  type="file"  class="form-control file_input" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" required/>
                     <span class="show_document_error" style="color:red;"></span>
                   </div>
                 </div>
@@ -96,7 +96,7 @@
                 <div class="row">
                   <div class="col form-group">
                     <label for="InputRemarks">{{__('Status')}}</label>
-                    <select name="replier_status[]" class="form-control" aria-label="Default select example" >
+                    <select name="replier_status[]" class="form-control" aria-label="Default select example" required>
                       <option selected disabled>Status</option>
                       <option value="clear">Clear</option>
                       <option value="pending">Pending</option>
@@ -106,7 +106,7 @@
                   <div class="col-12 mt-3">
                     <div class="form-group">
                       <label for="InputRemarks">{{__('Remarks/ Notes')}}</label>
-                      <textarea type="text" class="form-control" name="replier_remark[]" placeholder="{{__('Remarks/ Notes')}}" ></textarea>
+                      <textarea type="text" class="form-control" name="replier_remark[]" placeholder="{{__('Remarks/ Notes')}}" required></textarea>
                     </div>
                   </div>
                   {{-- <div class="col-md-12 mt-3">
