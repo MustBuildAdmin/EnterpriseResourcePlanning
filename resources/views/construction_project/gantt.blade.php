@@ -343,9 +343,9 @@ $holidays=implode(':',$holidays);
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
-                                        <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
+                                       <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> 
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -374,6 +374,7 @@ $holidays=implode(':',$holidays);
                                             </select>
                                     </div>
                                 </div>
+
                             </div>
                               <div class="row">
                                 <div class="col-12">
@@ -511,7 +512,7 @@ $holidays=implode(':',$holidays);
 			keyboard_navigation: true,
             auto_scheduling: true
 		});
-       
+
 
 		gantt.ext.fullscreen.getFullscreenElement = function () {
 			return document.getElementById("additional_elements");
@@ -642,7 +643,7 @@ $holidays=implode(':',$holidays);
 
         // progress end
         gantt.attachEvent("onBeforeAutoSchedule", function () {
-		gantt.message("Recalculating project schedule...");
+		// gantt.message("Recalculating project schedule...");
 		return true;
 	});
 	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
@@ -764,12 +765,12 @@ $holidays=implode(':',$holidays);
             ];
 
         // holidays
-            gantt.config.work_time = true;
-            gantt.config.details_on_create = false;
-            gantt.config.scale_unit = "day";
-            gantt.config.duration_unit = "day";
-            gantt.config.row_height = 30;
-            gantt.config.min_column_width = 40;
+             gantt.config.work_time = true;
+            // gantt.config.details_on_create = false;
+            // gantt.config.scale_unit = "day";
+            // gantt.config.duration_unit = "day";
+            // gantt.config.row_height = 30;
+            // gantt.config.min_column_width = 40;
 
                 // weekdays appending
                 var weekend_list=$('#weekends').val();
@@ -814,12 +815,17 @@ $holidays=implode(':',$holidays);
 
 
         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        // var dp = new gantt.dataProcessor("/erpnew/public/");
+        // var dp = new gantt.dataProcessor("/erp_ui/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
                 payload:{
                 "_token":tempcsrf,
+                }
+            });
+            dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
+                if(action != "error"){
+                    gantt.load("{{route('projects.gantt_data',[$project->id])}}");
                 }
             });
 
