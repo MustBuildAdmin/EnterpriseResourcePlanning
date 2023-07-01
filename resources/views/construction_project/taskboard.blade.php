@@ -111,10 +111,9 @@
                             </div>
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
                                 <div class="btn-box">
-                                    {{ Form::label('status', __('Status'),['class'=>'form-label'])}}
+                                    {{ Form::label('status', __('Filter Type'),['class'=>'form-label'])}}
                                     <select onchange="status_task(this)" name="status_task" id="status_task" class="form-control">
                                         <option value="">Select Status</option>
-                                        <option value="1">Today Task</option>
                                         <option value="3">Pending Task</option>
                                         <option value="4">Completed Task</option>
                                     </select>
