@@ -163,16 +163,16 @@ h3, .h3 {
                       extend: 'pdfHtml5',
                       title: 'Project Specifications Summary',
                       titleAttr: 'PDF',
-                      pagesize: 'A3',
-                      orientation: 'landscape',
+                      pagesize: 'A4',
+                      orientation: 'potrait',
                       pageSize: 'LEGAL',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
                         // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
                         doc.styles.tableBodyEven.alignment = 'center';
-                        doc.styles.tableBodyEven.noWrap = true;
+                        doc.styles.tableBodyEven.noWrap = false;
                         doc.styles.tableBodyOdd.alignment = 'center';
-                        doc.styles.tableBodyOdd.noWrap = true;
+                        doc.styles.tableBodyOdd.noWrap = false;
                         doc.styles.tableHeader.fontSize = 9;  
                         doc.defaultStyle.fontSize = 9;
                         doc.defaultStyle.alignment = 'center';
