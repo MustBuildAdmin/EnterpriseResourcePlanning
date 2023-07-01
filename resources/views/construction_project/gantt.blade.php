@@ -570,6 +570,7 @@ $holidays=implode(':',$holidays);
 			predecessors: { type: "predecessor", map_to: "auto", formatter: linksFormatter }
 		};
 
+        gantt.config.reorder_grid_columns = true;
 		gantt.config.columns = [
 			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
 			{
@@ -618,6 +619,48 @@ $holidays=implode(':',$holidays);
 			{ name: "add" }
 		];
 
+        // scale length
+        gantt.config.scale_height = 20*2;
+	gantt.config.min_column_width = 50;
+	gantt.config.scales = [
+		{ unit:"month", step:1, date:"%M, %Y"	},
+		{ unit:"day", step:1, date:"%d %M"	}
+	];
+
+	gantt.config.layout = {
+		css: "gantt_container",
+		cols: [
+			{
+				width:400,
+				min_width: 300,
+				rows:[
+					{view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"},
+					{view: "scrollbar", id: "gridScroll", group:"horizontal"}
+				]
+			},
+			{resizer: true, width: 1},
+			{
+				rows:[
+					{view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
+					{view: "scrollbar", id: "scrollHor", group:"horizontal"}
+				]
+			},
+			{view: "scrollbar", id: "scrollVer"}
+		]
+	};
+
+	gantt.attachEvent("onParse", function() {
+		gantt.eachTask(function(task) {
+			// fill 'task.user' field with random data
+			task.user = Math.round(Math.random()*3);
+			//
+			if (gantt.hasChild(task.id))
+				task.type = gantt.config.types.project
+		});
+	});
+
+
+        // scale length end
 		gantt.templates.task_class = function (start, end, task) {
 			if (task.type == gantt.config.types.project)
 				return "hide_project_progress_drag";
@@ -814,8 +857,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        // var dp = new gantt.dataProcessor("/erp_ui/public/");
+       // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+         var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
