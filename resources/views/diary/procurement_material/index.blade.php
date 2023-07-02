@@ -4,14 +4,6 @@
 <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    background: #fff;
-    max-width: 1072px !important;
-   
-}
 div.dt-buttons .dt-button {
 	background-color: #ffa21d;
 	color: #fff;
@@ -69,7 +61,8 @@ h3, .h3 {
     
         <div class="card-header card-body table-border-style">
             @can('manage procurement material')
-            <div class="table-responsive">
+            <div class="container-fluid">
+            <div class="table-responsive-xxl text-nowrap">
               <table class="table" id="example2">
                 <thead class="">
                 <tr>
@@ -130,6 +123,7 @@ h3, .h3 {
                 </tbody>
             </table>
             </div>
+        </div>
             @endcan
         </div>
         </div>

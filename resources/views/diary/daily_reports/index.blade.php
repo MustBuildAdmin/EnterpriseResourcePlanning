@@ -83,7 +83,9 @@ h3, .h3 {
                 <th>{{__('Remarks')}}</th>
                 <th>{{__('Prepared By')}}</th>
                 <th>{{__('Title')}}</th>
-                <th style="width:25%;">{{__('Action')}}</th>
+                @if(Gate::check('edit site reports') || Gate::check('delete site reports'))
+                <th>{{__('Action')}}</th>
+                @endif
               </tr>
             </thead>
             <tbody>
@@ -115,6 +117,7 @@ h3, .h3 {
                   <td>{{$data_report->remarks}}</td> 
                   <td>{{$data_report->prepared_by}}</td>
                   <td>{{$data_report->title}}</td>
+                  @if(Gate::check('edit site reports') || Gate::check('delete site reports'))
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
                           @can('edit site reports')
@@ -129,6 +132,7 @@ h3, .h3 {
                           @endcan
                       </div>
                   </td>
+                  @endif
               </tr>
               @endforeach
             </tbody>

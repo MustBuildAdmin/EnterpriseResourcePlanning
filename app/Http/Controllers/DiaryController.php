@@ -798,7 +798,7 @@ class DiaryController extends Controller
                             }
                         }else{
                             $check_attach_file=RFIStatusSubSave::select('attachments_two','attachments_two_path')
-                                                ->where('id',$request->id)
+                                                ->where('id',$request->edit_id)
                                                 ->where('user_id',$user_id)
                                                 ->where('project_id',$request->project_id)
                                                 ->first();

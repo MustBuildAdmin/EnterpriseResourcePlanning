@@ -85,7 +85,6 @@ h3, .h3 {
                     <th>{{__('Cost Impact')}}</th>
                     <th>{{__('Time impact')}}</th>
                     <th>{{__('Description')}}</th>
-                   
                     @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                     <th>{{__('Action')}}</th>
                     @endif
@@ -102,13 +101,12 @@ h3, .h3 {
                     <td>{{$data->cost_impact ?? '-'}}</td>
                     <td>{{$data->time_impact ?? '-'}}</td>
                     <td>{{$data->description ?? '-'}}</td>
-                 
                         @if(Gate::check('edit RFI') || Gate::check('delete RFI'))
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
-                                {{-- @can('edit RFI') --}}
+                                @can('edit RFI')
                                     <a href="#"  class="btn btn-md backgroundnone" data-url="{{ route('edit_rfi_info_status',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}"><i class="ti ti-pencil text-white"></i></a>
-                                {{-- @endcan --}}
+                                @endcan
                                 @can('delete RFI')
                                     {!! Form::open(['method' => 'POST', 'route' => ['delete_rfi_status', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
