@@ -343,9 +343,9 @@ $holidays=implode(':',$holidays);
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
-                                        <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
+                                       <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
                                         <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
-                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button> --}}
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
                                     </div>
                                 </div>
                                 <div class='row'>
@@ -361,6 +361,7 @@ $holidays=implode(':',$holidays);
                                             In</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
                                             Out</button> -->
+
                                         <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
@@ -373,6 +374,7 @@ $holidays=implode(':',$holidays);
                                             </select>
                                     </div>
                                 </div>
+
                             </div>
                               <div class="row">
                                 <div class="col-12">
@@ -511,6 +513,7 @@ $holidays=implode(':',$holidays);
             auto_scheduling: true
 		});
 
+
 		gantt.ext.fullscreen.getFullscreenElement = function () {
 			return document.getElementById("additional_elements");
 		}
@@ -567,6 +570,7 @@ $holidays=implode(':',$holidays);
 			predecessors: { type: "predecessor", map_to: "auto", formatter: linksFormatter }
 		};
 
+        gantt.config.reorder_grid_columns = true;
 		gantt.config.columns = [
 			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
 			{
@@ -615,6 +619,48 @@ $holidays=implode(':',$holidays);
 			{ name: "add" }
 		];
 
+        // scale length
+        gantt.config.scale_height = 20*2;
+	gantt.config.min_column_width = 50;
+	gantt.config.scales = [
+		{ unit:"month", step:1, date:"%M, %Y"	},
+		{ unit:"day", step:1, date:"%d %M"	}
+	];
+
+	gantt.config.layout = {
+		css: "gantt_container",
+		cols: [
+			{
+				width:400,
+				min_width: 300,
+				rows:[
+					{view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"},
+					{view: "scrollbar", id: "gridScroll", group:"horizontal"}
+				]
+			},
+			{resizer: true, width: 1},
+			{
+				rows:[
+					{view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
+					{view: "scrollbar", id: "scrollHor", group:"horizontal"}
+				]
+			},
+			{view: "scrollbar", id: "scrollVer"}
+		]
+	};
+
+	gantt.attachEvent("onParse", function() {
+		gantt.eachTask(function(task) {
+			// fill 'task.user' field with random data
+			task.user = Math.round(Math.random()*3);
+			//
+			if (gantt.hasChild(task.id))
+				task.type = gantt.config.types.project
+		});
+	});
+
+
+        // scale length end
 		gantt.templates.task_class = function (start, end, task) {
 			if (task.type == gantt.config.types.project)
 				return "hide_project_progress_drag";
@@ -640,7 +686,7 @@ $holidays=implode(':',$holidays);
 
         // progress end
         gantt.attachEvent("onBeforeAutoSchedule", function () {
-		gantt.message("Recalculating project schedule...");
+		// gantt.message("Recalculating project schedule...");
 		return true;
 	});
 	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
@@ -762,12 +808,12 @@ $holidays=implode(':',$holidays);
             ];
 
         // holidays
-            gantt.config.work_time = true;
-            gantt.config.details_on_create = false;
-            gantt.config.scale_unit = "day";
-            gantt.config.duration_unit = "day";
-            gantt.config.row_height = 30;
-            gantt.config.min_column_width = 40;
+             gantt.config.work_time = true;
+            // gantt.config.details_on_create = false;
+            // gantt.config.scale_unit = "day";
+            // gantt.config.duration_unit = "day";
+            // gantt.config.row_height = 30;
+            // gantt.config.min_column_width = 40;
 
                 // weekdays appending
                 var weekend_list=$('#weekends').val();
@@ -811,13 +857,18 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        // var dp = new gantt.dataProcessor("/erpnew/public/");
+         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+         //var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
                 payload:{
                 "_token":tempcsrf,
+                }
+            });
+            dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
+                if(action != "error"){
+                    gantt.load("{{route('projects.gantt_data',[$project->id])}}");
                 }
             });
 

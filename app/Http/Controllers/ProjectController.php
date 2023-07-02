@@ -1001,10 +1001,14 @@ class ProjectController extends Controller
 
             if($project != null){
                 foreach($project->users as $user){
-                    $user_array[] = [
-                        'key' => $user->id,
-                        'label' => $user->name
-                    ];
+                  
+                    if($user->type!='company' || $user->type!='admin')
+                    {
+                        $user_array[] = [
+                            'key' => $user->id,
+                            'label' => $user->name
+                        ];
+                    }                   
                 }
             }
 
