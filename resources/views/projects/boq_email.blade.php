@@ -317,63 +317,6 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <table cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%;">
-                                    <tr>
-                                        <td class="py-xl" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; padding-top: 48px; padding-bottom: 48px;">
-                                            <table class="font-sm text-center text-muted" cellspacing="0" cellpadding="0" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; border-collapse: collapse; width: 100%; color: #9eb0b7; text-align: center; font-size: 13px;">
-                                                <tr>
-                                                    <td class="px-sm">
-                                                        <a href="https://erp.mustbuildapp.com/">
-                                                            <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-facebook-square.png"
-                                                                class=" va-middle" width="24" height="24"
-                                                                alt="social-facebook-square" />
-                                                        </a>
-                                                    </td>
-                                                    <td class="px-sm">
-                                                        <a href="https://erp.mustbuildapp.com/">
-                                                            <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-twitter.png"
-                                                                class=" va-middle" width="24" height="24"
-                                                                alt="social-twitter" />
-                                                        </a>
-                                                    </td>
-                                                    <td class="px-sm">
-                                                        <a href="https://erp.mustbuildapp.com/">
-                                                            <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-github.png"
-                                                                class=" va-middle" width="24" height="24"
-                                                                alt="social-github" />
-                                                        </a>
-                                                    </td>
-                                                    <td class="px-sm">
-                                                        <a href="https://erp.mustbuildapp.com/">
-                                                            <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-youtube.png"
-                                                                class=" va-middle" width="24" height="24"
-                                                                alt="social-youtube" />
-                                                        </a>
-                                                    </td>
-                                                    <td class="px-sm">
-                                                        <a href="https://erp.mustbuildapp.com/">
-                                                            <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-pinterest.png"
-                                                                class=" va-middle" width="24" height="24"
-                                                                alt="social-pinterest" />
-                                                        </a>
-                                                    </td>
-                                                    <td class="px-sm">
-                                                        <a href="https://erp.mustbuildapp.com/">
-                                                            <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-instagram.png"
-                                                                class=" va-middle" width="24" height="24"
-                                                                alt="social-instagram" />
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="px-lg" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; padding-right: 24px; padding-left: 24px;">
-                                                        If you have any questions, feel free to message us at <a href="mailto:support@tabler.io" class="text-muted" style="color: #9eb0b7; text-decoration: none;">support@tabler.io</a>.
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
                             </td>
                         </tr>
                     </table>
