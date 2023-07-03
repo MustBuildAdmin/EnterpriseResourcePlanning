@@ -690,12 +690,12 @@ $holidays=implode(':',$holidays);
 		return true;
 	});
 	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
-		if(task && predecessor){
-			gantt.message({
-				text: "<b>" + task.text + "</b> has been rescheduled to " + gantt.templates.task_date(new_date) + " due to <b>" + predecessor.text + "</b> constraint",
-				expire: 4000
-			});
-		}
+		// if(task && predecessor){
+		// 	gantt.message({
+		// 		text: "<b>" + task.text + "</b> has been rescheduled to " + gantt.templates.task_date(new_date) + " due to <b>" + predecessor.text + "</b> constraint",
+		// 		expire: 4000
+		// 	});
+		// }
 	});
 
 

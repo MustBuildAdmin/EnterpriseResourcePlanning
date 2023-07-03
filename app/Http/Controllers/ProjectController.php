@@ -736,7 +736,45 @@ class ProjectController extends Controller
 
                 // end chart
 
-                return view('construction_project.dashboard',compact('project','project_data'));
+                $total_sub=Con_task::where('project_id',$project->id)->where('type','task')->count();
+                $first_task=Con_task::where('project_id',$project->id)->where('id','1')->first();
+                $workdone_percentage= $first_task->progress;
+
+
+                $cur= date('Y-m-d');
+                $no_working_days=$first_task->duration;// include the last day
+                ############### END ##############################
+
+                ############### Remaining days ###################
+                $date1=date_create($cur);
+                $date2=date_create($first_task->end_date);
+
+                $diff=date_diff($date1,$date2);
+                $remaining_working_days=$diff->format("%a");
+                $remaining_working_days=$remaining_working_days-1;// include the last day
+                ############### Remaining days ##################
+
+                $completed_days=$no_working_days-$remaining_working_days;
+
+                // percentage calculator
+                $perday=100/$no_working_days;
+
+
+                $current_Planed_percentage=round($completed_days*$perday);
+                $remaing_percenatge=round(100-$current_Planed_percentage);
+                $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))->where('con_tasks.type','task')->where('con_tasks.start_date','like',$cur.'%')->get();
+                $not_started=0;
+                foreach ($project_task as $key => $value) {
+                    $result=Task_progress::where('task_id',$value->main_id)->first();
+                    if(!$result){
+                        $not_started=$not_started+1;
+                    }
+                }
+
+                $notfinished=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->where('progress','!=','100')->count();
+
+
+                return view('construction_project.dashboard',compact('project','project_data','total_sub','workdone_percentage','current_Planed_percentage','not_started','notfinished'));
                // return view('projects.view',compact('project','project_data'));
             }
             else
@@ -1001,14 +1039,14 @@ class ProjectController extends Controller
 
             if($project != null){
                 foreach($project->users as $user){
-                  
+
                     if($user->type!='company' || $user->type!='admin')
                     {
                         $user_array[] = [
                             'key' => $user->id,
                             'label' => $user->name
                         ];
-                    }                   
+                    }
                 }
             }
 
