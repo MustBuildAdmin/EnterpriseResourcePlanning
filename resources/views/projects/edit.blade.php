@@ -130,17 +130,6 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                <select name="status" id="status" class="form-control main-element select2" required>
-                                    <option value=''>Choose Status</option>
-                                    @foreach(\App\Models\Project::$project_status as $k => $v)
-                                        <option value="{{$k}}" {{ ($project->status == $k) ? 'selected' : ''}}>{{__($v)}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
                                 {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
                                 <input type="file" class="form-control" id="project_image"  name="project_image">
                             </div>
@@ -228,12 +217,19 @@
                     </div>
                 </section>
 
-                <h3>{{ __('Project Import or Manual') }}</h3>
+                <h3>{{ __('Project Status') }}</h3>
                 <section>
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
-                            {{ Form::label('boq', __('Upload a BOQ File Here'), ['class' => 'form-label boq_file']) }}
-                            <input type='file' name='file' id='file' accept=".xlsx, .xls, .csv">
+                            <div class="form-group">
+                                {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                                <select name="status" id="status" class="form-control main-element select2" required>
+                                    <option value=''>Choose Status</option>
+                                    @foreach(\App\Models\Project::$project_status as $k => $v)
+                                        <option value="{{$k}}" {{ ($project->status == $k) ? 'selected' : ''}}>{{__($v)}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -342,15 +338,7 @@
                 
             }
             else{
-                if(newIndex == 3){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else if(newIndex == 2){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else{
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                }
+                form.validate().settings.ignore = ":disabled,:hidden";
             }
             
             return form.valid();

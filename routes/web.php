@@ -3491,6 +3491,8 @@ Route::resource('projects', 'ProjectController')->middleware(
     ]
 );
 
+Route::get('boq_file/{project_id}', 'ProjectController@boq_file')->name('boq_file')->middleware(['auth','XSS']);
+
 // User Permission
 Route::get(
     'projects/{id}/user/{uid}/permission', [
