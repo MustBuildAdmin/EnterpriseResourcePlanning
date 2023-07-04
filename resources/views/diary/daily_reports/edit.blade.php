@@ -509,6 +509,10 @@
       var indirect_val=0;
       var direct_val_total=0;
       var indirect_val_total=0;
+      $('#total_di_power_one_dis').val(0);
+      $('#total_in_power_one_dis').val(0);
+      $('#total_in_power_one').val(0);
+      $('#total_di_power_one').val(0);
         $(".first_option :selected").each(function(index) {
             first_option = $(this).val();
             if(first_option == "Direct Manpower"){
@@ -551,6 +555,10 @@
     var indirect_val_two=0;
     var direct_val_total_two=0;
     var indirect_val_total_two=0;
+    $('#total_di_power_two').val(0);
+    $('#total_di_power_two_dis').val(0);
+    $('#total_in_power_one').val(0);
+    $('#total_in_power_two_dis').val(0);
       $(".second_option :selected").each(function(index) {
           second_option = $(this).val();
           if(second_option == "Direct Manpower"){

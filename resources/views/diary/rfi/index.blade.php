@@ -2,6 +2,7 @@
 @include('construction_project.side-menu')
 <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 
@@ -48,6 +49,13 @@ div.dt-buttons .dt-button:hover {
 h3, .h3 {
 	font-size: 1rem !important;
 }
+
+table.dataTable>tbody>tr.child span.dtr-title {
+   
+   font-weight: var(--tblr-font-weight-bold);
+   color: var(--tblr-muted);
+
+}
 </style>
 <div class="row">
   <div class="col-md-6">
@@ -70,9 +78,9 @@ h3, .h3 {
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
     
-        <div class="card-header card-body table-border-style">
+        <div class="container-fluid">
             @can('manage RFI')
-            <div class="table-responsive" style="width:100%;">
+            <div class="container table-responsive-xl">
               <table class="table" id="example2" >
                 <thead class="table">
                 <tr>
@@ -131,6 +139,7 @@ h3, .h3 {
 @include('new_layouts.footer')
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
