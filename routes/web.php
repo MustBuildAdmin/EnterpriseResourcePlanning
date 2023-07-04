@@ -3492,6 +3492,8 @@ Route::resource('projects', 'ProjectController')->middleware(
 );
 
 Route::get('boq_file/{project_id}', 'ProjectController@boq_file')->name('boq_file')->middleware(['auth','XSS']);
+Route::any('boq_code_verify', 'ProjectController@boq_code_verify')->name('boq_code_verify')->middleware(['auth','XSS']);
+Route::any('boq_file_upload', 'ProjectController@boq_file_upload')->name('boq_file_upload')->middleware(['auth','XSS']);
 
 // User Permission
 Route::get(

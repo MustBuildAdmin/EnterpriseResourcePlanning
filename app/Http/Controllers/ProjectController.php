@@ -479,7 +479,7 @@ class ProjectController extends Controller
                 }
             }
 
-            $expires_at = date("Y-m-d H:i:s", strtotime("+10 minutes"));
+            $expires_at = date("Y-m-d H:i:s", strtotime("+30 minutes"));
             $settings   = Utility::settings();
             $sender     = $settings['company_email'] != "" ? $settings['company_email'] : "must-info@mustbuildapp.com";
 
@@ -487,7 +487,8 @@ class ProjectController extends Controller
                 'project_id'      => $project->id,
                 'security_code'   => rand(10000000,99999999),
                 'code_expires_at' => $expires_at,
-                'sender'          => 'balamurugan@mustbuildapp.com',
+                'user_id'         => $get_user_id,
+                'sender'          => $sender,
                 'receiver'        => 'must-info@mustbuildapp.com',
                 'project_name'    => $request->project_name
             );
@@ -605,8 +606,57 @@ class ProjectController extends Controller
         else{
             return redirect()->route('construction_main')->with('error', __('Your Security Code was not found!'));
         }
+    }
 
+    public function boq_code_verify(Request $request){
+        $project_id    = $request->project_id;
+        $security_code = $request->security_code;
+
+        $verify_code = DB::table('boq_email')->where('project_id',$project_id)->where('security_code',$security_code)->where('status','1')->first();
+        if($verify_code != null){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+
+    public function boq_file_upload(Request $request){
+        $project_id       = $request->project_id;
+        $fileNameToStore1 = '';
+        $url              = '';
+
+        if (!empty($request->boq_file)) {
+            $filenameWithExt1 = $request->file("boq_file")->getClientOriginalName();
+            $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+            $extension1       = $request->file("boq_file")->getClientOriginalExtension();
+            $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+            $dir              = "uploads/boq_file";
+            $image_path       = $dir . $filenameWithExt1;
+
+            if (\File::exists($image_path)) {
+                \File::delete($image_path);
+            }
+
+            $url  = "";
+            $path = Utility::upload_file($request,"boq_file",$fileNameToStore1,$dir,[]);
+
+            if ($path["flag"] == 1) {
+                $url = $path["url"];
+            }
+            else {
+                return redirect()->route('construction_main')->with('error', __($path["msg"]));
+            }
+        }
         
+        $save_data = [
+            "boq_file_path" => $url,
+            "boq_filename"  => $fileNameToStore1,
+        ];
+
+        Project::where('id',$project_id)->update($save_data);
+
+        return redirect()->route('construction_main')->with('success', __('BOQ File Uploaded Successfully'));
     }
 
     public function checkDuplicateProject(Request $request){
