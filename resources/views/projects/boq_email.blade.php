@@ -304,11 +304,10 @@
                                                     <tr>
                                                         <td class="content border-top font-sm" style="font-family: Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 13px; border-top-width: 1px; border-top-color: #f0f0f0; border-top-style: solid; padding: 40px 48px;">
                                                             <p style="margin: 0 0 1em;">
-                                                                <strong style="font-weight: 600;">Note:</strong> It Expires in 10 Minutes. <br>
-                                                                Please before login you click the Button in <a href="https://erptest.mustbuildapp.com/">Mustbuild.com</a>
+                                                                <strong style="font-weight: 600;">Note:</strong> It Expires in 30 Minutes. <br>
                                                             </p>
                                                             <p class="text-muted" style="color: #9eb0b7; margin: 0 0 1em;">
-                                                                Getting a 404 error? Make sure you’re signed in <a href="https://erptest.mustbuildapp.com/">Mustbuild.com</a>.
+                                                                Getting a 404 error or showing Login page? Make sure you’re signed in <a href="https://erptest.mustbuildapp.com/">Mustbuild.com</a>.
                                                             </p>
                                                         </td>
                                                     </tr>
