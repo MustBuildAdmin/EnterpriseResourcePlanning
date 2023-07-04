@@ -12,7 +12,7 @@
 <div class="row divmainrow">
    <div class="col-md-6">
       <h2>Project Dashboard</h2>
-   </div> 
+   </div>
    <div class="col-md-6">
     <div class="float-end icons">
       {{-- @can('view grant chart')
@@ -29,7 +29,7 @@
       <a href="{{ route('project_report.view_task_report',$project->id) }}" class="btn btn-sm btn-primary">
         {{__('Report')}}
       </a> --}}
-    
+
       {{-- @if($setting['company_type']!=2)
           @can('manage bug report')
               <a href="{{ route('task.bug',$project->id) }}" class="btn btn-sm btn-primary">
@@ -54,7 +54,7 @@
           @endcan
           @endif
       @endif --}}
-      
+
       @can('edit project')
           <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
               <i class="ti ti-pencil"></i>
@@ -62,7 +62,7 @@
       @endcan
 
      </div>
-   </div> 
+   </div>
 
 </div>
 
@@ -143,7 +143,7 @@
   <div class="form-container">
     <button id="btnCloseForm" class="close-button">X</button>
     <h1>Create MileStone</h1>
-  
+
     <div class="modal-body">
   <div class="row">
     <div class="form-group col-md-6">
@@ -209,9 +209,9 @@
             <i class="uil-dollar-alt fs-2 text-center green rounded-circle"></i>
             <div class="ms-3">
               <div class="d-flex align-items-center">
-                 <span class="d-block">{{__('Total')}} {{__('Budget')}}</span>
+                 <span class="d-block">{{__('Total')}} {{__('Sub Task')}}</span>
               </div>
-              <p class="fs-normal mb-0">{{ \Auth::user()->priceFormat($project->budget)}}</p>
+              <p class="fs-normal mb-0">{{ $total_sub }}</p>
             </div>
           </div>
         </div>
@@ -230,6 +230,44 @@
         @else
           <div class="col-lg-4 col-md-6"></div>
         @endif
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-lg-4 bgwhite">
+            <div class="box d-flex rounded-2 align-items-center p-3">
+              <i class="uil-list-ul fs-2 text-center green rounded-circle"></i>
+              <div class="ms-3">
+                <div class="d-flex align-items-center">
+                  <span class="d-block">Workdone % Productivity</span>
+                </div>
+                <br>
+                <p class="fs-normal mb-0">{{ $workdone_percentage }}%</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-4 bgwhite">
+            <div class="box d-flex rounded-2 align-items-center p-3">
+              <i class="uil-list-ul fs-2 text-center green rounded-circle"></i>
+              <div class="ms-3">
+                <div class="d-flex align-items-center">
+                  <span class="d-block">Task not started even after<br>planned start date<br>No.of Task:</span>
+                </div>
+                <br>
+                <p class="fs-normal mb-0">{{ $not_started }}</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-4 bgwhite">
+            <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
+              <i class="uil-list-ul fs-2 text-center green rounded-circle"></i>
+              <div class="ms-3">
+                <div class="d-flex align-items-center">
+                   <span class="d-block">Task in progress even after<br>planned end date<br>No.of.Tasks</span>
+                </div>
+                <p class="fs-normal mb-0 align-items-center">{{$notfinished }}</p>
+              </div>
+            </div>
+        </div>
       </div>
     </section>
 <br/>
@@ -316,16 +354,46 @@
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['day_left']['percentage'] }}%"></div>
                 </div>
-                <div class="d-flex align-items-center justify-content-between mb-2">
+                {{-- <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
 
                         <span class="text-muted">{{__('Open Task')}}</span>
                     </div>
                     <span>{{ $project_data['open_task']['tasks'] }}</span>
+
                 </div>
+
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['open_task']['percentage'] }}%"></div>
+                </div> --}}
+                <hr>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <div class="d-flex align-items-center">
+
+                      <span class="text-muted">Planned Progress</span>
+                  </div>
+                  <span>{{ $current_Planed_percentage }}%</span>
+
+
+              </div>
+
+              <div class="progress mb-3">
+                  <div class="progress-bar bg-primary" style="width: {{ $current_Planed_percentage }}%"></div>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center">
+
+                    <span class="text-muted">Actual Progress</span>
                 </div>
+                <span>{{ $workdone_percentage }}%</span>
+
+
+              </div>
+
+              <div class="progress mb-3">
+                  <div class="progress-bar bg-primary" style="width: {{ $workdone_percentage }}%"></div>
+              </div>
                 {{-- <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
                         <span class="text-muted">{{__('Completed Milestone')}}</span>
@@ -383,7 +451,7 @@
 
 <div class="col-md-12 col-lg-6 mb-6 mb-md-0">
           @can('view activity')
- 
+
               <div class="card activity-scroll">
                   <div class="card-header">
                       <h5>{{__('Activity Log')}}</h5>
@@ -409,7 +477,7 @@
                   </div>
               </div>
       @endcan
-        
+
       </div>
 
 
@@ -427,12 +495,12 @@
 
       </div>
     </section>
-    
+
 
 
 
   </div>
-</section>  
+</section>
 
 
 <div class="row">
@@ -600,14 +668,14 @@ function closeForm() {
 }
 
 $(document).ready(function($) {
-  
+
   /* Contact Form Interactions */
   $('#btnOpenForm').on('click', function(event) {
     event.preventDefault();
 
     $('.form-popup-bg').addClass('is-visible');
   });
-  
+
     //close popup when clicking x or off popup
   $('.form-popup-bg').on('click', function(event) {
     if ($(event.target).is('.form-popup-bg') || $(event.target).is('#btnCloseForm')) {
@@ -615,8 +683,8 @@ $(document).ready(function($) {
       $(this).removeClass('is-visible');
     }
   });
-  
-  
+
+
 
     /* Contact Form Interactions */
     $('#btnOpenForm2').on('click', function(event) {
@@ -624,7 +692,7 @@ $(document).ready(function($) {
 
     $('.form-popup1-bg').addClass('is-visible');
   });
-  
+
     //close popup when clicking x or off popup
   $('.form-popup1-bg').on('click', function(event) {
     if ($(event.target).is('.form-popup1-bg') || $(event.target).is('#btnCloseForm')) {
@@ -632,9 +700,9 @@ $(document).ready(function($) {
       $(this).removeClass('is-visible');
     }
   });
-  
 
-  
+
+
   });
 
 </script>
