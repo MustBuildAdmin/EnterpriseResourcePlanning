@@ -35,6 +35,7 @@ use DateTime;
 use DatePeriod;
 use DB;
 use App\Jobs\Projecttypetask;
+use Mail;
 
 class ProjectController extends Controller
 {
@@ -462,6 +463,43 @@ class ProjectController extends Controller
 
             }
 
+            $get_project_name = $request->project_name;
+
+            if(\Auth::user()->type=='company'){
+                $get_user_id = Auth::user()->id;
+                $receiver = Auth::user()->email;
+            }else{
+                $get_user_id = Auth::user()->creatorId();
+                $get_email = DB::table('users')->where('id',Auth::user()->creatorId())->first();
+                if($get_email != null){
+                    $receiver = $get_email->email;
+                }
+                else{
+                    $receiver = Auth::user()->email;
+                }
+            }
+
+            $expires_at = date("Y-m-d H:i:s", strtotime("+10 minutes"));
+            $settings   = Utility::settings();
+            $sender     = $settings['company_email'] != "" ? $settings['company_email'] : "must-info@mustbuildapp.com";
+
+            $boq_insert = array(
+                'project_id'      => $project->id,
+                'security_code'   => rand(10000000,99999999),
+                'code_expires_at' => $expires_at,
+                'sender'          => 'balamurugan@mustbuildapp.com',
+                'receiver'        => 'must-info@mustbuildapp.com',
+                'project_name'    => $request->project_name
+            );
+
+            DB::table('boq_email')->insert($boq_insert);
+
+            Mail::send('projects.boq_email',$boq_insert, function($message) use($boq_insert) {
+                $message->to($boq_insert['sender'])
+                        ->subject($boq_insert['project_name']. " | BOQ File Upload")
+                        ->from($boq_insert['receiver']);
+            });
+
             if(\Auth::user()->type=='company'){
 
                 ProjectUser::create(
@@ -548,6 +586,27 @@ class ProjectController extends Controller
         {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
+    }
+
+    public function boq_file(Request $request){
+        $project_id = $request->project_id;
+
+        $get_code = DB::table('boq_email')->where('project_id',$project_id)->where('status','1')->first();
+        if($get_code != null){
+            $verify_date = $get_code->code_expires_at;
+            // dd(date("Y-m-d H:i:s"));
+            if($verify_date > date("Y-m-d H:i:s")){
+                return view('projects.boq_index',compact('project_id'));
+            }
+            else{
+                return redirect()->route('construction_main')->with('error', __('Email is Expired!'));
+            }
+        }
+        else{
+            return redirect()->route('construction_main')->with('error', __('Your Security Code was not found!'));
+        }
+
+        
     }
 
     public function checkDuplicateProject(Request $request){
@@ -736,7 +795,45 @@ class ProjectController extends Controller
 
                 // end chart
 
-                return view('construction_project.dashboard',compact('project','project_data'));
+                $total_sub=Con_task::where('project_id',$project->id)->where('type','task')->count();
+                $first_task=Con_task::where('project_id',$project->id)->where('id','1')->first();
+                $workdone_percentage= $first_task->progress;
+
+
+                $cur= date('Y-m-d');
+                $no_working_days=$first_task->duration;// include the last day
+                ############### END ##############################
+
+                ############### Remaining days ###################
+                $date1=date_create($cur);
+                $date2=date_create($first_task->end_date);
+
+                $diff=date_diff($date1,$date2);
+                $remaining_working_days=$diff->format("%a");
+                $remaining_working_days=$remaining_working_days-1;// include the last day
+                ############### Remaining days ##################
+
+                $completed_days=$no_working_days-$remaining_working_days;
+
+                // percentage calculator
+                $perday=100/$no_working_days;
+
+
+                $current_Planed_percentage=round($completed_days*$perday);
+                $remaing_percenatge=round(100-$current_Planed_percentage);
+                $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))->where('con_tasks.type','task')->where('con_tasks.start_date','like',$cur.'%')->get();
+                $not_started=0;
+                foreach ($project_task as $key => $value) {
+                    $result=Task_progress::where('task_id',$value->main_id)->first();
+                    if(!$result){
+                        $not_started=$not_started+1;
+                    }
+                }
+
+                $notfinished=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->where('progress','!=','100')->count();
+
+
+                return view('construction_project.dashboard',compact('project','project_data','total_sub','workdone_percentage','current_Planed_percentage','not_started','notfinished'));
                // return view('projects.view',compact('project','project_data'));
             }
             else
@@ -1001,14 +1098,14 @@ class ProjectController extends Controller
 
             if($project != null){
                 foreach($project->users as $user){
-                  
+
                     if($user->type!='company' || $user->type!='admin')
                     {
                         $user_array[] = [
                             'key' => $user->id,
                             'label' => $user->name
                         ];
-                    }                   
+                    }
                 }
             }
 

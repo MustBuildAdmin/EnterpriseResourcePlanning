@@ -189,7 +189,7 @@ abbr[title] {
 .wizard > .steps .disabled a:hover,
 .wizard > .steps .disabled a:active
 {
-    background: #eee;
+    /* background: #eee; */
     color: #aaa;
     cursor: default;
     
@@ -225,7 +225,7 @@ abbr[title] {
 
 .wizard > .content
 {
-    background: #eee;
+    /* background: #eee; */
     display: block;
     margin: 0.5em;
     min-height: 28em;
@@ -354,7 +354,7 @@ abbr[title] {
 .wizard > .actions .disabled a:hover,
 .wizard > .actions .disabled a:active
 {
-    background: #eee;
+    /* background: #eee; */
     color: #aaa;
 }
 

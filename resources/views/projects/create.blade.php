@@ -222,12 +222,12 @@
                             <input type='file' name='file' id='file' accept=".mpp">
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-sm-6 col-md-6">
                             {{ Form::label('boq', __('Upload a BOQ File Here'), ['class' => 'form-label boq_file']) }}
                             <input type='file' name='boq_file' id='boq_file' accept=".xlsx, .xls, .csv">
                         </div>
-                    </div>
+                    </div> --}}
                 </section>
             </div>
         {{Form::close()}}
