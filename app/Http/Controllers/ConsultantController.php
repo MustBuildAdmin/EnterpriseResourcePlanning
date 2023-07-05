@@ -32,7 +32,7 @@ class ConsultantController extends Controller
     public function index(Request $request)
     {
         $user = \Auth::user();
-        if(\Auth::user()->can('manage user'))
+        if(\Auth::user()->can('manage consultant'))
         {
             if(\Auth::user()->type == 'super admin')
             {
@@ -105,7 +105,7 @@ class ConsultantController extends Controller
                 }]
             ])->where('id', '=', $user->creatorId())->get()->pluck('name', 'id');
         }
-        if(\Auth::user()->can('create user'))
+        if(\Auth::user()->can('create consultant'))
         {
             $country=Utility::getcountry();
 
@@ -128,7 +128,7 @@ class ConsultantController extends Controller
         }
        
 
-        if(\Auth::user()->can('create user'))
+        if(\Auth::user()->can('create consultant'))
         {
             $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
             if(\Auth::user()->type == 'super admin')
@@ -220,7 +220,7 @@ class ConsultantController extends Controller
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
         $company_type=Company_type::get()->pluck('name', 'id');
-        if(\Auth::user()->can('edit user'))
+        if(\Auth::user()->can('edit consultant'))
         {
             $user              = Consultant::findOrFail($id);
           
@@ -260,7 +260,7 @@ class ConsultantController extends Controller
             $string_version = Null;
         }
        
-        if(\Auth::user()->can('edit user'))
+        if(\Auth::user()->can('edit consultant'))
         {
             if(\Auth::user()->type == 'super admin')
             {
@@ -345,7 +345,7 @@ class ConsultantController extends Controller
     public function destroy($id)
     {
 
-        if(\Auth::user()->can('delete user'))
+        if(\Auth::user()->can('delete consultant'))
         {
             $user = Consultant::find($id);
             if($user)

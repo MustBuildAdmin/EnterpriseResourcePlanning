@@ -49,11 +49,11 @@
 							<div class="input-group-btn">
 								<button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
 							{!! Form::close() !!}
-							
+							@can('create consultant')
 							<a href="#" class="btn btn-primary" data-size="lg" data-url="{{ route('consultants.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Consultant')}}" id="create" class="btn btn-primary" id="create">
 								<span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
 							</a>
-							
+							@endcan
 					</div>
 					</div>
 				</div>
@@ -67,16 +67,16 @@
 				@forelse($users as $user)
 				<div class="col-md-6 col-lg-3">
 					<div class="card">
-						@if(Gate::check('edit user') || Gate::check('delete user'))
+						@if(Gate::check('edit consultant') || Gate::check('delete consultant'))
 						<div class="card-header-right">
 							<div class="btn-group card-option float-end"> 
 								
 								<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti ti-dots-vertical"></i> </button>
 								<div class="dropdown-menu dropdown-menu-end">
-									@can('edit user')
+									@can('edit consultant')
 									<a href="#!" data-size="lg" data-url="{{ route('consultants.edit',$user->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> <span>{{__('Edit')}}</span> </a>
 									@endcan
-									@can('delete user')
+									@can('delete consultant')
 									{!! Form::open(['method' => 'DELETE', 'route' => ['consultants.destroy', $user['id']],'id'=>'delete-form-'.$user['id']]) !!}
 									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span> 
 										@if($user->is_deleted!=1){{__('Delete')}}

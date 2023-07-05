@@ -164,6 +164,7 @@
 						</div>
 						@endif
 						@endif
+						@if(Gate::check('manage consultant'))
 						<div class="col-md-6 col-xl-2">
 							<a class="card card-link" href="{{route('consultants.index')}}" >
 								<div class="card-body">
@@ -186,6 +187,7 @@
 								</div>
 							</a>
 						</div>
+						@endif
 						@if(\Auth::user()->show_project() == 1)
                         @if( Gate::check('manage project'))
 						<div class="col-md-6 col-xl-2">
