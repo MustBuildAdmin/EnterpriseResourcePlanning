@@ -1,7 +1,7 @@
 <div class="modal-body">
     <div class="row">
-      <form action="{{ route('save_project_specification') }}" method="POST"  enctype="multipart/form-data" > 
-        @csrf 
+      <form action="{{ route('save_project_specification') }}" method="POST"  enctype="multipart/form-data" >
+        @csrf
         <div class="container">
           <input type="hidden" name="project_id" value="{{$project_id}}">
           <div class="row">
@@ -61,7 +61,7 @@
         <div class="col-xs-3">
             <div class="modal-footer">
                 <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-                <input type="submit" id="add_project" value="{{__('Submit')}}" class="btn  btn-primary add"> 
+                <input type="submit" id="add_project" value="{{__('Submit')}}" class="btn  btn-primary add">
             </div>
         </div>
       </form>

@@ -1,12 +1,12 @@
 <div class="modal-body">
 	<div class="row">
-		<form action="{{ route('save_procurement_material') }}" enctype="multipart/form-data" method="POST"> 
+		<form action="{{ route('save_procurement_material') }}" enctype="multipart/form-data" method="POST">
 			@csrf
 			<div class="container">
 				<input type="hidden" name="project_id" value="{{$project_id}}">
 				<div class="row">
 					<div class="form-group">
-						<label for="InputLIst"><b>PROCUREMENT, MATERIAL SUPPLIER & SUPPLY LOG STATUS</b> for the project of:</label> 
+						<label for="InputLIst"><b>PROCUREMENT, MATERIAL SUPPLIER & SUPPLY LOG STATUS</b> for the project of:</label>
 						<b>{{$project_name->project_name}}</b>
 					</div>
 				</div>
@@ -16,13 +16,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="InputLIst">{{__('Description')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="description" class="form-control" placeholder="{{__('Description')}}" required> 
+							<input type="text" name="description" class="form-control" placeholder="{{__('Description')}}" required>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('RAM Ref with No')}} <span style='color:red;'>*</span></label>
-							<input type="text" name="ram_ref_no" class="form-control" placeholder="{{__('RAM Ref with No')}}" required> 
+							<input type="text" name="ram_ref_no" class="form-control" placeholder="{{__('RAM Ref with No')}}" required>
 						</div>
 					</div>
 				</div>
@@ -77,7 +77,7 @@
 						</div>
 						<span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
 							<span class="text-danger">{{__('Email already exist in our record.!')}}</span>
-						</span> 
+						</span>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
@@ -111,20 +111,20 @@
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="InputLIst">{{__('Submission Date')}}</label>
-											<input type="date" name="submission_date[]" class="form-control"> 
+											<input type="date" name="submission_date[]" class="form-control">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('Actual Reply Date')}}</label>
-											<input type="date" name="actual_reply_date[]" class="form-control"> 
+											<input type="date" name="actual_reply_date[]" class="form-control">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('No of Submissions')}}</label>
-											<input type="text" name="" placeholder="{{__('No of Submissions')}}" class="form-control number" value="1" disabled> 
-											<input type="hidden" name="no_of_submission[]" class="form-control number" value="1" > 
+											<input type="text" name="" placeholder="{{__('No of Submissions')}}" class="form-control number" value="1" disabled>
+											<input type="hidden" name="no_of_submission[]" class="form-control number" value="1" >
 										</div>
 									</div>
 								</div>
@@ -136,12 +136,12 @@
 						<div class="form-group">
 							<label for="input">{{__('Status')}} <span style='color:red;'>*</span></label>
 							<select class="form-select" aria-label="Default select example" name="status">
-								<option selected="" disabled="">Status</option>
-								<option value="Approved With Comment">Approved With Comment</option>
-								<option value="Approved">Approved</option>
-								<option value="Rejected">Rejected To Resubmit</option>
-								<option value="Subject">Approved Subject to Additional Info</option>
-								<option value="Pending">Pending</option>
+								<option selected="" disabled="">{{__('Select Status')}}</option>
+								<option value="Approved With Comment">{{__('Approved With Comment')}}</option>
+								<option value="Approved">{{__('Approved')}}</option>
+								<option value="Rejected">{{__('Rejected To Resubmit')}}</option>
+								<option value="Subject">{{__('Approved Subject to Additional Info')}}</option>
+								<option value="Pending">{{__('Pending')}}</option>
 							</select>
 						</div>
 					</div>
@@ -164,7 +164,7 @@
 			</div>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal" >
-				<input type="submit" value="{{__('Create')}}" class="btn btn-primary add" id="create_procurement"> 
+				<input type="submit" value="{{__('Create')}}" class="btn btn-primary add" id="create_procurement">
 			</div>
 		</form>
 	</div>

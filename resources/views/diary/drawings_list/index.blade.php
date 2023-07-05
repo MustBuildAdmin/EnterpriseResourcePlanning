@@ -10,7 +10,7 @@
     &nbsp;
 </div>
   <div class="col-md-6">
-    <select name="reporting_to[]" id='myselection' class='chosen-select floatrght' required>
+    <select name="reporting_to[]" id='myselection' class='form-control floatrght' required>
         <option value="" disabled>Select your option</option>
         <option value="One">Shop Drawings List</option>
         <option value="Two">Contractor As-Built Drawings List</option>

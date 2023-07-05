@@ -19,7 +19,7 @@
           <div class="col-6">
             <div class="form-group">
               <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
-              <label for="InputDate">{{__('Project')}}:</label> 
+              <label for="InputDate">{{__('Project')}}:</label>
               <b>{{$project_name->project_name}}</b>
             </div>
           </div>
@@ -237,7 +237,7 @@ $('.total_result,.days_testing_result').alphanum({
 			allowLower         : false,  // Allow lower case characters
 			forceUpper         : false, // Convert lower case characters to upper case
 			forceLower         : false, // Convert upper case characters to lower case
-			allowLatin         : false,  
+			allowLatin         : false,
 });
 </script>
 

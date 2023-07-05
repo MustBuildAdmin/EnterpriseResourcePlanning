@@ -446,9 +446,9 @@
           '</tr>');
     });
       
-    $(document).on('click', '.remove-ca', function(){  
+    $(document).on('click', '.remove-ca', function(){
         $(this).parents('tr').remove();
-    });  
+    });
     var K = 0;
     $(".addBtn3").click(function(){
   
@@ -476,9 +476,9 @@
       '</tr>');
     });
 
-    $(document).on('click', '.remove-ba', function(){  
+    $(document).on('click', '.remove-ba', function(){
       $(this).parents('tr').remove();
-    });  
+    });
 
 
  $(document).on('change', '#con_date', function() {
@@ -517,7 +517,7 @@
             first_option = $(this).val();
             if(first_option == "Direct Manpower"){
               direct_val =  $(this).closest("tr").find(".first_person").val();
-              direct_val_total += parseFloat(direct_val); 
+              direct_val_total += parseFloat(direct_val);
               direct_val_total = isNaN(direct_val_total) ? '' : direct_val_total;
               $('#total_di_power_one').val(direct_val_total);
               $('#total_di_power_one_dis').val(direct_val_total);
@@ -563,7 +563,7 @@
           second_option = $(this).val();
           if(second_option == "Direct Manpower"){
             direct_val_two =  $(this).closest("tr").find(".second_person").val();
-            direct_val_total_two += parseFloat(direct_val_two); 
+            direct_val_total_two += parseFloat(direct_val_two);
             direct_val_total_two = isNaN(direct_val_total_two) ? '' : direct_val_total_two;
             $('#total_di_power_two').val(direct_val_total_two);
             $('#total_di_power_two_dis').val(direct_val_total_two);
@@ -588,7 +588,7 @@
         allowLower         : false,  // Allow lower case characters
         forceUpper         : false, // Convert lower case characters to upper case
         forceLower         : false, // Convert upper case characters to lower case
-        allowLatin         : false,  
+        allowLatin         : false,
   });
 
 

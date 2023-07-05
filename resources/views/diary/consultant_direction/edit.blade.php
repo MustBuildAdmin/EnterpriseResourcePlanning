@@ -9,13 +9,13 @@
 <div class="modal-body">
   <div class="row">
     <div class="container">
-      <form class="" id="edit_data" action="{{ route('update_consultant_direction') }}" 
-      enctype="multipart/form-data" method="POST"> 
-        @csrf 
+      <form class="" id="edit_data" action="{{ route('update_consultant_direction') }}"
+      enctype="multipart/form-data" method="POST">
+        @csrf
         <div class="container">
             <input type="hidden" name="project_id" value="{{$project}}">
             <div class="row">
-              <input name="id" type="hidden" class="form-control" value="{{$consult_dir->id}}" 
+              <input name="id" type="hidden" class="form-control" value="{{$consult_dir->id}}"
               placeholder="Enter your  Issued By" />
               <div class="col form-group ">
                 <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY
@@ -31,7 +31,7 @@
               <div class="col">
                 <div class="form-group">
                   <label for="InputIssued">{{__('Issued By')}} <span style='color:red;'>*</span></label>
-                  <input name="issued_by" type="text" class="form-control" value="{{$consult_dir->issued_by}}" 
+                  <input name="issued_by" type="text" class="form-control" value="{{$consult_dir->issued_by}}"
                   placeholder="{{__('Issued By')}}" />
                 </div>
               </div>
@@ -64,7 +64,7 @@
               </div>
             </div>
             <table class="table"> 
-              @foreach ($consult_dir_multi as $key => $mutli_data) 
+              @foreach ($consult_dir_multi as $key => $mutli_data)
               <tr>
                 <td>
                   <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action & Reply')}}</h4>
@@ -95,10 +95,10 @@
                     <div class="col form-group">
                       <label for="InputRemarks">{{__('Status')}}</label>
                       <select name="replier_status[]" class="form-control" aria-label="Default select example">
-                        <option selected disabled>Status</option>
-                        <option value="clear" @if('clear'==$mutli_data['replier_status']){ selected }@endif>Clear</option>
-                        <option value="pending" @if('pending'==$mutli_data['replier_status']){ selected }@endif>Pending</option>
-                        <option value="withdrawn" @if('withdrawn'==$mutli_data['replier_status']){ selected }@endif>Withdrawn</option>
+                        <option selected disabled>{{__('Select Status')}}</option>
+                        <option value="clear" @if('clear'==$mutli_data['replier_status']){ selected }@endif>{{__('Clear')}}</option>
+                        <option value="pending" @if('pending'==$mutli_data['replier_status']){ selected }@endif>{{__('Pending')}}</option>
+                        <option value="withdrawn" @if('withdrawn'==$mutli_data['replier_status']){ selected }@endif>{{__('Withdrawn')}}</option>
                       </select>
                     </div>
                     <div class="col-12 mt-3">
@@ -117,8 +117,8 @@
                 </td>
               </tr>
          
-            </table> 
-            @endforeach 
+            </table>
+            @endforeach
             <table class="table" id="dynamicAddRemove">
             </table>
             @if(!empty($initiator_date))
@@ -155,28 +155,28 @@
                   '<div class="col">'+
                     '<div class="form-group">'+
                       '<label for="InputReference">Reference:</label>'+
-                      '<input type="text" name="initiator_reference[' + i +']" 
-                      class="form-control" placeholder="Enter your  Reference" required/>'+
+                      '<input type="text" name="initiator_reference[' + i +']"'+
+                      'class="form-control" placeholder="Enter your  Reference" required/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="col">'+
                     '<div class="form-group">'+
                       '<label for="Inputdate">Date:</label>'+
-                        '<input type="date"  max="{{ date('Y-m-d') }}" name="initiator_date[' + i +']" 
-                        class="form-control" placeholder="Enter your  Date" required/>'+
+                        '<input type="date"  max="{{ date('Y-m-d') }}" name="initiator_date[' + i +']"'+
+                        'class="form-control" placeholder="Enter your  Date" required/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="col-md-12 mt-3">'+
                       '<label for="InputRemarks">Attachment</label>'+
-                      '<input name="initiator_file_name[' + i +']"  type="file" id="" 
-                      class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" required/>'+
+                      '<input name="initiator_file_name[' + i +']"  type="file" id="" '+
+                      'class="form-control" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" required/>'+
                   '</div>'+
                 '</div>'+
                 '<div class="row">'+
                   '<div class="col form-group">'+
                     '<label for="InputRemarks">Status:</label>'+
-                        '<select name="replier_status[' + i +']" class="form-control" 
-                        aria-label="Default select example" required>'+
+                        '<select name="replier_status[' + i +']" class="form-control"'+
+                        'aria-label="Default select example" required>'+
                           '<option selected disabled>Status</option>'+
                           '<option value="clear">Clear</option>'+
                           '<option value="pending">Pending</option>'+
@@ -186,14 +186,14 @@
                     '<div class="col-12 mt-3">'+
                       '<div class="form-group">'+
                         '<label for="InputRemarks">Remarks/ Notes:</label>'+
-                        '<textarea type="text" class="form-control" name="replier_remark[' + i +']" 
-                        placeholder="Enter your Remarks/ Notes" required></textarea>'+
+                        '<textarea type="text" class="form-control" name="replier_remark[' + i +']"'+
+                        'placeholder="Enter your Remarks/ Notes" required></textarea>'+
                         '</div>'+
                     '</div>'+
                     '<div class="col-md-12 mt-3">'+
                       '<label for="InputRemarks">Attachment</label>'+
-                      '<input  type="file"  name="replier_file_name[' + i +']" id="concreteFile" 
-                      class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>'+
+                      '<input  type="file"  name="replier_file_name[' + i +']" id="concreteFile"'+
+                      'class="form-control" accept="image/*, .png, .jpeg, .jpg ,pdf" required/>'+
                     '</div>'+
                 '</div>'+
               '<div class="col-md-12 mt-3">'+

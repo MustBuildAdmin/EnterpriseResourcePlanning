@@ -22,7 +22,7 @@
 }
 
 .table-responsive .bg-primary {
-	background: #206bc4 !important;
+    background: unset !important;
 }
 
 div.dt-buttons .dt-button {
@@ -31,7 +31,6 @@ div.dt-buttons .dt-button {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -44,7 +43,6 @@ div.dt-buttons .dt-button:hover {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -55,13 +53,10 @@ h3, .h3 {
 	font-size: 1rem !important;
 }
 
-.table-responsive .bg-primary {
-	background: unset !important;
-}
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Concrete Pouring Record ')}}</h2> 
+     <h2>{{__('Concrete Pouring Record ')}}</h2>
   </div>
     @can('create concrete')
     <div class="col-auto ms-auto d-print-none">
@@ -73,7 +68,7 @@ h3, .h3 {
               <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
             </a>
         </div>
-    </div>  
+    </div>
     @endcan
     <div class="col-xl-12 mt-3">
       <div class="card table-card">
@@ -99,14 +94,14 @@ h3, .h3 {
                   @endif
                 </tr>
               </thead>
-              <tbody> 
-              @foreach ($dairy_data as $key=>$data) 
-                      @php $check=$data->diary_data; @endphp 
-                      @if($check != null) 
-                          @php $bulk_data = json_decode($check); @endphp 
-                      @else 
-                          @php $bulk_data = array(); @endphp 
-                      @endif 
+              <tbody>
+              @foreach ($dairy_data as $key=>$data)
+                      @php $check=$data->diary_data; @endphp
+                      @if($check != null)
+                          @php $bulk_data = json_decode($check); @endphp
+                      @else
+                          @php $bulk_data = array(); @endphp
+                      @endif
                   <tr>
                   <td>{{$loop->iteration}}</td>
                   <td>{{ Utility::site_date_format($bulk_data->date_of_casting,\Auth::user()->id) }}</td>
@@ -131,13 +126,13 @@ h3, .h3 {
                           {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                           <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                             <i class="ti ti-trash text-white mt-1"></i>
-                          </a> 
-                          {!! Form::close() !!} 
+                          </a>
+                          {!! Form::close() !!}
                           @endcan
                       </div>
                   </td>
                   @endif
-                </tr> 
+                </tr>
               @endforeach
               </tbody>
             </table>
@@ -145,7 +140,7 @@ h3, .h3 {
           @endcan
         </div>
       </div>
-    </div>    
+    </div>
 </div>
 @include('new_layouts.footer')
 <script src="{{ asset('js/moment.min.js') }}"></script>
@@ -157,27 +152,6 @@ h3, .h3 {
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 <script type="text/javascript">
-  $(document).ready(function () {
-    var i = 0;
-    $(document).on("click", "#dynamic-ar", function () {
-        ++i;
-        $("#dynamicAddRemove").append('<tr><td> <h4 style="text-align: center; font-weight: 700">Initiator Action:</h4><div class="row mb-5"><div class="col"><div class="form-group"><label for="InputReference">Reference:</label><input type="text" name="initiator_reference[]" class="form-control" placeholder="Enter your  Reference"/></div></div><div class="col"><div class="form-group"><label for="Inputdate">Date:</label><input type="date" name="initiator_date[]" class="form-control" placeholder="Enter your  Date"/></div></div><div class="col-md-12 mt-3"><label for="InputRemarks">Attachment</label><input name="initiator_file_name[]"  type="file" id="" class="form-control" multiple/></div></div> <h4 style="text-align: center; font-weight: 700">Replier:</h4><div class="row mb-3"><div class="col"><div class="form-group"><label for="InputReference">Reference:</label><input type="text" name="replier_reference[]" class="form-control" placeholder="Enter your  Reference"/></div></div><div class="col"><div class="form-group"><label for="Inputdate">Date:</label><input type="date" name="replier_date[]" class="form-control" placeholder="Enter your  Date"/></div></div></div><div class="row mb-5"><div class="col form-group"><label for="InputRemarks">Status:</label><select name="replier_status[]" class="form-control" aria-label="Default select example"><option selected disabled>Status</option><option value="clear">Clear</option><option value="pending">Pending</option><option value="withdrawn">Withdrawn</option></select></div><div class="col-12 mt-3"><div class="form-group"><label for="InputRemarks">Remarks/ Notes:</label><textarea type="text" class="form-control" name="replier_remark[]" placeholder="Enter your Remarks/ Notes"></textarea></div></div><div class="col-md-12 mt-3"><label for="InputRemarks">Attachment</label><input  type="file"  name="replier_file_name[]" id="" class="form-control" multiple/></div></div><div class="col-md-12 mt-3"><button type="button" class="btn btn-outline-danger remove-input-field">Delete</button></div></td></tr>');
-    });
-    $(document).on('click', '.remove-input-field', function () {
-        $(this).parents('tr').remove();
-    });
-
-    var j = 0;
-    $(document).on("click", "#dynamic-rfi", function () {
-        ++j;
-        $("#dynamicaddrfi").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submit Date :</label><input type="date" name="submit_date[]" class="form-control" value=""></div></div><div class="col-md-6"><div class="form-group"><label for="input">Return Date :</label><input type="date" name="return_date[]" class="form-control" value=""></div></div></div><div class="row"><div class="col-md-6"><div class="form-group"><label for="Input">Status of Return :</label><select class="form-control" name="status_of_return[]"><option selected disabled>Status</option><option value="Exception">No Exception Taken (NET) (OR) Approved /with comment</option><option value="Resubmission">Revise No Resubmission Requried (RNRR)</option><option value="Revise">Revise and Resubmit (RR)</option><option value="Submit">Submit Specified Item (SSI)</option><option value="Rejected">Rejected</option></select></div></div><div class="col-md-6"><div class="form-group"><label for="InputDate">Remarks :</label><textarea class="form-control" name="remarks[]"></textarea></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="remove-input-field"> Remove Submission </button></div></div></td></tr>');
-    });
-    $(document).on('click', '#remove-input-field', function () {
-        $(this).parents('tr').remove();
-    });
-
-  });
-
      $(document).ready(function() {
         $('#example2').DataTable({
             dom: 'Bfrtip',
@@ -210,13 +184,11 @@ h3, .h3 {
                     orientation: 'landscape',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
-                       
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = true;
                         doc.styles.tableBodyOdd.alignment = 'center';
                         doc.styles.tableBodyOdd.noWrap = true;
-                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.styles.tableHeader.fontSize = 9;
                         doc.defaultStyle.fontSize = 9;
                         doc.defaultStyle.alignment = 'center';
                         doc.styles.tableHeader.alignment = 'center';

@@ -11,7 +11,6 @@ div.dt-buttons .dt-button {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -24,7 +23,6 @@ div.dt-buttons .dt-button:hover {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -48,7 +46,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Procurement Material Supply Log')}}</h2> 
+     <h2>{{__('Procurement Material Supply Log')}}</h2>
   </div>
  
         @can('create procurement material')
@@ -61,7 +59,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                   <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
                 </a>
             </div>
-        </div>    
+        </div>
         @endcan
   
     <div class="col-xl-12 mt-3">
@@ -93,8 +91,8 @@ table.dataTable>tbody>tr.child span.dtr-title {
                     @endif
                 </tr>
                 </thead>
-                <tbody> 
-                    @foreach ($dairy_data as $key=>$data) 
+                <tbody>
+                    @foreach ($dairy_data as $key=>$data)
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->description}}</td>
@@ -121,7 +119,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
                                     {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                         <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
-                                    {!! Form::close() !!} 
+                                    {!! Form::close() !!}
                                 @endcan
                             </div>
                         </td>
@@ -220,12 +218,11 @@ table.dataTable>tbody>tr.child span.dtr-title {
                     pagesize: 'A4',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = false;
                         doc.styles.tableBodyOdd.alignment = 'center';
                         doc.styles.tableBodyOdd.noWrap = false;
-                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.styles.tableHeader.fontSize = 9;
                         doc.defaultStyle.fontSize = 9;
                         doc.content[0].alignment = 'center';
                         doc.defaultStyle.alignment = 'center';

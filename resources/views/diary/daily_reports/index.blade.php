@@ -29,7 +29,6 @@ div.dt-buttons .dt-button {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -42,7 +41,6 @@ div.dt-buttons .dt-button:hover {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -55,7 +53,7 @@ h3, .h3 {
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Site Reports')}}</h2> 
+     <h2>{{__('Site Reports')}}</h2>
   </div>
 @can('create site reports')
 <div class="col-auto ms-auto d-print-none">
@@ -104,11 +102,11 @@ h3, .h3 {
                   <td>{{$data_report->contractor_name}}</td>
                   <td>{{ Utility::site_date_format($data_report->con_date,\Auth::user()->id) }}</td>
                   <td>{{$data_report->weather}}</td>
-                  <td>{{$data_report->site_conditions}}</td>  
+                  <td>{{$data_report->site_conditions}}</td>
                   <td>{{$data_report->con_day}}</td>
                   <td>{{$data_report->temperature}}</td>
                   <td>{{$data_report->min_input}}</td>
-                  <td>{{$data_report->degree}}</td> 
+                  <td>{{$data_report->degree}}</td>
                   {{-- <td>
                     @php
                     $file_explode = explode(',',$data_report->file_name);
@@ -122,7 +120,7 @@ h3, .h3 {
                     @empty
                     @endforelse
                   </td>  --}}
-                  <td>{{$data_report->remarks}}</td> 
+                  <td>{{$data_report->remarks}}</td>
                   <td>{{$data_report->prepared_by}}</td>
                   <td>{{$data_report->title}}</td>
                   @if(Gate::check('edit site reports') || Gate::check('delete site reports'))
@@ -136,7 +134,7 @@ h3, .h3 {
                               {{ Form::hidden('id',$data_report->id, ['class' => 'form-control']) }}
                               {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                   <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
-                              {!! Form::close() !!} 
+                              {!! Form::close() !!}
                           @endcan
                       </div>
                   </td>
@@ -199,12 +197,11 @@ h3, .h3 {
                       pageSize: 'LEGAL',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = true;
                         doc.styles.tableBodyOdd.alignment = 'center';
                         doc.styles.tableBodyOdd.noWrap = true;
-                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.styles.tableHeader.fontSize = 9;
                         doc.defaultStyle.fontSize = 9;
                         doc.defaultStyle.alignment = 'center';
                         doc.styles.tableHeader.alignment = 'center';

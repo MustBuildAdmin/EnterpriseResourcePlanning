@@ -1,13 +1,13 @@
 <div class="modal-body">
 	<div class="row">
-		<form action="{{ route('update_procurement_material') }}" enctype="multipart/form-data" method="POST"> 
+		<form action="{{ route('update_procurement_material') }}" enctype="multipart/form-data" method="POST">
 			@csrf
 			<div class="container">
 				<input type="hidden" name="project_id" value="{{$project_id}}">
 				<input type="hidden" name="id" value="{{$data->id}}">
 				<div class="row">
 					<div class="form-group">
-						<label for="InputLIst"><b>PROCUREMENT, MATERIAL SUPPLIER & SUPPLY LOG STATUS</b> for the project of:</label> 
+						<label for="InputLIst"><b>PROCUREMENT, MATERIAL SUPPLIER & SUPPLY LOG STATUS</b> for the project of:</label>
 							<b>{{$project_name->project_name}}</b>
 					</div>
 				</div>
@@ -78,7 +78,7 @@
 						</div>
 						<span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
 							<span class="text-danger">{{__('Email already exist in our record.!')}}</span>
-						</span> 
+						</span>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
@@ -117,7 +117,7 @@
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="InputLIst">{{__('Submission Date')}}</label>
-											<input type="date" name="submission_date[]" value="{{$mutli_data['submission_date']}}" class="form-control"> 
+											<input type="date" name="submission_date[]" value="{{$mutli_data['submission_date']}}" class="form-control">
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -136,7 +136,7 @@
 								</div>
 							
 						</td>
-					</tr> 
+					</tr>
 					@empty
 					<tr>
 						<td>
@@ -145,25 +145,25 @@
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="InputLIst">{{__('Submission Date')}}</label>
-											<input type="date" name="submission_date[]" class="form-control"> 
+											<input type="date" name="submission_date[]" class="form-control">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('Actual Reply Date')}}</label>
-											<input type="date" name="actual_reply_date[]" class="form-control"> 
+											<input type="date" name="actual_reply_date[]" class="form-control">
 										</div>
 									</div>
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('No of Submissions')}}</label>
-											<input type="text" name="no_of_submission[]" class="form-control number"> 
+											<input type="text" name="no_of_submission[]" class="form-control number">
 										</div>
 									</div>
 								</div>
 						</td>
-					</tr> 
-					@endforelse 
+					</tr>
+					@endforelse
 					
 				</table>
 				

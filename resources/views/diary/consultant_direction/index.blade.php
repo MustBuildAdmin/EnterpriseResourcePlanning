@@ -21,7 +21,6 @@ div.dt-buttons .dt-button {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -41,7 +40,6 @@ div.dt-buttons .dt-button:hover {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -50,11 +48,11 @@ div.dt-buttons .dt-button:hover {
 
 h3, .h3 {
 	font-size: 1rem !important;
-}  
+}
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Consultants Directions Summary')}}</h2> 
+     <h2>{{__('Consultants Directions Summary')}}</h2>
   </div>
 
         @can('create directions')
@@ -91,8 +89,8 @@ h3, .h3 {
                         @endif
                     </tr>
                     </thead>
-                    <tbody> 
-                    @foreach ($dairy_data as $key=>$data) 
+                    <tbody>
+                    @foreach ($dairy_data as $key=>$data)
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->issued_by}}</td>
@@ -113,13 +111,13 @@ h3, .h3 {
                                 {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                     <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
                                 <i class="ti ti-trash text-white mt-1"></i>
-                                </a> 
-                                {!! Form::close() !!} 
+                                </a>
+                                {!! Form::close() !!}
                                 @endcan
                             </div>
                         </td>
                         @endif
-                    </tr> 
+                    </tr>
                     @endforeach
                     </tbody>
                 </table>
@@ -171,12 +169,11 @@ h3, .h3 {
                     pageSize: 'LEGAL',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = true;
                         doc.styles.tableBodyOdd.alignment = 'center';
                         doc.styles.tableBodyOdd.noWrap = true;
-                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.styles.tableHeader.fontSize = 9;
                         doc.defaultStyle.fontSize = 9;
                         doc.defaultStyle.alignment = 'center';
                         doc.styles.tableHeader.alignment = 'center';

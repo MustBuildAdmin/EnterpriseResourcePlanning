@@ -8,7 +8,9 @@
   </style>
 <div class="modal-body">
   <div class="row">
-    <form method="POST" action="{{route('save_variation_scope_change')}}" enctype="multipart/form-data"> @csrf <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
+    <form method="POST" action="{{route('save_variation_scope_change')}}" enctype="multipart/form-data">
+    @csrf
+      <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
       <div class="container">
         <div class="col-xs-12">
           <div class="form-group">
@@ -204,7 +206,7 @@ $('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_
 			allowLower         : false,  // Allow lower case characters
 			forceUpper         : false, // Convert lower case characters to upper case
 			forceLower         : false, // Convert upper case characters to lower case
-			allowLatin         : false,  
+			allowLatin         : false,
 });
 
 $('.claimed_addition_cost,.approved_addition_cost').alphanum({
@@ -213,7 +215,7 @@ $('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			allowLower         : false,  // Allow lower case characters
 			forceUpper         : false, // Convert lower case characters to upper case
 			forceLower         : false, // Convert upper case characters to lower case
-			allowLatin         : false,  
+			allowLatin         : false,
 });
 
 

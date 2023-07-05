@@ -6,8 +6,8 @@
 </style>
 <div class="modal-body">
     <div class="row">
-      <form action="{{ route('update_project_specification') }}" method="POST"  enctype="multipart/form-data" > 
-        @csrf 
+      <form action="{{ route('update_project_specification') }}" method="POST"  enctype="multipart/form-data" >
+        @csrf
         <div class="container">
             <input type="hidden" name="project_id" value="{{$project_id}}">
             <input type="hidden" name="id" value="{{$data->id}}">
@@ -77,7 +77,7 @@
         <div class="col-xs-3">
             <div class="modal-footer">
                 <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-                <input type="submit" id="edit_project" value="{{__('Update')}}" class="btn btn-primary add"> 
+                <input type="submit" id="edit_project" value="{{__('Update')}}" class="btn btn-primary add">
             </div>
         </div>
       </form>

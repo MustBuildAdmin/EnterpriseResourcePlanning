@@ -22,7 +22,6 @@ div.dt-buttons .dt-button {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -35,7 +34,6 @@ div.dt-buttons .dt-button:hover {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -59,7 +57,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('RFI-Request For Information Status')}}</h2> 
+     <h2>{{__('RFI-Request For Information Status')}}</h2>
   </div>
    
     @can('create RFI')
@@ -98,8 +96,8 @@ table.dataTable>tbody>tr.child span.dtr-title {
                     @endif
                 </tr>
                 </thead>
-                <tbody> 
-                    @foreach ($dairy_data as $key=>$data) 
+                <tbody>
+                    @foreach ($dairy_data as $key=>$data)
                     <td>{{$loop->iteration}}</td>
                     <td>{{$data->contractor_name ?? '-'}}</td>
                     <td>{{$data->reference_no ?? '-'}}</td>
@@ -120,7 +118,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
                                     {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                         <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
-                                    {!! Form::close() !!} 
+                                    {!! Form::close() !!}
                                 @endcan
                             </div>
                         </td>
@@ -150,7 +148,58 @@ table.dataTable>tbody>tr.child span.dtr-title {
         var j = 0;
         $(document).on("click", "#dynamic-rfi", function () {
             ++j;
-            $("#dynamicaddrfi").append('<tr><td><h4 style="text-align: center;">Date Replied By Consultant :</h4><div class=""><div class="row"><div class="col-md-6"><div class="form-group"><label for="InputLIst">Submit Date :</label><input type="date" name="submit_date[]" class="form-control" value=""></div></div><div class="col-md-6"><div class="form-group"><label for="input">Return Date :</label><input type="date" name="return_date[]" class="form-control" value=""></div></div></div><div class="row"><div class="col-md-6"><div class="form-group"><label for="Input">Status of Return :</label><select class="form-control" name="status_of_return[]"><option selected disabled>Status</option><option value="Exception">No Exception Taken (NET) (OR) Approved /with comment</option><option value="Resubmission">Revise No Resubmission Requried (RNRR)</option><option value="Revise">Revise and Resubmit (RR)</option><option value="Submit">Submit Specified Item (SSI)</option><option value="Rejected">Rejected</option></select></div></div><div class="col-md-6"><div class="form-group"><label for="InputDate">Remarks :</label><textarea class="form-control" name="remarks[]"></textarea></div></div></div><div class="col-md-3 pull-right"><button class="btn btn-secondary" type="button" id="remove-input-field"> Remove Submission </button></div></div></td></tr>');
+            $("#dynamicaddrfi").append(
+            '<tr>'+
+                '<td>'+
+                    '<h4 style="text-align: center;">Date Replied By Consultant :</h4>'+
+                        '<div class="">'+
+                            '<div class="row">'+
+                                '<div class="col-md-6">'+
+                                    '<div class="form-group">'+
+                                        '<label for="InputLIst">Submit Date :</label>'+
+                                        '<input type="date" name="submit_date[]" class="form-control" value="">'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-md-6">'+
+                                    '<div class="form-group">'+
+                                        '<label for="input">Return Date :</label>'+
+                                        '<input type="date" name="return_date[]" class="form-control" value="">'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="row">'+
+                                '<div class="col-md-6">'+
+                                    '<div class="form-group">'+
+                                        '<label for="Input">Status of Return :</label>'+
+                                        '<select class="form-control" name="status_of_return[]">'+
+                                            '<option selected disabled>Status</option>'+
+                                            '<option value="Exception">
+                                                'No Exception Taken (NET) (OR) Approved /with comment'+
+                                            '</option>'+
+                                            '<option value="Resubmission">'+
+                                                'Revise No Resubmission Requried (RNRR)'+
+                                            '</option>'+
+                                            '<option value="Revise">Revise and Resubmit (RR)</option>'+
+                                            '<option value="Submit">Submit Specified Item (SSI)</option>'+
+                                            '<option value="Rejected">Rejected</option>'+
+                                        '</select>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="col-md-6">'+
+                                    '<div class="form-group">'+
+                                        '<label for="InputDate">Remarks :</label>'+
+                                        '<textarea class="form-control" name="remarks[]"></textarea>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="col-md-3 pull-right">'+
+                            '<button class="btn btn-secondary" type="button" id="remove-input-field">'+
+                                'Remove Submission</button>'+
+                            '</div>'+
+                        '</div>'+
+                '</td>'+
+            '</tr>'
+            );
         });
         $(document).on('click', '#remove-input-field', function () {
             $(this).parents('tr').remove();
@@ -188,12 +237,11 @@ table.dataTable>tbody>tr.child span.dtr-title {
                     pagesize: 'A4',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = true;
                         doc.styles.tableBodyOdd.alignment = 'center';
                         doc.styles.tableBodyOdd.noWrap = true;
-                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.styles.tableHeader.fontSize = 9;
                         doc.defaultStyle.fontSize = 9;
                         doc.defaultStyle.alignment = 'center';
                         doc.styles.tableHeader.alignment = 'center';

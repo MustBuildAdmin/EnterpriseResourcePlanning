@@ -8,20 +8,20 @@
   </style>
 <div class="modal-body">
   <div class="row">
-    <form method="POST" action="{{route('update_variation_scope_change')}}" enctype="multipart/form-data"> 
-      @csrf 
-      @if(isset($get_dairy_data->data)) 
-        @if($get_dairy_data->data!=null) 
-          @php $data=$get_dairy_data->data; @endphp 
-        @else 
-          @php $data=''; @endphp @endif 
-      @else 
-          @php $data=''; @endphp @endif 
-        @if($data != null) 
-          @php $dairy_data = json_decode($data); @endphp 
+    <form method="POST" action="{{route('update_variation_scope_change')}}" enctype="multipart/form-data">
+      @csrf
+      @if(isset($get_dairy_data->data))
+        @if($get_dairy_data->data!=null)
+          @php $data=$get_dairy_data->data; @endphp
         @else
-          @php $dairy_data = array(); @endphp 
-      @endif 
+          @php $data=''; @endphp @endif
+      @else
+          @php $data=''; @endphp @endif
+        @if($data != null)
+          @php $dairy_data = json_decode($data); @endphp
+        @else
+          @php $dairy_data = array(); @endphp
+      @endif
       <input type="hidden" name="id" id="id" value="{{$id}}">
       <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
       <div class="container">
@@ -39,13 +39,16 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Input">{{__('Issued By')}} <span style='color:red;'>*</span></label>
-              <input type="text" value="@if($id!='' && $dairy_data->issued_by!=''){{$dairy_data->issued_by}}@endif" name="issued_by" class="form-control" placeholder="{{__('Issued By')}}" required>
+              <input type="text" value="@if($id!='' && $dairy_data->issued_by!=''){{$dairy_data->issued_by}}@endif"
+              name="issued_by" class="form-control" placeholder="{{__('Issued By')}}" required>
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Input">{{__('Issued Date')}} <span style='color:red;'>*</span></label>
-              <input max="{{ date('Y-m-d') }}" type="date" value="@if($id!='' && $dairy_data->issued_date!=''){{$dairy_data->issued_date}}@endif" name="issued_date" class="form-control" placeholder="Text input" required>
+              <input max="{{ date('Y-m-d') }}" type="date"
+              value="@if($id!='' && $dairy_data->issued_date!=''){{$dairy_data->issued_date}}@endif"
+              name="issued_date" class="form-control" placeholder="Text input" required>
             </div>
           </div>
         </div>
@@ -53,13 +56,17 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label class="form-group">{{__('VO/SCA Reference')}} <span style='color:red;'>*</span></label>
-              <textarea name="sca_reference" class="form-control" placeholder="{{__('VO/SCA Reference')}}" required>@if($id!='' && $dairy_data->sca_reference!=''){{$dairy_data->sca_reference}}@endif</textarea>
+              <textarea name="sca_reference" class="form-control" placeholder="{{__('VO/SCA Reference')}}" required>
+                @if($id!='' && $dairy_data->sca_reference!=''){{$dairy_data->sca_reference}}@endif
+              </textarea>
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label class="form-group">{{__('VO Description')}}</label>
-              <textarea name="vo_reference" class="form-control" placeholder="{{__('VO Description')}}">@if($id!='' && $dairy_data->vo_reference!=''){{$dairy_data->vo_reference}}@endif</textarea>
+              <textarea name="vo_reference" class="form-control" placeholder="{{__('VO Description')}}">
+                @if($id!='' && $dairy_data->vo_reference!=''){{$dairy_data->vo_reference}}@endif
+              </textarea>
             </div>
           </div>
         </div>
@@ -69,13 +76,16 @@
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Input">{{__('Reference')}}</label>
-                <input type="text" value="@if($id!='' && $dairy_data->reference!=''){{$dairy_data->reference}}@endif" name="reference" class="form-control" placeholder="{{__('Reference')}}" >
+                <input type="text" value="@if($id!='' && $dairy_data->reference!=''){{$dairy_data->reference}}@endif"
+                name="reference" class="form-control" placeholder="{{__('Reference')}}" >
               </div>
             </div>
             <div class="col-6 mb-3">
               <div class="form-group">
                 <label for="Input">{{__('Date')}}</label>
-                <input max="{{ date('Y-m-d') }}" name="vo_date" value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif" type="date" class="form-control" placeholder="Text input" >
+                <input max="{{ date('Y-m-d') }}" name="vo_date"
+                value="@if($id!='' && $dairy_data->vo_date!=''){{$dairy_data->vo_date}}@endif"
+                type="date" class="form-control" placeholder="Text input">
               </div>
             </div>
           </div>
@@ -86,17 +96,25 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="Input">{{__('Omission Cost')}}</label>
-                <input name="claimed_omission_cost" placeholder="{{__('Omission Cost')}}" value="@if($id!='' && $dairy_data->claimed_omission_cost!=''){{$dairy_data->claimed_omission_cost}}@endif" type="text" class="form-control claimed_omission_cost" >
+                <input name="claimed_omission_cost" placeholder="{{__('Omission Cost')}}"
+                value="@if($id!='' && $dairy_data->claimed_omission_cost!='')
+                {{$dairy_data->claimed_omission_cost}}@endif" type="text" class="form-control claimed_omission_cost">
               </div>
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Addition Cost')}}</label>
-              <input name="claimed_addition_cost" placeholder="{{__('Addition Cost')}}" value="@if($id!='' && $dairy_data->claimed_addition_cost!=''){{$dairy_data->claimed_addition_cost}}@endif" type="text" class="form-control claimed_addition_cost" >
+              <input name="claimed_addition_cost" placeholder="{{__('Addition Cost')}}"
+              value="@if($id!='' && $dairy_data->claimed_addition_cost!=''){{$dairy_data->claimed_addition_cost}}@endif"
+              type="text" class="form-control claimed_addition_cost" >
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="text" class="form-control claimed_net" disabled>
-              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif" type="hidden" class="form-control claimed_net_amount" >
+              <input name="" placeholder="{{__('Net Amount')}}"
+              value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif"
+              type="text" class="form-control claimed_net" disabled>
+              <input name="claimed_net_amount" placeholder="{{__('Net Amount')}}"
+              value="@if($id!='' && $dairy_data->claimed_net_amount!=''){{$dairy_data->claimed_net_amount}}@endif"
+              type="hidden" class="form-control claimed_net_amount" >
             </div>
           </div>
         </div>
@@ -106,7 +124,9 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label for="Input">{{__('Omission Cost')}}</label>
-                <input name="approved_omission_cost" placeholder="{{__('Omission Cost')}}"  value="@if($id!='' && $dairy_data->approved_omission_cost!=''){{$dairy_data->approved_omission_cost}}@endif" type="text" class="form-control approved_omission_cost" >
+                <input name="approved_omission_cost" placeholder="{{__('Omission Cost')}}"
+                value="@if($id!='' && $dairy_data->approved_omission_cost!='')
+                {{$dairy_data->approved_omission_cost}}@endif" type="text" class="form-control approved_omission_cost">
               </div>
             </div>
             <div class="col-md-4">
@@ -215,7 +235,7 @@ $('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_
 			allowLower         : false,  // Allow lower case characters
 			forceUpper         : false, // Convert lower case characters to upper case
 			forceLower         : false, // Convert upper case characters to lower case
-			allowLatin         : false,  
+			allowLatin         : false,
 });
 
 $('.claimed_addition_cost,.approved_addition_cost').alphanum({
@@ -224,6 +244,6 @@ $('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			allowLower         : false,  // Allow lower case characters
 			forceUpper         : false, // Convert lower case characters to upper case
 			forceLower         : false, // Convert upper case characters to lower case
-			allowLatin         : false,  
+			allowLatin         : false,
 });
 </script>

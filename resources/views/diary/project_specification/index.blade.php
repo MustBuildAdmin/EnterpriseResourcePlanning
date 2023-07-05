@@ -22,7 +22,6 @@ div.dt-buttons .dt-button {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -35,7 +34,6 @@ div.dt-buttons .dt-button:hover {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -55,7 +53,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Project Specifications Summary')}}</h2> 
+     <h2>{{__('Project Specifications Summary')}}</h2>
   </div>
 @can('create directions')
 <div class="col-auto ms-auto d-print-none">
@@ -89,8 +87,8 @@ table.dataTable>tbody>tr.child span.dtr-title {
                 @endif
               </tr>
             </thead>
-            <tbody> 
-              @foreach ($dairy_data as $key=>$data) 
+            <tbody>
+              @foreach ($dairy_data as $key=>$data)
               <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$data->reference_no}}</td>
@@ -114,7 +112,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                             <i class="ti ti-trash text-white mt-1">
                             </i>
                           </a>
-                          {!! Form::close() !!} 
+                          {!! Form::close() !!}
                         @endcan
                     </div>
                 </td>
@@ -177,12 +175,11 @@ table.dataTable>tbody>tr.child span.dtr-title {
                       pageSize: 'LEGAL',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = false;
                         doc.styles.tableBodyOdd.alignment = 'center';
                         doc.styles.tableBodyOdd.noWrap = false;
-                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.styles.tableHeader.fontSize = 9;
                         doc.defaultStyle.fontSize = 9;
                         doc.defaultStyle.alignment = 'center';
                         doc.styles.tableHeader.alignment = 'center';

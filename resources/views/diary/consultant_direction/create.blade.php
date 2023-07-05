@@ -9,12 +9,12 @@
 <div class="modal-body">
   <div class="row">
     <div class="container">
-      <form class="" action="{{ route('save_consultant_direction') }}" enctype="multipart/form-data" method="POST"> 
-        @csrf 
+      <form class="" action="{{ route('save_consultant_direction') }}" enctype="multipart/form-data" method="POST">
+        @csrf
         <div class="container">
           <div class="row">
             <div class="col form-group ">
-              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) 
+              <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED)
                 SUMMARY for the project of')}}</label> <span>:</span>
               <span class="bold">{{$project_name->project_name}}</span>
             </div>
@@ -109,10 +109,10 @@
                     <label for="InputRemarks">{{__('Status')}}</label>
                     <select name="replier_status[]" class="form-control"
                     aria-label="Default select example" required>
-                      <option selected disabled>Status</option>
-                      <option value="clear">Clear</option>
-                      <option value="pending">Pending</option>
-                      <option value="withdrawn">Withdrawn</option>
+                      <option selected disabled>{{__('Select Status')}}</option>
+                      <option value="clear">{{__('Clear')}}</option>
+                      <option value="pending">{{__('Pending')}}</option>
+                      <option value="withdrawn">{{__('Withdrawn')}}</option>
                     </select>
                   </div>
                   <div class="col-12 mt-3">

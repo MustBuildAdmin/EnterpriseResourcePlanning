@@ -105,7 +105,7 @@
 			</div>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary" id="create_rfi"> 
+				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary" id="create_rfi">
             </div>
 		</form>
 	</div>
