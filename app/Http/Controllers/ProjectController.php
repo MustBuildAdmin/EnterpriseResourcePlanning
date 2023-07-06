@@ -846,17 +846,25 @@ class ProjectController extends Controller
                 // end chart
 
                 $total_sub=Con_task::where('project_id',$project->id)->where('type','task')->count();
-                $first_task=Con_task::where('project_id',$project->id)->where('id','1')->first();
-                $workdone_percentage= $first_task->progress;
-
+                $first_task=Con_task::where('project_id',$project->id)->orderBy('id','ASC')->first();
+                if($first_task){
+                    $workdone_percentage= $first_task->progress;
+                    $no_working_days=$first_task->duration;// include the last day
+                    $date2=date_create($first_task->end_date);
+                }else{
+                    $workdone_percentage= '0';
+                    $no_working_days=$project->estimated_days;// include the last day
+                    $date2=date_create($project->end_date);
+                }
+              
 
                 $cur= date('Y-m-d');
-                $no_working_days=$first_task->duration;// include the last day
+                
                 ############### END ##############################
 
                 ############### Remaining days ###################
                 $date1=date_create($cur);
-                $date2=date_create($first_task->end_date);
+                
 
                 $diff=date_diff($date1,$date2);
                 $remaining_working_days=$diff->format("%a");
@@ -879,11 +887,13 @@ class ProjectController extends Controller
                         $not_started=$not_started+1;
                     }
                 }
-
+                if($remaining_working_days<0){
+                    $remaining_working_days=0;
+                }
                 $notfinished=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->where('progress','!=','100')->count();
 
 
-                return view('construction_project.dashboard',compact('project','project_data','total_sub','workdone_percentage','current_Planed_percentage','not_started','notfinished'));
+                return view('construction_project.dashboard',compact('project','project_data','total_sub','workdone_percentage','current_Planed_percentage','not_started','notfinished','remaining_working_days'));
                // return view('projects.view',compact('project','project_data'));
             }
             else
