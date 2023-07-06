@@ -3,7 +3,7 @@
         width: 100% !important;
     }
 </style>
-{{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
+{{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off','enctype'=>"multipart/form-data")) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
@@ -133,6 +133,14 @@
                             {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
                             <div class="form-icon-user">
                                 {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3))}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
+                            <div class="form-icon-user">
+                                {{Form::file('avatar',null,array('class'=>'form-control'))}}
                             </div>
                         </div>
                     </div>

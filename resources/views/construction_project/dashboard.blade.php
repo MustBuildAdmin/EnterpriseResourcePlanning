@@ -1,5 +1,9 @@
 @include('new_layouts.header')
-
+<style>
+.green {
+    background-color: #206bc4 !important;
+}
+</style>
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
@@ -206,7 +210,7 @@
         </div>
         <div class="col-lg-4 bgwhite">
           <div class="box d-flex rounded-2 align-items-center mb-4 mb-lg-0 p-3">
-            <i class="uil-dollar-alt fs-2 text-center green rounded-circle"></i>
+            <<i class="uil-list-ul fs-2 text-center green rounded-circle"></i>
             <div class="ms-3">
               <div class="d-flex align-items-center">
                  <span class="d-block">{{__('Total')}} {{__('Sub Task')}}</span>
@@ -218,12 +222,12 @@
         @if(Auth::user()->type !='client')
         <div class="col-lg-4 bgwhite">
           <div class="box d-flex rounded-2 align-items-center p-3">
-            <i class="uil-dollar-alt fs-2 text-center green rounded-circle"></i>
+            <i class="uil-list-ul fs-2 text-center green rounded-circle"></i>
             <div class="ms-3">
               <div class="d-flex align-items-center">
-                <span class="d-block">{{__('Total')}} {{__('Expense')}}</span>
+                <span class="d-block">{{__('Total')}} {{__('Remaining Days')}}</span>
               </div>
-              <p class="fs-normal mb-0">{{ \Auth::user()->priceFormat($project_data['expense']['total']) }}</p>
+              <p class="fs-normal mb-0">{{ $remaining_working_days }}</p>
             </div>
           </div>
         </div>
@@ -253,7 +257,7 @@
                   <span class="d-block">Task not started even after<br>planned start date<br>No.of Task:</span>
                 </div>
                 <br>
-                <p class="fs-normal mb-0">{{ $not_started }}</p>
+                <p class="fs-normal mb-0" @if($not_started!=0) style='color:red;' @endif>{{ $not_started }}</p>
               </div>
             </div>
         </div>
@@ -264,7 +268,7 @@
                 <div class="d-flex align-items-center">
                    <span class="d-block">Task in progress even after<br>planned end date<br>No.of.Tasks</span>
                 </div>
-                <p class="fs-normal mb-0 align-items-center">{{$notfinished }}</p>
+                <p class="fs-normal mb-0 align-items-center" @if($not_started!=0) style='color:red;' @endif>{{$notfinished }}</p>
               </div>
             </div>
         </div>

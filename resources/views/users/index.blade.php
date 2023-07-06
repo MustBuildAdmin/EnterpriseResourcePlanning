@@ -21,6 +21,16 @@
     top: 50%;
     right: 20px;
 }
+.user-initial {
+	width: 101px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 42px;
+    text-align: center;
+  
+}
 
 </style>
 @php
@@ -97,9 +107,11 @@
 						</div>
 						@endif
 						<div class="card-body p-4 text-center">
-							 @if($user->gender !='female') <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
+							<?php  $short=substr($user->name, 0, 1);?>
+							 @if(!empty($user->avatar)) 
+							 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
 							 @else 
-							 <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url(" uploads/avatar/avatarfemale.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
+							 	<div class="avatar avatar-xl mb-3 user-initial">{{strtoupper($short)}}</div>
 							 @endif
 							<?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
 								<h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
