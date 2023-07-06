@@ -12,6 +12,16 @@
 	#reset{
 		width: 12% !important;
 	}
+	.user-initial {
+	width: 101px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 42px;
+    text-align: center;
+  
+}
 </style>
 @include('crm.side-menu')
 
@@ -80,7 +90,13 @@
 						</div>
              @endif
 						<div class="card-body p-4 text-center"> 
-              <img src="{{(!empty($client->avatar))? asset(Storage::url(" uploads/avatar/ ".$client->avatar)): asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded">
+							<?php  $short=substr($client->name, 0, 1);?>
+							 @if(!empty($client->avatar)) 
+							 	<img src="{{(!empty($client->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
+							 @else 
+							 	<div class="avatar avatar-xl mb-3 user-initial">{{strtoupper($short)}}</div>
+							 @endif
+              				{{-- <img src="{{(!empty($client->avatar))? asset(Storage::url(" uploads/avatar/ ".$client->avatar)): asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> --}}
 							<?php $name = strlen($client->name) > 20 ? substr($client->name,0,19)."..." : $client->name;?>
 								<h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
 								<h5 class="m-0 mb-1">{{ $client->email }}</h5> </div>

@@ -147,6 +147,28 @@ class UserController extends Controller
 
                     return redirect()->back()->with('error', $messages->first());
                 }
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                
+                    $dir = 'uploads/avatar/';
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
                 $user               = new User();
                 $user['name']       = $request->name;
                 $user['email']      = $request->email;
@@ -169,7 +191,9 @@ class UserController extends Controller
                 $user['company_type']       = $request->company_type;
                 // $user['reporting_to']=$string_version;
                 $user['company_name']       = $request->company_name;
-
+                if(isset($url)){
+                    $user['avatar']=$url;
+                }
                 $user->save();
                 $role_r = Role::findByName('company');
                 $user->assignRole($role_r);
@@ -206,6 +230,28 @@ class UserController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
 
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                
+                    $dir = 'uploads/avatar/';
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
 
                 $objUser    = \Auth::user()->creatorId();
                 $objUser =User::find($objUser);
@@ -222,6 +268,10 @@ class UserController extends Controller
                     $request['created_by'] = \Auth::user()->creatorId();
                     $request['gender']      = $request->gender;
                     $request['reporting_to']=$string_version;
+                    if(isset($url)){
+                        $request['avatar']=$url;
+                    }
+                   
                     $user = User::create($request->all());
                     $user->assignRole($role_r);
                     if($request['type'] != 'client')
@@ -321,12 +371,36 @@ class UserController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
 
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                
+                    $dir = 'uploads/avatar/';
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
 //                $role = Role::findById($request->role);
                 $role = Role::findByName('company');
                 $input = $request->all();
                 $input['type'] = $role->name;
                 // $input['reporting_to']=$string_version;
-
+                if(isset($url)){
+                    $input['avatar']=$url;
+                }
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);
                 DB::table('users')->where('id',$id)->update(['company_type'=>$request->company_type]);
@@ -360,11 +434,35 @@ class UserController extends Controller
                     $messages = $validator->getMessageBag();
                     return redirect()->back()->with('error', $messages->first());
                 }
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                
+                    $dir = 'uploads/avatar/';
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
 
+                }
                 $role          = Role::findById($request->role);
                 $input         = $request->all();
                 $input['type'] = $role->name;
                 $input['reporting_to']=$string_version;
+                if(isset($url)){
+                    $input['avatar']=$url;
+                }
                 $user->fill($input)->save();
                 Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                 CustomField::saveData($user, $request->customField);
