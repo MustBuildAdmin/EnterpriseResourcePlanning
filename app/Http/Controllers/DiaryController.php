@@ -1482,8 +1482,8 @@ class DiaryController extends Controller
     public function drawing_list(Request $request)
     {
         try {
-              
-            return view("diary.drawings_list.index");
+            $project_id=Session::get('project_id');
+            return view("diary.drawings_list.index",compact('project_id'));
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -2644,6 +2644,64 @@ class DiaryController extends Controller
         }
     }
 
-    
+    public function drawing_selection_list(Request $request)
+    {
+        try {
+            if ($request->dairy_id == 1) {
+
+                $project_id = Session::get('project_id');
+
+                $dairy_data = '';
+
+                $returnHTML = view("diary.drawings_list.shop_drawing_list.index",compact("dairy_data", "project_id"))->render();
+
+            }elseif($request->dairy_id == 2){
+                $project_id = Session::get('project_id');
+                $dairy_data = '';
+                $returnHTML = view("diary.drawings_list.contractor_drawings_list.index",compact("dairy_data", "project_id"))->render();
+            }elseif($request->dairy_id == 3){
+                $project_id = Session::get('project_id');
+                $dairy_data = '';
+                $returnHTML = view("diary.drawings_list.consultant_drawings_list.index",compact("dairy_data", "project_id"))->render();
+            }elseif($request->dairy_id == 4){
+                $project_id = Session::get('project_id');
+                $dairy_data = '';
+                $returnHTML = view("diary.drawings_list.tender_dawings_list.index",compact("dairy_data", "project_id"))->render();
+            }
+            else {
+                $project_id = Session::get('project_id');
+                $dairy_data = '';
+                $returnHTML = view("diary.drawings_list.shop_drawing_list.index",compact("dairy_data", "project_id"))->render();
+            }
+            return response()->json([
+                "success" => true,
+                "html" => $returnHTML,
+            ]);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function create_shop_drawing_list(Request $request){
+        try {
+
+            if(\Auth::user()->can('create directions')){
+
+                $project_id = Session::get('project_id');
+
+                $project_name = Project::select("project_name")
+                    ->where("id", $project_id)
+                    ->first();
+                
+                return view("diary.drawings_list.shop_drawing_list.create",compact("project_name", "project_id"));
+
+            }else{
+                return redirect()->back()->with('error', __('Permission denied.'));
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
     
 }

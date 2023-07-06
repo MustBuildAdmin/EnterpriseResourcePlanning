@@ -173,7 +173,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                                         '<label for="Input">Status of Return :</label>'+
                                         '<select class="form-control" name="status_of_return[]">'+
                                             '<option selected disabled>Status</option>'+
-                                            '<option value="Exception">
+                                            '<option value="Exception">'+
                                                 'No Exception Taken (NET) (OR) Approved /with comment'+
                                             '</option>'+
                                             '<option value="Resubmission">'+

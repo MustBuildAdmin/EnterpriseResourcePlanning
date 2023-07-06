@@ -361,6 +361,22 @@ Route::any('vo_change_download_file', 'DiaryController@vo_change_download_file')
         ]
     );
 
+    Route::any('drawing_selection_list','DiaryController@drawing_selection_list')->name('drawing_selection_list')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::any('create_shop_drawing_list','DiaryController@create_shop_drawing_list')->name('create_shop_drawing_list')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    
+    
 
     
 Route::any('ConstructionDrawingsedit','DiaryController@ConstructionDrawingsedit')->name('ConstructionDrawingsedit')->middleware(
