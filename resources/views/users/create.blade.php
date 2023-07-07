@@ -3,7 +3,7 @@
         width: 100% !important;
     }
 </style>
-{{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form','autocomplete'=>'off'))}}
+{{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form','autocomplete'=>'off','enctype'=>"multipart/form-data"))}}
 
 <div class="modal-body">
 
@@ -123,6 +123,14 @@
                 {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
+                <div class="form-icon-user">
+                    {{Form::file('avatar',null,array('class'=>'form-control'))}}
                 </div>
             </div>
         </div>
