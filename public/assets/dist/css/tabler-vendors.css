@@ -1360,3 +1360,7 @@ body {
 .tox:not(.tox-tinymce-inline) .tox-editor-header {
   background: transparent !important;
 }
+
+.btn-primary{
+    background-color: #c74634 !important;
+}

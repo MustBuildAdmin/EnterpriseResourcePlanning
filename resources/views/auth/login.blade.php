@@ -89,10 +89,10 @@
     </div>
     {{Form::open(array('route'=>'login','method'=>'post',"class"=>"card card-md",'id'=>'loginForm' ))}}
     @csrf
-  
+
     <div class="card-body">
         <h2 class="h2 text-center mb-4">{{__('Login to your account')}}</h2>
-   
+
 
 
         <div class="form-group mb-3">

@@ -67,9 +67,9 @@
         }
     }
 </style>
-    <div class="page-wrapper">
+    <div class="page">
         @include('construction_project.side-menu')
-        <div class="row">
+        <div class="page-wrapper">
             <div class="row min-750" id="taskboard_view">
                 <div class="card">
                     <div class="card-body" id="show_search_function">
@@ -104,7 +104,7 @@
                                     @else
                                         {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
                                     @endif
-                                    
+
                                     {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date','onchange' => 'end_date_change()')) }}
 
                                 </div>
@@ -141,7 +141,7 @@
                                     </li>
                                 </ul>
                                 <br>
-                               
+
                                 <center>
                                     <section class="wrappers loader_show_hide">
                                         <div class="cards">
@@ -160,7 +160,7 @@
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                         <div class="card-body table-border-style">
                                             <div class="table-responsive" id="all_task_append">
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -169,7 +169,7 @@
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                             <div class="card-body table-border-style">
                                                 <div class="table-responsive" id="main_task_append">
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>
@@ -226,7 +226,7 @@
         end_date    = $(".end_date").val();
         user_id     = JSON.stringify($("#users").val());
         status_task = $("#status_task").val();
-        
+
 
         alltask(start_date,end_date,user_id,status_task);
     }
@@ -234,7 +234,7 @@
     function maintask(){
         $(".loader_show_hide").show();
         $("#show_search_function").hide();
-        $("#main_task_append").html("");  
+        $("#main_task_append").html("");
 
         $(".start_date").val("");
         $("#status_task").val("");
@@ -246,7 +246,7 @@
             data : {
             },
             cache:true,
-            success : function(data) {     
+            success : function(data) {
                 if(data['success'] == true){
                     $("#main_task_append").html(data['main_task']);
                 }

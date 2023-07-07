@@ -1,10 +1,41 @@
 <footer class="footer footer-transparent d-print-none">
+    <div class="container-xl">
+      <div class="row text-center align-items-center flex-row-reverse">
+        <div class="col-lg-auto ms-lg-auto">
+          <ul class="list-inline list-inline-dots mb-0">
+            <li class="list-inline-item"> {{(Utility::getValByName('footer_text')) ? Utility::getValByName('footer_text') :  __('Copyright Must BuildApp') }} {{ date('Y') }}
+                <a href="." class="link-secondary"></a>
+            </li>
+            <li class="list-inline-item"><a href="./license.html" class="link-secondary">License</a></li>
+
+          </ul>
+        </div>
+        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+          <ul class="list-inline list-inline-dots mb-0">
+            <li class="list-inline-item">
+              Copyright © 2023
+              <a href="." class="link-secondary">Must BuildApp</a>.
+              All rights reserved.
+            </li>
+            <li class="list-inline-item">
+              <a href="./changelog.html" class="link-secondary" rel="noopener">
+                v1.0.0-beta19
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+<footer class="footer footer-transparent d-print-none">
 	<div class="container-xl">
 		<div class="row text-center align-items-center flex-row-reverse">
 			<ul class="list-inline list-inline-dots mb-0">
-				<li class="list-inline-item"> {{(Utility::getValByName('footer_text')) ? Utility::getValByName('footer_text') :  __('Copyright Must BuildApp') }} {{ date('Y') }}
-					<a href="." class="link-secondary"></a>
-				</li>
+
 			</ul>
 		</div>
 	</div>
@@ -23,10 +54,10 @@
 <script>
 // 	var oTable = $('.datatable').dataTable( {
 //     "aoColumnDefs": [
-//         { "bSortable": false, "aTargets": [ 1, 2, 3 ] }, 
+//         { "bSortable": false, "aTargets": [ 1, 2, 3 ] },
 //         { "bSearchable": false, "aTargets": [ 0, 1, 2, 3 ] }
 //     ]
-// }); 
+// });
 </script>
 <!-- Libs JS -->
 <script>
@@ -88,7 +119,7 @@
             'noticeTextColor': '#fff',
             'linkColor': '#009fdd'
         };
-        
+
     </script>
     <script src="{{ asset('js/cookie.notice.js') }}"></script>
 @endif

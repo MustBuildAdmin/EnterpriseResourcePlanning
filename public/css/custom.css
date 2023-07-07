@@ -1333,7 +1333,7 @@ body.theme-4 .cat-list-btn .cat-active .btn-primary {
     color: #eb2323;
     margin-left: 3px;
 }
-    
+
 /* text ellipse */
 .text_ellipse{
     white-space: nowrap;
@@ -1344,4 +1344,9 @@ body.theme-4 .cat-list-btn .cat-active .btn-primary {
     text-align: center;
     font-size: 20px;
     font-weight: bold;
+}
+
+
+.btn-primary{
+    background-color: #c74634 !important;
 }

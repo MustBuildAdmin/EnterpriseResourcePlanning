@@ -1,4 +1,4 @@
-<table class="table" id="example2">
+<table class="table" id="all-task-list">
     <thead>
     <tr>
         <th scope="col">{{__('Tasks')}}</th>
@@ -57,15 +57,15 @@
                                 @php
                                     $user_db = DB::table('users')->where('id',$get_user)->first();
                                 @endphp
-                               
+
                                 @if($key<3)
                                     <a href="#" class="avatar rounded-circle avatar-sm">
-                                        <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
-                                            @if($user_db->avatar) 
-                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
-                                            @else 
+                                        <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
+                                            @if($user_db->avatar)
+                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}"
+                                            @else
                                                 src="{{asset('/storage/uploads/avatar/avatar.png')}}"
-                                            @endif 
+                                            @endif
                                         title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
                                     </a>
                                 @endif
@@ -77,7 +77,7 @@
                     @if(\Auth::user()->type == 'company')
                         <td style="width:10%;" class="text-center w-15">
                             <div class="actions">
-                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}" 
+                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
                                     data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="floatrght btn btn-primary mb-3">
                                     <i class="ti ti-pencil"></i>
                                 </a>
@@ -97,13 +97,12 @@
     });
 
     function datatable2(){
-        $('#example2').dataTable().fnDestroy();
-        $('#example2').DataTable({
+        $('#all-task-list').dataTable().fnDestroy();
+        $('#all-task-list').DataTable({
             dom: 'Bfrtip',
             searching: true,
             info: true,
             paging: true,
-            // bSort: false,
         });
     }
 </script>

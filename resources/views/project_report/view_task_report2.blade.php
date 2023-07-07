@@ -6,20 +6,20 @@
     <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   
+
     <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
     <style>
-  
+
         .dataTables_wrapper .dataTables_paginate {
             float: right;
             text-align: right;
             padding-top: 0.25em;
         }
-        
+
         .table-responsive .bg-primary {
             background: #206bc4 !important;
         }
-        
+
         div.dt-buttons .dt-button {
             background-color: #ffa21d;
             color: #fff;
@@ -32,7 +32,7 @@
             justify-content: center;
             font-size: 20px;
         }
-        
+
         div.dt-buttons .dt-button:hover {
             background-color: #ffa21d;
             color: #fff;
@@ -45,7 +45,7 @@
             justify-content: center;
             font-size: 20px;
         }
-        
+
         h3, .h3 {
             font-size: 1rem !important;
         }
@@ -57,24 +57,37 @@
 @include('construction_project.side-menu')
 
 
-<div class="row mainrow">
-   <div class="col-md-6">
-     <h2>Task Report</h2>
-   </div>
-   <div class="col-md-6">
 
-      <div class="float-end">
-            <div class="float-right ">
-              
-            </div>
-      </div>
 
-   </div>
-</div>
-
-<div class="page-wrapper dashboard">
+<div class="page-wrapper">
 
     @if(Auth::user()->type == 'company')
+    <div class="page-header d-print-none">
+      <div class="container-fluid">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <!-- Page pre-title -->
+            <div class="page-pretitle">
+              Overview
+            </div>
+            <h2 class="page-title">
+              Welcome to Project Name's Task Reports
+            </h2>
+          </div>
+          <!-- Page title actions -->
+          <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+              <span class="d-none d-sm-inline">
+                <a href="#" class="btn">
+                  Your Projects
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
     <div class="col-sm-12">
         <div class="mt-2 " >
@@ -104,7 +117,7 @@
                                 @empty
                                 @endforelse
                                 </select>
-                               
+
                             </div>
                         </div>
 
@@ -119,7 +132,7 @@
                                 </select>
                             </div>
                         </div>
-                      
+
                         <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
                             <div class="btn-box">
                                 {{ Form::label('priority', __('Priority'),['class'=>'form-label'])}}
@@ -157,7 +170,7 @@
                     {{ Form::close() }}
                 </div>
                 <div>
-              
+
                 </div>
             </div>
         </div>
@@ -180,7 +193,7 @@
                           <th>{{__('Projects Members')}}</th>
                           <th class="hide_user" style="display: none;">{{__('Projects Members')}}</th>
                           <th>{{__('Progress')}}</th>
-                        
+
                       </tr>
                   </thead>
                   <tbody>
@@ -230,9 +243,9 @@
                                     @endforeach
                                     {{ implode(",",$split_user)}}
                                 @endif
-                                  
+
                               </td>
-                             
+
                               <td class="">
                                   <h6 class="mb-0 text-success">{{ round($project->progress) }}%</h6>
                                   @php $color = Utility::getProgressColor(round($project->progress));@endphp
@@ -240,11 +253,11 @@
                                   </div>
                                   {{-- <span class="badge bg-{{\App\Models\ProjectTask::$priority_color[$project->priority]}} p-2 px-3 rounded status_badge">{{ __(\App\Models\ProjectTask::$priority[$project->priority]) }}</span> --}}
                               </td>
-                          
+
                           </tr>
                       @endforeach
                   @else
-                         
+
                   @endif
 
                   </tbody>
@@ -266,11 +279,11 @@
 
 <script>
   $(document).ready(function() {
-  
+
   /*--------Project list---------------*/
   // $('#project_list').on('change', function() {
       var idCountry = this.value;
-  
+
       $.ajax({
           url: "{{ route('project_report.fetch_user_details2') }}",
           type: 'POST',
@@ -280,10 +293,10 @@
           },
           dataType: 'json',
           success: function(result) {
-  
+
               // Handle success here
               $('#all_users').html('<option value="">-- Select Users --</option>');
-  
+
               if (result.length != 0) {
                   $.each(result, function(key, value) {
                       $("#all_users").append('<option value="' + value
@@ -294,22 +307,22 @@
                   $("#all_users").append('<option value="0" disabled>No Data Found</option>');
               }
               $('#task_name').html('<option value="">-- Select Task --</option>');
-  
+
           },
           cache: false
       }).fail(function(jqXHR, textStatus, error) {
-  
+
       });
   // });
-  
-  
-  
+
+
+
   /*--------User list---------------*/
-  
+
   $('#all_users').on('change', function() {
       var idState = this.value;
       var get_id = $("#project_list option:selected").val();
-  
+
       $("#task_name").html('');
       $.ajax({
           url: "{{route('project_report.fetch_task_details')}}",
@@ -321,7 +334,7 @@
           },
           dataType: 'json',
           success: function(res) {
-  
+
               $('#task_name').html('<option value="">-- Select Task --</option>');
               $.each(res, function(key, value) {
                   $("#task_name").append('<option value="' + value
@@ -332,7 +345,7 @@
   });
   });
   </script>
-  
+
   <script>
     $(document).ready(function() {
         $('#example2').DataTable({
@@ -348,7 +361,7 @@
                       title: 'Task Report',
                       titleAttr: 'Excel',
                       text: '<i class="fa fa-file-excel-o"></i>',
-      
+
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'
@@ -365,17 +378,17 @@
                       pagesize: 'A4',
                       text: '<i class="fa fa-file-pdf-o"></i>',
                       customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
+                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                         doc.styles.tableBodyEven.alignment = 'center';
                         doc.styles.tableBodyEven.noWrap = true;
                         doc.styles.tableBodyOdd.alignment = 'center';
                         doc.styles.tableBodyOdd.noWrap = true;
-                        doc.styles.tableHeader.fontSize = 12;  
+                        doc.styles.tableHeader.fontSize = 12;
                         doc.defaultStyle.fontSize = 12;
                         doc.defaultStyle.alignment = 'center';
                         doc.styles.tableHeader.alignment = 'center';
                         },
-      
+
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'
@@ -390,7 +403,7 @@
                       title: 'Task Report',
                       titleAttr: 'Print',
                       text: '<i class="fa fa-print"></i>',
-      
+
                       exportOptions: {
                           modifier: {
                               order: 'index', // 'current', 'applied','index', 'original'
@@ -402,7 +415,7 @@
                   },
                   'colvis'
               ]
-         
+
         });
     });
   </script>
