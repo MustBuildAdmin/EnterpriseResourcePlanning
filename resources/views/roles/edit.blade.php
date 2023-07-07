@@ -2568,7 +2568,7 @@
                 count_consultant --;
             }
         });
-        if(countcount_consultant_assets==1){
+        if(count_consultant==1){
             $("#consultant").prop('checked', true);
         }
         $("#staff_checkall").click(function(){
