@@ -16,7 +16,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="InputLIst">{{__('Reference No')}} <span style='color:red;'>*</span></label>
-                <input type="text" name="reference_no" class="form-control" placeholder="{{__('Reference No')}}" required>
+                <input type="text" name="reference_no" class="form-control"
+                 placeholder="{{__('Reference No')}}" required>
               </div>
             </div>
             <div class="col-md-6">
@@ -36,7 +37,8 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="input">{{__('Drawing References (if any)')}}</label>
-                <input type="text" name="drawing_reference" class="form-control" placeholder="{{__('Drawing References (if any)')}}" >
+                <input type="text" name="drawing_reference"
+                class="form-control" placeholder="{{__('Drawing References (if any)')}}" >
               </div>
             </div>
           </div>
@@ -52,7 +54,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="input">{{__('Attachments')}}</label>
-                <input type="file" class="form-control document_setup" name="attachment_file_name"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+                <input type="file" class="form-control document_setup"
+                 name="attachment_file_name"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
                 <span class="show_document_error" style="color:red;"></span>
               </div>
             </div>

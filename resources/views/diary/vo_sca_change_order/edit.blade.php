@@ -131,12 +131,18 @@
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Addition Cost')}}</label>
-              <input name="approved_addition_cost" placeholder="{{__('Addition Cost')}}" value="@if($id!='' && $dairy_data->approved_addition_cost!=''){{$dairy_data->approved_addition_cost}}@endif" type="text" class="form-control approved_addition_cost" >
+              <input name="approved_addition_cost" placeholder="{{__('Addition Cost')}}"
+               value="@if($id!='' && $dairy_data->approved_addition_cost!=''){{$dairy_data->approved_addition_cost}}@endif"
+               type="text" class="form-control approved_addition_cost" >
             </div>
             <div class="col-md-4">
               <label for="Input">{{__('Net Amount')}}</label>
-              <input name="" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="text" class="form-control approved_net" disabled>
-              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}" value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif" type="hidden" class="form-control approved_net_cost" >
+              <input name="" placeholder="{{__('Net Amount')}}"
+               value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif"
+                type="text" class="form-control approved_net" disabled>
+              <input name="approved_net_cost" placeholder="{{__('Net Amount')}}"
+               value="@if($id!='' && $dairy_data->approved_net_cost!=''){{$dairy_data->approved_net_cost}}@endif"
+                type="hidden" class="form-control approved_net_cost" >
             </div>
           </div>
         </div>
@@ -144,7 +150,9 @@
           <div class="col-md-5">
             <label class="form-group">{{__('Impact/Lead Time')}}</label>
             <div class="form-group">
-              <input name="impact_time" placeholder="{{__('Impact/Lead Time')}}" value="@if($id!='' && $dairy_data->impact_time!=''){{$dairy_data->impact_time}}@endif" type="text" class="form-control impact_time" >
+              <input name="impact_time" placeholder="{{__('Impact/Lead Time')}}"
+              value="@if($id!='' && $dairy_data->impact_time!=''){{$dairy_data->impact_time}}@endif"
+              type="text" class="form-control impact_time" >
             </div>
           </div>
           <div class="col-md-1">
@@ -156,26 +164,32 @@
           <div class="col-md-5">
             <label class="form-group">{{__('Granted EOT(in days)')}}</label>
             <div class="form-group">
-              <input name="granted_eot" value="@if($id!='' && $dairy_data->granted_eot!=''){{$dairy_data->granted_eot}}@endif" type="text" class="form-control impact_time" placeholder="{{__('Granted EOT(in days)')}}">
+              <input name="granted_eot"
+              value="@if($id!='' && $dairy_data->granted_eot!=''){{$dairy_data->granted_eot}}@endif"
+              type="text" class="form-control impact_time" placeholder="{{__('Granted EOT(in days)')}}">
             </div>
           </div>
           <div class="col-md-1">
             <label class="form-group"></label>
             <div class="form-group mt-2">
-              <input name="impact_time" placeholder="" value="{{__('Days')}}" type="text" class="form-control disabled" disabled>
+              <input name="impact_time" placeholder="" value="{{__('Days')}}"
+               type="text" class="form-control disabled" disabled>
             </div>
           </div>
         </div>
         <div class="col-xs-12">
           <label class="form-group">{{__('Remarks')}}</label>
           <div class="form-group">
-            <textarea name="remarks" class="form-control" placeholder="{{__('Remarks')}}">@if($id!='' && $dairy_data->remarks!=''){{$dairy_data->remarks}}@endif</textarea>
+            <textarea name="remarks" class="form-control" placeholder="{{__('Remarks')}}">
+              @if($id!='' && $dairy_data->remarks!=''){{$dairy_data->remarks}}@endif
+            </textarea>
           </div>
         </div>
         <div class="col-xs-6">
           <div class="form-group">
             <label for="InputATTACHMENTS:">{{__('Attachments)')}}</label>
-            <input type="file" name="attachment_file" class="form-control document_setup" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+            <input type="file" name="attachment_file" class="form-control document_setup"
+             placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
             <span class="show_document_error" style="color:red;"></span>
             <span>{{$get_dairy_data->attachment_file}}</span>
           </div>

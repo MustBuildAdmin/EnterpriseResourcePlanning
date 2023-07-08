@@ -90,13 +90,15 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Target Delivery Date')}} <span style='color:red;'>*</span></label>
-							<input type="date" min="{{ date('Y-m-d', strtotime("+1 day")) }}" name="target_delivery_date" class="form-control" placeholder="{{__('Target Delivery Date')}}" required>
+							<input type="date" min="{{ date('Y-m-d', strtotime("+1 day")) }}"
+							 name="target_delivery_date" class="form-control" placeholder="{{__('Target Delivery Date')}}" required>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Target Date of Approval')}} <span style='color:red;'>*</span></label>
-							<input type="date" min="{{ date('Y-m-d', strtotime("+1 day")) }}" name="target_approval_date" class="form-control" placeholder="{{__('Target Date of Approval')}}" required>
+							<input type="date" min="{{ date('Y-m-d', strtotime("+1 day")) }}"
+							 name="target_approval_date" class="form-control" placeholder="{{__('Target Date of Approval')}}" required>
 						</div>
 					</div>
 				</div>
@@ -123,7 +125,8 @@
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="input">{{__('No of Submissions')}}</label>
-											<input type="text" name="" placeholder="{{__('No of Submissions')}}" class="form-control number" value="1" disabled>
+											<input type="text" name="" placeholder="{{__('No of Submissions')}}"
+											 class="form-control number" value="1" disabled>
 											<input type="hidden" name="no_of_submission[]" class="form-control number" value="1" >
 										</div>
 									</div>
@@ -148,7 +151,8 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="input">{{__('Attachement')}} <span style='color:red;'>*</span></label>
-							<input type="file" name="filename" class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" placeholder="Text input">
+							<input type="file" name="filename"
+							 class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif" placeholder="Text input">
 							<span class="show_document_error" style="color:red;"></span>
 						</div>
 					</div>

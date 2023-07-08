@@ -5,10 +5,14 @@
     @can('create directions')
     <div class="col-auto ms-auto d-print-none">
        <div class="input-group-btn">
-          <a href="#" data-size="xl" data-url="{{ route('create_shop_drawing_list',["project_id"=>$project_id]) }}"  data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
+          <a href="#" data-size="xl"
+           data-url="{{ route('create_shop_drawing_list',["project_id"=>$project_id]) }}"
+           data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}"
+           data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
           <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
           </a>
-          <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+          <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger"
+           data-bs-toggle="tooltip" title="{{ __('Back') }}">
           <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
           </a>
        </div>

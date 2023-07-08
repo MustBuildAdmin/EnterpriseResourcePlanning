@@ -26,7 +26,8 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputDate">{{__('Month and Year')}} <span style='color:red;'>*</span></label>
-              <input name="month_year" value="" required type="month" id="month_year" class="form-control" placeholder="Enter your Month and Year" />
+              <input name="month_year" value="" required type="month"
+               id="month_year" class="form-control" placeholder="Enter your Month and Year" />
             </div>
           </div>
           <hr style="border: 1px solid black" />
@@ -35,13 +36,15 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputDate">{{__('Date of Casting')}} <span style='color:red;'>*</span></label>
-              <input name="date_of_casting" value="" id="date_of_casting" required type="date" class="form-control" placeholder="Enter your Date of Casting" />
+              <input name="date_of_casting" value="" id="date_of_casting"
+               required type="date" class="form-control" placeholder="Enter your Date of Casting" />
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputElement">{{__('Element of Casting')}} <span style='color:red;'>*</span></label>
-              <input name="element_of_casting" value="" required type="text" id="element_of_casting" class="form-control" placeholder="Enter your Element of Casting " />
+              <input name="element_of_casting" value="" required type="text"
+               id="element_of_casting" class="form-control" placeholder="Enter your Element of Casting " />
             </div>
           </div>
           <div class="col-md-6 mb-3">
@@ -65,13 +68,15 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputGrade">{{__('Theoretical')}} <span style='color:red;'>*</span></label>
-              <input name="theoretical" value="" required type="date" id="theoretical" class="form-control" placeholder="Enter your Theoretical Date" />
+              <input name="theoretical" value="" required type="date"
+               id="theoretical" class="form-control" placeholder="Enter your Theoretical Date" />
             </div>
           </div>
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="InputGrade">{{__('Actual')}} <span style='color:red;'>*</span></label>
-              <input name="actual" value="" required type="date" class="form-control" id="actual" name="Enter your Actual Date" />
+              <input name="actual" value="" required type="date"
+               class="form-control" id="actual" name="Enter your Actual Date" />
             </div>
           </div>
           <div class="col-6 mb-3">
@@ -85,8 +90,11 @@
           <div class="col-5 mb-3">
             <div class="form-group">
               <label for="InputAverage">{{__('Total Result (Average)')}}</label>
-              <input name="" value=""  type="text" id="total_result" class="form-control total_result" placeholder="{{__('Total Result (Average)')}}" />
-              <input name="total_result" value=""  type="hidden" id="total_result_back" class="form-control total_result" placeholder="{{__('Total Result (Average)')}}" />
+              <input name="" value=""  type="text" id="total_result"
+               class="form-control total_result" placeholder="{{__('Total Result (Average)')}}" />
+              <input name="total_result" value=""  type="hidden"
+               id="total_result_back" class="form-control total_result"
+                placeholder="{{__('Total Result (Average)')}}" />
             </div>
           </div>
           <div class="col-1 mb-3">
@@ -98,15 +106,19 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Testing Falls on')}}</label>
-              <input name="days_testing_falls_on" value=""  type="date" class="form-control" id="days_testing_falls_on" disabled/>
+              <input name="days_testing_falls_on" value=""  type="date"
+               class="form-control" id="days_testing_falls_on" disabled/>
               <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  />
             </div>
           </div>
           <div class="col-5 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Result (Average)')}}</label>
-              <input name=""  value=""  type="text"  id="days_testing_result" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
-              <input name="days_testing_result"  value="" id="days_testing_result_back"  type="hidden"  class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+              <input name=""  value=""  type="text"  id="days_testing_result"
+               class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+              <input name="days_testing_result"  value=""
+               id="days_testing_result_back"  type="hidden"
+               class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
             </div>
           </div>
           <div class="col-1 mb-3">
@@ -118,12 +130,14 @@
           <div class="col-md-12 mb-3">
             <div class="form-group">
               <label for="InputRemarks">{{__('Remarks')}}</label>
-              <textarea name="remarks"  id="remarks" type="text" class="form-control" placeholder="Enter your Remarks" ></textarea>
+              <textarea name="remarks"  id="remarks" type="text"
+              class="form-control" placeholder="Enter your Remarks" ></textarea>
             </div>
           </div>
           <div class="col-md-12 mb-3">
             <label for="InputRemarks">{{__('Attachment')}}</label>
-            <input name="file_name"  type="file" id="file_name" class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg ,.pdf,.gif"/>
+            <input name="file_name"  type="file" id="file_name"
+             class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg ,.pdf,.gif"/>
             <span class="show_document_error" style="color:red;"></span>
           </div>
         </div>

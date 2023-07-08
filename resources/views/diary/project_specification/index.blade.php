@@ -58,10 +58,14 @@ table.dataTable>tbody>tr.child span.dtr-title {
 @can('create directions')
 <div class="col-auto ms-auto d-print-none">
   <div class="input-group-btn">
-      <a href="#" data-size="xl" data-url="{{ route('add_project_specification',["project_id"=>$project_id]) }}"  data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
+      <a href="#" data-size="xl"
+      data-url="{{ route('add_project_specification',["project_id"=>$project_id]) }}"
+        data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}"
+         data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
           <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
       </a>
-      <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+      <a href="{{ route('projects.show', $project_id) }}"
+        class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
         <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
       </a>
   </div>
@@ -101,7 +105,8 @@ table.dataTable>tbody>tr.child span.dtr-title {
                 <td>
                     <div class="ms-2" style="display:flex;gap:10px;">
                         @can('edit project specification')
-                            <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_project_specification',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project Specifications Summary')}}"><i class="ti ti-pencil text-white"></i></a>
+                            <a href="#"  class="btn btn-md bg-primary backgroundnone"
+                             data-url="{{ route('edit_project_specification',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project Specifications Summary')}}"><i class="ti ti-pencil text-white"></i></a>
                         @endcan
 
                         @can('delete project specification')

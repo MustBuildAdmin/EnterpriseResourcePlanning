@@ -52,10 +52,14 @@ table.dataTable>tbody>tr.child span.dtr-title {
         @can('create procurement material')
         <div class="col-auto ms-auto d-print-none">
             <div class="input-group-btn">
-                <a href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
-                    <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
+                <a href="#" data-size="xl"
+                data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true"
+                data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip"
+                title="{{__('Create')}}" class="btn btn-primary">
+                <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
                 </a>
-                <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger"
+                 data-bs-toggle="tooltip" title="{{ __('Back') }}">
                   <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
                 </a>
             </div>
@@ -112,13 +116,23 @@ table.dataTable>tbody>tr.child span.dtr-title {
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 @can('edit procurement material')
-                                    <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
+                                    <a href="#"  class="btn btn-md bg-primary backgroundnone"
+                                     data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,"id"=>$data->id]) }}"
+                                      data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
+                                      title="{{__('Edit')}}"
+                                      data-title="{{__('Edit Procurement Material Supply Log')}}">
+                                      <i class="ti ti-pencil text-white"></i>
+                                    </a>
                                 @endcan
                                 @can('delete procurement material')
                                     {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
                                     {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
-                                        <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
+                                        <a href="#" class="btn btn-md btn-danger bs-pass-para"
+                                        data-bs-toggle="tooltip" title="{{__('Delete')}}"
+                                        data-original-title="{{__('Delete')}}"
+                                        data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}">
+                                        <i class="ti ti-trash text-white"></i></a>
                                     {!! Form::close() !!}
                                 @endcan
                             </div>
