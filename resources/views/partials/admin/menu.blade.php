@@ -794,6 +794,11 @@
                                         <a class="dash-link" href="{{ route('users.index') }}">{{__('User')}}</a>
                                     </li>
                                 @endcan
+                                @can('manage user')
+                                    <li class="dash-item {{ (Request::route()->getName() == 'consultants.index' || Request::route()->getName() == 'consultants.create' || Request::route()->getName() == 'consultants.edit') ? ' active' : '' }}">
+                                        <a class="dash-link" href="{{ route('consultants.index') }}">{{__('Consultant')}}</a>
+                                    </li>
+                                @endcan
                                 @can('manage role')
                                     <li class="dash-item {{ (Request::route()->getName() == 'roles.index' || Request::route()->getName() == 'roles.create' || Request::route()->getName() == 'roles.edit') ? ' active' : '' }} ">
                                         <a class="dash-link" href="{{route('roles.index')}}">{{__('Role')}}</a>
@@ -1028,6 +1033,13 @@
                         <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'users.index' || Request::route()->getName() == 'users.create' || Request::route()->getName() == 'users.edit') ? ' active' : '' }}">
                             <a href="{{ route('users.index') }}" class="dash-link">
                                 <span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{__('User')}}</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('manage user')
+                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'consultants.index' || Request::route()->getName() == 'consultants.create' || Request::route()->getName() == 'consultants.edit') ? ' active' : '' }}">
+                            <a href="{{ route('consultants.index') }}" class="dash-link">
+                                <span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{__('Consultant')}}</span>
                             </a>
                         </li>
                     @endcan

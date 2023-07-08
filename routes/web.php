@@ -612,6 +612,13 @@ Route::any('check_duplicate_email', 'UserController@check_duplicate_email')->nam
     ]
 );
 
+Route::any('check_duplicate_email_consultant', 'ConsultantController@check_duplicate_email_consultant')->name('check_duplicate_email_consultant')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('view_change_password', 'UserController@view_change_password')->name('view_change_password')->middleware(
     [
         'auth',
@@ -4087,6 +4094,13 @@ Route::get(
 
 // saas
 Route::resource('users', 'UserController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+Route::resource('consultants', 'ConsultantController')->middleware(
     [
         'auth',
         'XSS',
