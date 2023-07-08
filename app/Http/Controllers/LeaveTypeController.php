@@ -44,7 +44,7 @@ class LeaveTypeController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                'title' => 'required',
+                'title' => 'required|unique:leave_types',
                 'days' => 'required',
             ]
             );
@@ -104,7 +104,7 @@ class LeaveTypeController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                    'title' => 'required',
+                    'title' => 'required|unique:leave_types',
                     'days' => 'required',
                 ]
                 );
