@@ -34,11 +34,20 @@
                         </tr>
 
                         <tr class="highlighted">
-                            <td style="font-weight:bold;">Actual Progress:</td>
-                            <td style="">{{$data['con_data']->progress != null ? $data['con_data']->progress : '0'}}%</td>
+                            @php
+                                $actual_task_progress = $data['con_data']->progress ? $data['con_data']->progress : '0';
+                                if($actual_task_progress < $planned_progress){
+                                    $style = "color:red;";
+                                }
+                                else{
+                                    $style = "";
+                                }
+                            @endphp
+                            <td style="font-weight:bold; {{$style}}">Actual Progress:</td>
+                            <td style="{{$style}}">{{$data['con_data']->progress != null ? $data['con_data']->progress : '0'}}%</td>
 
-                            <td style="font-weight:bold;"></td>
-                            <td style=""></td>
+                            <td style="font-weight:bold;">Planned Progress</td>
+                            <td style="">{{ round($planned_progress) }}%</td>
                         </tr>
                     </table>
                 </div>
