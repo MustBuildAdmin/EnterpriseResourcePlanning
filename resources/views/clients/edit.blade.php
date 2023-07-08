@@ -1,5 +1,5 @@
 
-{{ Form::model($client, array('route' => array('clients.update', $client->id), 'method' => 'PUT')) }}
+{{ Form::model($client, array('route' => array('clients.update', $client->id), 'method' => 'PUT' ,'enctype'=>"multipart/form-data")) }}
 <div class="modal-body">
     <div class="row">
         <h5 class="sub-title"><strong>{{__('Basic Info')}}</strong></h5>
@@ -109,6 +109,14 @@
                         {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                         <div class="form-icon-user">
                             {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
+                        <div class="form-icon-user">
+                            {{Form::file('avatar',null,array('class'=>'form-control'))}}
                         </div>
                     </div>
                 </div>
