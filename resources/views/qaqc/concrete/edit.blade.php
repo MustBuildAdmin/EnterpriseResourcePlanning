@@ -155,10 +155,12 @@
           <div class="col-6 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Testing Falls on')}}</label>
-              <input name="days_testing_falls_on" 
-              value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif" 
+              <input name="days_testing_falls_on"
+              value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif"
               type="date" class="form-control" id="days_testing_falls_on" disabled />
-              <input name="days_testing_falls"  type="hidden" class="form-control" id="days_testing_falls"  value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif"  />
+              <input name="days_testing_falls"  type="hidden" class="form-control"
+               id="days_testing_falls"
+               value="@if($id!='' && $dairy_data->days_testing_falls!=''){{$dairy_data->days_testing_falls}}@endif"  />
             </div>
           </div>
           @php
@@ -172,8 +174,16 @@
           <div class="col-5 mb-3">
             <div class="form-group">
               <label for="Inputdays">{{__('28 days Result (Average)')}}</label>
-              <input name="" placeholder="{{__('28 days Result (Average)')}}"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif"  type="text" id="days_testing_result" class="form-control days_testing_result" @if($format_date==$today_result) @else disabled @endif/>
-              <input name="days_testing_result" type="hidden"  value="@if($id!='' && $dairy_data->days_testing_result!=''){{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}@endif" id="days_testing_result_back" class="form-control days_testing_result" placeholder="Enter your 28 days Result (Average)" />
+              <input name="" placeholder="{{__('28 days Result (Average)')}}"
+              value="@if($id!='' && $dairy_data->days_testing_result!='')
+                    {{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}
+                    @endif" type="text" id="days_testing_result" class="form-control days_testing_result"
+              @if($format_date==$today_result) @else disabled @endif/>
+              <input name="days_testing_result" type="hidden"
+              value="@if($id!='' && $dairy_data->days_testing_result!='')
+                    {{rtrim(str_replace('N/mm2','', $dairy_data->days_testing_result))}}
+                    @endif" id="days_testing_result_back" class="form-control days_testing_result"
+                    placeholder="Enter your 28 days Result (Average)" />
             </div>
           </div>
           <div class="col-1 mb-3">
@@ -185,24 +195,18 @@
           <div class="col-md-12 mb-3">
             <div class="form-group">
               <label for="InputRemarks">{{__('Remarks')}}</label>
-              <textarea name="remarks"  id="remarks" type="text" class="form-control" placeholder="Enter your Remarks">@if($id!='' && $dairy_data->remarks!=''){{$dairy_data->remarks}}@endif</textarea>
+              <textarea name="remarks"  id="remarks" type="text" class="form-control" placeholder="Enter your Remarks">
+                @if($id!='' && $dairy_data->remarks!=''){{$dairy_data->remarks}}@endif
+              </textarea>
             </div>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <label for="input">{{__('Attachments')}}<span style='color:red;'>*</span></label>
-              <input name="file_name"  type="file" id="file_name" class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg ,.pdf,.gif" />
+              <input name="file_name"  type="file" id="file_name" class="form-control document_setup"
+              accept="image/*, .png, .jpeg, .jpg ,.pdf,.gif" />
               <span class="show_document_error" style="color:red;"></span>
               <span>{{$get_dairy_data->file_name ?? ''}}</span>
-               {{-- @php 
-                  $documentPath=\App\Models\Utility::get_file('uploads/concrete_pouring'); 
-               @endphp
-              <br>
-              <table>
-                <tr>
-                  <td>{{$get_dairy_data->file_name ?? ''}} <a id="contrete_file" class="btn btn-primary" download href="{{ $documentPath . '/' . $get_dairy_data->file_name }}"> <i class="ti ti-download text-white"></i> </a></td>
-                </tr>
-              </table> --}}
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@
             <div class="col form-group ">
               <label class="bold">{{__('ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED)
                 SUMMARY for the project of')}}</label> <span>:</span>
-              <span class="bold">{{$project_name->project_name}}</span>
+              <span class="bold">{{$projectname->project_name}}</span>
             </div>
           </div>
           <hr style="border: 1px solid black" />

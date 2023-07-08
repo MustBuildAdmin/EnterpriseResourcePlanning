@@ -124,15 +124,17 @@ h3, .h3 {
                         @can('edit concrete')
                               <a href="#"  class="btn btn-md bg-primary backgroundnone"
                               data-url="{{ route('qaqc.concrete_edit',["project_id"=>$project_id,"id"=>$data->id]) }}"
-                              data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" 
-                              data-title="{{__('Create Concrete Pouring Record')}}"><i class="ti ti-pencil text-white"></i>
+                              data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}"
+                              data-title="{{__('Create Concrete Pouring Record')}}">
+                              <i class="ti ti-pencil text-white"></i>
                             </a>
                           @endcan
                           @can('delete concrete')
                           {!! Form::open(['method' => 'POST', 'route' => ['concrete.delete_concrete', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
                           {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
                           {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
-                          <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                          <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para"
+                           data-bs-toggle="tooltip" title="{{__('Delete')}}">
                             <i class="ti ti-trash text-white mt-1"></i>
                           </a>
                           {!! Form::close() !!}

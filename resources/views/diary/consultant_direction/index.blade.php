@@ -58,10 +58,14 @@ h3, .h3 {
         @can('create directions')
         <div class="col-auto ms-auto d-print-none">
             <div class="input-group-btn">
-                <a href="#" data-size="xl" data-url="{{ route('add_consultant_direction',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Consultants Directions Summary')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
+                <a href="#" data-size="xl"
+                data-url="{{ route('add_consultant_direction',["projectid"=>$projectid]) }}"
+                data-ajax-popup="true" data-title="{{__('Create Consultants Directions Summary')}}"
+                data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
                     <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
                 </a>
-                <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                <a href="{{ route('projects.show', $projectid) }}" class="btn btn-danger"
+                data-bs-toggle="tooltip" title="{{ __('Back') }}">
                   <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
                 </a>
             </div>
@@ -73,7 +77,7 @@ h3, .h3 {
                 <div class="container-fluid">
                 @can('manage directions')
                 <div class="container table-responsive-xl">
-                <table class="table" id="example2">
+                <table class="table" id="example2"> <!--data display-->
                     <thead class="">
                     <tr>
                         <th>{{__('S.No')}}</th>
@@ -90,7 +94,7 @@ h3, .h3 {
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach ($dairy_data as $key=>$data)
+                    @foreach ($dairydata as $key=>$data)
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->issued_by}}</td>
@@ -104,13 +108,18 @@ h3, .h3 {
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 @can('edit directions')
-                                    <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_consultant_direction',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Consultants Directions Summary')}}"><i class="ti ti-pencil text-white"></i></a>
+                                    <a href="#"  class="btn btn-md bg-primary backgroundnone"
+                                    data-url="{{ route('edit_consultant_direction',["projectid"=>$projectid,"id"=>$data->id]) }}"
+                                    data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
+                                    title="{{__('Edit')}}" data-title="{{__('Edit Consultants Directions Summary')}}">
+                                    <i class="ti ti-pencil text-white"></i></a>
                                 @endcan
                                 @can('delete directions')
                                 {!! Form::open(['method' => 'POST', 'route' => ['delete_consultant_direction', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
-                                {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
-                                    <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
-                                <i class="ti ti-trash text-white mt-1"></i>
+                                {{ Form::hidden('projectid',$projectid, ['class' => 'form-control']) }}
+                                    <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para"
+                                     data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                                    <i class="ti ti-trash text-white mt-1"></i>
                                 </a>
                                 {!! Form::close() !!}
                                 @endcan
