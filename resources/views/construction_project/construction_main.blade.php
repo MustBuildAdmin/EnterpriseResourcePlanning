@@ -7,6 +7,17 @@
 .page-wrapper{
     margin:20px;
 }
+.user-initial {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 18px;
+    text-align: center;
+    line-height: 43px;
+    margin: 1px;
+}
 </style>
 <script src="{{ asset('WizardSteps/js/jquery.steps.js') }}"></script>
 <div class="page-wrapper">
@@ -121,15 +132,24 @@
                                     </div>
                                     <p class="text-muted text-sm mt-3">{{ $project->description }}</p>
                                     <small>{{ __('MEMBERS') }}</small>
-                                    <div class="user-group">
+                                    <div class="user-group" style='display: flex;'>
                                         @if (isset($project->users) && !empty($project->users) && count($project->users) > 0)
                                             @foreach ($project->users as $key => $user)
+                                            <?php  $short=substr($user->name, 0, 1);?>
                                                 @if ($key < 3)
-                                                    <a href="#" class="avatar rounded-circle avatar-sm">
-                                                        <img @if ($user->avatar) src="{{ asset('/storage/uploads/avatar/' . $user->avatar) }}" @else src="{{ asset('/storage/uploads/avatar/avatar.png') }}" @endif
-                                                            alt="image" data-bs-toggle="tooltip"
-                                                            title="{{ $user->name }}">
-                                                    </a>
+                                                    @if ($user->avatar)
+                                                        <a href="#" class="avatar rounded-circle avatar-sm">
+                                                            <img  src="{{ asset('/storage/uploads/avatar/' . $user->avatar) }}"
+                                                                alt="image" data-bs-toggle="tooltip"
+                                                                title="{{ $user->name }}" class="user-initial">
+                                                        </a>
+                                                    @else
+                                                        {{-- <a href="#" class="avatar rounded-circle avatar-sm"> --}}
+                                                            <div class="user-initial" data-bs-toggle="tooltip"
+                                                            title="{{ $user->name }}">{{strtoupper($short)}}</div>
+                                                        {{-- </a> --}}
+                                                    @endif
+
                                                 @else
                                                 @break
                                             @endif

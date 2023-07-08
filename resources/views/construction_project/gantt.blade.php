@@ -574,20 +574,19 @@ $holidays=implode(':',$holidays);
 		gantt.config.columns = [
 			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
 			{
-				name: "text", label: "Task Name",width: 150, editor: editors.text,
+				name: "text", label: "Task Name",width: 150,
 				resize: true
 			},
 			{
 				name: "start_date", label: "Start Date", width: 80, align: "center",
-				editor: editors.start_date, resize: true
-			},
+				 resize: true			},
 			{
 				name: "end_date", label: "End Date", width: 80, align: "center",
-				editor: editors.end_date, resize: true
+				resize: true
 			},
             {
 				name: "duration", label: "Duration", width: 80, align: "center",
-				editor: editors.end_date, resize: true
+				 resize: true
 			},
 
 			// {
@@ -868,7 +867,7 @@ $holidays=implode(':',$holidays);
             });
             dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
                 if(action != "error"){
-                    gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+                    // gantt.load("{{route('projects.gantt_data',[$project->id])}}");
                 }
             });
 

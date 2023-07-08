@@ -1,14 +1,31 @@
+<style>
+    .user-initial {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 24px;
+  text-align: center;
+  line-height: 50px;
+}
+</style>
+
 @foreach($project->users as $user)
     <li class="list-group-item px-0">
         <div class="row align-items-center justify-content-between">
             <div class="col-sm-auto mb-3 mb-sm-0">
                 <div class="d-flex align-items-center">
-                    <div class="avatar rounded-circle avatar-sm me-3">
+                    
 {{--                        <img src="@if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif " alt="kal" class="img-user">--}}
-                        <img @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif  alt="image" >
-
-                    </div>
-                    <div class="div">
+                        @if($user->avatar)
+                            <img  src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"  alt="image" class="user-initial">
+                        @else
+                            <?php  $short=substr($user->name, 0, 1);?>
+                            <span class="user-initial">{{strtoupper($short)}}</span>
+                        @endif
+                
+                    <div class="div" style='margin-left: 10px;'>
                         <h5 class="m-0">{{ $user->name }}</h5>
                         <small class="text-muted">{{ $user->email }}</small>
                     </div>

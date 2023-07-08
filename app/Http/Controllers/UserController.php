@@ -160,7 +160,7 @@ class UserController extends Controller
                         \File::delete($image_path);
                     }
                     $url = '';
-                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
                     if($path['flag'] == 1){
                         $url = $path['url'];
@@ -243,7 +243,7 @@ class UserController extends Controller
                         \File::delete($image_path);
                     }
                     $url = '';
-                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
                     if($path['flag'] == 1){
                         $url = $path['url'];
@@ -384,7 +384,7 @@ class UserController extends Controller
                         \File::delete($image_path);
                     }
                     $url = '';
-                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
                     if($path['flag'] == 1){
                         $url = $path['url'];
@@ -447,7 +447,7 @@ class UserController extends Controller
                         \File::delete($image_path);
                     }
                     $url = '';
-                    $path = Utility::upload_file($request,'attachment',$fileNameToStore,$dir,[]);
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
                     if($path['flag'] == 1){
                         $url = $path['url'];

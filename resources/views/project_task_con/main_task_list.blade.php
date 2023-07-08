@@ -1,3 +1,15 @@
+<style>
+        .user-initial {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 24px;
+  text-align: center;
+  line-height: 50px;
+}
+</style>
 <table class="table" id="example3">
     <thead>
     <tr>
@@ -55,15 +67,23 @@
                                 @endphp
                                
                                 @if($key<3)
-                                    <a href="#" class="avatar rounded-circle avatar-sm">
-                                        <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
-                                            @if($user_db->avatar)
-                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
-                                            @else
-                                                src="{{asset('/storage/uploads/avatar/avatar.png')}}"
-                                            @endif
-                                        title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
-                                    </a>
+                                    
+                                        @if($user_db->avatar)
+                                            <a href="#" class="avatar rounded-circle avatar-sm">
+                                                <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
+                                                @if($user_db->avatar)
+                                                    src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
+                                                @else
+                                                    src="{{asset('/storage/uploads/avatar/avatar.png')}}"
+                                                @endif
+                                            title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
+                                            </a>
+                                        @else
+                                            <?php  $short=substr($user_db->name, 0, 1);?>
+                                            <span class="user-initial">{{strtoupper($short)}}</span>
+                                        @endif
+                                        
+                                   
                                 @endif
                             @empty
                                 {{ __('-') }}

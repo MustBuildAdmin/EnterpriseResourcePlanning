@@ -129,6 +129,35 @@ class ClientController extends Controller
                     $plan           = Plan::find($creator->plan);
                     $user_value=$this->customerNumber();
 
+                    // user profile update 
+                    if(isset($request->avatar)){
+                        
+                            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                            $extension       = $request->file('avatar')->getClientOriginalExtension();
+                            $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                        
+                            $dir = 'uploads/avatar/';
+                            $image_path = $dir . $fileNameToStore;
+                            if (\File::exists($image_path)) {
+                                \File::delete($image_path);
+                            }
+                            $url = '';
+                            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+            
+                            if($path['flag'] == 1){
+                                $url = $path['url'];
+                            }else{
+                                return redirect()->back()->with('error', __($path['msg']));
+                            }
+        
+                    }
+                    if(isset($url)){
+                        $avatar=$url;
+                    }else{
+                        $avatar=null;
+                    }
+                    // user profile update completed
                     if($request->copy_status!=null){
                         $copy_status=$request->copy_status;
 
@@ -168,6 +197,7 @@ class ClientController extends Controller
                                 'city'=>$request->billing_city,
                                 'phone'=>$request->billing_phone,
                                 'zip'=>$request->billing_zip,
+                                'avatar'=>$avatar,
                                 'address'=>$request->billing_address,
                                 'customer_id'=>$user_value,
                                 'tax_number'=>$request->tax_number,
@@ -340,7 +370,33 @@ class ClientController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
 
+                if(isset($request->avatar)){
+                        
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
+                    $dir = 'uploads/avatar/';
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
+                if(isset($url)){
+                    $avatar=$url;
+                }else{
+                    $avatar=null;
+                }
                 if($request->copy_status!=null){
                     $copy_status=$request->copy_status;
 
@@ -363,6 +419,9 @@ class ClientController extends Controller
                     $shipping_address = $request->shipping_address;
                 }
 
+                if(isset($url)){
+                    $post['avatar']=$url;
+                }
                 $post['email'] = $request->email;
                 $post['country']=$request->country;
                 $post['state']=$request->state;
