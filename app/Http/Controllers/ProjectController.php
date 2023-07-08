@@ -860,7 +860,6 @@ class ProjectController extends Controller
                 }
 
 
-
                 $cur= date('Y-m-d');
 
                 ############### END ##############################
@@ -886,7 +885,7 @@ class ProjectController extends Controller
 
 
                 $current_Planed_percentage=round($completed_days*$perday);
-                if($no_working_days>0){
+                if($current_Planed_percentage>0){
                     $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;;
                 }else{
                     $workdone_percentage=0;
@@ -906,10 +905,12 @@ class ProjectController extends Controller
                     $remaining_working_days=0;
                 }
                 $notfinished=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->where('progress','!=','100')->count();
+                $completed_task=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->where('progress','100')->count();
+
                 $ongoing_task=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->whereBetween('progress', ['0', '100'])->count();
 
 
-                return view('construction_project.dashboard',compact('project','ongoing_task','project_data','total_sub','actual_percentage','workdone_percentage','current_Planed_percentage','not_started','notfinished','remaining_working_days'));
+                return view('construction_project.dashboard',compact('project','ongoing_task','project_data','total_sub','actual_percentage','workdone_percentage','current_Planed_percentage','not_started','notfinished','remaining_working_days','completed_task'));
                // return view('projects.view',compact('project','project_data'));
             }
             else

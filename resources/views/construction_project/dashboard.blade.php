@@ -190,7 +190,7 @@
 </div>
   </div>
 </div>
-{{-- 
+{{--
 <section id="wrapper">
 
   <div class="p-4">
@@ -342,12 +342,12 @@
                       <div class="ms-3">
                           <p class="text-muted mb-0">{{__('Project Task status')}}</p>
                           {{-- <h4 class="mb-0">{{ $project_data['task_chart']['total'] }}</h4> --}}
-  
+
                       </div>
                   </div>
-    
+
               </div>
-  
+
               <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between mb-2">
                       <div class="d-flex align-items-center">
@@ -358,7 +358,7 @@
                   <hr>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-  
+
                         <span class="text-muted">Total Project Sub-Task</span>
                     </div>
                     <span>{{ $total_sub }}</span>
@@ -366,15 +366,15 @@
                   <hr>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-  
+
                         <span class="text-muted">Complete Sub-Task as of Today</span>
                     </div>
-                    <span>{{ $total_sub-$notfinished }}</span>
+                    <span>{{  $completed_task }}</span>
                   </div>
                   <hr>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-  
+
                         <span class="text-muted">Ongoing Sub-Task as of Today</span>
                     </div>
                     <span>{{ $ongoing_task }}</span>
@@ -382,16 +382,16 @@
                   <hr>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-  
+
                         <span class="text-muted">Remainning Sub-Task as of Today</span>
                     </div>
-                    @php $completed=$total_sub-$notfinished @endphp
-                    <span>{{ $total_sub-$completed-$ongoing_task }}</span>
+
+                    <span>{{ $total_sub- $completed_task-$ongoing_task }}</span>
                   </div>
                   <hr>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-  
+
                         <span class="text-muted">Task not started even after<br>planned start date</span>
                     </div>
                     <span>{{ $not_started }}</span>
@@ -399,7 +399,7 @@
                   <hr>
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-  
+
                         <span class="text-muted">Task in progress even after<br>planned end date</span>
                     </div>
                     <span>{{$notfinished }}</span>
@@ -435,7 +435,7 @@
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['day_left']['percentage'] }}%"></div>
                 </div>
-  
+
                 <hr>
                 <div class="d-flex align-items-center justify-content-between mb-2">
                   <div class="d-flex align-items-center">
@@ -493,7 +493,7 @@
               <div class="progress mb-3">
                   <div class="progress-bar bg-primary" style="width: {{ 100-$delay}}%"></div>
               </div>
-    
+
             </div>
         </div>
   </div>
