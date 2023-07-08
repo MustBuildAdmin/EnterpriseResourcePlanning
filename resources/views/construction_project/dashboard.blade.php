@@ -190,7 +190,7 @@
 </div>
   </div>
 </div>
-
+{{-- 
 <section id="wrapper">
 
   <div class="p-4">
@@ -273,7 +273,7 @@
             </div>
         </div>
       </div>
-    </section>
+    </section> --}}
 <br/>
 
 
@@ -293,9 +293,9 @@
                                 <h5 class="mb-1"> {{$project->project_name}}</h5>
                                 <p class="mb-0 text-sm">
                                 <div class="progress-wrapper">
-                                    <span class="progress-percentage"><small class="font-weight-bold">{{__('Completed:')}} : </small>{{ $project->project_progress()['percentage'] }}</span>
+                                    <span class="progress-percentage">{{__('Workdone % Productivity As of Today')}} : {{ $workdone_percentage }} %</span>
                                     <div class="progress progress-xs mt-2">
-                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ $project->project_progress()['percentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $project->project_progress()['percentage'] }};"></div>
+                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ $workdone_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $workdone_percentage}}%;"></div>
                                     </div>
                                 </div>
                                 </p>
@@ -332,6 +332,83 @@
 
         </div>
         <div class="col-lg-4 bgwhite">
+          <div class="card">
+            <div class="card">
+              <div class="card-body" style='min-height: 72px !important;'>
+                  <div class="d-flex align-items-start">
+                      <div class="theme-avtar bg-primary">
+                          <i class="ti ti-clipboard-list"></i>
+                      </div>
+                      <div class="ms-3">
+                          <p class="text-muted mb-0">{{__('Project Task status')}}</p>
+                          {{-- <h4 class="mb-0">{{ $project_data['task_chart']['total'] }}</h4> --}}
+  
+                      </div>
+                  </div>
+    
+              </div>
+  
+              <div class="card-body">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                      <div class="d-flex align-items-center">
+                          <span class="text-muted">{{__('Total Project Task')}}</span>
+                      </div>
+                      <span>{{$project_data['task']['total'] }}</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+  
+                        <span class="text-muted">Total Project Sub-Task</span>
+                    </div>
+                    <span>{{ $total_sub }}</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+  
+                        <span class="text-muted">Complete Sub-Task as of Today</span>
+                    </div>
+                    <span>{{ $total_sub-$notfinished }}</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+  
+                        <span class="text-muted">Ongoing Sub-Task as of Today</span>
+                    </div>
+                    <span>{{ $ongoing_task }}</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+  
+                        <span class="text-muted">Remainning Sub-Task as of Today</span>
+                    </div>
+                    @php $completed=$total_sub-$notfinished @endphp
+                    <span>{{ $total_sub-$completed-$ongoing_task }}</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+  
+                        <span class="text-muted">Task not started even after<br>planned start date</span>
+                    </div>
+                    <span>{{ $not_started }}</span>
+                  </div>
+                  <hr>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="d-flex align-items-center">
+  
+                        <span class="text-muted">Task in progress even after<br>planned end date</span>
+                    </div>
+                    <span>{{$notfinished }}</span>
+                  </div>
+              </div>
+          </div>
+    </div>
+   </div>
+        <div class="col-lg-4 bgwhite">
         <div class="card">
           <div class="card">
             <div class="card-body">
@@ -340,8 +417,8 @@
                         <i class="ti ti-clipboard-list"></i>
                     </div>
                     <div class="ms-3">
-                        <p class="text-muted mb-0">{{__('Last 7 days task done')}}</p>
-                        <h4 class="mb-0">{{ $project_data['task_chart']['total'] }}</h4>
+                        <p class="text-muted mb-0">{{__('Project Progress Status As of Toaday')}}</p>
+                        {{-- <h4 class="mb-0">{{ $project_data['task_chart']['total'] }}</h4> --}}
 
                     </div>
                 </div>
@@ -351,25 +428,14 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('Day Left')}}</span>
+                        <span class="text-muted">{{__('Day Left As Today')}}</span>
                     </div>
                     <span>{{ $project_data['day_left']['day'] }}</span>
                 </div>
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['day_left']['percentage'] }}%"></div>
                 </div>
-                {{-- <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-
-                        <span class="text-muted">{{__('Open Task')}}</span>
-                    </div>
-                    <span>{{ $project_data['open_task']['tasks'] }}</span>
-
-                </div>
-
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['open_task']['percentage'] }}%"></div>
-                </div> --}}
+  
                 <hr>
                 <div class="d-flex align-items-center justify-content-between mb-2">
                   <div class="d-flex align-items-center">
@@ -390,23 +456,44 @@
 
                     <span class="text-muted">Actual Progress</span>
                 </div>
-                <span>{{ $workdone_percentage }}%</span>
+                <span>{{ $actual_percentage }}%</span>
 
 
               </div>
 
               <div class="progress mb-3">
-                  <div class="progress-bar bg-primary" style="width: {{ $workdone_percentage }}%"></div>
+                  <div class="progress-bar bg-primary" style="width: {{ $actual_percentage }}%"></div>
               </div>
-                {{-- <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('Completed Milestone')}}</span>
-                    </div>
-                    <span>{{ $project_data['milestone']['total'] }}</span>
+
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center">
+
+                    <span class="text-muted">Delay in progress</span>
                 </div>
-                <div class="progress mb-3">
-                    <div class="progress-bar bg-primary" style="width: {{ $project_data['milestone']['percentage'] }}%"></div>
-                </div> --}}
+                <span>{{ $current_Planed_percentage-$actual_percentage }}%</span>
+
+
+              </div>
+
+              <div class="progress mb-3">
+                  <div class="progress-bar bg-primary" style="width: {{ $current_Planed_percentage-$actual_percentage }}%"></div>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <div class="d-flex align-items-center">
+
+                    <span class="text-muted">Actual Remaining Progress</span>
+                </div>
+                @php $delay=$current_Planed_percentage-$actual_percentage @endphp
+                <span>{{ 100-$delay }}%</span>
+
+
+              </div>
+
+              <div class="progress mb-3">
+                  <div class="progress-bar bg-primary" style="width: {{ 100-$delay}}%"></div>
+              </div>
+    
             </div>
         </div>
   </div>
@@ -427,33 +514,7 @@
             </div>
           </div>
         </div>
-      </div>
-    </section>
-
-
-<div class="row">
-
-
-{{-- <div class="col-md-6 col-lg-6 mb-6 mb-lg-0"> --}}
-  {{-- <div class="card">
-    <div class="card-header">
-      <div class="headingnew align-items-center justify-content-between">
-        <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
-          <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
-            <i class="ti ti-plus"></i>
-          </a>
-        </div> @endcan
-      </div>
-    </div>
-    <div class="card-body">
-      <ul class="list-group list-group-flush list" id="project_users"></ul>
-    </div>
-  </div> --}}
-{{-- </div> --}}
-
-
-
-<div class="col-md-12 col-lg-6 mb-6 mb-md-0">
+        <div class="col-md-12 col-lg-6 mb-6 mb-md-0">
           @can('view activity')
 
               <div class="card activity-scroll">
@@ -483,6 +544,33 @@
       @endcan
 
       </div>
+      </div>
+    </section>
+
+
+<div class="row">
+
+
+{{-- <div class="col-md-6 col-lg-6 mb-6 mb-lg-0"> --}}
+  {{-- <div class="card">
+    <div class="card-header">
+      <div class="headingnew align-items-center justify-content-between">
+        <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
+          <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary" data-bs-original-title="{{__('Add Member')}}">
+            <i class="ti ti-plus"></i>
+          </a>
+        </div> @endcan
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="list-group list-group-flush list" id="project_users"></ul>
+    </div>
+  </div> --}}
+{{-- </div> --}}
+
+
+
+
 
 
 
