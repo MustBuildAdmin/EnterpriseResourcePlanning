@@ -270,6 +270,7 @@
               <h2>{{__('Sub Contractors')}}</h2>
               <br />
               <table class="table tableadd form" id="dynamicTable2" aria-describedby="Sub Contractors">
+                <th></th>
                 <thead>
                   <tbody>
                     @foreach ($datasub1 as $sub_con_key=> $display_sub_con)

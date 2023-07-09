@@ -1845,7 +1845,8 @@ class DiaryController extends Controller
                         return redirect()->back()->with("error", __($path["msg"]));
                     }
                 }
-                $implodefileid =count($fileidarray)!= 0 ? implode(",", $fileidarray): 0;
+                $implodefileid =count($fileidarray)!= 0 ?
+                                implode(",", $fileidarray): 0;
             } else {
                 $implodefileid = 0;
             }
@@ -2049,7 +2050,8 @@ class DiaryController extends Controller
                     }
                 }
 
-                $implodefileid =count($fileidarray) != 0 ? implode(",", $fileidarray): 0;
+                $implodefileid =count($fileidarray) != 0 ?
+                                implode(",", $fileidarray): 0;
                 if ($request->existing_file_id != "") {
                     $implodefileid =$request->existing_file_id . "," . $implodefileid;
                 }
