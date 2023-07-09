@@ -182,7 +182,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($data_sub as $sub_key=>$display_sub)
+                    @foreach ($datasub as $sub_key=>$display_sub)
                     <tr id="addRow">
                       <td class="col-xs-3">
                         <input name="first_position[]" class="form-control first_position_0"
@@ -272,7 +272,7 @@
               <table class="table tableadd form" id="dynamicTable2" aria-describedby="Sub Contractors">
                 <thead>
                   <tbody>
-                    @foreach ($data_sub1 as $sub_con_key=> $display_sub_con)
+                    @foreach ($datasub1 as $sub_con_key=> $display_sub_con)
                     <tr id="">
                       <td class="col-xs-3">
                         <input name="second_position[]" class="form-control second_position_0" type="text"
@@ -366,7 +366,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($data_sub2 as $key =>$display_major_equi)
+                  @foreach ($datasub2 as $key =>$display_major_equi)
                   <tr id="">
                     <td class="col-xs-3">
                       <input name="third_position[]" class="form-control third_position_0" type="text"

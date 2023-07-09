@@ -137,7 +137,7 @@ h3, .h3 {
                               {!! Form::open(['method' => 'POST', 'route' => ['delete_site_reports',
                                $data_report->id],'id'=>'delete-form-'.$data_report->id]) !!}
                               {{ Form::hidden('id',$data_report->id, ['class' => 'form-control']) }}
-                              {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
+                              {{ Form::hidden('projectid',$projectid, ['class' => 'form-control']) }}
                                   <a href="#" class="btn btn-md btn-danger bs-pass-para"
                                    data-bs-toggle="tooltip" title="{{__('Delete')}}"
                                    data-original-title="{{__('Delete')}}"
