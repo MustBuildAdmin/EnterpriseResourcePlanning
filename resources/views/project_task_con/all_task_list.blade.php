@@ -17,6 +17,7 @@ line-height: 50px;
         <th scope="col">{{__('Tasks')}}</th>
         <th scope="col">{{__('Status')}}</th>
         <th scope="col">{{__('Actual Progress')}}</th>
+        <th scope="col">{{__('Planned Progress')}}</th>
         <th scope="col">{{__('Planned Start Date')}}</th>
         <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
@@ -28,8 +29,20 @@ line-height: 50px;
     <tbody class="list">
         @forelse ($tasks as $task)
             @if($task->instance_id == $task->pro_instance_id)
+                @php
+                    $total_count_of_task  = DB::table('task_progress')->where('task_id',$task->main_id)->get()->count();
+                    $task_duration        = $task->duration;
+                    if($task_duration != 0){
+                        $get_planned_progress = 100/$task_duration;
+                        $planned_progress     = $get_planned_progress*$total_count_of_task;
+                    }
+                    else{
+                        $planned_progress = 0;
+                    }
+                    
+                @endphp
                 <tr>
-                    <td style="width:40%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+                    <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
                         <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
                         </a>
@@ -44,11 +57,17 @@ line-height: 50px;
                         @endif
                     </td>
                     <td style="width:10%;">
+
                         @if ($task->progress >= 100)
                             <span class="badge badge-success" style="background-color:#28A745;">{{$task->progress}}%</span>
+                        @elseif($task->progress < $planned_progress)
+                            <span title="Planned Progress is to High Compare to Actual Progress" class="badge badge-success" style="background-color:red;">{{$task->progress}}%</span>
                         @else
                             <span class="badge badge-info" style="background-color:#007bff;">{{$task->progress}}%</span>
                         @endif
+                    </td>
+                    <td style="width:10%;">
+                        <span class="badge badge-info" style="background-color:#007bff;">{{ round($planned_progress) }}%</span>
                     </td>
                     <td style="width:10%;" class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}

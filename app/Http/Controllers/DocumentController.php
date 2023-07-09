@@ -42,7 +42,7 @@ class DocumentController extends Controller
         {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20',
+                                   'name' => 'required|max:20|unique:documents',
                                ]
             );
             if($validator->fails())
@@ -101,7 +101,7 @@ class DocumentController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20',
+                                       'name' => 'required|max:20|unique:documents',
                                    ]
                 );
                 if($validator->fails())

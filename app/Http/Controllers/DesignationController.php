@@ -48,7 +48,7 @@ class DesignationController extends Controller
             $validator = \Validator::make(
                 $request->all(), [
                                    'department_id' => 'required',
-                                   'name' => 'required|max:20',
+                                   'name' => 'required|max:20|unique:designations',
                                ]
             );
             if($validator->fails())
@@ -112,7 +112,7 @@ class DesignationController extends Controller
                 $validator = \Validator::make(
                     $request->all(), [
                                        'department_id' => 'required',
-                                       'name' => 'required|max:20',
+                                       'name' => 'required|max:20|unique:designations',
                                    ]
                 );
                 if($validator->fails())
