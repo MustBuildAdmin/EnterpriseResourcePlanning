@@ -690,7 +690,7 @@
     });
 
 
-  $('.first_person,.second_person,.third_person,.minimum,.temperature',.hours).alphanum({
+  $('.first_person,.second_person,.third_person,.minimum,.temperature,.hours').alphanum({
         allow              : '',    // Allow extra characters
         allowUpper         : false,  // Allow upper case characters
         allowLower         : false,  // Allow lower case characters
