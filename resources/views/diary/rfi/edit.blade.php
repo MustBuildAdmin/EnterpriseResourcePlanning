@@ -435,7 +435,7 @@
 							'<div class="col-md-4">'+
 								'<div class="form-group">'+
 									'<label for="input">Consultant No. '+ ++k +'</label>'+
-									'<input type="text" name="data[consultant_' + ++j + ']" class="form-control"
+									'<input type="text" name="data[consultant_' + ++j + ']" class="form-control"'+
 									 'placeholder="Consultant No. '+ ++g +'" value="">'+
 								'</div>'+
 							'</div>'+

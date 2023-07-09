@@ -357,11 +357,11 @@
         $("#dynamicTable").append(
           '<tr>'+
             '<td>'+
-              '<input type="text" name="first_position[]" placeholder="Enter Position Name"
+              '<input type="text" name="first_position[]" placeholder="Enter Position Name"'+
                'class="form-control first_position" id="first_position_'+i+'"/>'+
             '</td>'+
             '<td>'+
-              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position"
+              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position"'+
                'class="form-control first_person" id="first_person_'+i+'" />'+
             '</td>'+
             '<td>'+
@@ -392,11 +392,11 @@
         $("#dynamicTable2").append(
           '<tr>'+
             '<td>'+
-                '<input type="text" name="second_position[]" placeholder="Enter Position Name"
+                '<input type="text" name="second_position[]" placeholder="Enter Position Name"'+
                  'class="form-control second_position" id="second_position_'+j+'" />'+
             '</td>'+
             '<td>'+
-                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position"
+                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position"'+
                  'class="form-control second_person" id="second_person_'+j+'" />'+
             '</td>'+
             '<td>'+
@@ -425,11 +425,11 @@
     $("#dynamicTable3").append(
       '<tr>'+
         '<td>'+
-            '<input type="text" name="third_position[]" placeholder="Enter Position Name"
+            '<input type="text" name="third_position[]" placeholder="Enter Position Name"'+
              'id="third_position_'+K+'" class="form-control third_position" />'+
         '</td>'+
         '<td>'+
-            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position"
+            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position"'+
              'class="form-control third_person" id="third_person_'+K+'"/>'+
         '</td>'+
         '<td>'+
@@ -554,7 +554,7 @@
       });
     });
 
-    $('.first_person,.second_person,.third_person,.minimum,.temperature').alphanum({
+    $('.first_person,.second_person,.third_person,.minimum,.temperature,.hours').alphanum({
           allow              : '',    // Allow extra characters
           allowUpper         : false,  // Allow upper case characters
           allowLower         : false,  // Allow lower case characters

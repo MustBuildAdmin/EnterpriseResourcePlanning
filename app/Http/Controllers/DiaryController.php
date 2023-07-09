@@ -17,7 +17,7 @@ use App\Models\SiteReportSub;
 use App\Models\Vochange;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Crypt;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Session;
 use Exception;
 class DiaryController extends Controller
@@ -261,7 +261,7 @@ class DiaryController extends Controller
                 $checkattachfile = ConsultantDirection::select("attach_file_name","file_path")
                                     ->where("id", $request->id)
                                     ->where("user_id", $userid)
-                                    ->where("project_id", $request->project_id)
+                                    ->where("project_id", Session::get("project_id"))
                                     ->first();
 
                 $filenameWithExt1 = $checkattachfile->attach_file_name;
@@ -279,7 +279,7 @@ class DiaryController extends Controller
                 "file_path" => $url,
             ];
 
-            ConsultantDirection::where("project_id", $request->project_id)
+            ConsultantDirection::where("project_id", Session::get("project_id"))
                 ->where("user_id", $userid)
                 ->where("id", $request->id)
                 ->update($data);
@@ -287,7 +287,7 @@ class DiaryController extends Controller
             $inid = DB::table("consultant_directions")
                 ->where("id", "=", $request->id)
                 ->where("user_id", $userid)
-                ->where("project_id", $request->project_id)
+                ->where("project_id", Session::get("project_id"))
                 ->get("id");
 
             $invoiceid = trim($inid, '[{"id:"}]');
@@ -437,7 +437,7 @@ class DiaryController extends Controller
 
                 ConsultantDirection::where("id", $request->id)
                     ->where("user_id", $userid)
-                    ->where("project_id", $request->project_id)
+                    ->where("project_id", Session::get("project_id"))
                     ->delete();
 
                 ConsultantsDirectionMulti::where("consultant_id",$request->id)->delete();
@@ -1331,19 +1331,19 @@ class DiaryController extends Controller
 
                 $projectid = Session::get("project_id");
 
-                $project_name = Project::select("project_name")
+                $projectname = Project::select("project_name")
                     ->where("id", $projectid)
                     ->first();
 
-                $decode_id = Crypt::decryptString($request->id);
-                $edit_id = trim($decode_id, '[{"id:;"}]');
+                $decodeid = Crypt::decryptString($request->id);
+                $editid = trim($decodeid, '[{"id:;"}]');
 
                 $data = SiteReport::select(
                     "dr_site_reports.*",
-                    \DB::raw(
-                        "group_concat(file.file_name) as file_name,group_concat(file.id) as file_id"
+                        \DB::raw(
+                            "group_concat(file.file_name) as file_name,group_concat(file.id) as file_id"
+                        )
                     )
-                )
                     ->leftjoin(
                         "dr_site_multi_files as file",
                         \DB::raw(
@@ -1352,7 +1352,7 @@ class DiaryController extends Controller
                         ">",
                         \DB::raw("'0'")
                     )
-                    ->where("dr_site_reports.id", $edit_id)
+                    ->where("dr_site_reports.id", $editid)
                     ->where(
                         "dr_site_reports.project_id",
                         Session::get("project_id")
@@ -1361,19 +1361,19 @@ class DiaryController extends Controller
                     ->groupBy("dr_site_reports.id")
                     ->first();
 
-                $datasub = SiteReportSub::where("site_id", "=", $edit_id)
+                $datasub = SiteReportSub::where("site_id", "=", $editid)
                     ->where("project_id", Session::get("project_id"))
                     ->where("user_id", $userid)
                     ->where("type", "contractors_personnel")
                     ->get();
 
-                $datasub1 = SiteReportSub::where("site_id", "=", $edit_id)
+                $datasub1 = SiteReportSub::where("site_id", "=", $editid)
                     ->where("project_id", Session::get("project_id"))
                     ->where("user_id", $userid)
                     ->where("type", "sub_contractors")
                     ->get();
 
-                $datasub2 = SiteReportSub::where("site_id", "=", $edit_id)
+                $datasub2 = SiteReportSub::where("site_id", "=", $editid)
                     ->where("project_id", Session::get("project_id"))
                     ->where("user_id", $userid)
                     ->where("type", "major_equipment_on_project")
@@ -1386,7 +1386,7 @@ class DiaryController extends Controller
                         "datasub",
                         "datasub1",
                         "datasub2",
-                        "project_name"
+                        "projectname"
                     )
                 );
             } else {
