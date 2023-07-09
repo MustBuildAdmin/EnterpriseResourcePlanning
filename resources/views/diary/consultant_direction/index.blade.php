@@ -77,7 +77,7 @@ h3, .h3 {
                 <div class="container-fluid">
                 @can('manage directions')
                 <div class="container table-responsive-xl">
-                <table class="table" id="example2"> <!--data display-->
+                <table class="table" id="example2" aria-describedby="directions">
                     <thead class="">
                     <tr>
                         <th>{{__('S.No')}}</th>

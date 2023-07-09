@@ -59,12 +59,12 @@ table.dataTable>tbody>tr.child span.dtr-title {
 <div class="col-auto ms-auto d-print-none">
   <div class="input-group-btn">
       <a href="#" data-size="xl"
-      data-url="{{ route('add_project_specification',["project_id"=>$project_id]) }}"
+      data-url="{{ route('add_project_specification',["projectid"=>$projectid]) }}"
         data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}"
          data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
           <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
       </a>
-      <a href="{{ route('projects.show', $project_id) }}"
+      <a href="{{ route('projects.show', $projectid) }}"
         class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
         <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
       </a>
@@ -76,7 +76,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
       <div class="container-fluid">
         @can('manage project specification')
         <div class="table">
-          <table class="table" id="example2">
+          <table class="table" id="example2" aria-describedby="project specifications">
             <thead class="">
               <tr>
                 <th>{{__('S.No')}}</th>
@@ -92,7 +92,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
               </tr>
             </thead>
             <tbody>
-              @foreach ($dairy_data as $key=>$data)
+              @foreach ($dairydata as $key=>$data)
               <tr>
                 <td>{{$loop->iteration}}</td>
                 <td>{{$data->reference_no}}</td>
@@ -106,14 +106,18 @@ table.dataTable>tbody>tr.child span.dtr-title {
                     <div class="ms-2" style="display:flex;gap:10px;">
                         @can('edit project specification')
                             <a href="#"  class="btn btn-md bg-primary backgroundnone"
-                             data-url="{{ route('edit_project_specification',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Project Specifications Summary')}}"><i class="ti ti-pencil text-white"></i></a>
+                             data-url="{{ route('edit_project_specification',["projectid"=>$projectid,"id"=>$data->id]) }}"
+                             data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
+                            title="{{__('Edit')}}" data-title="{{__('Edit Project Specifications Summary')}}"><i class="ti ti-pencil text-white"></i></a>
                         @endcan
 
                         @can('delete project specification')
-                          {!! Form::open(['method' => 'POST', 'route' => ['delete_project_specification', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                          {!! Form::open(['method' => 'POST',
+                          'route' => ['delete_project_specification', $data->id],'id'=>'delete-form-'.$data->id]) !!}
                           {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
-                          {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
-                          <a href="#"  class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                          {{ Form::hidden('projectid',$projectid, ['class' => 'form-control']) }}
+                          <a href="#"  class="btn btn-md btn-danger bs-pass-para"
+                          data-bs-toggle="tooltip" title="{{__('Delete')}}">
                             <i class="ti ti-trash text-white mt-1">
                             </i>
                           </a>

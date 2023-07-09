@@ -10,9 +10,9 @@
   <div class="row">
     <form method="POST" action="{{route('update_variation_scope_change')}}" enctype="multipart/form-data">
       @csrf
-      @if(isset($get_dairy_data->data))
-        @if($get_dairy_data->data!=null)
-          @php $data=$get_dairy_data->data; @endphp
+      @if(isset($getdairydata->data))
+        @if($getdairydata->data!=null)
+          @php $data=$getdairydata->data; @endphp
         @else
           @php $data=''; @endphp @endif
       @else
@@ -28,7 +28,7 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="InputLIst">{{__('Variations/Scope Change Authorization for the project of')}}:</label>
-            <span>{{$project_name->project_name}}</span>
+            <span>{{$projectname->project_name}}</span>
           </div>
         </div>
         <hr style="border: 1px solid black;">
@@ -191,7 +191,7 @@
             <input type="file" name="attachment_file" class="form-control document_setup"
              placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
             <span class="show_document_error" style="color:red;"></span>
-            <span>{{$get_dairy_data->attachment_file}}</span>
+            <span>{{$getdairydata->attachment_file}}</span>
           </div>
         </div>
       </div>

@@ -72,7 +72,7 @@ h3, .h3 {
       <div class="container-fluid">
         @can('manage site reports')
         <div class="container table-responsive-xl">
-          <table class="table" id="example2">
+          <table class="table" id="example2" aria-describedby="daily reports">
             <thead>
               <tr>
                 <th>{{__('SNo')}}</th>

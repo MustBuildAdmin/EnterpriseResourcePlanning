@@ -79,7 +79,7 @@ h3, .h3 {
         <div class="container-fluid">
           @can('manage concrete')
           <div class="container table-responsive-xl">
-            <table class="table" id="example2">
+            <table class="table" id="example2" aria-describedby="concrete">
               <thead class="">
                 <tr>
                   <th>{{__('Sno')}}</th>

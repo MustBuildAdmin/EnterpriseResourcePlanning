@@ -15,7 +15,7 @@
         <div class="col-xs-12">
           <div class="form-group">
             <label for="InputLIst">{{__('Variations/Scope Change Authorization for the project of')}}:</label>
-            <span>{{$project_name->project_name}}</span>
+            <span>{{$projectname->project_name}}</span>
           </div>
         </div>
         <hr style="border: 1px solid black;">

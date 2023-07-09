@@ -10,8 +10,8 @@
   <div class="row">
     <div class="row row-cards">
       <div class="col-12">
-        <form class="card" action="{{ route('update_site_reports') }}" enctype="multipart/form-data" method="POST"> 
-          @csrf 
+        <form class="card" action="{{ route('update_site_reports') }}" enctype="multipart/form-data" method="POST">
+          @csrf
           @if(isset($data->id))
           @if($data->id!=null)
           <input type="hidden" name="edit_id" value="{{$data->id ?? ''}}">
@@ -22,25 +22,28 @@
               <div class="col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Daily Report No')}}</label>
-                  <label class="form-label form-control disabledmode">{{__('Daily Report No')}}  {{$data->id ?? ''}}</label>
+                  <label class="form-label form-control disabledmode">
+                    {{__('Daily Report No')}}  {{$data->id ?? ''}}</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Contractor Name')}}</label>
-                  <input type="text" class="form-control" name="contractor_name" placeholder="Username" value="{{$data->contractor_name ?? ''}}">
+                  <input type="text" class="form-control" name="contractor_name"
+                   placeholder="Username" value="{{$data->contractor_name ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Date')}}</label>
-                  <input type="date" name="con_date" class="form-control" id="con_date" placeholder="Email" value="{{$data->con_date ?? ''}}">
+                  <input type="date" name="con_date" class="form-control"
+                   id="con_date" placeholder="Email" value="{{$data->con_date ?? ''}}">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Project Name')}}</label>
-                  <label class="form-label form-control disabledmode">{{$project_name->project_name}}</label>
+                  <label class="form-label form-control disabledmode">{{$projectname->project_name}}</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
@@ -74,8 +77,6 @@
                       <option value="Hot">{{__('Hot')}}</option>
                     </select>
                     @endif
-                 
-                   
                   </div>
                 </div>
               </div>
@@ -111,13 +112,15 @@
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Temperature (Minimum)')}}</label>
-                  <input name="min_input" type="text" class="form-control minimum" placeholder="{{__('Temperature (Minimum)')}}"  value="{{$data->min_input ?? ''}}">
+                  <input name="min_input" type="text" class="form-control minimum"
+                   placeholder="{{__('Temperature (Minimum)')}}"  value="{{$data->min_input ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Temperature (Maximum)')}}</label>
-                  <input name="temperature" type="text" class="form-control temperature" placeholder="{{__('Temperature (Maximum)')}}" value="{{$data->temperature ?? ''}}">
+                  <input name="temperature" type="text" class="form-control temperature"
+                   placeholder="{{__('Temperature (Maximum)')}}" value="{{$data->temperature ?? ''}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-2">
@@ -126,7 +129,9 @@
                   @if(isset($data->degree))
                   <select name="degree" class="form-control addbutton" >
                     <option value="" disabled selected>{{__('Select your option')}}</option>
-                    <option @if('Fahrenheit'==$data->degree){ selected }@endif value="Fahrenheit">{{__('Fahrenheit')}}</option>
+                    <option @if('Fahrenheit'==$data->degree){ selected }@endif value="Fahrenheit">
+                      {{__('Fahrenheit')}}
+                    </option>
                     <option @if('Celsius'==$data->degree){ selected }@endif value="Celsius">{{__('Celsius')}}</option>
                   </select>
                   @else
@@ -156,10 +161,14 @@
                     @foreach ($data_sub as $sub_key=>$display_sub)
                     <tr id="addRow">
                       <td class="col-xs-3">
-                        <input name="first_position[]" class="form-control first_position_0" type="text" placeholder="{{__('Enter Position Name')}}" value="{{$display_sub['position_name'] ?? ''}}"/>
+                        <input name="first_position[]" class="form-control first_position_0"
+                         type="text" placeholder="{{__('Enter Position Name')}}"
+                          value="{{$display_sub['position_name'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="first_person[]"  class="form-control first_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}" value="{{$display_sub['no_of_persons'] ?? ''}}" />
+                        <input name="first_person[]"  class="form-control first_person_0"
+                         type="text" placeholder="{{__('Enter No Of Person Per Position')}}"
+                          value="{{$display_sub['no_of_persons'] ?? ''}}" />
                       </td>
                       <td class="col-xs-5">
                         <select class="form-control first_option_0"  name="first_option[]">
@@ -195,13 +204,19 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control" name="" id="total_di_power_one_dis" value="{{$data->total_di_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_one" id="total_di_power_one" value="{{$data->total_di_power_one ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Direct Manpower')}}"
+                     class="form-control" name="" id="total_di_power_one_dis"
+                      value="{{$data->total_di_power_one ?? ''}}" disabled>
+                    <input type="hidden" class="form-control" name="total_di_power_one"
+                     id="total_di_power_one" value="{{$data->total_di_power_one ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control" name="" id="total_in_power_one_dis" value="{{$data->total_in_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one" value="{{$data->total_in_power_one ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control" name="" id="total_in_power_one_dis" value="{{$data->total_in_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one" value="{{$data->total_in_power_one ?? ''}}"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">

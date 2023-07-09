@@ -10,7 +10,9 @@
   <div class="row">
     <div class="row row-cards">
       <div class="col-12">
-        <form class="card" action="{{ route('save_site_reports') }}" enctype="multipart/form-data" method="POST"> @csrf <div class="card-body">
+        <form class="card" action="{{ route('save_site_reports') }}" enctype="multipart/form-data" method="POST">
+          @csrf
+          <div class="card-body">
             <div class="row row-cards">
               <div class="col-md-4">
                 <div class="mb-3">
@@ -21,7 +23,8 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Contractor Name')}}</label>
-                  <input type="text" class="form-control" name="contractor_name" placeholder="{{__('Contractor Name')}}" value="">
+                  <input type="text" class="form-control" name="contractor_name"
+                  placeholder="{{__('Contractor Name')}}" value="">
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
@@ -33,7 +36,7 @@
               <div class="col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Project Name')}}</label>
-                  <label class="form-label form-control disabledmode">{{$project_name->project_name}}</label>
+                  <label class="form-label form-control disabledmode">{{$projectname->project_name}}</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
@@ -78,13 +81,15 @@
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Temparture (Minimum)')}}</label>
-                  <input name="min_input" type="text" class="form-control minimum" placeholder="{{__('Temparture (Minimum)')}}">
+                  <input name="min_input" type="text" class="form-control minimum"
+                  placeholder="{{__('Temparture (Minimum)')}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Temparture (Maximum)')}}</label>
-                  <input name="temperature" type="text" class="form-control temperature" placeholder="{{__('Temparture (Maximum)')}}" value="">
+                  <input name="temperature" type="text" class="form-control temperature"
+                  placeholder="{{__('Temparture (Maximum)')}}" value="">
                 </div>
               </div>
              
@@ -115,10 +120,12 @@
                   <tbody>
                     <tr id="addRow">
                       <td class="col-xs-3">
-                        <input name="first_position[]" class="form-control first_position" id="first_position_0" type="text" placeholder="{{__('Enter Position Name')}}"/>
+                        <input name="first_position[]" class="form-control first_position" id="first_position_0"
+                        type="text" placeholder="{{__('Enter Position Name')}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="first_person[]"  class="form-control first_person" id="first_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}"  />
+                        <input name="first_person[]"  class="form-control first_person" id="first_person_0"
+                        type="text" placeholder="{{__('Enter No Of Person Per Position')}}"  />
                       </td>
                       <td class="col-xs-5">
                         <select class="form-control first_option"  id="first_option_0" name="first_option[]">
@@ -128,7 +135,6 @@
                         </select>
                       </td>
                       <td class="col-xs-1 text-center">
-                        <!-- <span class="c-link"><i class="bttoncreate fa fa-edit  js-toggleForm"></i></span> -->
                         <span class="addBtn bttoncreate">
                           <i class="fa fa-plus"></i>
                         </span>

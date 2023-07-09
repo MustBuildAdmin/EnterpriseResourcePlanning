@@ -6,12 +6,12 @@
     <div class="col-auto ms-auto d-print-none">
        <div class="input-group-btn">
           <a href="#" data-size="xl"
-           data-url="{{ route('create_shop_drawing_list',["project_id"=>$project_id]) }}"
+           data-url="{{ route('create_shop_drawing_list',["projectid"=>$projectid]) }}"
            data-ajax-popup="true" data-title="{{__('Create Project Specifications Summary')}}"
            data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
           <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
           </a>
-          <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger"
+          <a href="{{ route('projects.show', $projectid) }}"  class="btn btn-danger"
            data-bs-toggle="tooltip" title="{{ __('Back') }}">
           <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
           </a>
@@ -23,7 +23,7 @@
           <div class="container-fluid">
              @can('manage project specification')
              <div class="table">
-                <table class="table" id="example2">
+                <table class="table" id="example2" aria-describedby="shop drawing list">
                    <thead class="">
                       <tr>
                          <th>{{__('S.No')}}</th>

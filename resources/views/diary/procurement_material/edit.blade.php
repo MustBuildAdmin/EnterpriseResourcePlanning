@@ -3,12 +3,12 @@
 		<form action="{{ route('update_procurement_material') }}" enctype="multipart/form-data" method="POST">
 			@csrf
 			<div class="container">
-				<input type="hidden" name="project_id" value="{{$project_id}}">
+				<input type="hidden" name="project_id" value="{{$projectid}}">
 				<input type="hidden" name="id" value="{{$data->id}}">
 				<div class="row">
 					<div class="form-group">
 						<label for="InputLIst"><b>PROCUREMENT, MATERIAL SUPPLIER & SUPPLY LOG STATUS</b> for the project of:</label>
-							<b>{{$project_name->project_name}}</b>
+							<b>{{$projectname->project_name}}</b>
 					</div>
 				</div>
 				<hr style="border: 1px solid black;">
@@ -120,7 +120,7 @@
 				</div>
 				
 				<table class="table" id="dynamicprocurement">
-					@forelse($pro_material_mutli as $mutli_data)
+					@forelse($promaterialmutli as $mutli_data)
 					<tr>
 						<td>
 							<h4 style="text-align: center;">{{__('Date Replied By Consultant:')}}</h4>

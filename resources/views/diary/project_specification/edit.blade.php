@@ -9,12 +9,12 @@
       <form action="{{ route('update_project_specification') }}" method="POST"  enctype="multipart/form-data" >
         @csrf
         <div class="container">
-            <input type="hidden" name="project_id" value="{{$project_id}}">
+            <input type="hidden" name="project_id" value="{{$projectid}}">
             <input type="hidden" name="id" value="{{$data->id}}">
           <div class="row">
             <div class="form-group">
               <label for="InputLIst"><b>SPECIFICATIONS</b> for the project of:</label>
-              <b>{{$project_name->project_name}}</b>
+              <b>{{$projectname->project_name}}</b>
             </div>
           </div>
           <hr style="border: 1px solid black;">

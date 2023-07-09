@@ -73,7 +73,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
             @can('manage procurement material')
             <div class="">
             <div class="container table-responsive-xl">
-              <table class="table" id="example2" >
+              <table class="table" id="example2" aria-describedby="procurement material">
                 <thead class="">
                 <tr>
                     <th>{{__('Sno')}}</th>

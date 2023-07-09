@@ -59,12 +59,12 @@ table.dataTable>tbody>tr.child span.dtr-title {
     <div class="col-auto ms-auto d-print-none">
       <div class="input-group-btn">
           <a class="btn btn-primary" href="#" data-size="xl"
-            data-url="{{ route('add_variation_scope_change',["project_id"=>$project_id]) }}"
+            data-url="{{ route('add_variation_scope_change',["projectid"=>$projectid]) }}"
             data-ajax-popup="true" data-title="{{__('Create VO/Change Order')}}"
             data-bs-toggle="tooltip" title="{{__('Create')}}">
             <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
           </a>
-          <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger"
+          <a href="{{ route('projects.show', $projectid) }}"  class="btn btn-danger"
            data-bs-toggle="tooltip" title="{{ __('Back') }}">
             <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
           </a>
@@ -77,7 +77,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
           @can('manage vochange')
           <div class="container table-responsive-xl">
              <!-- table data -->
-            <table class="table" id="example2">
+            <table class="table" id="example2" aria-describedby="vo_sca_change_order">
               <thead class="">
                 <tr>
                   <th>{{__('S.No')}}</th>
@@ -104,7 +104,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                 </tr>
               </thead>
               <tbody>
-                @foreach ($dairy_data as $key=>$data)
+                @foreach ($dairydata as $key=>$data)
                     @php
                          $check=$data->data;
                     @endphp
@@ -135,7 +135,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                     <div class="ms-2" style="display:flex;gap:10px;">
                       @can('edit vochange')
                       <a href="#"  class="btn btn-md bg-primary backgroundnone"
-                      data-url="{{ route('edit_variation_scope_change',["project_id"=>$project_id,"id"=>$data->id]) }}"
+                      data-url="{{ route('edit_variation_scope_change',["projectid"=>$projectid,"id"=>$data->id]) }}"
                       data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
                       title="{{__('Edit')}}" data-title="{{__('Edit VO or Change Order')}}">
                       <i class="ti ti-pencil text-white"></i>
@@ -145,7 +145,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
                       {!! Form::open(['method' => 'POST', 'route' => ['delete_variation_scope_change', $data->id],
                       'id'=>'delete-form-'.$data->id]) !!}
                       {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
-                      {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
+                      {{ Form::hidden('projectid',$projectid, ['class' => 'form-control']) }}
                       <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para"
                       data-bs-toggle="tooltip" title="{{__('Delete')}}">
                       <i class="ti ti-trash text-white mt-1"></i>

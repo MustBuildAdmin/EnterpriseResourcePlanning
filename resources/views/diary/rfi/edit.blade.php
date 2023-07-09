@@ -11,14 +11,15 @@
 </style>
 <div class="modal-body">
 	<div class="row">
-		<form id="edit_rfi" action="{{ route('update_rfi_info_status') }}" enctype="multipart/form-data" method="POST"> @csrf
+		<form id="edit_rfi" action="{{ route('update_rfi_info_status') }}" enctype="multipart/form-data" method="POST">
+			@csrf
 			<div class="container">
 				<input type="hidden" name="project_id" value="{{$project}}" />
-				<input type="hidden" name="edit_id" id="edit_id" value="{{$get_dairy->id}}">
+				<input type="hidden" name="edit_id" id="edit_id" value="{{$getdairy->id}}">
 				<div class="row">
-                    @if($get_dairy != null)
-                        @if($get_dairy->consulatant_data != null)
-                        @php $consulatant_data=json_decode($get_dairy->consulatant_data); @endphp
+                    @if($getdairy != null)
+                        @if($getdairy->consulatant_data != null)
+                        @php $consulatant_data=json_decode($getdairy->consulatant_data); @endphp
                         @else
                         @php $consulatant_data=array(); @endphp
                         @endif
@@ -33,7 +34,7 @@
 						<div class="col-md-4">
 							<label for="InputLIst">{{__('Contractor')}}</label>
 							<input type="text" name="contractor_name" class="form-control"
-							 placeholder="{{__('Contractor')}}" value="{{$get_dairy->contractor_name}}" />
+							 placeholder="{{__('Contractor')}}" value="{{$getdairy->contractor_name}}" />
                         </div>
 					</div>
 				</div>
@@ -67,14 +68,14 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('RFI Reference No')}}</label>
-							<input type="text" name="reference_no" value="{{$get_dairy->reference_no  ?? ''}}"
+							<input type="text" name="reference_no" value="{{$getdairy->reference_no  ?? ''}}"
 							 class="form-control" placeholder="{{__('RFI Reference No')}}" />
                         </div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Requested Date')}}</label>
-							<input type="date" name="requested_date" value="{{$get_dairy->requested_date  ?? ''}}"
+							<input type="date" name="requested_date" value="{{$getdairy->requested_date  ?? ''}}"
 							 class="form-control" placeholder="{{__('Referene')}}" />
                         </div>
 					</div>
@@ -83,7 +84,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="Input">{{__('Required Date')}}</label>
-							<input type="date" name="required_date" value="{{$get_dairy->required_date  ?? ''}}"
+							<input type="date" name="required_date" value="{{$getdairy->required_date  ?? ''}}"
 							 class="form-control" placeholder="{{__('RFI Reference No')}}" />
                         </div>
 					</div>
@@ -92,9 +93,9 @@
 							<label for="Input">{{__('Priority')}}</label>
 							<select name="priority" class="form-control">
 								<option value="">{{__('Select Priority')}}</option>
-								<option value="High" @if( 'High'==$get_dairy[ 'priority']){ selected }@endif>{{__('High')}}</option>
-								<option value="Normal" @if( 'Normal'==$get_dairy[ 'priority']){ selected }@endif>{{__('Normal')}}</option>
-								<option value="Unknown" @if( 'Unknown'==$get_dairy[ 'priority']){ selected }@endif>{{__('Unknown')}}</option>
+								<option value="High" @if( 'High'==$getdairy[ 'priority']){ selected }@endif>{{__('High')}}</option>
+								<option value="Normal" @if( 'Normal'==$getdairy[ 'priority']){ selected }@endif>{{__('Normal')}}</option>
+								<option value="Unknown" @if( 'Unknown'==$getdairy[ 'priority']){ selected }@endif>{{__('Unknown')}}</option>
 							</select>
 						</div>
 					</div>
@@ -105,8 +106,8 @@
 							<label for="Input">{{__('Cost Impact')}}</label>
 							<select name="cost_impact" class="form-control">
 								<option value="">{{__('Select Cost Impact')}}</option>
-								<option value="Yes" @if( 'Yes'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('Yes')}}</option>
-								<option value="No" @if( 'No'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('No')}}</option>
+								<option value="Yes" @if( 'Yes'==$getdairy[ 'cost_impact']){ selected }@endif>{{__('Yes')}}</option>
+								<option value="No" @if( 'No'==$getdairy[ 'cost_impact']){ selected }@endif>{{__('No')}}</option>
 							</select>
 						</div>
 					</div>
@@ -115,8 +116,8 @@
 							<label for="Input">{{__('Time impact')}}</label>
 							<select name="time_impact" class="form-control">
 								<option value="">{{__('Select Time impact')}}</option>
-								<option value="Yes" @if( 'Yes'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('Yes')}}</option>
-								<option value="No" @if( 'No'==$get_dairy[ 'cost_impact']){ selected }@endif>{{__('No')}}</option>
+								<option value="Yes" @if( 'Yes'==$getdairy[ 'cost_impact']){ selected }@endif>{{__('Yes')}}</option>
+								<option value="No" @if( 'No'==$getdairy[ 'cost_impact']){ selected }@endif>{{__('No')}}</option>
 							</select>
 						</div>
 					</div>
@@ -126,7 +127,7 @@
 						<div class="form-group">
 							<label for="Input">{{__('Description')}}</label>
 							<textarea name="description" class="form-control"
-							 row="3" placeholder="{{__('Description')}}">{{$get_dairy->description ?? ''}}</textarea>
+							 row="3" placeholder="{{__('Description')}}">{{$getdairy->description ?? ''}}</textarea>
 						</div>
 					</div>
 				</div>
@@ -137,7 +138,7 @@
 							<select name="select_the_consultants[]" id="choices-multiple1" class='chosen-select' required multiple>
 								<option value="" disabled>{{__('Select the Consultants')}}</option>
                                 @foreach ($consulatant_data as $conkey =>$con)
-								<option @if(str_contains($get_dairy->select_the_consultants,$con)) selected @endif
+								<option @if(str_contains($getdairy->select_the_consultants,$con)) selected @endif
 								value="{{$con}}">{{$con}}</option>
                                 @endforeach
                             </select>
@@ -147,12 +148,12 @@
 						<div class="form-group">
 							<label for="Input">{{__('Attachments')}}</label>
 							<input type="file" id="attachment_one" name="attachment_one" class="form-control">
-							<div>{{$get_dairy->attachment_one}}</div>
+							<div>{{$getdairy->attachment_one}}</div>
 						</div>
 					</div>
 				</div>
                 @php $key_count=1; @endphp
-                @forelse ($get_content as $key => $mutli_data)
+                @forelse ($getcontent as $key => $mutli_data)
 				<h4 style="text-align: center;font-weight:700;">{{__('Date Replied by the Consultants')}}</h4>
 				<hr>
 				<div class="row">
@@ -179,7 +180,7 @@
 					<div class="col-md-4">
 						<div class="form-group">
 							<label for="Input">{{__('Status')}}</label>
-							@if($get_sub_table==null)
+							@if($getsubtable==null)
 							<select name="status{{$key_count}}" class="form-control">
 								<option value="">{{__('Select Status')}}</option>
 								<option value="Clear">{{__('Clear')}}</option>
@@ -241,7 +242,7 @@
 						<div class="form-group">
 							<label for="Input">{{__('Replied Date')}}</label>
 							<input type="date" name="replied_date1" class="form-control"
-							 value="{{$get_sub_table->replied_date ?? ''}}" />
+							 value="{{$getsubtable->replied_date ?? ''}}" />
                         </div>
 					</div>
 					<div class="col-md-4">
@@ -412,23 +413,27 @@
 							'<div class="col-md-4">'+
 								'<div class="form-group">'+
 									'<label for="InputLIst">Consultant No.'+  ++k +'</label>'+
-									'<input type="text" name="data[consultant_'+ ++j +']" class="form-control" placeholder="Consultant No. '+ ++g +'" value="">'+
+									'<input type="text" name="data[consultant_'+ ++j +']" class="form-control"'+
+									'placeholder="Consultant No. '+ ++g +'" value="">'+
 								'</div>'+
 							'</div>'+
 							'<div class="col-md-4">'+
 								'<div class="form-group">'+
 									'<label for="input">Consultant No. '+ ++k +'</label>'+
-									'<input type="text" name="data[consultant_' + ++j + ']" placeholder="Consultant No. '+ ++g +'" class="form-control" value="">'+
+									'<input type="text" name="data[consultant_' + ++j + ']"'+
+									'placeholder="Consultant No. '+ ++g +'" class="form-control" value="">'+
 								'</div>'+
 							'</div>'+
 							'<div class="col-md-4">'+
 								'<div class="form-group">'+
 									'<label for="input">Consultant No. '+ ++k +'</label>'+
-									'<input type="text" name="data[consultant_' + ++j + ']" class="form-control" placeholder="Consultant No. '+ ++g +'" value="">'+
+									'<input type="text" name="data[consultant_' + ++j + ']" class="form-control"
+									 'placeholder="Consultant No. '+ ++g +'" value="">'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
-						'<button class="btn btn-secondary float-end" type="button" id="removedynamicprocure"> Remove Consultant </button>'+
+						'<button class="btn btn-secondary float-end" type="button"'+
+						 'id="removedynamicprocure"> Remove Consultant </button>'+
 					'</div>'+
 			'</td>'+
 			'</tr>'
