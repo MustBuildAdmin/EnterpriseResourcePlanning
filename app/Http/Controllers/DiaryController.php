@@ -2107,7 +2107,7 @@ class DiaryController extends Controller
                 "remarks" => $request->remarks,
                 "prepared_by" => $request->prepared_by,
                 "title" => $request->title,
-                "file_id" => $implode_file_id,
+                "file_id" => $implodefileid,
             ];
 
             SiteReport::where("id", $request->edit_id)

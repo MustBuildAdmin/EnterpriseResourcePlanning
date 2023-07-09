@@ -93,7 +93,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
           <div class="container-fluid">
              @can('manage project specification')
              <div class="table">
-                <table class="table" id="example2">
+                <table class="table" id="example2" aria-describedby="shop drawing">
                    <thead class="">
                       <tr>
                          <th>{{__('S.No')}}</th>
