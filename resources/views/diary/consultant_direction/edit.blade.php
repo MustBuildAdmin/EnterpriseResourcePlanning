@@ -64,6 +64,7 @@
               </div>
             </div>
             <table class="table" aria-describedby="directions">
+              <th></th>
               @foreach ($consultdirmulti as $key => $mutli_data)
               <tr>
                 <td>
@@ -124,6 +125,7 @@
             </table>
             @endforeach
             <table class="table" id="dynamicAddRemove" aria-describedby="initiator">
+              <th></th>
             </table>
             @if(!empty($initiatordate))
             <div class="col-md-12 mt-3">

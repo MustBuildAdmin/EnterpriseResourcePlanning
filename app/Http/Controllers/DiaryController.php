@@ -53,16 +53,16 @@ class DiaryController extends Controller
                     ->where("id", $projectid)
                     ->first();
 
-                $dairydata = ConsultantDirection::select(
-                    "consultant_directions.id",
-                    "consultant_directions.issued_by",
-                    "consultant_directions.issued_date",
-                    "consultant_directions.ad_ae_ref",
-                    "consultant_directions.ad_ae_decs",
-                    "consultant_directions.attach_file_name",
-                    "consultants_direction_multi.initiator_reference",
-                    "consultants_direction_multi.initiator_date"
-                )
+                    $dairydata = ConsultantDirection::select(
+                        "consultant_directions.id",
+                        "consultant_directions.issued_by",
+                        "consultant_directions.issued_date",
+                        "consultant_directions.ad_ae_ref",
+                        "consultant_directions.ad_ae_decs",
+                        "consultant_directions.attach_file_name",
+                        "consultants_direction_multi.initiator_reference",
+                        "consultants_direction_multi.initiator_date"
+                    )
                     ->leftJoin(
                         "consultants_direction_multi",
                         "consultants_direction_multi.consultant_id","=",
@@ -80,9 +80,7 @@ class DiaryController extends Controller
                 return view("diary.consultant_direction.index",compact("projectid", "dairydata", "projectname")
                 );
             } else {
-                return redirect()
-                    ->back()
-                    ->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
             return $e->getMessage();
@@ -142,9 +140,7 @@ class DiaryController extends Controller
                 if ($path["flag"] == 1) {
                     $url = $path["url"];
                 } else {
-                    return redirect()
-                        ->back()
-                        ->with("error", __($path["msg"]));
+                    return redirect()->back()->with("error", __($path["msg"]));
                 }
                 $data = [
                     "user_id" => $userid,
@@ -319,7 +315,7 @@ class DiaryController extends Controller
                     ->get();
                 if (count($checkinitiatorfile) != 0) {
                     foreach ($checkinitiatorfile as $file) {
-                        $initiator_file_name[] = $file->initiator_file_name;
+                        $initiatorfilename[] = $file->initiator_file_name;
                     }
                 }
             }
@@ -416,9 +412,7 @@ class DiaryController extends Controller
                 )
                 );
             } else {
-                return redirect()
-                    ->back()
-                    ->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
             return $e->getMessage();
@@ -478,9 +472,7 @@ class DiaryController extends Controller
 
                 return view("diary.rfi.index",compact("projectid", "dairydata"));
             } else {
-                return redirect()
-                    ->back()
-                    ->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (exception $e) {
             return $e->getMessage();
@@ -498,9 +490,7 @@ class DiaryController extends Controller
 
                 return view("diary.rfi.create",compact("project", "projectname"));
             } else {
-                return redirect()
-                    ->back()
-                    ->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (exception $e) {
             return $e->getMessage();
@@ -799,9 +789,7 @@ class DiaryController extends Controller
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()
-                    ->route("construction_main")
-                    ->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
             }
 
             if (\Auth::user()->can("manage project specification")) {
@@ -816,6 +804,7 @@ class DiaryController extends Controller
                     ->where("project_id", $projectid)
                     ->orderBy("id", "ASC")
                     ->get();
+
                 return view("diary.project_specification.index",compact("projectid", "dairydata"));
             } else {
                 return redirect()->back()->with("error", __("Permission denied."));
@@ -887,6 +876,7 @@ class DiaryController extends Controller
                 "drawing_reference" => $request->drawing_reference,
                 "remarks" => $request->remarks,
                 "attachment_file_name" => $fileNameToStore1,
+                "attachment_file_location"=>$url,
             ];
 
             ProjectSpecification::insert($savedata);
@@ -959,13 +949,14 @@ class DiaryController extends Controller
                 }
             } else {
               
-                $checkattachfile = ProjectSpecification::select("attachment_file_name")
+                $checkattachfile = ProjectSpecification::select("attachment_file_name","attachment_file_location")
                     ->where("id", $request->id)
                     ->where("user_id", $userid)
                     ->where("project_id", Session::get("project_id"))
                     ->first();
 
                 $filenameWithExt1 = $checkattachfile->attachment_file_name;
+                $url = $checkattachfile->attachment_file_location;
             }
           
 
@@ -978,6 +969,7 @@ class DiaryController extends Controller
                 "drawing_reference" => $request->drawing_reference,
                 "remarks" => $request->remarks,
                 "attachment_file_name" => $filenameWithExt1,
+                "attachment_file_location"=> $url,
             ];
 
             ProjectSpecification::where("id", $request->id)
@@ -1161,6 +1153,7 @@ class DiaryController extends Controller
 
             $alldata = [
                 "attachment_file" => $fileNameToStore1,
+                "attachment_file_path" => $url,
                 "project_id" => Session::get("project_id"),
                 "user_id" => $userid,
                 "data" => json_encode($data),
@@ -1229,16 +1222,18 @@ class DiaryController extends Controller
                 }
             } else {
                 $checkfilename = DB::table("variation_scope")
-                    ->select("attachment_file")
+                    ->select("attachment_file","attachment_file_path")
                     ->where("id", $request->id)
                     ->where("user_id", $userid)
                     ->where("project_id", Session::get("project_id"))
                     ->first();
                 $fileNameToStore1 = $checkfilename->attachment_file;
+                $url=$checkfilename->attachment_file_path;
             }
 
             $alldata = [
                 "attachment_file" => $fileNameToStore1,
+                "attachment_file_path"=> $url,
                 "project_id" => Session::get("project_id"),
                 "user_id" => $userid,
                 "data" => json_encode($data),
@@ -1401,9 +1396,7 @@ class DiaryController extends Controller
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()
-                    ->route("construction_main")
-                    ->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
             }
 
             if (\Auth::user()->type != "company") {

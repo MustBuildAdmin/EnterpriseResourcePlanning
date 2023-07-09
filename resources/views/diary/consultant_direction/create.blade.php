@@ -62,6 +62,7 @@
             </div>
           </div>
           <table class="table" id="dynamicAddRemove" aria-describedby="directions">
+            <th></th>
             <tr>
               <td>
                 <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action & Reply')}}</h4>

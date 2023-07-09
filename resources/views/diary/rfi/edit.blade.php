@@ -286,6 +286,7 @@
 				<br><br>
 				<div class="row">
 					<table class="table" id="dynamic_add_rfi" aria-describedby="rfi table">
+						<th></th>
 						<tr id="rfi_create">
 					</table>
 				</div>

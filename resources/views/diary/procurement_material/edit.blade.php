@@ -120,6 +120,7 @@
 				</div>
 				
 				<table class="table" id="dynamicprocurement" aria-describedby="procuremnt material">
+					<th></th>
 					@forelse($promaterialmutli as $mutli_data)
 					<tr>
 						<td>
