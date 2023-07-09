@@ -190,11 +190,24 @@
 								<option selected="" disabled="">{{__('Status')}}</option>
 								<option value="Approved With Comment"
 								 @if('Approved With Comment'==$data->status){ selected } @endif>
-								 {{__('Approved With Comment')}}</option>
-								<option value="Approved" @if('Approved'==$data->status){ selected } @endif>{{__('Approved')}}</option>
-								<option value="Rejected To Resubmit" @if('Rejected To Resubmit'==$data->status){ selected } @endif>{{__('Rejected To Resubmit')}}</option>
-								<option value="Approved Subject to Additional Info" @if('Approved Subject to Additional Info'==$data->status){ selected } @endif>{{__('Approved Subject to Additional Info')}}</option>
-								<option value="Pending" @if('Pending'==$data->status){ selected } @endif>{{__('Pending')}}</option>
+								 {{__('Approved With Comment')}}
+								</option>
+								<option value="Approved"
+								@if('Approved'==$data->status){ selected } @endif>
+								{{__('Approved')}}
+								</option>
+								<option value="Rejected To Resubmit"
+								 @if('Rejected To Resubmit'==$data->status){ selected } @endif>
+								 {{__('Rejected To Resubmit')}}
+								</option>
+								<option value="Approved Subject to Additional Info"
+								 @if('Approved Subject to Additional Info'==$data->status){ selected } @endif>
+								 {{__('Approved Subject to Additional Info')}}
+								</option>
+								<option value="Pending"
+								@if('Pending'==$data->status){ selected } @endif>
+								{{__('Pending')}}
+								</option>
 							</select>
 						</div>
 					</div>
