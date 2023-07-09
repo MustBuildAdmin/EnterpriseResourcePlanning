@@ -67,17 +67,7 @@
                 <input type="file" class="form-control document_setup"
                  name="attachment_file_name" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
                 <span class="show_document_error" style="color:red;"></span>
-                @php $documentPath=\App\Models\Utility::get_file('uploads/project_direction_summary'); @endphp
-                <br>
-                <table>
-                  <tr>
-                    <td> {{$data->attachment_file_name}}
-                      <a id="project_file" class="btn btn-primary" download
-                      href="{{ $documentPath . '/' . $data->attachment_file_name }}">
-                      <i class="ti ti-download text-white"></i> </a>
-                    </td>
-                  </tr>
-                </table>
+                {{$data->attachment_file_name}}
               </div>
             </div>
           </div>

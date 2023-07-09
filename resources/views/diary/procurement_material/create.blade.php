@@ -105,7 +105,7 @@
 				<div class="col-md-3 pull-right">
 					<button class="btn btn-primary" type="button" id="dynamic-procurement">{{__('Add Submission')}}</button>
 				</div>
-				<table class="table" id="dynamicprocurement">
+				<table class="table" id="dynamicprocurement" aria-describedby="procuremnt material">
 					<tr>
 						<td>
 							<h4 style="text-align: center;">{{__('Date Replied By Consultant:')}}</h4>

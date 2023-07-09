@@ -119,7 +119,7 @@
 					<button class="btn btn-primary" type="button" id="dynamic-procurement">{{__('Add Submission')}}</button>
 				</div>
 				
-				<table class="table" id="dynamicprocurement">
+				<table class="table" id="dynamicprocurement" aria-describedby="procuremnt material">
 					@forelse($promaterialmutli as $mutli_data)
 					<tr>
 						<td>
@@ -187,8 +187,10 @@
 						<div class="form-group">
 							<label for="input">{{__('Status')}} <span style='color:red;'>*</span></label>
 							<select class="form-select" aria-label="Default select example" name="status">
-								<option selected="" disabled="">Status</option>
-								<option value="Approved With Comment" @if('Approved With Comment'==$data->status){ selected } @endif>{{__('Approved With Comment')}}</option>
+								<option selected="" disabled="">{{__('Status')}}</option>
+								<option value="Approved With Comment"
+								 @if('Approved With Comment'==$data->status){ selected } @endif>
+								 {{__('Approved With Comment')}}</option>
 								<option value="Approved" @if('Approved'==$data->status){ selected } @endif>{{__('Approved')}}</option>
 								<option value="Rejected To Resubmit" @if('Rejected To Resubmit'==$data->status){ selected } @endif>{{__('Rejected To Resubmit')}}</option>
 								<option value="Approved Subject to Additional Info" @if('Approved Subject to Additional Info'==$data->status){ selected } @endif>{{__('Approved Subject to Additional Info')}}</option>

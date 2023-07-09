@@ -53,15 +53,33 @@
                    @if(isset($data->weather))
                     <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
                       <option value="" disabled>{{__('Select your option')}}</option>
-                      <option @if(str_contains($data->weather,'Clear')) selected @endif value="Windy">{{__('Clear')}}</option>
-                      <option @if(str_contains($data->weather,'Windy')) selected @endif value="Windy">{{__('Windy')}}</option>
-                      <option @if(str_contains($data->weather,'Cool')) selected @endif value="Cool">{{__('Cool')}}</option>
-                      <option @if(str_contains($data->weather,'Overcast')) selected @endif value="Overcast">{{__('Overcast')}}</option>
-                      <option @if(str_contains($data->weather,'Fog')) selected @endif value="Fog">{{__('Fog')}}</option>
-                      <option @if(str_contains($data->weather,'Warm')) selected @endif value="Warm">{{__('Warm')}}</option>
-                      <option @if(str_contains($data->weather,'Rain')) selected @endif value="Rain">{{__('Rain')}}</option>
-                      <option @if(str_contains($data->weather,'Cold')) selected @endif value="Cold">{{__('Cold')}}</option>
-                      <option @if(str_contains($data->weather,'Hot')) selected @endif value="Hot">{{__('Hot')}}</option>
+                      <option @if(str_contains($data->weather,'Clear')) selected @endif
+                         value="Windy">{{__('Clear')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Windy')) selected @endif
+                         value="Windy">{{__('Windy')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Cool')) selected @endif
+                         value="Cool">{{__('Cool')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Overcast')) selected @endif
+                         value="Overcast">{{__('Overcast')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Fog')) selected @endif
+                         value="Fog">{{__('Fog')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Warm')) selected @endif
+                         value="Warm">{{__('Warm')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Rain')) selected @endif
+                         value="Rain">{{__('Rain')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Cold')) selected @endif
+                         value="Cold">{{__('Cold')}}
+                      </option>
+                      <option @if(str_contains($data->weather,'Hot')) selected @endif
+                         value="Hot">{{__('Hot')}}
+                      </option>
                     </select>
                     @else
                     <select name="weather[]" id='choices-multiple1' class='chosen-select' multiple>
@@ -87,9 +105,15 @@
                     @if(isset($data->site_conditions))
                     <select name="site_conditions[]" id='choices-multiple1' class='chosen-select'  multiple>
                       <option value="" disabled>{{__('Select your option')}}</option>
-                      <option @if(str_contains($data->site_conditions,'Clear')) selected @endif value="Clear">{{__('Clear')}}</option>
-                      <option @if(str_contains($data->site_conditions,'Dusty')) selected @endif value="Dusty">{{__('Dusty')}}</option>
-                      <option @if(str_contains($data->site_conditions,'Muddy')) selected @endif value="Muddy">{{__('Muddy')}}</option>
+                      <option @if(str_contains($data->site_conditions,'Clear')) selected @endif
+                        value="Clear">{{__('Clear')}}
+                      </option>
+                      <option @if(str_contains($data->site_conditions,'Dusty')) selected @endif
+                         value="Dusty">{{__('Dusty')}}
+                      </option>
+                      <option @if(str_contains($data->site_conditions,'Muddy')) selected @endif
+                        value="Muddy">{{__('Muddy')}}
+                      </option>
                     </select>
                     @else
                     <select name="site_conditions[]" id='choices-multiple1' class='chosen-select'  multiple>
@@ -148,7 +172,7 @@
                 <h2>{{__('Contractors Personnel')}}</h2>
                 <br />
            
-                <table class="table tableadd form" id="dynamicTable">
+                <table class="table tableadd form" id="dynamicTable" aria-describedby="Contractors Personnel">
                   <thead>
                     <tr>
                       <th>{{__('Position')}}</th>
@@ -173,8 +197,14 @@
                       <td class="col-xs-5">
                         <select class="form-control first_option_0"  name="first_option[]">
                           <option value="" disabled selected>{{__('Select your option')}}</option>
-                          <option value="Direct Manpower" @if( 'Direct Manpower'==$display_sub[ 'option_method']){ selected }@endif>{{__('Direct Manpower')}}</option>
-                          <option value="InDirect Manpower" @if( 'InDirect Manpower'==$display_sub[ 'option_method']){ selected }@endif>{{__('InDirect Manpower')}}</option>
+                          <option value="Direct Manpower"
+                          @if( 'Direct Manpower'==$display_sub[ 'option_method']){ selected } @endif>
+                          {{__('Direct Manpower')}}
+                          </option>
+                          <option value="InDirect Manpower"
+                           @if( 'InDirect Manpower'==$display_sub[ 'option_method']){ selected } @endif>
+                           {{__('InDirect Manpower')}}
+                          </option>
                         </select>
                       </td>
                       @if ($sub_key == 0)
@@ -216,13 +246,22 @@
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
                   <label class="form-label">{{__('Total Indirect Manpower')}}:
-                    <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control" name="" id="total_in_power_one_dis" value="{{$data->total_in_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one" value="{{$data->total_in_power_one ?? ''}}"></label>
+                    <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control"
+                     name="" id="total_in_power_one_dis" value="{{$data->total_in_power_one ?? ''}}" disabled>
+                    <input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one"
+                     value="{{$data->total_in_power_one ?? ''}}">
+                  </label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control" name="" id="total_con_power_one_dis" value="{{$data->total_con_power_one ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_one" id="total_con_power_one" value="{{$data->total_con_power_one ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control"
+                     name="" id="total_con_power_one_dis" value="{{$data->total_con_power_one ?? ''}}" disabled>
+                    <input type="hidden" class="form-control" name="total_con_power_one"
+                      id="total_con_power_one" value="{{$data->total_con_power_one ?? ''}}">
+                  </label>
                 </div>
               </div>
             </div>
@@ -230,22 +269,32 @@
             <div class="col-md-12 l-section">
               <h2>{{__('Sub Contractors')}}</h2>
               <br />
-              <table class="table tableadd form" id="dynamicTable2">
+              <table class="table tableadd form" id="dynamicTable2" aria-describedby="Sub Contractors">
                 <thead>
                   <tbody>
                     @foreach ($data_sub1 as $sub_con_key=> $display_sub_con)
                     <tr id="">
                       <td class="col-xs-3">
-                        <input name="second_position[]" class="form-control second_position_0" type="text" placeholder="{{__('Enter Position Name')}}" value="{{$display_sub_con['position_name'] ?? ''}}"/>
+                        <input name="second_position[]" class="form-control second_position_0" type="text"
+                         placeholder="{{__('Enter Position Name')}}"
+                         value="{{$display_sub_con['position_name'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="second_person[]"  class="form-control second_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}" value="{{$display_sub_con['no_of_persons'] ?? ''}}"/>
+                        <input name="second_person[]"  class="form-control second_person_0" type="text"
+                         placeholder="{{__('Enter No Of Person Per Position')}}"
+                         value="{{$display_sub_con['no_of_persons'] ?? ''}}"/>
                       </td>
                       <td class="col-xs-5">
                         <select  class="form-control second_option_0"  name="second_option[]">
                           <option value="" disabled selected>{{__('Select your option')}}</option>
-                          <option value="Direct Manpower" @if( 'Direct Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>Direct Manpower</option>
-                          <option value="InDirect Manpower" @if( 'InDirect Manpower'==$display_sub_con[ 'option_method']){ selected }@endif>InDirect Manpower</option>
+                          <option value="Direct Manpower"
+                          @if( 'Direct Manpower'==$display_sub_con[ 'option_method']){ selected } @endif>
+                          {{__('Direct Manpower')}}
+                        </option>
+                          <option value="InDirect Manpower"
+                          @if( 'InDirect Manpower'==$display_sub_con[ 'option_method']){ selected } @endif>
+                          {{__('InDirect Manpower')}}
+                          </option>
                         </select>
                       </td>
                       @if ($sub_con_key == 0)
@@ -271,19 +320,34 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control" name="" id="total_di_power_two_dis" value="{{$data->total_di_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_di_power_two" id="total_di_power_two" value="{{$data->total_di_power_two ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control" name=""
+                    id="total_di_power_two_dis" value="{{$data->total_di_power_two ?? ''}}" disabled>
+                    <input type="hidden" class="form-control" name="total_di_power_two"
+                     id="total_di_power_two" value="{{$data->total_di_power_two ?? ''}}">
+                    </label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" placeholder="{{__('Total Indirect Manpower')}}" class="form-control" name="" id="total_in_power_two_dis" value="{{$data->total_in_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_in_power_two" id="total_in_power_two" value="{{$data->total_in_power_two ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}:
+                  <input type="text" placeholder="{{__('Total Indirect Manpower')}}" class="form-control"
+                   name="" id="total_in_power_two_dis" value="{{$data->total_in_power_two ?? ''}}" disabled>
+                   <input type="hidden" class="form-control" name="total_in_power_two"
+                    id="total_in_power_two" value="{{$data->total_in_power_two ?? ''}}">
+                  </label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input placeholder="{{__('Total Contractors Manpower')}}" type="text" class="form-control" name="" id="total_con_power_two_dis" value="{{$data->total_con_power_two ?? ''}}" disabled><input type="hidden" class="form-control" name="total_con_power_two" id="total_con_power_two" value="{{$data->total_con_power_two ?? ''}}"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}:
+                    <input placeholder="{{__('Total Contractors Manpower')}}" type="text" class="form-control"
+                     name="" id="total_con_power_two_dis" value="{{$data->total_con_power_two ?? ''}}" disabled>
+                     <input type="hidden" class="form-control" name="total_con_power_two"
+                      id="total_con_power_two" value="{{$data->total_con_power_two ?? ''}}">
+                  </label>
                 </div>
               </div>
             </div>
@@ -292,7 +356,7 @@
               <h2>{{__('Major Equipment on Project')}}</h2>
               <br />
             
-              <table class="table tableadd form" id="dynamicTable3">
+              <table class="table tableadd form" id="dynamicTable3" aria-describedby="Major Equipment on Project">
                 <thead>
                   <tr>
                     <th>{{__('Equipment Name')}}</th>
@@ -305,16 +369,27 @@
                   @foreach ($data_sub2 as $key =>$display_major_equi)
                   <tr id="">
                     <td class="col-xs-3">
-                      <input name="third_position[]" class="form-control third_position_0" type="text" placeholder="{{__('Enter Equipment Name')}}" value="{{$display_major_equi['position_name'] ?? ''}}"/>
+                      <input name="third_position[]" class="form-control third_position_0" type="text"
+                       placeholder="{{__('Enter Equipment Name')}}"
+                       value="{{$display_major_equi['position_name'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-3">
-                      <input name="third_person[]" class="form-control third_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}"  value="{{$display_major_equi['no_of_persons'] ?? ''}}"/>
+                      <input name="third_person[]" class="form-control third_person_0" type="text"
+                       placeholder="{{__('Enter No Of Person Per Position')}}"
+                       value="{{$display_major_equi['no_of_persons'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-5">
-                      <input name="hours[]" class="form-control hours" id="hours_0" type="text" placeholder="{{__('Enter No Of Hours/Day')}}" value="{{$display_major_equi['hours'] ?? ''}}"/>
+                      <input name="hours[]" class="form-control hours" id="hours_0" type="text"
+                       placeholder="{{__('Enter No Of Hours/Day')}}"
+                       value="{{$display_major_equi['hours'] ?? ''}}"/>
                     </td>
                     <td class="col-xs-3">
-                      <input class="form-control total_hours_sub" id="total_hours_sub_0" type="text" placeholder="{{__('Enter No of Hours/Day')}}"  value="{{$display_major_equi['total_hours'] ?? ''}}" disabled/><input name="total_hours[]" class="form-control total_hours" id="total_hours_0" type="hidden" placeholder="Enter Total Hours/Day"  value="{{$display_major_equi['total_hours'] ?? ''}}"/>
+                      <input class="form-control total_hours_sub" id="total_hours_sub_0" type="text"
+                       placeholder="{{__('Enter No of Hours/Day')}}"
+                       value="{{$display_major_equi['total_hours'] ?? ''}}" disabled/>
+                       <input name="total_hours[]" class="form-control total_hours" id="total_hours_0"
+                        type="hidden" placeholder="Enter Total Hours/Day"
+                        value="{{$display_major_equi['total_hours'] ?? ''}}"/>
                     </td>
                     @if($key == 0)
                       <td class="col-xs-1 text-center">
@@ -341,14 +416,18 @@
               </label>
               <div class="choose-file ">
                 <label for="document" class="form-label">
-                  <input name="attachements[]" type="file" class="form-control" name="document" id="document" data-filename="document_create"  multiple>
+                  <input name="attachements[]" type="file" class="form-control" name="document"
+                   id="document" data-filename="document_create"  multiple>
                   <input type="hidden" name="existing_file_id" value="{{$data->file_id ?? ''}}">
                   @php
                       $file_explode = explode(',',$data->file_name);
                   @endphp
                   @forelse ($file_explode as $file_show)
                       @if($file_show != "")
-                          <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}</span> <br>
+                          <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">
+                            {{$file_show}}
+                          </span>
+                          <br>
                       @else
                           -
                       @endif
@@ -361,16 +440,20 @@
             </div>
             <div class="col-md-12">
               {{Form::label('Remarks',__('Remarks'),array('class'=>'form-label')) }}
-              <textarea name="remarks" placeholder="{{__('Remarks')}}" class="form-control" rows="5" style="height: 200px;">{{$data->remarks ?? ''}}</textarea>
+              <textarea name="remarks" placeholder="{{__('Remarks')}}" class="form-control"
+               rows="5" style="height: 200px;">{{$data->remarks ?? ''}}
+              </textarea>
             </div>
             <div class="row">
             <div class="col-md-6">
               {{Form::label('Prepared By',__('Prepared By'),array('class'=>'form-label')) }}
-              <input name="prepared_by" placeholder="{{__('Prepared By')}}" class="form-control" type="text" value="{{$data->prepared_by ?? ''}}"/>
+              <input name="prepared_by" placeholder="{{__('Prepared By')}}" class="form-control"
+               type="text" value="{{$data->prepared_by ?? ''}}"/>
             </div>
             <div class="col-md-6">
               {{Form::label('Title',__('Title'),array('class'=>'form-label')) }}
-              <input name="title" placeholder="{{__('Title')}}" class="form-control" type="text" value="{{$data->title ?? ''}}" />
+              <input name="title" placeholder="{{__('Title')}}" class="form-control"
+               type="text" value="{{$data->title ?? ''}}" />
             </div>
             </div>
             <br />
@@ -408,10 +491,12 @@
         $("#dynamicTable").append(
           '<tr>'+
             '<td>'+
-              '<input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position" id="first_position_'+i+'"/>'+
+              '<input type="text" name="first_position[]" placeholder="Enter Position Name"'+
+               'class="form-control first_position" id="first_position_'+i+'"/>'+
             '</td>'+
             '<td>'+
-              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person" id="first_person_'+i+'" />'+
+              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position"'+
+              'class="form-control first_person" id="first_person_'+i+'" />'+
             '</td>'+
             '<td>'+
               '<select class="form-control first_option" id="first_option_'+i+'" name="first_option[]">'+
@@ -428,9 +513,9 @@
           '</tr>');
     });
       
-    $(document).on('click', '.remove-tr', function(){  
+    $(document).on('click', '.remove-tr', function(){
         $(this).parents('tr').remove();
-    });  
+    });
 
     var j = 0;
     
@@ -441,10 +526,12 @@
         $("#dynamicTable2").append(
           '<tr>'+
             '<td>'+
-                '<input type="text" name="second_position[]" placeholder="Enter Position Name" class="form-control second_position" id="second_position_'+j+'" />'+
+                '<input type="text" name="second_position[]" placeholder="Enter Position Name"'+
+                 'class="form-control second_position" id="second_position_'+j+'" />'+
             '</td>'+
             '<td>'+
-                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position" class="form-control second_person" id="second_person_'+j+'" />'+
+                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position"'+
+                 'class="form-control second_person" id="second_person_'+j+'" />'+
             '</td>'+
             '<td>'+
                 '<select id="second_option_'+i+'" class="form-control second_option" name="second_option[]" >'+
@@ -472,16 +559,22 @@
     $("#dynamicTable3").append(
       '<tr>'+
         '<td>'+
-            '<input type="text" name="third_position[]" placeholder="Enter Position Name" id="third_position_'+K+'" class="form-control third_position" />'+
+            '<input type="text" name="third_position[]" placeholder="Enter Position Name"'+
+             'id="third_position_'+K+'" class="form-control third_position" />'+
         '</td>'+
         '<td>'+
-            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/>'+
+            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position"'+
+             'class="form-control third_person" id="third_person_'+K+'"/>'+
         '</td>'+
         '<td>'+
-          '<input type="text" name="hours[]" placeholder="Enter No Of Hours/Day" class="form-control hours" id="hours'+K+'"/>'+
+          '<input type="text" name="hours[]" placeholder="Enter No Of Hours/Day" class="form-control hours"'+
+           'id="hours'+K+'"/>'+
         '</td>'+
         '<td>'+
-          '<input type="text" name="" placeholder="Enter Total No Of Hours/Day" class="form-control total_hours_sub" id="total_hours_sub'+K+'" disabled/><input type="hidden" name="total_hours[]" placeholder="Enter Total No Of Hours/Day" class="form-control total_hours" id="total_hours'+K+'"/>'+
+          '<input type="text" name="" placeholder="Enter Total No Of Hours/Day" '+
+           ' class="form-control total_hours_sub" id="total_hours_sub'+K+'" disabled/>'+
+           '<input type="hidden" name="total_hours[]" placeholder="Enter Total No Of Hours/Day"'+
+            'class="form-control total_hours" id="total_hours'+K+'"/>'+
         '</td>'+
         '<td>'+
             '<span class="remove-ba bttoncreate">'+

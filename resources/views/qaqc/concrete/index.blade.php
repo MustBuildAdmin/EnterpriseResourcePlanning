@@ -130,7 +130,8 @@ h3, .h3 {
                             </a>
                           @endcan
                           @can('delete concrete')
-                          {!! Form::open(['method' => 'POST', 'route' => ['concrete.delete_concrete', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                          {!! Form::open(['method' => 'POST', 'route' => ['concrete.delete_concrete',
+                          $data->id],'id'=>'delete-form-'.$data->id]) !!}
                           {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
                           {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                           <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para"

@@ -117,7 +117,8 @@ table.dataTable>tbody>tr.child span.dtr-title {
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 @can('edit procurement material')
                                     <a href="#"  class="btn btn-md bg-primary backgroundnone"
-                                     data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,"id"=>$data->id]) }}"
+                                     data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,
+                                     "id"=>$data->id]) }}"
                                       data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
                                       title="{{__('Edit')}}"
                                       data-title="{{__('Edit Procurement Material Supply Log')}}">
@@ -125,13 +126,15 @@ table.dataTable>tbody>tr.child span.dtr-title {
                                     </a>
                                 @endcan
                                 @can('delete procurement material')
-                                    {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                                    {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material',
+                                     $data->id],'id'=>'delete-form-'.$data->id]) !!}
                                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
                                     {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
                                         <a href="#" class="btn btn-md btn-danger bs-pass-para"
                                         data-bs-toggle="tooltip" title="{{__('Delete')}}"
                                         data-original-title="{{__('Delete')}}"
-                                        data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}">
+                                        data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone.
+                                        Do you want to continue?')}}">
                                         <i class="ti ti-trash text-white"></i></a>
                                     {!! Form::close() !!}
                                 @endcan
@@ -183,13 +186,16 @@ table.dataTable>tbody>tr.child span.dtr-title {
                             '<div class="col-md-4">'+
                                 '<div class="form-group">'+
                                     '<label for="input">No of Submissions</label>'+
-                                    '<input type="text" name="" placeholder="No of Submissions" class="form-control number" value="'+j+'" disabled>'+
-                                    '<input type="hidden" name="no_of_submission[]" placeholder="No of Submissions" class="form-control number" value="'+j+'">'+
+                                    '<input type="text" name="" placeholder="No of Submissions"'+
+                                     'class="form-control number" value="'+j+'" disabled>'+
+                                    '<input type="hidden" name="no_of_submission[]" placeholder="No of Submissions"'+
+                                    'class="form-control number" value="'+j+'">'+
                                 '</div>'+
                             '</div>'+
                         '</div>'+
                         '<div class="col-md-3 pull-right">'+
-                            '<button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button>'+
+                            '<button class="btn btn-secondary" type="button" id="removedynamicprocurement">'+
+                                'Remove Submission </button>'+
                         '</div>'+
                     '</div>'+
                 '</td>'+

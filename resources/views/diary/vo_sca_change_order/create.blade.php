@@ -153,7 +153,8 @@
         <div class="col-xs-6">
           <div class="form-group">
             <label for="InputATTACHMENTS:">{{__('Attachments')}}</label>
-            <input type="file" name="attachment_file" class="form-control document_setup" placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+            <input type="file" name="attachment_file" class="form-control document_setup"
+             placeholder="Text input"  accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
             <span class="show_document_error" style="color:red;"></span>
           </div>
         </div>
@@ -208,9 +209,6 @@ $(".approved_omission_cost,.approved_addition_cost").on("keydown keyup", sum);
 
 });
 
-
-
-
 $('.claimed_omission_cost,.claimed_net_amount,.approved_omission_cost,.approved_net_cost').alphanum({
 			allow              : '(,),-',    // Allow extra characters
 			allowUpper         : false,  // Allow upper case characters
@@ -228,6 +226,5 @@ $('.claimed_addition_cost,.approved_addition_cost').alphanum({
 			forceLower         : false, // Convert upper case characters to lower case
 			allowLatin         : false,
 });
-
 
 </script>

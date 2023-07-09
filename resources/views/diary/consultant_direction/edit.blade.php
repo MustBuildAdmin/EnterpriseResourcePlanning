@@ -63,7 +63,7 @@
                 </div>
               </div>
             </div>
-            <table class="table">
+            <table class="table" aria-describedby="directions">
               @foreach ($consultdirmulti as $key => $mutli_data)
               <tr>
                 <td>
@@ -96,9 +96,18 @@
                       <label for="InputRemarks">{{__('Status')}}</label>
                       <select name="replier_status[]" class="form-control" aria-label="Default select example">
                         <option selected disabled>{{__('Select Status')}}</option>
-                        <option value="clear" @if('clear'==$mutli_data['replier_status']){ selected }@endif>{{__('Clear')}}</option>
-                        <option value="pending" @if('pending'==$mutli_data['replier_status']){ selected }@endif>{{__('Pending')}}</option>
-                        <option value="withdrawn" @if('withdrawn'==$mutli_data['replier_status']){ selected }@endif>{{__('Withdrawn')}}</option>
+                        <option value="clear"
+                        @if('clear'==$mutli_data['replier_status']){ selected } @endif>
+                        {{__('Clear')}}
+                        </option>
+                        <option value="pending"
+                        @if('pending'==$mutli_data['replier_status']){ selected } @endif>
+                        {{__('Pending')}}
+                        </option>
+                        <option value="withdrawn"
+                        @if('withdrawn'==$mutli_data['replier_status']){ selected } @endif>
+                        {{__('Withdrawn')}}<
+                        /option>
                       </select>
                     </div>
                     <div class="col-12 mt-3">
@@ -108,18 +117,13 @@
                         placeholder="{{__('Remarks/ Notes')}}">{{ $mutli_data['replier_remark'] }}</textarea>
                       </div>
                     </div>
-                    {{-- <div class="col-md-12 mt-3">
-                      <label for="InputRemarks">{{__('Attachment')}}</label>
-                      <input  type="file" name="replier_file_name[]" id="" class="form-control"  />
-                      <span>{{ $mutli_data['replier_file_name'] }}</span>
-                    </div> --}}
                   </div>
                 </td>
               </tr>
          
             </table>
             @endforeach
-            <table class="table" id="dynamicAddRemove">
+            <table class="table" id="dynamicAddRemove" aria-describedby="initiator">
             </table>
             @if(!empty($initiatordate))
             <div class="col-md-12 mt-3">

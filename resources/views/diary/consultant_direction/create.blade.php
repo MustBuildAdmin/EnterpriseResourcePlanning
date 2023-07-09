@@ -61,7 +61,7 @@
               </div>
             </div>
           </div>
-          <table class="table" id="dynamicAddRemove">
+          <table class="table" id="dynamicAddRemove" aria-describedby="directions">
             <tr>
               <td>
                 <h4 style="text-align: center; font-weight: 700">{{__('Initiator Action & Reply')}}</h4>
@@ -87,23 +87,7 @@
                     <span class="show_document_error" style="color:red;"></span>
                   </div>
                 </div>
-                {{-- <h4 style="text-align: center; font-weight: 700;">Replier:</h4>
-                <div class="row mb-3">
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="InputReference">Reference <span style='color:red;'>*</span></label>
-                      <input type="text" name="replier_reference[]"
-                      class="form-control" placeholder="Enter your  Reference" required />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="Inputdate">Date <span style='color:red;'>*</span></label>
-                      <input type="date" name="replier_date[]"
-                      class="form-control" placeholder="Enter your  Date" required/>
-                    </div>
-                  </div>
-                </div> --}}
+              
                 <div class="row">
                   <div class="col form-group">
                     <label for="InputRemarks">{{__('Status')}}</label>
@@ -122,10 +106,6 @@
                       placeholder="{{__('Remarks/ Notes')}}" required></textarea>
                     </div>
                   </div>
-                  {{-- <div class="col-md-12 mt-3">
-                    <label for="InputRemarks">{{__('Attachment')}}</label>
-                    <input  type="file" name="replier_file_name[]" class="form-control"  />
-                  </div> --}}
                 </div>
               </td>
             </tr>

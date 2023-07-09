@@ -132,7 +132,9 @@
             <div class="col-md-4">
               <label for="Input">{{__('Addition Cost')}}</label>
               <input name="approved_addition_cost" placeholder="{{__('Addition Cost')}}"
-               value="@if($id!='' && $dairy_data->approved_addition_cost!=''){{$dairy_data->approved_addition_cost}}@endif"
+                value="@if($id!='' && $dairy_data->approved_addition_cost!='')
+                {{$dairy_data->approved_addition_cost}}
+                @endif"
                type="text" class="form-control approved_addition_cost" >
             </div>
             <div class="col-md-4">

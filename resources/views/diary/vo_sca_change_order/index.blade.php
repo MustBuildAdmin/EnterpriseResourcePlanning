@@ -291,5 +291,5 @@ table.dataTable>tbody>tr.child span.dtr-title {
       });
 
 });
-      
+
 </script>

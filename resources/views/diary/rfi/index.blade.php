@@ -115,7 +115,8 @@ table.dataTable>tbody>tr.child span.dtr-title {
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 @can('edit RFI')
                                     <a href="#"  class="btn btn-md backgroundnone"
-                                     data-url="{{ route('edit_rfi_info_status',["projectid"=>$projectid,"id"=>$data->id]) }}"
+                                     data-url="{{ route('edit_rfi_info_status',["projectid"=>$projectid,
+                                     "id"=>$data->id]) }}"
                                      data-ajax-popup="true" data-size="xl"
                                      data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit RFI')}}">
                                     <i class="ti ti-pencil text-white"></i></a>
@@ -127,7 +128,8 @@ table.dataTable>tbody>tr.child span.dtr-title {
                                     {{ Form::hidden('projectid',$projectid, ['class' => 'form-control']) }}
                                         <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip"
                                          title="{{__('Delete')}}" data-original-title="{{__('Delete')}}"
-                                         data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}">
+                                         data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone.
+                                         Do you want to continue?')}}">
                                          <i class="ti ti-trash text-white"></i>
                                         </a>
                                     {!! Form::close() !!}

@@ -127,13 +127,24 @@ h3, .h3 {
                   <td>
                       <div class="ms-2" style="display:flex;gap:10px;">
                           @can('edit site reports')
-                              <a class="btn btn-md bg-primary backgroundnone" href="{{route('daily_reportsedit',Crypt::encrypt($data_report->id))}}"   title="{{__('Edit Site Report')}}" data-title="{{__('Edit Site Report')}}"><i class="ti ti-pencil text-white"></i></a>
+                              <a class="btn btn-md bg-primary backgroundnone"
+                                href="{{route('daily_reportsedit',Crypt::encrypt($data_report->id))}}"
+                                title="{{__('Edit Site Report')}}" data-title="{{__('Edit Site Report')}}">
+                                <i class="ti ti-pencil text-white"></i>
+                              </a>
                           @endcan
                           @can('delete site reports')
-                              {!! Form::open(['method' => 'POST', 'route' => ['delete_site_reports', $data_report->id],'id'=>'delete-form-'.$data_report->id]) !!} 
+                              {!! Form::open(['method' => 'POST', 'route' => ['delete_site_reports',
+                               $data_report->id],'id'=>'delete-form-'.$data_report->id]) !!}
                               {{ Form::hidden('id',$data_report->id, ['class' => 'form-control']) }}
                               {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
-                                  <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
+                                  <a href="#" class="btn btn-md btn-danger bs-pass-para"
+                                   data-bs-toggle="tooltip" title="{{__('Delete')}}"
+                                   data-original-title="{{__('Delete')}}"
+                                   data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone.
+                                   Do you want to continue?')}}">
+                                   <i class="ti ti-trash text-white"></i>
+                                  </a>
                               {!! Form::close() !!}
                           @endcan
                       </div>

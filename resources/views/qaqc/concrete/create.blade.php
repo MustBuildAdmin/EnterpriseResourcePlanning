@@ -12,7 +12,7 @@
   <div class="row">
     <div class="container">
       <h3 style="text-align: center; font-weight: 500">
-        {{__('MONTHLY REPORT BY PROJECT ENGINEERS / SITE ENGINEERS')}} 
+        {{__('MONTHLY REPORT BY PROJECT ENGINEERS / SITE ENGINEERS')}}
       </h3>
      
       <form class="" action="{{ route('concrete.save_concrete_pouring') }}" enctype="multipart/form-data" method="POST">

@@ -192,11 +192,17 @@
 							@else
 							<select name="status{{$key_count}}" class="form-control">
 								<option value="">{{__('Select Status')}}</option>
-								<option value="Clear" @if( 'Clear'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Clear')}}</option>
-								<option value="Close" @if( 'Close'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Close')}}</option>
-								<option value="Pending" @if( 'Pending'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Pending')}}</option>
-								<option value="Rejected" @if( 'Rejected'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Rejected')}}</option>
-								<option value="Withdrawn" @if( 'Withdrawn'==$mutli_data[ 'status'] ?? ''){ selected }@endif>{{__('Withdrawn')}}</option>
+								<option value="Clear" @if( 'Clear'==$mutli_data[ 'status'] ?? ''){ selected } @endif>{{__('Clear')}}</option>
+								<option value="Close" @if( 'Close'==$mutli_data[ 'status'] ?? ''){ selected } @endif>{{__('Close')}}</option>
+								<option value="Pending"
+								 @if( 'Pending'==$mutli_data[ 'status'] ?? ''){ selected } @endif>{{__('Pending')}}</option>
+								<option value="Rejected" @if( 'Rejected'==$mutli_data[ 'status'] ?? ''){ selected } @endif>
+									{{__('Rejected')}}
+								</option>
+								<option value="Withdrawn"
+								@if( 'Withdrawn'==$mutli_data[ 'status'] ?? ''){ selected } @endif>
+								{{__('Withdrawn')}}
+								</option>
 							</select>
                             @endif
                         </div>
@@ -279,7 +285,7 @@
 				<button class="btn btn-primary float-end" type="button" id="dynamic-rfi">{{__('Add More')}}</button>
 				<br><br>
 				<div class="row">
-					<table class="table" id="dynamic_add_rfi">
+					<table class="table" id="dynamic_add_rfi" aria-describedby="rfi table">
 						<tr id="rfi_create">
 					</table>
 				</div>
@@ -335,7 +341,8 @@
                             	'<div class="col-md-4">'+
 									'<div class="form-group">'+
 										'<label for="Input">Name of Consultant</label>'+
-										'<select name="name_of_consulatant' + i + '[]"   class="chosen-select name_of_consulatant_' + i + '" multiple style="width: 309px;">'+
+										'<select name="name_of_consulatant' + i + '[]"'+
+										   'class="chosen-select name_of_consulatant_' + i + '" multiple style="width: 309px;">'+
 											'<option value="Select the Consultants" >Select the Consultants</option>"'+data+'"'+
 										'</select>'+
                             		'</div>'+
@@ -370,12 +377,13 @@
 								'<div class="col-md-6">'+
 									'<div class="form-group">'+
 										'<label for="Input">Attachments</label>'+
-										'<input type="file" name="attachments_two' + i + '" class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">'+
+										'<input type="file" name="attachments_two' + i + '"'+
+										 'class="form-control document_setup" accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">'+
 										'<span class="show_document_error" style="color:red;"></span>'+
 									'</div>'+
 								'</div>'+
 							'</div>'+
-                            '<button class="btn btn-danger remove-input-field float-end" type="button" >Delete</button>'+
+                            '<button class="btn btn-danger remove-input-field float-end" type="button">Delete</button>'+
                         '</td>'+
                     '</tr>');
 
