@@ -45,7 +45,7 @@ class TrainingTypeController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
+                                   'name' => 'required|unique:training_types',
                                ]
             );
             if($validator->fails())
@@ -107,7 +107,7 @@ class TrainingTypeController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required',
+                                       'name' => 'required|unique:training_types',
 
                                    ]
                 );
