@@ -24,7 +24,7 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Update')}}" class="btn btn-primary submit_button">
+    <input type="submit" id="edit_training" value="{{__('Update')}}" class="btn btn-primary submit_button">
 </div>
 {{Form::close()}}
 
@@ -51,6 +51,9 @@
                     alert("Request: "+JSON.stringify(request));
                 }
             });
+        });
+        $(document).on('submit', 'form', function() {
+            $('#edit_training').attr('disabled', 'disabled');
         });
     });
 </script>

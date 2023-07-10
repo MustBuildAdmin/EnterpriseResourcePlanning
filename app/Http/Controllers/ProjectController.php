@@ -722,7 +722,7 @@ class ProjectController extends Controller
                 // end
                 $project_data = [];
                 // Task Count
-                $tasks = Con_task::where('project_id',$project->id)->get();
+                $tasks = Con_task::where('project_id',$project->id)->where('instance_id',$project->instance_id)->get();
                 $project_task         = $tasks->count();
                 $completedTask = Con_task::where('project_id',$project->id)->where('progress',100)->get();
 
@@ -907,8 +907,7 @@ class ProjectController extends Controller
                 $notfinished=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->where('progress','!=','100')->count();
                 $completed_task=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->where('progress','100')->count();
 
-                $ongoing_task=Con_task::where('project_id',$project->id)->where('type','task')->where('end_date','<',$cur)->whereBetween('progress', ['0', '100'])->count();
-
+                $ongoing_task=Con_task::where('project_id',$project->id)->where('type','task')->where('progress','<',100)->where('progress','>',0)->count();
 
                 return view('construction_project.dashboard',compact('project','ongoing_task','project_data','total_sub','actual_percentage','workdone_percentage','current_Planed_percentage','not_started','notfinished','remaining_working_days','completed_task'));
                // return view('projects.view',compact('project','project_data'));
