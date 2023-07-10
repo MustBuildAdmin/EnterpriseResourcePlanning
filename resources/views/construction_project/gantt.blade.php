@@ -523,21 +523,21 @@ $holidays=implode(':',$holidays);
 	gantt.config.auto_scheduling_compatibility = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
-		var today = new Date(2018, 3, 5);
-		gantt.addMarker({
-			start_date: today,
-			css: "today",
-			text: "Today",
-			title: "Today: " + dateToStr(today)
-		});
+		var today = new Date();
+		// gantt.addMarker({
+		// 	start_date: today,
+		// 	css: "today",
+		// 	text: "Today",
+		// 	title: "Today: " + dateToStr(today)
+		// });
 
-		var start = new Date(2018, 2, 28);
-		gantt.addMarker({
-			start_date: start,
-			css: "status_line",
-			text: "Start project",
-			title: "Start project: " + dateToStr(start)
-		});
+		var start = new Date();
+		// gantt.addMarker({
+		// 	start_date: start,
+		// 	css: "status_line",
+		// 	text: "Start project",
+		// 	title: "Start project: " + dateToStr(start)
+		// });
 		gantt.config.scale_height = 50;
 		gantt.templates.task_class = gantt.templates.grid_row_class = gantt.templates.task_row_class = function (start, end, task) {
 			if (gantt.isSelectedTask(task.id))
