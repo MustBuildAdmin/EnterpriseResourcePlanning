@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Construction_project;
+use App\Http\Controllers\ActivityController;
 use App\Models\Project;
 use App\Models\ConcretePouring;
 use Illuminate\Http\Request;
@@ -166,6 +167,12 @@ class DiaryController extends Controller
                     $user_id = \Auth::user()->id;
                 }
 
+                $ConsultantDirection = ConsultantDirection::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->first();
+
+                if($ConsultantDirection != null){
+                    ActivityController::activity_store(Auth::user()->id, $request->project_id, "Deleted Consultant", $ConsultantDirection->issued_by);
+                }
+
                 ConsultantDirection::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();
 
                 ConsultantsDirectionMulti::where('consultant_id',$request->id)->delete();
@@ -308,6 +315,8 @@ class DiaryController extends Controller
                         ConsultantsDirectionMulti::insert($data2);
                     }
                 }
+
+                ActivityController::activity_store(Auth::user()->id, $request->project_id, "Added New Consultant", $request->issued_by);
 
                 return redirect()->back()->with("success", __("Consultants directions summary created successfully."));
             }
@@ -516,6 +525,8 @@ class DiaryController extends Controller
                     // }
                 }
             }
+
+            ActivityController::activity_store(Auth::user()->id, $request->project_id, "Updated Consultant", $request->issued_by);
           
             return redirect()->back()->with("success", __("Consultants directions summary updated successfully."));
         } catch (Exception $e) {
@@ -601,6 +612,8 @@ class DiaryController extends Controller
             );
           
             RFIStatusSave::insert($data);
+
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New RFIStatus", $request->contractor_name);
 
             return redirect()->back()->with("success", __("RFI created successfully."));
           
@@ -830,6 +843,8 @@ class DiaryController extends Controller
                 
                 }
 
+                ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated RFIStatus", $request->contractor_name);
+
             return redirect()->back()->with("success", __("RFI updated successfully."));
 
         } catch (Exception $e) {
@@ -880,6 +895,12 @@ class DiaryController extends Controller
                 }
                 else{
                     $user_id = \Auth::user()->id;
+                }
+
+                $rfistatus = RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->first();
+
+                if($rfistatus != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted RFIStatus", $rfistatus->contractor_name);
                 }
            
                 RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
@@ -1022,6 +1043,8 @@ class DiaryController extends Controller
 
             ProjectSpecification::insert($save_data);
 
+            ActivityController::activity_store(Auth::user()->id, $request->project_id, "Added New ProjectSpecification", $request->reference_no);
+
             return redirect()->back()->with("success", __("Project specification summary created Successfully."));
 
         }
@@ -1140,6 +1163,8 @@ class DiaryController extends Controller
                                   ->where('project_id',$request->project_id)
                                   ->update($update_data);
 
+            ActivityController::activity_store(Auth::user()->id, $request->project_id, "Updated ProjectSpecification", $request->reference_no);
+
             return redirect()->back()->with("success", __("Project specification summary updated Successfully."));
 
 
@@ -1166,6 +1191,11 @@ class DiaryController extends Controller
                 }
                 else{
                     $user_id = \Auth::user()->id;
+                }
+
+                $ProjectSpecification = ProjectSpecification::where('id', $request->id)->where('project_id',$request->project_id)->where('user_id',$user_id)->first();
+                if($ProjectSpecification != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated ProjectSpecification", $ProjectSpecification->reference_no);
                 }
 
                 ProjectSpecification::where('id', $request->id)
@@ -1360,6 +1390,7 @@ class DiaryController extends Controller
 
             DB::table('variation_scope')->insert($all_data);
 
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New Variation Scope", $request->issued_by);
          
             return redirect()->back()->with("success",__("Vo/Change Order created successfully."));
            
@@ -1442,7 +1473,8 @@ class DiaryController extends Controller
 
             DB::table('variation_scope')->where('id',$request->id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->update($all_data);
 
-         
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated Variation Scope", $request->issued_by);
+
             return redirect()->back()->with("success",__("Vo/Change Order created successfully."));
 
         } catch (Exception $e) {
@@ -1462,6 +1494,11 @@ class DiaryController extends Controller
                 }
                 else{
                     $user_id = \Auth::user()->id;
+                }
+
+                $variation_scope = DB::table('variation_scope')->where('id',$request->id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->first();
+                if($variation_scope != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted Variation Scope", $variation_scope->issued_by);
                 }
 
                 DB::table('variation_scope')->where('id',$request->id)->where('project_id',Session::get('project_id'))->where('user_id',$user_id)->delete();
@@ -1763,6 +1800,8 @@ class DiaryController extends Controller
                     ProcurementMaterialSub::insert($data2);
                 }
             }
+
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New ProcurementMaterial", $request->description);
             return redirect()->back()->with("success", "Procurement Material created successfully.");
             
         }
@@ -1944,6 +1983,8 @@ class DiaryController extends Controller
 
                 }
 
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated ProcurementMaterial", $request->description);
+
             return redirect()->back()->with("success", __("Procurement Material updated successfully."));
 
         } catch (Exception $e) {
@@ -1964,6 +2005,11 @@ class DiaryController extends Controller
                 }
                 else{
                     $user_id = \Auth::user()->id;
+                }
+
+                $ProcurementMaterial = ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->first();
+                if($ProcurementMaterial != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted ProcurementMaterial", $ProcurementMaterial->description);
                 }
            
                 ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
@@ -2298,6 +2344,8 @@ class DiaryController extends Controller
 
             }
 
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New SiteReport", $request->contractor_name);
+
             return redirect()->route('daily_reports')->with("success", "Site report created successfully.");
       
 
@@ -2562,6 +2610,7 @@ class DiaryController extends Controller
 
             }
 
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated SiteReport", $request->contractor_name);
 
             return redirect()->route('daily_reports')->with("success", "Site report created successfully.");
 
@@ -2625,6 +2674,11 @@ class DiaryController extends Controller
                 }
                 else{
                     $user_id = \Auth::user()->id;
+                }
+
+                $SiteReport = SiteReport::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->first();
+                if($SiteReport != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted SiteReport", $SiteReport->contractor_name);
                 }
 
                 SiteReport::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();

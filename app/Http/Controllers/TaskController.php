@@ -5,6 +5,9 @@ use App\Models\Con_task;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use Session;
+use App\Http\Controllers\ActivityController;
+use Auth;
+
 class TaskController extends Controller
 {
     public function store(Request $request){
@@ -43,6 +46,9 @@ class TaskController extends Controller
             $task->type="task";
         }
         $task->save();
+
+        ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New Task", $request->text);
+
         return response()->json([
             "action"=> "inserted",
             "tid" => $row_id
@@ -53,6 +59,10 @@ class TaskController extends Controller
         $project=Session::get('project_id');
         $task = Con_task::find($id);
         $row=Con_task::where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance'),'id'=>$id])->first();
+        if($row != null){
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted Task", $row->text);
+        }
+        
         $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->delete();
          // checking whether its having parent or not

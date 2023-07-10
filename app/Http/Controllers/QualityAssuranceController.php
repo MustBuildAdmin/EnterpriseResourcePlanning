@@ -206,6 +206,8 @@ class QualityAssuranceController extends Controller
 
             ConcretePouring::insert($all_data);
 
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New ConcretePouring", $request->element_of_casting);
+
          
             return redirect()->back()->with("success",__("Concrete Pouring created successfully."));
            
@@ -288,6 +290,8 @@ class QualityAssuranceController extends Controller
                             ->where('user_id', $user_id)
                             ->update($all_data);
 
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated ConcretePouring", $request->element_of_casting);
+
             return redirect()->back()->with("success",__("diary updated successfully."));
            
 
@@ -308,6 +312,11 @@ class QualityAssuranceController extends Controller
                 }
                 else{
                     $user_id = \Auth::user()->id;
+                }
+
+                $ConcretePouring = ConcretePouring::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->first();
+                if($ConcretePouring != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted ConcretePouring", $ConcretePouring->element_of_casting);
                 }
 
                 ConcretePouring::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();
