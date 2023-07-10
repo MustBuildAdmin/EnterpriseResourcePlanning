@@ -857,7 +857,7 @@ $holidays=implode(':',$holidays);
 
 
         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-         //var dp = new gantt.dataProcessor("/erpnew/public/");
+        //var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
@@ -865,11 +865,11 @@ $holidays=implode(':',$holidays);
                 "_token":tempcsrf,
                 }
             });
-            dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
-                if(action != "error"){
-                    // gantt.load("{{route('projects.gantt_data',[$project->id])}}");
-                }
-            });
+            // dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
+            //     if(action != "error"){
+            //          gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+            //     }
+            // });
 
             gantt.templates.link_class = function (link) {
                 var types = gantt.config.links;

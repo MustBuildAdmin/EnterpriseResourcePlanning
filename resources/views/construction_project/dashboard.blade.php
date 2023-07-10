@@ -394,7 +394,7 @@
 
                         <span class="text-muted">Task not started even after<br>planned start date</span>
                     </div>
-                    <span>{{ $not_started }}</span>
+                    <span @if($not_started) style='color:red;' @endif>{{ $not_started }}</span>
                   </div>
                   <hr>
                   <div class="d-flex align-items-center justify-content-between mb-2">
@@ -402,7 +402,7 @@
 
                         <span class="text-muted">Task in progress even after<br>planned end date</span>
                     </div>
-                    <span>{{$notfinished }}</span>
+                    <span  @if($notfinished) style='color:red;' @endif>{{$notfinished }}</span>
                   </div>
               </div>
           </div>
@@ -470,7 +470,7 @@
 
                     <span class="text-muted">Delay in progress</span>
                 </div>
-                <span>{{ $current_Planed_percentage-$actual_percentage }}%</span>
+                <span @if($current_Planed_percentage-$actual_percentage>0) style='color:red;' @endif>{{ $current_Planed_percentage-$actual_percentage }}%</span>
 
 
               </div>
@@ -485,13 +485,13 @@
                     <span class="text-muted">Actual Remaining Progress</span>
                 </div>
                 @php $delay=$current_Planed_percentage-$actual_percentage @endphp
-                <span>{{ 100-$delay }}%</span>
+                <span>{{ round(100-$actual_percentage) }}%</span>
 
 
               </div>
 
               <div class="progress mb-3">
-                  <div class="progress-bar bg-primary" style="width: {{ 100-$delay}}%"></div>
+                  <div class="progress-bar bg-primary" style="width: {{ round(100-$actual_percentage) }}%"></div>
               </div>
 
             </div>
