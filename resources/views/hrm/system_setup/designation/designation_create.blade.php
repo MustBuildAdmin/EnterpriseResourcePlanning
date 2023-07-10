@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="form-group">
                 {{ Form::label('department_id', __('Department*'),['class'=>'form-label']) }}
-                {{ Form::select('department_id', $departments,null, array('class' => 'form-control select','required'=>'required')) }}
+                {{ Form::select('department_id', $departments,null, array('class' => 'form-control select','required'=>'required','placeholder'=>'Select Department')) }}
             </div>
             <div class="form-group">
                 {{Form::label('name',__('Name*'),['class'=>'form-label'])}}
@@ -26,7 +26,7 @@
     </div>
     <div class="modal-footer">
         <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-        <input type="submit" value="{{__('Create')}}" class="btn  btn-primary submit_button">
+        <input type="submit" id="add_designation" value="{{__('Create')}}" class="btn  btn-primary submit_button">
     </div>
     {{Form::close()}}
     <script> 
@@ -52,6 +52,9 @@
                         alert("Request: "+JSON.stringify(request));
                     }
                 });
+            });
+            $(document).on('submit', 'form', function() {
+                $('#add_designation').attr('disabled', 'disabled');
             });
         });
     </script>

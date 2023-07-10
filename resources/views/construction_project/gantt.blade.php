@@ -523,21 +523,21 @@ $holidays=implode(':',$holidays);
 	gantt.config.auto_scheduling_compatibility = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
-		var today = new Date(2018, 3, 5);
-		gantt.addMarker({
-			start_date: today,
-			css: "today",
-			text: "Today",
-			title: "Today: " + dateToStr(today)
-		});
+		var today = new Date();
+		// gantt.addMarker({
+		// 	start_date: today,
+		// 	css: "today",
+		// 	text: "Today",
+		// 	title: "Today: " + dateToStr(today)
+		// });
 
-		var start = new Date(2018, 2, 28);
-		gantt.addMarker({
-			start_date: start,
-			css: "status_line",
-			text: "Start project",
-			title: "Start project: " + dateToStr(start)
-		});
+		var start = new Date();
+		// gantt.addMarker({
+		// 	start_date: start,
+		// 	css: "status_line",
+		// 	text: "Start project",
+		// 	title: "Start project: " + dateToStr(start)
+		// });
 		gantt.config.scale_height = 50;
 		gantt.templates.task_class = gantt.templates.grid_row_class = gantt.templates.task_row_class = function (start, end, task) {
 			if (gantt.isSelectedTask(task.id))
@@ -856,8 +856,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        //  var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-         var dp = new gantt.dataProcessor("/erp_new/public/");
+        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        //var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
@@ -865,11 +865,11 @@ $holidays=implode(':',$holidays);
                 "_token":tempcsrf,
                 }
             });
-            dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
-                if(action != "error"){
-                    // gantt.load("{{route('projects.gantt_data',[$project->id])}}");
-                }
-            });
+            // dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
+            //     if(action != "error"){
+            //          gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+            //     }
+            // });
 
             gantt.templates.link_class = function (link) {
                 var types = gantt.config.links;
