@@ -25,9 +25,9 @@
         enctype="multipart/form-data" method="POST">
         @csrf
 
-        @if(isset($get_dairy_data->diary_data))
-        @if($get_dairy_data->diary_data!=null)
-            @php $data=$get_dairy_data->diary_data;  @endphp
+        @if(isset($getdairydata->diary_data))
+        @if($getdairydata->diary_data!=null)
+            @php $data=$getdairydata->diary_data;  @endphp
         @else
             @php $data=''; @endphp
         @endif
@@ -48,7 +48,7 @@
               <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
               <input type="hidden" name="edit_id" id="edit_id" value="{{$id}}">
               <label for="InputDate">{{__('Project')}}:</label>
-              <b>{{$project_name->project_name}}</b>
+              <b>{{$projectname->project_name}}</b>
             </div>
           </div>
           <div class="col-6 mb-3">
@@ -206,7 +206,7 @@
               <input name="file_name"  type="file" id="file_name" class="form-control document_setup"
               accept="image/*, .png, .jpeg, .jpg ,.pdf,.gif" />
               <span class="show_document_error" style="color:red;"></span>
-              <span>{{$get_dairy_data->file_name ?? ''}}</span>
+              <span>{{$getdairydata->file_name ?? ''}}</span>
             </div>
           </div>
         </div>

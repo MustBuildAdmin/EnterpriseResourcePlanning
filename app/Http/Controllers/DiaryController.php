@@ -15,11 +15,13 @@ use App\Models\ProcurementMaterialSub;
 use App\Models\SiteReport;
 use App\Models\SiteReportSub;
 use App\Models\Vochange;
+use App\Models\Consultant;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Session;
 use Exception;
+use Config;
 class DiaryController extends Controller
 {
     public function index($view = "grid")
@@ -35,9 +37,7 @@ class DiaryController extends Controller
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()
-                    ->route("construction_main")
-                    ->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
             }
 
             if (\Auth::user()->can("manage directions")) {
@@ -83,7 +83,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -161,7 +161,7 @@ class DiaryController extends Controller
                 if ($request->hasfile("initiator_file_name")) {
                     foreach ($request->file("initiator_file_name") as $file) {
                         $name = $file->getClientOriginalName();
-                        $file->move(public_path("files"), $name);
+                        $file->move(public_path($initiatorfilefolder), $name);
                         $initiatorfilename[] = $name;
                     }
                 }
@@ -217,7 +217,7 @@ class DiaryController extends Controller
                     );
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -323,7 +323,7 @@ class DiaryController extends Controller
            
             ConsultantsDirectionMulti::where("consultant_id","=",$request->id)->delete();
 
-            if (count($request->initiator_reference) >= 0) {
+            if (count($request->initiator_reference) > 0) {
                 foreach ($request->initiator_reference as $item => $v) {
                    
                     if (isset($request->initiator_reference[$item])) {
@@ -376,7 +376,7 @@ class DiaryController extends Controller
 
             return redirect()->back()->with("success",__("Consultants directions summary updated successfully."));
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -475,7 +475,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -488,7 +488,15 @@ class DiaryController extends Controller
                     ->where("id", $project)
                     ->first();
 
-                return view("diary.rfi.create",compact("project", "projectname"));
+                    if (\Auth::user()->type != "company") {
+                        $userid = Auth::user()->creatorId();
+                    } else {
+                        $userid = \Auth::user()->id;
+                    }
+
+                $getconsultant=Consultant::select('name')->where('created_by',$userid)->get();
+
+                return view("diary.rfi.create",compact("project", "projectname","getconsultant"));
             } else {
                 return redirect()->back()->with("error", __("Permission denied."));
             }
@@ -537,6 +545,14 @@ class DiaryController extends Controller
                     ->where("id", $projectid)
                     ->first();
 
+                    if (\Auth::user()->type != "company") {
+                        $userid = Auth::user()->creatorId();
+                    } else {
+                        $userid = \Auth::user()->id;
+                    }
+
+                $getconsultant=Consultant::select('name')->where('created_by',$userid)->get();
+
                 $getdairy = RFIStatusSave::where("project_id", $projectid)
                     ->where("user_id", $userid)
                     ->where("id", $request->id)
@@ -564,7 +580,7 @@ class DiaryController extends Controller
                     ->get();
 
                 return view("diary.rfi.edit",compact("getdairy","project","projectid","contractorname",
-                                                    "contractor","getsubtable","getcontent")
+                                                    "contractor","getsubtable","getcontent","getconsultant")
                 );
             } else {
                 return redirect()->back()->with("error", __("Permission denied."));
@@ -624,7 +640,7 @@ class DiaryController extends Controller
                 "user_id" => $userid,
                 "project_id" => Session::get("project_id"),
                 "contractor_name" => $request->contractor_name,
-                "consulatant_data" => json_encode($request->data),
+                "consulatant_data" => json_encode($request->rfijson),
                 "reference_no" => $request->reference_no,
                 "requested_date" => $request->requested_date,
                 "required_date" => $request->required_date,
@@ -662,7 +678,7 @@ class DiaryController extends Controller
                 $remarksvar = "remarks" . $i;
                 $filevar = "attachments_two" . $i;
 
-                if (isset($request->$replieddatevar)) {
+                if (isset($request->$replieddatevar) || isset($request->$statusset) || isset($request->$remarksset)) {
                     $nameofconsulatantset =$request->$nameofconsulatantvar;
                     $replieddateset = $request->$replieddatevar;
                     $statusset = $request->$statusvar;
@@ -726,7 +742,7 @@ class DiaryController extends Controller
 
             return redirect()->back()->with("success", __("RFI updated successfully."));
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -738,19 +754,12 @@ class DiaryController extends Controller
             } else {
                 $userid = \Auth::user()->id;
             }
-
-            $getdairy = RFIStatusSave::where(
-                "project_id",
-                Session::get("project_id")
-            )
-                ->where("user_id", $userid)
-                ->where("id", $request->id)
-                ->first();
-            $decode = json_decode($getdairy->consulatant_data);
+            $getdairy=Consultant::select('name')->where('created_by',$userid)->get();
+        
             $html = "";
 
-            foreach ($decode as $conkey => $con) {
-                $html .= '<option value="' . $con . '" >' . $con . "</option>";
+            foreach ($getdairy as $con) {
+                $html .= '<option value="' . $con->name . '" >' . $con->name . "</option>";
             }
 
             return $html;
@@ -810,7 +819,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -845,7 +854,7 @@ class DiaryController extends Controller
                 $extension1 = $request->file("attachment_file_name")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/project_direction_summary";
+                $dir = Config::get('constants.PROJECT_SPECIFICATION');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -933,7 +942,7 @@ class DiaryController extends Controller
                 $extension1 = $request->file("attachment_file_name")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/project_direction_summary";
+                $dir = Config::get('constants.PROJECT_SPECIFICATION');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -1036,7 +1045,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1135,7 +1144,7 @@ class DiaryController extends Controller
                 $extension1 = $request->file("attachment_file")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/variation_scope";
+                $dir = Config::get('constants.VARIATION_SCOPE');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -1206,7 +1215,7 @@ class DiaryController extends Controller
                 $extension1 = $request->file("attachment_file")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/variation_scope";
+                $dir = Config::get('constants.VARIATION_SCOPE');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -1306,7 +1315,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1388,7 +1397,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1447,7 +1456,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("error", __("Permission denied."));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1487,7 +1496,7 @@ class DiaryController extends Controller
                 $extension = $request->file("filename")->getClientOriginalExtension();
                 $fileNameToStore = $filename . "_" . time() . "." . $extension;
 
-                $dir = "uploads/procurement_material";
+                $dir = Config::get('constants.PROCUREMENT_MATERIAL');
 
                 $imagepath = $dir . $filenameWithExt;
 
@@ -1603,7 +1612,7 @@ class DiaryController extends Controller
                 $extension1 = $request->file("filename")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/procurement_material";
+                $dir = Config::get('constants.PROCUREMENT_MATERIAL');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -1663,7 +1672,7 @@ class DiaryController extends Controller
 
             ProcurementMaterialSub::where("procurement_id","=",$request->id)->delete();
 
-            if (isset($request->submission_date)) {
+            if (isset($request->submission_date) || isset($request->actual_reply_date)) {
                 if (count($request->submission_date) > 0) {
                     foreach ($request->submission_date as $item => $v) {
                         if (isset($request->submission_date[$item])) {
@@ -1696,7 +1705,7 @@ class DiaryController extends Controller
 
             return redirect()->back()->with("success",__("Procurement Material updated successfully."));
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1822,7 +1831,7 @@ class DiaryController extends Controller
                     $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
                     $extension1 = $file_req->getClientOriginalExtension();
                     $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
-                    $dir = "uploads/site_reports/";
+                    $dir = Config::get('constants.SITE_REPORTS');
                     $imagepath = $dir . $filenameWithExt1;
 
                     if (\File::exists($imagepath)) {
@@ -1996,7 +2005,7 @@ class DiaryController extends Controller
             return redirect()->route("daily_reports")->with("success", "Site report created successfully.");
 
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
     public function update_site_reports(Request $request)
@@ -2027,7 +2036,7 @@ class DiaryController extends Controller
                     $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
                     $extension1 = $file_req->getClientOriginalExtension();
                     $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
-                    $dir = "uploads/site_reports/";
+                    $dir = Config::get('constants.SITE_REPORTS');
                     $imagepath = $dir . $filenameWithExt1;
 
                     if (\File::exists($imagepath)) {
@@ -2223,7 +2232,7 @@ class DiaryController extends Controller
 
             return redirect()->route("daily_reports")->with("success", "Site report created successfully.");
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -2264,9 +2273,7 @@ class DiaryController extends Controller
             ]);
           
         } else {
-            return redirect()
-                ->back()
-                ->with("error", __("File is not exist."));
+            return redirect()->back()->with("error", __("File is not exist."));
         }
     }
 

@@ -22,7 +22,7 @@
             <div class="form-group">
               <input type="hidden" name="project_id" id="project_id" value="{{$project}}">
               <label for="InputDate">{{__('Project')}}:</label>
-              <b>{{$project_name->project_name}}</b>
+              <b>{{$projectname->project_name}}</b>
             </div>
           </div>
           <div class="col-6 mb-3">

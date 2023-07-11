@@ -62,12 +62,12 @@ h3, .h3 {
     <div class="col-auto ms-auto d-print-none">
         <div class="input-group-btn">
             <a href="#" data-size="xl"
-            data-url="{{ route('qaqc.concrete_create',["project_id"=>$project_id]) }}"
+            data-url="{{ route('qaqc.concrete_create',["projectid"=>$projectid]) }}"
             data-ajax-popup="true" data-title="{{__('Create Concrete Pouring Record')}}"
             data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
             <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
             </a>
-            <a href="{{ route('projects.show', $project_id) }}"
+            <a href="{{ route('projects.show', $projectid) }}"
             class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
               <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
             </a>
@@ -99,7 +99,7 @@ h3, .h3 {
                 </tr>
               </thead>
               <tbody>
-              @foreach ($dairy_data as $key=>$data)
+              @foreach ($dairydata as $key=>$data)
                       @php $check=$data->diary_data; @endphp
                       @if($check != null)
                           @php $bulk_data = json_decode($check); @endphp
@@ -123,7 +123,7 @@ h3, .h3 {
                       <div class="ms-2" style="display:flex;gap:10px;">
                         @can('edit concrete')
                               <a href="#"  class="btn btn-md bg-primary backgroundnone"
-                              data-url="{{ route('qaqc.concrete_edit',["project_id"=>$project_id,"id"=>$data->id]) }}"
+                              data-url="{{ route('qaqc.concrete_edit',["projectid"=>$projectid,"id"=>$data->id]) }}"
                               data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}"
                               data-title="{{__('Create Concrete Pouring Record')}}">
                               <i class="ti ti-pencil text-white"></i>
@@ -133,7 +133,7 @@ h3, .h3 {
                           {!! Form::open(['method' => 'POST', 'route' => ['concrete.delete_concrete',
                           $data->id],'id'=>'delete-form-'.$data->id]) !!}
                           {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
-                          {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
+                          {{ Form::hidden('projectid',$projectid, ['class' => 'form-control']) }}
                           <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center bs-pass-para"
                            data-bs-toggle="tooltip" title="{{__('Delete')}}">
                             <i class="ti ti-trash text-white mt-1"></i>
