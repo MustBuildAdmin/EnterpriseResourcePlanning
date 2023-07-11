@@ -58,7 +58,7 @@ class BranchController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
+                                   'name' => 'required|unique:branches',
                                ]
             );
             if($validator->fails())
@@ -114,7 +114,7 @@ class BranchController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required',
+                                       'name' => 'required|unique:branches',
                                    ]
                 );
                 if($validator->fails())

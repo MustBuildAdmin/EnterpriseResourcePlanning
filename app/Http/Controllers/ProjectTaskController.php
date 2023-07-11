@@ -749,7 +749,18 @@ class ProjectTaskController extends Controller
             }
         }
 
-        return view('construction_project.task_particular_list',compact('task_id','data','total_pecentage'));
+        $total_count_of_task = Task_progress::where('task_id',$task_id)->get()->count();
+
+        if($get_popup_data_con != null){
+            $task_duration        = $get_popup_data_con->duration;
+            $get_planned_progress = 100/$task_duration;
+            $planned_progress     = $get_planned_progress*$total_count_of_task;
+        }
+        else{
+            $planned_progress = 0;
+        }
+        
+        return view('construction_project.task_particular_list',compact('task_id','data','total_pecentage', 'planned_progress'));
     }
 
     public function add_particular_task(Request $request){

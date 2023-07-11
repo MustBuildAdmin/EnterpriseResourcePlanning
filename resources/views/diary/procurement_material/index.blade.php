@@ -2,23 +2,15 @@
 @include('construction_project.side-menu')
 <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    background: #fff;
-    max-width: 1072px !important;
-   
-}
 div.dt-buttons .dt-button {
 	background-color: #ffa21d;
 	color: #fff;
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -31,7 +23,6 @@ div.dt-buttons .dt-button:hover {
 	width: 29px;
 	height: 28px;
 	border-radius: 4px;
-	color: #fff;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -45,32 +36,44 @@ div.dt-buttons .dt-button:hover {
 h3, .h3 {
 	font-size: 1rem !important;
 }
+
+table.dataTable>tbody>tr.child span.dtr-title {
+   
+   font-weight: var(--tblr-font-weight-bold);
+   color: var(--tblr-muted);
+
+}
 </style>
 <div class="row">
   <div class="col-md-6">
-     <h2>{{__('Procurement Material Supply Log')}}</h2> 
+     <h2>{{__('Procurement Material Supply Log')}}</h2>
   </div>
  
         @can('create procurement material')
         <div class="col-auto ms-auto d-print-none">
             <div class="input-group-btn">
-                <a href="#" data-size="xl" data-url="{{ route('add_procurement_material',["project_id"=>$project_id]) }}" data-ajax-popup="true" data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" class="btn btn-primary">
-                    <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
+                <a href="#" data-size="xl"
+                data-url="{{ route('add_procurement_material',["projectid"=>$projectid]) }}" data-ajax-popup="true"
+                data-title="{{__('Create Procurement Material Supply Log')}}" data-bs-toggle="tooltip"
+                title="{{__('Create')}}" class="btn btn-primary">
+                <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
                 </a>
-                <a href="{{ route('projects.show', $project_id) }}"  class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                <a href="{{ route('projects.show', $projectid) }}"  class="btn btn-danger"
+                 data-bs-toggle="tooltip" title="{{ __('Back') }}">
                   <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
                 </a>
             </div>
-        </div>    
+        </div>
         @endcan
   
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
     
-        <div class="card-header card-body table-border-style">
+        <div class="container-fluid">
             @can('manage procurement material')
-            <div class="table-responsive">
-              <table class="table" id="example2">
+            <div class="">
+            <div class="container table-responsive-xl">
+              <table class="table" id="example2" aria-describedby="procurement material">
                 <thead class="">
                 <tr>
                     <th>{{__('Sno')}}</th>
@@ -92,8 +95,8 @@ h3, .h3 {
                     @endif
                 </tr>
                 </thead>
-                <tbody> 
-                    @foreach ($dairy_data as $key=>$data) 
+                <tbody>
+                    @foreach ($dairydata as $key=>$data)
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$data->description}}</td>
@@ -113,14 +116,27 @@ h3, .h3 {
                         <td>
                             <div class="ms-2" style="display:flex;gap:10px;">
                                 @can('edit procurement material')
-                                    <a href="#"  class="btn btn-md bg-primary backgroundnone" data-url="{{ route('edit_procurement_material',["project_id"=>$project_id,"id"=>$data->id]) }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Procurement Material Supply Log')}}"><i class="ti ti-pencil text-white"></i></a>
+                                    <a href="#"  class="btn btn-md bg-primary backgroundnone"
+                                     data-url="{{ route('edit_procurement_material',["projectid"=>$projectid,
+                                     "id"=>$data->id]) }}"
+                                      data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
+                                      title="{{__('Edit')}}"
+                                      data-title="{{__('Edit Procurement Material Supply Log')}}">
+                                      <i class="ti ti-pencil text-white"></i>
+                                    </a>
                                 @endcan
                                 @can('delete procurement material')
-                                    {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material', $data->id],'id'=>'delete-form-'.$data->id]) !!} 
+                                    {!! Form::open(['method' => 'POST', 'route' => ['delete_procurement_material',
+                                     $data->id],'id'=>'delete-form-'.$data->id]) !!}
                                     {{ Form::hidden('id',$data->id, ['class' => 'form-control']) }}
-                                    {{ Form::hidden('project_id',$project_id, ['class' => 'form-control']) }}
-                                        <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}"><i class="ti ti-trash text-white"></i></a>
-                                    {!! Form::close() !!} 
+                                    {{ Form::hidden('projectid',$projectid, ['class' => 'form-control']) }}
+                                        <a href="#" class="btn btn-md btn-danger bs-pass-para"
+                                        data-bs-toggle="tooltip" title="{{__('Delete')}}"
+                                        data-original-title="{{__('Delete')}}"
+                                        data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone.
+                                        Do you want to continue?')}}">
+                                        <i class="ti ti-trash text-white"></i></a>
+                                    {!! Form::close() !!}
                                 @endcan
                             </div>
                         </td>
@@ -130,6 +146,7 @@ h3, .h3 {
                 </tbody>
             </table>
             </div>
+        </div>
             @endcan
         </div>
         </div>
@@ -139,6 +156,7 @@ h3, .h3 {
 @include('new_layouts.footer')
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
@@ -168,13 +186,16 @@ h3, .h3 {
                             '<div class="col-md-4">'+
                                 '<div class="form-group">'+
                                     '<label for="input">No of Submissions</label>'+
-                                    '<input type="text" name="" placeholder="No of Submissions" class="form-control number" value="'+j+'" disabled>'+
-                                    '<input type="hidden" name="no_of_submission[]" placeholder="No of Submissions" class="form-control number" value="'+j+'">'+
+                                    '<input type="text" name="" placeholder="No of Submissions"'+
+                                     'class="form-control number" value="'+j+'" disabled>'+
+                                    '<input type="hidden" name="no_of_submission[]" placeholder="No of Submissions"'+
+                                    'class="form-control number" value="'+j+'">'+
                                 '</div>'+
                             '</div>'+
                         '</div>'+
                         '<div class="col-md-3 pull-right">'+
-                            '<button class="btn btn-secondary" type="button" id="removedynamicprocurement"> Remove Submission </button>'+
+                            '<button class="btn btn-secondary" type="button" id="removedynamicprocurement">'+
+                                'Remove Submission </button>'+
                         '</div>'+
                     '</div>'+
                 '</td>'+
@@ -214,16 +235,14 @@ h3, .h3 {
                     title: 'Procurement Material Supply Log',
                     titleAttr: 'PDF',
                     orientation : 'landscape',
-                    pagesize: 'A3',
-                    pageSize: 'LEGAL',
+                    pagesize: 'A4',
                     text: '<i class="fa fa-file-pdf-o"></i>',
                     customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
                         doc.styles.tableBodyEven.alignment = 'center';
-                        doc.styles.tableBodyEven.noWrap = true;
+                        doc.styles.tableBodyEven.noWrap = false;
                         doc.styles.tableBodyOdd.alignment = 'center';
-                        doc.styles.tableBodyOdd.noWrap = true;
-                        doc.styles.tableHeader.fontSize = 9;  
+                        doc.styles.tableBodyOdd.noWrap = false;
+                        doc.styles.tableHeader.fontSize = 9;
                         doc.defaultStyle.fontSize = 9;
                         doc.content[0].alignment = 'center';
                         doc.defaultStyle.alignment = 'center';

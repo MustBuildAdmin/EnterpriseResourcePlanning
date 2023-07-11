@@ -1,5 +1,5 @@
     // #######################gantt overlay functionality###############################
-            
+
     gantt.plugins({
         marker: true,
         overlay: true
@@ -129,19 +129,19 @@
 
 
     var dateToStr = gantt.date.date_to_str("%F %j, %Y");
-    var today = new Date(2019, 3, 14);
-    gantt.addMarker({
-        start_date: today,
-        css: "today",
-        text: "Today",
-        title: "Today: " + dateToStr(today)
-    });
-    var projectEnd = new Date(2019, 3, 19);
-    gantt.addMarker({
-        start_date: projectEnd,
-        text: "Project end",
-        title: "Project end: " + dateToStr(today)
-    });
+    var today = new Date();
+    // gantt.addMarker({
+    //     start_date: today,
+    //     css: "today",
+    //     text: "Today",
+    //     title: "Today: " + dateToStr(today)
+    // });
+    // var projectEnd = new Date();
+    // gantt.addMarker({
+    //     start_date: projectEnd,
+    //     text: "Project end",
+    //     title: "Project end: " + dateToStr(today)
+    // });
 
     gantt.config.open_tree_initially = true;
 

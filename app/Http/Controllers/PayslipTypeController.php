@@ -43,7 +43,7 @@ class PayslipTypeController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20',
+                                   'name' => 'required|max:20|unique:payslip_types',
                                ]
             );
             if($validator->fails())
@@ -100,7 +100,7 @@ class PayslipTypeController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20',
+                                       'name' => 'required|max:20|unique:payslip_types',
                                    ]
                 );
 
