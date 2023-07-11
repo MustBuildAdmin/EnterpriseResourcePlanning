@@ -80,47 +80,53 @@ Route::get(
 );
 
 
-Route::get('show_consultant_direction','DiaryController@show_consultant_direction')->name('show_consultant_direction')->middleware(
+Route::get('show_consultant_direction','DiaryController@show_consultant_direction')
+->name('show_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('add_consultant_direction','DiaryController@add_consultant_direction')->name('add_consultant_direction')->middleware(
+Route::any('add_consultant_direction','DiaryController@add_consultant_direction')
+->name('add_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('edit_consultant_direction','DiaryController@edit_consultant_direction')->name('edit_consultant_direction')->middleware(
+Route::any('edit_consultant_direction','DiaryController@edit_consultant_direction')
+->name('edit_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('save_consultant_direction','DiaryController@save_consultant_direction')->name('save_consultant_direction')->middleware(
+Route::any('save_consultant_direction','DiaryController@save_consultant_direction')
+->name('save_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('update_consultant_direction','DiaryController@update_consultant_direction')->name('update_consultant_direction')->middleware(
+Route::any('update_consultant_direction','DiaryController@update_consultant_direction')
+->name('update_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::post('delete_consultant_direction/{id}','DiaryController@delete_consultant_direction')->name('delete_consultant_direction')->middleware(
+Route::post('delete_consultant_direction/{id}','DiaryController@delete_consultant_direction')
+->name('delete_consultant_direction')->middleware(
     [
         'auth',
         'XSS',
     ]
-); 
+);
 
 
 Route::get('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info')->middleware(
@@ -132,7 +138,8 @@ Route::get('rfi_show_info','DiaryController@rfi_show_info')->name('rfi_show_info
 
 
 
-Route::get('get_name_of_consultant','DiaryController@get_name_of_consultant')->name('get_name_of_consultant')->middleware(
+Route::get('get_name_of_consultant','DiaryController@get_name_of_consultant')
+->name('get_name_of_consultant')->middleware(
     [
         'auth',
         'XSS',
@@ -161,7 +168,8 @@ Route::any('edit_rfi_info_status','DiaryController@edit_rfi_info_status')->name(
     ]
 );
 
-Route::any('update_rfi_info_status','DiaryController@update_rfi_info_status')->name('update_rfi_info_status')->middleware(
+Route::any('update_rfi_info_status','DiaryController@update_rfi_info_status')
+->name('update_rfi_info_status')->middleware(
     [
         'auth',
         'XSS',
@@ -175,44 +183,32 @@ Route::any('delete_rfi_status','DiaryController@delete_rfi_status')->name('delet
     ]
 );
 
-Route::any('add_project_specification','DiaryController@add_project_specification')->name('add_project_specification')->middleware(
+Route::any('add_project_specification','DiaryController@add_project_specification')
+->name('add_project_specification')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('save_project_specification','DiaryController@save_project_specification')->name('save_project_specification')->middleware(
+Route::any('save_project_specification','DiaryController@save_project_specification')
+->name('save_project_specification')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('edit_project_specification','DiaryController@edit_project_specification')->name('edit_project_specification')->middleware(
+Route::any('edit_project_specification','DiaryController@edit_project_specification')
+->name('edit_project_specification')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('update_project_specification','DiaryController@update_project_specification')->name('update_project_specification')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::get('show_project_specification','DiaryController@show_project_specification')->name('show_project_specification')->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-
-Route::any('delete_project_specification','DiaryController@delete_project_specification')->name('delete_project_specification')->middleware(
+Route::any('update_project_specification','DiaryController@update_project_specification')
+->name('update_project_specification')->middleware(
     [
         'auth',
         'XSS',
@@ -220,42 +216,66 @@ Route::any('delete_project_specification','DiaryController@delete_project_specif
 );
 
 
-Route::get('variation_scope_change','DiaryController@variation_scope_change')->name('variation_scope_change')->middleware(
+Route::get('show_project_specification','DiaryController@show_project_specification')
+->name('show_project_specification')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('add_variation_scope_change','DiaryController@add_variation_scope_change')->name('add_variation_scope_change')->middleware(
+
+Route::any('delete_project_specification','DiaryController@delete_project_specification')
+->name('delete_project_specification')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('save_variation_scope_change','DiaryController@save_variation_scope_change')->name('save_variation_scope_change')->middleware(
+
+Route::get('variation_scope_change','DiaryController@variation_scope_change')
+->name('variation_scope_change')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('edit_variation_scope_change','DiaryController@edit_variation_scope_change')->name('edit_variation_scope_change')->middleware(
+Route::any('add_variation_scope_change','DiaryController@add_variation_scope_change')
+->name('add_variation_scope_change')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('update_variation_scope_change','DiaryController@update_variation_scope_change')->name('update_variation_scope_change')->middleware(
+Route::any('save_variation_scope_change','DiaryController@save_variation_scope_change')
+->name('save_variation_scope_change')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('delete_variation_scope_change','DiaryController@delete_variation_scope_change')->name('delete_variation_scope_change')->middleware(
+Route::any('edit_variation_scope_change','DiaryController@edit_variation_scope_change')
+->name('edit_variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('update_variation_scope_change','DiaryController@update_variation_scope_change')
+->name('update_variation_scope_change')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('delete_variation_scope_change','DiaryController@delete_variation_scope_change')
+->name('delete_variation_scope_change')->middleware(
     [
         'auth',
         'XSS',
@@ -269,14 +289,16 @@ Route::get('procurement_material','DiaryController@procurement_material')->name(
     ]
 );
 
-Route::any('add_procurement_material','DiaryController@add_procurement_material')->name('add_procurement_material')->middleware(
+Route::any('add_procurement_material','DiaryController@add_procurement_material')
+->name('add_procurement_material')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('save_procurement_material','DiaryController@save_procurement_material')->name('save_procurement_material')->middleware(
+Route::any('save_procurement_material','DiaryController@save_procurement_material')
+->name('save_procurement_material')->middleware(
     [
         'auth',
         'XSS',
@@ -284,21 +306,24 @@ Route::any('save_procurement_material','DiaryController@save_procurement_materia
 );
 
 
-Route::any('edit_procurement_material','DiaryController@edit_procurement_material')->name('edit_procurement_material')->middleware(
+Route::any('edit_procurement_material','DiaryController@edit_procurement_material')
+->name('edit_procurement_material')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('update_procurement_material','DiaryController@update_procurement_material')->name('update_procurement_material')->middleware(
+Route::any('update_procurement_material','DiaryController@update_procurement_material')
+->name('update_procurement_material')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
 
-Route::any('delete_procurement_material','DiaryController@delete_procurement_material')->name('delete_procurement_material')->middleware(
+Route::any('delete_procurement_material','DiaryController@delete_procurement_material')
+->name('delete_procurement_material')->middleware(
     [
         'auth',
         'XSS',
@@ -328,7 +353,8 @@ Route::any('delete_site_reports','DiaryController@delete_site_reports')->name('d
 
 
 
-Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary_email')->name('check_duplicate_diary_email')->middleware(
+Route::any('check_duplicate_diary_email', 'DiaryController@check_duplicate_diary_email')
+->name('check_duplicate_diary_email')->middleware(
     [
         'auth',
         'XSS',
@@ -361,9 +387,28 @@ Route::any('vo_change_download_file', 'DiaryController@vo_change_download_file')
         ]
     );
 
+    Route::any('drawing_selection_list','DiaryController@drawing_selection_list')
+    ->name('drawing_selection_list')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
+
+    Route::any('create_shop_drawing_list','DiaryController@create_shop_drawing_list')
+    ->name('create_shop_drawing_list')->middleware(
+        [
+            'auth',
+            'XSS',
+        ]
+    );
 
     
-Route::any('ConstructionDrawingsedit','DiaryController@ConstructionDrawingsedit')->name('ConstructionDrawingsedit')->middleware(
+    
+
+    
+Route::any('ConstructionDrawingsedit','DiaryController@ConstructionDrawingsedit')
+->name('ConstructionDrawingsedit')->middleware(
     [
         'auth',
         'XSS',
@@ -371,7 +416,8 @@ Route::any('ConstructionDrawingsedit','DiaryController@ConstructionDrawingsedit'
 );
 
 
-Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscreate')->name('ConstructionDrawingscreate')->middleware(
+Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscreate')
+->name('ConstructionDrawingscreate')->middleware(
     [
         'auth',
         'XSS',
@@ -385,7 +431,8 @@ Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscre
         ]
     );
 
-    Route::any('shopdrawing_listcreate','DiaryController@shopdrawing_listcreate')->name('shopdrawing_listcreate')->middleware(
+    Route::any('shopdrawing_listcreate','DiaryController@shopdrawing_listcreate')
+    ->name('shopdrawing_listcreate')->middleware(
         [
             'auth',
             'XSS',

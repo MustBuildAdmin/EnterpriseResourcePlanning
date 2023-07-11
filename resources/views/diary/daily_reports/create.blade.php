@@ -10,7 +10,9 @@
   <div class="row">
     <div class="row row-cards">
       <div class="col-12">
-        <form class="card" action="{{ route('save_site_reports') }}" enctype="multipart/form-data" method="POST"> @csrf <div class="card-body">
+        <form class="card" action="{{ route('save_site_reports') }}" enctype="multipart/form-data" method="POST">
+          @csrf
+          <div class="card-body">
             <div class="row row-cards">
               <div class="col-md-4">
                 <div class="mb-3">
@@ -21,7 +23,8 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Contractor Name')}}</label>
-                  <input type="text" class="form-control" name="contractor_name" placeholder="{{__('Contractor Name')}}" value="">
+                  <input type="text" class="form-control" name="contractor_name"
+                  placeholder="{{__('Contractor Name')}}" value="">
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
@@ -33,7 +36,7 @@
               <div class="col-md-4">
                 <div class="mb-3">
                   <label class="form-label">{{__('Project Name')}}</label>
-                  <label class="form-label form-control disabledmode">{{$project_name->project_name}}</label>
+                  <label class="form-label form-control disabledmode">{{$projectname->project_name}}</label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
@@ -78,13 +81,15 @@
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Temparture (Minimum)')}}</label>
-                  <input name="min_input" type="text" class="form-control minimum" placeholder="{{__('Temparture (Minimum)')}}">
+                  <input name="min_input" type="text" class="form-control minimum"
+                  placeholder="{{__('Temparture (Minimum)')}}">
                 </div>
               </div>
               <div class="col-sm-6 col-md-3">
                 <div class="mb-3">
                   <label class="form-label">{{__('Temparture (Maximum)')}}</label>
-                  <input name="temperature" type="text" class="form-control temperature" placeholder="{{__('Temparture (Maximum)')}}" value="">
+                  <input name="temperature" type="text" class="form-control temperature"
+                  placeholder="{{__('Temparture (Maximum)')}}" value="">
                 </div>
               </div>
              
@@ -102,7 +107,7 @@
               <div class="col-md-12 l-section">
                 <h2>{{__('Contractors Personnel')}}</h2>
                 <br />
-                <table class="table tableadd form" id="dynamicTable">
+                <table class="table tableadd form" id="dynamicTable" aria-describedby="position">
                   <thead>
                     <tr>
                     <tr>
@@ -115,10 +120,12 @@
                   <tbody>
                     <tr id="addRow">
                       <td class="col-xs-3">
-                        <input name="first_position[]" class="form-control first_position" id="first_position_0" type="text" placeholder="{{__('Enter Position Name')}}"/>
+                        <input name="first_position[]" class="form-control first_position" id="first_position_0"
+                        type="text" placeholder="{{__('Enter Position Name')}}"/>
                       </td>
                       <td class="col-xs-3">
-                        <input name="first_person[]"  class="form-control first_person" id="first_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}"  />
+                        <input name="first_person[]"  class="form-control first_person" id="first_person_0"
+                        type="text" placeholder="{{__('Enter No Of Person Per Position')}}"  />
                       </td>
                       <td class="col-xs-5">
                         <select class="form-control first_option"  id="first_option_0" name="first_option[]">
@@ -128,7 +135,6 @@
                         </select>
                       </td>
                       <td class="col-xs-1 text-center">
-                        <!-- <span class="c-link"><i class="bttoncreate fa fa-edit  js-toggleForm"></i></span> -->
                         <span class="addBtn bttoncreate">
                           <i class="fa fa-plus"></i>
                         </span>
@@ -143,19 +149,29 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control" name="" id="total_di_power_one_dis" disabled><input type="hidden" class="form-control" name="total_di_power_one" id="total_di_power_one"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control"
+                    name="" id="total_di_power_one_dis" disabled>
+                    <input type="hidden" class="form-control" name="total_di_power_one" id="total_di_power_one"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" placeholder="{{__('Total Indirect Manpower')}}" class="form-control" name="" id="total_in_power_one_dis" disabled><input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Indirect Manpower')}}" class="form-control"
+                     name="" id="total_in_power_one_dis" disabled>
+                    <input type="hidden" class="form-control" name="total_in_power_one" id="total_in_power_one"></label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" placeholder="{{__('Total Contractors Manpower')}}"  class="form-control" name="" id="total_con_power_one_dis" disabled><input type="hidden" class="form-control" name="total_con_power_one" id="total_con_power_one"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Contractors Manpower')}}"  class="form-control" name=""
+                    id="total_con_power_one_dis" disabled>
+                    <input type="hidden" class="form-control" name="total_con_power_one"
+                    id="total_con_power_one"></label>
                 </div>
               </div>
             </div>
@@ -163,7 +179,7 @@
             <div class="col-md-12 l-section">
               <h2>{{__('Sub Contractors')}}</h2>
               <br />
-              <table class="table tableadd form" id="dynamicTable2">
+              <table class="table tableadd form" id="dynamicTable2" aria-describedby="second position">
                 <thead>
                   <tr>
                     <th>{{__('Position Name')}}</th>
@@ -175,10 +191,12 @@
                 <tbody>
                   <tr id="addRow2">
                     <td class="col-xs-3">
-                      <input name="second_position[]" class="form-control second_position" id="second_position_0" type="text" placeholder="{{__('Enter Position Name')}}" />
+                      <input name="second_position[]" class="form-control second_position"
+                       id="second_position_0" type="text" placeholder="{{__('Enter Position Name')}}" />
                     </td>
                     <td class="col-xs-3">
-                      <input name="second_person[]"  class="form-control second_person" id="second_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}"/>
+                      <input name="second_person[]"  class="form-control second_person"
+                       id="second_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}"/>
                     </td>
                     <td class="col-xs-5">
                       <select  class="form-control second_option" id="second_option_0"  name="second_option[]">
@@ -201,19 +219,34 @@
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Direct Manpower')}}: <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control" name="" id="total_di_power_two_dis" disabled><input type="hidden" class="form-control" name="total_di_power_two" id="total_di_power_two"></label>
+                  <label class="form-label">{{__('Total Direct Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Direct Manpower')}}" class="form-control"
+                     name="" id="total_di_power_two_dis" disabled>
+                     <input type="hidden" class="form-control" name="total_di_power_two"
+                      id="total_di_power_two">
+                    </label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Indirect Manpower')}}: <input type="text" placeholder="{{__('Total Indirect Manpower')}}" class="form-control" name="" id="total_in_power_two_dis" disabled><input type="hidden" class="form-control" name="total_in_power_two" id="total_in_power_two"></label>
+                  <label class="form-label">{{__('Total Indirect Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Indirect Manpower')}}" class="form-control"
+                     name="" id="total_in_power_two_dis" disabled>
+                     <input type="hidden" class="form-control" name="total_in_power_two"
+                      id="total_in_power_two">
+                  </label>
                 </div>
               </div>
               <div class="col-sm-6 col-md-4">
                 <div class="mb-3">
                   <label class="form-label">&nbsp;</label>
-                  <label class="form-label">{{__('Total Contractors Manpower')}}: <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control" name="" id="total_con_power_two_dis" disabled><input type="hidden" class="form-control" name="total_con_power_two" id="total_con_power_two"></label>
+                  <label class="form-label">{{__('Total Contractors Manpower')}}:
+                    <input type="text" placeholder="{{__('Total Contractors Manpower')}}" class="form-control"
+                     name="" id="total_con_power_two_dis" disabled>
+                     <input type="hidden" class="form-control" name="total_con_power_two"
+                      id="total_con_power_two">
+                  </label>
                 </div>
               </div>
             </div>
@@ -221,7 +254,7 @@
             <div class="col-md-12 l-section">
               <h2>{{__('Major Equipment on Project')}}</h2>
               <br />
-              <table class="table tableadd form" id="dynamicTable3">
+              <table class="table tableadd form" id="dynamicTable3" aria-describedby="equipment">
                 <thead>
                   <tr>
                     <th>{{__('Equipment Name')}}</th>
@@ -233,17 +266,22 @@
                 <tbody>
                   <tr id="addRow3">
                     <td class="col-xs-3">
-                      <input name="third_position[]" class="form-control third_position" id="third_position_0" type="text" placeholder="{{__('Enter Equipment Name')}}"/>
+                      <input name="third_position[]" class="form-control third_position" id="third_position_0"
+                       type="text" placeholder="{{__('Enter Equipment Name')}}"/>
                     </td>
                     <td class="col-xs-3">
-                      <input name="third_person[]" class="form-control third_person" id="third_person_0" type="text" placeholder="{{__('Enter No Of Person Per Position')}}" />
+                      <input name="third_person[]" class="form-control third_person" id="third_person_0"
+                       type="text" placeholder="{{__('Enter No Of Person Per Position')}}" />
                     </td>
                     <td class="col-xs-5">
-                      <input name="hours[]" class="form-control hours" id="hours_0" type="text" placeholder="{{__('Enter No Of Hours/Day')}}" />
+                      <input name="hours[]" class="form-control hours" id="hours_0"
+                       type="text" placeholder="{{__('Enter No Of Hours/Day')}}" />
                     </td>
                     <td class="col-xs-3">
-                      <input class="form-control total_hours_sub" id="total_hours_sub_0" type="text" placeholder="{{__('Enter Total No Of Hours/Day')}}"   disabled/>
-                      <input name="total_hours[]" class="form-control total_hours" id="total_hours_0" type="hidden" placeholder="Enter Total Hours/Day" />
+                      <input class="form-control total_hours_sub" id="total_hours_sub_0"
+                       type="text" placeholder="{{__('Enter Total No Of Hours/Day')}}"   disabled/>
+                      <input name="total_hours[]" class="form-control total_hours"
+                       id="total_hours_0" type="hidden" placeholder="Enter Total Hours/Day" />
                     </td>
                     <td class="col-xs-1 text-center">
                       <span class="addBtn3 bttoncreate">
@@ -259,7 +297,8 @@
               </label>
               <div class="choose-file ">
                 <label for="document" class="form-label">
-                  <input name="attachements[]" type="file" class="form-control"  id="document" data-filename="document_create"  multiple>
+                  <input name="attachements[]" type="file" class="form-control"
+                    id="document" data-filename="document_create"  multiple>
                   <br>
                   <span class="show_document_file" style="color:green;"></span>
                 </label>
@@ -267,7 +306,9 @@
             </div>
             <div class="col-md-12">
               {{Form::label('Remarks',__('Remarks'),array('class'=>'form-label')) }}
-              <textarea name="remarks" placeholder="{{__('Remarks')}}" class="form-control" rows="5" style="height: 200px;"></textarea>
+              <textarea name="remarks" placeholder="{{__('Remarks')}}" class="form-control"
+               rows="5" style="height: 200px;">
+              </textarea>
             </div>
             <div class="row">
             <div class="col-md-6">
@@ -316,10 +357,12 @@
         $("#dynamicTable").append(
           '<tr>'+
             '<td>'+
-              '<input type="text" name="first_position[]" placeholder="Enter Position Name" class="form-control first_position" id="first_position_'+i+'"/>'+
+              '<input type="text" name="first_position[]" placeholder="Enter Position Name"'+
+               'class="form-control first_position" id="first_position_'+i+'"/>'+
             '</td>'+
             '<td>'+
-              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position" class="form-control first_person" id="first_person_'+i+'" />'+
+              '<input type="text" name="first_person[]" placeholder="Enter No Of Person Per Position"'+
+               'class="form-control first_person" id="first_person_'+i+'" />'+
             '</td>'+
             '<td>'+
               '<select class="form-control first_option" id="first_option_'+i+'" name="first_option[]">'+
@@ -336,9 +379,9 @@
           '</tr>');
     });
       
-    $(document).on('click', '.remove-tr', function(){  
+    $(document).on('click', '.remove-tr', function(){
         $(this).parents('tr').remove();
-    });  
+    });
 
     var j = 0;
     
@@ -349,10 +392,12 @@
         $("#dynamicTable2").append(
           '<tr>'+
             '<td>'+
-                '<input type="text" name="second_position[]" placeholder="Enter Position Name" class="form-control second_position" id="second_position_'+j+'" />'+
+                '<input type="text" name="second_position[]" placeholder="Enter Position Name"'+
+                 'class="form-control second_position" id="second_position_'+j+'" />'+
             '</td>'+
             '<td>'+
-                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position" class="form-control second_person" id="second_person_'+j+'" />'+
+                '<input type="text" name="second_person[]" placeholder="Enter No Of Person Per Position"'+
+                 'class="form-control second_person" id="second_person_'+j+'" />'+
             '</td>'+
             '<td>'+
                 '<select id="second_option_'+i+'" class="form-control second_option" name="second_option[]" >'+
@@ -369,9 +414,9 @@
           '</tr>');
     });
       
-    $(document).on('click', '.remove-ca', function(){  
+    $(document).on('click', '.remove-ca', function(){
         $(this).parents('tr').remove();
-    });  
+    });
     var K = 0;
     $(".addBtn3").click(function(){
   
@@ -380,16 +425,22 @@
     $("#dynamicTable3").append(
       '<tr>'+
         '<td>'+
-            '<input type="text" name="third_position[]" placeholder="Enter Position Name" id="third_position_'+K+'" class="form-control third_position" />'+
+            '<input type="text" name="third_position[]" placeholder="Enter Position Name"'+
+             'id="third_position_'+K+'" class="form-control third_position" />'+
         '</td>'+
         '<td>'+
-            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position" class="form-control third_person" id="third_person_'+K+'"/>'+
+            '<input type="text" name="third_person[]" placeholder="Enter No Of Person Per Position"'+
+             'class="form-control third_person" id="third_person_'+K+'"/>'+
         '</td>'+
         '<td>'+
-          '<input type="text" name="hours[]" placeholder="Enter No Of Hours/Day" class="form-control hours" id="hours'+K+'"/>'+
+          '<input type="text" name="hours[]" placeholder="Enter No Of Hours/Day"'+
+           'class="form-control hours" id="hours'+K+'"/>'+
         '</td>'+
         '<td>'+
-          '<input type="text" name="" placeholder="Enter Total No Of Hours/Day" class="form-control total_hours_sub" id="total_hours_sub'+K+'" disabled/><input type="hidden" name="total_hours[]" placeholder="Enter Total No Of Hours/Day" class="form-control total_hours" id="total_hours'+K+'"/>'+
+          '<input type="text" name="" placeholder="Enter Total No Of Hours/Day"'+
+           'class="form-control total_hours_sub" id="total_hours_sub'+K+'" disabled/>'+
+           '<input type="hidden" name="total_hours[]" placeholder="Enter Total No Of Hours/Day"'+
+            'class="form-control total_hours" id="total_hours'+K+'"/>'+
         '</td>'+
         '<td>'+
             '<span class="remove-ba bttoncreate">'+
@@ -399,9 +450,9 @@
       '</tr>');
     });
 
-    $(document).on('click', '.remove-ba', function(){  
+    $(document).on('click', '.remove-ba', function(){
       $(this).parents('tr').remove();
-    });  
+    });
 
   $(document).on('change', '#con_date', function() {
     var con_date=$(this).val();
@@ -431,11 +482,15 @@
       var indirect_val=0;
       var direct_val_total=0;
       var indirect_val_total=0;
+      $('#total_di_power_one_dis').val(0);
+      $('#total_in_power_one_dis').val(0);
+      $('#total_in_power_one').val(0);
+      $('#total_di_power_one').val(0);
         $(".first_option :selected").each(function(index) {
             first_option = $(this).val();
             if(first_option == "Direct Manpower"){
               direct_val =  $(this).closest("tr").find(".first_person").val();
-              direct_val_total += parseFloat(direct_val); 
+              direct_val_total += parseFloat(direct_val);
               direct_val_total = isNaN(direct_val_total) ? '' : direct_val_total;
               $('#total_di_power_one').val(direct_val_total);
               $('#total_di_power_one_dis').val(direct_val_total);
@@ -473,11 +528,15 @@
     var indirect_val_two=0;
     var direct_val_total_two=0;
     var indirect_val_total_two=0;
+    $('#total_di_power_two').val(0);
+    $('#total_di_power_two_dis').val(0);
+    $('#total_in_power_one').val(0);
+    $('#total_in_power_two_dis').val(0);
       $(".second_option :selected").each(function(index) {
           second_option = $(this).val();
           if(second_option == "Direct Manpower"){
             direct_val_two =  $(this).closest("tr").find(".second_person").val();
-            direct_val_total_two += parseFloat(direct_val_two); 
+            direct_val_total_two += parseFloat(direct_val_two);
             direct_val_total_two = isNaN(direct_val_total_two) ? '' : direct_val_total_two;
             $('#total_di_power_two').val(direct_val_total_two);
             $('#total_di_power_two_dis').val(direct_val_total_two);
@@ -495,13 +554,13 @@
       });
     });
 
-    $('.first_person,.second_person,.third_person,.minimum,.temperature').alphanum({
+    $('.first_person,.second_person,.third_person,.minimum,.temperature,.hours').alphanum({
           allow              : '',    // Allow extra characters
           allowUpper         : false,  // Allow upper case characters
           allowLower         : false,  // Allow lower case characters
           forceUpper         : false, // Convert lower case characters to upper case
           forceLower         : false, // Convert upper case characters to lower case
-          allowLatin         : false,  
+          allowLatin         : false,
     });
 
 
@@ -521,9 +580,5 @@
       $(this).closest("tr").find(".total_hours_sub").val(mul_val);
 
     });
-
-
-
-
 
 </script>
