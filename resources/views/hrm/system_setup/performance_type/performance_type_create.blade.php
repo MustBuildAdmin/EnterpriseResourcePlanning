@@ -18,7 +18,7 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary submit_button">
+    <input type="submit" id="add_performance_type" value="{{__('Create')}}" class="btn  btn-primary submit_button">
 </div>
 {{ Form::close() }}
 
@@ -45,6 +45,9 @@
                     alert("Request: "+JSON.stringify(request));
                 }
             });
+        });
+        $(document).on('submit', 'form', function() {
+            $('#add_performance_type').attr('disabled', 'disabled');
         });
     });
 </script>
