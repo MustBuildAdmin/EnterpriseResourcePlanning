@@ -41,7 +41,7 @@ class CompetenciesController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
+                                   'name' => 'required|unique:competencies',
                                    'type' => 'required',
                                ]
             );
@@ -90,7 +90,7 @@ class CompetenciesController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
+                                   'name' => 'required|unique:competencies',
                                    'type' => 'required',
                                ]
             );
