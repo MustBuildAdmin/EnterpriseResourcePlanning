@@ -59,7 +59,7 @@ $(document).ready(function() {
 	$(document).on('submit', 'form', function() {
 		$('#create_rfi').attr('disabled', 'disabled');
 	});
-	$(".chosen-select get_consultant").chosen({
+	$(".chosen-select").chosen({
 		placeholder_text: "{{ __('Select Consultant') }}"
 	});
 	$('#create_rfi').validate({

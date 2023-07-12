@@ -2289,7 +2289,7 @@ class DiaryController extends Controller
 
                 SiteReport::where("id", $request->id)
                     ->where("user_id", $userid)
-                    ->where("project_id", $request->project_id)
+                    ->where("project_id", Session::get("project_id"))
                     ->delete();
 
                 SiteReportSub::where("site_id", $request->id)->delete();
