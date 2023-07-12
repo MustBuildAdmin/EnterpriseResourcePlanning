@@ -1,13 +1,14 @@
 <style>
     .user-initial {
-width: 50px;
-height: 50px;
-border-radius: 50%;
-background-color: #e0e0e0;
-color: #333;
-font-size: 24px;
-text-align: center;
-line-height: 50px;
+        width: 35px !important;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    line-height: 35px;
+    display: grid;
 }
 </style>
 
@@ -70,13 +71,13 @@ line-height: 50px;
                                 @php
                                     $user_db = DB::table('users')->where('id',$get_user)->first();
                                 @endphp
-                               
+
                                 @if($key<3)
                                     @if($user_db->avatar)
                                         <a href="#" class="avatar rounded-circle avatar-sm">
-                                            <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
+                                            <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
                                             @if($user_db->avatar)
-                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
+                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}"
                                             @else
                                                 src="{{asset('/storage/uploads/avatar/avatar.png')}}"
                                             @endif
@@ -86,17 +87,17 @@ line-height: 50px;
                                         <?php  $short=substr($user_db->name, 0, 1);?>
                                         <span class="user-initial">{{strtoupper($short)}}</span>
                                     @endif
-                                
+
                                 @endif
                             @empty
-                                {{ __('-') }}
+                                {{ __('Not Assigned') }}
                             @endforelse
                         </div>
                     </td>
                     @if(\Auth::user()->type == 'company')
                         <td style="width:10%;" class="text-center w-15">
                             <div class="actions">
-                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}" 
+                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
                                     data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="floatrght btn btn-primary mb-3">
                                     <i class="ti ti-pencil"></i>
                                 </a>
