@@ -23,6 +23,9 @@
   
 }
 </style>
+@php
+	   $profile=\App\Models\Utility::get_file('uploads/avatar');
+@endphp
 @include('crm.side-menu')
 
 
@@ -33,7 +36,7 @@
   <div class="col-md-6 float-end">
 
         <form action="{{ route('clients.index') }}" method="GET">
-            <div class="input-group"> 
+            <div class="input-group">
               {{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3 mt-auto','id'=>'search','placeholder'=>__('Search by Name or Email'))) }}
               <div class="input-group-btn">
 				
@@ -56,32 +59,32 @@
 	<!-- Page body -->
 	<div class="page-body">
 		<div class="container-xl">
-			<div class="row row-cards clients"> 
+			<div class="row row-cards clients">
         @forelse($clients as $client)
 				<div class="col-md-6 col-lg-3">
-					<div class="card"> 
+					<div class="card">
             @if(Gate::check('edit user') || Gate::check('delete user'))
 						<div class="card-header-right">
 							<div class="btn-group card-option float-end">
 								<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti ti-dots-vertical"></i> </button>
 								<div class="dropdown-menu dropdown-menu-end">
-									<a href="{{ route('clients.show',$client->id) }}" class="dropdown-item" data-bs-original-title="{{__('View')}}"> <i class="ti ti-eye"></i> <span>{{__('Show')}}</span> </a> 
+									<a href="{{ route('clients.show',$client->id) }}" class="dropdown-item" data-bs-original-title="{{__('View')}}"> <i class="ti ti-eye"></i> <span>{{__('Show')}}</span> </a>
 										@can('edit client')
-											<a href="#!" data-size="xl" data-url="{{ route('clients.edit',$client->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> 
-												<span>{{__('Edit')}}</span> 
-											</a> 
-										@endcan 
-										@can('delete client') 
+											<a href="#!" data-size="xl" data-url="{{ route('clients.edit',$client->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i>
+												<span>{{__('Edit')}}</span>
+											</a>
+										@endcan
+										@can('delete client')
 										{!! Form::open(['method' => 'DELETE', 'route' => ['clients.destroy', $client['id']],'id'=>'delete-form-'.$client['id']]) !!}
-										<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> 
-										<span> 
+										<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i>
+										<span>
 											@if($client->delete_status!=0)
-											{{__('Delete')}} 
-											@else 
+											{{__('Delete')}}
+											@else
 											{{__('Restore')}}
 											@endif
-										</span> 
-										</a> 
+										</span>
+										</a>
 										{!! Form::close() !!} 
     								    @endcan
 									<a href="#!" data-url="{{route('clients.reset',\Crypt::encrypt($client->id))}}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}"> <i class="ti ti-adjustments"></i> <span>  {{__('Reset Password')}}</span> </a>
@@ -89,11 +92,11 @@
 							</div>
 						</div>
              @endif
-						<div class="card-body p-4 text-center"> 
+						<div class="card-body p-4 text-center">
 							<?php  $short=substr($client->name, 0, 1);?>
-							 @if(!empty($client->avatar)) 
+							 @if(!empty($client->avatar))
 							 	<img src="{{(!empty($client->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
-							 @else 
+							 @else
 							 	<div class="avatar avatar-xl mb-3 user-initial">{{strtoupper($short)}}</div>
 							 @endif
               				{{-- <img src="{{(!empty($client->avatar))? asset(Storage::url(" uploads/avatar/ ".$client->avatar)): asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> --}}
@@ -119,7 +122,7 @@
 								</svg> {{__('Projects')}}</a>
 						</div>
 					</div>
-				</div> 
+				</div>
         @empty
 				<div class="page-body">
 					<div class="container-xl d-flex flex-column justify-content-center">
@@ -128,13 +131,13 @@
 							<p class="empty-title"> {{__('No results found')}}</p>
 						</div>
 					</div>
-				</div> 
-        @endforelse 
+				</div>
+        @endforelse
       </div>
 			<div class="d-flex mt-4">
 				<ul class="pagination ms-auto"> {!! $clients->links() !!} </ul>
 			</div>
 		</div>
 	</div>
-</div> 
+</div>
 @include('new_layouts.footer')
