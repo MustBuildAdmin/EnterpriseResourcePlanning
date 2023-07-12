@@ -1,13 +1,14 @@
 <style>
         .user-initial {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #e0e0e0;
-  color: #333;
-  font-size: 24px;
-  text-align: center;
-  line-height: 50px;
+            width: 35px !important;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    line-height: 35px;
+    display: grid;
 }
 </style>
 <table class="table" id="example3">
@@ -19,7 +20,7 @@
         <th scope="col">{{__('Planned Start Date')}}</th>
         <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
-        
+
     </tr>
     </thead>
     <tbody class="list">
@@ -65,14 +66,14 @@
                                 @php
                                     $user_db = DB::table('users')->where('id',$get_user)->first();
                                 @endphp
-                               
+
                                 @if($key<3)
-                                    
+
                                         @if($user_db->avatar)
                                             <a href="#" class="avatar rounded-circle avatar-sm">
-                                                <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
+                                                <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
                                                 @if($user_db->avatar)
-                                                    src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
+                                                    src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}"
                                                 @else
                                                     src="{{asset('/storage/uploads/avatar/avatar.png')}}"
                                                 @endif
@@ -82,11 +83,11 @@
                                             <?php  $short=substr($user_db->name, 0, 1);?>
                                             <span class="user-initial">{{strtoupper($short)}}</span>
                                         @endif
-                                        
-                                   
+
+
                                 @endif
                             @empty
-                                {{ __('-') }}
+                                {{ __('Not Assigned') }}
                             @endforelse
                         </div>
                     </td>
