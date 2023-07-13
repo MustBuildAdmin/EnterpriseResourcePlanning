@@ -14,7 +14,7 @@ use App\Models\UserDefualtView;
 use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Config;
 use App\Models\ConcretePouring;
 use File;
 use DB;
@@ -38,18 +38,18 @@ class QualityAssuranceController extends Controller
             if(\Auth::user()->can('manage concrete')){
 
                 if(\Auth::user()->type != 'company'){
-                    $user_id = Auth::user()->creatorId();
+                    $userid = Auth::user()->creatorId();
                 }
                 else{
-                    $user_id = \Auth::user()->id;
+                    $userid = \Auth::user()->id;
                 }
 
-                $project_id = Session::get('project_id');
+                $projectid = Session::get('project_id');
 
-                $dairy_data = ConcretePouring::where('user_id',$user_id)->where('project_id',$project_id)->get();
+                $dairydata = ConcretePouring::where('user_id',$userid)->where('project_id',$projectid)->get();
     
         
-                return view('qaqc.concrete.index',compact("project_id","dairy_data"));
+                return view('qaqc.concrete.index',compact("projectid","dairydata"));
 
             }else{
 
@@ -60,7 +60,7 @@ class QualityAssuranceController extends Controller
 
         } catch (Exception $e) {
 
-            return $e->getMessage();
+            dd($e->getMessage());
 
         }
       
@@ -77,11 +77,11 @@ class QualityAssuranceController extends Controller
                 $id = $request["id"];
         
 
-                $project_name = Project::select("project_name")
+                $projectname = Project::select("project_name")
                     ->where("id", $project)
                     ->first();
 
-                return view("qaqc.concrete.create",compact("project", "id","project_name"));
+                return view("qaqc.concrete.create",compact("project", "id","projectname"));
 
             }else{
 
@@ -105,28 +105,28 @@ class QualityAssuranceController extends Controller
                 $id = $request["id"];
 
                     if(\Auth::user()->type != 'company'){
-                        $user_id = Auth::user()->creatorId();
+                        $userid = Auth::user()->creatorId();
                     }
                     else{
-                        $user_id = \Auth::user()->id;
+                        $userid = \Auth::user()->id;
                     }
        
 
                 if ($id != null) {
-                    $get_dairy_data = ConcretePouring::where('project_id', $project)
-                        ->where('user_id', $user_id)
+                    $getdairydata = ConcretePouring::where('project_id', $project)
+                        ->where('user_id', $userid)
                         ->where('project_id',$project)
                         ->where('id', $id)
                         ->first();
                 } else {
-                    $get_dairy_data = null;
+                    $getdairydata = null;
                 }
 
-                $project_name = Project::select("project_name")
+                $projectname = Project::select("project_name")
                     ->where("id", $project)
                     ->first();
 
-                return view("qaqc.concrete.edit",compact("project", "id", "get_dairy_data", "project_name"));
+                return view("qaqc.concrete.edit",compact("project", "id", "getdairydata", "projectname"));
 
             }else{
 
@@ -147,10 +147,10 @@ class QualityAssuranceController extends Controller
             unset($request["_token"]);
 
             if(\Auth::user()->type != 'company'){
-                $user_id = Auth::user()->creatorId();
+                $userid = Auth::user()->creatorId();
             }
             else{
-                $user_id = \Auth::user()->id;
+                $userid = \Auth::user()->id;
             }
 
             $data = [
@@ -161,9 +161,9 @@ class QualityAssuranceController extends Controller
                 "theoretical" => $request->theoretical,
                 "actual" => $request->actual,
                 "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result." N/mm2",
+                "total_result" => $request->total_result.Config::get('constants.MEASUREMENT'),
                 "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result." N/mm2",
+                "days_testing_result" => $request->days_testing_result.Config::get('constants.MEASUREMENT'),
                 "remarks" => $request->remarks,
             ];
 
@@ -176,11 +176,11 @@ class QualityAssuranceController extends Controller
                 $extension1 = $request->file("file_name")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/concrete_pouring";
+                $dir = Config::get('constants.CONCRETE_POURING');
 
-                $image_path = $dir . $filenameWithExt1;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
+                $imagepath = $dir . $filenameWithExt1;
+                if (\File::exists($imagepath)) {
+                    \File::delete($imagepath);
                 }
                 $url = "";
                 $path = Utility::upload_file($request,"file_name",$fileNameToStore1,$dir,[]);
@@ -194,17 +194,17 @@ class QualityAssuranceController extends Controller
                 
             }
 
-            $all_data = [
+            $alldata = [
                 "file_name" => $fileNameToStore1,
                 "file_path" => $url,
                 "project_id" => Session::get('project_id'),
-                "user_id" => $user_id,
+                "user_id" => $userid,
                 "diary_data" => json_encode($data),
                 "status" => 0,
             ];
 
 
-            ConcretePouring::insert($all_data);
+            ConcretePouring::insert($alldata);
 
             ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New ConcretePouring", $request->element_of_casting);
 
@@ -225,10 +225,10 @@ class QualityAssuranceController extends Controller
             unset($request["_token"]);
 
             if(\Auth::user()->type != 'company'){
-                $user_id = Auth::user()->creatorId();
+                $userid = Auth::user()->creatorId();
             }
             else{
-                $user_id = \Auth::user()->id;
+                $userid = \Auth::user()->id;
             }
 
             $data = [
@@ -239,9 +239,9 @@ class QualityAssuranceController extends Controller
                 "theoretical" => $request->theoretical,
                 "actual" => $request->actual,
                 "testing_fall" => $request->testing_fall,
-                "total_result" => $request->total_result." N/mm2",
+                "total_result" => $request->total_result.Config::get('constants.MEASUREMENT'),
                 "days_testing_falls" => $request->days_testing_falls,
-                "days_testing_result" => $request->days_testing_result." N/mm2",
+                "days_testing_result" => $request->days_testing_result.Config::get('constants.MEASUREMENT'),
                 "remarks" => $request->remarks,
             ];
 
@@ -253,11 +253,11 @@ class QualityAssuranceController extends Controller
                 $extension1 = $request->file("file_name")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/concrete_pouring";
+                $dir = Config::get('constants.CONCRETE_POURING');
 
-                $image_path = $dir . $filenameWithExt1;
-                if (\File::exists($image_path)) {
-                    \File::delete($image_path);
+                $imagepath = $dir . $filenameWithExt1;
+                if (\File::exists($imagepath)) {
+                    \File::delete($imagepath);
                 }
                 $url = "";
                 $path = Utility::upload_file($request,"file_name",$fileNameToStore1,$dir,[]);
@@ -270,16 +270,17 @@ class QualityAssuranceController extends Controller
                 }
                 
             }else{
-                $check_file_name=DB::table('dairy')->select('file_name','file_path')->where('id',$request->edit_id)->where('project_id',$request->project_id)->first();
-                $fileNameToStore1=$check_file_name->file_name;
-                $url=$check_file_name->file_path;
+                $checkfilename=DB::table('dairy')->select('file_name','file_path')->where('id',$request->edit_id)
+                                ->where('project_id',$request->project_id)->first();
+                $fileNameToStore1=$checkfilename->file_name;
+                $url=$checkfilename->file_path;
             }
 
-            $all_data = [
+            $alldata = [
                 "file_name" => $fileNameToStore1,
                 "file_path" => $url,
                 "project_id" => Session::get('project_id'),
-                "user_id" => $user_id,
+                "user_id" => $userid,
                 "diary_data" => json_encode($data),
                 "status" => 0,
             ];
@@ -288,7 +289,7 @@ class QualityAssuranceController extends Controller
             ConcretePouring::where('id',$request->edit_id)
                             ->where('project_id',Session::get('project_id'))
                             ->where('user_id', $user_id)
-                            ->update($all_data);
+                            ->update($alldata);
 
             ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated ConcretePouring", $request->element_of_casting);
 
@@ -308,10 +309,10 @@ class QualityAssuranceController extends Controller
             if(\Auth::user()->can('delete concrete')){
 
                 if(\Auth::user()->type != 'company'){
-                    $user_id = Auth::user()->creatorId();
+                    $userid = Auth::user()->creatorId();
                 }
                 else{
-                    $user_id = \Auth::user()->id;
+                    $userid = \Auth::user()->id;
                 }
 
                 $ConcretePouring = ConcretePouring::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->first();

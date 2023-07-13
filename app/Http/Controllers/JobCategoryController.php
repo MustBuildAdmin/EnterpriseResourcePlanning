@@ -38,7 +38,7 @@ class JobCategoryController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'title' => 'required',
+                                   'title' => 'required|unique:job_categories',
                                ]
             );
 
@@ -82,7 +82,7 @@ class JobCategoryController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'title' => 'required',
+                                   'title' => 'required|unique:job_categories',
                                ]
             );
 

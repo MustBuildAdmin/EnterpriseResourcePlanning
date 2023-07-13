@@ -1,17 +1,29 @@
+
+<style>
+ div#choices_multiple2_chosen{
+     width: 100% !important;
+}
+ div#reporting_toerr {
+     display: flex;
+     flex-direction: column-reverse;
+}
+</style>
 <div class="modal-body">
 	<div class="row">
-		<form action="{{ route('rfi_info_main_save') }}" method="POST"> @csrf
+		<form action="{{ route('rfi_info_main_save') }}" method="POST" id="create_rfi">
+			@csrf
 			<div class="container">
 				<input type="hidden" name="project_id" value="{{$project}}">
 				<div class="row">
 					<div class="form-group">
-						<label for="InputLIst"><b>REQUEST FOR INFORMATION (RFI) STATUS</b> for the project of:</label> 
-						<b>{{$project_name->project_name}}</b>
+						<label for="InputLIst"><b>REQUEST FOR INFORMATION (RFI) STATUS</b> for the project of:</label>
+						<b>{{$projectname->project_name}}</b>
                     </div>
 					<div class="form-group">
 						<div class="col-md-4">
 							<label for="InputLIst">{{__('Contractor:')}}</label>
-							<input type="text" name="contractor_name" class="form-control" placeholder="{{__('Contractor')}}" > 
+							<input type="text" name="contractor_name" class="form-control"
+							placeholder="{{__('Contractor')}}" >
                         </div>
 					</div>
 				</div>
@@ -23,97 +35,50 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="InputLIst">{{__('Consultant No. 1')}}</label><span style='color:red;'>*</span>
-							<input type="text" name="rfijson[consultant_1]" class="form-control consultant_1" placeholder="{{__('Consultant No. 1')}}" required>
-                         </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 2')}}</label>
-							<input type="text" name="rfijson[consultant_2]" class="form-control consultant_2" placeholder="{{__('Consultant No. 2')}}"> 
-                        </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 3')}}</label>
-							<input type="text" name="rfijson[consultant_3]" class="form-control consultant_3" placeholder="{{__('Consultant No. 3')}}"> 
-                        </div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="InputLIst">{{__('Consultant No. 4')}}</label>
-							<input type="text" name="rfijson[consultant_4]" class="form-control consultant_4" placeholder="{{__('Consultant No. 4')}}">
-                         </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 5')}}</label>
-							<input type="text" name="rfijson[consultant_5]" class="form-control consultant_5" placeholder="{{__('Consultant No. 5')}}">
-                         </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 6')}}</label>
-							<input type="text" name="rfijson[consultant_6]" class="form-control consultant_6" placeholder="{{__('Consultant No. 6')}}"> 
-                        </div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="InputLIst">{{__('Consultant No. 7')}}</label>
-							<input type="text" name="rfijson[consultant_7]" class="form-control consultant_7" placeholder="{{__('Consultant No. 7')}}">
-                         </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 8')}}</label>
-							<input type="text" name="rfijson[consultant_8]" class="form-control consultant_8"  placeholder="{{__('Consultant No. 8')}}"> 
-                        </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 9')}}</label>
-							<input type="text" name="rfijson[consultant_9]" class="form-control consultant_9" placeholder="{{__('Consultant No. 9')}}"> 
-                        </div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="InputLIst">{{__('Consultant No. 10')}}</label>
-							<input type="text"  name="rfijson[consultant_10]" class="form-control consultant_10"  placeholder="{{__('Consultant No. 10')}}"> 
-                        </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 11')}}</label>
-							<input type="text"  name="rfijson[consultant_11]" class="form-control consultant_11"  placeholder="{{__('Consultant No. 11')}}"> 
-                        </div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="input">{{__('Consultant No. 12')}}</label>
-							<input type="text" name="rfijson[consultant_12]" class="form-control consultant_12" placeholder="{{__('Consultant No. 12')}}"> 
-                        </div>
+					<label for="Input">{{__('Select the Consultants')}}</label>
+					<div class="form-icon-user" id="consultant_toerr">
+						<select name="rfijson[]" id="choices-multiple2" class="chosen-select get_consultant" required multiple>
+							<option value="" disabled>{{__('Select the Consultants')}}</option>
+							@foreach ($getconsultant as $conkey =>$con)
+							<option
+							value="{{$con->name}}">{{$con->name}}</option>
+							@endforeach
+						</select>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary" id="create_rfi"> 
+				<input type="submit" value="{{__('Create')}}" class="btn  btn-primary" id="create_rfi">
             </div>
 		</form>
 	</div>
 </div>
 <script>
 $(document).ready(function() {
-    $(document).on('submit', 'form', function() {
-        $('#create_rfi').attr('disabled', 'disabled');
-    });
+	$(document).on('submit', 'form', function() {
+		$('#create_rfi').attr('disabled', 'disabled');
+	});
+	$(".chosen-select get_consultant").chosen({
+		placeholder_text: "{{ __('Select Consultant') }}"
+	});
+	$('#create_rfi').validate({
+		rules: {
+			reportto: "required",
+		},
+		ignore: ':hidden:not("#choices-multiple2")'
+	});
+
+	$('.get_consultant').on('change', function() {
+		get_val = $(this).val();
+		console.log("get_val", get_val);
+
+		if (get_val != "") {
+			$("#consultant_toerr").hide();
+		} else {
+			$("#consultant_toerr").show();
+		}
+
+	});
 });
 </script>

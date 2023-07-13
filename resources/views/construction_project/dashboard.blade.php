@@ -293,9 +293,9 @@
                                 <h5 class="mb-1"> {{$project->project_name}}</h5>
                                 <p class="mb-0 text-sm">
                                 <div class="progress-wrapper">
-                                    <span class="progress-percentage">{{__('Workdone % Productivity As of Today')}} : {{ $workdone_percentage }} %</span>
+                                    <span class="progress-percentage">{{__('Workdone % Productivity As of Today')}} : {{ round($workdone_percentage) }} %</span>
                                     <div class="progress progress-xs mt-2">
-                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ $workdone_percentage }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $workdone_percentage}}%;"></div>
+                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{ round($workdone_percentage) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ round($workdone_percentage)}}%;"></div>
                                     </div>
                                 </div>
                                 </p>
@@ -430,7 +430,9 @@
                     <div class="d-flex align-items-center">
                         <span class="text-muted">{{__('Day Left As Today')}}</span>
                     </div>
-                    <span>{{ $project_data['day_left']['day'] }}</span>
+                    {{-- <span>{{ $project_data['day_left']['day'] }}</span> --}}
+                    <span>{{ $remaining_working_days }}</span>
+
                 </div>
                 <div class="progress mb-3">
                     <div class="progress-bar bg-primary" style="width: {{ $project_data['day_left']['percentage'] }}%"></div>
@@ -442,13 +444,13 @@
 
                       <span class="text-muted">Planned Progress</span>
                   </div>
-                  <span>{{ $current_Planed_percentage }}%</span>
+                  <span>{{ round($current_Planed_percentage) }}%</span>
 
 
               </div>
 
               <div class="progress mb-3">
-                  <div class="progress-bar bg-primary" style="width: {{ $current_Planed_percentage }}%"></div>
+                  <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage) }}%"></div>
               </div>
 
               <div class="d-flex align-items-center justify-content-between mb-2">
@@ -456,13 +458,13 @@
 
                     <span class="text-muted">Actual Progress</span>
                 </div>
-                <span>{{ $actual_percentage }}%</span>
+                <span>{{ round($actual_percentage) }}%</span>
 
 
               </div>
 
               <div class="progress mb-3">
-                  <div class="progress-bar bg-primary" style="width: {{ $actual_percentage }}%"></div>
+                  <div class="progress-bar bg-primary" style="width: {{ round($actual_percentage) }}%"></div>
               </div>
 
               <div class="d-flex align-items-center justify-content-between mb-2">
@@ -470,13 +472,13 @@
 
                     <span class="text-muted">Delay in progress</span>
                 </div>
-                <span @if($current_Planed_percentage-$actual_percentage>0) style='color:red;' @endif>{{ $current_Planed_percentage-$actual_percentage }}%</span>
+                <span @if($current_Planed_percentage-$actual_percentage>0) style='color:red;' @endif>{{ round($current_Planed_percentage-$actual_percentage) }}%</span>
 
 
               </div>
 
               <div class="progress mb-3">
-                  <div class="progress-bar bg-primary" style="width: {{ $current_Planed_percentage-$actual_percentage }}%"></div>
+                  <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage-$actual_percentage) }}%"></div>
               </div>
 
               <div class="d-flex align-items-center justify-content-between mb-2">

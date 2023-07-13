@@ -12,7 +12,7 @@
     <div class="col-12">
         <div class="form-group">
             {{Form::label('type',__('Type*'),['class'=>'form-label'])}}
-            {{Form::select('type',$performance,null,array('class'=>'form-control select','required'=>'required'))}}
+            {{Form::select('type',$performance,null,array('class'=>'form-control select','required'=>'required','placeholder'=>'Select Type'))}}
             <br>
             <span class="invalid-name show_duplicate_error" role="alert" style="display: none;"> 
                 <strong class="text-danger">Competencies Name Already Exist!</strong>
@@ -29,7 +29,7 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary submit_button">
+    <input type="submit" id="add_competencies" value="{{__('Create')}}" class="btn  btn-primary submit_button">
 </div>
 {{Form::close()}}
 
@@ -56,6 +56,9 @@
                     alert("Request: "+JSON.stringify(request));
                 }
             });
+        });
+        $(document).on('submit', 'form', function() {
+            $('#add_competencies').attr('disabled', 'disabled');
         });
     });
 </script>
