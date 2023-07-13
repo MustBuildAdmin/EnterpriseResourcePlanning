@@ -3474,6 +3474,9 @@ class Utility extends Model
                 $array=array();
                 return $array;
             }else{
+                uasort($data, function($a, $b) {
+                    return $a->name < $b->name ? -1 : 1;
+                }); 
                 return $data;
             }
 

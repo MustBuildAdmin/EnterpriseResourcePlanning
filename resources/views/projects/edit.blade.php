@@ -479,9 +479,16 @@
         $.ajax(settings).done(function (response) {
             $('#state').empty();
             $('#state').append('<option value="">{{__('Select State ...')}}</option>');
-            $.each(response, function (key, value) {
-                $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+
+            Object.keys(response).sort(function(a,b) {
+                return response[a].name.localeCompare( response[b].name );
+            }).forEach(function( key ) {
+                $('#state').append('<option value="' + response[key].iso2 + '">' + response[key].name + '</option>');
             });
+
+            // $.each(response, function (key, value) {
+            //     $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+            // });
         });
     });
 

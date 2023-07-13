@@ -29,7 +29,7 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                <select class="form-control country" name="country" id='country' placeholder="Select Country" required>
+                                <select class="form-control country" name="country" id='country_wizard' placeholder="Select Country" required>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($country as $key => $value)
                                           <option value="{{$value->iso2}}">{{$value->name}}</option>
@@ -240,11 +240,9 @@
     $(document).on("click", '.addmore', function () {
         var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
             "<td><input type='checkbox' class='case'/></td>";
-            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]'/></td>"+
-            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]'/></td>"+
+            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]' required/></td>"+
+            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]' required/></td>"+
         "</tr>";
-
-        console.log("data",data);
 
         $('.holiday_table tbody').append(data);
         key_i++;
@@ -300,10 +298,8 @@
         }
     });
 
-
     $(function ()
     {
-
         var form = $("#create_project_form");
 
         form.validate({
@@ -315,6 +311,14 @@
                         data: { 'form_name' : "ProjectCreate" },
                         type: "GET"
                     }
+                },
+                latitude: {
+                    required: true,
+                    latCoord: true
+                },
+                longitude: {
+                    required: true,
+                    longCoord: true
                 }
             },
             messages: {
@@ -323,6 +327,16 @@
                 }
             }
         });
+
+        $.validator.addMethod('latCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((8[0-5]?)|([0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Latitude format has error.')
+
+        $.validator.addMethod('longCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((0?[8-9][0-9])|180|([0-1]?[0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Longitude format has error.')
 
         form.children("div").steps({
             headerTag: "h3",
@@ -456,7 +470,7 @@
         }
     }
 
-    $(document).on("change", '#country', function () {
+    $(document).on("change", '#country_wizard', function () {
         var name=$(this).val();
         var settings = {
             "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
@@ -469,9 +483,16 @@
         $.ajax(settings).done(function (response) {
             $('#state').empty();
             $('#state').append('<option value="">{{__('Select State ...')}}</option>');
-            $.each(response, function (key, value) {
-                $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+
+            Object.keys(response).sort(function(a,b) {
+                return response[a].name.localeCompare( response[b].name );
+            }).forEach(function( key ) {
+                $('#state').append('<option value="' + response[key].iso2 + '">' + response[key].name + '</option>');
             });
+
+            // $.each(response.sort(), function (key, value) {
+            //     $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+            // });
         });
     });
 

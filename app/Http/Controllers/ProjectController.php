@@ -149,6 +149,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
+            $project->status = "in_progress";
             ///---------end-----------------
             $project->save();
             $insert_data=array(
