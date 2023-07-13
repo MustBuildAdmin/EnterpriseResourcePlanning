@@ -93,7 +93,78 @@ class ActivityLog extends Model
             {
                 return $user_name . " " . __('Moved the deal') . " <b>" . $remark['title'] . "</b> " . __('from') . " " . __(ucwords($remark['old_status'])) . " " . __('to') . " " . __(ucwords($remark['new_status']));
             }
+            elseif($this->log_type == "Added New Consultant"){
+                return $user_name . ' ' . __('Added new Consultant') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated Consultant"){
+                return $user_name . ' ' . __('Updated Consultant') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Deleted Consultant"){
+                return $user_name . ' ' . __('Deleted Consultant') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Added New RFIStatus"){
+                return $user_name . ' ' . __('Added New RFIStatus') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated RFIStatus"){
+                return $user_name . ' ' . __('Updated RFIStatus') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Deleted RFIStatus"){
+                return $user_name . ' ' . __('Deleted RFIStatus') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Added New ProjectSpecification"){
+                return $user_name . ' ' . __('Added New ProjectSpecification') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated ProjectSpecification"){
+                return $user_name . ' ' . __('Updated ProjectSpecification') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Added New Variation Scope"){
+                return $user_name . ' ' . __('Added New Variation Scope') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated Variation Scope"){
+                return $user_name . ' ' . __('Updated Variation Scope') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Deleted Variation Scope"){
+                return $user_name . ' ' . __('Deleted Variation Scope') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Added New ProcurementMaterial"){
+                return $user_name . ' ' . __('Added New ProcurementMaterial') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated ProcurementMaterial"){
+                return $user_name . ' ' . __('Updated ProcurementMaterial') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Deleted ProcurementMaterial"){
+                return $user_name . ' ' . __('Deleted ProcurementMaterial') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Added New SiteReport"){
+                return $user_name . ' ' . __('Added New SiteReport') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated SiteReport"){
+                return $user_name . ' ' . __('Updated SiteReport') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Deleted SiteReport"){
+                return $user_name . ' ' . __('Deleted SiteReport') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Added New ConcretePouring"){
+                return $user_name . ' ' . __('Added New ConcretePouring') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated ConcretePouring"){
+                return $user_name . ' ' . __('Updated ConcretePouring') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Deleted ConcretePouring"){
+                return $user_name . ' ' . __('Deleted ConcretePouring') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Added New Task"){
+                return $user_name . ' ' . __('Added New Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Updated Task"){
+                return $user_name . ' ' . __('Updated Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == "Deleted Task"){
+                return $user_name . ' ' . __('Deleted Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            
         }
+        
         else
         {
             return $this->remark;

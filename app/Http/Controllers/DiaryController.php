@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Construction_project;
+use App\Http\Controllers\ActivityController;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,20 +26,12 @@ use Exception;
 use Config;
 class DiaryController extends Controller
 {
-    public function index($view = "grid")
-    {
-        try {
-            return view("diary.index", compact("view"));
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
+  
     public function show_consultant_direction(Request $request)
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", Config::get('constants.PROJECT_EXPIRED'));
             }
 
             if (\Auth::user()->can("manage directions")) {
@@ -80,7 +74,7 @@ class DiaryController extends Controller
                 return view("diary.consultant_direction.index",compact("projectid", "dairydata", "projectname")
                 );
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -101,12 +95,98 @@ class DiaryController extends Controller
                     compact("projectname", "project")
                 );
             } else {
-                return redirect()
-                    ->back()
-                    ->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
+
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
+        }
+    }
+
+    public function edit_consultant_direction(Request $request)
+    {
+        try {
+
+            if(\Auth::user()->can('edit directions')){
+
+                $project = Session::get('project_id');
+
+                if(\Auth::user()->type != 'company'){
+                    $userid = Auth::user()->creatorId();
+                }
+                else{
+                    $userid = \Auth::user()->id;
+                }
+
+                $projectname = Project::select("project_name")
+                    ->where("id", $project)
+                    ->first();
+    
+                $consultdir = ConsultantDirection::where('id', '=', $request->id)
+                                                    ->where('project_id', Session::get('project_id'))
+                                                    ->where('user_id', $userid)
+                                                    ->first();
+    
+                $consultdirmulti = ConsultantsDirectionMulti::where("consultant_id","=",$consultdir->id)->get();
+    
+                $initiatordate=$consultdirmulti[0]->initiator_date;
+    
+                return view("diary.consultant_direction.edit",compact("consultdir","consultdirmulti",
+                                                            "projectname","project","initiatordate"));
+
+            }else{
+
+                return redirect()->back()->with('error', Config::get('constants.PERMISSION_DENIED'));
+            }
+           
+
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+   
+    public function delete_consultant_direction(Request $request)
+    {
+        try {
+
+            if(\Auth::user()->can('delete directions')){
+
+                if(\Auth::user()->type != 'company'){
+                    $userid = Auth::user()->creatorId();
+                }
+                else{
+                    $userid = \Auth::user()->id;
+                }
+
+                $consultantdirection = ConsultantDirection::where('id', $request->id)
+                                        ->where('user_id',$userid)
+                                        ->where('project_id',Session::get("project_id"))
+                                        ->first();
+
+                if($consultantdirection != null){
+                    ActivityController::activity_store(Auth::user()->id,
+                                        Session::get("project_id"), "Deleted Consultant",
+                                        $consultantdirection->issued_by);
+                }
+
+                ConsultantDirection::where('id', $request->id)
+                                    ->where('user_id',$userid)
+                                    ->where('project_id',Session::get("project_id"))
+                                    ->delete();
+
+                ConsultantsDirectionMulti::where('consultant_id',$request->id)->delete();
+
+                return redirect()->back()->with("success", "Consultants directions record deleted successfully.");
+
+            }else{
+
+                return redirect()->back()->with('error', Config::get('constants.PERMISSION_DENIED'));
+
+            }
+
+        } catch (Exception $e) {
+            dd($e->getMessage());
         }
     }
 
@@ -128,7 +208,7 @@ class DiaryController extends Controller
                 $fileNameToStore1 =
                 $filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/consultant_direction";
+                $dir = Config::get('constants.CONSULTANT_DIRECTIONS');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -144,7 +224,7 @@ class DiaryController extends Controller
                 }
                 $data = [
                     "user_id" => $userid,
-                    "project_id" => $request->project_id,
+                    "project_id" => Session::get("project_id"),
                     "issued_by" => $request->issued_by,
                     "issued_date" => $request->issued_date,
                     "ad_ae_ref" => $request->ad_ae_ref,
@@ -213,8 +293,10 @@ class DiaryController extends Controller
                     }
                 }
 
-                return redirect()->back()->with("success",__("Consultants directions summary created successfully.")
-                    );
+                ActivityController::activity_store(Auth::user()->id, Session::get("project_id"),
+                                    "Added New Consultant", $request->issued_by);
+
+                return redirect()->back()->with("success", __("Consultants directions summary created successfully."));
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -239,7 +321,7 @@ class DiaryController extends Controller
                 $fileNameToStore1 =
                 $filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/consultant_direction";
+                $dir = Config::get('constants.CONSULTANT_DIRECTIONS');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -266,7 +348,7 @@ class DiaryController extends Controller
 
             $data = [
                 "user_id" => $userid,
-                "project_id" => $request->project_id,
+                "project_id" => Session::get("project_id"),
                 "issued_by" => $request->issued_by,
                 "issued_date" => $request->issued_date,
                 "ad_ae_ref" => $request->ad_ae_ref,
@@ -286,7 +368,7 @@ class DiaryController extends Controller
                 ->where("project_id", Session::get("project_id"))
                 ->get("id");
 
-            $invoiceid = trim($inid, '[{"id:"}]');
+            $invoiceid = trim($inid, '[{"inid:"}]');
 
             $initiatorfilename = [];
 
@@ -339,8 +421,8 @@ class DiaryController extends Controller
                         $setinitiatordate = null;
                     }
 
-                    if (isset($initiator_file_name[$item])) {
-                        $setinitiatorfilename = $initiator_file_name[$item];
+                    if (isset($initiatorfilename[$item])) {
+                        $setinitiatorfilename = $initiatorfilename[$item];
                     } else {
                         $setinitiatorfilename = null;
                     }
@@ -374,87 +456,20 @@ class DiaryController extends Controller
                 }
             }
 
-            return redirect()->back()->with("success",__("Consultants directions summary updated successfully."));
-        } catch (Exception $e) {
-            dd($e->getMessage());
-        }
-    }
-
-
-
-    public function edit_consultant_direction(Request $request)
-    {
-        try {
-            if (\Auth::user()->can("edit directions")) {
-                $project = Session::get("project_id");
-
-                if (\Auth::user()->type != "company") {
-                    $userid = Auth::user()->creatorId();
-                } else {
-                    $userid = \Auth::user()->id;
-                }
-
-                $projectname = Project::select("project_name")
-                    ->where("id", $project)
-                    ->first();
-
-                $consultdir = ConsultantDirection::where("id","=",$request->id)
-                    ->where("project_id", Session::get("project_id"))
-                    ->where("user_id", $userid)
-                    ->first();
-
-                $consultdirmulti = ConsultantsDirectionMulti::where("consultant_id","=",$consultdir->id)
-                                    ->orderby('dr_consultants_direction_multi.id','ASC')->get();
-
-                $initiatordate = $consultdirmulti[0]->initiator_date;
-
-                return view("diary.consultant_direction.edit",compact("consultdir","consultdirmulti",
-                       "projectname","project","initiatordate"
-                )
-                );
-            } else {
-                return redirect()->back()->with("error", __("Permission denied."));
-            }
+            ActivityController::activity_store(Auth::user()->id,
+                                Session::get("project_id"), "Updated Consultant", $request->issued_by);
+          
+            return redirect()->back()->with("success", __("Consultants directions summary updated successfully."));
         } catch (Exception $e) {
             return $e->getMessage();
         }
     }
-
-    public function delete_consultant_direction(Request $request)
-    {
-        try {
-            if (\Auth::user()->can("delete directions")) {
-                if (\Auth::user()->type != "company") {
-                    $userid = Auth::user()->creatorId();
-                } else {
-                    $userid = \Auth::user()->id;
-                }
-
-                ConsultantDirection::where("id", $request->id)
-                    ->where("user_id", $userid)
-                    ->where("project_id", Session::get("project_id"))
-                    ->delete();
-
-                ConsultantsDirectionMulti::where("consultant_id",$request->id)->delete();
-
-                return redirect()->back()->with("success","Consultants directions record deleted successfully.");
-            } else {
-                return redirect()->back()->with("error", __("Permission denied."));
-            }
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-   
     
     public function rfi_show_info()
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()
-                    ->route("construction_main")
-                    ->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", Config::get('constants.PROJECT_EXPIRED'));
             }
 
             if (\Auth::user()->can("manage RFI")) {
@@ -473,7 +488,7 @@ class DiaryController extends Controller
 
                 return view("diary.rfi.index",compact("projectid", "dairydata"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (exception $e) {
             dd($e->getMessage());
@@ -499,7 +514,7 @@ class DiaryController extends Controller
 
                 return view("diary.rfi.create",compact("project", "projectname","getconsultant"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (exception $e) {
             return $e->getMessage();
@@ -523,6 +538,9 @@ class DiaryController extends Controller
             ];
 
             RFIStatusSave::insert($data);
+
+            ActivityController::activity_store(Auth::user()->id,
+                                Session::get('project_id'), "Added New RFIStatus", $request->contractor_name);
 
             return redirect()->back()->with("success", __("RFI created successfully."));
         } catch (Exception $e) {
@@ -584,7 +602,7 @@ class DiaryController extends Controller
                                                     "contractor","getsubtable","getcontent","getconsultant")
                 );
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
             return $e->getMessage();
@@ -612,7 +630,7 @@ class DiaryController extends Controller
                 $extension1 = $request->file("attachment_one")->getClientOriginalExtension();
                 $fileNameToStore1 =$filename1 . "_" . time() . "." . $extension1;
 
-                $dir = "uploads/RFI";
+                $dir = Config::get('constants.RFI');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
@@ -630,7 +648,7 @@ class DiaryController extends Controller
                 $checkattachfile = RFIStatusSave::select("attachment_one","attachment_one_path")
                     ->where("id", $request->id)
                     ->where("user_id", $userid)
-                    ->where("project_id", $request->project_id)
+                    ->where("project_id", Session::get("project_id"))
                     ->first();
 
                 $filenameWithExt1 = $checkattachfile->attachment_one ?? "";
@@ -741,6 +759,9 @@ class DiaryController extends Controller
                 }
             }
 
+                ActivityController::activity_store(Auth::user()->id,
+                                    Session::get('project_id'), "Updated RFIStatus", $request->contractor_name);
+
             return redirect()->back()->with("success", __("RFI updated successfully."));
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -765,7 +786,7 @@ class DiaryController extends Controller
 
             return $html;
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -779,19 +800,25 @@ class DiaryController extends Controller
                     $userid = \Auth::user()->id;
                 }
 
-                RFIStatusSave::where("id", $request->id)
-                    ->where("project_id", Session::get("project_id"))
-                    ->where("user_id", $userid)
-                    ->delete();
+                $rfistatus = RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))
+                ->where("user_id",$userid)->first();
+
+                if($rfistatus != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'),
+                                        "Deleted RFIStatus", $rfistatus->contractor_name);
+                }
+           
+                RFIStatusSave::where("id", $request->id)->where("project_id",Session::get('project_id'))
+                                ->where("user_id",$userid)->delete();
 
                 RFIStatusSubSave::where("rfi_id", $request->id)->delete();
 
                 return redirect()->back()->with("success", "RFI record deleted successfully.");
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -799,7 +826,7 @@ class DiaryController extends Controller
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", Config::get('constants.PROJECT_EXPIRED'));
             }
 
             if (\Auth::user()->can("manage project specification")) {
@@ -817,7 +844,7 @@ class DiaryController extends Controller
 
                 return view("diary.project_specification.index",compact("projectid", "dairydata"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -836,10 +863,10 @@ class DiaryController extends Controller
 
                 return view("diary.project_specification.create",compact("projectname", "projectid"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -893,7 +920,7 @@ class DiaryController extends Controller
 
             return redirect()->back()->with("success",__("Project specification summary created Successfully."));
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -920,10 +947,10 @@ class DiaryController extends Controller
 
                 return view("diary.project_specification.edit",compact("data", "projectname", "projectid"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -982,14 +1009,18 @@ class DiaryController extends Controller
                 "attachment_file_location"=> $url,
             ];
 
-            ProjectSpecification::where("id", $request->id)
-                ->where("user_id", $userid)
-                ->where("project_id", Session::get("project_id"))
-                ->update($updatedata);
+            ProjectSpecification::insert($updatedata);
 
-            return redirect()->back()->with("success",__("Project specification summary updated Successfully."));
-        } catch (Exception $e) {
-            return $e->getMessage();
+            ActivityController::activity_store(Auth::user()->id,
+                                Session::get("project_id"), "Added New ProjectSpecification", $request->reference_no);
+
+            return redirect()->back()->with("success", __("Project specification summary created Successfully."));
+
+        }
+        catch (Exception $e) {
+
+            dd($e->getMessage());
+
         }
     }
 
@@ -1012,10 +1043,10 @@ class DiaryController extends Controller
 
                 return redirect()->back()->with("success","Project specification summary record deleted successfully.");
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1043,7 +1074,7 @@ class DiaryController extends Controller
 
                 return view("diary.vo_sca_change_order.index",compact("projectid", "dairydata"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -1061,10 +1092,10 @@ class DiaryController extends Controller
 
                 return view("diary.vo_sca_change_order.create",compact("project", "projectname"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1100,10 +1131,10 @@ class DiaryController extends Controller
                 return view("diary.vo_sca_change_order.edit",compact("project", "id", "getdairydata", "projectname")
                 );
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1172,9 +1203,16 @@ class DiaryController extends Controller
 
             DB::table("variation_scope")->insert($alldata);
 
-            return redirect()->back()->with("success", __("Vo/Change Order created successfully."));
+
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'),
+                                "Added New Variation Scope", $request->issued_by);
+         
+            return redirect()->back()->with("success",__("Vo/Change Order created successfully."));
+           
+
+
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1256,9 +1294,13 @@ class DiaryController extends Controller
                 ->where("user_id", $userid)
                 ->update($alldata);
 
-            return redirect()->back()->with("success", __("Vo/Change Order created successfully."));
+            ActivityController::activity_store(Auth::user()->id,
+                                Session::get('project_id'), "Updated Variation Scope", $request->issued_by);
+
+            return redirect()->back()->with("success",__("Vo/Change Order created successfully."));
+
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1272,18 +1314,30 @@ class DiaryController extends Controller
                     $userid = \Auth::user()->id;
                 }
 
-                DB::table("variation_scope")
-                    ->where("id", $request->id)
-                    ->where("project_id", Session::get("project_id"))
-                    ->where("user_id", $userid)
-                    ->delete();
+                $variationscope = DB::table('variation_scope')
+                                    ->where('id',$request->id)
+                                    ->where('project_id',Session::get('project_id'))
+                                    ->where('user_id',$userid)
+                                    ->first();
+                if($variationscope != null){
+                    ActivityController::activity_store(Auth::user()->id,Session::get('project_id'),
+                                        "Deleted Variation Scope", $variationscope->issued_by);
+                }
 
-                return redirect()->back()->with("success","Project specification summary record deleted successfully.");
-            } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                DB::table('variation_scope')
+                        ->where('id',$request->id)
+                        ->where('project_id',Session::get('project_id'))
+                        ->where('user_id',$userid)
+                        ->delete();
+            
+                return redirect()->back()
+                                 ->with("success", "Project specification summary record deleted successfully.");
+
+            }else{
+                return redirect()->back()->with('error', Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1293,7 +1347,7 @@ class DiaryController extends Controller
             $projectid = Session::get("project_id");
             return view("diary.drawings_list.index", compact("projectid"));
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1301,7 +1355,7 @@ class DiaryController extends Controller
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", Config::get('constants.PROJECT_EXPIRED'));
             }
 
             if (\Auth::user()->can("create site reports")) {
@@ -1313,7 +1367,7 @@ class DiaryController extends Controller
 
                 return view("diary.daily_reports.create",compact("projectname"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -1324,7 +1378,7 @@ class DiaryController extends Controller
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", Config::get('constants.PROJECT_EXPIRED'));
             }
 
             if (\Auth::user()->can("edit site reports")) {
@@ -1395,7 +1449,7 @@ class DiaryController extends Controller
                     )
                 );
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -1406,7 +1460,7 @@ class DiaryController extends Controller
     {
         try {
             if (Session::has("project_id") == null) {
-                return redirect()->route("construction_main")->with("error", __("Project Session Expired."));
+                return redirect()->route("construction_main")->with("error", Config::get('constants.PROJECT_EXPIRED'));
             }
 
             if (\Auth::user()->type != "company") {
@@ -1421,9 +1475,6 @@ class DiaryController extends Controller
                 ->get();
 
             return view("diary.daily_reports.index",compact("data", "projectid"));
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
     }
 
     public function procurement_material()
@@ -1441,9 +1492,9 @@ class DiaryController extends Controller
                     ->where("id", $projectid)
                     ->first();
 
-                if (\Auth::user()->type != "company") {
+                if (\Auth::user()->type !="company") {
                     $userid = Auth::user()->creatorId();
-                } else {
+                } else{
                     $userid = \Auth::user()->id;
                 }
 
@@ -1454,7 +1505,7 @@ class DiaryController extends Controller
                 return view("diary.procurement_material.index",compact("projectid", "projectname", "dairydata"));
 
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
             dd($e->getMessage());
@@ -1472,10 +1523,10 @@ class DiaryController extends Controller
 
                 return view("diary.procurement_material.create",compact("projectid", "projectname"));
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1553,7 +1604,7 @@ class DiaryController extends Controller
                 return redirect()->back()->with("success","Procurement Material created successfully.");
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1589,10 +1640,10 @@ class DiaryController extends Controller
                     )
                 );
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1704,38 +1755,51 @@ class DiaryController extends Controller
                 }
             }
 
-            return redirect()->back()->with("success",__("Procurement Material updated successfully."));
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated ProcurementMaterial", $request->description);
+
+            return redirect()->back()->with("success", __("Procurement Material updated successfully."));
+            
+
         } catch (Exception $e) {
             dd($e->getMessage());
         }
+
     }
 
-    public function delete_procurement_material(Request $request)
-    {
+
+    public function delete_procurement_material(Request $request){
+       
         try {
-            if (\Auth::user()->can("delete procurement material")) {
-                if (\Auth::user()->type != "company") {
-                    $userid = Auth::user()->creatorId();
-                } else {
-                    $userid = \Auth::user()->id;
+
+            if(\Auth::user()->can('delete procurement material')){
+
+                if(\Auth::user()->type != 'company'){
+                    $user_id = Auth::user()->creatorId();
+                }
+                else{
+                    $user_id = \Auth::user()->id;
                 }
 
-                ProcurementMaterial::where("id", $request->id)
-                    ->where("project_id", Session::get("project_id"))
-                    ->where("user_id", $userid)
-                    ->delete();
+                $ProcurementMaterial = ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->first();
+                if($ProcurementMaterial != null){
+                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted ProcurementMaterial", $ProcurementMaterial->description);
+                }
+           
+                ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
 
-                ProcurementMaterialSub::where("procurement_id", $request->id)
-                    ->where("project_id", Session::get("project_id"))
-                    ->where("user_id", $userid)
-                    ->delete();
+                ProcurementMaterialSub::where("procurement_id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
 
-                return redirect()->back()->with("success","Procurement Material deleted successfully.");
-            } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("success", "Procurement Material deleted successfully.");
+
+            }else{
+
+                return redirect()->back()->with('error', Config::get('constants.PERMISSION_DENIED'));
+
             }
+
+            return redirect()->back()->with("success",__("Procurement Material updated successfully."));
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1744,7 +1808,7 @@ class DiaryController extends Controller
         try {
             return view("diary.Construction_DrawingsList.edit");
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1753,7 +1817,7 @@ class DiaryController extends Controller
         try {
             return view("diary.Construction_DrawingsList.create");
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1762,7 +1826,7 @@ class DiaryController extends Controller
         try {
             return view("diary.shop_drawings.edit");
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1771,7 +1835,7 @@ class DiaryController extends Controller
         try {
             return view("diary.shop_drawings.create");
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1800,7 +1864,7 @@ class DiaryController extends Controller
                 return 0; //Error
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -1888,8 +1952,7 @@ class DiaryController extends Controller
 
             $id =  DB::connection()->getPdo()->lastInsertId();
 
-            if (isset($request->first_position)) {
-                if (count($request->first_position) > 0) {
+            if (isset($request->first_position) && count($request->first_position) > 0) {
                     foreach ($request->first_position as $item => $v) {
                         if (isset($request->first_position[$item])) {
                             $setfirstposition =$request->first_position[$item];
@@ -1921,11 +1984,9 @@ class DiaryController extends Controller
 
                         SiteReportSub::insert($datafirst);
                     }
-                }
             }
 
-            if (isset($request->second_position)) {
-                if (count($request->second_position) > 0) {
+            if (isset($request->second_position) && count($request->second_position) > 0) {
                     foreach ($request->second_position as $item => $v) {
                         if (isset($request->second_position[$item])) {
                             $setsecondposition =$request->second_position[$item];
@@ -1957,11 +2018,9 @@ class DiaryController extends Controller
 
                         SiteReportSub::insert($datasecond);
                     }
-                }
             }
 
-            if (isset($request->third_position)) {
-                if (count($request->third_position) > 0) {
+            if (isset($request->third_position) && count($request->third_position) > 0) {
                     foreach ($request->third_position as $item => $v) {
                         if (isset($request->third_position[$item])) {
                             $setthirdposition =$request->third_position[$item];
@@ -2000,15 +2059,19 @@ class DiaryController extends Controller
 
                         SiteReportSub::insert($datathird);
                     }
-                }
             }
 
-            return redirect()->route("daily_reports")->with("success", "Site report created successfully.");
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'),
+                                "Added New SiteReport", $request->contractor_name);
+
+            return redirect()->route('daily_reports')->with("success", "Site report created successfully.");
+      
 
         } catch (Exception $e) {
             dd($e->getMessage());
         }
     }
+    
     public function update_site_reports(Request $request)
     {
         try {
@@ -2106,7 +2169,7 @@ class DiaryController extends Controller
                 ->update($data);
 
             $inid = SiteReport::where("user_id", $userid)
-                ->where("project_id", Session::get("project_id"))
+                ->where("project_id",Session::get("project_id"))
                 ->where("id", "=", $request->edit_id)
                 ->get("id");
 
@@ -2114,8 +2177,7 @@ class DiaryController extends Controller
 
             SiteReportSub::where("site_id","=",$request->edit_id)->delete();
 
-            if (isset($request->first_position)) {
-                if (count($request->first_position) > 0) {
+            if (isset($request->first_position) && count($request->first_position) > 0) {
                     foreach ($request->first_position as $item => $v) {
                         if (isset($request->first_position[$item])) {
                             $setfirstposition =$request->first_position[$item];
@@ -2149,11 +2211,9 @@ class DiaryController extends Controller
                             SiteReportSub::insert($data2);
                         
                     }
-                }
             }
 
-            if (isset($request->second_position)) {
-                if (count($request->second_position) > 0) {
+            if (isset($request->second_position) && count($request->second_position) > 0) {
                     foreach ($request->second_position as $item => $v) {
                         if (isset($request->second_position[$item])) {
                             $setsecondposition =$request->second_position[$item];
@@ -2185,11 +2245,9 @@ class DiaryController extends Controller
 
                         SiteReportSub::insert($datasecond);
                     }
-                }
             }
 
-            if (isset($request->third_position)) {
-                if (count($request->third_position) > 0) {
+            if (isset($request->third_position) && count($request->third_position) > 0) {
                     foreach ($request->third_position as $item => $v) {
                         if (isset($request->third_position[$item])) {
                             $setthirdposition =$request->third_position[$item];
@@ -2228,10 +2286,13 @@ class DiaryController extends Controller
 
                         SiteReportSub::insert($datathird);
                     }
-                }
             }
 
-            return redirect()->route("daily_reports")->with("success", "Site report created successfully.");
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'),
+                                "Updated SiteReport", $request->contractor_name);
+
+            return redirect()->route('daily_reports')->with("success", "Site report created successfully.");
+
         } catch (Exception $e) {
             dd($e->getMessage());
         }
@@ -2288,19 +2349,25 @@ class DiaryController extends Controller
                     $userid = \Auth::user()->id;
                 }
 
-                SiteReport::where("id", $request->id)
-                    ->where("user_id", $userid)
-                    ->where("project_id", Session::get("project_id"))
-                    ->delete();
+                $sitereport = SiteReport::where('id', $request->id)
+                               ->where('user_id',$userid)->where('project_id',Session::get("project_id"))->first();
+                
+                if($sitereport != null){
+                    ActivityController::activity_store(Auth::user()->id,
+                    Session::get('project_id'), "Deleted SiteReport", $sitereport->contractor_name);
+                }
+
+                SiteReport::where('id', $request->id)->where('user_id',$userid)
+                    ->where('project_id', Session::get("project_id"))->delete();
 
                 SiteReportSub::where("site_id", $request->id)->delete();
 
                 return redirect()->back()->with("success","Site Report record deleted successfully.");
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error",Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -2346,7 +2413,7 @@ class DiaryController extends Controller
                 "html" => $returnHTML,
             ]);
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 
@@ -2364,10 +2431,10 @@ class DiaryController extends Controller
                     compact("projectname", "projectid")
                 );
             } else {
-                return redirect()->back()->with("error", __("Permission denied."));
+                return redirect()->back()->with("error", Config::get('constants.PERMISSION_DENIED'));
             }
         } catch (Exception $e) {
-            return $e->getMessage();
+            dd($e->getMessage());
         }
     }
 }
