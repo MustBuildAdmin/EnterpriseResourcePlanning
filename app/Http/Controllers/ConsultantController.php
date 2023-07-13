@@ -185,8 +185,8 @@ class ConsultantController extends Controller
                 $request['created_by'] = \Auth::user()->creatorId();
                 $request['gender']      = $request->gender;
                 $user = Consultant::create($request->all());
-                if($request['type'] != 'client')
-                    \App\Models\Utility::employeeDetails($user->id,\Auth::user()->creatorId());
+                // if($request['type'] != 'client')
+                    // \App\Models\Utility::employeeDetails($user->id,\Auth::user()->creatorId());
                
             }
             // Send Email
@@ -322,8 +322,8 @@ class ConsultantController extends Controller
                 $input['type'] = $role->name;
                 $input['reporting_to']=$string_version;
                 $user->fill($input)->save();
-                Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
-                CustomField::saveData($user, $request->customField);
+                // Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
+                // CustomField::saveData($user, $request->customField);
 
                 $roles[] = $request->role;
                 $user->roles()->sync($roles);

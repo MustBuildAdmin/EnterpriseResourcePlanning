@@ -43,7 +43,7 @@ class AwardTypeController extends Controller
             $validator = \Validator::make(
                 $request->all(), [
 
-                                   'name' => 'required|max:20',
+                                   'name' => 'required|max:20|unique:award_types',
                                ]
             );
             if($validator->fails())
@@ -101,7 +101,7 @@ class AwardTypeController extends Controller
                 $validator = \Validator::make(
                     $request->all(), [
 
-                                       'name' => 'required|max:20',
+                                       'name' => 'required|max:20|unique:award_types',
                                    ]
                 );
                 if($validator->fails())

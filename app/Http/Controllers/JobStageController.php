@@ -37,7 +37,7 @@ class JobStageController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'title' => 'required',
+                                   'title' => 'required|unique:job_stages',
                                ]
             );
 
@@ -82,7 +82,7 @@ class JobStageController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'title' => 'required',
+                                   'title' => 'required|unique:job_stages',
                                ]
             );
 
