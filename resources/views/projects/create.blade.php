@@ -240,8 +240,8 @@
     $(document).on("click", '.addmore', function () {
         var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
             "<td><input type='checkbox' class='case'/></td>";
-            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]' required/></td>"+
-            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]' required/></td>"+
+            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]'/></td>"+
+            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]'/></td>"+
         "</tr>";
 
         $('.holiday_table tbody').append(data);
