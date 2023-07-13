@@ -54,27 +54,27 @@ class DiaryController extends Controller
                     ->first();
 
                     $dairydata = ConsultantDirection::select(
-                        "consultant_directions.id",
-                        "consultant_directions.issued_by",
-                        "consultant_directions.issued_date",
-                        "consultant_directions.ad_ae_ref",
-                        "consultant_directions.ad_ae_decs",
-                        "consultant_directions.attach_file_name",
-                        "consultants_direction_multi.initiator_reference",
-                        "consultants_direction_multi.initiator_date"
+                        "dr_consultant_directions.id",
+                        "dr_consultant_directions.issued_by",
+                        "dr_consultant_directions.issued_date",
+                        "dr_consultant_directions.ad_ae_ref",
+                        "dr_consultant_directions.ad_ae_decs",
+                        "dr_consultant_directions.attach_file_name",
+                        "dr_consultants_direction_multi.initiator_reference",
+                        "dr_consultants_direction_multi.initiator_date"
                     )
                     ->leftJoin(
-                        "consultants_direction_multi",
-                        "consultants_direction_multi.consultant_id","=",
-                        "consultant_directions.id"
+                        "dr_consultants_direction_multi",
+                        "dr_consultants_direction_multi.consultant_id","=",
+                        "dr_consultant_directions.id"
                     )
                     ->where(
-                        "consultant_directions.project_id",
+                        "dr_consultant_directions.project_id",
                          Session::get("project_id")
                     )
-                    ->where("consultant_directions.user_id", $userid)
-                    ->orderBy("consultant_directions.id", "ASC")
-                    ->groupBy("consultant_directions.id")
+                    ->where("dr_consultant_directions.user_id", $userid)
+                    ->orderBy("dr_consultant_directions.id", "ASC")
+                    ->groupBy("dr_consultant_directions.id")
                     ->get();
 
                 return view("diary.consultant_direction.index",compact("projectid", "dairydata", "projectname")
@@ -280,7 +280,7 @@ class DiaryController extends Controller
                 ->where("id", $request->id)
                 ->update($data);
 
-            $inid = DB::table("consultant_directions")
+            $inid = DB::table("dr_consultant_directions")
                 ->where("id", "=", $request->id)
                 ->where("user_id", $userid)
                 ->where("project_id", Session::get("project_id"))
@@ -295,7 +295,7 @@ class DiaryController extends Controller
                     foreach ($request->file("initiator_file_name") as $file) {
                         $name = $file->getClientOriginalName();
                         $file->move(public_path("files"), $name);
-                        array_push($initiator_file_name, $name);
+                        array_push($initiatorfilename, $name);
                     }
                     $checkinitiatorfile = ConsultantsDirectionMulti::select("initiator_file_name")
                         ->where("consultant_id", $request->id)
@@ -403,7 +403,8 @@ class DiaryController extends Controller
                     ->where("user_id", $userid)
                     ->first();
 
-                $consultdirmulti = ConsultantsDirectionMulti::where("consultant_id","=",$consultdir->id)->get();
+                $consultdirmulti = ConsultantsDirectionMulti::where("consultant_id","=",$consultdir->id)
+                                    ->orderby('dr_consultants_direction_multi.id','ASC')->get();
 
                 $initiatordate = $consultdirmulti[0]->initiator_date;
 
