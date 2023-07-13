@@ -1761,7 +1761,8 @@ class DiaryController extends Controller
                 }
             }
 
-            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated ProcurementMaterial", $request->description);
+            ActivityController::activity_store(Auth::user()->id,
+                                Session::get('project_id'), "Updated ProcurementMaterial", $request->description);
 
             return redirect()->back()->with("success", __("Procurement Material updated successfully."));
             
@@ -1780,20 +1781,31 @@ class DiaryController extends Controller
             if(\Auth::user()->can('delete procurement material')){
 
                 if(\Auth::user()->type != 'company'){
-                    $user_id = Auth::user()->creatorId();
+                    $userid = Auth::user()->creatorId();
                 }
                 else{
-                    $user_id = \Auth::user()->id;
+                    $userid = \Auth::user()->id;
                 }
 
-                $ProcurementMaterial = ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->first();
-                if($ProcurementMaterial != null){
-                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted ProcurementMaterial", $ProcurementMaterial->description);
+                $procurementmaterial = ProcurementMaterial::where("id", $request->id)
+                                        ->where("project_id",Session::get('project_id'))
+                                        ->where("user_id",$userid)
+                                        ->first();
+                if($procurementmaterial != null){
+                    ActivityController::activity_store(Auth::user()->id,
+                                        Session::get('project_id'), "Deleted ProcurementMaterial",
+                                        $procurementmaterial->description);
                 }
            
-                ProcurementMaterial::where("id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
+                ProcurementMaterial::where("id", $request->id)
+                                    ->where("project_id",Session::get('project_id'))
+                                    ->where("user_id",$userid)
+                                    ->delete();
 
-                ProcurementMaterialSub::where("procurement_id", $request->id)->where("project_id",Session::get('project_id'))->where("user_id",$user_id)->delete();
+                ProcurementMaterialSub::where("procurement_id", $request->id)
+                                        ->where("project_id",Session::get('project_id'))
+                                        ->where("user_id",$userid)
+                                        ->delete();
 
                 return redirect()->back()->with("success", "Procurement Material deleted successfully.");
 
@@ -1803,7 +1815,6 @@ class DiaryController extends Controller
 
             }
 
-            return redirect()->back()->with("success",__("Procurement Material updated successfully."));
         } catch (Exception $e) {
             dd($e->getMessage());
         }
