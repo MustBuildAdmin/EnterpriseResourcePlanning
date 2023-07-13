@@ -1319,9 +1319,12 @@ class DiaryController extends Controller
                                     ->where('project_id',Session::get('project_id'))
                                     ->where('user_id',$userid)
                                     ->first();
+                                    
                 if($variationscope != null){
+                    $decode=json_decode($variationscope->data);
+                    $decodedata=$decode->issued_by;
                     ActivityController::activity_store(Auth::user()->id,Session::get('project_id'),
-                                        "Deleted Variation Scope", $variationscope->issued_by);
+                                        "Deleted Variation Scope", json_decode($decodedata));
                 }
 
                 DB::table('variation_scope')
@@ -1395,7 +1398,7 @@ class DiaryController extends Controller
                     ->first();
 
                 $decodeid = Crypt::decryptString($request->id);
-                $editid = trim($decodeid, '[{"id:;"}]');
+                $editid = trim($decodeid, '[{"scid:;"}]');
 
                 $data = SiteReport::select(
                     "dr_site_reports.*",
@@ -1475,6 +1478,9 @@ class DiaryController extends Controller
                 ->get();
 
             return view("diary.daily_reports.index",compact("data", "projectid"));
+        }catch (Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
     public function procurement_material()
@@ -1720,7 +1726,7 @@ class DiaryController extends Controller
                 ->where("id", "=", $request->id)
                 ->get("id");
 
-            $invoice = trim($inid, '[{"id:"}]');
+            $invoice = trim($inid, '[{"pid:"}]');
 
             ProcurementMaterialSub::where("procurement_id","=",$request->id)->delete();
 
@@ -2173,7 +2179,7 @@ class DiaryController extends Controller
                 ->where("id", "=", $request->edit_id)
                 ->get("id");
 
-            $invoiceid = trim($inid, '[{"id:"}]');
+            $invoiceid = trim($inid, '[{"sid:"}]');
 
             SiteReportSub::where("site_id","=",$request->edit_id)->delete();
 

@@ -16,11 +16,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Config;
 use App\Models\ConcretePouring;
-use File;
 use DB;
 use Session;
+use Exception;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\File;
 
 class QualityAssuranceController extends Controller
 {
@@ -32,7 +32,7 @@ class QualityAssuranceController extends Controller
         try {
 
             if(Session::has('project_id')==null){
-                return redirect()->route('construction_main')->with('error', __('Project Session Expired.'));
+                return redirect()->route('construction_main')->with('error', Config::get('constants.PROJECT_EXPIRED'));
             }
 
             if(\Auth::user()->can('manage concrete')){
@@ -53,7 +53,7 @@ class QualityAssuranceController extends Controller
 
             }else{
 
-                return redirect()->back()->with('error', __('Permission denied.'));
+                return redirect()->back()->with('error',Config::get('constants.PERMISSION_DENIED'));
 
             }
            
@@ -85,7 +85,7 @@ class QualityAssuranceController extends Controller
 
             }else{
 
-                return redirect()->back()->with('error', __('Permission denied.'));
+                return redirect()->back()->with('error',Config::get('constants.PERMISSION_DENIED'));
 
             }
 
@@ -130,7 +130,7 @@ class QualityAssuranceController extends Controller
 
             }else{
 
-                return redirect()->back()->with('error', __('Permission denied.'));
+                return redirect()->back()->with('error', Config::get('constants.PERMISSION_DENIED'));
 
             }
             
@@ -206,7 +206,9 @@ class QualityAssuranceController extends Controller
 
             ConcretePouring::insert($alldata);
 
-            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Added New ConcretePouring", $request->element_of_casting);
+            ActivityController::activity_store(Auth::user()->id,
+                                Session::get('project_id'), "Added New ConcretePouring",
+                                $request->element_of_casting);
 
          
             return redirect()->back()->with("success",__("Concrete Pouring created successfully."));
@@ -288,10 +290,11 @@ class QualityAssuranceController extends Controller
 
             ConcretePouring::where('id',$request->edit_id)
                             ->where('project_id',Session::get('project_id'))
-                            ->where('user_id', $user_id)
+                            ->where('user_id', $userid)
                             ->update($alldata);
 
-            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Updated ConcretePouring", $request->element_of_casting);
+            ActivityController::activity_store(Auth::user()->id, Session::get('project_id'),
+                                                "Updated ConcretePouring", $request->element_of_casting);
 
             return redirect()->back()->with("success",__("diary updated successfully."));
            
@@ -315,18 +318,26 @@ class QualityAssuranceController extends Controller
                     $userid = \Auth::user()->id;
                 }
 
-                $ConcretePouring = ConcretePouring::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->first();
-                if($ConcretePouring != null){
-                    ActivityController::activity_store(Auth::user()->id, Session::get('project_id'), "Deleted ConcretePouring", $ConcretePouring->element_of_casting);
+                $concretepouring = ConcretePouring::where('id', $request->id)
+                                                    ->where('user_id',$userid)
+                                                    ->where('project_id',Session::get('project_id'))
+                                                    ->first();
+                if($concretepouring != null){
+                    ActivityController::activity_store(Auth::user()->id,
+                                        Session::get('project_id'), "Deleted ConcretePouring",
+                                        $concretepouring->element_of_casting);
                 }
 
-                ConcretePouring::where('id', $request->id)->where('user_id',$user_id)->where('project_id',$request->project_id)->delete();
+                ConcretePouring::where('id', $request->id)
+                                ->where('user_id',$userid)
+                                ->where('project_id',Session::get('project_id'))
+                                ->delete();
 
                 return redirect()->back()->with("success", "Concrete pouring record deleted successfully.");
 
             }else{
 
-                return redirect()->back()->with('error', __('Permission denied.'));
+                return redirect()->back()->with('error',Config::get('constants.PERMISSION_DENIED'));
 
             }
            
