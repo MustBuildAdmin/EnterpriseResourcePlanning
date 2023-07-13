@@ -463,34 +463,6 @@ class DiaryController extends Controller
             return $e->getMessage();
         }
     }
-
-    public function delete_consultant_direction(Request $request)
-    {
-        try {
-            if (\Auth::user()->can("delete directions")) {
-                if (\Auth::user()->type != "company") {
-                    $userid = Auth::user()->creatorId();
-                } else {
-                    $userid = \Auth::user()->id;
-                }
-
-                ConsultantDirection::where("id", $request->id)
-                    ->where("user_id", $userid)
-                    ->where("project_id", Session::get("project_id"))
-                    ->delete();
-
-                ConsultantsDirectionMulti::where("consultant_id",$request->id)->delete();
-
-                return redirect()->back()->with("success","Consultants directions record deleted successfully.");
-            } else {
-                return redirect()->back()->with("error", __("Permission denied."));
-            }
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-   
     
     public function rfi_show_info()
     {
@@ -1044,45 +1016,6 @@ class DiaryController extends Controller
 
             return $e->getMessage();
 
-        }
-    }
-
-    public function edit_project_specification(Request $request){
-
-        try {
-
-            if(\Auth::user()->can('edit project specification')){
-
-                $project_id = Session::get('project_id');
-
-        
-                $project_name = Project::select('project_name')
-                ->where('id', $project_id)
-                ->first();
-
-                if(\Auth::user()->type != 'company'){
-                    $user_id = Auth::user()->creatorId();
-                }
-                else{
-                    $user_id = \Auth::user()->id;
-                }
-                
-                $data=ProjectSpecification::where('project_id',$project_id)
-                                            ->where('id',$request->id)
-                                            ->where('user_id',$user_id)
-                                            ->first();
-
-                return view('diary.project_specification.edit',compact('data','project_name','project_id'));
-        
-            }else{
-
-                return redirect()->back()->with('error', __('Permission denied.'));
-
-            }
-
-            return redirect()->back()->with("success",__("Project specification summary updated Successfully."));
-        } catch (Exception $e) {
-            return $e->getMessage();
         }
     }
 
@@ -1899,35 +1832,6 @@ class DiaryController extends Controller
             return redirect()->back()->with("success",__("Procurement Material updated successfully."));
         } catch (Exception $e) {
             dd($e->getMessage());
-        }
-    }
-
-    public function delete_procurement_material(Request $request)
-    {
-        try {
-            if (\Auth::user()->can("delete procurement material")) {
-                if (\Auth::user()->type != "company") {
-                    $userid = Auth::user()->creatorId();
-                } else {
-                    $userid = \Auth::user()->id;
-                }
-
-                ProcurementMaterial::where("id", $request->id)
-                    ->where("project_id", Session::get("project_id"))
-                    ->where("user_id", $userid)
-                    ->delete();
-
-                ProcurementMaterialSub::where("procurement_id", $request->id)
-                    ->where("project_id", Session::get("project_id"))
-                    ->where("user_id", $userid)
-                    ->delete();
-
-                return redirect()->back()->with("success","Procurement Material deleted successfully.");
-            } else {
-                return redirect()->back()->with("error", __("Permission denied."));
-            }
-        } catch (Exception $e) {
-            return $e->getMessage();
         }
     }
 
