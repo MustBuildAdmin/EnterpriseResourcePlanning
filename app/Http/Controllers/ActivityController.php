@@ -77,14 +77,14 @@ class ActivityController extends Controller
 
     }
 
-    public static function activity_store($user_id,$project_id,$log_type,$remark){
+    public static function activity_store($userid,$projectid,$logtype,$remark){
 
         // Make entry in activity log
         ActivityLog::create(
             [
-                'user_id'    => $user_id,
-                'project_id' => $project_id,
-                'log_type'   => $log_type,
+                'user_id'    => $userid,
+                'project_id' => $projectid,
+                'log_type'   => $logtype,
                 'remark'     => json_encode(['title' => $remark]),
             ]
         );
