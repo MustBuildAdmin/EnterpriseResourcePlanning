@@ -1635,7 +1635,8 @@ class DiaryController extends Controller
                     ->where("id", $request->id)
                     ->first();
 
-                $promaterialmutli = ProcurementMaterialSub::where("procurement_id","=",$data->id)->get();
+                $promaterialmutli = ProcurementMaterialSub::where("procurement_id","=",$data->id)
+                                    ->orderBy('id', 'ASC')->get();
 
                 return view("diary.procurement_material.edit",
                     compact(

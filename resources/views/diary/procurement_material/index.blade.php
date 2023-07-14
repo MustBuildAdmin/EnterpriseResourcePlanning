@@ -162,51 +162,6 @@ table.dataTable>tbody>tr.child span.dtr-title {
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 <script type="text/javascript">
-
-    $(document).ready(function () {
-        var j = 1;
-        $(document).on("click", "#dynamic-procurement", function () {
-            ++j;
-            $("#dynamicprocurement").append('<tr>'+
-                '<td>'+
-                    '<h4 style="text-align: center;">Date Replied By Consultant :</h4>'+
-                    '<div class="row">'+
-                        '<div class="col-md-4">'+
-                            '<div class="form-group">'+
-                                '<label for="InputLIst">Submission Date :</label>'+
-                                '<input type="date" name="submission_date[]" class="form-control" value="">'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-md-4">'+
-                            '<div class="form-group">'+
-                                '<label for="input">Actual Reply Date :</label>'+
-                                '<input type="date" name="actual_reply_date[]" class="form-control" value="">'+
-                                '</div>'+
-                            '</div>'+
-                            '<div class="col-md-4">'+
-                                '<div class="form-group">'+
-                                    '<label for="input">No of Submissions</label>'+
-                                    '<input type="text" name="" placeholder="No of Submissions"'+
-                                     'class="form-control number" value="'+j+'" disabled>'+
-                                    '<input type="hidden" name="no_of_submission[]" placeholder="No of Submissions"'+
-                                    'class="form-control number" value="'+j+'">'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-md-3 pull-right">'+
-                            '<button class="btn btn-secondary" type="button" id="removedynamicprocurement">'+
-                                'Remove Submission </button>'+
-                        '</div>'+
-                    '</div>'+
-                '</td>'+
-            '</tr>');
-        });
-        $(document).on('click', '#removedynamicprocurement', function () {
-            $(this).parents('tr').remove();
-        });
-    
-    });
-
     $(document).ready(function() {
         $('#example2').DataTable({
             dom: 'Bfrtip',
