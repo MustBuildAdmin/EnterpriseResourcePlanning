@@ -3,7 +3,7 @@
     <div class="row">
         <div class="form-group col-md-12">
             {{ Form::label('employee_id', __('Employee*'),['class'=>'form-label'])}}
-            {{ Form::select('employee_id', $employees,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('employee_id', $employees,null, array('class' => 'form-control select','required'=>'required','placeholder'=>'Select Employee')) }}
         </div>
         <div class="form-group col-lg-6 col-md-6">
             {{Form::label('start_date',__('Start Date*'),['class'=>'form-label'])}}
@@ -30,6 +30,13 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" id="add_trip" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
-    {{Form::close()}}
+{{Form::close()}}
+<script> 
+    $(document).ready(function(){
+        $(document).on('submit', 'form', function() {
+            $('#add_trip').attr('disabled', 'disabled');
+        });
+    });
+</script>
