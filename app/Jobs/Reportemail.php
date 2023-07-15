@@ -49,7 +49,7 @@ class Reportemail implements ShouldQueue
                        foreach ($project_task as $key => $value) {
                            $planned_start=date("d-m-Y", strtotime($value->start_date));
                            $planned_end=date("d-m-Y", strtotime($value->end_date));
-       
+
                            $actual_start=DB::table('task_progress')->where('project_id',$project_id)->where('task_id',$value->main_id)->max('created_at');
                            $actual_end=DB::table('task_progress')->where('project_id',$project_id)->where('task_id',$value->main_id)->min('created_at');
                            $flag=0;
@@ -59,13 +59,13 @@ class Reportemail implements ShouldQueue
                            }else{
                                $actual_start='Task Not Started';
                            }
-       
+
                            if($actual_end){
                                $actual_end=date("d-m-Y", strtotime($actual_end));
                            }else{
                                $actual_end='Task Not Finish';
                            }
-       
+
                            if($actual_end < $planned_end){
                                $actual_end='Task Not Finish';
                            }
@@ -74,29 +74,35 @@ class Reportemail implements ShouldQueue
                                $date1=date_create($value->start_date);
                                $date2=date_create($value->end_date);
                                $cur= date('Y-m-d');
-       
+
                                $diff=date_diff($date1,$date2);
                                $no_working_days=$diff->format("%a");
                                $no_working_days=$value->duration;// include the last day
                                ############### END ##############################
-       
+
                                ############### Remaining days ###################
-                               $date1=date_create($cur);
+
                                $date2=date_create($value->end_date);
-       
-                               $diff=date_diff($date1,$date2);
-                               $remaining_working_days=$diff->format("%a");
-                               $remaining_working_days=$remaining_working_days-1;// include the last day
-                               ############### Remaining days ##################
-       
-                               $completed_days=$no_working_days-$remaining_working_days;
-       
-                               // percentage calculator
-                               $perday=100/$no_working_days;
-       
-       
-                               $current_percentage=round($completed_days*$perday);
-                               $remaing_percenatge=round(100-$current_percentage);
+                               // update one report
+
+                                    $remaining_working_days=Utility::remaining_duration_calculator($date2,$project->id);
+                                    $remaining_working_days=$remaining_working_days-1;// include the last day
+
+                                    $completed_days=$no_working_days-$remaining_working_days;
+
+                                    // percentage calculator
+                                    if($no_working_days>0){
+                                        $perday=100/$no_working_days;
+                                    }else{
+                                        $perday=0;
+                                    }
+
+                                    $current_percentage=round($completed_days*$perday);
+                                    if($current_percentage > 100){
+                                        $current_percentage=100;
+                                    }
+
+                               //
                                $taskdata[]=array(
                                    'title'=>$value->text,
                                    'planed_start'=>$planned_start,
@@ -122,7 +128,7 @@ class Reportemail implements ShouldQueue
                                $user_name='';
                                $user_email='';
                            }
-       
+
                            $taskdata2[]=array(
                                'title'=>$main_task->text,
                                'planed_start'=>date("d-m-Y", strtotime($main_task->start_date)),
@@ -133,7 +139,7 @@ class Reportemail implements ShouldQueue
                                'description'=>$value->description,
                                'user'=>$user_name,
                                'email'=>$user_email,
-       
+
                            );
                        }
                        $to=array();
@@ -141,7 +147,7 @@ class Reportemail implements ShouldQueue
                        foreach ($to_array as $key => $value) {
                            $to[]=DB::table('users')->where('id',$value)->pluck('email')->first();
                        }
-                       
+
                        if($to){
                            $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
                            $data["email"] = $to;
@@ -154,7 +160,7 @@ class Reportemail implements ShouldQueue
                                $message->to($data["email"], $data["email"])
                                        ->subject($data["title"])
                                        ->attachData($pdf->output(),'Report.pdf');
-       
+
                            });
                            $dir = 'uploads/cronreport/';
                            $image_path = date('ymdhis').$project_id.'.pdf';
@@ -168,7 +174,7 @@ class Reportemail implements ShouldQueue
                        {
                            $error = $e->getMessage();
                            dd($error);
-       
+
                        }
                        //sending Report end ###########################################
     }
