@@ -177,7 +177,7 @@ class Utility extends Model
         return $settings;
     }
 
-   
+
 
     public static function settingsById($user_id)
     {
@@ -1451,11 +1451,11 @@ class Utility extends Model
             Mail::send($data, function($message)use($data, $files) {
                 $message->to($data["email"], $data["email"])
                         ->subject($data["title"]);
-    
+
                 foreach ($files as $file){
                     $message->attach($file);
                 }
-                
+
             });
 
         }
@@ -3653,7 +3653,7 @@ class Utility extends Model
         }
         // utc to company timezone
         public static function utc_to_originaltime($time,$setting){
-            
+
             $timezone =$setting['timezone'];
             // dd($timezone);
             // $timezone = 'America/New_York';
@@ -3685,9 +3685,9 @@ class Utility extends Model
                 $final_count = 0;
 
                 $start_date = Carbon::now();
-                $end_date = Carbon::create($end);    
+                $end_date = Carbon::create($end);
                 $date_range = CarbonPeriod::create($start_date, $end_date);
-                
+
                 foreach ($date_range as $date) {
                     if (!in_array($date->dayOfWeek, $weekarray) && !in_array($date, $excluded_dates)) {
                         $final_count++;
@@ -3699,7 +3699,7 @@ class Utility extends Model
            }else{
                 return '0';
            }
-           
+
 
         }
 
