@@ -315,32 +315,35 @@ class ProjectReportController extends Controller
                         ############### END ##############################
 
                         ############### Remaining days ###################
-                        $date1=date_create($cur);
-                        $date2=date_create($value->end_date);
 
-                        $diff=date_diff($date1,$date2);
-                        $remaining_working_days=$diff->format("%a");
+                        $remaining_working_days=Utility::remaining_duration_calculator($date2,$project->id);
                         $remaining_working_days=$remaining_working_days-1;// include the last day
+
+                        // $date1=date_create($cur);
+                        // $date2=date_create($value->end_date);
+
+                        // $diff=date_diff($date1,$date2);
+                        // $remaining_working_days=$diff->format("%a");
+                        // $remaining_working_days=$remaining_working_days-1;// include the last day
                         ############### Remaining days ##################
 
-                        $completed_days=$no_working_days-$remaining_working_days;
+                        // $completed_days=$no_working_days-$remaining_working_days;
 
                         // percentage calculator
-                        $perday=100/$no_working_days;
-
+                        if($no_working_days>0){
+                            $perday=100/$no_working_days;
+                        }else{
+                            $perday=0;
+                        }
 
                         $current_percentage=round($completed_days*$perday);
+                        if($current_percentage > 100){
+                            $current_percentage=100;
+                        }
+    
                         $remaing_percenatge=round(100-$current_percentage);
 
                     //####################################___END____#######################################
-
-                    // // actual duration finding
-                    //     $date1=date_create($actual_start);
-                    //     $date2=date_create($actual_end);
-                    //     $diff=date_diff($date1,$date2);
-                    //     $no_working_days=$diff->format("%a");
-                    //     $no_working_days=$no_working_days+1;// include the last day
-
                     //  // actual duration finding
                     $taskdata[]=array(
                         'title'=>$value->text,

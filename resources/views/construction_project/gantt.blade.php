@@ -630,7 +630,7 @@ $holidays=implode(':',$holidays);
 		css: "gantt_container",
 		cols: [
 			{
-				width:400,
+				width:680,
 				min_width: 300,
 				rows:[
 					{view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"},
@@ -857,7 +857,7 @@ $holidays=implode(':',$holidays);
 
 
         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/erpnew/public/");
+        //var dp = new gantt.dataProcessor("/ui/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
