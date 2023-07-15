@@ -12,6 +12,7 @@
         'MEASUREMENT'=>'N/mm2', //N/mm2 for concret Pouring
         'PERMISSION_DENIED'=>'__("Permission denied.")',
         'PROJECT_EXPIRED'=>'__("Project Session Expired..")',
+        'ONE_ROW'=>'Alteast you must select one row',
     
     ];
 

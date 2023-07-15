@@ -273,6 +273,10 @@
 	$(this).attr('id', `R${dig - 1}`);
 	});
 
+	if(rowIdx==1){
+		toastr.error("{{Config::get('constants.ONE_ROW')}}");
+ 		return false;
+	}
 	// Removing the current row.
 	$(this).closest('tr').remove();
 
