@@ -22,7 +22,7 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
+    <input type="submit" id="edit_holiday" value="{{__('Update')}}" class="btn  btn-primary">
 </div>
 {{Form::close()}}
 
@@ -34,4 +34,9 @@
             locale: date_picker_locale,
         });
     }
+    $(document).ready(function(){
+        $(document).on('submit', 'form', function() {
+            $('#edit_holiday').attr('disabled', 'disabled');
+        });
+    });
 </script>

@@ -4,11 +4,11 @@
     <div class="row">
         <div class="form-group col-md-6 col-lg-6 ">
             {{ Form::label('employee_id', __('Employee*'),['class'=>'form-label'])}}
-            {{ Form::select('employee_id', $employees,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('employee_id', $employees,null, array('class' => 'form-control select','required'=>'required','placeholder'=>'Select Employee')) }}
         </div>
         <div class="form-group col-md-6 col-lg-6">
             {{ Form::label('award_type', __('Award Type*'),['class'=>'form-label'])}}
-            {{ Form::select('award_type', $awardtypes,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('award_type', $awardtypes,null, array('class' => 'form-control select','required'=>'required','placeholder'=>'Select Award')) }}
         </div>
         <div class="form-group col-md-6 col-lg-6">
             {{Form::label('date',__('Date*'),['class'=>'form-label'])}}
@@ -27,7 +27,14 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" id="add_award" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
 
-    {{Form::close()}}
+{{Form::close()}}
+<script> 
+    $(document).ready(function(){
+        $(document).on('submit', 'form', function() {
+            $('#add_award').attr('disabled', 'disabled');
+        });
+    });
+</script>

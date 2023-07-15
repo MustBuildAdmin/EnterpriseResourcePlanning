@@ -42,7 +42,7 @@ class PerformanceTypeController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required',
+                                       'name' => 'required|unique:performance_types',
                                    ]
                 );
                 if($validator->fails())
@@ -90,7 +90,7 @@ class PerformanceTypeController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required',
+                                       'name' => 'required|unique:performance_types',
                                    ]
                 );
                 if($validator->fails())

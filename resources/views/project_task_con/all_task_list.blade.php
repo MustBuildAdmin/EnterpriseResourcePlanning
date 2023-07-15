@@ -1,13 +1,14 @@
 <style>
     .user-initial {
-width: 50px;
-height: 50px;
-border-radius: 50%;
-background-color: #e0e0e0;
-color: #333;
-font-size: 24px;
-text-align: center;
-line-height: 50px;
+        width: 35px !important;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+    line-height: 35px;
+    display: grid;
 }
 </style>
 
@@ -31,15 +32,27 @@ line-height: 50px;
             @if($task->instance_id == $task->pro_instance_id)
                 @php
                     $total_count_of_task  = DB::table('task_progress')->where('task_id',$task->main_id)->get()->count();
-                    $task_duration        = $task->duration;
-                    if($task_duration != 0){
-                        $get_planned_progress = 100/$task_duration;
-                        $planned_progress     = $get_planned_progress*$total_count_of_task;
+
+                    $remaining_working_days=Utility::remaining_duration_calculator($task->end_date,$task->project_id);
+                    $remaining_working_days=$remaining_working_days-1;// include the last day
+
+                    ############### Remaining days ##################
+
+                    $completed_days=$task->duration-$remaining_working_days;
+                    // percentage calculator
+                    if($task->duration>0){
+                        $perday=100/$task->duration;
+                    }else{
+                        $perday=0;
                     }
-                    else{
-                        $planned_progress = 0;
+
+
+
+                    $current_Planed_percentage=round($completed_days*$perday);
+                    if($current_Planed_percentage > 100){
+                        $current_Planed_percentage=100;
                     }
-                    
+
                 @endphp
                 <tr>
                     <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
@@ -60,14 +73,14 @@ line-height: 50px;
 
                         @if ($task->progress >= 100)
                             <span class="badge badge-success" style="background-color:#28A745;">{{$task->progress}}%</span>
-                        @elseif($task->progress < $planned_progress)
+                        @elseif($task->progress < $current_Planed_percentage)
                             <span title="Planned Progress is to High Compare to Actual Progress" class="badge badge-success" style="background-color:red;">{{$task->progress}}%</span>
                         @else
                             <span class="badge badge-info" style="background-color:#007bff;">{{$task->progress}}%</span>
                         @endif
                     </td>
                     <td style="width:10%;">
-                        <span class="badge badge-info" style="background-color:#007bff;">{{ round($planned_progress) }}%</span>
+                        <span class="badge badge-info" style="background-color:#007bff;">{{ round($current_Planed_percentage) }}%</span>
                     </td>
                     <td style="width:10%;" class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
@@ -89,13 +102,13 @@ line-height: 50px;
                                 @php
                                     $user_db = DB::table('users')->where('id',$get_user)->first();
                                 @endphp
-                               
+
                                 @if($key<3)
                                     @if($user_db->avatar)
                                         <a href="#" class="avatar rounded-circle avatar-sm">
-                                            <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}" 
+                                            <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
                                             @if($user_db->avatar)
-                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}" 
+                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}"
                                             @else
                                                 src="{{asset('/storage/uploads/avatar/avatar.png')}}"
                                             @endif
@@ -105,17 +118,17 @@ line-height: 50px;
                                         <?php  $short=substr($user_db->name, 0, 1);?>
                                         <span class="user-initial">{{strtoupper($short)}}</span>
                                     @endif
-                                
+
                                 @endif
                             @empty
-                                {{ __('-') }}
+                                {{ __('Not Assigned') }}
                             @endforelse
                         </div>
                     </td>
                     @if(\Auth::user()->type == 'company')
                         <td style="width:10%;" class="text-center w-15">
                             <div class="actions">
-                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}" 
+                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
                                     data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="floatrght btn btn-primary mb-3">
                                     <i class="ti ti-pencil"></i>
                                 </a>

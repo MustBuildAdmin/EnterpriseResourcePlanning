@@ -61,7 +61,7 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" id="add_announcement" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
 
 {{Form::close()}}
@@ -125,5 +125,11 @@
             }
         });
     }
+    $(document).ready(function(){
+        $(document).on('submit', 'form', function() {
+            $('#add_announcement').attr('disabled', 'disabled');
+        });
+    });
 </script>
+
 

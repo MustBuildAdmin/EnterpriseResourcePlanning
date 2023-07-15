@@ -36,6 +36,7 @@ use DatePeriod;
 use DB;
 use App\Jobs\Projecttypetask;
 use Mail;
+use Carbon\CarbonPeriod;
 
 class ProjectController extends Controller
 {
@@ -764,6 +765,7 @@ class ProjectController extends Controller
                 // Day left
                 $total_day                = Carbon::parse($project->start_date)->diffInDays(Carbon::parse($project->end_date));
                 $remaining_day            = Carbon::parse($project->start_date)->diffInDays(now());
+
                 $project_data['day_left'] = [
                     'day' => number_format($remaining_day) . '/' . number_format($total_day),
                     'percentage' => Utility::getPercentage($remaining_day, $total_day),
@@ -865,16 +867,13 @@ class ProjectController extends Controller
                 ############### END ##############################
 
                 ############### Remaining days ###################
-                $date1=date_create($cur);
 
-
-                $diff=date_diff($date1,$date2);
-                $remaining_working_days=$diff->format("%a");
+                $remaining_working_days=Utility::remaining_duration_calculator($date2,$project->id);
                 $remaining_working_days=$remaining_working_days-1;// include the last day
+
                 ############### Remaining days ##################
 
                 $completed_days=$no_working_days-$remaining_working_days;
-
                 // percentage calculator
                 if($no_working_days>0){
                     $perday=100/$no_working_days;
@@ -885,8 +884,12 @@ class ProjectController extends Controller
 
 
                 $current_Planed_percentage=round($completed_days*$perday);
+                if($current_Planed_percentage > 100){
+                    $current_Planed_percentage=100;
+                }
+
                 if($current_Planed_percentage>0){
-                    $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;;
+                    $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;
                 }else{
                     $workdone_percentage=0;
                 }
