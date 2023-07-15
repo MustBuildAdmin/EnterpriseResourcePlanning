@@ -1,112 +1,79 @@
-@include('new_layouts.header') @include('construction_project.side-menu')
- <h2>SHOP DRAWINGS</h2>
-<div class="maindailyreport Drawingsreport">
+@include('new_layouts.header')
+@include('construction_project.side-menu')
+<h2>SHOP DRAWINGS</h2>
+<div class="container-fluid">
   <div class="row">
-    <div class="row row-cards">
-      <div class="col-12">
-        <form class="card">
-          <div class="card-body">
-            <div class="row row-cards">
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Drawing Reference No.</label>
-                  <label class="form-label form-control disabledmode">A/xx-001</label>
-                  <!-- <select name="reporting_to[]" id='choices-multiple1' class='chosen-select' required>
-                    <option value="" disabled>Select your option</option>
-                    <option value="">Maincontractor</option>
-                    <option value="">Structural Co Pte Ltd</option>
-                  </select> -->
-                </div>
+     <form action="{{ route('save_project_specification') }}" method="POST"  enctype="multipart/form-data" >
+        @csrf
+        <div class="container">
+           <input type="hidden" name="project_id" value="{{$project_id}}">
+           <div class="row">
+              <div class="form-group">
+                 <label for="InputLIst"><b>SPECIFICATIONS</b> for the project of:</label>
+                 <b>{{$project_name->project_name}}</b>
               </div>
-
-              <div class="col-sm-6 col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Description</label>
-                  <input type="Text" class="form-control" placeholder="Description">
-                </div>
+           </div>
+           <hr style="border: 1px solid black;">
+           <h3 style="text-align: center;">{{__('Specification')}}</h3>
+           <div class="row">
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <label for="InputLIst">{{__('Reference No')}} <span style='color:red;'>*</span></label>
+                    <input type="text" name="reference_no" class="form-control"
+                     placeholder="{{__('Reference No')}}" required>
+                 </div>
               </div>
-
-
-              <div class="col-sm-6 col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Submitted to Consultant</label>
-                  <input type="Text" class="form-control" placeholder="Submitted to Consultant">
-                </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <label for="input">{{__('Description')}} <span style='color:red;'>*</span></label>
+                    <input type="text" name="description" class="form-control"
+                     placeholder="{{__('Description')}}" required>
+                 </div>
               </div>
-
-
-              <div class="col-sm-6 col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Schedule Submission Date</label>
-                  <input type="date" class="form-control" placeholder="Schedule Submission Date">
-                </div>
+           </div>
+           <div class="row">
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <label for="InputLIst">{{__('Location')}} <span style='color:red;'>*</span></label>
+                    <input type="text" name="location" class="form-control" placeholder="{{__('Location')}}" required>
+                 </div>
               </div>
-              <div class="col-sm-6 col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Submission</label>
-                  <input type="Text" class="form-control" placeholder="Submission">
-                </div>
+              <div class="col-md-6">
+                 <div class="form-group">
+                    <label for="input">{{__('Drawing References (if any)')}}</label>
+                    <input type="text" name="drawing_reference" class="form-control"
+                     placeholder="{{__('Drawing References (if any)')}}" >
+                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Expected Approval Date</label>
-                  <input type="date" class="form-control" placeholder="Expected Approval Date">
-                </div>
+           </div>
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="form-group">
+                    <label for="input">{{__('Remarks/ Notes')}}</label>
+                    <textarea name="remarks" class="form-control" placeholder="{{__('Remarks/ Notes')}}" ></textarea>
+                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">Actual Approval Date</label>
-                  <input type="Date" class="form-control" placeholder="Actual Approval Date">
-                </div>
+           </div>
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="form-group">
+                    <label for="input">{{__('Attachments')}}</label>
+                    <input type="file" class="form-control document_setup" name="attachment_file_name"
+                     accept="image/*, .png, .jpeg, .jpg , .pdf, .gif">
+                    <span class="show_document_error" style="color:red;"></span>
+                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="mb-3">
-                  <label class="form-label">STATUS as of last return</label>
-                  <select class='form-control'>
-                    <option value="" disabled>Select your option</option>
-                    <option value="">A</option>
-                    <option value="">C</option>
-                    <option value="">B</option>
-                    <option value="">D</option>
-                    <option value="">E</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="card-footer text-end"> &nbsp; </div>
-        </form>
-      </div>
-      <!-- <div class="col-md-4 form-group"><label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label><div class="choose-file "><label for="document" class="form-label"><input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" required>.
-                                    {{-- <img id="image" class="mt-3" style="width:25%;"/> --}}
-                                    <br><span class="show_document_file" style="color:green;"></span></label></div></div><div class="col-md-4 form-group"><label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label><div class="choose-file "><label for="document" class="form-label"><input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" required>.
-                                    {{-- <img id="image" class="mt-3" style="width:25%;"/> --}}
-                                    <br><span class="show_document_file" style="color:green;"></span></label></div></div> -->
-      <!-- <div class="col-md-12">
-                                {{Form::label('Remarks',__('Remarks'),array('class'=>'form-label')) }}<span style='color:red;'>*</span><textarea class="form-control" rows="5" style="height: 200px;"></textarea></div> -->
-      <div class="card-footer text-end">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-      </form>
-    </div>
+           </div>
+        </div>
+        <div class="col-xs-3">
+           <div class="modal-footer">
+              <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
+              <input type="submit" id="add_project" value="{{__('Submit')}}" class="btn  btn-primary add">
+           </div>
+        </div>
+     </form>
   </div>
 </div>
-<hr />
-</div>
-</div>
-</div>
-</div>
+@include('new_layouts.footer')
 
-@include('new_layouts.footer') 
 
-<script>
-  $(document).ready(function() {
-    $(".chosen-select").chosen();
-  });
-</script>
-<style>
-  div#choices_multiple1_chosen {
-    width: 100% !important;
-  }
-</style>
-<script src="{{asset('js/jquery-ui.min.js')}}"></script>
-<script src="{{asset('js/jquery.repeater.min.js')}}"></script>

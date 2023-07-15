@@ -11,11 +11,6 @@
                 <div class="mb-3">
                   <label class="form-label">Drawing Reference No.</label>
                   <label class="form-label form-control disabledmode">A/xx-001</label>
-                  <!-- <select name="reporting_to[]" id='choices-multiple1' class='chosen-select' required>
-                    <option value="" disabled>Select your option</option>
-                    <option value="">Maincontractor</option>
-                    <option value="">Structural Co Pte Ltd</option>
-                  </select> -->
                 </div>
               </div>
 
@@ -76,13 +71,11 @@
               <div class="card-footer text-end"> &nbsp; </div>
         </form>
       </div>
-      <!-- <div class="col-md-4 form-group"><label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label><div class="choose-file "><label for="document" class="form-label"><input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" required>.
-                                    {{-- <img id="image" class="mt-3" style="width:25%;"/> --}}
-                                    <br><span class="show_document_file" style="color:green;"></span></label></div></div><div class="col-md-4 form-group"><label name="document" for="" class="form-label">{{__('Document')}} <span style='color:red;'>*</span></label><div class="choose-file "><label for="document" class="form-label"><input name="inputimage" type="file" class="form-control" name="document" id="document" data-filename="document_create" required>.
-                                    {{-- <img id="image" class="mt-3" style="width:25%;"/> --}}
-                                    <br><span class="show_document_file" style="color:green;"></span></label></div></div> -->
-      <!-- <div class="col-md-12">
-                                {{Form::label('Remarks',__('Remarks'),array('class'=>'form-label')) }}<span style='color:red;'>*</span><textarea class="form-control" rows="5" style="height: 200px;"></textarea></div> -->
+
+          {{Form::label('Remarks',__('Remarks'),array('class'=>'form-label')) }}
+          <span style='color:red;'>*</span>
+          <textarea class="form-control" rows="5" style="height: 200px;"></textarea>
+        </div>
       <div class="card-footer text-end">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>

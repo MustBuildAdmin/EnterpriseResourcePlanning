@@ -264,9 +264,9 @@
                             </li>
                         @endcan
 
-                        <li class="">
+                        {{-- <li class="">
                             <a href="#" class="dropdown-item">{{ __('RAF/RAM') }}</a>
-                        </li>
+                        </li> --}}
 
                         @can('manage RFI')
                             <li class="{{ (Request::segment(1) == 'rfi_show_info')?'active':''}}">

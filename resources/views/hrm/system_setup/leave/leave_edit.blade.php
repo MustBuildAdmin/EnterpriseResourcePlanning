@@ -20,7 +20,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('days',__('Days Per Year*'),['class'=>'form-label'])}}
-                {{Form::number('days',null,array('class'=>'form-control','required'=>'required','placeholder'=>__('Enter Days / Year')))}}
+                {{Form::number('days',null,array('class'=>'form-control','required'=>'required','placeholder'=>__('Enter Days / Year'),'min'=>0))}}
             </div>
         </div>
 
@@ -28,7 +28,7 @@
     </div>
     <div class="modal-footer">
         <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-        <input type="submit" value="{{__('Update')}}" class="btn btn-primary submit_button">
+        <input type="submit" id="edit_leave" value="{{__('Update')}}" class="btn btn-primary submit_button">
     </div>
 
     {{Form::close()}}
@@ -55,6 +55,9 @@
                         alert("Request: "+JSON.stringify(request));
                     }
                 });
+            });
+            $(document).on('submit', 'form', function() {
+                $('#edit_leave').attr('disabled', 'disabled');
             });
         });
     </script>

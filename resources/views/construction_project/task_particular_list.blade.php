@@ -34,11 +34,20 @@
                         </tr>
 
                         <tr class="highlighted">
-                            <td style="font-weight:bold;">Actual Progress:</td>
-                            <td style="">{{ $total_pecentage }}%</td>
+                            @php
+                                $actual_task_progress = $data['con_data']->progress ? $data['con_data']->progress : '0';
+                                if($actual_task_progress < $planned_progress){
+                                    $style = "color:red;";
+                                }
+                                else{
+                                    $style = "";
+                                }
+                            @endphp
+                            <td style="font-weight:bold; {{$style}}">Actual Progress:</td>
+                            <td style="{{$style}}">{{$data['con_data']->progress != null ? $data['con_data']->progress : '0'}}%</td>
 
-                            <td style="font-weight:bold;"></td>
-                            <td style=""></td>
+                            <td style="font-weight:bold;">Planned Progress</td>
+                            <td style="">{{ round($planned_progress) }}%</td>
                         </tr>
                     </table>
                 </div>
@@ -82,12 +91,12 @@
                                     <td>{{Utility::site_date_format($task_progress->created_at,\Auth::user()->id)}}</td>
                                     <td>{{Utility::site_date_format($task_progress->record_date,\Auth::user()->id)}}</td>
                                     <td>
-                                        @if ($task_progress->date_status == "As Per Time")
-                                            <span class="badge badge-success" style="background-color:#007bff;">{{$task_progress->date_status}}</span>
-                                        @elseif($task_progress->date_status == "Overdue")
-                                            <span class="badge badge-success" style="background-color:#DC3545;">{{$task_progress->date_status}}</span>
+                                        @if( date('Y-m-d', strtotime($task_progress->created_at)) > date('Y-m-d') && $task_progress->percentage >= "100")
+                                            <span class="badge badge-success">Incomplete</span>
+                                        @elseif ($task_progress->percentage >= "100")
+                                            <span class="badge badge-success" style="background-color:#3ec334;">completed</span>
                                         @else
-                                            -
+                                            <span class="badge badge-success" style="background-color:#DC3545;">Incomplete</span>
                                         @endif
                                     </td>
                                     <td><span class="badge badge-info" style="background-color:#007bff;">{{$task_progress->percentage}}%</span></td>

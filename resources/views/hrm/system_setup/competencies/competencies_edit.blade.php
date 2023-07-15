@@ -21,7 +21,7 @@
     <div class="col-12">
         <div class="form-group">
             {{Form::label('type',__('Type*'),['class'=>'form-label'])}}
-            {{Form::select('type',$performance,null,array('class'=>'form-control select','required'=>'required'))}}
+            {{Form::select('type',$performance,null,array('class'=>'form-control select','required'=>'required', 'placeholder'=>'Select Type'))}}
         </div>
     </div>
 
@@ -30,7 +30,7 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Update')}}" class="btn btn-primary submit_button">
+    <input type="submit" id="edit_competencies" value="{{__('Update')}}" class="btn btn-primary submit_button">
 </div>
 {{Form::close()}}
 
@@ -57,6 +57,9 @@
                     alert("Request: "+JSON.stringify(request));
                 }
             });
+        });
+        $(document).on('submit', 'form', function() {
+            $('#edit_competencies').attr('disabled', 'disabled');
         });
     });
 </script>

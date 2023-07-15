@@ -23,8 +23,15 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" id="add_holiday" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
 
 {{Form::close()}}
+<script>
+    $(document).ready(function(){
+        $(document).on('submit', 'form', function() {
+            $('#add_holiday').attr('disabled', 'disabled');
+        });
+    });
+</script>
 

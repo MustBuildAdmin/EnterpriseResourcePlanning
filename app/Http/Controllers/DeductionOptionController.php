@@ -42,7 +42,7 @@ class DeductionOptionController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
+                                   'name' => 'required|unique:deduction_options',
                                ]
             );
             if($validator->fails())
@@ -100,7 +100,7 @@ class DeductionOptionController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required',
+                                       'name' => 'required|unique:deduction_options',
 
                                    ]
                 );
