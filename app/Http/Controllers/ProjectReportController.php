@@ -43,7 +43,7 @@ class ProjectReportController extends Controller
             else{
                 $projects = Project::where('client_id', '=', $user->id);
             }
-            
+
             $users=[];
             $status=[];
 
@@ -309,8 +309,8 @@ class ProjectReportController extends Controller
                         $date2=date_create($value->end_date);
                         $cur= date('Y-m-d');
 
-                        $diff=date_diff($date1,$date2);
-                        $no_working_days=$diff->format("%a");
+                        // $diff=date_diff($date1,$date2);
+                        // $no_working_days=$diff->format("%a");
                         $no_working_days=$value->duration;// include the last day
                         ############### END ##############################
 
@@ -327,7 +327,7 @@ class ProjectReportController extends Controller
                         // $remaining_working_days=$remaining_working_days-1;// include the last day
                         ############### Remaining days ##################
 
-                        // $completed_days=$no_working_days-$remaining_working_days;
+                        $completed_days=$no_working_days-$remaining_working_days;
 
                         // percentage calculator
                         if($no_working_days>0){
@@ -340,7 +340,7 @@ class ProjectReportController extends Controller
                         if($current_percentage > 100){
                             $current_percentage=100;
                         }
-    
+
                         $remaing_percenatge=round(100-$current_percentage);
 
                     //####################################___END____#######################################
@@ -389,12 +389,12 @@ class ProjectReportController extends Controller
                 foreach ($to_array as $key => $value) {
                     $to[]=DB::table('users')->where('id',$value)->pluck('email')->first();
                 }
-                
+
                 if(!$to){
                     return redirect()->back()->with('error', __('Not Assign a Report person'));
                 }
                 $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
-       
+
                 $data["email"] = $to;
                 $data["title"] = "Daily Productivity Report";
                 $data["body"] = "Please find the attachment of the Today Productivity report";
@@ -424,7 +424,7 @@ class ProjectReportController extends Controller
 
 
         }
-        // cron email 
+        // cron email
         public function cronmail(Request $request){
             $time=Carbon::now()->format('H:i');
             $project=Project::where('end_date','>=',Carbon::now()->format('Y-m-d'))->where('report_time',$time)->get();
@@ -434,12 +434,12 @@ class ProjectReportController extends Controller
                     if(!str_contains( $value3->non_working_days, Carbon::now()->format('w'))){
                         Reportemail::dispatch($value3->id);
                     }
-                   
+
                 }
-               
+
             }
         }
-        
+
         public function fetch_user_details(Request $request){
 
             try {
