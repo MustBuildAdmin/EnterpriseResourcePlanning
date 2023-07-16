@@ -12,7 +12,7 @@
         </div>
         <div class="form-group col-lg-6 col-md-6">
             {{Form::label('department_id',__('Department*'),['class'=>'form-label'])}}
-            {{Form::select('department_id',$departments,null,array('class'=>'form-control select2','required'=>'required' 'placeholder'=>'Select Department'))}}
+            {{Form::select('department_id',$departments,null,array('class'=>'form-control select2','required'=>'required', 'placeholder'=>'Select Department'))}}
         </div>
         <div class="form-group col-lg-6 col-md-6">
             {{Form::label('transfer_date',__('Transfer Date*'),['class'=>'form-label'])}}
