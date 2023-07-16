@@ -177,7 +177,7 @@
                     @endif
                 </li>
 
-                @if( Gate::check('manage set salary') || Gate::check('manage pay slip'))
+                <!-- @if( Gate::check('manage set salary') || Gate::check('manage pay slip'))
                     <li class="{{ (Request::segment(1) == 'setsalary' || Request::segment(1) == 'payslip') ? 'active' : '' }}">
                         <a data-bs-target="#payslip_hrm_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
                             <span class="icon"><img src="assets/images/icons/money.png"/></span>
@@ -192,9 +192,9 @@
                             @endcan
                         </ul>
                     </li>
-                @endif
+                @endif -->
 
-                @if( Gate::check('manage leave') || Gate::check('manage attendance'))
+                <!-- @if( Gate::check('manage leave') || Gate::check('manage attendance'))
                     <li class="{{ (Request::segment(1) == 'leave' || Request::segment(1) == 'attendanceemployee') ? 'active' :'' }}">
                         <a data-bs-target="#hrm_leave_management_setup" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
                             <span class="icon"><img src="assets/images/icons/leave.png"/></span>
@@ -220,7 +220,7 @@
                             @endcan
                         </ul>
                     </li>
-                @endif
+                @endif -->
 
                 <li class="{{ Request::segment(1) == 'holiday-calender' || Request::segment(1) == 'holiday' || Request::segment(1) == 'policies' ||
                     Request::segment(1) == 'award' || Request::segment(1) == 'transfer' || Request::segment(1) == 'resignation' || Request::segment(1) == 'travel' ||
@@ -270,7 +270,7 @@
                     <a href="#"><span class="icon"><i class="ti ti-calendar-event"></i></span><span class="list">Event and Meetings</span></a>
                 </li> --}}
 
-                @can('manage document')
+                <!-- @can('manage document')
                     <li class="{{ Request::segment(1) == 'hrm_doc_setup' ? 'active' : '' }}">
                         <a href="{{ url('hrm_doc_setup') }}"><span class="icon"><i
                                     class="ti ti-certificate"></i></span><span
@@ -284,7 +284,7 @@
                                     class="ti ti-certificate"></i></span><span
                                 class="list">{{ __('Company policy') }}</span></a>
                     </li>
-                @endcan
+                @endcan -->
 
                 {{-- <li>
                     <a href="#"><span class="icon"> <img src="assets/images/icons/support.png"/></span><span
@@ -370,7 +370,7 @@
                     </ul>
                 </li>
 
-                @can('manage report')
+                <!-- @can('manage report')
                     <li class="{{ (Request::segment(1) == 'reports-monthly-attendance' || Request::segment(1) == 'reports-leave' || 
                         Request::segment(1) == 'reports-payroll') ? 'active dash-trigger' : ''}}">
                         <a data-bs-target="#hrm_reports" data-bs-toggle="collapse" aria-expanded="false" class="accordion-collapse collapse list-unstyled">
@@ -383,7 +383,7 @@
                             <li class="{{ request()->is('reports-monthly-attendance') ? 'active' : '' }}"><a href="{{ route('report.monthly.attendance') }}">{{ __('Monthly Attendance') }}</a></li>
                         </ul>
                     </li>
-                @endcan
+                @endcan -->
             </ul>
         </div>
     </nav>
