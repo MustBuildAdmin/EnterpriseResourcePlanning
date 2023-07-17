@@ -129,7 +129,7 @@ h5.sm {
 <h3 style="
     text-align: center;
     padding: 2px 2px;
-    "> {{$project->project_name}}</h3>
+    ">{{$project->project_name}} - {{date('Y-m-d h:i A')}}</h3>
 
 
 <h3 style="
