@@ -1033,7 +1033,6 @@ class ProjectController extends Controller
                     $extension1       = $request->file("project_image")->getClientOriginalExtension();
                     $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
                     $dir              = Config::get('constants.Projects_image');
-                    $imagepath        = $dir . $filenameWithExt1;
                     $url              = "";
                     $path             = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
     

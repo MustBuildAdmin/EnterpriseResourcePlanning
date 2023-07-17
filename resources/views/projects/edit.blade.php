@@ -136,7 +136,7 @@
                             <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
 
                             @if($project->project_image != null)
-                                <img id="image"  src="{{ url($project->project_image) }}" class="avatar avatar-xl" alt="">
+                                <img id="image"  src="{{  \App\Models\Utility::get_file($project->project_image) }}" class="avatar avatar-xl" alt="">
                             @endif
                         </div>
                     </div>
