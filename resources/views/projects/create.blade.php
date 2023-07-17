@@ -29,7 +29,7 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                <select class="form-control country" name="country" id='country_wizard' 
+                                <select class="form-control country" name="country" id='country_wizard'
                                 placeholder="Select Country" required>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($country as $key => $value)
@@ -207,9 +207,9 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 @if($setting['company_type']==2)
-                                    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }} 
+                                    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }}
                                     <span class="text-danger">*</span>
-                                    <select name="file_status" id="file_status" 
+                                    <select name="file_status" id="file_status"
                                     class="form-control main-element" required>
                                         <option value=''>Choose File Type</option>
                                         <option value='M'>Manual</option>
