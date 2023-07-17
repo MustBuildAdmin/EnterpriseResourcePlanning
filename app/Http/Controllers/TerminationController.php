@@ -39,7 +39,7 @@ class TerminationController extends Controller
     {
         if(\Auth::user()->can('create termination'))
         {
-            $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees        = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             $terminationtypes = TerminationType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('hrm.admin_setup.termination.termination_create', compact('employees', 'terminationtypes'));
@@ -122,7 +122,7 @@ class TerminationController extends Controller
     {
         if(\Auth::user()->can('edit termination'))
         {
-            $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees        = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             $terminationtypes = TerminationType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             if($termination->created_by == \Auth::user()->creatorId())
             {
