@@ -274,7 +274,7 @@ ul.collapse li{
     text-align: center;
 }
 
-.employee table.dataTable td, table.dataTable th {
+table.dataTable th {
   -webkit-box-sizing: content-box;
   box-sizing: border-box;
   /* word-break: break-word; */
