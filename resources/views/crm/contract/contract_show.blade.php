@@ -358,7 +358,8 @@ i.ti.ti-eye.text-white.text-white {
                                         <div class="row align-items-center">
                                             <div class="col-auto">
                                                 <a href="{{ !empty($user->avatar) ? $logo . '/'
-                                                   . $user->avatar : $logo . '/avatar.png' }}" target="_blank">
+                                                   . $user->avatar : $logo . '/avatar.png' }}" target="_blank"
+                                                   rel="noopener">
                                                     <img class="rounded-circle"  width="40" height="40" alt=""
                                                         src="{{ !empty($user->avatar) ? $logo . '/'
                                                         . $user->avatar : $logo . '/avatar.png' }}">
