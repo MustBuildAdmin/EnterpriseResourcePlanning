@@ -42,13 +42,13 @@ class ComplaintController extends Controller
             {
                 $user             = \Auth::user();
                 $current_employee = Employee::where('user_id', $user->id)->get()->pluck('name', 'id');
-                $employees        = Employee::where('user_id', '!=', $user->id)->get()->pluck('name', 'id');
+                $employees        = Employee::where('user_id', '!=', $user->id)->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             }
             else
             {
                 $user             = \Auth::user();
                 $current_employee = Employee::where('user_id', $user->id)->get()->pluck('name', 'id');
-                $employees = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+                $employees = Employee::where('created_by', Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             }
 
             return view('hrm.admin_setup.complaints.complaints_create', compact('employees', 'current_employee'));
@@ -152,13 +152,13 @@ class ComplaintController extends Controller
             {
                 $user             = \Auth::user();
                 $current_employee = Employee::where('user_id', $user->id)->get()->pluck('name', 'id');
-                $employees        = Employee::where('user_id', '!=', $user->id)->get()->pluck('name', 'id');
+                $employees        = Employee::where('user_id', '!=', $user->id)->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             }
             else
             {
                 $user             = \Auth::user();
                 $current_employee = Employee::where('user_id', $user->id)->get()->pluck('name', 'id');
-                $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+                $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             }
             if($complaint->created_by == \Auth::user()->creatorId())
             {

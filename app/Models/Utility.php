@@ -177,7 +177,7 @@ class Utility extends Model
         return $settings;
     }
 
-   
+
 
     public static function settingsById($user_id)
     {
@@ -1451,11 +1451,11 @@ class Utility extends Model
             Mail::send($data, function($message)use($data, $files) {
                 $message->to($data["email"], $data["email"])
                         ->subject($data["title"]);
-    
+
                 foreach ($files as $file){
                     $message->attach($file);
                 }
-                
+
             });
 
         }
@@ -3656,7 +3656,7 @@ class Utility extends Model
         }
         // utc to company timezone
         public static function utc_to_originaltime($time,$setting){
-            
+
             $timezone =$setting['timezone'];
             // dd($timezone);
             // $timezone = 'America/New_York';
@@ -3669,6 +3669,40 @@ class Utility extends Model
             // $utcTime = $carbon->toDateTimeString();
             // $dateTimeUTC= date('H:i:s', strtotime($utcTime));
             // return  $dateTimeUTC;
+
+        }
+
+        public static function remaining_duration_calculator($end,$id){
+           $holidays=DB::table('project_holidays')->where('project_id',$id)->get();
+           $project=DB::table('projects')->where('id',$id)->first();
+           if($project){
+                // $weekends_array=array('MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY');
+                $weekarray=explode(',',$project->non_working_days);
+                $excluded_dates =array();
+
+                if(count($holidays)>0){
+                    foreach ($holidays as $key => $value) {
+                        $excluded_dates [] =Carbon::create($value->date);
+                    }
+                }
+                $final_count = 0;
+
+                $start_date = Carbon::now();
+                $end_date = Carbon::create($end);
+                $date_range = CarbonPeriod::create($start_date, $end_date);
+
+                foreach ($date_range as $date) {
+                    if (!in_array($date->dayOfWeek, $weekarray) && !in_array($date, $excluded_dates)) {
+                        $final_count++;
+                    }
+                }
+
+                return $final_count;
+
+           }else{
+                return '0';
+           }
+
 
         }
 

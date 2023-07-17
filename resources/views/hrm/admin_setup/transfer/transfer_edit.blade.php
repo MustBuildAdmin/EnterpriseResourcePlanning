@@ -4,15 +4,15 @@
     <div class="row">
         <div class="form-group col-lg-6 col-md-6 ">
             {{ Form::label('employee_id', __('Employee*'),['class'=>'form-label'])}}
-            {{ Form::select('employee_id', $employees,null, array('class' => 'form-control select2','required'=>'required')) }}
+            {{ Form::select('employee_id', $employees,null, array('class' => 'form-control select2','required'=>'required','placeholder'=>'Select Employee')) }}
         </div>
         <div class="form-group col-lg-6 col-md-6">
             {{Form::label('branch_id',__('Branch*'),['class'=>'form-label'])}}
-            {{Form::select('branch_id',$branches,null,array('class'=>'form-control select2','required'=>'required'))}}
+            {{Form::select('branch_id',$branches,null,array('class'=>'form-control select2','required'=>'required','placeholder'=>'Select Branch'))}}
         </div>
         <div class="form-group col-lg-6 col-md-6">
             {{Form::label('department_id',__('Department*'),['class'=>'form-label'])}}
-            {{Form::select('department_id',$departments,null,array('class'=>'form-control select2','required'=>'required'))}}
+            {{Form::select('department_id',$departments,null,array('class'=>'form-control select2','required'=>'required', 'placeholder'=>'Select Department'))}}
         </div>
         <div class="form-group col-lg-6 col-md-6">
             {{Form::label('transfer_date',__('Transfer Date*'),['class'=>'form-label'])}}
@@ -28,8 +28,15 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
+    <input type="submit" id="edit_transfer" value="{{__('Update')}}" class="btn  btn-primary">
 </div>
 
 
 {{Form::close()}}
+<script> 
+    $(document).ready(function(){
+        $(document).on('submit', 'form', function() {
+            $('#edit_transfer').attr('disabled', 'disabled');
+        });
+    });
+</script>

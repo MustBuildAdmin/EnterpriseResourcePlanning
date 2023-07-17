@@ -40,7 +40,7 @@ class PromotionController extends Controller
         if(\Auth::user()->can('create promotion'))
         {
             $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $employees    = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees    = Employee::where('created_by', Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
 
             return view('hrm.admin_setup.promotion.promotion_create', compact('employees', 'designations'));
             // return view('promotion.create', compact('employees', 'designations'));
@@ -117,7 +117,7 @@ class PromotionController extends Controller
     public function edit(Promotion $promotion)
     {
         $designations = Designation::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $employees    = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $employees    = Employee::where('created_by', Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
         if(\Auth::user()->can('edit promotion'))
         {
             if($promotion->created_by == \Auth::user()->creatorId())
