@@ -206,8 +206,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 @if($setting['company_type']==2)
-                                    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }}
-                                    <select name="file_status" id="file_status" class="form-control main-element" >
+                                    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }} <span class="text-danger">*</span>
+                                    <select name="file_status" id="file_status" class="form-control main-element" required>
                                         <option value=''>Choose File Type</option>
                                         <option value='M'>Manual</option>
                                         <option value='MP'>Microsoft Project</option>
@@ -344,7 +344,13 @@
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                if(currentIndex == 2){
+                get_reportto         = $(".get_reportto").val();
+                get_non_working_days = $(".get_non_working_days").val();
+               
+                if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
+                    form.validate().settings.ignore = ":disabled";
+                }
+                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
                 else{
