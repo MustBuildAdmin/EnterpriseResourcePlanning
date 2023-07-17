@@ -2,25 +2,35 @@
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 <link rel="stylesheet" href="{{asset('assets/css/plugins/dropzone.min.css')}}">
 
-<div class="page-wrapper"> 
+<div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
 
 	<div class="float-end">
         @can('convert deal to deal')
             @if(!empty($deal))
-                <a href="@can('View Deal') @if($deal->is_active) {{route('deals.show',$deal->id)}} @else # @endif @else # @endcan" data-size="lg" data-bs-toggle="tooltip" title=" {{__('Already Converted To Deal')}}" class="btn btn-sm btn-primary">
+                <a href="@can('View Deal')
+                @if($deal->is_active) {{route('deals.show',$deal->id)}} @else # @endif
+                @else # @endcan"
+                    data-size="lg" data-bs-toggle="tooltip" title=" {{__('Already Converted To Deal')}}"
+                    class="btn btn-sm btn-primary">
                     <i class="ti ti-exchange"></i>
                 </a>
             @else
-                <a href="#" data-size="lg" data-url="{{ URL::to('deals/'.$deal->id.'/show_convert') }}" data-bs-toggle="tooltip" title="{{__('Convert ['.$deal->subject.'] To Deal')}}" class="btn btn-sm btn-primary">
+                <a href="#" data-size="lg" data-url="{{ URL::to('deals/'.$deal->id.'/show_convert') }}"
+                    data-bs-toggle="tooltip" title="{{__('Convert ['.$deal->subject.'] To Deal')}}"
+                    class="btn btn-sm btn-primary">
                     <i class="ti ti-exchange"></i>
                 </a>
             @endif
         @endcan
-        <a href="#" data-url="{{ URL::to('deals/'.$deal->id.'/labels') }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Label')}}" class="btn btn-sm btn-primary">
+        <a href="#" data-url="{{ URL::to('deals/'.$deal->id.'/labels') }}"
+             data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip"
+             title="{{__('Label')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-bookmark"></i>
         </a>
-        <a href="#" data-size="lg" data-url="{{ route('deals.edit',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="btn btn-sm btn-primary">
+        <a href="#" data-size="lg" data-url="{{ route('deals.edit',$deal->id) }}"
+           data-ajax-popup="true" data-bs-toggle="tooltip"
+           title="{{__('Edit')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-pencil"></i>
         </a>
     </div>
@@ -43,18 +53,27 @@
                             </a>
 
 
-                            <a href="#users_products" class="list-group-item list-group-item-action border-0">{{__('Users').' | '.__('Products')}}
-                                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                            <a href="#users_products" class="list-group-item list-group-item-action border-0">
+                                {{__('Users').' | '.__('Products')}}
+                                <div class="float-end">
+                                    <i class="ti ti-chevron-right"></i>
+                                </div>
                             </a>
 
 
-                            <a href="#sources_emails" class="list-group-item list-group-item-action border-0">{{__('Sources').' | '.__('Emails')}}
-                                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                            <a href="#sources_emails" class="list-group-item list-group-item-action border-0">
+                                {{__('Sources').' | '.__('Emails')}}
+                                <div class="float-end">
+                                    <i class="ti ti-chevron-right"></i>
+                                </div>
                             </a>
 
 
-                            <a href="#discussion_note" class="list-group-item list-group-item-action border-0">{{__('Discussion').' | '.__('Notes')}}
-                                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                            <a href="#discussion_note" class="list-group-item list-group-item-action border-0">
+                                {{__('Discussion').' | '.__('Notes')}}
+                                <div class="float-end">
+                                    <i class="ti ti-chevron-right"></i>
+                                </div>
                             </a>
 
 
@@ -68,8 +87,11 @@
                             </a>
 
 
-                            <a href="#activity" class="list-group-item list-group-item-action border-0">{{__('Activity')}}
-                                <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                            <a href="#activity" class="list-group-item list-group-item-action border-0">
+                                {{__('Activity')}}
+                                <div class="float-end">
+                                    <i class="ti ti-chevron-right"></i>
+                                </div>
                             </a>
 
 
@@ -116,7 +138,9 @@
                                         </div>
                                         <div class="ms-2">
                                             <p class="text-muted text-sm mb-0">{{__('Created')}}</p>
-                                            <h5 class="mb-0 text-warning">{{\Auth::user()->dateFormat($deal->created_at)}}</h5>
+                                            <h5 class="mb-0 text-warning">
+                                                {{\Auth::user()->dateFormat($deal->created_at)}}
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -211,7 +235,10 @@
                                 <h5>{{__('Tasks')}}</h5>
                                 @can('create task')
                                     <div class="float-end">
-                                        <a href="#" data-size="lg" data-url="{{ route('deals.tasks.create',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Task')}}" class="btn btn-sm btn-primary">
+                                         <a  href="#" data-size="lg"
+                                             data-url="{{ route('deals.tasks.create',$deal->id) }}"
+                                             data-ajax-popup="true" data-bs-toggle="tooltip"
+                                             title="{{__('Add Task')}}" class="btn btn-sm btn-primary">
                                             <i class="ti ti-plus"></i>
                                         </a>
                                     </div>
@@ -225,9 +252,16 @@
                                     @foreach($tasks as $task)
                                         <li class="list-group-item px-0">
                                             <div class="d-block d-sm-flex align-items-start">
-                                                <div class="form-check form-switch form-switch-right img-fluid me-3 mb-2 mb-sm-0">
-                                                    <input class="form-check-input task-checkbox" type="checkbox" role="switch" id="task_{{$task->id}}" @if($task->status) checked="checked" @endcan value="{{$task->status}}" data-url="{{route('deals.tasks.update_status',[$deal->id,$task->id])}}">
-                                                    <label class="form-check-label pe-5" for="task_{{$task->id}}"></label>
+                                                <div class="form-check form-switch form-switch-right img-fluid me-3
+                                                     mb-2 mb-sm-0">
+                                                    <input class="form-check-input task-checkbox" type="checkbox"
+                                                     role="switch" id="task_{{$task->id}}"
+                                                     @if($task->status) checked="checked" @endcan
+                                                     value="{{$task->status}}"
+                                                      data-url="{{route('deals.tasks.update_status',
+                                                      [$deal->id,$task->id])}}">
+                                                    <label class="form-check-label pe-5" for="task_{{$task->id}}">
+                                                    </label>
                                                 </div>
                                                 <div class="w-100">
                                                     <div class="d-flex align-items-center justify-content-between">
@@ -235,30 +269,59 @@
                                                             <h5 class="mb-0">
                                                                 {{$task->name}}
                                                                 @if($task->status)
-                                                                    <div class="badge bg-success mb-1">{{__(\App\Models\DealTask::$status[$task->status])}}</div>
+                                                                    <div class="badge bg-success mb-1">
+                                                                        {{__(\App\Models\DealTask::
+                                                                        $status[$task->status])}}
+                                                                    </div>
                                                                 @else
-                                                                    <div class="badge bg-warning mb-1">{{__(\App\Models\DealTask::$status[$task->status])}}</div>
+                                                                    <div class="badge bg-warning mb-1">
+                                                                        {{__(\App\Models\DealTask::
+                                                                        $status[$task->status])}}
+                                                                    </div>
                                                                 @endif
                                                             </h5>
-                                                            <small class="text-sm">{{__(\App\Models\DealTask::$priorities[$task->priority])}} - {{Auth::user()->dateFormat($task->date)}} {{Auth::user()->timeFormat($task->time)}}</small>
+                                                            <small class="text-sm">
+                                                                {{__(\App\Models\DealTask::
+                                                                $priorities[$task->priority])}}
+                                                                 - {{Auth::user()->dateFormat($task->date)}}
+                                                                 {{Auth::user()->timeFormat($task->time)}}
+                                                            </small>
                                                             <span class="text-muted text-sm">
                                                                 @if($task->status)
-                                                                    <div class="badge badge-pill badge-success mb-1">{{__(\App\Models\DealTask::$status[$task->status])}}</div>
+                                                                    <div class="badge badge-pill badge-success mb-1">
+                                                                        {{__(\App\Models\DealTask::
+                                                                        $status[$task->status])}}
+                                                                    </div>
                                                                 @else
-                                                                    <div class="badge badge-pill badge-warning mb-1">{{__(\App\Models\DealTask::$status[$task->status])}}</div>
+                                                                    <div class="badge badge-pill badge-warning mb-1">
+                                                                        {{__(\App\Models\DealTask::
+                                                                        $status[$task->status])}}
+                                                                    </div>
                                                                 @endif
                                                             </span>
                                                         </div>
                                                         <span>
                                                         @can('edit task')
                                                                 <div class="action-btn bg-info ms-2">
-                                                                <a href="#" class="" data-title="{{__('Edit Task')}}" data-url="{{route('deals.tasks.edit',[$deal->id,$task->id])}}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
+                                                                <a href="#" class="" data-title="{{__('Edit Task')}}"
+                                                                   data-url="{{route('deals.tasks.edit',
+                                                                   [$deal->id,$task->id])}}"
+                                                                   data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                                   title="{{__('Edit')}}">
+                                                                   <i class="ti ti-pencil text-white"></i>
+                                                                </a>
                                                             </div>
                                                             @endcan
                                                             @can('delete task')
                                                                 <div class="action-btn bg-danger ms-2">
-                                                                {!! Form::open(['method' => 'DELETE', 'route' => ['deals.tasks.destroy',$deal->id,$task->id]]) !!}
-                                                                <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                                {!! Form::open(['method' => 'DELETE',
+                                                                 'route' => ['deals.tasks.destroy',
+                                                                 $deal->id,$task->id]]) !!}
+                                                                <a href="#" class="mx-3 btn btn-sm  align-items
+                                                                   -center bs-pass-para" data-bs-toggle="tooltip"
+                                                                    title="{{__('Delete')}}">
+                                                                   <i class="ti ti-trash text-white"></i>
+                                                                </a>
                                                                 {!! Form::close() !!}
                                                                 </div>
                                                             @endcan
@@ -285,7 +348,10 @@
                                             <h5>{{__('Users')}}</h5>
 
                                             <div class="float-end">
-                                                <a href="#" data-size="md" data-url="{{ route('deals.users.edit',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add User')}}" class="btn btn-sm btn-primary">
+                                                <a href="#" data-size="md" data-url="{{ route('deals.users.edit',
+                                                   $deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                    title="{{__('Add User')}}"
+                                                    class="btn btn-sm btn-primary">
                                                     <i class="ti ti-plus"></i>
                                                 </a>
                                             </div>
@@ -306,7 +372,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div>
-                                                                    <img @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif class="wid-30 rounded-circle me-3" >
+                                                                    <img  alt=""
+                                                                        @if($user->avatar)
+                                                                            src="{{asset('/storage/uploads/avatar/
+                                                                            '.$user->avatar)}}"
+                                                                        @else
+                                                                            src="{{asset('/storage/uploads/avatar/
+                                                                            avatar.png')}}"
+                                                                        @endif
+                                                                      class="wid-30 rounded-circle me-3">
                                                                 </div>
                                                                 <p class="mb-0">{{$user->name}}</p>
                                                             </div>
@@ -314,9 +388,16 @@
                                                         @can('edit deal')
                                                             <td>
                                                                 <div class="action-btn bg-danger ms-2">
-                                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['deals.users.destroy', $deal->id,$user->id],'id'=>'delete-form-'.$deal->id]) !!}
-                                                                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
-
+                                                                    {!! Form::open(['method' => 'DELETE',
+                                                                        'route' => ['deals.users.destroy',
+                                                                        $deal->id,$user->id],'id'=>'delete-form-'
+                                                                        .$deal->id]) !!}
+                                                                        <a  href="#" class="mx-3 btn btn-sm  align-items-
+                                                                            center bs-pass-para"
+                                                                            data-bs-toggle="tooltip"
+                                                                            title="{{__('Delete')}}">
+                                                                            <i class="ti ti-trash text-white"></i>
+                                                                        </a>
                                                                     {!! Form::close() !!}
                                                                 </div>
                                                             </td>
@@ -337,7 +418,11 @@
                                             <h5>{{__('Products')}}</h5>
 
                                             <div class="float-end">
-                                                <a href="#" data-size="md" data-url="{{ route('deals.products.edit',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Product')}}" class="btn btn-sm btn-primary">
+                                                <a href="#" data-size="md"
+                                                   data-url="{{ route('deals.products.edit',$deal->id) }}"
+                                                   data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                   title="{{__('Add Product')}}"
+                                                   class="btn btn-sm btn-primary">
                                                     <i class="ti ti-plus"></i>
                                                 </a>
                                             </div>
@@ -366,9 +451,14 @@
                                                         @can('edit deal')
                                                             <td>
                                                                 <div class="action-btn bg-danger ms-2">
-                                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['deals.products.destroy', $deal->id,$product->id]]) !!}
-                                                                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
-
+                                                                    {!! Form::open(['method' => 'DELETE',
+                                                                    'route' => ['deals.products.destroy',
+                                                                    $deal->id,$product->id]]) !!}
+                                                                    <a href="#" class="mx-3 btn btn-sm  align-items
+                                                                        -center bs-pass-para"data-bs-toggle="tooltip"
+                                                                        title="{{__('Delete')}}">
+                                                                        <i class="ti ti-trash text-white"></i>
+                                                                    </a>
                                                                     {!! Form::close() !!}
                                                                 </div>
                                                             </td>
@@ -393,7 +483,11 @@
                                             <h5>{{__('Sources')}}</h5>
 
                                             <div class="float-end">
-                                                <a href="#" data-size="md" data-url="{{ route('deals.sources.edit',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Source')}}" class="btn btn-sm btn-primary">
+                                                <a href="#" data-size="md"
+                                                   data-url="{{ route('deals.sources.edit',$deal->id) }}"
+                                                   data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                   title="{{__('Add Source')}}"
+                                                   class="btn btn-sm btn-primary">
                                                     <i class="ti ti-plus"></i>
                                                 </a>
                                             </div>
@@ -415,8 +509,16 @@
                                                         @can('edit deal')
                                                             <td>
                                                                 <div class="action-btn bg-danger ms-2">
-                                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['deals.sources.destroy', $deal->id,$source->id],'id'=>'delete-form-'.$deal->id]) !!}
-                                                                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                                    {!! Form::open(['method' => 'DELETE',
+                                                                    'route' => ['deals.sources.destroy',
+                                                                    $deal->id,$source->id],
+                                                                    'id'=>'delete-form-'.$deal->id])
+                                                                    !!}
+                                                                    <a href="#" class="mx-3 btn btn-sm  align-items
+                                                                       -center bs-pass-para" data-bs-toggle="tooltip"
+                                                                        title="{{__('Delete')}}">
+                                                                        <i class="ti ti-trash text-white"></i>
+                                                                    </a>
 
                                                                     {!! Form::close() !!}
                                                                 </div>
@@ -437,7 +539,10 @@
                                             <h5>{{__('Emails')}}</h5>
                                             @can('create deal email')
                                             <div class="float-end">
-                                                <a href="#" data-size="lg" data-url="{{ route('deals.emails.create',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create Email')}}" class="btn btn-sm btn-primary">
+                                                <a href="#" data-size="lg"
+                                                   data-url="{{ route('deals.emails.create',$deal->id) }}"
+                                                   data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                   title="{{__('Create Email')}}" class="btn btn-sm btn-primary">
                                                     <i class="ti ti-plus"></i>
                                                 </a>
                                             </div>
@@ -453,12 +558,16 @@
                                                             <img src="{{asset('/storage/uploads/avatar/avatar.png')}}"
                                                                  class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
                                                             <div class="w-100">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div class="d-flex align-items-center justify
+                                                                      -content-between">
                                                                     <div class="mb-3 mb-sm-0">
                                                                         <h5 class="mb-0">{{$email->subject}}</h5>
-                                                                        <span class="text-muted text-sm">{{$email->to}}</span>
+                                                                        <span class="text-muted text-sm">
+                                                                            {{$email->to}}
+                                                                        </span>
                                                                     </div>
-                                                                    <div class="form-check form-switch form-switch-right mb-2">
+                                                                    <div class="form-check form-switch form-switch
+                                                                         -right mb-2">
                                                                         {{$email->created_at->diffForHumans()}}
                                                                     </div>
                                                                 </div>
@@ -486,7 +595,11 @@
                                             <h5>{{__('Discussion')}}</h5>
 
                                             <div class="float-end">
-                                                <a href="#" data-size="lg" data-url="{{ route('deals.discussions.create',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Message')}}" class="btn btn-sm btn-primary">
+                                                <a href="#" data-size="lg"
+                                                    data-url="{{ route('deals.discussions.create',$deal->id) }}"
+                                                    data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                    title="{{__('Add Message')}}"
+                                                    class="btn btn-sm btn-primary">
                                                     <i class="ti ti-plus"></i>
                                                 </a>
                                             </div>
@@ -498,13 +611,22 @@
                                                 @foreach($deal->discussions as $discussion)
                                                     <li class="list-group-item px-0">
                                                         <div class="d-block d-sm-flex align-items-start">
-                                                            <img src="@if($discussion->user->avatar) {{asset('/storage/uploads/avatar/'.$discussion->user->avatar)}} @else {{asset('/storage/uploads/avatar/avatar.png')}} @endif"
+                                                            <img
+                                                                 src="@if($discussion->user->avatar)
+                                                                    {{asset('/storage/uploads/avatar/
+                                                                '.$discussion->user->avatar)}}
+                                                                    @else
+                                                                    {{asset('/storage/uploads/avatar/avatar.png')}}
+                                                                    @endif"
                                                                  class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
                                                             <div class="w-100">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div class="d-flex align-items-center
+                                                                     justify-content-between">
                                                                     <div class="mb-3 mb-sm-0">
                                                                         <h5 class="mb-0"> {{$discussion->comment}}</h5>
-                                                                        <span class="text-muted text-sm">{{$discussion->user->name}}</span>
+                                                                        <span class="text-muted text-sm">
+                                                                            {{$discussion->user->name}}
+                                                                        </span>
                                                                     </div>
                                                                     <div class=" form-switch form-switch-right mb-4">
                                                                         {{$discussion->created_at->diffForHumans()}}
@@ -552,7 +674,11 @@
                                 <h5>{{__('Calls')}}</h5>
                                 @can('create deal call')
                                 <div class="float-end">
-                                    <a href="#" data-size="lg" data-url="{{ route('deals.calls.create',$deal->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Call')}}" class="btn btn-sm btn-primary">
+                                    <a href="#" data-size="lg"
+                                       data-url="{{ route('deals.calls.create',$deal->id) }}"
+                                       data-ajax-popup="true" data-bs-toggle="tooltip"
+                                       title="{{__('Add Call')}}"
+                                       class="btn btn-sm btn-primary">
                                         <i class="ti ti-plus"></i>
                                     </a>
                                 </div>
@@ -564,7 +690,7 @@
                                 <table class="table table-hover mb-0">
                                     <thead>
                                     <tr>
-                                        <th width="">{{__('Subject')}}</th>
+                                        <th>{{__('Subject')}}</th>
                                         <th>{{__('Call Type')}}</th>
                                         <th>{{__('Duration')}}</th>
                                         <th>{{__('User')}}</th>
@@ -577,19 +703,31 @@
                                             <td>{{ $call->subject }}</td>
                                             <td>{{ ucfirst($call->call_type) }}</td>
                                             <td>{{ $call->duration }}</td>
-                                            <td>{{ isset($call->getLeadCallUser) ? $call->getLeadCallUser->name : '-' }}</td>
+                                            <td>
+                                                {{ isset($call->getLeadCallUser) ? $call->getLeadCallUser->name : '-' }}
+                                            </td>
                                             <td>
                                                 @can('edit deal call')
                                                     <div class="action-btn bg-info ms-2">
-                                                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ URL::to('deals/'.$deal->id.'/call/'.$call->id.'/edit') }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Call')}}">
+                                                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align
+                                                           -items-center" data-url="{{ URL::to('deals/'.$deal->id.'/call
+                                                           /'.$call->id.'/edit') }}" data-ajax-popup="true"
+                                                           data-size="xl" data-bs-toggle="tooltip"
+                                                            title="{{__('Edit')}}" data-title="{{__('Edit Call')}}">
                                                             <i class="ti ti-pencil text-white"></i>
                                                         </a>
                                                     </div>
                                                 @endcan
                                                 @can('delete deal call')
                                                     <div class="action-btn bg-danger ms-2">
-                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['deals.calls.destroy', $deal->id,$user->id],'id'=>'delete-form-'.$deal->id]) !!}
-                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                        {!! Form::open(['method' => 'DELETE',
+                                                         'route' => ['deals.calls.destroy',
+                                                         $deal->id,$user->id],'id'=>'delete-form-'.$deal->id])
+                                                         !!}
+                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center bs
+                                                        -pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                                                        <i class="ti ti-trash text-white"></i>
+                                                       </a>
 
                                                         {!! Form::close() !!}
                                                     </div>
@@ -620,9 +758,13 @@
                                                                 <i class="ti {{ $activity->logIcon() }}"></i>
                                                             </div>
                                                             <div class="ms-3">
-                                                                <span class="text-dark text-sm">{{ __($activity->log_type) }}</span>
+                                                                <span class="text-dark text-sm">
+                                                                    {{ __($activity->log_type) }}
+                                                                </span>
                                                                 <h6 class="m-0">{!! $activity->getRemark() !!}</h6>
-                                                                <small class="text-muted">{{$activity->created_at->diffForHumans()}}</small>
+                                                                <small class="text-muted">
+                                                                    {{$activity->created_at->diffForHumans()}}
+                                                                </small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -645,9 +787,10 @@
             </div>
         </div>
     </div>
+    @include('new_layouts.footer')
 	</div>
 	
-@include('new_layouts.footer')
+
 <script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
 <script src="{{asset('assets/js/plugins/dropzone-amd-module.min.js')}}"></script>
 <script>
@@ -750,7 +893,8 @@
     myDropzone.emit("thumbnail", mockFile, "{{asset(Storage::url('deal_files/'.$file->file_path))}}");
     myDropzone.emit("complete", mockFile);
 
-    dropzoneBtn(mockFile, {download: "{{route('deals.file.download',[$deal->id,$file->id])}}", delete: "{{route('deals.file.delete',[$deal->id,$file->id])}}"});
+    dropzoneBtn(mockFile, {download: "{{route('deals.file.download',[$deal->id,$file->id])}}",
+                           delete: "{{route('deals.file.delete',[$deal->id,$file->id])}}"});
     @endif
     @endforeach
 

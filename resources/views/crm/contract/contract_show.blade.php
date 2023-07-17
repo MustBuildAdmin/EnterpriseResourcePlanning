@@ -1,31 +1,45 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 <link rel="stylesheet" href="{{asset('assets/css/plugins/dropzone.min.css')}}">
+<style>
+i.ti.ti-eye.text-white.text-white {
+    color: #fff !important;
+}
+</style>
 <div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Contract Detail'])
 
 	<div class="float-end d-flex align-items-center">
-        <a href="{{route('contract.download.pdf',\Crypt::encrypt($contract->id))}}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('Download')}}" target="_blanks">
+        <a href="{{route('contract.download.pdf',\Crypt::encrypt($contract->id))}}"
+           class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip"
+           data-bs-placement="top" title="{{__('Download')}}" target="_blanks">
             <i class="ti ti-download"></i>
         </a>
-        <a href="{{ route('get.contract',$contract->id) }}"  target="_blank" class="btn btn-sm btn-primary btn-icon m-1" >
-            <i class="ti ti-eye text-white" data-bs-toggle="tooltip" data-bs-original-title="{{ __('PreView') }}"> </i>
+        <a href="{{ route('get.contract',$contract->id) }}"  target="_blank"
+           class="btn btn-sm btn-primary btn-icon m-1" >
+            <i class="ti ti-eye text-white" data-bs-toggle="tooltip" data-bs-original-title="{{ __('Preview') }}"> </i>
         </a>
         @if((\Auth::user()->type=='company')&&($contract->status == 'accept'))
 
-            <a href="#" class="btn btn-sm btn-primary btn-icon m-1" data-size="lg" data-url="{{route('contract.copy',$contract->id)}}"
-               data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Duplicate')}}" class="btn btn-sm btn-primary">
-                <i class="ti ti-copy text-white"></i>
+            <a href="#" class="btn btn-sm btn-primary btn-icon m-1" data-size="lg"
+               data-url="{{route('contract.copy',$contract->id)}}"
+               data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Duplicate')}}"
+               class="btn btn-sm btn-primary">
+              <i class="ti ti-copy text-white"></i>
             </a>
 
-            <a href="{{route('send.mail.contract',$contract->id)}}" class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip" data-bs-original-title="{{__('Send Email')}}"  >
+            <a href="{{route('send.mail.contract',$contract->id)}}" class="btn btn-sm btn-primary btn-icon m-1"
+               data-bs-toggle="tooltip" data-bs-original-title="{{__('Send Email')}}">
                 <i class="ti ti-mail text-white"></i>
             </a>
         @endif
-        @if ((\Auth::user()->type == 'company' && $contract->company_signature == '') ||(\Auth::user()->type == 'client' && $contract->client_signature == ''))
+        @if ((\Auth::user()->type == 'company' && $contract->company_signature == '')
+            ||(\Auth::user()->type == 'client' && $contract->client_signature == ''))
             @if($contract->status == 'accept')
-                <a href="#" class="btn btn-sm btn-primary btn-icon m-1" data-size="lg" data-url="{{ route('signature',$contract->id) }}"
-                   data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('signature')}}" class="btn btn-sm btn-primary">
+                <a href="#" class="btn btn-sm btn-primary btn-icon m-1" data-size="lg"
+                   data-url="{{ route('signature',$contract->id) }}"
+                   data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('signature')}}"
+                   class="btn btn-sm btn-primary">
                     <i class="ti ti-pencil text-white"></i>
                 </a>
             @endif
@@ -48,7 +62,8 @@
                     </a>
                     <div class="dropdown-menu dash-h-dropdown">
                         @foreach ($status as $k => $status)
-                            <a class="dropdown-item status" data-id="{{ $k }}" data-url="{{ route('contract.status', $contract->id) }}" href="#">{{ ucfirst($status) }}
+                            <a class="dropdown-item status" data-id="{{ $k }}"
+                               data-url="{{ route('contract.status', $contract->id) }}" href="#">{{ ucfirst($status) }}
                             </a>
                         @endforeach
                     </div>
@@ -128,17 +143,27 @@
                                         <dt class="col-sm-4 h6 text-sm">{{ __('Subject') }}</dt>
                                         <dd class="col-sm-8 text-sm">{{ $contract->subject}}</dd>
                                         <dt class="col-sm-4 h6 text-sm">{{ __('Project') }}</dt>
-                                        <dd class="col-sm-8 text-sm">{{ !empty($contract->projects)?$contract->projects->project_name:'-' }}</dd>
+                                        <dd class="col-sm-8 text-sm">
+                                            {{ !empty($contract->projects)?$contract->projects->project_name:'-' }}
+                                        </dd>
                                         <dt class="col-sm-4 h6 text-sm">{{ __('Value') }}</dt>
-                                        <dd class="col-sm-8 text-sm"> {{ \Auth::user()->priceFormat($contract->value) }}</dd>
+                                        <dd class="col-sm-8 text-sm">
+                                            {{ \Auth::user()->priceFormat($contract->value) }}
+                                        </dd>
                                         <dt class="col-sm-4 h6 text-sm">{{__('Type')}}</dt>
-                                        <dd class="col-sm-8 text-sm">{{ !empty($contract->types)?$contract->types->name:'-' }}</dd>
+                                        <dd class="col-sm-8 text-sm">
+                                            {{ !empty($contract->types)?$contract->types->name:'-' }}
+                                        </dd>
                                         <dt class="col-sm-4 h6 text-sm">{{__('Status')}}</dt>
                                         <dd class="col-sm-8 text-sm">{{$contract->status }}</dd>
                                         <dt class="col-sm-4 h6 text-sm">{{__('Start Date')}}</dt>
-                                        <dd class="col-sm-8 text-sm">{{ Auth::user()->dateFormat($contract->start_date) }}</dd>
+                                        <dd class="col-sm-8 text-sm">
+                                            {{ Auth::user()->dateFormat($contract->start_date) }}
+                                        </dd>
                                         <dt class="col-sm-4 h6 text-sm">{{__('End Date')}}</dt>
-                                        <dd class="col-sm-8 text-sm">{{ Auth::user()->dateFormat($contract->end_date) }}</dd>
+                                        <dd class="col-sm-8 text-sm">
+                                            {{ Auth::user()->dateFormat($contract->end_date) }}
+                                        </dd>
                                     </dl>
                                 </address>
                             </div>
@@ -185,8 +210,8 @@
                                                         <a href="#!">{{ $file->files }}</a>
                                                     </h6>
                                                     <p class="card-text small text-muted">
-                                                        {{ number_format(\File::size(storage_path('contract_attechment/' . $file->files)) / 1048576, 2) . ' ' . __('MB') }}
-                                                        {{-- {{ number_format(\File::size(storage_path('uploads/lead_files/' . $file->file_path)) / 1048576, 2) . ' ' . __('MB') }} --}}
+                                                        {{ number_format(\File::size(storage_path('contract_attechment/'
+                                                        . $file->files)) / 1048576, 2) . ' ' . __('MB') }}
                                                     </p>
                                                 </div>
                                                 <div class="">
@@ -196,12 +221,19 @@
                                                         <span class="text-white"> <i class="ti ti-download"></i></span>
                                                     </a>
                                                 </div>
-                                                @if(((\Auth::user()->id == $file->user_id) || (\Auth::user()->type == 'company'))&&($contract->status=='accept'))
+                                                @if(((\Auth::user()->id == $file->user_id)
+                                                    || (\Auth::user()->type == 'company'))
+                                                    &&($contract->status=='accept'))
                                                     <div class="col-auto actions">
                                                         <div class="action-btn bg-danger ms-2">
-                                                            {!! Form::open(['method' => 'DELETE', 'route' => ['contracts.file.delete', $contract->id, $file->id]]) !!}
-                                                            <a href="#!" class="mx-3  align-items-center bs-pass-para ">
-                                                                <i class="ti ti-trash text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('Delete')}}" ></i>
+                                                            {!! Form::open(['method' => 'DELETE',
+                                                            'route' => ['contracts.file.delete',
+                                                            $contract->id, $file->id]]) !!}
+                                                            <a href="#!" class="mx-3  align-items-center bs-pass-para">
+                                                                <i class="ti ti-trash text-white"
+                                                                    data-bs-toggle="tooltip"
+                                                                    data-bs-original-title="{{__('Delete')}}" >
+                                                                </i>
                                                             </a>
                                                             {!! Form::close() !!}
                                                         </div>
@@ -230,11 +262,16 @@
                             <div class="col-12 d-flex">
                                 @if($contract->status=='accept')
                                     <div class="form-group mb-0 form-send w-100">
-                                        <form method="post" class="card-comment-box" id="form-comment" data-action="{{route('comment.store', [$contract->id])}}">
-                                            <textarea rows="1" class="form-control" name="comment" data-toggle="autosize" placeholder="{{__('Add a comment...')}}"></textarea>
+                                        <form method="post" class="card-comment-box" id="form-comment"
+                                              data-action="{{route('comment.store', [$contract->id])}}">
+                                            <textarea rows="1" class="form-control" name="comment"
+                                                      data-toggle="autosize"placeholder="{{__('Add a comment...')}}">
+                                            </textarea>
                                         </form>
                                     </div>
-                                    <button id="comment_submit" class="btn btn-send mt-2"><i class="f-16 text-primary ti ti-brand-telegram"></i></button>
+                                    <button id="comment_submit" class="btn btn-send mt-2">
+                                        <i class="f-16 text-primary ti ti-brand-telegram"></i>
+                                    </button>
                                 @endif
                             </div>
                         </div>
@@ -248,22 +285,33 @@
                                 <div class="list-group-item ">
                                     <div class="row align-items-center">
                                         <div class="col-auto ">
-                                            <a href="{{ !empty($user->avatar) ? $logo . '/' . $user->avatar : $logo . '/avatar.png' }}" target="_blank">
-                                                <img class="rounded-circle"  width="40" height="40" src="{{ !empty($user->avatar) ? $logo . '/' . $user->avatar : $logo . '/avatar.png' }}">
+                                            <a href="{{ !empty($user->avatar) ? $logo . '/'
+                                             . $user->avatar : $logo . '/avatar.png' }}" target="_blank">
+                                                <img class="rounded-circle"  width="40" height="40"
+                                                    src="{{ !empty($user->avatar) ? $logo . '/'
+                                                    . $user->avatar : $logo . '/avatar.png' }}" alt="">
                                             </a>
                                         </div>
                                         <div class="col-auto">
                                         </div>
                                         <div class="col ml-n2">
-                                            <p class="d-block h6 text-sm font-weight-light mb-0 text-break">{{ $comment->comment }}</p>
+                                            <p class="d-block h6 text-sm font-weight-light mb-0 text-break">
+                                                {{ $comment->comment }}
+                                            </p>
                                             <small class="d-block">{{$comment->created_at->diffForHumans()}}</small>
                                         </div>
-                                        @if(((\Auth::user()->id == $comment->user_id) || (\Auth::user()->type == 'company'))&&($contract->status == 'accept'))
+                                        @if(((\Auth::user()->id == $comment->user_id)
+                                            || (\Auth::user()->type == 'company'))
+                                            &&($contract->status == 'accept'))
                                             <div class="col-auto actions">
                                                 <div class="action-btn bg-danger ms-2">
-                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['comment_store.destroy',  $comment->id]]) !!}
-                                                    <a href="#!" class="mx-3 btn btn-sm  align-items-center bs-pass-para ">
-                                                        <i class="ti ti-trash text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('Delete')}}"></i>
+                                                    {!! Form::open(['method' => 'DELETE',
+                                                        'route' => ['comment_store.destroy',  $comment->id]]) !!}
+                                                    <a href="#!" class="mx-3 btn btn-sm  align-items
+                                                       -center bs-pass-para">
+                                                        <i class="ti ti-trash text-white" data-bs-toggle="tooltip"
+                                                         data-bs-original-title="{{__('Delete')}}">
+                                                        </i>
                                                     </a>
                                                     {!! Form::close() !!}
                                                 </div>
@@ -289,7 +337,9 @@
                                     <div class="form-group mb-0 form-send w-100">
                                         {{ Form::open(['route' => ['note_store.store', $contract->id]]) }}
                                         <div class="form-group">
-                                            <textarea rows="3" class="form-control" name="notes" data-toggle="autosize" placeholder="{{__('Add a Notes...')}}" required></textarea>
+                                            <textarea rows="3" class="form-control" name="notes" data-toggle="autosize"
+                                                placeholder="{{__('Add a Notes...')}}" required>
+                                            </textarea>
                                         </div>
                                         <div class="col-md-12 text-end mb-0">
                                             {{ Form::submit(__('Add'), ['class' => 'btn  btn-primary']) }}
@@ -307,22 +357,33 @@
                                     <div class="list-group-item ">
                                         <div class="row align-items-center">
                                             <div class="col-auto">
-                                                <a href="{{ !empty($user->avatar) ? $logo . '/' . $user->avatar : $logo . '/avatar.png' }}" target="_blank">
-                                                    <img class="rounded-circle"  width="40" height="40" src="{{ !empty($user->avatar) ? $logo . '/' . $user->avatar : $logo . '/avatar.png' }}">
+                                                <a href="{{ !empty($user->avatar) ? $logo . '/'
+                                                   . $user->avatar : $logo . '/avatar.png' }}" target="_blank">
+                                                    <img class="rounded-circle"  width="40" height="40" alt=""
+                                                        src="{{ !empty($user->avatar) ? $logo . '/'
+                                                        . $user->avatar : $logo . '/avatar.png' }}">
                                                 </a>
                                             </div>
                                             <div class="col-auto">
                                             </div>
                                             <div class="col ml-n2">
-                                                <p class="d-block h6 text-sm font-weight-light mb-0 text-break">{{ $note->notes }}</p>
+                                                <p class="d-block h6 text-sm font-weight-light mb-0 text-break">
+                                                    {{ $note->notes }}
+                                                </p>
                                                 <small class="d-block">{{$note->created_at->diffForHumans()}}</small>
                                             </div>
-                                            @if(((\Auth::user()->id == $note->user_id) || (\Auth::user()->type == 'company'))&&($contract->status == 'accept'))
+                                            @if(((\Auth::user()->id == $note->user_id)
+                                                || (\Auth::user()->type == 'company'))
+                                                &&($contract->status == 'accept'))
                                                 <div class="col-auto actions">
                                                     <div class="action-btn bg-danger ms-2">
-                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['note_store.destroy',  $note->id]]) !!}
-                                                        <a href="#!" class="mx-3 btn btn-sm  align-items-center bs-pass-para ">
-                                                            <i class="ti ti-trash text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('Delete')}}"></i>
+                                                        {!! Form::open(['method' => 'DELETE',
+                                                            'route' => ['note_store.destroy',  $note->id]]) !!}
+                                                        <a href="#!" class="mx-3 btn btn-sm align
+                                                            -items-center bs-pass-para">
+                                                            <i class="ti ti-trash text-white" data-bs-toggle="tooltip"
+                                                               data-bs-original-title="{{__('Delete')}}">
+                                                            </i>
                                                         </a>
                                                         {!! Form::close() !!}
                                                     </div>
@@ -338,9 +399,10 @@
             </div>
         </div>
     </div>
+    @include('new_layouts.footer')
 	</div>
 
-@include('new_layouts.footer')
+
 <script>
     $(document).on("click", ".status", function() {
         var status = $(this).attr('data-id');
@@ -491,20 +553,29 @@
                     }, 500)
                     data = JSON.parse(data);
                     console.log(data);
-                    var html = "<div class='list-group-item px-0'>" +
+                    var html =             "<div class='list-group-item px-0'>" +
                         "                    <div class='row align-items-center'>" +
                         "                        <div class='col-auto'>" +
                         "                            <a href='#' class='avatar avatar-sm rounded-circle ms-2'>" +
-                        "                                <img src="+data.default_img+" alt='' class='avatar-sm rounded-circle'>" +
+                        "                                <img src="+data.default_img+" alt=''"+
+                        "                                     class='avatar-sm rounded-circle'>" +
                         "                            </a>" +
                         "                        </div>" +
                         "                        <div class='col ml-n2'>" +
-                        "                            <p class='d-block h6 text-sm font-weight-light mb-0 text-break'>" + data.comment + "</p>" +
+                        "                            <p class='d-block h6 text-sm font-weight-light mb-0 "+
+                        "                               text-break'>" + data.comment + "</p>" +
                         "                            <small class='d-block'>"+data.current_time+"</small>" +
                         "                        </div>" +
-                        "                        <div class='action-btn bg-danger me-4'><div class='col-auto'><a href='#' class='mx-3 btn btn-sm  align-items-center delete-comment' data-url='" + data.deleteUrl + "'><i class='ti ti-trash text-white'></i></a></div></div>" +
-                        "                    </div>" +
-                        "                </div>";
+                        "                        <div class='action-btn bg-danger me-4'>"+
+                        "                           <div class='col-auto'>"+
+                        "                              <a href='#' class='mx-3 btn btn-sm  align-items-center"+
+                        "                                 delete-comment'"+ "data-url='" + data.deleteUrl + "'>"+
+                        "                                 <i class='ti ti-trash text-white'></i>"+
+                        "                              </a>"+
+                        "                           </div>"+
+                        "                        </div>" +
+                        "                     </div>" +
+                        "                   </div>";
 
                     $("#comments").prepend(html);
                     $("#form-comment textarea[name='comment']").val('');
