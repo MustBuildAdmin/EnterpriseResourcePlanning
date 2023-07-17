@@ -126,6 +126,11 @@ h5.sm {
 </head>
 <body>
 
+<h3 style="
+    text-align: center;
+    padding: 2px 2px;
+    "> {{$project->project_name}}</h3>
+
 
 <h3 style="
 text-align: center;
