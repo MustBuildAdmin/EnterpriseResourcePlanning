@@ -37,11 +37,11 @@ class EmployeeController extends Controller
         {
             if(Auth::user()->type == 'employee')
             {
-                $employees = Employee::where('user_id', '=', Auth::user()->id)->get();
+                $employees = Employee::where('user_id', '=', Auth::user()->id)->where('user_id', '!=', 1)->get();
             }
             else
             {
-                $employees = Employee::where('created_by', \Auth::user()->creatorId())->get();
+                $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get();
             }
 
             return view('hrm.employee_setup.employee', compact('employees'));
