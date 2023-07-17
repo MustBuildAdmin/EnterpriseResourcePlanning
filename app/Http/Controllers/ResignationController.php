@@ -39,7 +39,7 @@ class ResignationController extends Controller
     {
         if(\Auth::user()->can('create resignation'))
         {
-            $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
 
             return view('hrm.admin_setup.resignation.resignation_create', compact('employees'));
             // return view('resignation.create', compact('employees'));
@@ -128,7 +128,7 @@ class ResignationController extends Controller
     {
         if(\Auth::user()->can('edit resignation'))
         {
-            $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             if($resignation->created_by == \Auth::user()->creatorId())
             {
 
