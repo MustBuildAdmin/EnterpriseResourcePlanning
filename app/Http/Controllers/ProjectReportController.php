@@ -393,10 +393,11 @@ class ProjectReportController extends Controller
                 if(!$to){
                     return redirect()->back()->with('error', __('Not Assign a Report person'));
                 }
+                // return Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
                 $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
 
                 $data["email"] = $to;
-                $data["title"] = "Daily Productivity Report";
+                $data["title"] = $project->project_name."- Daily Productivity Report";
                 $data["body"] = "Please find the attachment of the Today Productivity report";
                 try
                 {

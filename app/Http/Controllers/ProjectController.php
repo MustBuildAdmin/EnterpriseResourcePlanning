@@ -765,7 +765,9 @@ class ProjectController extends Controller
                 // Day left
                 $total_day                = Carbon::parse($project->start_date)->diffInDays(Carbon::parse($project->end_date));
                 $remaining_day            = Carbon::parse($project->start_date)->diffInDays(now());
-
+                if($total_day<$remaining_day){
+                    $remaining_day=$total_day;
+                }
                 $project_data['day_left'] = [
                     'day' => number_format($remaining_day) . '/' . number_format($total_day),
                     'percentage' => Utility::getPercentage($remaining_day, $total_day),
@@ -860,6 +862,7 @@ class ProjectController extends Controller
                     $no_working_days=$project->estimated_days;// include the last day
                     $date2=date_create($project->end_date);
                 }
+
 
 
                 $cur= date('Y-m-d');
