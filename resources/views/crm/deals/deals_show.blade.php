@@ -359,7 +359,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-hover mb-0">
+                                            <table class="table table-hover mb-0" aria-describedby="deal show">
                                                 <thead>
                                                 <tr>
                                                     <th>{{__('Name')}}</th>
@@ -392,8 +392,8 @@
                                                                         'route' => ['deals.users.destroy',
                                                                         $deal->id,$user->id],'id'=>'delete-form-'
                                                                         .$deal->id]) !!}
-                                                                        <a  href="#" class="mx-3 btn btn-sm  align-items-
-                                                                            center bs-pass-para"
+                                                                        <a  href="#" class="mx-3 btn btn-sm
+                                                                            align-items-center bs-pass-para"
                                                                             data-bs-toggle="tooltip"
                                                                             title="{{__('Delete')}}">
                                                                             <i class="ti ti-trash text-white"></i>
@@ -431,7 +431,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-hover mb-0">
+                                            <table class="table table-hover mb-0" aria-describedby="deal">
                                                 <thead>
                                                 <tr>
                                                     <th>{{__('Name')}}</th>
@@ -495,7 +495,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-hover mb-0">
+                                            <table class="table table-hover mb-0" aria-describedby="sources">
                                                 <thead>
                                                 <tr>
                                                     <th>{{__('Name')}}</th>
@@ -687,7 +687,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover mb-0">
+                                <table class="table table-hover mb-0" aria-describedby="calls">
                                     <thead>
                                     <tr>
                                         <th>{{__('Subject')}}</th>

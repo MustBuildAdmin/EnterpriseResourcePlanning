@@ -12,11 +12,11 @@ i.ti.ti-eye.text-white.text-white {
 	<div class="float-end d-flex align-items-center">
         <a href="{{route('contract.download.pdf',\Crypt::encrypt($contract->id))}}"
            class="btn btn-sm btn-primary btn-icon m-1" data-bs-toggle="tooltip"
-           data-bs-placement="top" title="{{__('Download')}}" target="_blanks">
+           data-bs-placement="top" title="{{__('Download')}}" target="_blanks" rel="noopener">
             <i class="ti ti-download"></i>
         </a>
         <a href="{{ route('get.contract',$contract->id) }}"  target="_blank"
-           class="btn btn-sm btn-primary btn-icon m-1" >
+           class="btn btn-sm btn-primary btn-icon m-1" rel="noopener">
             <i class="ti ti-eye text-white" data-bs-toggle="tooltip" data-bs-original-title="{{ __('Preview') }}"> </i>
         </a>
         @if((\Auth::user()->type=='company')&&($contract->status == 'accept'))
@@ -286,7 +286,7 @@ i.ti.ti-eye.text-white.text-white {
                                     <div class="row align-items-center">
                                         <div class="col-auto ">
                                             <a href="{{ !empty($user->avatar) ? $logo . '/'
-                                             . $user->avatar : $logo . '/avatar.png' }}" target="_blank">
+                                             . $user->avatar : $logo . '/avatar.png' }}" target="_blank" rel="noopener">
                                                 <img class="rounded-circle"  width="40" height="40"
                                                     src="{{ !empty($user->avatar) ? $logo . '/'
                                                     . $user->avatar : $logo . '/avatar.png' }}" alt="">
