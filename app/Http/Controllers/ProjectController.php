@@ -37,6 +37,7 @@ use DB;
 use App\Jobs\Projecttypetask;
 use Mail;
 use Carbon\CarbonPeriod;
+use Config;
 
 class ProjectController extends Controller
 {
@@ -117,10 +118,27 @@ class ProjectController extends Controller
             $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
             if($request->hasFile('project_image'))
             {
-                $imageName = time() . '.' . $request->project_image->extension();
-                $request->file('project_image')->storeAs('projects', $imageName);
-                $project->project_image      = 'projects/'.$imageName;
+                $filenameWithExt1 = $request->file("project_image")->getClientOriginalName();
+                $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                $extension1       = $request->file("project_image")->getClientOriginalExtension();
+                $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+
+                $dir = Config::get('constants.Projects_image');
+
+                $imagepath = $dir . $filenameWithExt1;
+                if (\File::exists($imagepath)) {
+                    \File::delete($imagepath);
+                }
+                $url = "";
+                $path = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
+
+                if ($path["flag"] == 1) {
+                    $url = $path["url"];
+                }
+
+                $project->project_image = $url;
             }
+
             if(isset($request->holidays)){
                 $project->holidays= $request->holidays;
             }
@@ -150,6 +168,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
+            $project->status = "in_progress";
             ///---------end-----------------
             $project->save();
             $insert_data=array(
@@ -1005,12 +1024,26 @@ class ProjectController extends Controller
                 $project->project_name = $request->project_name;
                 $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
                 $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
+                
                 if($request->hasFile('project_image'))
                 {
-                    Utility::checkFileExistsnDelete([$project->project_image]);
-                    $imageName = time() . '.' . $request->project_image->extension();
-                    $request->file('project_image')->storeAs('projects', $imageName);
-                    $project->project_image      = 'projects/'.$imageName;
+                    if (\File::exists($project->project_image)) {
+                        \File::delete($project->project_image);
+                    }
+
+                    $filenameWithExt1 = $request->file("project_image")->getClientOriginalName();
+                    $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                    $extension1       = $request->file("project_image")->getClientOriginalExtension();
+                    $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+                    $dir              = Config::get('constants.Projects_image');
+                    $url              = "";
+                    $path             = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
+    
+                    if ($path["flag"] == 1) {
+                        $url = $path["url"];
+                    }
+    
+                    $project->project_image = $url;
                 }
                 if(isset($request->holidays)){
                     $project->holidays= $request->holidays;
