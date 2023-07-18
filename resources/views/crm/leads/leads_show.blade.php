@@ -20,6 +20,9 @@ a.mx-3.btn.btn-sm.align-items-center.bs-pass-para {
 a.mx-3.btn.btn-sm.d-inline-flex.align-items-center{
     background: unset !important;
 }
+ul {
+  list-style-type: none;
+}
 </style>
 
 <div class="page-wrapper">
