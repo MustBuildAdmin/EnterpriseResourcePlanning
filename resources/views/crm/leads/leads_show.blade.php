@@ -1,27 +1,63 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 <link rel="stylesheet" href="{{asset('assets/css/plugins/dropzone.min.css')}}">
-<div class="page-wrapper"> 
+<style>
+i.ti.ti-pencil.text-white{
+    color:#FFF !important;
+}
+i.ti.ti-plus.text-white{
+    color:#FFF !important;
+}
+a.mx-3.btn.btn-sm.align-items-center.bs-pass-para {
+    color:#FFF !important;
+}
+.bg-danger{
+    background: unset !important;
+}
+.bg-info{
+    background: unset !important;
+}
+a.mx-3.btn.btn-sm.d-inline-flex.align-items-center{
+    background: unset !important;
+}
+</style>
+
+<div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Form Builder'])
 
 	<div class="float-end">
         @can('convert lead to deal')
             @if(!empty($deal))
-                <a href="@can('View Deal') @if($deal->is_active) {{route('deals.show',$deal->id)}} @else # @endif @else # @endcan" data-size="lg" data-bs-toggle="tooltip" title=" {{__('Already Converted To Deal')}}" class="btn btn-sm btn-primary">
+                <a href="@can('View Deal')
+                    @if($deal->is_active)
+                    {{route('deals.show',$deal->id)}}
+                    @else
+                    #
+                    @endif
+                    @else #
+                    @endcan"
+                    data-size="lg" data-bs-toggle="tooltip"
+                  title=" {{__('Already Converted To Deal')}}" class="btn btn-sm btn-primary">
                     <i class="ti ti-exchange"></i>
                 </a>
             @else
-                <a href="#" data-size="lg" data-url="{{ URL::to('leads/'.$lead->id.'/show_convert') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Convert ['.$lead->subject.'] To Deal')}}" class="btn btn-sm btn-primary">
+                <a href="#" data-size="lg" data-url="{{ URL::to('leads/'.$lead->id.'/show_convert') }}"
+                     data-ajax-popup="true" data-bs-toggle="tooltip"
+                      title="{{__('Convert ['.$lead->subject.'] To Deal')}}" class="btn btn-sm btn-primary">
                     <i class="ti ti-exchange"></i>
                 </a>
             @endif
         @endcan
 
-        <a href="#" data-url="{{ URL::to('leads/'.$lead->id.'/labels') }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Label')}}" class="btn btn-sm btn-primary">
+        <a href="#" data-url="{{ URL::to('leads/'.$lead->id.'/labels') }}"
+             data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip"
+              title="{{__('Label')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-bookmark"></i>
         </a>
-        <a href="#" data-size="lg" data-url="{{ route('leads.edit',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="btn btn-sm btn-primary">
-            <i class="ti ti-pencil"></i>
+        <a href="#" data-size="lg" data-url="{{ route('leads.edit',$lead->id) }}"
+             data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit')}}"
+              class="btn btn-sm btn-primary">
+            <i class="ti ti-pencil text-white"></i>
         </a>
     </div>
     <br><br><br>
@@ -33,25 +69,38 @@
                     <div class="card sticky-top" style="top:30px">
                         <div class="list-group list-group-flush" id="lead-sidenav">
                             @if(Auth::user()->type != 'client')
-                                <a href="#general" class="list-group-item list-group-item-action border-0">{{__('General')}}
-                                    <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                                <a href="#general"
+                                   class="list-group-item list-group-item-action border-0">
+                                    {{__('General')}}
+                                    <div class="float-end">
+                                        <i class="ti ti-chevron-right"></i>
+                                    </div>
                                 </a>
                             @endif
 
                             @if(Auth::user()->type != 'client')
-                                <a href="#users_products" class="list-group-item list-group-item-action border-0">{{__('Users').' | '.__('Products')}}
-                                    <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                                <a href="#users_products" class="list-group-item list-group-item-action border-0">
+                                    {{__('Users').' | '.__('Products')}}
+                                    <div class="float-end">
+                                        <i class="ti ti-chevron-right"></i>
+                                    </div>
                                 </a>
                             @endif
 
                             @if(Auth::user()->type != 'client')
-                                <a href="#sources_emails" class="list-group-item list-group-item-action border-0">{{__('Sources').' | '.__('Emails')}}
-                                    <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                                <a href="#sources_emails" class="list-group-item list-group-item-action border-0">
+                                    {{__('Sources').' | '.__('Emails')}}
+                                    <div class="float-end">
+                                        <i class="ti ti-chevron-right"></i>
+                                    </div>
                                 </a>
                             @endif
                             @if(Auth::user()->type != 'client')
-                                <a href="#discussion_note" class="list-group-item list-group-item-action border-0">{{__('Discussion').' | '.__('Notes')}}
-                                    <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                                <a href="#discussion_note" class="list-group-item list-group-item-action border-0">
+                                    {{__('Discussion').' | '.__('Notes')}}
+                                    <div class="float-end">
+                                        <i class="ti ti-chevron-right"></i>
+                                    </div>
                                 </a>
                             @endif
                             @if(Auth::user()->type != 'client')
@@ -65,8 +114,11 @@
                                 </a>
                             @endif
                             @if(Auth::user()->type != 'client')
-                                <a href="#activity" class="list-group-item list-group-item-action border-0">{{__('Activity')}}
-                                    <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+                                <a href="#activity" class="list-group-item list-group-item-action border-0">
+                                    {{__('Activity')}}
+                                    <div class="float-end">
+                                        <i class="ti ti-chevron-right"></i>
+                                    </div>
                                 </a>
                             @endif
 
@@ -90,7 +142,9 @@
                                             </div>
                                             <div class="ms-2">
                                                 <p class="text-muted text-sm mb-0">{{__('Email')}}</p>
-                                                <h5 class="mb-0 text-primary">{{!empty($lead->email)?$lead->email:''}}</h5>
+                                                <h5 class="mb-0 text-primary">
+                                                    {{!empty($lead->email)?$lead->email:''}}
+                                                </h5>
 
                                             </div>
                                         </div>
@@ -102,7 +156,9 @@
                                             </div>
                                             <div class="ms-2">
                                                 <p class="text-muted text-sm mb-0">{{__('Phone')}}</p>
-                                                <h5 class="mb-0 text-warning">{{!empty($lead->phone)?$lead->phone:''}}</h5>
+                                                <h5 class="mb-0 text-warning">
+                                                    {{!empty($lead->phone)?$lead->phone:''}}
+                                                </h5>
 
                                             </div>
                                         </div>
@@ -138,7 +194,9 @@
                                             </div>
                                             <div class="ms-2">
                                                 <p class="text-muted text-sm mb-0">{{__('Created')}}</p>
-                                                <h5 class="mb-0 text-warning">{{\Auth::user()->dateFormat($lead->created_at)}}</h5>
+                                                <h5 class="mb-0 text-warning">
+                                                    {{\Auth::user()->dateFormat($lead->created_at)}}
+                                                </h5>
 
                                             </div>
                                         </div>
@@ -151,7 +209,8 @@
                                             <div class="ms-2">
                                                 <h3 class="mb-0 text-info">{{$precentage}}%</h3>
                                                 <div class="progress mb-0">
-                                                    <div class="progress-bar bg-info" style="width: {{$precentage}}%;"></div>
+                                                    <div class="progress-bar bg-info" style="width: {{$precentage}}%;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -222,8 +281,11 @@
 
                                             <h5>{{__('Users')}}</h5>
                                             <div class="float-end">
-                                                <a href="#" data-size="md" data-url="{{ route('leads.users.edit',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add User')}}" class="btn btn-sm btn-primary ">
-                                                    <i class="ti ti-plus"></i>
+                                                <a href="#" data-size="md"
+                                                    data-url="{{ route('leads.users.edit',$lead->id) }}"
+                                                     data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                     title="{{__('Add User')}}" class="btn btn-sm btn-primary ">
+                                                    <i class="ti ti-plus text-white"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -244,16 +306,34 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div>
-                                                                    <img @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif class="wid-30 rounded-circle me-3" alt="avatar image">
+                                                                    <img alt="avatar image"
+                                                                        @if($user->avatar)
+                                                                            src="{{asset('/storage/uploads/avatar/
+                                                                            '.$user->avatar)}}"
+                                                                        @else
+                                                                            src="{{asset('/storage/uploads/avatar/
+                                                                            avatar.png')}}"
+                                                                        @endif
+                                                                     class="wid-30 rounded-circle me-3">
                                                                 </div>
                                                                 <p class="mb-0">{{$user->name}}</p>
                                                             </div>
                                                         </td>
                                                         @can('edit lead')
                                                             <td>
-                                                                <div class="action-btn bg-danger ms-2">
-                                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['leads.users.destroy', $lead->id,$user->id],'id'=>'delete-form-'.$lead->id]) !!}
-                                                                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                                <div class="action-btn ms-2">
+                                                                    {!! Form::open(['method' => 'DELETE',
+                                                                        'route' => ['leads.users.destroy',
+                                                                        $lead->id,$user->id],
+                                                                        'id'=>'delete-form-'.$lead->id])
+                                                                    !!}
+                                                                    <a href="#"
+                                                                        class="mx-3 btn btn-sm  align-items-center
+                                                                        bs-pass-para"
+                                                                        data-bs-toggle="tooltip"
+                                                                        title="{{__('Delete')}}">
+                                                                        <i class="ti ti-trash text-white"></i>
+                                                                    </a>
 
                                                                     {!! Form::close() !!}
                                                                 </div>
@@ -275,8 +355,11 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <h5>{{__('Products')}}</h5>
                                             <div class="float-end">
-                                                <a href="#" data-size="md" data-url="{{ route('leads.products.edit',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Product')}}" class="btn btn-sm btn-primary">
-                                                    <i class="ti ti-plus"></i>
+                                                <a href="#" data-size="md"
+                                                        data-url="{{ route('leads.products.edit',$lead->id) }}"
+                                                        data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                        title="{{__('Add Product')}}" class="btn btn-sm btn-primary">
+                                                    <i class="ti ti-plus text-white"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -304,8 +387,15 @@
                                                         @can('edit lead')
                                                             <td>
                                                                 <div class="action-btn bg-danger ms-2">
-                                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['leads.products.destroy', $lead->id,$product->id]]) !!}
-                                                                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                                    {!! Form::open(['method' => 'DELETE',
+                                                                        'route' => ['leads.products.destroy',
+                                                                        $lead->id,$product->id]]) !!}
+                                                                    <a href="#"
+                                                                        class="mx-3 btn btn-sm  align-items-center
+                                                                        bs-pass-para" data-bs-toggle="tooltip"
+                                                                        title="{{__('Delete')}}">
+                                                                        <i class="ti ti-trash text-white"></i>
+                                                                    </a>
 
                                                                     {!! Form::close() !!}
                                                                 </div>
@@ -330,9 +420,12 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <h5>{{__('Sources')}}</h5>
                                             <div class="float-end">
-                                            <a href="#" data-size="md" data-url="{{ route('leads.sources.edit',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Source')}}" class="btn btn-sm btn-primary">
-                                                <i class="ti ti-plus"></i>
-                                            </a>
+                                               <a   href="#" data-size="md"
+                                                 data-url="{{ route('leads.sources.edit',$lead->id) }}"
+                                                 data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                  title="{{__('Add Source')}}" class="btn btn-sm btn-primary">
+                                                <i class="ti ti-plus text-white"></i>
+                                              </a>
                                         </div>
                                         </div>
 
@@ -353,8 +446,17 @@
                                                         @can('edit lead')
                                                             <td>
                                                                 <div class="action-btn bg-danger ms-2">
-                                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['leads.sources.destroy', $lead->id,$source->id],'id'=>'delete-form-'.$lead->id]) !!}
-                                                                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                                    {!! Form::open(['method' => 'DELETE',
+                                                                        'route' => ['leads.sources.destroy',
+                                                                        $lead->id,$source->id],
+                                                                        'id'=>'delete-form-'.$lead->id]) !!}
+                                                                        <a href="#"
+                                                                        class="mx-3 btn btn-sm  align-items-center
+                                                                        bs-pass-para"
+                                                                        data-bs-toggle="tooltip"
+                                                                        title="{{__('Delete')}}">
+                                                                        <i class="ti ti-trash text-white"></i>
+                                                                        </a>
 
                                                                     {!! Form::close() !!}
                                                                 </div>
@@ -375,8 +477,11 @@
                                             <h5>{{__('Emails')}}</h5>
                                             @can('create lead email')
                                                 <div class="float-end">
-                                                    <a href="#" data-size="md" data-url="{{ route('leads.emails.create',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create Email')}}" class="btn btn-sm btn-primary">
-                                                        <i class="ti ti-plus"></i>
+                                                    <a href="#" data-size="md"
+                                                        data-url="{{ route('leads.emails.create',$lead->id) }}"
+                                                        data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                       title="{{__('Create Email')}}" class="btn btn-sm btn-primary">
+                                                        <i class="ti ti-plus text-white"></i>
                                                     </a>
                                                 </div>
                                             @endcan
@@ -387,28 +492,36 @@
                                         <div class="list-group list-group-flush mt-2">
                                             @if(!$emails->isEmpty())
                                                 @foreach($emails as $email)
+                                                <ul>
                                                     <li class="list-group-item px-0">
                                                         <div class="d-block d-sm-flex align-items-start">
                                                             <img src="{{asset('/storage/uploads/avatar/avatar.png')}}"
                                                                  class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
                                                             <div class="w-100">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div class="d-flex align-items-center
+                                                                     justify-content-between">
                                                                     <div class="mb-3 mb-sm-0">
                                                                         <h6 class="mb-0">{{$email->subject}}</h6>
-                                                                        <span class="text-muted text-sm">{{$email->to}}</span>
+                                                                        <span class="text-muted text-sm">
+                                                                            {{$email->to}}
+                                                                        </span>
                                                                     </div>
-                                                                    <div class="form-check form-switch form-switch-right mb-2">
+                                                                    <div class="form-check form-switch
+                                                                                form-switch-right mb-2">
                                                                         {{$email->created_at->diffForHumans()}}
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </li>
+                                                </ul>
                                                 @endforeach
                                             @else
+                                            <ul>
                                                 <li class="text-center">
                                                     {{__(' No Emails Available.!')}}
                                                 </li>
+                                            </ul>
                                             @endif
                                         </div>
                                     </div>
@@ -424,8 +537,11 @@
                                         <div class="d-flex align-items-center justify-content-between">
                                             <h5>{{__('Discussion')}}</h5>
                                         <div class="float-end">
-                                            <a href="#" data-size="lg" data-url="{{ route('leads.discussions.create',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Message')}}" class="btn btn-sm btn-primary">
-                                                <i class="ti ti-plus"></i>
+                                            <a href="#" data-size="lg"
+                                                data-url="{{ route('leads.discussions.create',$lead->id) }}"
+                                                 data-ajax-popup="true" data-bs-toggle="tooltip"
+                                                  title="{{__('Add Message')}}" class="btn btn-sm btn-primary">
+                                                <i class="ti ti-plus text-white"></i>
                                             </a>
                                         </div>
 
@@ -437,15 +553,26 @@
                                                 @foreach($lead->discussions as $discussion)
                                                     <li class="list-group-item px-0">
                                                         <div class="d-block d-sm-flex align-items-start">
-                                                            <img src="@if($discussion->user->avatar) {{asset('/storage/uploads/avatar/'.$discussion->user->avatar)}} @else {{asset('/storage/uploads/avatar/avatar.png')}} @endif"
+                                                            <img
+                                                                src="
+                                                            @if($discussion->user->avatar)
+                                                                {{asset('/storage/uploads/avatar/'
+                                                                .$discussion->user->avatar)}}
+                                                            @else
+                                                            {{asset('/storage/uploads/avatar/avatar.png')}}
+                                                             @endif"
                                                                  class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
                                                             <div class="w-100">
-                                                                <div class="d-flex align-items-center justify-content-between">
+                                                                <div class="d-flex align-items-center
+                                                                            justify-content-between">
                                                                     <div class="mb-3 mb-sm-0">
                                                                         <h6 class="mb-0"> {{$discussion->comment}}</h6>
-                                                                        <span class="text-muted text-sm">{{$discussion->user->name}}</span>
+                                                                        <span class="text-muted text-sm">
+                                                                            {{$discussion->user->name}}
+                                                                        </span>
                                                                     </div>
-                                                                    <div class="form-check form-switch form-switch-right mb-2">
+                                                                    <div class="form-check form-switch
+                                                                                form-switch-right mb-2">
                                                                         {{$discussion->created_at->diffForHumans()}}
                                                                     </div>
                                                                 </div>
@@ -488,8 +615,10 @@
                                 <h5>{{__('Calls')}}</h5>
 
                                 <div class="float-end">
-                                <a href="#" data-size="lg" data-url="{{ route('leads.calls.create',$lead->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Add Call')}}" class="btn btn-sm btn-primary">
-                                    <i class="ti ti-plus"></i>
+                                <a href="#" data-size="lg" data-url="{{ route('leads.calls.create',$lead->id) }}"
+                                     data-ajax-popup="true" data-bs-toggle="tooltip"
+                                      title="{{__('Add Call')}}" class="btn btn-sm btn-primary">
+                                    <i class="ti ti-plus text-white"></i>
                                 </a>
                             </div>
                             </div>
@@ -512,19 +641,32 @@
                                             <td>{{ $call->subject }}</td>
                                             <td>{{ ucfirst($call->call_type) }}</td>
                                             <td>{{ $call->duration }}</td>
-                                            <td>{{ isset($call->getLeadCallUser) ? $call->getLeadCallUser->name : '-' }}</td>
+                                            <td>
+                                                {{ isset($call->getLeadCallUser) ? $call->getLeadCallUser->name : '-' }}
+                                            </td>
                                             <td>
                                                 @can('edit lead call')
                                                     <div class="action-btn bg-info ms-2">
-                                                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ URL::to('leads/'.$lead->id.'/call/'.$call->id.'/edit') }}" data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Role Edit')}}">
-                                                            <i class="ti ti-pencil text-white"></i>
+                                                        <a href="#" class="mx-3 btn btn-sm d-inline-flex
+                                                            align-items-center" data-url="{{ URL::to('leads/'.$lead->id.
+                                                            '/call/'.$call->id.'/edit') }}"
+                                                            data-ajax-popup="true" data-size="xl"
+                                                            data-bs-toggle="tooltip" title="{{__('Edit')}}"
+                                                            data-title="{{__('Role Edit')}}">
+                                                            <i class="ti ti-pencil"></i>
                                                         </a>
                                                     </div>
                                                 @endcan
                                                 @can('delete lead call')
                                                     <div class="action-btn bg-danger ms-2">
-                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['leads.calls.destroy', $lead->id,$call->id],'id'=>'delete-form-'.$lead->id]) !!}
-                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                        {!! Form::open(['method' => 'DELETE',
+                                                            'route' => ['leads.calls.destroy', $lead->id,$call->id],
+                                                            'id'=>'delete-form-'.$lead->id]) !!}
+                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center
+                                                           bs-pass-para" data-bs-toggle="tooltip"
+                                                           title="{{__('Delete')}}">
+                                                         <i class="ti ti-trash text-white"></i>
+                                                        </a>
 
                                                         {!! Form::close() !!}
                                                     </div>
@@ -555,9 +697,13 @@
                                                                 <i class="ti {{ $activity->logIcon() }}"></i>
                                                             </div>
                                                             <div class="ms-3">
-                                                                <span class="text-dark text-sm">{{ __($activity->log_type) }}</span>
+                                                                <span class="text-dark text-sm">
+                                                                    {{ __($activity->log_type) }}
+                                                                </span>
                                                                 <h6 class="m-0">{!! $activity->getLeadRemark() !!}</h6>
-                                                                <small class="text-muted">{{$activity->created_at->diffForHumans()}}</small>
+                                                                <small class="text-muted">
+                                                                    {{$activity->created_at->diffForHumans()}}
+                                                                </small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -578,9 +724,10 @@
             </div>
         </div>
     </div>
+    @include('new_layouts.footer')
 	</div>
 	
-@include('new_layouts.footer')
+
 <script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
 <script src="{{asset('assets/js/plugins/dropzone-amd-module.min.js')}}"></script>
 <script>
@@ -683,7 +830,9 @@
     myDropzone.emit("thumbnail", mockFile, "{{asset(Storage::url('lead_files/'.$file->file_path))}}");
     myDropzone.emit("complete", mockFile);
 
-    dropzoneBtn(mockFile, {download: "{{route('leads.file.download',[$lead->id,$file->id])}}", delete: "{{route('leads.file.delete',[$lead->id,$file->id])}}"});
+    dropzoneBtn(mockFile,
+                {download: "{{route('leads.file.download',[$lead->id,$file->id])}}",
+                delete: "{{route('leads.file.delete',[$lead->id,$file->id])}}"});
     @endif
     @endforeach
 
