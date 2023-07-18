@@ -1,7 +1,18 @@
 @include('new_layouts.header')
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 <link rel="stylesheet" href="{{asset('assets/css/plugins/dropzone.min.css')}}">
-
+<style>
+    i.ti.ti-pencil,i.ti.ti-plus{
+        color:#FFF !important;
+    }
+    i.ti.ti-trash {
+    color: #FFF !important;
+    background: unset !important;
+    }
+    a.btn.btn-sm {
+        background: unset !important;
+    }
+    </style>
 <div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
 
