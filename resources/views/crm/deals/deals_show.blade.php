@@ -16,6 +16,9 @@
         color: black !important;
         background: unset !important;
     }
+    ul {
+        list-style-type: none;
+    }
 </style>
 <div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
