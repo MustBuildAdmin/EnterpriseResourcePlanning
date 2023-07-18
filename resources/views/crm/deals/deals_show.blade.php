@@ -5,6 +5,7 @@
     i.ti.ti-pencil,i.ti.ti-plus{
         color:#FFF !important;
     }
+<<<<<<< HEAD
     .bg-danger{
         background: unset !important;
     }
@@ -17,6 +18,16 @@
         background: unset !important;
     }
 </style>
+=======
+    i.ti.ti-trash {
+    color: #FFF !important;
+    background: unset !important;
+    }
+    a.btn.btn-sm {
+        background: unset !important;
+    }
+    </style>
+>>>>>>> 12c4405dedde47bbfd4f0e195d90717b2918140b
 <div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
 
@@ -333,7 +344,11 @@
                                                                  'route' => ['deals.tasks.destroy',
                                                                  $deal->id,$task->id]]) !!}
                                                                 <a href="#" class="mx-3 btn btn-sm  align-items
+<<<<<<< HEAD
                                                                    -center bs-pass-para white" data-bs-toggle="tooltip"
+=======
+                                                                   -center bs-pass-para" data-bs-toggle="tooltip"
+>>>>>>> 12c4405dedde47bbfd4f0e195d90717b2918140b
                                                                     title="{{__('Delete')}}">
                                                                    <i class="ti ti-trash text-white"></i>
                                                                 </a>
@@ -408,7 +423,11 @@
                                                                         $deal->id,$user->id],'id'=>'delete-form-'
                                                                         .$deal->id]) !!}
                                                                         <a  href="#" class="mx-3 btn btn-sm
+<<<<<<< HEAD
                                                                             align-items-center bs-pass-para white"
+=======
+                                                                            align-items-center bs-pass-para"
+>>>>>>> 12c4405dedde47bbfd4f0e195d90717b2918140b
                                                                             data-bs-toggle="tooltip"
                                                                             title="{{__('Delete')}}">
                                                                             <i class="ti ti-trash text-white"></i>
@@ -470,8 +489,12 @@
                                                                     'route' => ['deals.products.destroy',
                                                                     $deal->id,$product->id]]) !!}
                                                                     <a href="#" class="mx-3 btn btn-sm  align-items
+<<<<<<< HEAD
                                                                         -center bs-pass-para white"
                                                                         data-bs-toggle="tooltip"
+=======
+                                                                        -center bs-pass-para"data-bs-toggle="tooltip"
+>>>>>>> 12c4405dedde47bbfd4f0e195d90717b2918140b
                                                                         title="{{__('Delete')}}">
                                                                         <i class="ti ti-trash text-white"></i>
                                                                     </a>
@@ -531,8 +554,12 @@
                                                                     'id'=>'delete-form-'.$deal->id])
                                                                     !!}
                                                                     <a href="#" class="mx-3 btn btn-sm  align-items
+<<<<<<< HEAD
                                                                        -center bs-pass-para white"
                                                                        data-bs-toggle="tooltip"
+=======
+                                                                       -center bs-pass-para" data-bs-toggle="tooltip"
+>>>>>>> 12c4405dedde47bbfd4f0e195d90717b2918140b
                                                                         title="{{__('Delete')}}">
                                                                         <i class="ti ti-trash text-white"></i>
                                                                     </a>
@@ -742,8 +769,12 @@
                                                          $deal->id,$user->id],'id'=>'delete-form-'.$deal->id])
                                                          !!}
                                                         <a href="#" class="mx-3 btn btn-sm  align-items-center bs
+<<<<<<< HEAD
                                                         -pass-para white"
                                                         data-bs-toggle="tooltip" title="{{__('Delete')}}">
+=======
+                                                        -pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
+>>>>>>> 12c4405dedde47bbfd4f0e195d90717b2918140b
                                                         <i class="ti ti-trash text-white"></i>
                                                        </a>
 
