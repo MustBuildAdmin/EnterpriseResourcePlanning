@@ -5,14 +5,21 @@
     i.ti.ti-pencil,i.ti.ti-plus{
         color:#FFF !important;
     }
-    i.ti.ti-trash {
-    color: #FFF !important;
-    background: unset !important;
-    }
-    a.btn.btn-sm {
+    .bg-danger{
         background: unset !important;
     }
-    </style>
+    .bg-info{
+        background: unset !important;
+    }
+   
+    i.ti.ti-trash.text-white {
+        color: black !important;
+        background: unset !important;
+    }
+    ul {
+        list-style-type: none;
+    }
+</style>
 <div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
 
@@ -329,7 +336,7 @@
                                                                  'route' => ['deals.tasks.destroy',
                                                                  $deal->id,$task->id]]) !!}
                                                                 <a href="#" class="mx-3 btn btn-sm  align-items
-                                                                   -center bs-pass-para" data-bs-toggle="tooltip"
+                                                                   -center bs-pass-para white" data-bs-toggle="tooltip"
                                                                     title="{{__('Delete')}}">
                                                                    <i class="ti ti-trash text-white"></i>
                                                                 </a>
@@ -404,7 +411,7 @@
                                                                         $deal->id,$user->id],'id'=>'delete-form-'
                                                                         .$deal->id]) !!}
                                                                         <a  href="#" class="mx-3 btn btn-sm
-                                                                            align-items-center bs-pass-para"
+                                                                            align-items-center bs-pass-para white"
                                                                             data-bs-toggle="tooltip"
                                                                             title="{{__('Delete')}}">
                                                                             <i class="ti ti-trash text-white"></i>
@@ -466,7 +473,8 @@
                                                                     'route' => ['deals.products.destroy',
                                                                     $deal->id,$product->id]]) !!}
                                                                     <a href="#" class="mx-3 btn btn-sm  align-items
-                                                                        -center bs-pass-para"data-bs-toggle="tooltip"
+                                                                        -center bs-pass-para white"
+                                                                        data-bs-toggle="tooltip"
                                                                         title="{{__('Delete')}}">
                                                                         <i class="ti ti-trash text-white"></i>
                                                                     </a>
@@ -526,7 +534,8 @@
                                                                     'id'=>'delete-form-'.$deal->id])
                                                                     !!}
                                                                     <a href="#" class="mx-3 btn btn-sm  align-items
-                                                                       -center bs-pass-para" data-bs-toggle="tooltip"
+                                                                       -center bs-pass-para white"
+                                                                       data-bs-toggle="tooltip"
                                                                         title="{{__('Delete')}}">
                                                                         <i class="ti ti-trash text-white"></i>
                                                                     </a>
@@ -736,7 +745,8 @@
                                                          $deal->id,$user->id],'id'=>'delete-form-'.$deal->id])
                                                          !!}
                                                         <a href="#" class="mx-3 btn btn-sm  align-items-center bs
-                                                        -pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                                                        -pass-para white"
+                                                        data-bs-toggle="tooltip" title="{{__('Delete')}}">
                                                         <i class="ti ti-trash text-white"></i>
                                                        </a>
 
