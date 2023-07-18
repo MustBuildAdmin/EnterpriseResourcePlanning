@@ -136,7 +136,8 @@
                             <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
 
                             @if($project->project_image != null)
-                                <img id="image"  src="{{asset(Storage::url($project->project_image))}}" class="avatar avatar-xl" alt="">
+                                <img id="image"  src="{{  \App\Models\Utility::get_file($project->project_image) }}"
+                                class="avatar avatar-xl" alt="">
                             @endif
                         </div>
                     </div>
@@ -181,7 +182,15 @@
                     </div>
 
                     <br>
-                    <div class="card-body table-border-style holidays_show_hide" style="overflow: scroll; height: 80%;">
+                    @php
+                        if($project->holidays==1){
+                            $holiday_show = 'display:none;';
+                        }
+                        else{
+                            $holiday_show = '';
+                        }
+                    @endphp
+                    <div class="card-body table-border-style holidays_show_hide" style="overflow: scroll; height: 80%;{{$holiday_show}}">
                         {{Form::label('holiday',__('Add Extra Project Holiday'),['class'=>'form-label'])}}
                         <div class="table-responsive holiday_table" id="holiday_table">
                             <table class="table" id="example2" style="width: 100%">
@@ -202,11 +211,26 @@
                                             <tr data-count_id="{{$set_key}}" id="{{$set_key}}" class="duplicate_tr">
                                                 <td><input type='checkbox' class='case'/></td>
                                         @endif
-                                            <td style="width: 30%;"><input value="{{$holiday_show->date}}" type="date" class="form-control holiday_date get_date" id="holiday_date{{$set_key}}" name="holiday_date[]"></td>
-                                            <td style="width: 70%;"><input value="{{$holiday_show->description}}" type="text" class="form-control holiday_description" id="holiday_description{{$set_key}}" name="holiday_description[]"></td>
+                                            <td style="width: 30%;">
+                                                <input value="{{$holiday_show->date}}" type="date" class="form-control holiday_date get_date" id="holiday_date{{$set_key}}" name="holiday_date[]">
+                                                <label style='display:none;color:red;' class='holiday_date_label{{$set_key}}'>This Field is Required </label>
+                                            </td>
+                                            <td style="width: 70%;">
+                                                <input value="{{$holiday_show->description}}" type="text" class="form-control holiday_description" id="holiday_description{{$set_key}}" name="holiday_description[]">
+                                                <label style='display:none;color:red;' class='holiday_description_label{{$set_key}}'>This Field is Required </label>
+                                            </td>
                                         </tr>
                                         @php $set_key++; @endphp
                                     @empty
+                                        <td><input type='checkbox' disabled/></td>
+                                        <td style="width: 30%;">
+                                            <input type="date" data-date_id='1' class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]">
+                                            <label style='display:none;color:red;' class='holiday_date_label1'>This Field is Required </label>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <input type="text" data-desc_id='1' class="form-control holiday_description" id="holiday_description1" name="holiday_description[]">
+                                            <label style='display:none;color:red;' class='holiday_description_label1'>This Field is Required </label>
+                                        </td>
                                     @endforelse
                                 </tbody>
                             </table>
@@ -266,14 +290,40 @@
     }
     var key_i = count_table_tr();
     $(document).on("click", '.addmore', function () {
-        var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
-            "<td><input type='checkbox' class='case'/></td>";
-            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]'/></td>"+
-            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]'/></td>"+
-        "</tr>";
+        check_validation = 0;
+        if ($("#holidays").prop('checked') == false) {
+            $( ".holiday_date" ).each(function(index) {
+                get_inc_id = $(this).data('date_id');
 
-        $('.holiday_table tbody').append(data);
-        key_i++;
+                get_date_val = $("#holiday_date"+get_inc_id).val();
+                get_desc_val = $("#holiday_description"+get_inc_id).val();
+
+                if(get_date_val == ""){
+                    $(".holiday_date_label"+get_inc_id).show();
+                    check_validation = 1;
+                }
+                else if(get_desc_val == ""){
+                    $(".holiday_description_label"+get_inc_id).show();
+                    check_validation = 1;
+                }
+                else{
+                    $(".holiday_date_label"+get_inc_id).hide();
+                    $(".holiday_description_label"+get_inc_id).hide();
+                    check_validation = 0;
+                }
+            });
+        }
+
+        if(check_validation == 0){
+            var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
+                "<td><input type='checkbox' class='case'/></td>";
+                data +="<td><input data-date_id='"+key_i+"' class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]'/> <label style='display:none;color:red;' class='holiday_date_label"+key_i+"'>This Field Is Required </label></td>"+
+                "<td><input data-desc_id='"+key_i+"' class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]'/> <label style='display:none;color:red;' class='holiday_description_label"+key_i+"'>This Field Is Required </label></td>"+
+            "</tr>";
+
+            $('.holiday_table tbody').append(data);
+            key_i++;
+        }
     });
 
     $(document).on("click", '.delete_key', function () {
@@ -326,76 +376,102 @@
         }
     });
 
-    var form = $("#create_project_form");
+    $(function ()
+    {
+        var form = $("#create_project_form");
 
-    form.children("div").steps({
-        headerTag: "h3",
-        bodyTag: "section",
-        transitionEffect: "slideLeft",
-        onStepChanging: function (event, currentIndex, newIndex)
-        {
-            if (newIndex < currentIndex) {
+        form.validate({
+            rules: {
+                latitude: {
+                    required: true,
+                    latCoord: true
+                },
+                longitude: {
+                    required: true,
+                    longCoord: true
+                }
+            }
+        });
+
+        $.validator.addMethod('latCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((8[0-5]?)|([0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Latitude format has error.')
+
+        $.validator.addMethod('longCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((0?[8-9][0-9])|180|([0-1]?[0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Longitude format has error.')
+
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                if (newIndex < currentIndex) {
+                    
+                }
+                else{
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                }
                 
-            }
-            else{
+                return form.valid();
+            },
+            onFinishing: function (event, currentIndex)
+            {
                 form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                freeze_status = $("#freeze_status").val();
+                if(freeze_status == 1){
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+                    swalWithBootstrapButtons.fire({
+                        title: 'Freezed',
+                        text: "This Project Was Freezed! Please Contact Your Company.",
+                        icon: 'warning',
+                        showCancelButton: false,
+                        confirmButtonText: 'Ok',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        }
+                    });
+                }
+                else{
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+                    swalWithBootstrapButtons.fire({
+                        title: 'Are you sure?',
+                        text: "Do You Want Create Project?",
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                        else if (result.dismiss === Swal.DismissReason.cancel) {
+                        }
+                    });
+                }
             }
-            
-            return form.valid();
-        },
-        onFinishing: function (event, currentIndex)
-        {
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
-        },
-        onFinished: function (event, currentIndex)
-        {
-            freeze_status = $("#freeze_status").val();
-            if(freeze_status == 1){
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-                swalWithBootstrapButtons.fire({
-                    title: 'Freezed',
-                    text: "This Project Was Freezed! Please Contact Your Company.",
-                    icon: 'warning',
-                    showCancelButton: false,
-                    confirmButtonText: 'Ok',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                    }
-                });
-            }
-            else{
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-                swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "Do You Want Create Project?",
-                    icon: 'success',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                    else if (result.dismiss === Swal.DismissReason.cancel) {
-                    }
-                });
-            }
-        }
+        });
     });
 
     $(document).on("change", '#holidays', function () {
@@ -479,9 +555,16 @@
         $.ajax(settings).done(function (response) {
             $('#state').empty();
             $('#state').append('<option value="">{{__('Select State ...')}}</option>');
-            $.each(response, function (key, value) {
-                $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+
+            Object.keys(response).sort(function(a,b) {
+                return response[a].name.localeCompare( response[b].name );
+            }).forEach(function( key ) {
+                $('#state').append('<option value="' + response[key].iso2 + '">' + response[key].name + '</option>');
             });
+
+            // $.each(response, function (key, value) {
+            //     $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+            // });
         });
     });
 

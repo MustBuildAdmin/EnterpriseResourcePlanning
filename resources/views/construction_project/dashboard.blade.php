@@ -367,7 +367,7 @@
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
 
-                        <span class="text-muted">Complete Sub-Task as of Today</span>
+                        <span class="text-muted">Completed Sub-Task as of Today</span>
                     </div>
                     <span>{{  $completed_task }}</span>
                   </div>

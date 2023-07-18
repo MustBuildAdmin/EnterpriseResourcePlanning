@@ -8,6 +8,7 @@
         'SITE_REPORTS'=>'uploads/site_reports', //Site Reports Folder Path
         'CONCRETE_POURING'=>'uploads/concrete_pouring', //Concrete Pouring Folder Path
         'MEASUREMENT'=>'N/mm2', //N/mm2 for concret Pouring
+        'Projects_image' => 'projects'
     ];
     
 ?>

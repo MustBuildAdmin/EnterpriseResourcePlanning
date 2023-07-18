@@ -1,15 +1,18 @@
 @include('new_layouts.header')
 <style>
-.nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
-    width: 13%;
-    float: right;
-}
+    .nav-fill .nav-item .nav-link, .nav-justified .nav-item .nav-link {
+        width: 13%;
+        float: right;
+    }
+    i.ti.ti-plus {
+        color: #FFF !important;
+    }
 </style>
 
-<div class="page-wrapper"> 
+<div class="page-wrapper">
     @include('crm.side-menu')
 
-    <div class="page-wrapper"> 
+    <div class="page-wrapper">
 
 
 <div class="row">
@@ -17,12 +20,13 @@
      <h2>Sources</h2>
   </div>
   <div class="col-md-6 float-end ">
-        <a class="floatrght btn btn-sm btn-primary" href="#" data-size="md" data-url="{{ route('sources.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Sources')}}" >
+        <a class="floatrght btn btn-sm btn-primary" href="#" data-size="md"
+            data-url="{{ route('sources.create') }}" data-ajax-popup="true"
+             data-bs-toggle="tooltip" title="{{__('Create New Sources')}}" >
             <i class="ti ti-plus"></i>
         </a>
   </div>
 </div>
-
 
     <div class="row">
         <div class="col-3">
@@ -46,13 +50,21 @@
                                         <td class="Active">
                                             <div class="ms-2" style="display:flex;gap:10px;">
                                                 @can('edit source')
-                                                    <a href="#" class="btn btn-md " data-url="{{ URL::to('sources/'.$source->id.'/edit') }}" data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Edit Source')}}">
+                                                    <a href="#" class="btn btn-md "
+                                                        data-url="{{ URL::to('sources/'.$source->id.'/edit') }}"
+                                                        data-ajax-popup="true"
+                                                        data-size="md" data-bs-toggle="tooltip" title="{{__('Edit')}}"
+                                                        data-title="{{__('Edit Source')}}">
                                                         <i class="ti ti-pencil text-white"></i>
                                                     </a>
                                                 @endcan
                                                 @can('delete source')
-                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['sources.destroy', $source->id]]) !!}
-                                                        <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                                                    {!! Form::open(['method' => 'DELETE',
+                                                    'route' => ['sources.destroy', $source->id]]) !!}
+                                                        <a href="#" class="btn btn-md btn-danger bs-pass-para"
+                                                         data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                                                         <i class="ti ti-trash text-white"></i>
+                                                        </a>
                                                     {!! Form::close() !!}
                                                 @endcan
                                             </div>
