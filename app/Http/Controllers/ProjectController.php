@@ -1528,14 +1528,11 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function get_gantt_task_count(Request $request){
-        try {
+        
          $instance_id=Session::get('project_instance');
          $task=Con_task::where('project_id',$request->project_id)->where('instance_id',$instance_id)->get();
          return count($task);
-        
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+       
     }
     public function get_freeze_status(Request $request){
         try {
