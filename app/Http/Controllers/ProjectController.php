@@ -1110,6 +1110,12 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('delete project'))
         {
+           
+            $projectID=$project->id;
+            $delete_tasks=Con_task::where('project_id',$projectID)->delete();
+            $project_holidays_delete=Project_holiday::where('project_id',$projectID)->delete();
+            $instance_delete=Instance::where('project_id',$projectID)->delete();
+
             if(!empty($project->image))
             {
                 Utility::checkFileExistsnDelete([$project->project_image]);
