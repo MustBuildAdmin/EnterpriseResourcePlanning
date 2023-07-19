@@ -479,6 +479,23 @@ $holidays=implode(':',$holidays);
 			return "";
 		};
 
+        function get_editon_multiselect(){
+            set_data = "";
+            $.ajax({
+                url : '{{route("projects.get_member")}}',
+                type : 'GET',
+                async: false,
+                data : {
+                    'project_id' : "<?php echo $project->id; ?>"
+                },
+                success : function(data) {
+                    set_data = data;
+                }
+            });
+
+            return set_data;
+        }
+
 
 		// 	gantt.message("Loading...");
 		// });
@@ -704,17 +721,8 @@ $holidays=implode(':',$holidays);
         set_data = "";
         gantt.form_blocks["my_editor"] = {
                 render: function (sns) {
-                    $.ajax({
-                        url : '{{route("projects.get_member")}}',
-                        type : 'GET',
-                        async: false,
-                        data : {
-                            'project_id' : "<?php echo $project->id; ?>"
-                        },
-                        success : function(data) {
-                            set_data += data['1'];
-                        }
-                    });
+                    get_data = get_editon_multiselect();
+                    set_data = get_data['1'];
                     return set_data;
                 },
                 set_value: function (node, value, task) {
@@ -735,24 +743,16 @@ $holidays=implode(':',$holidays);
                     var height = (sns.height || "23") + "px";
                     var html = "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect' style='height:" + height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
                     if (sns.options) {
-                        $.ajax({
-                            url : '{{route("projects.get_member")}}',
-                            type : 'GET',
-                            async: false,
-                            data : {
-                                'project_id' : "<?php echo $project->id; ?>"
-                            },
-                            success : function(multi_data) {
-                                $.each(multi_data['0'], function(multi_key, multi_value) {
-                                    html += "<option value=" + multi_value.key + ">" + multi_value.label + "</option>";
-                                });
-                            }
+                        multi_data = get_editon_multiselect();
+                        $.each(multi_data['0'], function(multi_key, multi_value) {
+                            html += "<option value=" + multi_value.key + ">" + multi_value.label + "</option>";
                         });
                     }
                     html += "</select></div>";
                     return html;
                 },
                 set_value: function (node, value, ev, sns) {
+                    console.log("value",value);
                     node.style.overflow = "visible";
                     node.parentNode.style.overflow = "visible";
                     node.style.display = "inline-block";
@@ -760,7 +760,7 @@ $holidays=implode(':',$holidays);
 
                     if (value) {
                         if(value!=''){
-                            value = value.split(",");
+                            value = $.parseJSON(value);
                         }
                         select.val([]);
                         select.val(value);
@@ -856,8 +856,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/ui/public/");
+        // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("/tracer-two/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
