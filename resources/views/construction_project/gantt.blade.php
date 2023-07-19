@@ -856,8 +856,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        var dp = new gantt.dataProcessor("/tracer-two/public/");
+        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        //var dp = new gantt.dataProcessor("/ui/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
