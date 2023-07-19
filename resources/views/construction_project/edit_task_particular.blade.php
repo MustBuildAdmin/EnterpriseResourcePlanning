@@ -18,7 +18,7 @@
 
                     <div class="col-6">
                         <div class="form-group">
-                            {{ Form::label('name', __('Actual Progress as per a Day'),['class' => 'form-label']) }}<span class="text-danger">*</span>
+                            {{ Form::label('name', __('Actual Workdone % as of Today'),['class' => 'form-label']) }}<span class="text-danger">*</span>
                             {{ Form::number('percentage', $data['percentage'], ['class' => 'form-control','id' => 'percentage','required'=>'required','max'=>'100','min'=>'1']) }}
                             {{ Form::hidden('task_id', $task_id, ['class' => 'form-control','id'=>'task_id']) }}
                             {{ Form::hidden('user_id', \Auth::user()->id, ['class' => 'form-control']) }}
@@ -54,8 +54,8 @@
                    </div>
                     <div class="row">
                         <div class="modal-footer">
-                            <a data-bs-dismiss="modal" class="btn btn-danger">{{__('Back')}}</a>
                             <input type="submit" value="{{__('Submit')}}" class="btn  btn-primary">
+                            <a data-bs-dismiss="modal" class="btn btn-danger">{{__('Back')}}</a>
                         </div>
                     </div>
             </form>
