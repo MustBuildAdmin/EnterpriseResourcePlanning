@@ -11,7 +11,7 @@
   <div class="col-md-6 float-end floatrght">
 
     @can('create loan option')
-        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('loanoption.create') }}" data-ajax-popup="true" data-title="{{__('Create New Loan Option')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+        <a class="floatrght mb-3 btn  btn-primary" href="#" data-url="{{ route('loanoption.create') }}" data-ajax-popup="true" data-title="{{__('Create New Loan Option')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan

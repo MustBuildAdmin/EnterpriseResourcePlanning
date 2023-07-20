@@ -8,7 +8,7 @@
   <div class="col-md-6 float-end floatrght">
 
         @can('create payment')
-            <a class="floatrght mb-3 btn btn-sm btn-primary"  href="#" data-url="{{ route('payment.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip"  data-size="lg" data-title="{{__('Create New Payment')}}"  title="{{__('Create')}}">
+            <a class="floatrght mb-3 btn  btn-primary"  href="#" data-url="{{ route('payment.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip"  data-size="lg" data-title="{{__('Create New Payment')}}"  title="{{__('Create')}}">
                 <i class="ti ti-plus"></i>
             </a>
         @endcan

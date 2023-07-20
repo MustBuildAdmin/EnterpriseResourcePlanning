@@ -9,7 +9,7 @@
   <div class="col-md-6 float-end floatrght">
 
         @can('create debit note')
-            <a  class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('bill.custom.debit.note') }}" data-ajax-popup="true" data-title="{{__('Create New Debit Note')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+            <a  class="floatrght mb-3 btn  btn-primary" href="#" data-url="{{ route('bill.custom.debit.note') }}" data-ajax-popup="true" data-title="{{__('Create New Debit Note')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
                 <i class="ti ti-plus"></i>
             </a>
 

@@ -18,7 +18,7 @@
   </div>
   <div class="col-md-6 float-end floatrght">
        @can('create journal entry')
-            <a  class="floatrght mb-3 btn btn-sm btn-primary href="{{ route('journal-entry.create') }}" data-title="{{__('Create New Journal')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" >
+            <a  class="floatrght mb-3 btn  btn-primary href="{{ route('journal-entry.create') }}" data-title="{{__('Create New Journal')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" >
                 <i class="ti ti-plus"></i>
             </a>
         @endcan
