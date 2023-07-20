@@ -17,7 +17,7 @@ class AwardController extends Controller
         $usr = \Auth::user();
         if($usr->can('manage award'))
         {
-            $employees  = Employee::where('created_by', '=', \Auth::user()->creatorId())->get();
+            $employees  = Employee::where('created_by', '=', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get();
             $awardtypes = AwardType::where('created_by', '=', \Auth::user()->creatorId())->get();
 
             if(Auth::user()->type == 'employee')
@@ -43,7 +43,7 @@ class AwardController extends Controller
     {
         if(\Auth::user()->can('create award'))
         {
-            $employees  = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees  = Employee::where('created_by', '=', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             $awardtypes = AwardType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
             return view('hrm.admin_setup.award.award_create', compact('employees', 'awardtypes'));
@@ -143,7 +143,7 @@ class AwardController extends Controller
         {
             if($award->created_by == \Auth::user()->creatorId())
             {
-                $employees  = Employee::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+                $employees  = Employee::where('created_by', '=', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
                 $awardtypes = AwardType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
                 return view('hrm.admin_setup.award.award_edit', compact('award', 'awardtypes', 'employees'));

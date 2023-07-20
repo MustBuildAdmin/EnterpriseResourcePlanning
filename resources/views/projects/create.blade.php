@@ -29,7 +29,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                <select class="form-control country" name="country" id='country' placeholder="Select Country" required>
+                                <select class="form-control country" name="country" id='country_wizard'
+                                placeholder="Select Country" required>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($country as $key => $value)
                                           <option value="{{$value->iso2}}">{{$value->name}}</option>
@@ -187,8 +188,14 @@
                                 <tbody>
                                     <tr data-count_id="1" id="1">
                                         <td><input type='checkbox' disabled/></td>
-                                        <td style="width: 30%;"><input type="date" class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]"></td>
-                                        <td style="width: 70%;"><input type="text" class="form-control holiday_description" id="holiday_description1" name="holiday_description[]"></td>
+                                        <td style="width: 30%;">
+                                            <input type="date" data-date_id='1' class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]">
+                                            <label style='display:none;color:red;' class='holiday_date_label1'>This Field is Required </label>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <input type="text" data-desc_id='1' class="form-control holiday_description" id="holiday_description1" name="holiday_description[]">
+                                            <label style='display:none;color:red;' class='holiday_description_label1'>This Field is Required </label>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -207,7 +214,9 @@
                             <div class="form-group">
                                 @if($setting['company_type']==2)
                                     {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }}
-                                    <select name="file_status" id="file_status" class="form-control main-element" >
+                                    <span class="text-danger">*</span>
+                                    <select name="file_status" id="file_status"
+                                    class="form-control main-element" required>
                                         <option value=''>Choose File Type</option>
                                         <option value='M'>Manual</option>
                                         <option value='MP'>Microsoft Project</option>
@@ -238,16 +247,41 @@
 
     var key_i=2;
     $(document).on("click", '.addmore', function () {
-        var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
-            "<td><input type='checkbox' class='case'/></td>";
-            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]'/></td>"+
-            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]'/></td>"+
-        "</tr>";
 
-        console.log("data",data);
+        check_validation = 0;
+        if ($("#holidays").prop('checked') == false) {
+            $( ".holiday_date" ).each(function(index) {
+                get_inc_id = $(this).data('date_id');
 
-        $('.holiday_table tbody').append(data);
-        key_i++;
+                get_date_val = $("#holiday_date"+get_inc_id).val();
+                get_desc_val = $("#holiday_description"+get_inc_id).val();
+
+                if(get_date_val == ""){
+                    $(".holiday_date_label"+get_inc_id).show();
+                    check_validation = 1;
+                }
+                else if(get_desc_val == ""){
+                    $(".holiday_description_label"+get_inc_id).show();
+                    check_validation = 1;
+                }
+                else{
+                    $(".holiday_date_label"+get_inc_id).hide();
+                    $(".holiday_description_label"+get_inc_id).hide();
+                    check_validation = 0;
+                }
+            });
+        }
+
+        if(check_validation == 0){
+            var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
+                "<td><input type='checkbox' class='case'/></td>";
+                data +="<td><input class='form-control holiday_date get_date' type='date' data-date_id='"+key_i+"' id='holiday_date"+key_i+"' name='holiday_date[]'/> <label style='display:none;color:red;' class='holiday_date_label"+key_i+"'>This Field Is Required </label></td>"+
+                "<td><input class='form-control holiday_description' type='text' data-desc_id='"+key_i+"' id='holiday_description"+key_i+"' name='holiday_description[]'/> <label style='display:none;color:red;' class='holiday_description_label"+key_i+"'>This Field Is Required </label></td>"+
+            "</tr>";
+
+            $('.holiday_table tbody').append(data);
+            key_i++;
+        }
     });
 
     $(document).on("click", '.delete_key', function () {
@@ -300,10 +334,8 @@
         }
     });
 
-
     $(function ()
     {
-
         var form = $("#create_project_form");
 
         form.validate({
@@ -315,6 +347,14 @@
                         data: { 'form_name' : "ProjectCreate" },
                         type: "GET"
                     }
+                },
+                latitude: {
+                    required: true,
+                    latCoord: true
+                },
+                longitude: {
+                    required: true,
+                    longCoord: true
                 }
             },
             messages: {
@@ -324,13 +364,29 @@
             }
         });
 
+        $.validator.addMethod('latCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((8[0-5]?)|([0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Latitude format has error.')
+
+        $.validator.addMethod('longCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((0?[8-9][0-9])|180|([0-1]?[0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Longitude format has error.')
+
         form.children("div").steps({
             headerTag: "h3",
             bodyTag: "section",
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                if(currentIndex == 2){
+                get_reportto         = $(".get_reportto").val();
+                get_non_working_days = $(".get_non_working_days").val();
+               
+                if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
+                    form.validate().settings.ignore = ":disabled";
+                }
+                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
                 else{
@@ -456,7 +512,7 @@
         }
     }
 
-    $(document).on("change", '#country', function () {
+    $(document).on("change", '#country_wizard', function () {
         var name=$(this).val();
         var settings = {
             "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
@@ -469,9 +525,16 @@
         $.ajax(settings).done(function (response) {
             $('#state').empty();
             $('#state').append('<option value="">{{__('Select State ...')}}</option>');
-            $.each(response, function (key, value) {
-                $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+
+            Object.keys(response).sort(function(a,b) {
+                return response[a].name.localeCompare( response[b].name );
+            }).forEach(function( key ) {
+                $('#state').append('<option value="' + response[key].iso2 + '">' + response[key].name + '</option>');
             });
+
+            // $.each(response.sort(), function (key, value) {
+            //     $('#state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+            // });
         });
     });
 

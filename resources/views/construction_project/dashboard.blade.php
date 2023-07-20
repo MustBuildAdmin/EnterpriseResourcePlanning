@@ -59,11 +59,11 @@
           @endif
       @endif --}}
 
-      @can('edit project')
+      {{-- @can('edit project')
           <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
               <i class="ti ti-pencil"></i>
           </a>
-      @endcan
+      @endcan --}}
 
      </div>
    </div>
@@ -367,7 +367,7 @@
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
 
-                        <span class="text-muted">Complete Sub-Task as of Today</span>
+                        <span class="text-muted">Completed Sub-Task as of Today</span>
                     </div>
                     <span>{{  $completed_task }}</span>
                   </div>
@@ -428,10 +428,10 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('Day Left As Today')}}</span>
+                        <span class="text-muted">{{__('Total Day Left As Today')}}</span>
                     </div>
-                    {{-- <span>{{ $project_data['day_left']['day'] }}</span> --}}
-                    <span>{{ $remaining_working_days }}</span>
+                    <span>{{ $project_data['day_left']['day'] }}</span>
+                    {{-- <span>{{ $remaining_working_days }}</span> --}}
 
                 </div>
                 <div class="progress mb-3">

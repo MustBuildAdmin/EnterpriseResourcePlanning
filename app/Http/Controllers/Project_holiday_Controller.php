@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Project_holiday;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Session;
 
 class Project_holiday_Controller extends Controller
 {
@@ -13,9 +14,9 @@ class Project_holiday_Controller extends Controller
     {
         // if(\Auth::user()->can('manage branch'))
         // {
-            $holidays = Project::where('created_by', \Auth::user()->creatorId())->get();
-            $projects = Project_holiday::with(['project_name'])->where('created_by', \Auth::user()->creatorId())->get();
-            return view('project_holidays.index', compact('projects','holidays'));
+            $project = Project::where('id', Session::get('project_id') )->first();
+            $holidays = Project_holiday::with(['project_name'])->where('project_id', Session::get('project_id'))->get();
+            return view('project_holidays.index', compact('project','holidays'));
         // }
         // else
         // {

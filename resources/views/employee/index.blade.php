@@ -40,7 +40,7 @@
                                         @can('show employee profile')
                                             <a href="{{route('employee.show',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}" class="btn btn-outline-primary">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
                                         @else
-                                            <a href="#"  class="btn btn-outline-primary">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
+                                            <a href="#"  class="">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
                                         @endcan
                                     </td>
                                     <td class="font-style">{{ $employee->name }}</td>

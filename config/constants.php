@@ -13,6 +13,7 @@
         'PERMISSION_DENIED'=>'__("Permission denied.")',
         'PROJECT_EXPIRED'=>'__("Project Session Expired..")',
         'ONE_ROW'=>'Alteast you must select one row',
+        'Projects_image' => 'projects'
     
     ];
 

@@ -24,6 +24,10 @@
 	text-align: center;
 
 }
+
+.avatar-xl {
+    --tblr-avatar-size: 6.2rem;
+}
 </style>
 @php
 	   $profile=\App\Models\Utility::get_file('uploads/avatar');

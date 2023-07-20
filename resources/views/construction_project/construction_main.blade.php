@@ -87,6 +87,7 @@
                                                         <span>{{ __('Edit') }}</span>
                                                     </a>
                                                 @endcan
+                                               @if($project->freeze_status!=1)
                                                 @can('delete project')
                                                     {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id]]) !!}
                                                     <a href="#!" class="dropdown-item bs-pass-para">
@@ -96,6 +97,7 @@
 
                                                     {!! Form::close() !!}
                                                 @endcan
+                                                @endif
                                                 @can('edit project')
                                                     <a href="#!" data-size="xl"
                                                         data-url="{{ route('invite.project.member.view', $project->id) }}"
@@ -105,12 +107,12 @@
                                                         <span>{{ __('Invite User') }}</span>
                                                     </a>
                                                 @endcan
-                                                <a href="{{ url('project_holiday') }}"   data-url=""
+                                                {{-- <a href="{{ url('project_holiday') }}"   data-url=""
                                                     data-ajax-popup="true" class="dropdown-item"
                                                     data-bs-original-title="{{ __('Invite User') }}">
                                                         <i class="ti ti-pencil"></i>
                                                         <span>{{ __('Holidays') }}</span>
-                                                </a>
+                                                </a> --}}
                                             </div>
                                         </div>
                                     </div>

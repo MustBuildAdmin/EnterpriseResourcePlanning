@@ -36,6 +36,8 @@ use DatePeriod;
 use DB;
 use App\Jobs\Projecttypetask;
 use Mail;
+use Carbon\CarbonPeriod;
+use Config;
 
 class ProjectController extends Controller
 {
@@ -116,10 +118,27 @@ class ProjectController extends Controller
             $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
             if($request->hasFile('project_image'))
             {
-                $imageName = time() . '.' . $request->project_image->extension();
-                $request->file('project_image')->storeAs('projects', $imageName);
-                $project->project_image      = 'projects/'.$imageName;
+                $filenameWithExt1 = $request->file("project_image")->getClientOriginalName();
+                $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                $extension1       = $request->file("project_image")->getClientOriginalExtension();
+                $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+
+                $dir = Config::get('constants.Projects_image');
+
+                $imagepath = $dir . $filenameWithExt1;
+                if (\File::exists($imagepath)) {
+                    \File::delete($imagepath);
+                }
+                $url = "";
+                $path = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
+
+                if ($path["flag"] == 1) {
+                    $url = $path["url"];
+                }
+
+                $project->project_image = $url;
             }
+
             if(isset($request->holidays)){
                 $project->holidays= $request->holidays;
             }
@@ -149,6 +168,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
+            $project->status = "in_progress";
             ///---------end-----------------
             $project->save();
             $insert_data=array(
@@ -764,6 +784,9 @@ class ProjectController extends Controller
                 // Day left
                 $total_day                = Carbon::parse($project->start_date)->diffInDays(Carbon::parse($project->end_date));
                 $remaining_day            = Carbon::parse($project->start_date)->diffInDays(now());
+                if($total_day<$remaining_day){
+                    $remaining_day=$total_day;
+                }
                 $project_data['day_left'] = [
                     'day' => number_format($remaining_day) . '/' . number_format($total_day),
                     'percentage' => Utility::getPercentage($remaining_day, $total_day),
@@ -857,7 +880,9 @@ class ProjectController extends Controller
                     $actual_percentage= '0';
                     $no_working_days=$project->estimated_days;// include the last day
                     $date2=date_create($project->end_date);
-                }
+                }  
+                
+
 
 
                 $cur= date('Y-m-d');
@@ -865,16 +890,13 @@ class ProjectController extends Controller
                 ############### END ##############################
 
                 ############### Remaining days ###################
-                $date1=date_create($cur);
 
-
-                $diff=date_diff($date1,$date2);
-                $remaining_working_days=$diff->format("%a");
+                $remaining_working_days=Utility::remaining_duration_calculator($date2,$project->id);
                 $remaining_working_days=$remaining_working_days-1;// include the last day
+
                 ############### Remaining days ##################
 
                 $completed_days=$no_working_days-$remaining_working_days;
-
                 // percentage calculator
                 if($no_working_days>0){
                     $perday=100/$no_working_days;
@@ -890,7 +912,7 @@ class ProjectController extends Controller
                 }
 
                 if($current_Planed_percentage>0){
-                    $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;;
+                    $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;
                 }else{
                     $workdone_percentage=0;
                 }
@@ -1003,12 +1025,26 @@ class ProjectController extends Controller
                 $project->project_name = $request->project_name;
                 $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
                 $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
+                
                 if($request->hasFile('project_image'))
                 {
-                    Utility::checkFileExistsnDelete([$project->project_image]);
-                    $imageName = time() . '.' . $request->project_image->extension();
-                    $request->file('project_image')->storeAs('projects', $imageName);
-                    $project->project_image      = 'projects/'.$imageName;
+                    if (\File::exists($project->project_image)) {
+                        \File::delete($project->project_image);
+                    }
+
+                    $filenameWithExt1 = $request->file("project_image")->getClientOriginalName();
+                    $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                    $extension1       = $request->file("project_image")->getClientOriginalExtension();
+                    $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
+                    $dir              = Config::get('constants.Projects_image');
+                    $url              = "";
+                    $path             = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
+    
+                    if ($path["flag"] == 1) {
+                        $url = $path["url"];
+                    }
+    
+                    $project->project_image = $url;
                 }
                 if(isset($request->holidays)){
                     $project->holidays= $request->holidays;
@@ -1075,6 +1111,12 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('delete project'))
         {
+           
+            $projectID=$project->id;
+            $delete_tasks=Con_task::where('project_id',$projectID)->delete();
+            $project_holidays_delete=Project_holiday::where('project_id',$projectID)->delete();
+            $instance_delete=Instance::where('project_id',$projectID)->delete();
+
             if(!empty($project->image))
             {
                 Utility::checkFileExistsnDelete([$project->project_image]);
@@ -1188,7 +1230,7 @@ class ProjectController extends Controller
                     }
                 }
             }
-
+            Session::put('project_member',$user_array);
             $returnHTML = view('projects.get_member', compact('project'))->render();
 
             $total_data = array(
@@ -1484,14 +1526,20 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function get_gantt_task_count(Request $request){
+        
+         $instance_id=Session::get('project_instance');
+         $task=Con_task::where('project_id',$request->project_id)->where('instance_id',$instance_id)->get();
+         return count($task);
+       
+    }
     public function get_freeze_status(Request $request){
         try {
 
 
                 $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
+                
                 return $result;
-
-
 
         } catch (Exception $e) {
 
@@ -1953,6 +2001,7 @@ class ProjectController extends Controller
 
     public function taskupdate(Request $request)
     {
+       
         $validator = \Validator::make(
             $request->all(), [
                 'task_id' => 'required',
@@ -1966,6 +2015,7 @@ class ProjectController extends Controller
         {
             return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
         }
+        
 
         $get_all_dates    = [];
         $fileNameToStore1 = '';
@@ -1991,8 +2041,8 @@ class ProjectController extends Controller
         $file_id_array    = array();
 
         $no_working_days  = $diff->format("%a");
-        $no_working_days  = $no_working_days+1; // include the last day
-        // $no_working_days=$task->duration;
+        //$no_working_days  = $no_working_days+1; // include the last day
+        $no_working_days=$task->duration;
 
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' This is holiday Your Record has been not recorded! Please Contact Your Company.'));
@@ -2082,7 +2132,19 @@ class ProjectController extends Controller
             $per_percentage  = round($per_percentage);
             Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
             // update the  gantt
-            $this->taskpersentage_update($task->project_id);
+            // dd($task);
+            ###################################################
+            $alltask =Con_task::where('project_id',$task->project_id)->where('type','project')->get();
+            foreach ($alltask as $key => $value) {
+                    $task_id=$value->main_id;
+                    $total_percentage=Con_task::where('project_id',$task->project_id)->where('parent',$value->id)->avg('progress');
+                    $total_percentage=round($total_percentage);
+                    if($total_percentage!=NUll){
+                        Con_task::where('main_id',$task_id)->update(['progress'=>$total_percentage]);
+                    }
+            }
+            ###################################################
+            //$this->taskpersentage_update($task->project_id);
 
             return redirect()->back()->with('success', __('Task successfully Updated.'));
         }

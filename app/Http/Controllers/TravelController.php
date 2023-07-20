@@ -39,7 +39,7 @@ class TravelController extends Controller
     {
         if(\Auth::user()->can('create travel'))
         {
-            $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
 
             return view('hrm.admin_setup.trip.trip_create', compact('employees'));
             // return view('travel.create', compact('employees'));
@@ -119,7 +119,7 @@ class TravelController extends Controller
 
         if(\Auth::user()->can('edit travel'))
         {
-            $employees = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             if($travel->created_by == \Auth::user()->creatorId())
             {
                 return view('hrm.admin_setup.trip.trip_edit', compact('travel', 'employees'));

@@ -48,7 +48,7 @@ class WarningController extends Controller
             {
                 $user             = \Auth::user();
                 $current_employee = Employee::where('user_id', $user->id)->get()->pluck('name', 'id');
-                $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+                $employees        = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             }
 
             return view('hrm.admin_setup.warning.warning_create', compact('employees', 'current_employee'));
@@ -151,7 +151,7 @@ class WarningController extends Controller
             {
                 $user             = \Auth::user();
                 $current_employee = Employee::where('user_id', $user->id)->get()->pluck('name', 'id');
-                $employees        = Employee::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+                $employees        = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get()->pluck('name', 'id');
             }
             if($warning->created_by == \Auth::user()->creatorId())
             {

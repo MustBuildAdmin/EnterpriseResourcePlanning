@@ -32,15 +32,27 @@
             @if($task->instance_id == $task->pro_instance_id)
                 @php
                     $total_count_of_task  = DB::table('task_progress')->where('task_id',$task->main_id)->get()->count();
-                    $task_duration        = $task->duration;
-                    if($task_duration != 0){
-                        $get_planned_progress = 100/$task_duration;
-                        $planned_progress     = $get_planned_progress*$total_count_of_task;
+
+                    $remaining_working_days=Utility::remaining_duration_calculator($task->end_date,$task->project_id);
+                    $remaining_working_days=$remaining_working_days-1;// include the last day
+
+                    ############### Remaining days ##################
+
+                    $completed_days=$task->duration-$remaining_working_days;
+                    // percentage calculator
+                    if($task->duration>0){
+                        $perday=100/$task->duration;
+                    }else{
+                        $perday=0;
                     }
-                    else{
-                        $planned_progress = 0;
+
+
+
+                    $current_Planed_percentage=round($completed_days*$perday);
+                    if($current_Planed_percentage > 100){
+                        $current_Planed_percentage=100;
                     }
-                    
+
                 @endphp
                 <tr>
                     <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
@@ -61,14 +73,14 @@
 
                         @if ($task->progress >= 100)
                             <span class="badge badge-success" style="background-color:#28A745;">{{$task->progress}}%</span>
-                        @elseif($task->progress < $planned_progress)
+                        @elseif($task->progress < $current_Planed_percentage)
                             <span title="Planned Progress is to High Compare to Actual Progress" class="badge badge-success" style="background-color:red;">{{$task->progress}}%</span>
                         @else
                             <span class="badge badge-info" style="background-color:#007bff;">{{$task->progress}}%</span>
                         @endif
                     </td>
                     <td style="width:10%;">
-                        <span class="badge badge-info" style="background-color:#007bff;">{{ round($planned_progress) }}%</span>
+                        <span class="badge badge-info" style="background-color:#007bff;">{{ round($current_Planed_percentage) }}%</span>
                     </td>
                     <td style="width:10%;" class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
