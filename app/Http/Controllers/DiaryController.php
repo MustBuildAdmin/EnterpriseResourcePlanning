@@ -1118,25 +1118,25 @@ class DiaryController extends Controller
             }
 
             $data = [
-                "issued_by" => $request->issued_by,
-                "issued_date" => $request->issued_date,
-                "sca_reference" => $request->sca_reference,
-                "vo_reference" => $request->vo_reference,
-                "reference" => $request->reference,
-                "vo_date" => $request->vo_date,
-                "claimed_omission_cost" => $request->claimed_omission_cost,
-                "claimed_addition_cost" => $request->claimed_addition_cost,
+                "issued_by" =>$request->issued_by,
+                "issued_date" =>$request->issued_date,
+                "sca_reference" =>$request->sca_reference,
+                "vo_reference" =>$request->vo_reference,
+                "reference" =>$request->reference,
+                "vo_date" =>$request->vo_date,
+                "claimed_omission_cost" =>$request->claimed_omission_cost,
+                "claimed_addition_cost" =>$request->claimed_addition_cost,
                 "claimed_net_amount" => $request->claimed_net_amount,
-                "approved_omission_cost" => $request->approved_omission_cost,
-                "approved_addition_cost" => $request->approved_addition_cost,
-                "approved_net_cost" => $request->approved_net_cost,
-                "impact_time" => $request->impact_time,
-                "granted_eot" => $request->granted_eot,
-                "remarks" => $request->remarks,
+                "approved_omission_cost" =>$request->approved_omission_cost,
+                "approved_addition_cost" =>$request->approved_addition_cost,
+                "approved_net_cost" =>$request->approved_net_cost,
+                "impact_time" =>$request->impact_time,
+                "granted_eot" =>$request->granted_eot,
+                "remarks" =>$request->remarks,
             ];
 
             $fileNameToStore1 = "";
-          
+            $url="";
 
             if (!empty($request->attachment_file)) {
                 $filenameWithExt1 = $request->file("attachment_file")->getClientOriginalName();
@@ -1150,7 +1150,7 @@ class DiaryController extends Controller
                 if (\File::exists($imagepath)) {
                     \File::delete($imagepath);
                 }
-                $url = "";
+        
                 $path = Utility::upload_file($request,"attachment_file",$fileNameToStore1,$dir,[]);
 
                 if ($path["flag"] == 1) {
@@ -1159,7 +1159,7 @@ class DiaryController extends Controller
                     return redirect()->back()->with("error", __($path["msg"]));
                 }
             }
-
+          
             $alldata = [
                 "attachment_file" => $fileNameToStore1,
                 "attachment_file_path" => $url,
@@ -1207,7 +1207,7 @@ class DiaryController extends Controller
             ];
 
             $fileNameToStore1 = "";
-         
+            $url = "";
 
             if (!empty($request->attachment_file)) {
                 $filenameWithExt1 = $request->file("attachment_file")->getClientOriginalName();
@@ -1221,7 +1221,7 @@ class DiaryController extends Controller
                 if (\File::exists($imagepath)) {
                     \File::delete($imagepath);
                 }
-                $url = "";
+               
                 $path = Utility::upload_file($request,"attachment_file",$fileNameToStore1,$dir,[]);
 
                 if ($path["flag"] == 1) {
