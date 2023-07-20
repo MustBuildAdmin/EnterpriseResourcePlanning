@@ -56,7 +56,7 @@
                     <div class="row">
                         <div class="modal-footer">
                             <input type="submit" value="{{__('Submit')}}" class="btn  btn-primary">
-                            <a data-bs-dismiss="modal" class="btn btn-danger">{{__('Back')}}</a>
+                            <a data-bs-dismiss="modal" class="btn btn-danger">{{__('Close')}}</a>
                         </div>
                     </div>
             </form>
