@@ -153,7 +153,8 @@
                </div>
                <div class="form-group  col-md-6">
                   <label for="start_date" class="col-form-label">Start Date</label>
-                  <input class="form-control" required="required" name="start_date" type="date" value="" id="start_date">
+                  <input class="form-control" required="required" name="start_date"
+                   type="date" value="" id="start_date">
                </div>
                <div class="form-group  col-md-6">
                   <label for="due_date" class="col-form-label">Due Date</label>
@@ -161,7 +162,8 @@
                </div>
                <div class="form-group  col-md-6">
                   <label for="cost" class="col-form-label">Cost</label>
-                  <input class="form-control" required="required" stage="0.01" name="cost" type="number" value="" id="cost">
+                  <input class="form-control" required="required" stage="0.01"
+                   name="cost" type="number" value="" id="cost">
                </div>
             </div>
             <div class="row">
@@ -417,7 +419,9 @@
                               <span>{{ round($current_Planed_percentage) }}%</span>
                            </div>
                            <div class="progress mb-3">
-                              <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage) }}%"></div>
+                              <div class="progress-bar bg-primary"
+                               style="width: {{ round($current_Planed_percentage) }}%">
+                              </div>
                            </div>
                            <div class="d-flex align-items-center justify-content-between mb-2">
                               <div class="d-flex align-items-center">
@@ -426,7 +430,9 @@
                               <span>{{ round($actual_percentage) }}%</span>
                            </div>
                            <div class="progress mb-3">
-                              <div class="progress-bar bg-primary" style="width: {{ round($actual_percentage) }}%"></div>
+                              <div class="progress-bar bg-primary"
+                               style="width: {{ round($actual_percentage) }}%">
+                              </div>
                            </div>
                            <div class="d-flex align-items-center justify-content-between mb-2">
                               <div class="d-flex align-items-center">
@@ -445,7 +451,9 @@
                               <span>{{ round(100-$actual_percentage) }}%</span>
                            </div>
                            <div class="progress mb-3">
-                              <div class="progress-bar bg-primary" style="width: {{ round(100-$actual_percentage) }}%"></div>
+                              <div class="progress-bar bg-primary"
+                               style="width: {{ round(100-$actual_percentage) }}%">
+                              </div>
                            </div>
                         </div>
                      </div>
