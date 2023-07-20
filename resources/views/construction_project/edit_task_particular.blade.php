@@ -18,7 +18,8 @@
 
                     <div class="col-6">
                         <div class="form-group">
-                            {{ Form::label('name', __('Actual Workdone % as of Today'),['class' => 'form-label']) }}<span class="text-danger">*</span>
+                            {{ Form::label('name', __('Actual Workdone % as of Today'),['class' => 'form-label']) }}
+                            <span class="text-danger">*</span>
                             {{ Form::number('percentage', $data['percentage'], ['class' => 'form-control','id' => 'percentage','required'=>'required','max'=>'100','min'=>'1']) }}
                             {{ Form::hidden('task_id', $task_id, ['class' => 'form-control','id'=>'task_id']) }}
                             {{ Form::hidden('user_id', \Auth::user()->id, ['class' => 'form-control']) }}

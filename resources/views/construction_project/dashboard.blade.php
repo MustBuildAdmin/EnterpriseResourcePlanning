@@ -393,7 +393,7 @@
                               </div>
                               <div class="ms-3">
                                  <p class="text-muted mb-0">{{__('Project Progress Status As of Toaday')}}</p>
-                                 {{-- 
+                                 {{--
                                  <h4 class="mb-0">{{ $project_data['task_chart']['total'] }}</h4>
                                  --}}
                               </div>
