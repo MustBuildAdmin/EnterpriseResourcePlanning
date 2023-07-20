@@ -1,5 +1,5 @@
 @include('new_layouts.header')
-<div class="page-wrapper"> 
+<div class="page-wrapper">
     @php
         $form_builder_name = $form->name."'s Response";
     @endphp
@@ -11,7 +11,7 @@
                 <div class="card-body table-border-style">
                     <div class="table-responsive">
                         <table class="table datatable">
-                            @if($form->response->count() > 0)
+                          
                             <tbody>
                             @php
                                 $first = null;
@@ -19,7 +19,7 @@
                                 $third = null;
                                 $i = 0;
                             @endphp
-                            @foreach ($form->response as $response)
+                            @forelse ($form->response as $response)
                                 @php
                                     $i++;
                                         $resp = json_decode($response->response,true);
@@ -58,22 +58,20 @@
                                     @endforeach
                                     <td class="Action">
                                         <div class="action-btn bg-warning ms-2">
-                                            <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center" data-url="{{ route('response.detail',$response->id) }}" data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title="{{__('View')}}" data-title="{{__('Response Detail')}}">
+                                            <a href="#" class="mx-3 btn btn-sm d-inline-flex align-items-center"
+                                               data-url="{{ route('response.detail',$response->id) }}"
+                                               data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip"
+                                               title="{{__('View')}}" data-title="{{__('Response Detail')}}">
                                                 <i class="ti ti-eye text-white"></i>
                                             </a>
                                         </div>
 
                                     </td>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                            @else
-                                <tbody>
-                                <tr>
-                                    <td class="text-center">{{__('No data available in table')}}</td>
-                                </tr>
-                                </tbody>
-                            @endif
+                            @empty
+                            @endforelse
+                          
+                          
                         </table>
                     </div>
                 </div>

@@ -188,8 +188,14 @@
                                 <tbody>
                                     <tr data-count_id="1" id="1">
                                         <td><input type='checkbox' disabled/></td>
-                                        <td style="width: 30%;"><input type="date" class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]"></td>
-                                        <td style="width: 70%;"><input type="text" class="form-control holiday_description" id="holiday_description1" name="holiday_description[]"></td>
+                                        <td style="width: 30%;">
+                                            <input type="date" data-date_id='1' class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]">
+                                            <label style='display:none;color:red;' class='holiday_date_label1'>This Field is Required </label>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <input type="text" data-desc_id='1' class="form-control holiday_description" id="holiday_description1" name="holiday_description[]">
+                                            <label style='display:none;color:red;' class='holiday_description_label1'>This Field is Required </label>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -241,14 +247,41 @@
 
     var key_i=2;
     $(document).on("click", '.addmore', function () {
-        var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
-            "<td><input type='checkbox' class='case'/></td>";
-            data +="<td><input class='form-control holiday_date get_date' type='date' id='holiday_date"+key_i+"' name='holiday_date[]'/></td>"+
-            "<td><input class='form-control holiday_description' type='text' id='holiday_description"+key_i+"' name='holiday_description[]'/></td>"+
-        "</tr>";
 
-        $('.holiday_table tbody').append(data);
-        key_i++;
+        check_validation = 0;
+        if ($("#holidays").prop('checked') == false) {
+            $( ".holiday_date" ).each(function(index) {
+                get_inc_id = $(this).data('date_id');
+
+                get_date_val = $("#holiday_date"+get_inc_id).val();
+                get_desc_val = $("#holiday_description"+get_inc_id).val();
+
+                if(get_date_val == ""){
+                    $(".holiday_date_label"+get_inc_id).show();
+                    check_validation = 1;
+                }
+                else if(get_desc_val == ""){
+                    $(".holiday_description_label"+get_inc_id).show();
+                    check_validation = 1;
+                }
+                else{
+                    $(".holiday_date_label"+get_inc_id).hide();
+                    $(".holiday_description_label"+get_inc_id).hide();
+                    check_validation = 0;
+                }
+            });
+        }
+
+        if(check_validation == 0){
+            var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
+                "<td><input type='checkbox' class='case'/></td>";
+                data +="<td><input class='form-control holiday_date get_date' type='date' data-date_id='"+key_i+"' id='holiday_date"+key_i+"' name='holiday_date[]'/> <label style='display:none;color:red;' class='holiday_date_label"+key_i+"'>This Field Is Required </label></td>"+
+                "<td><input class='form-control holiday_description' type='text' data-desc_id='"+key_i+"' id='holiday_description"+key_i+"' name='holiday_description[]'/> <label style='display:none;color:red;' class='holiday_description_label"+key_i+"'>This Field Is Required </label></td>"+
+            "</tr>";
+
+            $('.holiday_table tbody').append(data);
+            key_i++;
+        }
     });
 
     $(document).on("click", '.delete_key', function () {
