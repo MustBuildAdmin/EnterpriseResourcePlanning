@@ -59,11 +59,11 @@
           @endif
       @endif --}}
 
-      @can('edit project')
+      {{-- @can('edit project')
           <a href="#" data-size="lg" data-url="{{ route('projects.edit', $project->id) }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Edit Project')}}" class="btn btn-sm btn-primary">
               <i class="ti ti-pencil"></i>
           </a>
-      @endcan
+      @endcan --}}
 
      </div>
    </div>

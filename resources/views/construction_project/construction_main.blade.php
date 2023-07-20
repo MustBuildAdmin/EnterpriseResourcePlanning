@@ -105,12 +105,12 @@
                                                         <span>{{ __('Invite User') }}</span>
                                                     </a>
                                                 @endcan
-                                                <a href="{{ url('project_holiday') }}"   data-url=""
+                                                {{-- <a href="{{ url('project_holiday') }}"   data-url=""
                                                     data-ajax-popup="true" class="dropdown-item"
                                                     data-bs-original-title="{{ __('Invite User') }}">
                                                         <i class="ti ti-pencil"></i>
                                                         <span>{{ __('Holidays') }}</span>
-                                                </a>
+                                                </a> --}}
                                             </div>
                                         </div>
                                     </div>
