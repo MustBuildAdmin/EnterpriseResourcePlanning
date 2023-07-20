@@ -861,8 +861,8 @@ class ProjectController extends Controller
                     $actual_percentage= '0';
                     $no_working_days=$project->estimated_days;// include the last day
                     $date2=date_create($project->end_date);
-                }
-
+                }  
+                
 
 
                 $cur= date('Y-m-d');
@@ -1190,7 +1190,7 @@ class ProjectController extends Controller
                     }
                 }
             }
-
+            Session::put('project_member',$user_array);
             $returnHTML = view('projects.get_member', compact('project'))->render();
 
             $total_data = array(
@@ -1467,10 +1467,8 @@ class ProjectController extends Controller
     {
         try {
 
-                $project=Project::find($request->project_id);
-                $instance_id=$project->instance_id;
-                $con_task=Con_task::where(['project_id'=>$request->project_id,'instance_id'=>$instance_id])->orderBy('id', 'ASC')->first();
-                $data = array('freeze_status'=>1,'start_date'=>$con_task->start_date,'end_date'=>$con_task->end_date,'estimated_hrs'=>$con_task->duration);
+                $data = array('freeze_status'=>1);
+
                 Project::where('id',$request->project_id)->update($data);
 
                 return redirect()->back()->with('success', __('Freezed Status successfully changed.'));
@@ -1957,6 +1955,7 @@ class ProjectController extends Controller
 
     public function taskupdate(Request $request)
     {
+       
         $validator = \Validator::make(
             $request->all(), [
                 'task_id' => 'required',
@@ -1970,6 +1969,7 @@ class ProjectController extends Controller
         {
             return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
         }
+        
 
         $get_all_dates    = [];
         $fileNameToStore1 = '';
@@ -1995,8 +1995,8 @@ class ProjectController extends Controller
         $file_id_array    = array();
 
         $no_working_days  = $diff->format("%a");
-        $no_working_days  = $no_working_days+1; // include the last day
-        // $no_working_days=$task->duration;
+        //$no_working_days  = $no_working_days+1; // include the last day
+        $no_working_days=$task->duration;
 
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' This is holiday Your Record has been not recorded! Please Contact Your Company.'));
@@ -2086,7 +2086,19 @@ class ProjectController extends Controller
             $per_percentage  = round($per_percentage);
             Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
             // update the  gantt
-            $this->taskpersentage_update($task->project_id);
+            // dd($task);
+            ###################################################
+            $alltask =Con_task::where('project_id',$task->project_id)->where('type','project')->get();
+            foreach ($alltask as $key => $value) {
+                    $task_id=$value->main_id;
+                    $total_percentage=Con_task::where('project_id',$task->project_id)->where('parent',$value->id)->avg('progress');
+                    $total_percentage=round($total_percentage);
+                    if($total_percentage!=NUll){
+                        Con_task::where('main_id',$task_id)->update(['progress'=>$total_percentage]);
+                    }
+            }
+            ###################################################
+            //$this->taskpersentage_update($task->project_id);
 
             return redirect()->back()->with('success', __('Task successfully Updated.'));
         }

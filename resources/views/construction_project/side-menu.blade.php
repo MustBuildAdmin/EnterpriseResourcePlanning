@@ -313,6 +313,23 @@
                         </li>
                     </ul>
                 </li>
+                 
+                
+                <li class="{{ (Request::route()->getName() == 'project_holiday') ? ' active' : '' }}">
+                    <a  class="accordion-collapse collapse list-unstyled" href="{{ url('project_holiday') }}">
+                        <span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
+                        <span class="list">{{ __('Holidays') }}</span>
+                    </a>
+                </li> 
+                
+
+                    {{-- <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
+                    <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
+                    <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>
+                    <li class=""><a href="{{route('qaqc.steel')}}">{{__('Steel')}}</a></li> --}}
+                
+               
+                
 
                 {{-- Contracts --}}
                 {{-- <li class="">

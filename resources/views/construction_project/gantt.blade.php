@@ -142,7 +142,7 @@
 			padding-left: 10px;
 			box-sizing: border-box;
             color: #181717;
-            background-color: #fdfffdb8;
+            /* background-color: #fdfffdb8; */
 			font-weight: bold;
 		}
 
@@ -506,7 +506,6 @@ $holidays=implode(':',$holidays);
 			multiselect: true,
 			undo: true,
 			fullscreen: true,
-			marker: true,
 			drag_timeline: true,
 			critical_path: true,
 			keyboard_navigation: true,
@@ -520,7 +519,7 @@ $holidays=implode(':',$holidays);
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
         gantt.config.auto_scheduling = true;
         gantt.config.auto_scheduling_strict = true;
-	gantt.config.auto_scheduling_compatibility = true;
+	    gantt.config.auto_scheduling_compatibility = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
 		var today = new Date();
@@ -531,7 +530,7 @@ $holidays=implode(':',$holidays);
 		// 	title: "Today: " + dateToStr(today)
 		// });
 
-		var start = new Date();
+		// var start = new Date();
 		// gantt.addMarker({
 		// 	start_date: start,
 		// 	css: "status_line",
@@ -712,7 +711,7 @@ $holidays=implode(':',$holidays);
                             'project_id' : "<?php echo $project->id; ?>"
                         },
                         success : function(data) {
-                            set_data += data['1'];
+                            set_data = data['1'];
                         }
                     });
                     return set_data;
@@ -808,6 +807,7 @@ $holidays=implode(':',$holidays);
 
         // holidays
              gantt.config.work_time = true;
+             gantt.config.auto_types = true;
             // gantt.config.details_on_create = false;
             // gantt.config.scale_unit = "day";
             // gantt.config.duration_unit = "day";
@@ -842,22 +842,22 @@ $holidays=implode(':',$holidays);
 
                     var dateToStr = gantt.date.date_to_str("%d %F");
                     gantt.message("Following holidays are excluded from working time:");
-                    for (var i = 0; i < holidays.length; i++) {
-                        setTimeout(
-                            (function (i) {
-                                return function () {
-                                    gantt.message(dateToStr(holidays[i]))
-                                }
-                            })(i)
-                            ,
-                            (i + 1) * 600
-                        );
-                    }
+                    // for (var i = 0; i < holidays.length; i++) {
+                    //     setTimeout(
+                    //         (function (i) {
+                    //             return function () {
+                    //                 gantt.message(dateToStr(holidays[i]))
+                    //             }
+                    //         })(i)
+                    //         ,
+                    //         (i + 1) * 600
+                    //     );
+                    // }
                 }
 
 
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/ui/public/");
+        // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("/erp/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
@@ -865,12 +865,17 @@ $holidays=implode(':',$holidays);
                 "_token":tempcsrf,
                 }
             });
-            // dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
-            //     if(action != "error"){
-            //          gantt.load("{{route('projects.gantt_data',[$project->id])}}");
-            //     }
+            // gantt.attachEvent("onBeforeLightbox", function(id) {
+               
             // });
+            dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
+                if(action == "inserted"){
+                    gantt.showLightbox(tid);
+                    //  gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+                }
+            });
 
+            
             gantt.templates.link_class = function (link) {
                 var types = gantt.config.links;
                 switch (link.type) {
