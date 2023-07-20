@@ -3528,6 +3528,13 @@ Route::post('freeze_status', 'ProjectController@freeze_status_change')->name('pr
     ]
 );
 
+
+Route::any('get_gantt_task_count', 'ProjectController@get_gantt_task_count')->name('projects.get_gantt_task_count')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::any('get_freeze_status', 'ProjectController@get_freeze_status')->name('projects.get_freeze_status')->middleware(
     [
         'auth',

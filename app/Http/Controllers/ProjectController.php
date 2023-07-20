@@ -1111,6 +1111,12 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('delete project'))
         {
+           
+            $projectID=$project->id;
+            $delete_tasks=Con_task::where('project_id',$projectID)->delete();
+            $project_holidays_delete=Project_holiday::where('project_id',$projectID)->delete();
+            $instance_delete=Instance::where('project_id',$projectID)->delete();
+
             if(!empty($project->image))
             {
                 Utility::checkFileExistsnDelete([$project->project_image]);
@@ -1520,14 +1526,20 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function get_gantt_task_count(Request $request){
+        
+         $instance_id=Session::get('project_instance');
+         $task=Con_task::where('project_id',$request->project_id)->where('instance_id',$instance_id)->get();
+         return count($task);
+       
+    }
     public function get_freeze_status(Request $request){
         try {
 
 
                 $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
+                
                 return $result;
-
-
 
         } catch (Exception $e) {
 
