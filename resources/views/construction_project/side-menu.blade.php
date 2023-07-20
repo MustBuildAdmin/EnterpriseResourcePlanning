@@ -158,21 +158,21 @@
         <div class="sidebar">
             <ul class="list-unstyled components nav nav-sidebar">
                 <li class="">
-                    <a href="{{ route('projects.show', $project_id) }}" 
-                       ><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
+                    <a href="{{ route('projects.show', $project_id) }}"
+                       ><span class="icon"><img  alt='support' src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Dashboard') }}</span>
                     </a>
-                
+
                 </li>
                 {{-- Planning --}}
                 <li class="">
                     <a data-bs-toggle="collapse" data-bs-target="#pageSubmenuplanning" role="button" aria-expanded="false"
-                        aria-controls="pageSubmenuplanning"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
+                        aria-controls="pageSubmenuplanning"><span class="icon"><img  alt='support' src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Planning') }}</span>
                     </a>
-                 
+
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuplanning">
-                       
+
                         @can('view grant chart')
                             <li class="">
                                 <a href="{{ route('projects.gantt',$project_id) }}" class="dropdown-item">{{ __('Gantt Chart') }}</a>
@@ -234,7 +234,7 @@
                 {{-- Dairy --}}
                 <li class="{{ (Request::route()->getName() == 'drawing_list' || Request::route()->getName() == 'daily_reports' || Request::route()->getName() == 'show_project_specification' || Request::route()->getName() == 'variation_scope_change' || Request::route()->getName() == 'show_consultant_direction' || Request::route()->getName() == 'rfi_show_info' || Request::route()->getName() == 'procurement_material') ? ' active' : '' }}">
                     <a href="{{route('diary')}}"  data-bs-toggle="collapse" data-bs-target="#pageSubmenuDairy" role="button" aria-expanded="false"
-                        aria-controls="pageSubmenuDairy"><span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
+                        aria-controls="pageSubmenuDairy"><span class="icon"><img  alt='support' src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Diary') }}</span>
                     </a>
                     <ul class="accordion-collapse collapse list-unstyled" id="pageSubmenuDairy">
@@ -279,7 +279,7 @@
                                 <a href="{{ route('daily_reports') }}" class="dropdown-item">{{ __('Site Reports') }}</a>
                             </li>
                         @endcan
-                        
+
                         @can('manage vochange')
                             <li class="{{ (Request::segment(1) == 'variation_scope_change')?'active':''}}">
                                 <a href="{{ route('variation_scope_change') }}" class="dropdown-item">{{ __('VO / Change Order') }}</a>
@@ -313,23 +313,23 @@
                         </li>
                     </ul>
                 </li>
-                 
-                
+
+
                 <li class="{{ (Request::route()->getName() == 'project_holiday') ? ' active' : '' }}">
                     <a  class="accordion-collapse collapse list-unstyled" href="{{ url('project_holiday') }}">
-                        <span class="icon"><img src="{{asset('assets/images/icons/support.png')}}"/></span>
+                        <span class="icon"><img  alt='support' src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Holidays') }}</span>
                     </a>
-                </li> 
-                
+                </li>
+
 
                     {{-- <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                     <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
                     <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>
                     <li class=""><a href="{{route('qaqc.steel')}}">{{__('Steel')}}</a></li> --}}
-                
-               
-                
+
+
+
 
                 {{-- Contracts --}}
                 {{-- <li class="">
@@ -345,7 +345,7 @@
                             </a>
                             <ul class="collapse list-unstyled" id="submenuTender">
                                 <li class=""><a href="{{route('contract.boq')}}">{{__('BOQ')}}</a></li>
-                               
+
                             </ul>
                         </li>
                         <li class="">
@@ -368,7 +368,7 @@
                                     </ul>
                                 </li>
                             </ul>
-                           
+
                         </li>
                     </ul>
                 </li> --}}
