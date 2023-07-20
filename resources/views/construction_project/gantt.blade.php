@@ -21,7 +21,6 @@
 <script src="{{asset('assets/js/js/taskText.js')}}"></script>
 <script src="{{asset('assets/js/js/highlight.js')}}"></script>
 <script src="{{asset('assets/js/js/slackrow.js')}}"></script>
-
 <style>
 .gantt_task_line.gantt_critical_task .gantt_task_content {
     color: red !important;
@@ -142,7 +141,7 @@
 			padding-left: 10px;
 			box-sizing: border-box;
             color: #181717;
-            background-color: #fdfffdb8;
+            /* background-color: #fdfffdb8; */
 			font-weight: bold;
 		}
 
@@ -329,13 +328,15 @@ $holidays=implode(':',$holidays);
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
                                         {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
-                                        {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                                            <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
-                                                data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                                                {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
-                                                Set Baseline
-                                            </a>
-                                        {!! Form::close() !!}
+                                       
+                                            {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
+                                                <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
+                                                    data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
+                                                    {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
+                                                    Set Baseline
+                                                </a>
+                                            {!! Form::close() !!}
+                                       
                                         <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
                                         <button class="btn btn-outline-primary action w-20" name="redo" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Redo</button>
                                         <button class="btn btn-outline-primary action w-20" name="indent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Indent</button>
@@ -454,6 +455,28 @@ $holidays=implode(':',$holidays);
             });
 
     // check freeze status
+
+    // check gantt task count 
+        var tempcsrf1 = '{!! csrf_token() !!}';
+        $.post("{{route('projects.get_gantt_task_count')}}", {_token: tempcsrf1,project_id: {{$project->id}}},
+        function (resp, textStatus, jqXHR) {
+            console.log(resp,"resprespresp")
+            if(resp==0){
+                $('.freeze_button').addClass('disabled');
+            }
+            // if(resp=='1'){
+            //     gantt.config.readonly = true;
+            //     $('.freeze_button').addClass('disabled');
+            // }
+            // else{
+            //     gantt.config.readonly = false;
+            //     $('.freeze_button').removeClass('disabled');
+            // }
+
+        });
+
+    // check gantt task count 
+
 		//zoom
 
 		var selectOption = document.getElementById("zoomscale");
@@ -523,7 +546,6 @@ $holidays=implode(':',$holidays);
 			multiselect: true,
 			undo: true,
 			fullscreen: true,
-			marker: true,
 			drag_timeline: true,
 			critical_path: true,
 			keyboard_navigation: true,
@@ -537,7 +559,7 @@ $holidays=implode(':',$holidays);
 		gantt.config.date_format = "%Y-%m-%d %H:%i";
         gantt.config.auto_scheduling = true;
         gantt.config.auto_scheduling_strict = true;
-	gantt.config.auto_scheduling_compatibility = true;
+	    gantt.config.auto_scheduling_compatibility = true;
 
 		var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
 		var today = new Date();
@@ -548,7 +570,7 @@ $holidays=implode(':',$holidays);
 		// 	title: "Today: " + dateToStr(today)
 		// });
 
-		var start = new Date();
+		// var start = new Date();
 		// gantt.addMarker({
 		// 	start_date: start,
 		// 	css: "status_line",
@@ -808,6 +830,7 @@ $holidays=implode(':',$holidays);
 
         // holidays
              gantt.config.work_time = true;
+             gantt.config.auto_types = true;
             // gantt.config.details_on_create = false;
             // gantt.config.scale_unit = "day";
             // gantt.config.duration_unit = "day";
@@ -842,22 +865,22 @@ $holidays=implode(':',$holidays);
 
                     var dateToStr = gantt.date.date_to_str("%d %F");
                     gantt.message("Following holidays are excluded from working time:");
-                    for (var i = 0; i < holidays.length; i++) {
-                        setTimeout(
-                            (function (i) {
-                                return function () {
-                                    gantt.message(dateToStr(holidays[i]))
-                                }
-                            })(i)
-                            ,
-                            (i + 1) * 600
-                        );
-                    }
+                    // for (var i = 0; i < holidays.length; i++) {
+                    //     setTimeout(
+                    //         (function (i) {
+                    //             return function () {
+                    //                 gantt.message(dateToStr(holidays[i]))
+                    //             }
+                    //         })(i)
+                    //         ,
+                    //         (i + 1) * 600
+                    //     );
+                    // }
                 }
 
 
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/ui/public/");
+        // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("/erp/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
@@ -865,12 +888,17 @@ $holidays=implode(':',$holidays);
                 "_token":tempcsrf,
                 }
             });
-            // dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
-            //     if(action != "error"){
-            //          gantt.load("{{route('projects.gantt_data',[$project->id])}}");
-            //     }
+            // gantt.attachEvent("onBeforeLightbox", function(id) {
+               
             // });
+            dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
+                if(action == "inserted"){
+                    gantt.showLightbox(tid);
+                    //  gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+                }
+            });
 
+            
             gantt.templates.link_class = function (link) {
                 var types = gantt.config.links;
                 switch (link.type) {

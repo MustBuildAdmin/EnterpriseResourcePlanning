@@ -20,8 +20,8 @@ class TaskController extends Controller
         $row_id=$max_id+1;
         $task->project_id = Session::get('project_id');
         $task->instance_id = Session::get('project_instance');
-        $task->start_date = date('Y-m-d h:i',strtotime($request->start_date));
-        $task->end_date = date('Y-m-d h:i',strtotime($request->end_date));
+        $task->start_date = date('Y-m-d',strtotime($request->start_date));
+        $task->end_date = date('Y-m-d',strtotime($request->end_date));
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
@@ -73,8 +73,8 @@ class TaskController extends Controller
         $task = Con_task::find($id);
         $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->text = $request->text;
-        $task->start_date = date('Y-m-d h:i',strtotime($request->start_date));
-        $task->end_date = date('Y-m-d h:i',strtotime($request->end_date));
+        $task->start_date = date('Y-m-d',strtotime($request->start_date));
+        $task->end_date = date('Y-m-d',strtotime($request->end_date));
         $task->duration = $request->duration;
         $task->progress = $request->has("progress") ? $request->progress : 0;
         $task->parent = $request->parent;
