@@ -27,22 +27,26 @@
 
   <div class="row">
       <div class="col-md-6">
-         <h2>Project</h2>
+         <h2>{{ __('Project') }}</h2>
       </div>
       <div class="col-md-6">
 
-      @can('create project')
-                <a href="#" data-size="xl"    style="
-                float: right;" data-url="{{ route('projects.create') }}" data-ajax-popup="true"
-                    data-bs-toggle="tooltip" title="{{ __('Create New Project') }}">
-                    <button type="button" class="btn btn-primary w-20"
-                     ><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M12 5l0 14"></path>
-                        <path d="M5 12l14 0"></path>
-                      </svg> {{ __('Create New Project') }}</button>
+        <div class="col-auto ms-auto d-print-none float-end">
+            <div class="input-group-btn">
+                @can('create project')
+                <a href="#" data-size="xl"
+                data-url="{{ route('projects.create') }}" data-ajax-popup="true"
+                data-title="{{ __('Create New Project') }}" data-bs-toggle="tooltip"
+                title="{{__('Create New Project')}}" class="btn btn-primary">
+                <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
                 </a>
-            @endcan
+                @endcan
+                <a href="{{ route('new_home') }}"  class="btn btn-danger"
+                 data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                  <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
+                </a>
+            </div>
+        </div>
 
 
       </div>
