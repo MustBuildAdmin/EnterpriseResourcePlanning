@@ -3026,17 +3026,14 @@ Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main
 Route::get('edit_assigned_to', 'ProjectTaskController@edit_assigned_to')->name('edit_assigned_to')->middleware(['auth','XSS',]);
 Route::any('update_assigned_to/{task_main_id}', 'ProjectTaskController@update_assigned_to')->name('update_assigned_to')->middleware(['auth','XSS',]);
 // task progress update for construction part
-    Route::any(
-        'con_taskupdate', [
-        'as' => 'con_taskupdate',
-        'uses' => 'ProjectController@taskupdate',
-    ]
-    )->middleware(
-        [
-            'auth',
-            'XSS',
-        ]
-    );
+
+Route::any('con_taskupdate', 'ProjectController@taskupdate')->name('con_taskupdate');
+    // Route::any(
+    //     'con_taskupdate', [
+    //     'as' => 'con_taskupdate',
+    //     'uses' => 'ProjectController@taskupdate',
+    // ]
+    //     );
 // end
 Route::get(
     'taskboard-view', [
@@ -3531,6 +3528,13 @@ Route::post('freeze_status', 'ProjectController@freeze_status_change')->name('pr
     ]
 );
 
+
+Route::any('get_gantt_task_count', 'ProjectController@get_gantt_task_count')->name('projects.get_gantt_task_count')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::any('get_freeze_status', 'ProjectController@get_freeze_status')->name('projects.get_freeze_status')->middleware(
     [
         'auth',

@@ -751,16 +751,23 @@ class ProjectTaskController extends Controller
 
         $total_count_of_task = Task_progress::where('task_id',$task_id)->get()->count();
 
-        if($get_popup_data_con != null){
-            $task_duration        = $get_popup_data_con->duration;
-            $get_planned_progress = 100/$task_duration;
-            $planned_progress     = $get_planned_progress*$total_count_of_task;
+        $remaining_working_days=Utility::remaining_duration_calculator($get_con_task->end_date,$get_con_task->project_id);
+        $remaining_working_days=$remaining_working_days-1;// include the last day
+
+        $completed_days=$get_con_task->duration-$remaining_working_days;
+        // percentage calculator
+        if($get_con_task->duration>0){
+            $perday=100/$get_con_task->duration;
+        }else{
+            $perday=0;
         }
-        else{
-            $planned_progress = 0;
+
+        $current_Planed_percentage=round($completed_days*$perday);
+        if($current_Planed_percentage > 100){
+            $current_Planed_percentage=100;
         }
         
-        return view('construction_project.task_particular_list',compact('task_id','data','total_pecentage', 'planned_progress'));
+        return view('construction_project.task_particular_list',compact('task_id','data','total_pecentage', 'current_Planed_percentage'));
     }
 
     public function add_particular_task(Request $request){
