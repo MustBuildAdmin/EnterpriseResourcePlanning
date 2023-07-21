@@ -10,7 +10,7 @@
                             {{ Form::label('name', __('Planned Start to End Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
                             {{ Form::date('get_date', $data['get_date'], array('class' => 'form-control month-btn','id' => 'get_date', 
                                 'min' => date('Y-m-d',strtotime($data['con_data']->start_date)),
-                                'max' => date('Y-m-d',strtotime($data['con_data']->end_date))
+                                'max' => date('Y-m-d',strtotime($data['con_data']->end_date . "-1 day"))
                                 )) 
                             }}
                         </div>
