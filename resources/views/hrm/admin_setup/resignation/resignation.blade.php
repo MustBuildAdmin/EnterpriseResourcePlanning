@@ -9,7 +9,7 @@
   <div class="col-md-6 float-end">
 
     @can('create resignation')
-        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-size="lg" data-url="{{ route('resignation.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Resignation')}}" >
+        <a class="floatrght mb-3 btn  btn-primary" href="#" data-size="lg" data-url="{{ route('resignation.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Resignation')}}" >
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan

@@ -53,7 +53,7 @@
                 </div>
             </div>
             <br>
-            <div class="col-1 ms-auto d-print-none float-end floatrght">
+            <div class="col-auto ms-auto d-print-none float-end">
                 <div class="input-group-btn">
                     @php $get_date = $data['get_date']; @endphp
                     

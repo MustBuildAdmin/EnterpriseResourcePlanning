@@ -20,12 +20,12 @@
   </div>
   <div class="col-md-6 float-end floatrght">
 
-              <a class="gapbtn floatrght mb-3 btn btn-sm btn-primary" href="{{route('proposal.export')}}"  data-bs-toggle="tooltip" title="{{__('Export')}}">
+              <a class="gapbtn floatrght mb-3 btn  btn-primary" href="{{route('proposal.export')}}"  data-bs-toggle="tooltip" title="{{__('Export')}}">
                   <i class="ti ti-file-export"></i>
               </a>
       
               @can('create proposal')
-                  <a class="gapbtn floatrght mb-3 btn btn-sm btn-primary" href="{{ route('proposal.create',0) }}"  data-bs-toggle="tooltip" title="{{__('Create')}}">
+                  <a class="gapbtn floatrght mb-3 btn  btn-primary" href="{{ route('proposal.create',0) }}"  data-bs-toggle="tooltip" title="{{__('Create')}}">
                       <i class="ti ti-plus"></i>
                   </a>
               @endcan

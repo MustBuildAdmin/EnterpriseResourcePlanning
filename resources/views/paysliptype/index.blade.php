@@ -19,7 +19,7 @@
 
 
     @can('create payslip type')
-            <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('paysliptype.create') }}" data-ajax-popup="true" data-title="{{__('Create New Payslip Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  >
+            <a class="floatrght mb-3 btn  btn-primary" href="#" data-url="{{ route('paysliptype.create') }}" data-ajax-popup="true" data-title="{{__('Create New Payslip Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  >
                 <i class="ti ti-plus"></i>
             </a>
 

@@ -10,7 +10,7 @@
   <div class="col-md-6 float-end">
 
     @can('create complaint')
-        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('complaint.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Complaint')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
+        <a class="floatrght mb-3 btn  btn-primary" href="#" data-url="{{ route('complaint.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Complaint')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="mb-3 btn btn-sm btn-primary">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan

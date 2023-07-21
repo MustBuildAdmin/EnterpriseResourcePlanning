@@ -119,11 +119,24 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-auto float-end ms-2 mt-4">
+                            {{-- <div class="col-auto float-end ms-2 mt-4">
                                 <a href="#" class="btn btn-sm btn-primary" onclick="submit_button();">
                                     <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
                                 </a>
-                            </div>
+                            </div> --}}
+                     
+                                <div class="text-center mt-3">
+                                    <a href="#" class="btn btn-primary"
+                                       onclick="submit_button();" data-bs-toggle="tooltip"
+                                       title="{{__('Search')}}">
+                                        <span class="btn-inner--icon"><i class="fas fa-search"></i></span>
+                                    </a>
+                                    <a href="{{ url()->previous() }}"
+                                      class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                                      <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
+                                    </a>
+                                </div>
+                             
                         </div>
                     </div>
                     {{--  --}}

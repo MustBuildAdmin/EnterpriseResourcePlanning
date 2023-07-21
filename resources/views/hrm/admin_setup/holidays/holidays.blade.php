@@ -9,10 +9,10 @@
 
   
     @can('create holiday')
-        <a class="floatrght mb-3 btn btn-sm btn-primary calendarrght" href="{{ route('holiday.calender') }}"  data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calender View')}}">
+        <a class="floatrght mb-3 btn  btn-primary calendarrght" href="{{ route('holiday.calender') }}"  data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calender View')}}">
             <i class="ti ti-calendar" style="font-size: 18px;"></i>
         </a>
-        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-size="lg" data-url="{{ route('holiday.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Holiday')}}">
+        <a class="floatrght mb-3 btn  btn-primary" href="#" data-size="lg" data-url="{{ route('holiday.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Holiday')}}">
             {{__('Create')}} &nbsp; <i class="ti ti-plus"></i>
         </a>
     @endcan

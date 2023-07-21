@@ -10,7 +10,7 @@
   <div class="col-md-6 float-end floatrght">
 
        @can('create chart of account')
-                <a href="#" data-url="{{ route('chart-of-account.create') }}" data-bs-toggle="tooltip" title="{{__('Create')}}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Account')}}" class="floatrght mb-3 btn btn-sm btn-primary">
+                <a href="#" data-url="{{ route('chart-of-account.create') }}" data-bs-toggle="tooltip" title="{{__('Create')}}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Account')}}" class="floatrght mb-3 btn  btn-primary">
                     <i class="ti ti-plus"></i>
                 </a>
         @endcan

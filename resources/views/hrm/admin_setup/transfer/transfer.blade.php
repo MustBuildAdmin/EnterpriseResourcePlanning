@@ -8,7 +8,7 @@
   <div class="col-md-6 float-end floatrght">
 
     @can('create transfer')
-        <a class="floatrght mb-3 btn btn-sm btn-primary"  href="#" data-size="lg" data-url="{{ route('transfer.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Transfer')}}">
+        <a class="floatrght mb-3 btn  btn-primary"  href="#" data-size="lg" data-url="{{ route('transfer.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Transfer')}}">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
     </a>
     @endcan

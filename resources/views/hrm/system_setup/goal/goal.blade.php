@@ -8,7 +8,7 @@
   <div class="col-md-6 float-end floatrght">
 
     @can('create goal type')
-        <a class="floatrght mb-3 btn btn-sm btn-primary" href="#" data-url="{{ route('goaltype.create') }}" data-ajax-popup="true" data-title="{{__('Create New Goal Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
+        <a class="floatrght mb-3 btn  btn-primary" href="#" data-url="{{ route('goaltype.create') }}" data-ajax-popup="true" data-title="{{__('Create New Goal Type')}}" data-bs-toggle="tooltip" title="{{__('Create')}}">
             {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
         </a>
     @endcan
