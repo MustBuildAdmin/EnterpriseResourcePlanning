@@ -140,18 +140,22 @@
                                 {{ Form::date('end_date', isset($_GET['end_date'])?$_GET['end_date']:'', array('class' => 'form-control month-btn')) }}
                             </div>
                         </div>
-
-                        <div class="col-auto float-end ms-2 mt-4 btnmaindiv">
-                            <a href="#" class="btn btn-sm btn-primary btnalginment"
-                               onclick="document.getElementById('project_report_submit').submit(); return false;"
-                               data-toggle="tooltip" data-original-title="{{ __('apply') }}">
-                                <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
+                        <div class="col-auto float-end ms-2 mt-2 btnmaindiv">
+                            <a href="#" class="btn btn-primary"
+                            onclick="document.getElementById('project_report_submit').submit(); return false;"
+                            data-bs-toggle="tooltip"
+                               title="{{__('apply')}}">
+                                <span class="btn-inner--icon"><i class="fas fa-search"></i></span>
                             </a>
-                            <a href="{{ route('project_report.index') }}" class="btn btn-sm btn-danger btnalginment" data-toggle="tooltip"
-                                   data-original-title="{{ __('Reset') }}">
-                                    <span class="btn-inner--icon"><i class="ti ti-trash-off text-white-off"></i></span>
+                            <a href="{{ route('project_report.index') }}" class="btn btn-info"
+                            data-bs-toggle="tooltip"
+                            data-original-title="{{ __('Reset') }}">
+                                <span class="btn-inner--icon"><i class="ti ti-trash-off"></i></span>
                             </a>
-                            {{-- <a href="{{route('send_report_con')}}"><input type='button' class='btnalginment form-control btn-primary' name='send_report' value='Send Report' style='width: 60%;float: right;background: #206bc4;color: #fff;'></a> --}}
+                            <a href="{{ url()->previous() }}"
+                              class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+                              <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
+                            </a>
                         </div>
                     </div>
                     {{ Form::close() }}

@@ -15,7 +15,7 @@
 
 <div class="row divmainrow">
    <div class="col-md-6">
-      <h2>Project Dashboard</h2>
+      <h2>{{ __('Project Dashboard') }}</h2>
    </div>
    <div class="col-md-6">
     <div class="float-end icons">
@@ -64,7 +64,14 @@
               <i class="ti ti-pencil"></i>
           </a>
       @endcan --}}
-
+      <div class="col-auto ms-auto d-print-none">
+         <div class="input-group-btn">
+             <a href="{{ route('construction_main') }}"
+               class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+               <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
+             </a>
+         </div>
+       </div>
      </div>
    </div>
 
@@ -78,7 +85,7 @@
 <div class="form-popup1-bg popupnew">
   <div class="form-container">
     <button id="btnCloseForm" class="close-button">X</button>
-    <h1>Add Member</h1>
+    <h1>{{ __('Add Member') }}</h1>
     <div class="modal-body">
   <div class="row">
     <div class="col-6 mb-4">
@@ -146,46 +153,46 @@
 <div class="form-popup-bg popupnew">
   <div class="form-container">
     <button id="btnCloseForm" class="close-button">X</button>
-    <h1>Create MileStone</h1>
+    <h1>{{ __('Create MileStone') }}</h1>
 
     <div class="modal-body">
   <div class="row">
     <div class="form-group col-md-6">
-      <label for="title" class="form-label">Title</label>
+      <label for="title" class="form-label">{{ __('Title') }}</label>
       <input class="form-control" required="required" name="title" type="text" id="title">
     </div>
     <div class="form-group  col-md-6">
-      <label for="status" class="form-label">Status</label>
+      <label for="status" class="form-label">{{ __('Status') }}</label>
       <select class="form-control select" required="required" id="status" name="status">
-        <option value="in_progress">In Progress</option>
-        <option value="on_hold">On Hold</option>
-        <option value="complete">Complete</option>
-        <option value="canceled">Canceled</option>
+        <option value="in_progress">{{ __('In Progress') }}</option>
+        <option value="on_hold">{{ __('On Hold') }}</option>
+        <option value="complete">{{ __('Complete') }}</option>
+        <option value="canceled">{{ __('Canceled') }}</option>
       </select>
     </div>
     <div class="form-group  col-md-6">
-      <label for="start_date" class="col-form-label">Start Date</label>
+      <label for="start_date" class="col-form-label">{{ __('Start Date') }}</label>
       <input class="form-control" required="required" name="start_date" type="date" value="" id="start_date">
     </div>
     <div class="form-group  col-md-6">
-      <label for="due_date" class="col-form-label">Due Date</label>
+      <label for="due_date" class="col-form-label">{{ __('Due Date') }}</label>
       <input class="form-control" required="required" name="due_date" type="date" value="" id="due_date">
     </div>
     <div class="form-group  col-md-6">
-      <label for="cost" class="col-form-label">Cost</label>
+      <label for="cost" class="col-form-label">{{ __('Cost') }}</label>
       <input class="form-control" required="required" stage="0.01" name="cost" type="number" value="" id="cost">
     </div>
   </div>
   <div class="row">
     <div class="form-group  col-md-12">
-      <label for="description" class="form-label">Description</label>
+      <label for="description" class="form-label">{{ __('Description') }}</label>
       <textarea class="form-control" rows="2" name="description" cols="50" id="description"></textarea>
     </div>
   </div>
 <br/>
   <div class="modal-footer">
-    <input type="button" value="Cancel" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="Create" class="btn  btn-primary">
+    <input type="button" value="{{ __('Cancel') }}" class="btn  btn-light" data-bs-dismiss="modal">
+    <input type="submit" value="{{ __('Create') }}" class="btn  btn-primary">
 </div>
 </div>
   </div>
@@ -359,7 +366,7 @@
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
 
-                        <span class="text-muted">Total Project Sub-Task</span>
+                        <span class="text-muted">{{ __('Total Project Sub-Task') }}</span>
                     </div>
                     <span>{{ $total_sub }}</span>
                   </div>
@@ -367,7 +374,7 @@
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
 
-                        <span class="text-muted">Completed Sub-Task as of Today</span>
+                        <span class="text-muted">{{ __('Completed Sub-Task as of Today') }}</span>
                     </div>
                     <span>{{  $completed_task }}</span>
                   </div>
@@ -375,7 +382,7 @@
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
 
-                        <span class="text-muted">Ongoing Sub-Task as of Today</span>
+                        <span class="text-muted">{{ __('Ongoing Sub-Task as of Today') }}</span>
                     </div>
                     <span>{{ $ongoing_task }}</span>
                   </div>
@@ -383,7 +390,7 @@
                   <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
 
-                        <span class="text-muted">Remainning Sub-Task as of Today</span>
+                        <span class="text-muted">{{ __('Remaining Sub-Task as of Today') }}</span>
                     </div>
 
                     <span>{{ $total_sub- $completed_task-$ongoing_task }}</span>
@@ -442,7 +449,7 @@
                 <div class="d-flex align-items-center justify-content-between mb-2">
                   <div class="d-flex align-items-center">
 
-                      <span class="text-muted">Planned Progress</span>
+                      <span class="text-muted">{{ __('Planned Progress') }}</span>
                   </div>
                   <span>{{ round($current_Planed_percentage) }}%</span>
 
@@ -456,7 +463,7 @@
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div class="d-flex align-items-center">
 
-                    <span class="text-muted">Actual Progress</span>
+                    <span class="text-muted">{{ __('Actual Progress') }}</span>
                 </div>
                 <span>{{ round($actual_percentage) }}%</span>
 
@@ -470,7 +477,7 @@
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div class="d-flex align-items-center">
 
-                    <span class="text-muted">Delay in progress</span>
+                    <span class="text-muted">{{ __('Delay in progress') }}</span>
                 </div>
                 <span @if($current_Planed_percentage-$actual_percentage>0) style='color:red;' @endif>{{ round($current_Planed_percentage-$actual_percentage) }}%</span>
 
@@ -484,7 +491,7 @@
               <div class="d-flex align-items-center justify-content-between mb-2">
                 <div class="d-flex align-items-center">
 
-                    <span class="text-muted">Actual Remaining Progress</span>
+                    <span class="text-muted">{{ __('Actual Remaining Progress') }}</span>
                 </div>
                 @php $delay=$current_Planed_percentage-$actual_percentage @endphp
                 <span>{{ round(100-$actual_percentage) }}%</span>
