@@ -49,14 +49,14 @@
 				<i class="fa fa-search" aria-hidden="true"></i>
 			</button>
 			 {!! Form::close() !!}
+			 <a href="{{ route('clients.index') }}" id="reset" class="btn btn-danger"
+			  data-bs-toggle="tooltip" title="{{ __('Reset') }}">
+			 <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
+			 </a>
 			 <a href="#" class="btn btn-primary" data-size="xl" data-url="{{ route('clients.create') }}"
 			  data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" id="create">
 			 <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
 			 </a>
-			 <a href="{{ route('clients.index') }}" id="reset" class="btn btn-danger"
-			 data-bs-toggle="tooltip" title="{{ __('Back') }}">
-			<span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
-			</a>
 		  </div>
 	   </div>
 	</div>
@@ -119,8 +119,7 @@
 					  @endif
 					  <?php $name = strlen($client->name) > 20 ? substr($client->name,0,19)."..." : $client->name;?>
 					  <h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
-					  <?php $email = strlen($client->email) > 20 ? substr($client->email,0,19)."..." : $client->email;?>
-					  <span title="{{$client->email}}"><h5 class="m-0 mb-1">{{ $email }}</h5></span>
+					  <h5 class="m-0 mb-1">{{ $client->email }}</h5>
 				   </div>
 				   <div class="d-flex">
 					  <a data-bs-toggle="tooltip" title="@if($client->clientDeals){{$client->clientDeals->count()}}@endif"

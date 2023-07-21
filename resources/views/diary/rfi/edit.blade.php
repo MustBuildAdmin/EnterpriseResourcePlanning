@@ -8,6 +8,13 @@
     div#choices_multiple2_chosen{
         width: 100% !important;
     }
+	div#choices_multiple3_chosen{
+        width: 100% !important;
+    }
+	div#edit_consultant_toerr {
+     display: flex;
+     flex-direction: column-reverse;
+	}
 </style>
 <div class="modal-body">
 	<div class="row">
@@ -323,7 +330,7 @@ $('.get_reportto').on('change', function () {
 });
 
 $(".chosen-select").chosen({
-   placeholder_text: "{{ __('Reporting to') }}"
+   placeholder_text: "{{ __('Select Consultant') }}"
 });
 
 $(document).ready(function () {

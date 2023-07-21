@@ -107,8 +107,8 @@
                         </option>
                         <option value="withdrawn"
                         @if('withdrawn'==$mutli_data['replier_status']){ selected } @endif>
-                        {{__('Withdrawn')}}<
-                        /option>
+                        {{__('Withdrawn')}}
+                        </option>
                       </select>
                     </div>
                     <div class="col-12 mt-3">

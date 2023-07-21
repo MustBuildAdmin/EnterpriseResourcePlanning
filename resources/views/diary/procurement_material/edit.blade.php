@@ -113,76 +113,70 @@
 						</div>
 					</div>
 				</div>
+
 				<br>
 				<hr>
-				<div class="col-md-3 pull-right">
-					<button class="btn btn-primary" type="button" id="dynamic-procurement">{{__('Add Submission')}}</button>
-				</div>
-				
-				<table class="table" id="dynamicprocurement" aria-describedby="procuremnt material">
-					<th></th>
-					@forelse($promaterialmutli as $mutli_data)
-					<tr>
-						<td>
-							<h4 style="text-align: center;">{{__('Date Replied By Consultant:')}}</h4>
-							
-								<div class="row">
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="InputLIst">{{__('Submission Date')}}</label>
-											<input type="date" name="submission_date[]" value="{{$mutli_data['submission_date']}}" class="form-control">
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="input">{{__('Actual Reply Date')}}</label>
-											<input type="date" name="actual_reply_date[]"  value="{{$mutli_data['actual_reply_date']}}"
-											  class="form-control">
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="input">{{__('No of Submissions')}}</label>
-											<input type="text" name=""  value="{{$mutli_data['no_of_submission']}}"
-											 placeholder="{{__('No of Submissions')}}" class="form-control number" disabled>
-											<input type="hidden" name="no_of_submission[]"  value="{{$mutli_data['no_of_submission']}}"
-											   class="form-control number">
-										</div>
-									</div>
-								</div>
-							
-						</td>
-					</tr>
-					@empty
-					<tr>
-						<td>
-							<h4 style="text-align: center;">{{__('Date Replied By Consultant:')}}</h4>
-								<div class="row">
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="InputLIst">{{__('Submission Date')}}</label>
-											<input type="date" name="submission_date[]" class="form-control">
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="input">{{__('Actual Reply Date')}}</label>
-											<input type="date" name="actual_reply_date[]" class="form-control">
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label for="input">{{__('No of Submissions')}}</label>
-											<input type="text" name="no_of_submission[]" class="form-control number">
-										</div>
-									</div>
-								</div>
-						</td>
-					</tr>
-					@endforelse
-					
-				</table>
-				
+				<h4 style="text-align: center;">{{__('Date Replied By Consultant ')}}</h4>
+				<div class="table-responsive">
+					<table class="table table-bordered" aria-describedby="edit_procuremnt material">
+					   <thead>
+						  <tr>
+							 <th class="text-center">{{__('Submission Date')}}</th>
+							 <th class="text-center">{{__('Actual Reply Date')}}</th>
+							 <th class="text-center">{{__('No of Submissions')}}</th>
+							 <th class="text-center">{{__('Delete')}}</th>
+						  </tr>
+						  </tr>
+					   </thead>
+					   <tbody id="tbody_edit">
+						@forelse($promaterialmutli as $mutli_data)
+						  <tr id="R{{$mutli_data['no_of_submission']}}">
+							 <td class="row-index text-center" >
+								<input type="date" name="submission_date[]" value="{{$mutli_data['submission_date']}}"
+								class="form-control submission_date">
+							 </td>
+							 <td class="row-index text-center" >
+								<input type="date" name="actual_reply_date[]" value="{{$mutli_data['actual_reply_date']}}"
+								class="form-control actual_reply_date">
+							 </td>
+							 <td class="row-index text-center" >
+								<input type="text" name="" placeholder="{{__('No of Submissions')}}"
+								 class="form-control number" value="{{$mutli_data['no_of_submission']}}" disabled>
+								<input type="hidden" name="no_of_submission[]" class="form-control number count"
+								value="{{$mutli_data['no_of_submission']}}">
+							 </td>
+							 <td class="text-center">
+								<button class="btn btn-danger remove"
+								   type="button">{{__('Delete')}}</button>
+							 </td>
+						  </tr>
+						 @empty
+						 <tr id="R1">
+							 <td class="row-index text-center" >
+								 <input type="date" name="submission_date[]" class="form-control">
+							 </td>
+							 <td class="row-index text-center" >
+								 <input type="date" name="actual_reply_date[]" class="form-control">
+							 </td>
+							 <td class="row-index text-center" >
+								 <input type="text" name="" placeholder="{{__('No of Submissions')}}"
+								 class="form-control number" value="1" disabled>
+								 <input type="hidden" name="no_of_submission[]" class="form-control number" value="1" >
+							 </td>
+							 <td class="text-center">
+								 <button class="btn btn-danger remove"
+								 type="button">{{__('Delete')}}</button>
+							 </td>
+						 </tr>
+						 @endforelse
+					   </tbody>
+					</table>
+				 </div>
+				 <br>
+				 <button class="btn btn-md btn-primary float-end" id="editBtn" type="button">
+					{{__('Add Submission')}}
+				 </button>
+				 <br>
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
@@ -278,6 +272,70 @@
 			return false;
 		}
 		});
+
+	var rowIdx = $(this).find(':last-child .count').val();
+	console.log("adsf",rowIdx++);
+
+// jQuery button click event to add a row
+
+	$(document).on("click", "#editBtn", function () {
+	// Adding a row inside the tbody.
+	$('#tbody_edit').append(`<tr id="R${++rowIdx}">
+		<td class="row-index text-center">
+			<input type="date" name="submission_date[]" class="form-control submission_date">
+		</td>
+		<td class="row-index text-center">
+			<input type="date" name="actual_reply_date[]" class="form-control actual_reply_date">
+		</td>
+		<td class="row-index text-center">
+		<input type="text" name="" placeholder="{{__('No of Submissions')}}"
+		class="form-control number" value="${rowIdx}" disabled>
+		<input type="hidden" name="no_of_submission[]" class="form-control number count" value="${rowIdx}">
+		</td>
+		<td class="text-center">
+			<button class="btn btn-danger remove" type="button">{{__('Delete')}}</button>
+		</td>
+	</tr>`);
+	});
+	$('#tbody_edit').on('click', '.remove', function () {
+
+	// Getting all the rows next to the row
+	// containing the clicked button
+	var child = $(this).closest('tr').nextAll();
+
+	// Iterating across all the rows
+	// obtained to change the index
+	child.each(function () {
+
+	// Getting <tr> id.
+	var id = $(this).attr('id');
+
+	// Getting the <p> inside the .row-index class.
+	var idx = $(this).children('.row-index').children('p');
+	var idxx = $(this).children('.row-index').children('.number');
+
+	// Gets the row number from <tr> id.
+	var dig = parseInt(id.substring(1));
+
+	// Modifying row index.
+	idx.html(`Row ${dig - 1}`);
+
+	idxx.val(`${dig - 1}`);
+
+
+	// Modifying row id.
+	$(this).attr('id', `R${dig - 1}`);
+	});
+
+	if(rowIdx==0){
+		toastr.error("{{Config::get('constants.ONE_ROW')}}");
+ 		return false;
+	}
+	// Removing the current row.
+	$(this).closest('tr').remove();
+	// Decreasing total number of rows by 1.
+	rowIdx--;
+	});
 
     });
 </script>
