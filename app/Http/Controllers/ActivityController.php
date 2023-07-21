@@ -8,6 +8,7 @@ use App\Models\Email;
 use App\Models\Activity;
 use App\Models\Schedule;
 use App\Models\LogActivity;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -74,5 +75,20 @@ class ActivityController extends Controller
             return redirect()->back()->with('errors', __('Permission denied.'));
         }
 
+    }
+
+    public static function activity_store($userid,$projectid,$logtype,$remark){
+
+        // Make entry in activity log
+        ActivityLog::create(
+            [
+                'user_id'    => $userid,
+                'project_id' => $projectid,
+                'log_type'   => $logtype,
+                'remark'     => json_encode(['title' => $remark]),
+            ]
+        );
+
+        return 1;
     }
 }

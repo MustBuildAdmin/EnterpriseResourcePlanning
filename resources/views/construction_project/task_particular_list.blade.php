@@ -36,7 +36,7 @@
                         <tr class="highlighted">
                             @php
                                 $actual_task_progress = $data['con_data']->progress ? $data['con_data']->progress : '0';
-                                if($actual_task_progress < $planned_progress){
+                                if($actual_task_progress < $current_Planed_percentage){
                                     $style = "color:red;";
                                 }
                                 else{
@@ -47,7 +47,7 @@
                             <td style="{{$style}}">{{$data['con_data']->progress != null ? $data['con_data']->progress : '0'}}%</td>
 
                             <td style="font-weight:bold;">Planned Progress</td>
-                            <td style="">{{ round($planned_progress) }}%</td>
+                            <td style="">{{ round($current_Planed_percentage) }}%</td>
                         </tr>
                     </table>
                 </div>

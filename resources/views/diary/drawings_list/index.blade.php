@@ -141,7 +141,7 @@ table.dataTable>tbody>tr.child span.dtr-title {
  		data: {
  			_token: tempcsrf,
  			dairy_id: dairy_id,
- 			project_id: {{$project_id}},
+ 			project_id: {{$projectid}},
  		},
  		cache: false,
  		success: function(data) {
