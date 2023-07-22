@@ -1,16 +1,6 @@
 @include('new_layouts.header')
 @include('hrm.hrm_main',['hrm_header' => 'Dashboard'])
- 
-<style>
-#content {
-    width: 100%;
-    padding: 0;
-    min-height: 100vh;
-    transition: all 0.3s;
-    margin: 0 33px 0 20px;
-}
 
-</style>
 <div class="dash-container">
   <div class="dash-content">
     <div class="row">
