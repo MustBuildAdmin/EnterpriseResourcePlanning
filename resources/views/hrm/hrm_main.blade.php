@@ -11,7 +11,7 @@
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav pt-lg-3">
                     <li class="nav-item">
-                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
+                        <a href="#" class="nav-link">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -51,7 +51,7 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     @can('view grant chart')
-                                        <a class="dropdown-item" href="{{ route('projects.gantt', $project_id) }}">
+                                        <a class="dropdown-item" href="#">
                                             {{ __('Gantt Chart') }}
                                         </a>
                                     @endcan
@@ -60,32 +60,32 @@
                                         class="dropdown-item">{{ __('Task') }}</a>
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
-                                            <a href="{{ route('task.bug', $project_id) }}" class="dropdown-item">
+                                            <a href="{{ route('task.bug', 1) }}" class="dropdown-item">
                                                 {{ __('Bug Report') }}
                                             </a>
                                         @endcan
                                         @if (\Auth::user()->type != 'client' || \Auth::user()->type == 'client')
                                             <a class="dropdown-item"
-                                                href="{{ route('projecttime.tracker', $project_id) }}">
+                                                href="{{ route('projecttime.tracker', 1) }}">
                                                 {{ __('Tracker') }}
                                             </a>
                                         @endif
                                         @can('create project task')
                                             <a class="dropdown-item"
-                                                href="{{ route('projects.tasks.index', $project_id) }}">
+                                                href="{{ route('projects.tasks.index', 1) }}">
                                                 {{ __('Task') }}
                                             </a>
                                         @endcan
                                         @if (\Auth::user()->type != 'client')
                                             @can('view timesheet')
-                                                <a class="dropdown-item" href="{{ route('timesheet.index', $project_id) }}">
+                                                <a class="dropdown-item" href="{{ route('timesheet.index', 1) }}">
                                                     {{ __('Timesheet') }}
                                                 </a>
                                             @endcan
                                         @endif
                                     @endif
                                     <a class="dropdown-item"
-                                        href="{{ route('project_report.view_task_report', $project_id) }}">
+                                        href="{{ route('project_report.view_task_report', 1) }}">
                                         {{ __('Task Report') }}
                                     </a>
 
