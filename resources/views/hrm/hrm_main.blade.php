@@ -1,4 +1,4 @@
-><style>
+<style>
     .navbar-expand-lg {
         top: 8em !important;
     }
@@ -7,7 +7,7 @@
 <div class="page">
 
 
-    <!-- Sidebar  -->
+
     <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
@@ -54,7 +54,7 @@
                                 </span>
                                 <span class="nav-link-title"> {{ __('Employee') }} </span></a>
                         @else
-                            <a href="{{ route('employee.index') }}">
+                            <a href="{{ route('employee.index') }}" class="nav-link">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -71,8 +71,6 @@
                         @endif
 
                     </li>
-
-
 
                 </ul>
             </div>
