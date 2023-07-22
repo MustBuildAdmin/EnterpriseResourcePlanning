@@ -7,6 +7,7 @@
     <script src="https://tabler.io/demo/dist/js/tabler.min.js?1685976846">
         >
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <div>
     <!-- Page header -->
     <div class="page-header d-print-none">
