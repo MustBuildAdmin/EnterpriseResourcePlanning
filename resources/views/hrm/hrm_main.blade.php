@@ -78,7 +78,7 @@
     </aside>
 
     <!-- Page Content  -->
-    <div id="content" class="page-wrapper">
+    <div  class="page-wrapper">
 
 
 

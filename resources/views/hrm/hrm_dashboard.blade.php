@@ -7,7 +7,7 @@
     <script src="https://tabler.io/demo/dist/js/tabler.min.js?1685976846">
         >
     </script>
-<div class="page-wrapper">
+<div>
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
