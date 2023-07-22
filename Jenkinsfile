@@ -24,17 +24,6 @@ pipeline{
                 sh 'php artisan key:generate'
                 sh 'sudo chmod -R 777 /var/www/html/'
             }
-        }
-        stage('Deploy to Staging') {
-            steps{
-                sh 'sudo  /var/www/html/mkdir erpstage'
-                sh 'sudo rm -rf /var/www/html/erpstage/*'
-                sh 'scp -r /var/lib/jenkins/workspace/construction_management/*  /var/www/html/erpstage/'
-                sh 'cd /var/www/html/erpstage/'
-                sh 'composer install --no-interaction'
-                sh 'php artisan key:generate'
-                sh 'sudo chmod -R 777 /var/www/html/'
-            }
-        }
+          }
     }
 }
