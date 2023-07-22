@@ -46,9 +46,6 @@
     <div id="content" class="page-wrapper">
 
 
-        <div class="collapseToggle hrm">
-            <span id="toggleIcon" class="fa fa-chevron-left"></span>
-        </div>
 
         @isset($hrm_header)
             <h2 class="mb-4">{{ __($hrm_header) }}</h2>
@@ -56,11 +53,5 @@
 
 
 
-        <script type="text/javascript">
-            $('.collapseToggle').on('click', function() {
-                $(".sidebar").toggleClass('sidebar--Collapse');
-                $('.main').toggleClass('main--slide');
-                $('#toggleIcon').toggleClass('rotate');
-            });
-        </script>
+
         {{-- @include('new_layouts.footer') --}}
