@@ -24,13 +24,20 @@ $(function () {
 
 $(document).ready(function () {
     if ($(".datatable").length > 0) {
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.datatable').dataTable({
-        
                 "language": {
+
                     "paginate": {
-                        "previous": "<i class='fa fa-chevron-left custom'></i>",
-                        "next": "<i class='fa fa-chevron-right custom'></i>",
+                        "previous": `<span class="page-link custom" href="#" tabindex="-1" aria-disabled="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg>
+                        prev
+                      </span>`,
+                        "next": `<span class="page-link" href="#">
+                        next
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg>
+                      </span>`,
+                      "numbers": `<li class="page-item active"><a class="page-link" href="#">number</a></li>`
                     }
                 }
             });
@@ -63,8 +70,8 @@ function select2() {
             var id = $(element).attr('id');
             var multipleCancelButton = new Choices(
                 '#' + id, {
-                    removeItemButton: true,
-                }
+                removeItemButton: true,
+            }
             );
         });
 
@@ -175,7 +182,7 @@ function taskCheckbox() {
 function commonLoader() {
     $('[data-toggle="tooltip"]').tooltip();
     if ($('[data-toggle="tags"]').length > 0) {
-        $('[data-toggle="tags"]').tagsinput({tagClass: "badge badge-primary"});
+        $('[data-toggle="tags"]').tagsinput({ tagClass: "badge badge-primary" });
     }
 
 
@@ -400,7 +407,7 @@ $(document).on("click", '.bs-pass-para-pos', function () {
 
 function postAjax(url, data, cb) {
     var token = $('meta[name="csrf-token"]').attr('content');
-    var jdata = {_token: token};
+    var jdata = { _token: token };
 
     for (var k in data) {
         jdata[k] = data[k];
@@ -425,7 +432,7 @@ function postAjax(url, data, cb) {
 
 function deleteAjax(url, data, cb) {
     var token = $('meta[name="csrf-token"]').attr('content');
-    var jdata = {_token: token};
+    var jdata = { _token: token };
 
     for (var k in data) {
         jdata[k] = data[k];
