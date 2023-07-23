@@ -39,7 +39,8 @@
                             @php
                                 $employee = App\Models\Employee::where('user_id', \Auth::user()->id)->first();
                             @endphp
-                            <a href="{{ route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}" class="nav-link">
+                            <a href="{{ route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}"
+                                class="nav-link">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -71,6 +72,308 @@
                         @endif
 
                     </li>
+                    <li class="active nav-item dropdown">
+                        <a class="{{ Request::segment(1) == 'holiday-calender' ||
+                        Request::segment(1) == 'holiday' ||
+                        Request::segment(1) == 'policies' ||
+                        Request::segment(1) == 'award' ||
+                        Request::segment(1) == 'transfer' ||
+                        Request::segment(1) == 'resignation' ||
+                        Request::segment(1) == 'travel' ||
+                        Request::segment(1) == 'promotion' ||
+                        Request::segment(1) == 'complaint' ||
+                        Request::segment(1) == 'warning' ||
+                        Request::segment(1) == 'termination' ||
+                        Request::segment(1) == 'announcement' ||
+                        Request::segment(1) == 'competencies'
+                            ? 'nav-link dropdown-toggle show'
+                            : 'nav-link dropdown-toggle' }}"
+                            href="#hradmin_settings" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                            aria-expanded="{{ Request::segment(1) == 'holiday-calender' ||
+                            Request::segment(1) == 'holiday' ||
+                            Request::segment(1) == 'policies' ||
+                            Request::segment(1) == 'award' ||
+                            Request::segment(1) == 'transfer' ||
+                            Request::segment(1) == 'resignation' ||
+                            Request::segment(1) == 'travel' ||
+                            Request::segment(1) == 'promotion' ||
+                            Request::segment(1) == 'complaint' ||
+                            Request::segment(1) == 'warning' ||
+                            Request::segment(1) == 'termination' ||
+                            Request::segment(1) == 'announcement' ||
+                            Request::segment(1) == 'competencies'
+                                ? 'true'
+                                : 'false' }}">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                            <path d="M12 10.5v1.5"></path>
+                            <path d="M12 16v1.5"></path>
+                            <path d="M15.031 12.25l-1.299 .75"></path>
+                            <path d="M10.268 15l-1.3 .75"></path>
+                            <path d="M15 15.803l-1.285 -.773"></path>
+                            <path d="M10.285 12.97l-1.285 -.773"></path>
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                         </svg>
+                            <span class="nav-link-title">
+                                {{ __('HR Admin Setup') }}
+                            </span>
+                        </a>
+                        <div class="{{ Request::segment(1) == 'holiday-calender' ||
+                        Request::segment(1) == 'holiday' ||
+                        Request::segment(1) == 'policies' ||
+                        Request::segment(1) == 'award' ||
+                        Request::segment(1) == 'transfer' ||
+                        Request::segment(1) == 'resignation' ||
+                        Request::segment(1) == 'travel' ||
+                        Request::segment(1) == 'promotion' ||
+                        Request::segment(1) == 'complaint' ||
+                        Request::segment(1) == 'warning' ||
+                        Request::segment(1) == 'termination' ||
+                        Request::segment(1) == 'announcement' ||
+                        Request::segment(1) == 'competencies'
+                            ? 'dropdown-menu show'
+                            : 'dropdown-menu' }}"
+                            data-bs-popper="{{ Request::segment(1) == 'holiday-calender' ||
+                            Request::segment(1) == 'holiday' ||
+                            Request::segment(1) == 'policies' ||
+                            Request::segment(1) == 'award' ||
+                            Request::segment(1) == 'transfer' ||
+                            Request::segment(1) == 'resignation' ||
+                            Request::segment(1) == 'travel' ||
+                            Request::segment(1) == 'promotion' ||
+                            Request::segment(1) == 'complaint' ||
+                            Request::segment(1) == 'warning' ||
+                            Request::segment(1) == 'termination' ||
+                            Request::segment(1) == 'announcement' ||
+                            Request::segment(1) == 'competencies'
+                                ? 'static'
+                                : '' }}">
+
+
+                        <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                @can('manage award')
+                                <a class="{{ Request::segment(1) == 'award' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                    href="{{ url('award') }}">
+                                    {{ __('Award') }}
+                                </a>
+                                @endcan
+                                @can('manage transfer')
+                                <a class="{{ Request::segment(1) == 'transfer' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                    href="{{ url('transfer') }}">
+                                    {{ __('Transfer') }}
+                                </a>
+                                @endcan
+                                @can('manage resignation')
+                                <a class="{{ Request::segment(1) == 'resignation' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                href="{{ url('resignation') }}">
+                                    {{ __('Resignation') }}
+                                </a>
+                                @endcan
+                                @can('manage travel')
+                                <a class="{{ Request::segment(1) == 'travel' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                href="{{ url('travel') }}">
+                                    {{ __('Trip') }}
+                                </a>
+                                @endcan
+                                @can('manage promotion')
+                                <a class="{{ Request::segment(1) == 'promotion' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                href="{{ url('promotion') }}" >
+                                    {{ __('Promotion') }}
+                                </a>
+                                @endcan
+                                @can('manage complaint')
+                                <a class="{{ Request::segment(1) == 'complaint' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                href="{{ url('complaint') }}">
+                                    {{ __('Complaints') }}
+                                </a>
+                                @endcan
+                                @can('manage warning')
+                                <a class="{{ Request::segment(1) == 'warning' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                    hhref="{{ url('warning') }}" >
+                                    {{ __('Warning') }}
+                                </a>
+                                @endcan
+                                @can('manage termination')
+                                <a class="{{ Request::segment(1) == 'termination' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                href="{{ url('termination') }}" >
+                                    {{ __('Termination') }}
+                                </a>
+                                @endcan
+                                @can('manage announcement')
+                                <a class="{{ Request::segment(1) == 'announcement' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                href="{{ url('announcement') }}" >
+                                    {{ __('Announcement') }}
+                                </a>
+                                @endcan
+                                @can('manage holiday')
+                                <a class="{{ Request::segment(1) == 'holiday' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                href="{{ url('holiday') }}" >
+                                {{ __('Holidays') }}
+                            </a>
+                            @endcan
+                            </div>
+                        </div>
+                    </div>
+                    </li>
+
+                    <li class="active nav-item dropdown">
+                        <a class="{{ Request::segment(1) == 'leavetype' ||
+                        Request::segment(1) == 'document' ||
+                        Request::segment(1) == 'performanceType' ||
+                        Request::segment(1) == 'branch' ||
+                        Request::segment(1) == 'department' ||
+                        Request::segment(1) == 'designation' ||
+                        Request::segment(1) == 'job-stage' ||
+                        Request::segment(1) == 'performanceType' ||
+                        Request::segment(1) == 'job-category' ||
+                        Request::segment(1) == 'terminationtype' ||
+                        Request::segment(1) == 'awardtype' ||
+                        Request::segment(1) == 'trainingtype' ||
+                        Request::segment(1) == 'goaltype' ||
+                        Request::segment(1) == 'paysliptype' ||
+                        Request::segment(1) == 'allowanceoption' ||
+                        Request::segment(1) == 'loanoption' ||
+                        Request::segment(1) == 'deductionoption' ||
+                        Request::segment(1) == 'competencies'
+                            ? 'nav-link dropdown-toggle show'
+                            : 'nav-link dropdown-toggle' }}"
+                            href="#resource_settings" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                            aria-expanded="{{ Request::segment(1) == 'leavetype' ||
+                            Request::segment(1) == 'document' ||
+                            Request::segment(1) == 'performanceType' ||
+                            Request::segment(1) == 'branch' ||
+                            Request::segment(1) == 'department' ||
+                            Request::segment(1) == 'designation' ||
+                            Request::segment(1) == 'job-stage' ||
+                            Request::segment(1) == 'performanceType' ||
+                            Request::segment(1) == 'job-category' ||
+                            Request::segment(1) == 'terminationtype' ||
+                            Request::segment(1) == 'awardtype' ||
+                            Request::segment(1) == 'trainingtype' ||
+                            Request::segment(1) == 'goaltype' ||
+                            Request::segment(1) == 'paysliptype' ||
+                            Request::segment(1) == 'allowanceoption' ||
+                            Request::segment(1) == 'loanoption' ||
+                            Request::segment(1) == 'deductionoption' ||
+                            Request::segment(1) == 'competencies'
+                                ? 'true'
+                                : 'false' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-adjustments-horizontal" width="24"
+                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M14 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M4 6l8 0"></path>
+                                <path d="M16 6l4 0"></path>
+                                <path d="M8 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M4 12l2 0"></path>
+                                <path d="M10 12l10 0"></path>
+                                <path d="M17 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M4 18l11 0"></path>
+                                <path d="M19 18l1 0"></path>
+                            </svg>
+                            <span class="nav-link-title">
+                                {{ __('Resource Settings') }}
+                            </span>
+                        </a>
+                        <div class="{{ Request::segment(1) == 'leavetype' ||
+                        Request::segment(1) == 'document' ||
+                        Request::segment(1) == 'performanceType' ||
+                        Request::segment(1) == 'branch' ||
+                        Request::segment(1) == 'department' ||
+                        Request::segment(1) == 'designation' ||
+                        Request::segment(1) == 'job-stage' ||
+                        Request::segment(1) == 'performanceType' ||
+                        Request::segment(1) == 'job-category' ||
+                        Request::segment(1) == 'terminationtype' ||
+                        Request::segment(1) == 'awardtype' ||
+                        Request::segment(1) == 'trainingtype' ||
+                        Request::segment(1) == 'goaltype' ||
+                        Request::segment(1) == 'paysliptype' ||
+                        Request::segment(1) == 'allowanceoption' ||
+                        Request::segment(1) == 'loanoption' ||
+                        Request::segment(1) == 'deductionoption' ||
+                        Request::segment(1) == 'competencies'
+                            ? 'dropdown-menu show'
+                            : 'dropdown-menu' }}"
+                            data-bs-popper="{{ Request::segment(1) == 'leavetype' ||
+                            Request::segment(1) == 'document' ||
+                            Request::segment(1) == 'performanceType' ||
+                            Request::segment(1) == 'branch' ||
+                            Request::segment(1) == 'department' ||
+                            Request::segment(1) == 'designation' ||
+                            Request::segment(1) == 'job-stage' ||
+                            Request::segment(1) == 'performanceType' ||
+                            Request::segment(1) == 'job-category' ||
+                            Request::segment(1) == 'terminationtype' ||
+                            Request::segment(1) == 'awardtype' ||
+                            Request::segment(1) == 'trainingtype' ||
+                            Request::segment(1) == 'goaltype' ||
+                            Request::segment(1) == 'paysliptype' ||
+                            Request::segment(1) == 'allowanceoption' ||
+                            Request::segment(1) == 'loanoption' ||
+                            Request::segment(1) == 'deductionoption' ||
+                            Request::segment(1) == 'competencies'
+                                ? 'static'
+                                : '' }}">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <a class="{{ Request::segment(1) == 'branch' ? 'active dropdown-item' : 'dropdown-item' }}"
+                                        href="{{ route('branch.index') }}">
+                                        {{ __('Branch') }}
+                                    </a>
+                                    <a href="{{ route('designation.index') }}"
+                                        class="{{ Request::segment(1) == 'designation ' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Designation') }}</a>
+
+                                    <a href="{{ route('leavetype.index') }}"
+                                        class="{{ Request::segment(1) == 'leavetype' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Leave Type') }}</a>
+
+
+                                    <a href="{{ route('document.index') }}"
+                                        class="{{ Request::segment(1) == 'document' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Document Type') }}</a>
+
+                                    <a href="{{ route('paysliptype.index') }}"
+                                        class="{{ Request::segment(1) == 'paysliptype' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Payslip Type') }}</a>
+
+
+                                    <a href="{{ route('allowanceoption.index') }}"
+                                        class="{{ Request::segment(1) == 'allowanceoption' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Allowance Option') }}</a>
+
+                                    <a href="{{ route('loanoption.index') }}"
+                                        class="{{ Request::segment(1) == 'loanoption' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Loan Option') }}</a>
+
+                                    <a href="{{ route('deductionoption.index') }}"
+                                        class="{{ Request::segment(1) == 'deductionoption' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Deduction Option') }}</a>
+
+                                    <a href="{{ route('goaltype.index') }}"
+                                        class="{{ Request::segment(1) == 'goaltype' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Goal Type') }}</a>
+
+                                    <a href="{{ route('trainingtype.index') }}"
+                                        class="{{ Request::segment(1) == 'trainingtype' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Training Type') }}</a>
+
+                                    <a href="{{ route('awardtype.index') }}"
+                                        class="{{ Request::segment(1) == 'awardtype' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Award Type') }}</a>
+                                    <a href="{{ route('terminationtype.index') }}"
+                                        class="{{ Request::segment(1) == 'terminationtype' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Termination Type') }}</a>
+
+                                    <a href="{{ route('job-category.index') }}"
+                                        class="{{ Request::segment(1) == 'job-category' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Job Category') }}</a>
+                                    <a href="{{ route('job-stage.index') }}"
+                                        class="{{ Request::segment(1) == 'job-stage' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Job Stage') }}</a>
+                                    <a href="{{ route('performanceType.index') }}"
+                                        class="{{ Request::segment(1) == 'performanceType' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Performance Type') }}</a>
+                                    <a href="{{ route('competencies.index') }}"
+                                        class="{{ Request::segment(1) == 'competencies' ? 'active dropdown-item' : 'dropdown-item' }}">{{ __('Competencies') }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    </li>
+                    </li>
 
                 </ul>
             </div>
@@ -78,7 +381,7 @@
     </aside>
 
     <!-- Page Content  -->
-    <div  class="page-wrapper">
+    <div class="page-wrapper">
 
 
 

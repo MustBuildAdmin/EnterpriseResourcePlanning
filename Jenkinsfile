@@ -1,4 +1,4 @@
-pipeline{
+pipeline {
     agent any
     environment {
         production_server="http://13.234.199.245/"
@@ -26,4 +26,5 @@ pipeline{
             }
           }
     }
+
 }
