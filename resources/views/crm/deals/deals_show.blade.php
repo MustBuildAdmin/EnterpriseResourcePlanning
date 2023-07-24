@@ -21,7 +21,7 @@
     }
 </style>
 <div class="page-wrapper">
-    @include('crm.side-menu', ['hrm_header' => 'Manage Leads'])
+    @include('crm.side-menu', ['hrm_header' => 'Manage Deals - Sales'])
 
 	<div class="float-end">
         @can('convert deal to deal')
@@ -533,7 +533,7 @@
                                                                     $deal->id,$source->id],
                                                                     'id'=>'delete-form-'.$deal->id])
                                                                     !!}
-                                                                    <a href="#" class="mx-3 btn btn-sm  align-items
+                                                                    <a href="#" class="mx-3 align-items
                                                                        -center bs-pass-para white"
                                                                        data-bs-toggle="tooltip"
                                                                         title="{{__('Delete')}}">

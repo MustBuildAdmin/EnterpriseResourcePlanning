@@ -9,7 +9,7 @@ i.ti.ti-plus {
 </style>
 <div class="row">
     <div class="col-md-6">
-       <h2>{{__('Manage Deals')}}</h2>
+       <h2>{{__('Manage Deals - Sales')}}</h2>
     </div>
     <div class="col-auto ms-auto d-print-none">
         <div class="input-group-btn">

@@ -17,7 +17,7 @@
         </div>
         <div class="col-6 form-group">
             {{ Form::label('call_type', __('Call Type'),['class'=>'form-label']) }}
-            <select name="call_type" id="choices-multiple1" class="form-control select2" required>
+            <select name="call_type" id="choices-multiple1" class="form-control" required>
                 <option value="outbound" @if(isset($call->call_type) && $call->call_type == 'outbound') selected @endif>{{__('Outbound')}}</option>
                 <option value="inbound" @if(isset($call->call_type) && $call->call_type == 'inbound') selected @endif>{{__('Inbound')}}</option>
             </select>
@@ -28,7 +28,7 @@
         </div>
         <div class="col-6 form-group">
             {{ Form::label('user_id', __('Assignee'),['class'=>'form-label']) }}
-            <select name="user_id" id="choices-multiple2" class="form-control select2"  required>
+            <select name="user_id" id="choices-multiple2" class="form-control"  required>
                 @foreach($users as $user)
                     <option value="{{ $user->getDealUser->id }}" @if(isset($call->user_id) && $call->user_id == $user->getDealUser->id) selected @endif>{{ $user->getDealUser->name }}</option>
                 @endforeach
@@ -40,8 +40,9 @@
         </div>
         <div class="col-12 form-group">
             {{ Form::label('call_result', __('Call Result'),['class'=>'form-label']) }}
-            {{ Form::textarea('call_result', null, array('class' => 'summernote-simple')) }}
+            {{ Form::textarea('call_result', null, array('class' => 'summernote-simple','id'=>'summernote')) }}
         </div>
+        
     </div>
 </div>
 <div class="modal-footer">
