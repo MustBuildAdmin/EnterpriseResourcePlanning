@@ -1,22 +1,15 @@
 @include('new_layouts.header')
-@include('hrm.hrm_main',['hrm_header' => 'Employee'])
+@include('hrm.hrm_main')
 
-<style>
-
-
-.card {
-  box-shadow: 0 6px 30px rgba(182, 186, 203, 0.3);
-  margin-bottom: 24px;
-  transition: box-shadow 0.2s ease-in-out;
-  min-height: 270px;
-}
-
-</style>
-
-<div class="row">
-   <div class="table-responsive employee">
-       <table class="datatable table">
-            <thead>
+<div class="mt-3">
+    <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{ __('Employee') }}</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table card-table table-vcenter text-nowrap datatable">
+              <thead>
                 <tr>
                     <th>{{__('Employee ID')}}</th>
                     <th>{{__('Name')}}</th>
@@ -30,15 +23,15 @@
                         <th width="200px">{{__('Action')}}</th>
                     @endif
                 </tr>
-            </thead>
-            <tbody class="font-style">
+              </thead>
+              <tbody class="font-style">
                 @foreach ($employees as $employee)
                     <tr>
                         <td class="Id">
                             @can('show employee profile')
-                                <a href="{{route('employee.show',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}" class="btn btn-outline-primary">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
+                                <a href="{{route('employee.show',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}" >{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
                             @else
-                                <a href="#" class="btn btn-outline-primary">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
+                                <a href="#">{{ \Auth::user()->employeeIdFormat($employee->employee_id) }}</a>
                             @endcan
                         </td>
                         <td class="font-style">{{ $employee->name }}</td>
@@ -71,13 +64,13 @@
                                 <div class="ms-2" style="display:flex;gap:10px;">
                                     @if($employee->is_active==1)
                                         @can('edit employee')
-                                            <a href="{{route('employee.edit',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}" class="btn btn-md bg-primary" data-bs-toggle="tooltip" title="{{__('Edit')}}"
-                                                data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i>
+                                            <a href="{{route('employee.edit',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}"  data-bs-toggle="tooltip" title="{{__('Edit')}}"
+                                                data-original-title="{{__('Edit')}}"><i class="ti ti-pencil"></i>
                                             </a>
                                         @endcan
                                         @can('delete employee')
                                             {!! Form::open(['method' => 'DELETE', 'route' => ['employee.destroy', $employee->id],'id'=>'delete-form-'.$employee->id]) !!}
-                                                <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$employee->id}}').submit();"><i class="ti ti-trash text-white"></i></a>
+                                                <a href="#" class="" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$employee->id}}').submit();"><i class="ti ti-trash"></i></a>
                                             {!! Form::close() !!}
                                         @endcan
                                     @else
@@ -89,8 +82,10 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
-    </div>
+            </table>
+          </div>
+        </div>
+      </div>
 </div>
 </div>
 </div>
