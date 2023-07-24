@@ -3605,8 +3605,8 @@ class Utility extends Model
             }
 
             if($minus_count > 0){
-                $minus_day = "-".$minus_count." day";
-                return  date($convertor, strtotime($date . $minus_day));
+                $minus_day_get = "-".$minus_count." day";
+                return  date($convertor, strtotime($date . $minus_day_get));
             }
             else{
                 return  date($convertor, strtotime($date));
