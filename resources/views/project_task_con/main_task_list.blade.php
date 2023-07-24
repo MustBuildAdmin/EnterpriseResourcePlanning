@@ -50,7 +50,7 @@
                         {{ Utility::site_date_format($show_parent->start_date,\Auth::user()->id) }}
                     </td>
                     <td  style="width:10%;"class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
-                        {{ Utility::site_date_format($show_parent->end_date,\Auth::user()->id) }}
+                        {{ Utility::site_date_format_minus_day($show_parent->end_date,\Auth::user()->id,1) }}
                     </td>
                     <td style="width:10%;">
                         <div class="avatar-group">
