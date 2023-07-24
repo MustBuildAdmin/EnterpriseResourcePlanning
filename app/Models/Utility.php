@@ -3595,6 +3595,24 @@ class Utility extends Model
 
         }
 
+        public static function site_date_format_minus_day($date,$user_id,$minus_count){
+            
+            $data =DB::table('settings')->where(['name'=>'site_date_format','created_by'=>$user_id])->get();
+            if(count($data)>0){
+                $convertor=$data[0]->value;
+            }else{
+                $convertor="M j, Y";
+            }
+
+            if($minus_count > 0){
+                $minus_day_get = "-".$minus_count." day";
+                return  date($convertor, strtotime($date . $minus_day_get));
+            }
+            else{
+                return  date($convertor, strtotime($date));
+            }
+        }
+
          // Time Convert
          public static function site_time_format($date,$user_id){
 
