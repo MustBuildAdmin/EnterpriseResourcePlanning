@@ -19,7 +19,13 @@
     ul {
         list-style-type: none;
     }
+    a#edit {
+        color:black !important;
+    }
 </style>
+@php
+    $profile=\App\Models\Utility::get_file('uploads/avatar/');
+@endphp
 <div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Deals - Sales'])
 
@@ -335,7 +341,7 @@
                                                                 {!! Form::open(['method' => 'DELETE',
                                                                  'route' => ['deals.tasks.destroy',
                                                                  $deal->id,$task->id]]) !!}
-                                                                <a href="#" class="mx-3 btn btn-sm  align-items
+                                                                <a href="#" class="mx-3 align-items
                                                                    -center bs-pass-para white" data-bs-toggle="tooltip"
                                                                     title="{{__('Delete')}}">
                                                                    <i class="ti ti-trash text-white"></i>
@@ -390,17 +396,25 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div>
-                                                                    <img  alt=""
-                                                                        @if($user->avatar)
-                                                                            src="{{asset('/storage/uploads/avatar/
-                                                                            '.$user->avatar)}}"
+                                                                    @if($user->avatar!=null)
+                                                                        @if (!Storage::disk('s3')
+                                                                            ->exists($profile.$user->avatar))
+                                                                            <img src="{{ $profile.$user->avatar}}"
+                                                                            class="avatar avatar-sm mb-3 rounded"
+                                                                            title="{{$user->name}}" alt="IMG"/>
                                                                         @else
-                                                                            src="{{asset('/storage/uploads/avatar/
-                                                                            avatar.png')}}"
+                                                                            <img src="{{Config::get('constants.IMG')}}"
+                                                                            title="{{$user->name}}"
+                                                                            class="avatar avatar-sm mb-3 rounded"
+                                                                            alt="IMG"/>
                                                                         @endif
-                                                                      class="wid-30 rounded-circle me-3">
+                                                                    @else
+                                                                       <img src="{{ Config::get('constants.IMG') }}"
+                                                                       title="{{$user->name}}"
+                                                                       class="avatar avatar-sm mb-3 rounded" alt="IMG"/>
+                                                                    @endif
                                                                 </div>
-                                                                <p class="mb-0">{{$user->name}}</p>
+                                                                <p class="mb-3">{{$user->name}}</p>
                                                             </div>
                                                         </td>
                                                         @can('edit deal')
@@ -575,8 +589,8 @@
                                                 @foreach($emails as $email)
                                                     <li class="list-group-item px-0">
                                                         <div class="d-block d-sm-flex align-items-start">
-                                                            <img src="{{asset('/storage/uploads/avatar/avatar.png')}}"
-                                                                 class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
+                                                            <img src="{{ Config::get('constants.IMG') }}"
+                                                              class="avatar avatar-sm mb-3 rounded" alt="image">
                                                             <div class="w-100">
                                                                 <div class="d-flex align-items-center justify
                                                                       -content-between">
@@ -631,14 +645,23 @@
                                                 @foreach($deal->discussions as $discussion)
                                                     <li class="list-group-item px-0">
                                                         <div class="d-block d-sm-flex align-items-start">
-                                                            <img
-                                                                 src="@if($discussion->user->avatar)
-                                                                    {{asset('/storage/uploads/avatar/
-                                                                '.$discussion->user->avatar)}}
-                                                                    @else
-                                                                    {{asset('/storage/uploads/avatar/avatar.png')}}
-                                                                    @endif"
-                                                                 class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
+                                                        @if($discussion->user->avatar!=null)
+                                                            @if (!Storage::disk('s3')
+                                                                ->exists($profile.$discussion->user->avatar))
+                                                               <img src="{{ $profile.$discussion->user->avatar}}"
+                                                                class="avatar avatar-sm mb-3 rounded"
+                                                                 title="{{$user->name}}" alt="IMG"/>
+                                                            @else
+                                                               <img src="{{ Config::get('constants.IMG') }}"
+                                                                title="{{$discussion->user->name}}"
+                                                                class="avatar avatar-sm mb-3 rounded" alt="IMG"/>
+                                                            @endif
+                                                        @else
+                                                               <img src="{{ Config::get('constants.IMG') }}"
+                                                                title="{{$discussion->user->name}}"
+                                                                class="avatar avatar-sm mb-3 rounded" alt="IMG"/>
+                                                        @endif
+                                                        
                                                             <div class="w-100">
                                                                 <div class="d-flex align-items-center
                                                                      justify-content-between">
@@ -729,12 +752,12 @@
                                             <td>
                                                 @can('edit deal call')
                                                     <div class="action-btn bg-info ms-2">
-                                                        <a href="#" class="mx-3 btn btn-sm d-inline-flex align
+                                                        <a href="#" id="edit" class="mx-3 d-inline-flex align
                                                            -items-center" data-url="{{ URL::to('deals/'.$deal->id.'/call
                                                            /'.$call->id.'/edit') }}" data-ajax-popup="true"
                                                            data-size="xl" data-bs-toggle="tooltip"
                                                             title="{{__('Edit')}}" data-title="{{__('Edit Call')}}">
-                                                            <i class="ti ti-pencil text-white"></i>
+                                                            <i class="ti ti-pencil" style="color:black !important;"></i>
                                                         </a>
                                                     </div>
                                                 @endcan
@@ -744,7 +767,7 @@
                                                          'route' => ['deals.calls.destroy',
                                                          $deal->id,$user->id],'id'=>'delete-form-'.$deal->id])
                                                          !!}
-                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center bs
+                                                        <a href="#" class="mx-3 align-items-center bs
                                                         -pass-para white"
                                                         data-bs-toggle="tooltip" title="{{__('Delete')}}">
                                                         <i class="ti ti-trash text-white"></i>

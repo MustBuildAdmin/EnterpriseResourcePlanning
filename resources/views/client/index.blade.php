@@ -118,8 +118,9 @@
 					  <div class="avatar avatar-xl mb-3 user-initial">{{strtoupper($short)}}</div>
 					  @endif
 					  <?php $name = strlen($client->name) > 20 ? substr($client->name,0,19)."..." : $client->name;?>
+					  <?php $email = strlen($client->email) > 20 ? substr($client->email,0,19)."..." : $client->email;?>
 					  <h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
-					  <h5 class="m-0 mb-1">{{ $client->email }}</h5>
+					  <h5 class="m-0 mb-1"><span title="{{ $client->email }}">{{ $email }}</span></h5>
 				   </div>
 				   <div class="d-flex">
 					  <a data-bs-toggle="tooltip" title="@if($client->clientDeals){{$client->clientDeals->count()}}@endif"

@@ -24,6 +24,9 @@ ul {
   list-style-type: none;
 }
 </style>
+@php
+    $profile=\App\Models\Utility::get_file('uploads/avatar/');
+@endphp
 
 <div class="page-wrapper">
     @include('crm.side-menu', ['hrm_header' => 'Manage Form Builder'])
@@ -309,17 +312,27 @@ ul {
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div>
-                                                                    <img alt="avatar image"
-                                                                        @if($user->avatar)
-                                                                            src="{{asset('/storage/uploads/avatar/
-                                                                            '.$user->avatar)}}"
-                                                                        @else
-                                                                            src="{{asset('/storage/uploads/avatar/
-                                                                            avatar.png')}}"
-                                                                        @endif
-                                                                     class="wid-30 rounded-circle me-3">
+                                                                @if($user->avatar!=null)
+                                                                    @if (!Storage::disk('s3')
+                                                                        ->exists($profile.$user->avatar))
+                                                     
+                                                                        <img src="{{ $profile.$user->avatar}}"
+                                                                        class="avatar avatar-sm mb-3 rounded"
+                                                                        title="{{$user->name}}" alt="IMG"/>
+                                                                    @else
+                                                                        <img src="{{ Config::get('constants.IMG') }}"
+                                                                        title="{{$user->name}}"
+                                                                        class="avatar avatar-sm mb-3 rounded"
+                                                                         alt="IMG"/>
+                                                                    @endif
+                                                                @else
+                                                                    <img src="{{ Config::get('constants.IMG') }}"
+                                                                    title="{{$user->name}}"
+                                                                    class="avatar avatar-sm mb-3 rounded"
+                                                                    alt="IMG"/>
+                                                                @endif
                                                                 </div>
-                                                                <p class="mb-0">{{$user->name}}</p>
+                                                                <p class="mb-7">{{$user->name}}</p>
                                                             </div>
                                                         </td>
                                                         @can('edit lead')
@@ -498,8 +511,8 @@ ul {
                                                 <ul>
                                                     <li class="list-group-item px-0">
                                                         <div class="d-block d-sm-flex align-items-start">
-                                                            <img src="{{asset('/storage/uploads/avatar/avatar.png')}}"
-                                                                 class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
+                                                            <img src="{{ Config::get('constants.IMG') }}"
+                                                            class="avatar avatar-sm mb-3 rounded" alt="image">
                                                             <div class="w-100">
                                                                 <div class="d-flex align-items-center
                                                                      justify-content-between">
@@ -556,15 +569,26 @@ ul {
                                                 @foreach($lead->discussions as $discussion)
                                                     <li class="list-group-item px-0">
                                                         <div class="d-block d-sm-flex align-items-start">
-                                                            <img
-                                                                src="
-                                                            @if($discussion->user->avatar)
-                                                                {{asset('/storage/uploads/avatar/'
-                                                                .$discussion->user->avatar)}}
+
+                                                        @if($discussion->user->avatar!=null)
+                                                            @if (!Storage::disk('s3')
+                                                                ->exists($profile.$discussion->user->avatar))
+                                             
+                                                               <img src="{{ $profile.$discussion->user->avatar}}"
+                                                               class="avatar avatar-sm mb-3 rounded"
+                                                               alt="IMG"/>
                                                             @else
-                                                            {{asset('/storage/uploads/avatar/avatar.png')}}
-                                                             @endif"
-                                                                 class="img-fluid wid-40 me-3 mb-2 mb-sm-0" alt="image">
+                                                               <img src="{{Config::get('constants.IMG')}}"
+                                                                class="avatar avatar-sm mb-3 rounded"
+                                                                alt="IMG"/>
+                                                            @endif
+                                                            
+                                                        @else
+                                                               <img src="{{Config::get('constants.IMG')}}"
+                                                                alt="IMG"
+                                                                class="avatar avatar-sm mb-3 rounded"/>
+                                                        @endif
+
                                                             <div class="w-100">
                                                                 <div class="d-flex align-items-center
                                                                             justify-content-between">
