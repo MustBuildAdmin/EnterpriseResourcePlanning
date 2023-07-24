@@ -30,7 +30,7 @@
                             <td style="">{{Utility::site_date_format($data['con_data']->start_date,\Auth::user()->id)}}</td>
 
                             <td style="font-weight:bold;">Planned End Date:</td>
-                            <td style="">{{Utility::site_date_format($data['con_data']->end_date,\Auth::user()->id)}}</td>
+                            <td style=""> {{ Utility::site_date_format_minus_day($data['con_data']->end_date,\Auth::user()->id,1) }}</td>
                         </tr>
 
                         <tr class="highlighted">

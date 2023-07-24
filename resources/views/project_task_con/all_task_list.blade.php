@@ -46,13 +46,10 @@
                         $perday=0;
                     }
 
-
-
                     $current_Planed_percentage=round($completed_days*$perday);
                     if($current_Planed_percentage > 100){
                         $current_Planed_percentage=100;
                     }
-
                 @endphp
                 <tr>
                     <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
@@ -86,7 +83,7 @@
                         {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
                     </td>
                     <td style="width:10%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
-                        {{ Utility::site_date_format($task->end_date,\Auth::user()->id) }}
+                        {{ Utility::site_date_format_minus_day($task->end_date,\Auth::user()->id,1) }}
                     </td>
                     <td style="width:10%;">
                         <div class="avatar-group">
