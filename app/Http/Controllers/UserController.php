@@ -154,7 +154,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = Config::get('constants.USER_IMAGE');
+                    $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
@@ -237,7 +237,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = Config::get('constants.USER_IMAGE');
+                    $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
@@ -378,7 +378,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = Config::get('constants.USER_IMAGE');
+                    $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
@@ -441,7 +441,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = Config::get('constants.USER_IMAGE');
+                    $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
