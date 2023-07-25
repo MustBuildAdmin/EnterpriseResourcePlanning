@@ -137,7 +137,7 @@ class ClientController extends Controller
                             $extension       = $request->file('avatar')->getClientOriginalExtension();
                             $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                         
-                            $dir = 'uploads/avatar/';
+                            $dir = 'uploads/avatar';
                             $image_path = $dir . $fileNameToStore;
                             if (\File::exists($image_path)) {
                                 \File::delete($image_path);
@@ -377,7 +377,7 @@ class ClientController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = 'uploads/avatar/';
+                    $dir = 'uploads/avatar';
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
