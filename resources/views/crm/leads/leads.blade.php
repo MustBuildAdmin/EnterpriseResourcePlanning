@@ -6,6 +6,10 @@
    }
 </style>
 <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
+@php
+    $profile=\App\Models\Utility::get_file('uploads/avatar/');
+@endphp
+
 <div class="page-wrapper">
     <div class="row">
        <div class="col-md-6">
@@ -139,10 +143,23 @@
                                      </li>
                                   </ul>
                                   <div class="user-group">
+                                 
                                      @foreach($lead->users as $user)
-                                     <img src="@if($user->avatar) {{asset('/storage/uploads/avatar/'.$user->avatar)}}
-                                        @else {{asset('storage/uploads/avatar/avatar.png')}} @endif"
-                                        alt="image" data-bs-toggle="tooltip" title="{{$user->name}}">
+                                 
+                                        @if($user->avatar!=null)
+                                             @if ( ! Storage::disk('s3')->exists($profile.$user->avatar))
+                                                <img src="{{ $profile.$user->avatar}}"
+                                                 class="avatar avatar-sm mb-3 rounded"
+                                                  title="{{$user->name}}" alt="IMG"/>
+                                             @else
+                                                <img src="{{ Config::get('constants.IMG') }}" title="{{$user->name}}"
+                                                 class="avatar avatar-sm mb-3 rounded" alt="IMG"/>
+                                             @endif
+                                         @else
+                                                <img src="{{ Config::get('constants.IMG') }}" title="{{$user->name}}"
+                                                 class="avatar avatar-sm mb-3 rounded" alt="IMG"/>
+                                         @endif
+                                      
                                      @endforeach
                                   </div>
                                </div>

@@ -6,7 +6,8 @@
                 @foreach ($sources as $source)
                     <div class="col-12 custom-control custom-checkbox mt-2 mb-2">
                         {{ Form::checkbox('sources[]',$source->id,($selected && array_key_exists($source->id,$selected))?true:false,['class' => 'form-check-input','id'=>'sources_'.$source->id]) }}
-                        {{ Form::label('sources_'.$source->id, ucfirst($source->name),['class'=>'form-check-label']) }}
+                        {{ Form::label('sources_'.$source->id, ucfirst($source->name),
+                        ['class'=>'custom-control-label ml-4 text-sm font-weight-bold']) }}
                     </div>
                 @endforeach
             </div>

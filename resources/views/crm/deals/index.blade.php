@@ -7,9 +7,12 @@ i.ti.ti-plus {
     color: #FFF !important;
 }
 </style>
+@php
+    $profile=\App\Models\Utility::get_file('uploads/avatar/');
+@endphp
 <div class="row">
     <div class="col-md-6">
-       <h2>{{__('Manage Deals')}}</h2>
+       <h2>{{__('Manage Deals - Sales')}}</h2>
     </div>
     <div class="col-auto ms-auto d-print-none">
         <div class="input-group-btn">
@@ -208,9 +211,20 @@ i.ti.ti-plus {
                             </ul>
                             <div class="user-group">
                                @foreach($deal->users as $user)
-                               <img src="@if($user->avatar) {{asset('/storage/uploads/avatar/'.$user->avatar)}}
-                                    @else {{asset('storage/uploads/avatar/avatar.png')}} @endif"
-                                    data-bs-toggle="tooltip" title="{{$user->name}}" alt="">
+                               @if($user->avatar!=null)
+                                    @if ( ! Storage::disk('s3')->exists($profile.$user->avatar))
+                                       <img src="{{ $profile.$user->avatar}}"
+                                       class="avatar avatar-sm mb-3 rounded"
+                                       title="{{$user->name}}" alt="IMG"/>
+                                    @else
+                                       <img src="{{ Config::get('constants.IMG') }}" title="{{$user->name}}"
+                                       class="avatar avatar-sm mb-3 rounded" alt="IMG"/>
+                                    @endif
+                              @else
+                                       <img src="{{ Config::get('constants.IMG') }}" title="{{$user->name}}"
+                                       class="avatar avatar-sm mb-3 rounded" alt="IMG"/>
+                              @endif
+                                    
                                @endforeach
                             </div>
                          </div>

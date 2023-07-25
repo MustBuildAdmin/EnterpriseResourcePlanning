@@ -9,7 +9,7 @@
     }
     </style>
 <div class="page-wrapper">
-    @include('crm.side-menu', ['hrm_header' => 'Manage Deals'])
+    @include('crm.side-menu', ['hrm_header' => 'Manage Deals - Sales'])
 
 	<div class="float-end">
         <a href="{{ route('deals.index') }}" data-bs-toggle="tooltip"
@@ -185,6 +185,7 @@
             </div>
         </div>
     @endif
+    
     @include('new_layouts.footer')
 	</div>
 	
