@@ -598,7 +598,7 @@ class UserController extends Controller
                 {
                     $dir = Config::get('constants.USER_IMAGE');
                 }else{
-                    $dir = Config::get('constants.USER_IMAGE');
+                    $dir = 'uploads/avatar';
                 }
 
                 $image_path = $dir . $userDetail->avatar;
@@ -695,7 +695,7 @@ class UserController extends Controller
                 {
                     $dir = Config::get('constants.USER_IMAGE');
                 }else{
-                    $dir = Config::get('constants.USER_IMAGE');
+                    $dir = 'uploads/avatar';
                 }
 
                 $image_path = $dir . $userDetail->avatar;
