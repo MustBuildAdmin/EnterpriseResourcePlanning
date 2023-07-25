@@ -28333,11 +28333,9 @@ i.ti.ti-pencil {
     /* align-items: center; */
     justify-content: start;
     line-height: 33px;
-    background: #fafbfc;
 }
 #sidebar ul li a.active {
     color: #ffffff;
-    /* background: #ffffff; */
     text-decoration: none;
 }
 #sidebar ul li a:hover {
@@ -28351,8 +28349,6 @@ i.ti.ti-pencil {
     font-size: 1em;
     color: #fff;
     display: flex;
-    /* align-items: center; */
-    /* justify-content: start; */
     line-height: 33px;
     border: none;
 }
@@ -28602,17 +28598,13 @@ table.dataTable>tbody>tr {
 
 
 .hrm #toggleIcon {
-    background: #fafbfc;
+ background: #fafbfc;
     color: #7c7a7a;
     width: 30px;
     height: 30px;
-    margin-left: -3%;
-    z-index: 9999999;
-    position: absolute;
-    margin-top: -4%;
-    top: 4%;
-    line-height: 30px;
-    text-align: center;
+    margin-left: -36px;
+    z-index: 99;
+    top: 6%;
 }
 
 
