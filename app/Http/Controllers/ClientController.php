@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
-
+use Config;
 class ClientController extends Controller
 {
     public function __construct()
@@ -137,7 +137,7 @@ class ClientController extends Controller
                             $extension       = $request->file('avatar')->getClientOriginalExtension();
                             $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                         
-                            $dir = 'uploads/avatar';
+                            $dir = Config::get('constants.USER_IMAGE');
                             $image_path = $dir . $fileNameToStore;
                             if (\File::exists($image_path)) {
                                 \File::delete($image_path);
@@ -377,7 +377,7 @@ class ClientController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = 'uploads/avatar';
+                    $dir = Config::get('constants.USER_IMAGE');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
