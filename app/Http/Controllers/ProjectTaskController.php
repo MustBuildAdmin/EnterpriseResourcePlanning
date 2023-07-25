@@ -156,15 +156,18 @@ class ProjectTaskController extends Controller
                     ->where('project.project_id',$project_id)
                     ->groupBy('users.id')
                     ->get();
-
-            if($view == 'list'){
-                $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
-                return view('construction_project.taskboard', compact('view','tasks','project_id','user_id','start_date','end_date','setting','user_data'));
+            $result=Project::where('id',$project_id)->pluck('freeze_status')->first();
+            if($result==1){
+                if($view == 'list'){
+                    $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
+                    return view('construction_project.taskboard', compact('view','tasks','project_id','user_id','start_date','end_date','setting','user_data'));
+                }else{
+                    $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
+                    return view('project_task.grid', compact('tasks','view','project_id','user_id','start_date','end_date','setting'));
+                }
             }else{
-                $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
-                return view('project_task.grid', compact('tasks','view','project_id','user_id','start_date','end_date','setting'));
+                return redirect()->back()->with('error', __('Project Not Freezed.'));
             }
-            return redirect()->back()->with('error', __('Permission Denied.'));
         }else{
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
         }
