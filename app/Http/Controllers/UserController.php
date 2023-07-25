@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Session;
 use Spatie\Permission\Models\Role;
-
+use Config;
 
 
 class UserController extends Controller
@@ -154,7 +154,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = 'uploads/avatar';
+                    $dir = Config::get('constants.USER_IMAGE');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
@@ -237,7 +237,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = 'uploads/avatar';
+                    $dir = Config::get('constants.USER_IMAGE');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
@@ -378,7 +378,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = 'uploads/avatar';
+                    $dir = Config::get('constants.USER_IMAGE');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
@@ -441,7 +441,7 @@ class UserController extends Controller
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
                 
-                    $dir = 'uploads/avatar';
+                    $dir = Config::get('constants.USER_IMAGE');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
@@ -596,9 +596,9 @@ class UserController extends Controller
                 $settings = Utility::getStorageSetting();
                 if($settings['storage_setting']=='local')
                 {
-                    $dir = 'uploads/avatar/';
+                    $dir = Config::get('constants.USER_IMAGE');
                 }else{
-                    $dir = 'uploads/avatar';
+                    $dir = Config::get('constants.USER_IMAGE');
                 }
 
                 $image_path = $dir . $userDetail->avatar;
@@ -693,9 +693,9 @@ class UserController extends Controller
                 $settings = Utility::getStorageSetting();
                 if($settings['storage_setting']=='local')
                 {
-                    $dir = 'uploads/avatar/';
+                    $dir = Config::get('constants.USER_IMAGE');
                 }else{
-                    $dir = 'uploads/avatar';
+                    $dir = Config::get('constants.USER_IMAGE');
                 }
 
                 $image_path = $dir . $userDetail->avatar;

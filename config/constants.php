@@ -2,6 +2,7 @@
 
     return [
         /*Confirm*/
+        'USER_IMAGE'=>'uploads/avatar',
         'PROJECT_SPECIFICATION' =>'uploads/project_direction_summary', //Project Specification Folder Path
         'VARIATION_SCOPE' =>'uploads/variation_scope', //Variation Scope Folder Path
         'PROCUREMENT_MATERIAL'=>'uploads/procurement_material', //Procurement Material Folder Path
