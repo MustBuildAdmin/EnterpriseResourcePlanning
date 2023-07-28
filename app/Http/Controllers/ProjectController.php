@@ -2057,8 +2057,14 @@ class ProjectController extends Controller
         //$no_working_days  = $no_working_days+1; // include the last day
         $no_working_days=$task->duration;
 
+        $check_percentage = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
+        $check_percentage_get = isset($check_percentage->percentage) ? $check_percentage->percentage : 0;
+
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
+        }
+        else if($check_percentage_get > $request->percentage){
+            return redirect()->back()->with('error', __('This percentage is too low compare to old percentage.'));
         }
         else{
             if($request->attachment_file_name != null){
