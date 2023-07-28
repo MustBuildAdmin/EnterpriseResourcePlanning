@@ -82,26 +82,27 @@
                                                 <i class="ti ti-dots-vertical"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                @can('edit project')
-                                                    <a href="#!" data-size="xl"
-                                                        data-url="{{ route('projects.edit', $project->id) }}"
-                                                        data-ajax-popup="true" class="dropdown-item"
-                                                        data-bs-original-title="{{ __('Edit User') }}">
-                                                        <i class="ti ti-pencil"></i>
-                                                        <span>{{ __('Edit') }}</span>
-                                                    </a>
-                                                @endcan
-                                               @if($project->freeze_status!=1)
-                                                @can('delete project')
-                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id]]) !!}
-                                                    <a href="#!" class="dropdown-item bs-pass-para">
-                                                        <i class="ti ti-archive"></i>
-                                                        <span> {{ __('Delete') }}</span>
-                                                    </a>
-
-                                                    {!! Form::close() !!}
-                                                @endcan
+                                                @if($project->freeze_status!=1)
+                                                    @can('edit project')
+                                                        <a href="#!" data-size="xl"
+                                                            data-url="{{ route('projects.edit', $project->id) }}"
+                                                            data-ajax-popup="true" class="dropdown-item"
+                                                            data-bs-original-title="{{ __('Edit User') }}">
+                                                            <i class="ti ti-pencil"></i>
+                                                            <span>{{ __('Edit') }}</span>
+                                                        </a>
+                                                    @endcan
+                                               
+                                                    @can('delete project')
+                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id]]) !!}
+                                                        <a href="#!" class="dropdown-item bs-pass-para">
+                                                            <i class="ti ti-archive"></i>
+                                                            <span> {{ __('Delete') }}</span>
+                                                        </a>
+                                                        {!! Form::close() !!}
+                                                    @endcan
                                                 @endif
+                                                
                                                 @can('edit project')
                                                     <a href="#!" data-size="xl"
                                                         data-url="{{ route('invite.project.member.view', $project->id) }}"
