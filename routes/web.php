@@ -4825,7 +4825,8 @@ Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_detail
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report'); 
 Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con'); 
 
-Route::any('revision', 'RevisionController@revision')->name('revision'); 
+Route::any('revision', 'RevisionController@revision')->name('revision');
+Route::any('revision_store', 'RevisionController@revision_store')->name('revision_store');
 
 
 
