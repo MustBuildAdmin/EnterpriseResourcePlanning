@@ -30,7 +30,7 @@
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
             <div class="container-fluid mt-5">
-                {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_revision_form', 'class' => 'create_revision_form']) }}
+                {{ Form::open(['url' => 'revision_store', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_revision_form', 'class' => 'create_revision_form']) }}
                     <div>
                         <h3>{{ __('Non Working Days') }}</h3>
                         <section>
@@ -210,13 +210,9 @@
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                get_reportto         = $(".get_reportto").val();
                 get_non_working_days = $(".get_non_working_days").val();
                
-                if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
+                if(currentIndex == 0 && newIndex == 1 && get_non_working_days == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
                 else{
