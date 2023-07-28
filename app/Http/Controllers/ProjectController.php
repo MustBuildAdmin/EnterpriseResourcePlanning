@@ -2035,19 +2035,19 @@ class ProjectController extends Controller
         $url              = '';
         $task_id          = $request->task_id;
         $task             = Con_task::where('main_id',$task_id)->first();
-        $project_data     = Project::where('id',$task->project_id)->first();
-        $non_working_days_array = [];
+        $project_get     = Project::where('id',$task->project_id)->first();
+        $get_non_work_day = [];
 
-        if($project_data->non_working_days != null){
-            $explode_non = explode(',',$project_data->non_working_days);
-            foreach($explode_non as $non_working){
-                if($non_working == 0) $non_working_days_array[]     = "Sunday";
-                elseif($non_working == 1) $non_working_days_array[] = "Monday";
-                elseif($non_working == 2) $non_working_days_array[] = "Tuesday";
-                elseif($non_working == 3) $non_working_days_array[] = "Wednesday";
-                elseif($non_working == 4) $non_working_days_array[] = "Thursday";
-                elseif($non_working == 5) $non_working_days_array[] = "Friday";
-                elseif($non_working == 6) $non_working_days_array[] = "Saturday";
+        if($project_get->non_working_days != null){
+            $split_non_working = explode(',',$project_get->non_working_days);
+            foreach($split_non_working as $non_working){
+                if($non_working == 0){$get_non_work_day[]     = "Sunday";}
+                elseif($non_working == 1){$get_non_work_day[] = "Monday";}
+                elseif($non_working == 2){$get_non_work_day[] = "Tuesday";}
+                elseif($non_working == 3){$get_non_work_day[] = "Wednesday";}
+                elseif($non_working == 4){$get_non_work_day[] = "Thursday";}
+                elseif($non_working == 5){$get_non_work_day[] = "Friday";}
+                elseif($non_working == 6){$get_non_work_day[] = "Saturday";}
             }
         }
 
@@ -2074,16 +2074,16 @@ class ProjectController extends Controller
         //$no_working_days  = $no_working_days+1; // include the last day
         $no_working_days=$task->duration;
 
-        $check_percentage = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
-        $check_percentage_get = isset($check_percentage->percentage) ? $check_percentage->percentage : 0;
+        $checkPercentage = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
+        $checkPercentageGet = isset($checkPercentage->percentage) ? $checkPercentage->percentage : 0;
 
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
         }
-        elseif(in_array($getCurrentDay,$non_working_days_array)){
+        else if(in_array($getCurrentDay,$non_working_days_array)){
             return redirect()->back()->with('error', __('This day is a non-working day.'));
         }
-        else if($check_percentage_get > $request->percentage){
+        else if($checkPercentageGet > $request->percentage){
             return redirect()->back()->with('error', __('This percentage is too low compare to old percentage.'));
         }
         else{
