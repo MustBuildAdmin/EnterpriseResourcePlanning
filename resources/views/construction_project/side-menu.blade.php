@@ -322,7 +322,7 @@
                     </a>
                 </li>
 
-                <li class="{{ (Request::route()->getName() == 'revision') ? ' active' : '' }}">
+                <li class="{{ (Request::route()->getName() == 'revision') ? ' active' : '' }}" style="display: none;">
                     <a  class="accordion-collapse collapse list-unstyled" href="{{ url('revision') }}">
                         <span class="icon"><img  alt='support' src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Revision') }}</span>
