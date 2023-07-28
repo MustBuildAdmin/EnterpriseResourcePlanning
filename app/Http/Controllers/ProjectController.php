@@ -187,7 +187,8 @@ class ProjectController extends Controller
                         'project_id'=>$project->id,
                         'date'=>$value->date,
                         'description'=>$value->occasion,
-                        'created_by'=>\Auth::user()->creatorId()
+                        'created_by'=>\Auth::user()->creatorId(),
+                        'instance_id'=>$instance_id
                     );
                     Project_holiday::insert($insert);
                 }
@@ -201,7 +202,8 @@ class ProjectController extends Controller
                             'project_id'=>$project->id,
                             'date'=>$holi_value,
                             'description'=>$request->holiday_description[$holi_key],
-                            'created_by'=>\Auth::user()->creatorId()
+                            'created_by'=>\Auth::user()->creatorId(),
+                            'instance_id'=>$instance_id
                         );
 
                         Project_holiday::insert($holiday_insert);
@@ -212,7 +214,8 @@ class ProjectController extends Controller
                                 'project_id'=>$project->id,
                                 'date'=>$holi_value,
                                 'description'=>$request->holiday_description[$holi_key],
-                                'created_by'=>\Auth::user()->creatorId()
+                                'created_by'=>\Auth::user()->creatorId(),
+                                'instance_id'=>$instance_id
                             );
 
                             Project_holiday::insert($holiday_insert);
@@ -732,7 +735,7 @@ class ProjectController extends Controller
             {
                 // test the holidays
                     if($project->holidays==0){
-                        $holidays=Project_holiday::where('project_id',$project->id)->first();
+                        $holidays=Project_holiday::where(['project_id'=>$project->id,'instance_id'=>$project->instance_id])->first();
                         if(!$holidays){
                             return redirect()->back()->with('error', __('No holidays are listed.'));
                         }
@@ -979,7 +982,7 @@ class ProjectController extends Controller
             $setting  = Utility::settings(\Auth::user()->creatorId());
             $country  = Utility::getcountry();
 
-            $project_holidays = Project_holiday::where('project_id',$project->id)->orderBy('date','ASC')->get();
+            $project_holidays = Project_holiday::where(['project_id'=>$project->id,'instance_id'=>$project->instance_id])->orderBy('date','ASC')->get();
 
             if($project->country != null){
                 $statelist = Utility::getstate($project->country);
@@ -1088,13 +1091,15 @@ class ProjectController extends Controller
 
                     foreach ($holiday_date as $holi_key => $holi_value) {
                         $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())->where('date',$holi_value)->first();
-                        $project_holidays_list = Project_holiday::where('project_id',$project->id)->where('date',$holi_value)->first();
+                        $project_holidays_list = Project_holiday::where(['project_id'=>$project->id,'instance_id'=>$project->instance_id])->where('date',$holi_value)->first();
                         if($project_holidays_list == null){
                             $insert = array(
                                 'project_id'=>$project->id,
                                 'date'=>$holi_value,
                                 'description'=>$request->holiday_description[$holi_key],
-                                'created_by'=>\Auth::user()->creatorId()
+                                'created_by'=>\Auth::user()->creatorId(),
+                                'instance_id'=>$project->instance_id
+
                             );
                             Project_holiday::insert($insert);
                         }
@@ -1126,7 +1131,7 @@ class ProjectController extends Controller
            
             $projectID=$project->id;
             $delete_tasks=Con_task::where('project_id',$projectID)->delete();
-            $project_holidays_delete=Project_holiday::where('project_id',$projectID)->delete();
+            $project_holidays_delete=Project_holiday::where(['project_id'=>$projectID,'instance_id'=>$project->instance_id])->delete();
             $instance_delete=Instance::where('project_id',$projectID)->delete();
 
             if(!empty($project->image))
@@ -1447,7 +1452,7 @@ class ProjectController extends Controller
             {
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if($setting['company_type']==2){
-                    $project_holidays=Project_holiday::select('date')->where('project_id',$projectID)->get();
+                    $project_holidays=Project_holiday::select('date')->where(['project_id'=>$projectID,'instance_id'=>$project->instance_id])->get();
                     return view('construction_project.gantt', compact('project', 'tasks', 'duration','project_holidays'));
                     //return view('projects.congantt', compact('project', 'tasks', 'duration'));
                 }else{
