@@ -2080,7 +2080,7 @@ class ProjectController extends Controller
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
         }
-        else if(in_array($getCurrentDay,$non_working_days_array)){
+        else if(in_array($getCurrentDay,$get_non_work_day)){
             return redirect()->back()->with('error', __('This day is a non-working day.'));
         }
         else if($checkPercentageGet > $request->percentage){
