@@ -2035,6 +2035,23 @@ class ProjectController extends Controller
         $url              = '';
         $task_id          = $request->task_id;
         $task             = Con_task::where('main_id',$task_id)->first();
+        $project_data     = Project::where('id',$task->project_id)->first();
+        $non_working_days_array = [];
+
+        if($project_data->non_working_days != null){
+            $explode_non = explode(',',$project_data->non_working_days);
+            foreach($explode_non as $non_working){
+                if($non_working == 0) $non_working_days_array[]     = "Sunday";
+                elseif($non_working == 1) $non_working_days_array[] = "Monday";
+                elseif($non_working == 2) $non_working_days_array[] = "Tuesday";
+                elseif($non_working == 3) $non_working_days_array[] = "Wednesday";
+                elseif($non_working == 4) $non_working_days_array[] = "Thursday";
+                elseif($non_working == 5) $non_working_days_array[] = "Friday";
+                elseif($non_working == 6) $non_working_days_array[] = "Saturday";
+            }
+        }
+
+        $getCurrentDay = date('l', strtotime($request->get_date));
 
         if(\Auth::user()->type == 'company'){
             $get_holiday = Holiday::where('created_by',\Auth::user()->id)->get();
@@ -2062,6 +2079,9 @@ class ProjectController extends Controller
 
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
+        }
+        elseif(in_array($getCurrentDay,$non_working_days_array)){
+            return redirect()->back()->with('error', __('This day is a non-working day.'));
         }
         else if($check_percentage_get > $request->percentage){
             return redirect()->back()->with('error', __('This percentage is too low compare to old percentage.'));
