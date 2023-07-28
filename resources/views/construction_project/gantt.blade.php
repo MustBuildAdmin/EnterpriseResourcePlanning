@@ -328,7 +328,7 @@ $holidays=implode(':',$holidays);
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
                                         {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
-                                       
+
                                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                                                 <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
                                                     data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
@@ -336,7 +336,7 @@ $holidays=implode(':',$holidays);
                                                     Set Baseline
                                                 </a>
                                             {!! Form::close() !!}
-                                       
+
                                         <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
                                         <button class="btn btn-outline-primary action w-20" name="redo" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Redo</button>
                                         <button class="btn btn-outline-primary action w-20" name="indent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Indent</button>
@@ -445,18 +445,18 @@ $holidays=implode(':',$holidays);
             function (resp, textStatus, jqXHR) {
 
                if(resp=='1'){
-                gantt.config.readonly = true;
-                $('.freeze_button').addClass('disabled');
+                    gantt.config.readonly = true;
+                    $('.freeze_button').addClass('disabled');
                }else{
-                gantt.config.readonly = false;
-                $('.freeze_button').removeClass('disabled');
+                    gantt.config.readonly = false;
+                    $('.freeze_button').removeClass('disabled');
                }
 
             });
 
     // check freeze status
 
-    // check gantt task count 
+    // check gantt task count
         var tempcsrf1 = '{!! csrf_token() !!}';
         $.post("{{route('projects.get_gantt_task_count')}}", {_token: tempcsrf1,project_id: {{$project->id}}},
         function (resp, textStatus, jqXHR) {
@@ -475,7 +475,7 @@ $holidays=implode(':',$holidays);
 
         });
 
-    // check gantt task count 
+    // check gantt task count
 
 		//zoom
 
@@ -864,7 +864,7 @@ $holidays=implode(':',$holidays);
                     }
 
                     var dateToStr = gantt.date.date_to_str("%d %F");
-                    gantt.message("Following holidays are excluded from working time:");
+                  //  gantt.message("Following holidays are excluded from working time:");
                     // for (var i = 0; i < holidays.length; i++) {
                     //     setTimeout(
                     //         (function (i) {
@@ -888,17 +888,19 @@ $holidays=implode(':',$holidays);
                 "_token":tempcsrf,
                 }
             });
-            // gantt.attachEvent("onBeforeLightbox", function(id) {
-               
-            // });
+            dp.attachEvent("onBeforeUpdate", function(id, state, data){
+                gantt.config.readonly = true;
+                return true;
+            });
             dp.attachEvent("onAfterUpdate", function(id, action, tid, response){
+                gantt.config.readonly = false;
                 if(action == "inserted"){
                     gantt.showLightbox(tid);
                     //  gantt.load("{{route('projects.gantt_data',[$project->id])}}");
                 }
             });
 
-            
+
             gantt.templates.link_class = function (link) {
                 var types = gantt.config.links;
                 switch (link.type) {

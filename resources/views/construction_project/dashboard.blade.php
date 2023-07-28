@@ -479,13 +479,22 @@
 
                     <span class="text-muted">{{ __('Delay in progress') }}</span>
                 </div>
-                <span @if($current_Planed_percentage-$actual_percentage>0) style='color:red;' @endif>{{ round($current_Planed_percentage-$actual_percentage) }}%</span>
+                @php
+                $delay=round($current_Planed_percentage-$actual_percentage);
+                if($delay<0){
+                  $delay=0;
+                }
+                if($delay>100){
+                  $delay=100;
+                }
+                @endphp
+                <span @if($delay>0) style='color:red;' @endif>{{ $delay }}%</span>
 
 
               </div>
 
               <div class="progress mb-3">
-                  <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage-$actual_percentage) }}%"></div>
+                  <div class="progress-bar bg-primary" style="width: {{ round($delay) }}%"></div>
               </div>
 
               <div class="d-flex align-items-center justify-content-between mb-2">
@@ -493,7 +502,6 @@
 
                     <span class="text-muted">{{ __('Actual Remaining Progress') }}</span>
                 </div>
-                @php $delay=$current_Planed_percentage-$actual_percentage @endphp
                 <span>{{ round(100-$actual_percentage) }}%</span>
 
 
