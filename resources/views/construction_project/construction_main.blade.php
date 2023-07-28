@@ -82,6 +82,7 @@
                                                 <i class="ti ti-dots-vertical"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
+                                                @if($project->freeze_status!=1)
                                                 @can('edit project')
                                                     <a href="#!" data-size="xl"
                                                         data-url="{{ route('projects.edit', $project->id) }}"
@@ -91,7 +92,7 @@
                                                         <span>{{ __('Edit') }}</span>
                                                     </a>
                                                 @endcan
-                                               @if($project->freeze_status!=1)
+                                             
                                                 @can('delete project')
                                                     {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id]]) !!}
                                                     <a href="#!" class="dropdown-item bs-pass-para">

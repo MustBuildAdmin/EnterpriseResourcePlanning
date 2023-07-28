@@ -882,8 +882,14 @@ class ProjectController extends Controller
                     $date2=date_create($project->end_date);
                 }  
                 
+                if($actual_percentage > 100){
+                    $actual_percentage=100;
+                }
+                if($actual_percentage < 0){
+                    $actual_percentage=0;
+                }
 
-
+                
 
                 $cur= date('Y-m-d');
 
@@ -910,6 +916,12 @@ class ProjectController extends Controller
                 if($current_Planed_percentage > 100){
                     $current_Planed_percentage=100;
                 }
+                if($current_Planed_percentage <0){
+                    $current_Planed_percentage=0;
+                }
+
+                
+                
 
                 if($current_Planed_percentage>0){
                     $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;
@@ -1507,11 +1519,12 @@ class ProjectController extends Controller
     {
         try {
 
-                $data = array('freeze_status'=>1);
-
-                Project::where('id',$request->project_id)->update($data);
-
-                return redirect()->back()->with('success', __('Freezed Status successfully changed.'));
+            $project=Project::find($request->project_id);
+            $instance_id=$project->instance_id;
+            $con_task=Con_task::where(['project_id'=>$request->project_id,'instance_id'=>$instance_id])->orderBy('id', 'ASC')->first();
+            $data = array('freeze_status'=>1,'start_date'=>$con_task->start_date,'end_date'=>$con_task->end_date,'estimated_days'=>$con_task->duration);
+            Project::where('id',$request->project_id)->update($data);
+            return redirect()->back()->with('success', __('Freezed Status successfully changed.'));
 
 
         } catch (Exception $e) {
@@ -2048,7 +2061,7 @@ class ProjectController extends Controller
         $check_percentage_get = isset($check_percentage->percentage) ? $check_percentage->percentage : 0;
 
         if(in_array($request->get_date,$holiday_merge)){
-            return redirect()->back()->with('error', __($request->get_date.' This is holiday Your Record has been not recorded! Please Contact Your Company.'));
+            return redirect()->back()->with('error', __($request->get_date.' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
         }
         else if($check_percentage_get > $request->percentage){
             return redirect()->back()->with('error', __('This percentage is too low compare to old percentage.'));
