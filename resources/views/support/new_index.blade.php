@@ -1,5 +1,5 @@
 @include('new_layouts.header')
-@include('support.support_sidebar',['hrm_header' => 'Support'])
+<!-- @include('support.support_sidebar',['hrm_header' => 'Support']) -->
 
 <style>
 .cards_item {
