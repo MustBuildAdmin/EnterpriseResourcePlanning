@@ -35,7 +35,7 @@
 </style>
 @php
    // $profile=asset(Storage::url('uploads/avatar/'));
-    $profile=\App\Models\Utility::get_file('uploads/avatar');
+    $profile=\App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 <div class="page-wrapper">
 	<!-- Page header -->
