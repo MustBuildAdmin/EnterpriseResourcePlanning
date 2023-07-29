@@ -424,7 +424,7 @@
                         <i class="ti ti-clipboard-list"></i>
                     </div>
                     <div class="ms-3">
-                        <p class="text-muted mb-0">{{__('Total Days Completed to Date')}}</p>
+                        <p class="text-muted mb-0">{{__('Project Progress Status As of Toaday')}}</p>
                         {{-- <h4 class="mb-0">{{ $project_data['task_chart']['total'] }}</h4> --}}
 
                     </div>
@@ -435,7 +435,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('Total Day Left As Today')}}</span>
+                        <span class="text-muted">{{__('Total Days Completed to Date')}}</span>
                     </div>
                     <span>{{ $project_data['day_left']['day'] }}</span>
                     {{-- <span>{{ $remaining_working_days }}</span> --}}
