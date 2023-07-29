@@ -30,14 +30,17 @@
     <div class="col-xl-12 mt-3">
         <div class="card table-card">
             <div class="container-fluid mt-5">
-                {{ Form::open(['url' => 'revision_store', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_revision_form', 'class' => 'create_revision_form']) }}
+                {{ Form::open(['url' => 'revision_store', 'method' => 'post',
+                'enctype' => 'multipart/form-data', 'id' => 'create_revision_form',
+                'class' => 'create_revision_form']) }}
                     <div>
                         <h3>{{ __('Non Working Days') }}</h3>
                         <section>
                             <div class="row">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                        {{Form::label('non_working_days',__('non_working_days'),
+                                        ['class'=>'form-label'])}}<span class="text-danger">*</span>
                                         @php
                                             $non_working_days = array(
                                                 '1' => 'Monday',
@@ -50,7 +53,9 @@
                                             );
                                         @endphp
                                         {!! Form::select('non_working_days[]', $non_working_days, null,
-                                            array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true','required'=>'required')) 
+                                            array('id' => 'non_working_days',
+                                            'class' => 'form-control chosen-select get_non_working_days',
+                                            'multiple'=>'true','required'=>'required'))
                                         !!}
                                     </div>
                                 </div>
@@ -65,10 +70,11 @@
                                         {{ Form::label('holidays', __('Holidays'), ['class' => 'form-label']) }}
 
                                         <div class="table-responsive holiday_table" id="holiday_table">
-                                            <table class="table" id="example2" style="width: 100%">
+                                            <table class="table" id="example2" style="width: 100%"> <!-- Revision -->
                                                 <thead>
                                                     <tr>
-                                                        <th><input class='check_all' type='checkbox' onclick="select_all_key()"/></th>
+                                                        <th><input class='check_all' type='checkbox'
+                                                            onclick="select_all_key()"/></th>
                                                         <th>{{__('Date')}}</th>
                                                         <th>{{__('Description')}}</th>
                                                     </tr>
@@ -77,12 +83,20 @@
                                                     <tr data-count_id="1" id="1">
                                                         <td><input type='checkbox' disabled/></td>
                                                         <td style="width: 30%;">
-                                                            <input type="date" data-date_id='1' class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]">
-                                                            <label style='display:none;color:red;' class='holiday_date_label1'>This Field is Required </label>
+                                                            <input type="date" data-date_id='1'
+                                                            class="form-control holiday_date get_date"
+                                                            id="holiday_date1" name="holiday_date[]">
+                                                            <label style='display:none;color:red;'
+                                                            class='holiday_date_label1'>This Field is Required </label>
                                                         </td>
                                                         <td style="width: 70%;">
-                                                            <input type="text" data-desc_id='1' class="form-control holiday_description" id="holiday_description1" name="holiday_description[]">
-                                                            <label style='display:none;color:red;' class='holiday_description_label1'>This Field is Required </label>
+                                                            <input type="text" data-desc_id='1'
+                                                            class="form-control holiday_description"
+                                                            id="holiday_description1"
+                                                            name="holiday_description[]">
+                                                            <label style='display:none;color:red;'
+                                                            class='holiday_description_label1'>
+                                                            This Field is Required </label>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -171,12 +185,12 @@
 	}
 
     function select_all_key() {
-        $('input[class=case]:checkbox').each(function(){ 
-            if($('input[class=check_all]:checkbox:checked').length == 0){ 
-                $(this).prop("checked", false); 
+        $('input[class=case]:checkbox').each(function(){
+            if($('input[class=check_all]:checkbox:checked').length == 0){
+                $(this).prop("checked", false);
             } else {
-                $(this).prop("checked", true); 
-            } 
+                $(this).prop("checked", true);
+            }
         });
     }
 
@@ -193,7 +207,7 @@
             }
         });
 
-        if(holiday_array.indexOf(holiday_date) !== -1)  
+        if(holiday_array.indexOf(holiday_date) !== -1)
         {
             toastr.error("This Date Is Already Exist!");
             $(this).val("");
