@@ -1,24 +1,5 @@
 @include('new_layouts.header')
-<!-- @include('support.support_sidebar',['hrm_header' => 'Support']) -->
 
-<style>
-.cards_item {
-    font-size : 11px !important
-}
-.count_size {
-    font-size : 20px !important
-}
-.float-end {
-    padding-left: 93%;
-    padding-bottom: 15px;
-}
-.btn_icon {
-    width: 29px;
-    height: 28px;
-    border-radius: 9px;
-    margin-bottom: 5px;
-}
-</style>
 
 <div class="float-end">
         <a href="{{ route('support.grid') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Grid View')}}">
