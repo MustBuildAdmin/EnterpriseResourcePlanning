@@ -2,7 +2,7 @@
 
 
 <div class="p-1">
-        <a href="{{ route('support.grid') }}" class="btn btn-sm btn-primary float-end " data-bs-toggle="tooltip" title="{{__('Grid View')}}">
+        <a href="{{ route('support.grid') }}" class="btn btn-sm btn-primary float-end mx-2" data-bs-toggle="tooltip" title="{{__('Grid View')}}">
             <i class="ti ti-layout-grid text-white"></i>
         </a>
 
