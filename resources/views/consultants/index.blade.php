@@ -95,7 +95,7 @@
 						<div class="card-body p-4 text-center">
 							 @if($user->gender !='female') <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
 							 @else 
-							 <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url(" uploads/avatar/avatarfemale.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
+							 <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
 							 @endif
 							<?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
 								<h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>

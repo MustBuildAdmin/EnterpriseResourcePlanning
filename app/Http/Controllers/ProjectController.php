@@ -2304,6 +2304,23 @@ class ProjectController extends Controller
         $url              = '';
         $task_id          = $request->task_id;
         $task             = Con_task::where('main_id',$task_id)->first();
+        $project_get     = Project::where('id',$task->project_id)->first();
+        $get_non_work_day = [];
+
+        if($project_get->non_working_days != null){
+            $split_non_working = explode(',',$project_get->non_working_days);
+            foreach($split_non_working as $non_working){
+                if($non_working == 0){$get_non_work_day[]     = "Sunday";}
+                elseif($non_working == 1){$get_non_work_day[] = "Monday";}
+                elseif($non_working == 2){$get_non_work_day[] = "Tuesday";}
+                elseif($non_working == 3){$get_non_work_day[] = "Wednesday";}
+                elseif($non_working == 4){$get_non_work_day[] = "Thursday";}
+                elseif($non_working == 5){$get_non_work_day[] = "Friday";}
+                elseif($non_working == 6){$get_non_work_day[] = "Saturday";}
+            }
+        }
+
+        $getCurrentDay = date('l', strtotime($request->get_date));
 
         if(\Auth::user()->type == 'company'){
             $get_holiday = Holiday::where('created_by',\Auth::user()->id)->get();
@@ -2326,8 +2343,17 @@ class ProjectController extends Controller
         //$no_working_days  = $no_working_days+1; // include the last day
         $no_working_days=$task->duration;
 
+        $checkPercentage = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
+        $checkPercentageGet = isset($checkPercentage->percentage) ? $checkPercentage->percentage : 0;
+
         if(in_array($request->get_date,$holiday_merge)){
             return redirect()->back()->with('error', __($request->get_date.' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
+        }
+        else if(in_array($getCurrentDay,$get_non_work_day)){
+            return redirect()->back()->with('error', __('This day is a non-working day.'));
+        }
+        else if($checkPercentageGet > $request->percentage){
+            return redirect()->back()->with('error', __('This percentage is too low compare to old percentage.'));
         }
         else{
             if($request->attachment_file_name != null){

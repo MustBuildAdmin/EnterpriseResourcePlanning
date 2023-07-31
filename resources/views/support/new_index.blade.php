@@ -1,37 +1,18 @@
 @include('new_layouts.header')
-@include('support.support_sidebar',['hrm_header' => 'Support'])
 
-<style>
-.cards_item {
-    font-size : 11px !important
-}
-.count_size {
-    font-size : 20px !important
-}
-.float-end {
-    padding-left: 93%;
-    padding-bottom: 15px;
-}
-.btn_icon {
-    width: 29px;
-    height: 28px;
-    border-radius: 9px;
-    margin-bottom: 5px;
-}
-</style>
 
-<div class="float-end">
-        <a href="{{ route('support.grid') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Grid View')}}">
+<div class="p-1">
+        <a href="{{ route('support.grid') }}" class="btn btn-sm btn-primary float-end mx-2" data-bs-toggle="tooltip" title="{{__('Grid View')}}">
             <i class="ti ti-layout-grid text-white"></i>
         </a>
 
-       <a href="#" data-size="lg" data-url="{{ route('support.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Support')}}" class="btn btn-sm btn-primary">
+       <a href="#" data-size="lg" data-url="{{ route('support.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Support')}}" class="btn btn-sm btn-primary float-end ">
             <i class="ti ti-plus"></i>
         </a>
 
 </div>
 
-<div class="row">
+<div class="row mx-0">
     <div class="col-lg-3 col-md-6">
         <div class="card">
             <div class="card-body">
@@ -43,12 +24,12 @@
                             </div>
                             <div class="ms-3">
                                 <small class="text-muted">{{__('Total')}}</small>
-                                <h6 class="m-0 cards_item">{{__('Ticket')}}</h6>
+                                <h6 class="cards_item">{{__('Ticket')}}</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto text-end">
-                        <h3 class="m-0 count_size">{{ $countTicket }}</h3>
+                        <h3 class="count_size">{{ $countTicket }}</h3>
                     </div>
                 </div>
             </div>
@@ -65,12 +46,12 @@
                             </div>
                             <div class="ms-3">
                                 <small class="text-muted">{{__('Open')}}</small>
-                                <h6 class="m-0 cards_item">{{__('Ticket')}}</h6>
+                                <h6 class=" cards_item">{{__('Ticket')}}</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto text-end">
-                        <h3 class="m-0 count_size">{{ $countOpenTicket }}</h3>
+                        <h3 class=" count_size">{{ $countOpenTicket }}</h3>
                     </div>
                 </div>
             </div>
@@ -87,12 +68,12 @@
                             </div>
                             <div class="ms-3">
                                 <small class="text-muted">{{__('On Hold')}}</small>
-                                <h6 class="m-0 cards_item">{{__('Ticket')}}</h6>
+                                <h6 class=" cards_item">{{__('Ticket')}}</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto text-end">
-                        <h3 class="m-0 count_size">{{ $countonholdTicket }}</h3>
+                        <h3 class=" count_size">{{ $countonholdTicket }}</h3>
                     </div>
                 </div>
             </div>
@@ -109,12 +90,12 @@
                             </div>
                             <div class="ms-3">
                                 <small class="text-muted">{{__('Close')}}</small>
-                                <h6 class="m-0 cards_item">{{__('Ticket')}}</h6>
+                                <h6 class=" cards_item">{{__('Ticket')}}</h6>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto text-end">
-                        <h3 class="m-0 count_size">{{ $countCloseTicket }}</h3>
+                        <h3 class=" count_size">{{ $countCloseTicket }}</h3>
                     </div>
                 </div>
             </div>
