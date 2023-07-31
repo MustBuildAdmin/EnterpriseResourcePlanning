@@ -435,7 +435,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <div class="d-flex align-items-center">
-                        <span class="text-muted">{{__('Total Day Left As Today')}}</span>
+                        <span class="text-muted">{{__('Total Days Completed to Date')}}</span>
                     </div>
                     <span>{{ $project_data['day_left']['day'] }}</span>
                     {{-- <span>{{ $remaining_working_days }}</span> --}}
