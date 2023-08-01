@@ -11,7 +11,6 @@ use App\Models\NOC;
 use App\Models\User;
 use App\Models\UserCompany;
 use App\Models\Company_type;
-use Auth;
 use File;
 use App\Models\Utility;
 use App\Models\Order;
@@ -24,7 +23,8 @@ use Illuminate\Support\Facades\Mail;
 use Session;
 use Spatie\Permission\Models\Role;
 use Config;
-
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -1013,6 +1013,13 @@ public function check_duplicate_email(Request $request){
             else{
                 $get_check_val = User::where('email',$check_name)->where('id','!=',$get_id)->first();
             }
+        }else  if($form_name == "Client"){
+            if($get_id == null){
+                $get_check_val = User::where('email',$check_name)->first();
+            }
+            else{
+                $get_check_val = User::where('email',$check_name)->where('id','!=',$get_id)->first();
+            }
         }
         else{
             $get_check_val = "Not Empty";
@@ -1032,6 +1039,45 @@ public function check_duplicate_email(Request $request){
       }
     
    
+}
+
+public function check_duplicate_mobile(Request $request){
+    try {
+        $formname  = $request->formname;
+        $checkname = $request->getname;
+        $getid     = $request->getid;
+   
+        if($formname == "Users"){
+            if($getid == null){
+                $getcheckval = User::where('phone',$checkname)->first();
+            }
+            else{
+                $getcheckval = User::where('phone',$checkname)->where('id','!=',$getid)->first();
+            }
+        }else if($formname == "Client"){
+            if($getid == null){
+                $getcheckval = User::where('phone',$checkname)->first();
+            }
+            else{
+                $getcheckval = User::where('phone',$checkname)->where('id','!=',$getid)->first();
+            }
+        }
+        else{
+            $getcheckval = "Not Empty";
+        }
+      
+        if($getcheckval == null){
+            return 1; //Success
+        }
+        else{
+            return 0; //Error
+        }
+       
+      } catch (Exception $e) {
+
+          return $e->getMessage();
+
+      }
 }
 
 }

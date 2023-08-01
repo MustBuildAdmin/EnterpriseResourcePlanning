@@ -643,6 +643,13 @@ Route::any('check_duplicate_email', 'UserController@check_duplicate_email')->nam
     ]
 );
 
+Route::any('check_duplicate_mobile', 'UserController@check_duplicate_mobile')->name('check_duplicate_mobile')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('check_duplicate_email_consultant', 'ConsultantController@check_duplicate_email_consultant')->name('check_duplicate_email_consultant')->middleware(
     [
         'auth',

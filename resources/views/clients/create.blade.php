@@ -14,6 +14,9 @@
         <div class="form-group">
             {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
             {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'required'=>'required')) }}
+            <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
+                <span class="text-danger">{{__('Email Already Exist!')}}</span>
+            </span> 
         </div>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-6">
@@ -257,6 +260,9 @@
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <input class="form-control" name="shipping_phone" type="number" id="shipping_phone" maxlength="16" placeholder="+91 111 111 1111"  required>
+                        <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
+                            <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                        </span>
                         {{-- {{Form::text('shipping_phone',null,array('class'=>'form-control'))}} --}}
                     </div>
                 </div>
@@ -423,5 +429,51 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         return false;
     }
 });
+
+    $(document).ready(function(){
+        $(document).on("keyup", '#email', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_email") }}',
+                type : 'GET',
+                data : { 'get_name' : $("#email").val(),'form_name' : "Client" },
+                success : function(data) {
+                    if(data == 1){
+                        $(':input[type="submit"]').prop('disabled', false);
+                        $(".email_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $(':input[type="submit"]').prop('disabled', true);
+                        $(".email_duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    // alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
+        $(document).on("keyup", '#billing_phone', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_mobile") }}',
+                type : 'GET',
+                data : { 'getname' : $("#billing_phone").val(),'formname' : "Client" },
+                success : function(data) {
+                    if(data == 1){
+                        $(':input[type="submit"]').prop('disabled', false);
+                        $(".mobile_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $(':input[type="submit"]').prop('disabled', true);
+                        $(".mobile_duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    // alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
+            
+    });
 
 </script>
