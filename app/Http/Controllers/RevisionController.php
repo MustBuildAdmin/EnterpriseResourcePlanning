@@ -49,17 +49,19 @@ class RevisionController extends Controller
 
             DB::table('non_working_days')->insert($nonWorkingDaysInsert);
 
-            foreach($holidayDateGet as $holi_key => $holi_value){
+            if($holidayDateGet != ""){
+                foreach($holidayDateGet as $holi_key => $holi_value){
                 
-                $holidayInsert = array(
-                    'project_id'  => $projectId,
-                    'date'        => $holi_value,
-                    'description' => $request->holiday_description[$holi_key],
-                    'instance_id' => $instanceIdSet,
-                    'created_by'  => \Auth::user()->creatorId()
-                );
-
-                Project_holiday::insert($holidayInsert);
+                    $holidayInsert = array(
+                        'project_id'  => $projectId,
+                        'date'        => $holi_value,
+                        'description' => $request->holiday_description[$holi_key],
+                        'instance_id' => $instanceIdSet,
+                        'created_by'  => \Auth::user()->creatorId()
+                    );
+    
+                    Project_holiday::insert($holidayInsert);
+                }
             }
 
             $getConInstance = DB::table('con_tasks')->select('instance_id','project_id')
