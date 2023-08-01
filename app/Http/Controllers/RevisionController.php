@@ -33,34 +33,57 @@ class RevisionController extends Controller
     }
 
     public function revision_store(Request $request){
-        $project_id       = Session::get('project_id');
-        $non_working_days = implode(',',$request->non_working_days);
-        $holiday_date     = $request->holiday_date;
-        $var              = rand('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$project_id;
-        $instance_id      = Hash::make($var);
+        try {
+            $projectId       = Session::get('project_id');
+            $nonWorkingDays  = implode(',',$request->non_working_days);
+            $holidayDateGet  = $request->holiday_date;
+            $var             = rand('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$projectId;
+            $instanceIdSet   = Hash::make($var);
 
-        $non_working_days = array(
-            'project_id'       => $project_id,
-            'non_working_days' => $non_working_days,
-            'instance_id'      => $instance_id,
-            'created_by'       => \Auth::user()->creatorId()
-        );
-
-        DB::table('non_working_days')->insert($non_working_days);
-
-        foreach($holiday_date as $holi_key => $holi_value){
-            
-            $holiday_insert = array(
-                'project_id'  => $project_id,
-                'date'        => $holi_value,
-                'description' => $request->holiday_description[$holi_key],
-                'instance_id' => $instance_id,
-                'created_by'  => \Auth::user()->creatorId()
+            $nonWorkingDaysInsert = array(
+                'project_id'       => $projectId,
+                'non_working_days' => $nonWorkingDays,
+                'instance_id'      => $instanceIdSet,
+                'created_by'       => \Auth::user()->creatorId()
             );
 
-            Project_holiday::insert($holiday_insert);
-        }
+            DB::table('non_working_days')->insert($nonWorkingDaysInsert);
 
-        return redirect()->back()->with('success', __('Revision Added Successfully'));
+            foreach($holidayDateGet as $holi_key => $holi_value){
+                
+                $holidayInsert = array(
+                    'project_id'  => $projectId,
+                    'date'        => $holi_value,
+                    'description' => $request->holiday_description[$holi_key],
+                    'instance_id' => $instanceIdSet,
+                    'created_by'  => \Auth::user()->creatorId()
+                );
+
+                Project_holiday::insert($holidayInsert);
+            }
+
+            $getConInstance = DB::table('con_tasks')->select('instance_id','project_id')
+                            ->where('project_id',$projectId)->orderBy('main_id','DESC')->first();
+
+            if($getConInstance != null){
+                $conInstanceGet = $getConInstance->instance_id;
+
+                DB::select(
+                    "INSERT INTO con_tasks(
+                        id,text,project_id,users,duration,progress,start_date,end_date,predecessors,instance_id,achive,
+                        parent,sortorder,custom,created_at,updated_at,float_val,type
+                    )
+                    SELECT id,text,project_id,users,duration,progress,start_date,end_date,predecessors,
+                    '".$instanceIdSet."' as instance_id,achive,parent,sortorder,custom,created_at,updated_at,
+                    float_val,type FROM con_tasks WHERE project_id = " . $projectId . " AND
+                    instance_id='" . $conInstanceGet . "'"
+                );
+            }
+
+            return redirect()->back()->with('success', __('Revision Added Successfully'));
+        }
+        catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
 }
