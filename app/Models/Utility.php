@@ -3691,8 +3691,8 @@ class Utility extends Model
         }
 
         public static function remaining_duration_calculator($end,$id){
-           $holidays=DB::table('project_holidays')->where('project_id',$id)->get();
            $project=DB::table('projects')->where('id',$id)->first();
+           $holidays=DB::table('project_holidays')->where(['project_id'=>$id,'instance_id'=>$project->instance_id])->get();
            if($project){
                 // $weekends_array=array('MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY');
                 $weekarray=explode(',',$project->non_working_days);

@@ -15,7 +15,7 @@ class Project_holiday_Controller extends Controller
         // if(\Auth::user()->can('manage branch'))
         // {
             $project = Project::where('id', Session::get('project_id') )->first();
-            $holidays = Project_holiday::with(['project_name'])->where('project_id', Session::get('project_id'))->get();
+            $holidays = Project_holiday::with(['project_name'])->where(['project_id'=> Session::get('project_id'),'instance_id'=>$project->instance_id])->get();
             return view('project_holidays.index', compact('project','holidays'));
         // }
         // else
@@ -46,12 +46,13 @@ class Project_holiday_Controller extends Controller
 
                 return redirect()->back()->with('error', $messages->first());
             }
-
+            $project = Project::where('id', $request->project_id)->first();
             $Project_holiday = new Project_holiday();
             $Project_holiday['project_id']= $request->project_id;
             $Project_holiday['date']= $request->date;
             $Project_holiday['description']     = $request->description;
             $Project_holiday['created_by'] = \Auth::user()->creatorId();
+            $Project_holiday['instance_id'] = $project->instance_id;
             $Project_holiday ->save();
 
             return redirect()->route('project_holiday.index');
@@ -82,12 +83,13 @@ class Project_holiday_Controller extends Controller
 
             return redirect()->back()->with('error', $messages->first());
         }
-
+        $project = Project::where('id', $request->project_id)->first();
         $Project_holiday =Project_holiday::find($id);
         $Project_holiday['project_id']= $request->project_id;
         $Project_holiday['date']= $request->date;
         $Project_holiday['description']     = $request->description;
         $Project_holiday['created_by'] = \Auth::user()->creatorId();
+        $Project_holiday['instance_id'] = $project->instance_id;
         $Project_holiday ->save();
 
         return redirect()->route('project_holiday.index');

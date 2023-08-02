@@ -71,8 +71,9 @@
                                 <div class="card-header border-0 pb-0">
                                     <div class="d-flex align-items-center">
                                         <img {{ $project->img_image }} class="img-fluid wid-30 me-2" alt="">
-                                        <h5 class="mb-0"><a class="text-dark"
-                                                href="{{ route('projects.show', $project) }}">{{ $project->project_name }}</a>
+                                        <h5 class="mb-0">
+                                        <!-- href="{{ route('projects.show', $project) }}" -->
+                                            <a class="text-dark"  data-size="lg"   data-url="{{ route('projects.check_instance',$project->id) }}"  data-ajax-popup="true" data-bs-toggle="tooltip">{{ $project->project_name }}</a>
                                         </h5>
                                     </div>
                                     <div class="card-header-right">
@@ -196,10 +197,19 @@
         @endif
     </div>
 </div>
-
+<button id="myBtn" style="display:none;">Open Modal</button>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+    </div>
+    <div id="myModalContent"></div>
+  </div>
+</div>
 @include('new_layouts.footer')
 
 <script>
+  
          $(document).ready(function () {
             $(document).on('click', '.invite_usr', function () {
                 var project_id = $('#project_id').val();
