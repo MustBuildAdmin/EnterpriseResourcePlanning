@@ -1061,6 +1061,13 @@ public function check_duplicate_mobile(Request $request){
             else{
                 $getcheckval = User::where('phone',$checkname)->where('id','!=',$getid)->first();
             }
+        }else if($formname == "Consultant"){
+            if($getid == null){
+                $getcheckval = User::where('phone',$checkname)->first();
+            }
+            else{
+                $getcheckval = User::where('phone',$checkname)->where('id','!=',$getid)->first();
+            }
         }
         else{
             $getcheckval = "Not Empty";

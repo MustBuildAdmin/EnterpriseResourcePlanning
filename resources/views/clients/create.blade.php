@@ -1,5 +1,5 @@
 
-{{ Form::open(array('url' => 'clients' ,'enctype'=>"multipart/form-data")) }}
+{{ Form::open(array('url' => 'clients' ,'enctype'=>"multipart/form-data",'autocomplete'=>'off')) }}
 <div class="modal-body">
     <div class="row">
         <h5 class="sub-title"><strong>{{__('Basic Info')}}</strong></h5>
@@ -35,7 +35,7 @@
     <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="form-group">
             {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
+            {!! Form::select('gender', $gender, 'null',array('class' => 'form-control','required'=>'required')) !!}
             @error('role')
             <small class="invalid-role" role="alert">
                 <strong class="text-danger">{{ $message }}</strong>
@@ -179,6 +179,9 @@
                 <div class="form-icon-user">
                     <input class="form-control" name="billing_phone" type="number" id="billing_phone" maxlength="16" placeholder="+91 111 111 1111"  required>
                     {{-- {{Form::text('billing_phone',null,array('class'=>'form-control'))}} --}}
+                    <span class="invalid-name billing_duplicate" role="alert" style="display: none;">
+                        <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -260,7 +263,7 @@
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <input class="form-control" name="shipping_phone" type="number" id="shipping_phone" maxlength="16" placeholder="+91 111 111 1111"  required>
-                        <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
+                        <span class="invalid-name shipping_mobile_duplicate" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
                         {{-- {{Form::text('shipping_phone',null,array('class'=>'form-control'))}} --}}
@@ -289,7 +292,7 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" id="create_client" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
 
 {{Form::close()}}
@@ -438,11 +441,11 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
                 data : { 'get_name' : $("#email").val(),'form_name' : "Client" },
                 success : function(data) {
                     if(data == 1){
-                        $(':input[type="submit"]').prop('disabled', false);
+                        $('#create_client').prop('disabled', false);
                         $(".email_duplicate_error").css('display','none');
                     }
                     else{
-                        $(':input[type="submit"]').prop('disabled', true);
+                        $('#create_client').prop('disabled', true);
                         $(".email_duplicate_error").css('display','block');
                     }
                 },
@@ -459,12 +462,33 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
                 data : { 'getname' : $("#billing_phone").val(),'formname' : "Client" },
                 success : function(data) {
                     if(data == 1){
-                        $(':input[type="submit"]').prop('disabled', false);
-                        $(".mobile_duplicate_error").css('display','none');
+                        $('#create_client').prop('disabled', false);
+                        $(".billing_duplicate").css('display','none');
                     }
                     else{
-                        $(':input[type="submit"]').prop('disabled', true);
-                        $(".mobile_duplicate_error").css('display','block');
+                        $('#create_client').prop('disabled', true);
+                        $(".billing_duplicate").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    // alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
+        $(document).on("keyup", '#shipping_phone', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_mobile") }}',
+                type : 'GET',
+                data : { 'getname' : $("#shipping_phone").val(),'formname' : "Client" },
+                success : function(data) {
+                    if(data == 1){
+                        $('#create_client').prop('disabled', false);
+                        $(".shipping_mobile_duplicate").css('display','none');
+                    }
+                    else{
+                        $('#create_client').prop('disabled', true);
+                        $(".shipping_mobile_duplicate").css('display','block');
                     }
                 },
                 error : function(request,error)
