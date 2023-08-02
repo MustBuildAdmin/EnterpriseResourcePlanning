@@ -21,8 +21,8 @@
             <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
-                <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
-                    <span class="text-danger">Email Already Exist!</span>
+                <span class="invalid-name duplicate_error" role="alert" style="display: none;">
+                    <span class="text-danger">{{__('Email Already Exist!')}}</span>
                 </span> 
                 @error('email')
                 <small class="invalid-email" role="alert">
@@ -34,7 +34,8 @@
         <div class="row">
             <div class="form-group col-md-6">
                     {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
-                    {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control select2','required'=>'required')) !!}
+                    {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control',
+                        'required'=>'required')) !!}
                     @error('role')
                     <small class="invalid-role" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -103,6 +104,9 @@
                         {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                         <div class="form-icon-user">
                             <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111" value='{{$user->phone}}' required>
+                            <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
+                                <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -119,7 +123,7 @@
                 @if(\Auth::user()->type != 'super admin')
                     <div class="form-group col-md-6">
                         {{ Form::label('role', __('User Role'),['class'=>'form-label']) }}
-                        {!! Form::select('role', $roles, $user->roles,array('class' => 'form-control select2')) !!}
+                        {!! Form::select('role', $roles, $user->roles,array('class' => 'form-control')) !!}
                         @error('role')
                         <small class="invalid-role" role="alert">
                             <strong class="text-danger">{{ $message }}</strong>
@@ -150,7 +154,8 @@
         @if(\Auth::user()->type == 'super admin')
             <div class="form-group col-md-6">
                 {{ Form::label('company_type', __('Company'),['class'=>'form-label']) }}
-                {!! Form::select('company_type', $company_type, $user->company_type,array('class' => 'form-control select2','required'=>'required')) !!}
+                {!! Form::select('company_type', $company_type, $user->company_type,
+                    array('class' => 'form-control','required'=>'required')) !!}
                 @error('company_type')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
@@ -219,15 +224,37 @@
             $.ajax({
                 url : '{{ route("check_duplicate_email") }}',
                 type : 'GET',
-                data : { 'get_id': "{{$user->id}}", 'get_name' : $("#email").val(), 'form_name' : "Users" },
+                data : { 'getid': "{{$user->id}}", 'getname' : $("#email").val(), 'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
-                        $("#edit_user").prop('disabled',false);
-                        $(".email_duplicate_error").css('display','none');
+                        $("input#edit_user").prop('disabled',false);
+                        $("span.invalid-name.duplicate_error").css('display','none');
                     }
                     else{
-                        $("#edit_user").prop('disabled',true);
-                        $(".email_duplicate_error").css('display','block');
+                        $("input#edit_user").prop('disabled',true);
+                        $("span.invalid-name.duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    // alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
+
+        $(document).on("keyup", '#phone', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_mobile") }}',
+                type : 'GET',
+                data : { 'getid': "{{$user->id}}", 'getname' : $("#phone").val(), 'formname' : "Users" },
+                success : function(data) {
+                    if(data == 1){
+                        $("input#edit_user").prop('disabled',false);
+                        $(".mobile_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $("input#edit_user").prop('disabled',true);
+                        $(".mobile_duplicate_error").css('display','block');
                     }
                 },
                 error : function(request,error)
