@@ -52,7 +52,7 @@
                                     <h6 class="text-primary my-3">{{__('Create Proposal')}}</h6>
                                     <p class="text-muted text-sm mb-3"><i class="ti ti-clock mr-2"></i>{{__('Created on ')}}{{\Auth::user()->dateFormat($proposal->issue_date)}}</p>
                                     @can('edit proposal')
-                                        <a href="{{ route('proposal.edit',\Crypt::encrypt($proposal->id)) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil mr-2"></i>{{__('Edit')}}</a>
+                                        <a href="{{ route('proposal.edit',\Crypt::encrypt($proposal->id)) }}" class="btn  btn-primary" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil mr-2"></i>{{__('Edit')}}</a>
 
                                     @endcan
                                 </div>
@@ -73,7 +73,7 @@
 
                                     @if($proposal->status==0)
                                         @can('send proposal')
-                                            <a href="{{ route('proposal.sent',$proposal->id) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-original-title="{{__('Mark Sent')}}"><i class="ti ti-send mr-2"></i>{{__('Send')}}</a>
+                                            <a href="{{ route('proposal.sent',$proposal->id) }}" class="btn  btn-warning" data-bs-toggle="tooltip" data-original-title="{{__('Mark Sent')}}"><i class="ti ti-send mr-2"></i>{{__('Send')}}</a>
                                         @endcan
                                     @endif
                                 </div>

@@ -244,7 +244,7 @@
                                 <h6 class="text-primary my-3">{{__('Create Invoice')}}</h6>
                                 <p class="text-muted text-sm mb-3"><i class="ti ti-clock mr-2"></i>{{__('Created on ')}}{{\Auth::user()->dateFormat($invoice->issue_date)}}</p>
                                 @can('edit invoice')
-                                    <a href="{{ route('invoice.edit',\Crypt::encrypt($invoice->id)) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil mr-2"></i>{{__('Edit')}}</a>
+                                    <a href="{{ route('invoice.edit',\Crypt::encrypt($invoice->id)) }}" class="btn  btn-primary" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil mr-2"></i>{{__('Edit')}}</a>
                                 @endcan
                             </div>
                             <div class="col-md-6 col-lg-4 col-xl-4">
@@ -264,7 +264,7 @@
 
                                 @if($invoice->status==0)
                                     @can('send bill')
-                                        <a href="{{ route('invoice.sent',$invoice->id) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-original-title="{{__('Mark Sent')}}"><i class="ti ti-send mr-2"></i>{{__('Send')}}</a>
+                                        <a href="{{ route('invoice.sent',$invoice->id) }}" class="btn  btn-warning" data-bs-toggle="tooltip" data-original-title="{{__('Mark Sent')}}"><i class="ti ti-send mr-2"></i>{{__('Send')}}</a>
                                     @endcan
                                 @endif
                             </div>
@@ -276,7 +276,7 @@
                                 <p class="text-muted text-sm mb-3">{{__('Status')}} : {{__('Awaiting payment')}} </p>
                                 @if($invoice->status!=0)
                                     @can('create payment invoice')
-                                        <a href="#" data-url="{{ route('invoice.payment',$invoice->id) }}" data-ajax-popup="true" data-title="{{__('Add Payment')}}" class="btn btn-sm btn-info" data-original-title="{{__('Add Payment')}}"><i class="ti ti-report-money mr-2"></i>{{__('Add Payment')}}</a> <br>
+                                        <a href="#" data-url="{{ route('invoice.payment',$invoice->id) }}" data-ajax-popup="true" data-title="{{__('Add Payment')}}" class="btn  btn-info" data-original-title="{{__('Add Payment')}}"><i class="ti ti-report-money mr-2"></i>{{__('Add Payment')}}</a> <br>
                                     @endcan
                                 @endif
 
@@ -295,21 +295,21 @@
                 <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
                     @if(!empty($invoicePayment))
                         <div class="all-button-box mx-2 mr-2">
-                            <a href="#" class="btn btn-sm btn-primary" data-url="{{ route('invoice.credit.note',$invoice->id) }}" data-ajax-popup="true" data-title="{{__('Add Credit Note')}}">
+                            <a href="#" class="btn  btn-primary" data-url="{{ route('invoice.credit.note',$invoice->id) }}" data-ajax-popup="true" data-title="{{__('Add Credit Note')}}">
                                 {{__('Add Credit Note')}}
                             </a>
                         </div>
                     @endif
                     @if($invoice->status!=4)
                         <div class="all-button-box mr-2">
-                            <a href="{{ route('invoice.payment.reminder',$invoice->id)}}" class="btn btn-sm btn-primary me-2">{{__('Receipt Reminder')}}</a>
+                            <a href="{{ route('invoice.payment.reminder',$invoice->id)}}" class="btn  btn-primary me-2">{{__('Receipt Reminder')}}</a>
                         </div>
                     @endif
                     <div class="all-button-box mr-2">
-                        <a href="{{ route('invoice.resent',$invoice->id)}}" class="btn btn-sm btn-primary me-2">{{__('Resend Invoice')}}</a>
+                        <a href="{{ route('invoice.resent',$invoice->id)}}" class="btn  btn-primary me-2">{{__('Resend Invoice')}}</a>
                     </div>
                     <div class="all-button-box">
-                        <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" target="_blank" class="btn btn-sm btn-primary">{{__('Download')}}</a>
+                        <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" target="_blank" class="btn  btn-primary">{{__('Download')}}</a>
                     </div>
                 </div>
             </div>
@@ -405,12 +405,12 @@
                                     </small>
                                 </div>
                                 <div class="col">
-                                    @php  
+                                    @php
                                         $statecode=\App\Models\Utility::statecode();
                                     @endphp
                                     <small>
                                         <strong>{{__('Place Of Supply')}} :</strong><br>
-                                            <span>{{!empty($customer->shipping_state)?\App\Models\Utility::getstate_detailsonly_name($customer->billing_country,$customer->shipping_state):'' .', '}} 
+                                            <span>{{!empty($customer->shipping_state)?\App\Models\Utility::getstate_detailsonly_name($customer->billing_country,$customer->shipping_state):'' .', '}}
                                             @isset($statecode[$customer->shipping_state])
                                                 ({{$statecode[$customer->shipping_state]}})
                                             @endisset
@@ -453,7 +453,7 @@
                                                         @else
                                                             <th class="text-dark">SGST</th>
                                                         @endif
-                                                      
+
                                                     @else
                                                         <th class="text-dark">IGST</th>
                                                     @endif
@@ -517,7 +517,7 @@
                                                                 @endif
                                                             @else
                                                             @if(!empty($iteam->tax))
-                                                                
+
                                                                     @php $totalTaxRate = 0;@endphp
                                                                     @foreach($taxes as $tax)
                                                                         @php
@@ -553,7 +553,7 @@
                                                         @endif
                                                     </td>
                                                     @endif
-                                                    
+
                                                     {{-- <td>{{!empty($iteam->description)?$iteam->description:'-'}}</td> --}}
                                                     <td class="text-end">{{\Auth::user()->priceFormat(($iteam->price*$iteam->quantity))}}</td>
                                                 </tr>
@@ -584,7 +584,7 @@
                                                     <td><b>{{\Auth::user()->priceFormat($totalTaxPrice)}}</b></td>
                                                 @endif
                                                 {{-- //gst caluculation --}}
-                                                
+
                                                 {{-- <td></td> --}}
                                             </tr>
                                             <tr>
@@ -593,7 +593,7 @@
                                                 <td class="text-end">{{\Auth::user()->priceFormat($invoice->getSubTotal())}}</td>
                                             </tr>
 
-                                              
+
 
                                             @if(!empty($taxesData))
                                                 @foreach($taxesData as $taxName => $taxPrice)
@@ -690,7 +690,7 @@
                                 <tr>
                                     <td>
                                         @if(!empty($payment->add_receipt))
-                                            <a href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}" download="" class="btn btn-sm btn-secondary btn-icon rounded-pill" target="_blank"><span class="btn-inner--icon"><i class="ti ti-download"></i></span></a>
+                                            <a href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}" download="" class="btn  btn-secondary btn-icon rounded-pill" target="_blank"><span class="btn-inner--icon"><i class="ti ti-download"></i></span></a>
                                         @else
                                             -
                                         @endif
@@ -708,7 +708,7 @@
                                             <div class="action-btn bg-danger ms-2">
                                                 {!! Form::open(['method' => 'post', 'route' => ['invoice.payment.destroy',$invoice->id,$payment->id],'id'=>'delete-form-'.$payment->id]) !!}
 
-                                                <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para " data-bs-toggle="tooltip" title="Delete" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$payment->id}}').submit();">
+                                                <a href="#" class="mx-3 btn  align-items-center bs-pass-para " data-bs-toggle="tooltip" title="Delete" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$payment->id}}').submit();">
                                                     <i class="ti ti-trash text-white"></i>
                                                 </a>
                                             {!! Form::close() !!}
@@ -752,7 +752,7 @@
                                     <td>
                                         @can('edit credit note')
                                             <div class="action-btn bg-primary ms-2">
-                                                <a data-url="{{ route('invoice.edit.credit.note',[$creditNote->invoice,$creditNote->id]) }}" data-ajax-popup="true" title="{{__('Edit')}}" data-original-title="{{__('Credit Note')}}" href="#" class="mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}">
+                                                <a data-url="{{ route('invoice.edit.credit.note',[$creditNote->invoice,$creditNote->id]) }}" data-ajax-popup="true" title="{{__('Edit')}}" data-original-title="{{__('Credit Note')}}" href="#" class="mx-3 btn  align-items-center" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}">
                                                     <i class="ti ti-pencil text-white"></i>
                                                 </a>
                                             </div>
@@ -760,7 +760,7 @@
                                         @can('delete credit note')
                                             <div class="action-btn bg-danger ms-2">
                                                 {!! Form::open(['method' => 'DELETE', 'route' => array('invoice.delete.credit.note', $creditNote->invoice,$creditNote->id),'id'=>'delete-form-'.$creditNote->id]) !!}
-                                                <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para " data-bs-toggle="tooltip" title="Delete" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$creditNote->id}}').submit();">
+                                                <a href="#" class="mx-3 btn  align-items-center bs-pass-para " data-bs-toggle="tooltip" title="Delete" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$creditNote->id}}').submit();">
                                                     <i class="ti ti-trash text-white"></i>
                                                 </a>
                                                 {!! Form::close() !!}
@@ -803,67 +803,67 @@
                                         <ul class="nav nav-pills  mb-3" role="tablist">
                                             @if($company_payment_setting['is_stripe_enabled'] == 'on' && !empty($company_payment_setting['stripe_key']) && !empty($company_payment_setting['stripe_secret']))
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm active" data-toggle="tab" href="#stripe-payment" role="tab" aria-controls="stripe" aria-selected="true">{{ __('Stripe') }}</a>
+                                                    <a class="btn btn-outline-primary  active" data-toggle="tab" href="#stripe-payment" role="tab" aria-controls="stripe" aria-selected="true">{{ __('Stripe') }}</a>
                                                 </li>
                                             @endif
 
                                             @if($company_payment_setting['is_paypal_enabled'] == 'on' && !empty($company_payment_setting['paypal_client_id']) && !empty($company_payment_setting['paypal_secret_key']))
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#paypal-payment" role="tab" aria-controls="paypal" aria-selected="false">{{ __('Paypal') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#paypal-payment" role="tab" aria-controls="paypal" aria-selected="false">{{ __('Paypal') }}</a>
                                                 </li>
                                             @endif
 
                                             @if($company_payment_setting['is_paystack_enabled'] == 'on' && !empty($company_payment_setting['paystack_public_key']) && !empty($company_payment_setting['paystack_secret_key']))
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#paystack-payment" role="tab" aria-controls="paystack" aria-selected="false">{{ __('Paystack') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#paystack-payment" role="tab" aria-controls="paystack" aria-selected="false">{{ __('Paystack') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_flutterwave_enabled']) && $company_payment_setting['is_flutterwave_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#flutterwave-payment" role="tab" aria-controls="flutterwave" aria-selected="false">{{ __('Flutterwave') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#flutterwave-payment" role="tab" aria-controls="flutterwave" aria-selected="false">{{ __('Flutterwave') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_razorpay_enabled']) && $company_payment_setting['is_razorpay_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#razorpay-payment" role="tab" aria-controls="razorpay" aria-selected="false">{{ __('Razorpay') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#razorpay-payment" role="tab" aria-controls="razorpay" aria-selected="false">{{ __('Razorpay') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_mercado_enabled']) && $company_payment_setting['is_mercado_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#mercado-payment" role="tab" aria-controls="mercado" aria-selected="false">{{ __('Mercado') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#mercado-payment" role="tab" aria-controls="mercado" aria-selected="false">{{ __('Mercado') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_paytm_enabled']) && $company_payment_setting['is_paytm_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#paytm-payment" role="tab" aria-controls="paytm" aria-selected="false">{{ __('Paytm') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#paytm-payment" role="tab" aria-controls="paytm" aria-selected="false">{{ __('Paytm') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_mollie_enabled']) && $company_payment_setting['is_mollie_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#mollie-payment" role="tab" aria-controls="mollie" aria-selected="false">{{ __('Mollie') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#mollie-payment" role="tab" aria-controls="mollie" aria-selected="false">{{ __('Mollie') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_skrill_enabled']) && $company_payment_setting['is_skrill_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#skrill-payment" role="tab" aria-controls="skrill" aria-selected="false">{{ __('Skrill') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#skrill-payment" role="tab" aria-controls="skrill" aria-selected="false">{{ __('Skrill') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_coingate_enabled']) && $company_payment_setting['is_coingate_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#coingate-payment" role="tab" aria-controls="coingate" aria-selected="false">{{ __('Coingate') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#coingate-payment" role="tab" aria-controls="coingate" aria-selected="false">{{ __('Coingate') }}</a>
                                                 </li>
                                             @endif
 
                                             @if(isset($company_payment_setting['is_paymentwall_enabled']) && $company_payment_setting['is_paymentwall_enabled'] == 'on')
                                                 <li class="nav-item mb-2">
-                                                    <a class="btn btn-outline-primary btn-sm ml-1" data-toggle="tab" href="#paymentwall-payment" role="tab" aria-controls="paymentwall" aria-selected="false">{{ __('PaymentWall') }}</a>
+                                                    <a class="btn btn-outline-primary  ml-1" data-toggle="tab" href="#paymentwall-payment" role="tab" aria-controls="paymentwall" aria-selected="false">{{ __('PaymentWall') }}</a>
                                                 </li>
                                             @endif
 
@@ -915,7 +915,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <button class="btn btn-sm btn-primary rounded-pill" type="submit">{{ __('Make Payment') }}</button>
+                                                        <button class="btn  btn-primary rounded-pill" type="submit">{{ __('Make Payment') }}</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -940,7 +940,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <button class="btn btn-sm btn-primary rounded-pill" name="submit" type="submit">{{ __('Make Payment') }}</button>
+                                                        <button class="btn  btn-primary rounded-pill" name="submit" type="submit">{{ __('Make Payment') }}</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -961,7 +961,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <input class="btn btn-sm btn-primary rounded-pill" id="pay_with_paystack" type="button" value="{{ __('Make Payment') }}">
+                                                        <input class="btn  btn-primary rounded-pill" id="pay_with_paystack" type="button" value="{{ __('Make Payment') }}">
                                                     </div>
 
                                                 </form>
@@ -983,7 +983,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <input class="btn btn-sm btn-primary rounded-pill" id="pay_with_flaterwave" type="button" value="{{ __('Make Payment') }}">
+                                                        <input class="btn  btn-primary rounded-pill" id="pay_with_flaterwave" type="button" value="{{ __('Make Payment') }}">
                                                     </div>
 
                                                 </form>
@@ -1005,7 +1005,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <input class="btn btn-sm btn-primary rounded-pill" id="pay_with_razorpay" type="button" value="{{ __('Make Payment') }}">
+                                                        <input class="btn  btn-primary rounded-pill" id="pay_with_razorpay" type="button" value="{{ __('Make Payment') }}">
                                                     </div>
 
                                                 </form>
@@ -1027,7 +1027,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <input type="submit" id="pay_with_mercado" value="{{__('Make Payment')}}" class="btn btn-sm btn-primary rounded-pill">
+                                                        <input type="submit" id="pay_with_mercado" value="{{__('Make Payment')}}" class="btn  btn-primary rounded-pill">
                                                     </div>
 
                                                 </form>
@@ -1055,7 +1055,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <input type="submit" id="pay_with_paytm" value="{{__('Make Payment')}}" class="btn btn-sm btn-primary rounded-pill">
+                                                        <input type="submit" id="pay_with_paytm" value="{{__('Make Payment')}}" class="btn  btn-primary rounded-pill">
                                                     </div>
 
                                                 </form>
@@ -1077,7 +1077,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <input type="submit" id="pay_with_mollie" value="{{__('Make Payment')}}" class="btn btn-sm btn-primary rounded-pill">
+                                                        <input type="submit" id="pay_with_mollie" value="{{__('Make Payment')}}" class="btn  btn-primary rounded-pill">
                                                     </div>
 
                                                 </form>
@@ -1109,7 +1109,7 @@
 
                                                     @endphp
                                                     <div class="form-group mt-3">
-                                                        <input type="submit" id="pay_with_skrill" value="{{__('Make Payment')}}" class="btn btn-sm btn-primary rounded-pill">
+                                                        <input type="submit" id="pay_with_skrill" value="{{__('Make Payment')}}" class="btn  btn-primary rounded-pill">
                                                     </div>
 
                                                 </form>
@@ -1131,7 +1131,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group mt-3">
-                                                        <input type="submit" id="pay_with_coingate" value="{{__('Make Payment')}}" class="btn btn-sm btn-primary rounded-pill">
+                                                        <input type="submit" id="pay_with_coingate" value="{{__('Make Payment')}}" class="btn  btn-primary rounded-pill">
                                                     </div>
 
                                                 </form>
