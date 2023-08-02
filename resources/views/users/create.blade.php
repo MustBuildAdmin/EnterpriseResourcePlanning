@@ -97,8 +97,7 @@
                     <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111"  required>
                     <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                         <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
-                    </span> 
-                    {{-- {{Form::text('phone',null,array('class'=>'form-control'))}} --}}
+                    </span>
                 </div>
             </div>
         </div>
@@ -237,7 +236,7 @@ $(document).on("change", '#country', function () {
             $.ajax({
                 url : '{{ route("check_duplicate_email") }}',
                 type : 'GET',
-                data : { 'get_name' : $("#email").val(),'form_name' : "Users" },
+                data : { 'getname' : $("#email").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#create_user").prop('disabled',false);

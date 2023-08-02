@@ -173,7 +173,7 @@
             $.ajax({
                 url : '{{ route("check_duplicate_email_consultant") }}',
                 type : 'GET',
-                data : { 'get_id': "{{$user->id}}", 'get_name' : $("#email").val(), 'form_name' : "Users" },
+                data : { 'getid': "{{$user->id}}", 'getname' : $("#email").val(), 'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#edit_consultant").prop('disabled',false);
@@ -195,7 +195,7 @@
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
-                data : { 'get_id': "{{$user->id}}",'getname' : $("#phone").val(),'formname' : "Consultant" },
+                data : { 'get_id': "{{$user->id}}",'getname' : $("#phone").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#edit_consultant").prop('disabled',false);

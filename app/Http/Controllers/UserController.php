@@ -1002,30 +1002,23 @@ public function delete_new_profile(Request $request){
 public function check_duplicate_email(Request $request){
     
     try {
-        $form_name  = $request->form_name;
-        $check_name = $request->get_name;
-        $get_id     = $request->get_id;
+        $formname  = $request->formname;
+        $checkname = $request->getname;
+        $getid     = $request->getid;
    
-        if($form_name == "Users"){
-            if($get_id == null){
-                $get_check_val = User::where('email',$check_name)->first();
+        if($formname == "Users"){
+            if($getid == null){
+                $getcheckval = User::where('email',$checkname)->first();
             }
             else{
-                $get_check_val = User::where('email',$check_name)->where('id','!=',$get_id)->first();
-            }
-        }else  if($form_name == "Client"){
-            if($get_id == null){
-                $get_check_val = User::where('email',$check_name)->first();
-            }
-            else{
-                $get_check_val = User::where('email',$check_name)->where('id','!=',$get_id)->first();
+                $getcheckval = User::where('email',$checkname)->where('id','!=',$getid)->first();
             }
         }
         else{
-            $get_check_val = "Not Empty";
+            $getcheckval = "Not Empty";
         }
       
-        if($get_check_val == null){
+        if($getcheckval == null){
             return 1; //Success
         }
         else{
@@ -1048,20 +1041,6 @@ public function check_duplicate_mobile(Request $request){
         $getid     = $request->getid;
    
         if($formname == "Users"){
-            if($getid == null){
-                $getcheckval = User::where('phone',$checkname)->first();
-            }
-            else{
-                $getcheckval = User::where('phone',$checkname)->where('id','!=',$getid)->first();
-            }
-        }else if($formname == "Client"){
-            if($getid == null){
-                $getcheckval = User::where('phone',$checkname)->first();
-            }
-            else{
-                $getcheckval = User::where('phone',$checkname)->where('id','!=',$getid)->first();
-            }
-        }else if($formname == "Consultant"){
             if($getid == null){
                 $getcheckval = User::where('phone',$checkname)->first();
             }

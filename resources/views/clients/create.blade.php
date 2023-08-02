@@ -16,7 +16,7 @@
             {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'required'=>'required')) }}
             <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
                 <span class="text-danger">{{__('Email Already Exist!')}}</span>
-            </span> 
+            </span>
         </div>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-6">
@@ -438,7 +438,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             $.ajax({
                 url : '{{ route("check_duplicate_email") }}',
                 type : 'GET',
-                data : { 'get_name' : $("#email").val(),'form_name' : "Client" },
+                data : { 'getname' : $("#email").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $('#create_client').prop('disabled', false);
@@ -459,7 +459,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
-                data : { 'getname' : $("#billing_phone").val(),'formname' : "Client" },
+                data : { 'getname' : $("#billing_phone").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $('#create_client').prop('disabled', false);
@@ -480,7 +480,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
-                data : { 'getname' : $("#shipping_phone").val(),'formname' : "Client" },
+                data : { 'getname' : $("#shipping_phone").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $('#create_client').prop('disabled', false);

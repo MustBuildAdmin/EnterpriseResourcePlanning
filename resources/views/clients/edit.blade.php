@@ -22,7 +22,8 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                        {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'id'=>'email','required'=>'required')) }}
+                        {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),
+                        'id'=>'email','required'=>'required')) }}
                         <span class="invalid-name email_edit_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Email Already Exist!')}}</span>
                         </span> 
@@ -31,7 +32,8 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                     {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                    {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control','required'=>'required')) !!}
+                    {!! Form::select('gender', $gender, $user->gender,
+                        array('class' => 'form-control','required'=>'required')) !!}
                     @error('role')
                     <small class="invalid-role" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -267,7 +269,8 @@
                         {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
                             <input {{$disabled_enabled}} class="form-control" name="shipping_phone" type="number" id="shipping_phone" maxlength="16" placeholder="+91 111 111 1111"  value='{{$user->shipping_phone}}'>
-                            <span class="invalid-name edit_shipping_mobile_duplicate" role="alert" style="display: none;">
+                            <span class="invalid-name edit_shipping_mobile_duplicate"
+                                role="alert" style="display: none;">
                                 <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                             </span>
                             {{-- {{Form::text('shipping_phone',null,array('class'=>'form-control'))}} --}}
@@ -446,7 +449,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         $.ajax({
             url : '{{ route("check_duplicate_email") }}',
             type : 'GET',
-            data : { 'getid': "{{$user->id}}",'get_name' : $("#email").val(),'form_name' : "Client" },
+            data : { 'getid': "{{$user->id}}",'getname' : $("#email").val(),'formname' : "Users" },
             success : function(data) {
                 if(data == 1){
                     $('#edit_client').prop('disabled', false);
@@ -467,7 +470,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
-                data : { 'getid': "{{$user->id}}",'getname' : $("#billing_phone").val(),'formname' : "Client" },
+                data : { 'getid': "{{$user->id}}",'getname' : $("#billing_phone").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $('#edit_client').prop('disabled', false);
@@ -489,7 +492,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
-                data : { 'getid': "{{$user->id}}", 'getname' : $("#shipping_phone").val(), 'formname' : "Client" },
+                data : { 'getid': "{{$user->id}}", 'getname' : $("#shipping_phone").val(), 'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $('#edit_client').prop('disabled', false);

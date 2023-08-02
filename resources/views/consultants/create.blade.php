@@ -174,7 +174,7 @@ $(document).on("change", '#country', function () {
             $.ajax({
                 url : '{{ route("check_duplicate_email_consultant") }}',
                 type : 'GET',
-                data : { 'get_name' : $("#email").val(),'form_name' : "Users" },
+                data : { 'getname' : $("#email").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#create_consultant").prop('disabled',false);
@@ -195,7 +195,7 @@ $(document).on("change", '#country', function () {
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
-                data : { 'getname' : $("#phone").val(),'formname' : "Consultant" },
+                data : { 'getname' : $("#phone").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#create_consultant").prop('disabled',false);
