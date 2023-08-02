@@ -22,11 +22,11 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                        {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),
-                        'id'=>'email','required'=>'required')) }}
+                        {{ Form::email('email', null, array('class' => 'form-control',
+                        'placeholder'=>__('Enter Client Email'),'id'=>'email','required'=>'required')) }}
                         <span class="invalid-name email_edit_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Email Already Exist!')}}</span>
-                        </span> 
+                        </span>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">

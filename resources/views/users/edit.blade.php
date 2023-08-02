@@ -34,7 +34,8 @@
         <div class="row">
             <div class="form-group col-md-6">
                     {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
-                    {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control','required'=>'required')) !!}
+                    {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control',
+                        'required'=>'required')) !!}
                     @error('role')
                     <small class="invalid-role" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -153,7 +154,8 @@
         @if(\Auth::user()->type == 'super admin')
             <div class="form-group col-md-6">
                 {{ Form::label('company_type', __('Company'),['class'=>'form-label']) }}
-                {!! Form::select('company_type', $company_type, $user->company_type,array('class' => 'form-control','required'=>'required')) !!}
+                {!! Form::select('company_type', $company_type, $user->company_type,
+                    array('class' => 'form-control','required'=>'required')) !!}
                 @error('company_type')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
