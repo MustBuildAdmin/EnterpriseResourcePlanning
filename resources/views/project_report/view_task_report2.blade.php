@@ -147,15 +147,21 @@
                                title="{{__('apply')}}">
                                 <span class="btn-inner--icon"><i class="fas fa-search"></i></span>
                             </a>
+                            
                             <a href="{{ route('project_report.index') }}" class="btn btn-info"
                             data-bs-toggle="tooltip"
                             data-original-title="{{ __('Reset') }}">
                                 <span class="btn-inner--icon"><i class="ti ti-trash-off"></i></span>
                             </a>
+                            <a href="{{route('send_report_con')}}"
+                            class="btn btn-success" data-bs-toggle="tooltip" title="{{ __('Report Download') }}">
+                            <span class="btn-inner--icon">{{ __('Report Download') }}</span>
+                          </a>
                             <a href="{{ url()->previous() }}"
                               class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
                               <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
                             </a>
+                           
                         </div>
                     </div>
                     {{ Form::close() }}
