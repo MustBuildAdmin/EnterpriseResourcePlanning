@@ -127,30 +127,10 @@
 <script>
 
     var key_i=2;
+    var check_validation = 0;
     $(document).on("click", '.addmore', function () {
-        check_validation = 0;
         
-        $( ".holiday_date" ).each(function(index) {
-            get_inc_id = $(this).data('date_id');
-
-            get_date_val = $("#holiday_date"+get_inc_id).val();
-            get_desc_val = $("#holiday_description"+get_inc_id).val();
-
-            if(get_date_val == ""){
-                $(".holiday_date_label"+get_inc_id).show();
-                check_validation = 1;
-            }
-            else if(get_desc_val == ""){
-                $(".holiday_description_label"+get_inc_id).show();
-                check_validation = 1;
-            }
-            else{
-                $(".holiday_date_label"+get_inc_id).hide();
-                $(".holiday_description_label"+get_inc_id).hide();
-                check_validation = 0;
-            }
-        });
-        
+        holidayValidation();
 
         if(check_validation == 0){
             var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
@@ -234,6 +214,11 @@
                 }
                 return form.valid();
             },
+            labels: {
+                finish: 'Finish <i class="fa fa-chevron-right"></i>',
+                next: 'Next <i class="fa fa-chevron-right"></i>',
+                previous: '<i class="fa fa-chevron-left"></i> Previous'
+            },
             onFinishing: function (event, currentIndex)
             {
                 form.validate().settings.ignore = ":disabled,:hidden";
@@ -241,28 +226,38 @@
             },
             onFinished: function (event, currentIndex)
             {
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-                swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "Do You Want Create Revision for a New Instance?",
-                    icon: 'success',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                    else if (result.dismiss === Swal.DismissReason.cancel) {
-                    }
-                });
+                holidayValidation();
+
+                if(check_validation == 0){
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+                    swalWithBootstrapButtons.fire({
+                        title: 'Are you sure?',
+                        text: "Do You Want Create Revision for a New Instance?",
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                        else if (result.dismiss === Swal.DismissReason.cancel) {
+                        }
+                    });
+                }
+                else{
+                    $(".last").attr('aria-disabled','true');
+                    $(".last").addClass('error');
+                    return false;
+                }
+                
             }
         });
     });
@@ -271,5 +266,27 @@
         $('.chosen-select').chosen();
     });
 
+    function holidayValidation(){
+        $( ".holiday_date" ).each(function(index) {
+            get_inc_id = $(this).data('date_id');
+
+            get_date_val = $("#holiday_date"+get_inc_id).val();
+            get_desc_val = $("#holiday_description"+get_inc_id).val();
+
+            if(get_date_val == ""){
+                $(".holiday_date_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else if(get_desc_val == ""){
+                $(".holiday_description_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else{
+                $(".holiday_date_label"+get_inc_id).hide();
+                $(".holiday_description_label"+get_inc_id).hide();
+                check_validation = 0;
+            }
+        });
+    }
    
 </script>

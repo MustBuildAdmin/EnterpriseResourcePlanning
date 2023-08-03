@@ -1792,6 +1792,23 @@ class ProjectController extends Controller
             $instance_id=$project->instance_id;
             $con_task=Con_task::where(['project_id'=>$request->project_id,'instance_id'=>$instance_id])->orderBy('id', 'ASC')->first();
             $data = array('freeze_status'=>1,'start_date'=>$con_task->start_date,'end_date'=>$con_task->end_date,'estimated_days'=>$con_task->duration);
+
+            $getPreviousInstance = Con_task::where('project_id',$request->project_id)
+                                        ->where('instance_id','!=',$instance_id)->orderBy('id', 'Desc')->first();
+            if($getPreviousInstance != null){
+                $setPreviousInstance = $getPreviousInstance->instance_id;
+                $getPreData = Con_task::where('project_id',$request->project_id)
+                    ->where('instance_id',$setPreviousInstance)->get();
+                foreach($getPreData as $insertPre){
+                    Con_task::where([
+                                'project_id'=>$request->project_id,
+                                'instance_id'=>$instance_id,
+                                'id'=>$insertPre->id
+                            ])
+                    ->update(['progress' => $insertPre->progress]);
+                }
+            }
+
             Project::where('id',$request->project_id)->update($data);
             return redirect()->back()->with('success', __('Freezed Status successfully changed.'));
 
