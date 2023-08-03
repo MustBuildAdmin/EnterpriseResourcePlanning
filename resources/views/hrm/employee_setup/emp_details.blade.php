@@ -122,12 +122,66 @@
                         Active
                       </span>
                     </div>
-                  </div>
-                             
+                  </div>         
                 </div>
               </div>
             </div>
-        </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{__('Company Detail')}}</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="datagrid">
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Branch')}}</div>
+                            <div class="datagrid-content">{{!empty($employee->branch)?$employee->branch->name:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Department')}}</div>
+                            <div class="datagrid-content">{{!empty($employee->department)?$employee->department->name:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Designation')}}</div>
+                            <div class="datagrid-content">{{!empty($employee->designation)?$employee->designation->name:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Date Of Joining')}}</div>
+                            <div class="datagrid-content">{{\Auth::user()->dateFormat(!empty($employee)?$employee->company_doj:'')}}</div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+             <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{__('Document Detail')}}</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="datagrid">
+                                  @php
+
+                                        $employeedoc = !empty($employee)?$employee->documents()->pluck('document_value',__('document_id')):[];
+                                    @endphp
+
+                                    @if(!$documents->isEmpty())
+                                    @foreach($documents as $key=>$document)
+                                    <div class="datagrid-item">
+                                      <div class="datagrid-title">{{$document->name }}</div>
+                                      <div class="datagrid-content"><a href="{{ (!empty($employeedoc[$document->id])?asset(Storage::url('uploads/document')).'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></div>
+                                    </div>
+                                    @endforeach
+                                    @else
+                                        <div class="text-center">
+                                            No document is Added.!
+                                        </div>
+                                    @endif
+                        </div>
+                    </div>
+                </div>
+             </div>
                 
         </div>
     @endif
