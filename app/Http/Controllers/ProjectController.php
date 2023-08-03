@@ -1797,9 +1797,14 @@ class ProjectController extends Controller
                                         ->where('instance_id','!=',$instance_id)->orderBy('id', 'Desc')->first();
             if($getPreviousInstance != null){
                 $setPreviousInstance = $getPreviousInstance->instance_id;
-                $getPreData = Con_task::where('project_id',$request->project_id)->where('instance_id',$setPreviousInstance)->get();
+                $getPreData = Con_task::where('project_id',$request->project_id)
+                    ->where('instance_id',$setPreviousInstance)->get();
                 foreach($getPreData as $insertPre){
-                    Con_task::where(['project_id'=>$request->project_id,'instance_id'=>$instance_id, 'id'=>$insertPre->id])
+                    Con_task::where([
+                                'project_id'=>$request->project_id,
+                                'instance_id'=>$instance_id,
+                                'id'=>$insertPre->id
+                            ])
                     ->update(['progress' => $insertPre->progress]);
                 }
             }

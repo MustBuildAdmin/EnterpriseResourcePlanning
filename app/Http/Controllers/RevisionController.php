@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Storage;
 use DB;
 use Session;
 use Hash;
+use Exception;
 
 class RevisionController extends Controller
 {
