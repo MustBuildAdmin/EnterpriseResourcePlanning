@@ -17,13 +17,7 @@
 </style>
 
     @if(!empty($employee))
-        <div class="float-end m-2 mb-3 employeebtn">
-            @can('edit employee')
-                <a href="{{route('employee.edit',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}" data-bs-toggle="tooltip" title="{{__('Edit')}}"class="btn btn-sm btn-primary">
-                    <i class="ti ti-pencil"></i>
-                </a>
-            @endcan
-        </div>
+       
 
         <div class="text-end ">
             <div class="d-flex justify-content-end drp-languages mb-3">
@@ -68,6 +62,13 @@
                         </div>
                     </li>
                 </ul>
+                <div class="m-1">
+                    @can('edit employee')
+                        <a href="{{route('employee.edit',\Illuminate\Support\Facades\Crypt::encrypt($employee->id))}}" data-bs-toggle="tooltip" title="{{__('Edit')}}"class="">
+                            <i class="ti ti-pencil"></i>
+                        </a>
+                    @endcan
+               </div>
             </div>
         </div>
     @endif
