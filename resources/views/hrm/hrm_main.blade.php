@@ -78,12 +78,12 @@
 
 
                     @if( Gate::check('manage job') || Gate::check('create job') || Gate::check('manage job application') || Gate::check('manage custom question') || Gate::check('show interview schedule') || Gate::check('show career'))
-                    <li class="nav-item dropdown">
+                    <li class="active nav-item dropdown">
                                         <a class="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career') ? 'nav-link dropdown-toggle show' : 'nav-link dropdown-toggle'}}   " href="#"\
                                         aria-expanded="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career') ? 'true' : 'false' }}"
-                                        >{{__('Recruitment Setup')}}</a>
+                                        href="#recruitment" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" >{{__('Recruitment Setup')}}</a>
 
-                                        <div class=class="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career')  ? 'dropdown-menu show'
+                                        <div class="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career')  ? 'dropdown-menu show'
                             : 'dropdown-menu'}}"
                             data-bs-popper= "{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career')  ? 'static'
                             : ''}}"
