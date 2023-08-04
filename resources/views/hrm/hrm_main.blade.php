@@ -1,3 +1,9 @@
+@php
+    $lang= Auth::user()->lang;
+@endphp
+
+
+
 <style>
     .navbar-expand-lg {
         top: 8em !important;
