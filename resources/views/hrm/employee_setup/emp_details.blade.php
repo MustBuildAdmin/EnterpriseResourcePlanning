@@ -183,6 +183,42 @@
                     </div>
                 </div>
              </div>
+             <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{{__('Bank Account Detail')}}</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="datagrid">
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Account Holder Name')}}</div>
+                            <div class="datagrid-content">{{!empty($employee)?$employee->account_holder_name:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Account Number')}}</div>
+                            <div class="datagrid-content">{{!empty($employee)?$employee->account_number:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Bank Name')}}</div>
+                            <div class="datagrid-content">{{!empty($employee)?$employee->bank_name:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Bank Identifier Code')}}</div>
+                            <div class="datagrid-content">{{!empty($employee)?$employee->bank_identifier_code:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Branch Location')}}</div>
+                            <div class="datagrid-content">{{!empty($employee)?$employee->branch_location:''}}</div>
+                        </div>
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">{{__('Tax Payer Id')}}</div>
+                            <div class="datagrid-content">{{!empty($employee)?$employee->tax_payer_id:''}}</div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+             
                 
         </div>
     @endif
