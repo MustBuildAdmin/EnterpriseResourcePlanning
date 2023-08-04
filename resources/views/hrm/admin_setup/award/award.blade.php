@@ -3,25 +3,37 @@
 
 
 
-<div class="row">
-  <div class="col-md-6">
-     <h2>Award</h2>
-  </div>
-  <div class="col-md-6 float-end floatrght">
-    @can('create award')
-        <a class="floatrght mb-3 btn  btn-primary" href="#" data-size="lg" data-url="{{ route('award.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Award')}}" class="">
-            {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
-        </a>
-    @endcan
-  </div>
-</div>
 
 
-
-
-    <div class="table-responsive">
-        <table class="table card-table table-vcenter text-nowrap datatable">
-            <thead>
+<div class="card">
+                  <div class="card-header">
+                    <h3 class="card-title">{{__('Award')}}</h3>
+                    @can('create award')
+                        <a class="pull-right" href="#" data-size="lg" data-url="{{ route('award.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Award')}}" class="">
+                            {{__('Create')}} &nbsp;<i class="ti ti-plus"></i>
+                        </a>
+                    @endcan
+                  </div>
+                  <div class="card-body border-bottom py-3">
+                    <div class="d-flex">
+                      <div class="text-secondary">
+                        Show
+                        <div class="mx-2 d-inline-block">
+                          <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
+                        </div>
+                        entries
+                      </div>
+                      <div class="ms-auto text-secondary">
+                        Search:
+                        <div class="ms-2 d-inline-block">
+                          <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable">
+                    <thead>
                 <tr>
                     @role('company')
                     <th>{{__('Employee')}}</th>
@@ -67,8 +79,10 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
-    </div>
+                    </table>
+                  </div>
+                  
+                </div>
     </div>
     </div>
 @include('new_layouts.footer')
