@@ -17,7 +17,7 @@
                 {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}
                 <div class="form-icon-user">
                     <span><i class="ti ti-mobile-alt"></i></span>
-                    {{Form::text('contact',null,array('class'=>'form-control','required'=>'required'))}}
+                    {{Form::number('contact',null,array('class'=>'form-control','required'=>'required'))}}
                 </div>
             </div>
         </div>
@@ -89,7 +89,7 @@
             <div class="form-group">
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
                 <div class="form-icon-user">
-                    {{Form::text('billing_phone',null,array('class'=>'form-control'))}}
+                    {{Form::number('billing_phone',null,array('class'=>'form-control'))}}
                 </div>
             </div>
         </div>
@@ -165,7 +165,7 @@
                 <div class="form-group">
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::text('shipping_phone',null,array('class'=>'form-control'))}}
+                        {{Form::number('shipping_phone',null,array('class'=>'form-control'))}}
                     </div>
                 </div>
             </div>
