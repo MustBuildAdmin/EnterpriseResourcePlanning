@@ -25,6 +25,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'lname',
         'email',
         'gender',
         'password',
@@ -63,6 +64,7 @@ class User extends Authenticatable
         'shipping_zip',
         'shipping_address',
         'copy_status',
+        'color_code'
     ];
 
     protected $hidden = [

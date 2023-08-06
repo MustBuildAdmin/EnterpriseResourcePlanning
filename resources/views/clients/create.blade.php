@@ -11,6 +11,25 @@
         </div>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="form-group">
+        {{ Form::label('lname', __('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+        {{ Form::text('lname', null, array('class' => 'form-control','placeholder'=>__('Enter Last Name'),'required'=>'required')) }}
+    </div>
+</div>
+
+<?php
+function rndRGBColorCode()
+{
+return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
+}
+?>
+@php
+$rndColor = rndRGBColorCode(); #function call
+
+@endphp
+<input type="hidden" name="color_code" value="{{ $rndColor }}"> 
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="form-group">
             {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
             {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'required'=>'required')) }}

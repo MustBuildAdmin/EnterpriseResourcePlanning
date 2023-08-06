@@ -4150,6 +4150,9 @@ Route::resource('consultants', 'ConsultantController')->middleware(
         'revalidate',
     ]
 );
+
+Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
+
 Route::resource('plans', 'PlanController')->middleware(
     [
         'auth',

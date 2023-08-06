@@ -171,6 +171,7 @@ class UserController extends Controller
                 }
                 $user               = new User();
                 $user['name']       = $request->name;
+                $user['lname']       = $request->lname;
                 $user['email']      = $request->email;
                 $user['gender']      = $request->gender;
                 // $user['phone']      = $request->phone;
@@ -189,6 +190,7 @@ class UserController extends Controller
                 $user['zip']=$request->zip;
                 $user['address']=$request->address;
                 $user['company_type']       = $request->company_type;
+                $user['color_code']=$request->color_code;
                 // $user['reporting_to']=$string_version;
                 $user['company_name']       = $request->company_name;
                 if(isset($url)){
@@ -397,6 +399,7 @@ class UserController extends Controller
                 $role = Role::findByName('company');
                 $input = $request->all();
                 $input['type'] = $role->name;
+                $input['color_code']=$request->color_code;
                 // $input['reporting_to']=$string_version;
                 if(isset($url)){
                     $input['avatar']=$url;

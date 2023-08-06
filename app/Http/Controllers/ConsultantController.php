@@ -117,7 +117,17 @@ class ConsultantController extends Controller
             return redirect()->back();
         }
     }
-
+    public static function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+    
     public function store(Request $request)
     {
 
@@ -155,9 +165,10 @@ class ConsultantController extends Controller
                 $user['country']=$request->country;
                 $user['state']=$request->state;
                 $user['city']=$request->city;
-                $user['phone']=$request->phone;
                 $user['zip']=$request->zip;
                 $user['address']=$request->address;
+                $user['type']='Consultant';
+                $user['color_code']=$request->color_code;
                 $user->save();
                 // $role_r = Role::findByName('company');
                 // $user->assignRole($role_r);
@@ -190,20 +201,21 @@ class ConsultantController extends Controller
                
             }
             // Send Email
-            // $setings = Utility::settings();
+            $setings = Utility::settings();
 
-            // if($setings['create_user'] == 1) {
-            //     $user->password = $psw;
-            //     $user->type = $role_r->name;
+            if($setings['create_user'] == 1) {
+             
+                $user->password = $this->generateRandomString();
+                $user->type = 'Consultant';
 
-            //     $userArr = [
-            //         'email' => $user->email,
-            //         'password' => $user->password,
-            //     ];
-            //     $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
+                $userArr = [
+                    'email' => $user->email,
+                    'password' => $user->password,
+                ];
+                $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
 
-                // return redirect()->route('consultants.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
-            // }
+                return redirect()->route('consultants.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
+            }
             return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
 
         }
@@ -319,7 +331,8 @@ class ConsultantController extends Controller
 
                 $role          = Role::findById($request->role);
                 $input         = $request->all();
-                $input['type'] = $role->name;
+                $input['type']='Consultant';
+                $input['color_code']=$request->color_code;
                 $input['reporting_to']=$string_version;
                 $user->fill($input)->save();
                 // Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
@@ -392,23 +405,23 @@ class ConsultantController extends Controller
     public function check_duplicate_email_consultant(Request $request){
         
         try {
-            $form_name  = $request->form_name;
-            $check_name = $request->get_name;
-            $get_id     = $request->get_id;
+            $formname  = $request->form_name;
+            $checkname = $request->get_name;
+            $getid     = $request->get_id;
     
-            if($form_name == "Users"){
-                if($get_id == null){
-                    $get_check_val = Consultant::where('email',$check_name)->first();
+            if($formname == "Users"){
+                if($getid == null){
+                    $getcheckval = Consultant::where('email',$checkname)->first();
                 }
                 else{
-                    $get_check_val = Consultant::where('email',$check_name)->where('id','!=',$get_id)->first();
+                    $getcheckval = Consultant::where('email',$checkname)->where('id','!=',$getid)->first();
                 }
             }
             else{
-                $get_check_val = "Not Empty";
+                $getcheckval = "Not Empty";
             }
         
-            if($get_check_val == null){
+            if($getcheckval == null){
                 return 1; //Success
             }
             else{

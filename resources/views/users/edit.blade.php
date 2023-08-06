@@ -19,6 +19,33 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
+                {{Form::label('lname',__('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                <input type="text" name="lname" class="form-control" maxlength="35" value="{{$user->lname}}" placeholder="{{__('Enter Last Name')}}" required>
+                @error('name')
+                <small class="invalid-name" role="alert">
+                    <strong class="text-danger">{{ $message }}</strong>
+                </small>
+                @enderror
+            </div>
+        </div>
+        <?php
+        function rndRGBColorCode()
+   {
+       return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
+   }
+       ?>
+       @php
+       $rndColor = rndRGBColorCode(); #function call
+      
+       @endphp
+        @if ($user->color_code!=Null || $user->color_code!='')
+        @php $color_co =$user->color_code; @endphp
+        @else
+        @php $color_co =$rndColor; @endphp
+        @endif
+        <input type="hidden" name="color_code" value="{{ $color_co }}"> 
+        <div class="col-md-6">
+            <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
                 <span class="invalid-name duplicate_error" role="alert" style="display: none;">

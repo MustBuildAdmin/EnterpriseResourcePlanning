@@ -26,16 +26,23 @@
     height: 100px;
     border-radius: 50%;
     background-color: #e0e0e0;
-    color: #333;
+    color: #FFF;
     font-size: 42px;
     text-align: center;
   
 }
-
+.avatar-xl {
+    --tblr-avatar-size: 6.2rem;
+}
 </style>
 @php
    // $profile=asset(Storage::url('uploads/avatar/'));
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
+	$color_palate = 0;
+	$color = ['#4585b5','#cd3850', '#a7c57a', '#97ca49',
+			  '#d75bac','#a2d2ff','#ffafcc','#1d3557',
+			  '#606c38','#bc6c25','#ffbe0b','#fb5607',
+			  '#588157','#5e548e'];
 @endphp
 <div class="page-wrapper">
 	<!-- Page header -->
@@ -108,16 +115,23 @@
 						@endif
 						<div class="card-body p-4 text-center">
 							<?php  $short=substr($user->name, 0, 1);?>
+							<?php  $short_lname=substr($user->lname, 0, 1);?>
 							 @if(!empty($user->avatar)) 
 							 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
 							 @else 
-							 	<div class="avatar avatar-xl mb-3 user-initial">{{strtoupper($short)}}</div>
+							 @if ($user->color_code!=Null || $user->color_code!='')
+						@php $color_co =$user->color_code; @endphp
+						@else
+						@php $color_co =$color[$color_palate]; @endphp
+						@endif
+							 	<div class="avatar avatar-xl mb-3 user-initial" style="background-color:{{$color_co}};">{{strtoupper($short)}}{{strtoupper($short_lname)}}</div>
 							 @endif
 							<?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
 								<h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
 								<div class="text-muted text-center" data-bs-toggle="tooltip" title="{{__('Last Login')}}">@if(!empty($user->last_login_at)) {{ $user->last_login_at }} @else  <br> @endif</div>
 								<div class="mt-3"> <span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span> </div>
 						</div>
+						@php $color_palate++; @endphp
 						@if(\Auth::user()->type != 'super admin')
 						<div class="d-flex">
 							

@@ -3,6 +3,10 @@
         width: 100% !important;
     }
 </style>
+@php
+$color_palate = 0;
+	$color = ['#4585b5','#cd3850', '#a7c57a', '#97ca49', '#d75bac','#a2d2ff','#ffafcc','#1d3557','#606c38','#bc6c25','#ffbe0b','#fb5607','#588157','#5e548e'];
+    @endphp
 {{Form::model($user,array('route' => array('consultants.update', $user->id), 'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
 <div class="modal-body">
     <div class="row">
@@ -19,6 +23,33 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
+                <label for="{{__('Last Name')}}"></label><span style='color:red;'>*</span>
+        
+                <input type="text" class="form-control" value="{{$user->lname}}" id="lname" name="lname" placeholder="{{ __('Enter User Last Name') }}" autocomplete="off" required>
+               
+
+            </div>
+        </div>
+
+        <?php
+        function rndRGBColorCode()
+   {
+       return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
+   }
+       ?>
+       @php
+       $rndColor = rndRGBColorCode(); #function call
+      
+       @endphp
+        @if ($user->color_code!=Null || $user->color_code!='')
+        @php $color_co =$user->color_code; @endphp
+        @else
+        @php $color_co =$rndColor; @endphp
+        @endif
+        <input type="hidden" name="color_code" value="{{ $color_co }}"> 
+        <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
@@ -31,7 +62,7 @@
                 @enderror
             </div>
         </div>
-        <div class="row">
+      
             <div class="form-group col-md-6">
                     {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
                     {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control select2','required'=>'required')) !!}
@@ -41,6 +72,7 @@
                     </small>
                     @enderror
             </div>
+        </div>
            
             <div class="form-group col-md-6">
                 <div class="form-group">

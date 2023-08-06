@@ -22,6 +22,17 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
+                {{Form::label('lname',__('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                {{Form::text('lname',null,array('class'=>'form-control','maxlength' => 35,'placeholder'=>__('Enter Last Name'),'required'=>'required'))}}
+                @error('name')
+                <small class="invalid-name" role="alert">
+                    <strong class="text-danger">{{ $message }}</strong>
+                </small>
+                @enderror
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
@@ -35,6 +46,17 @@
 
             </div>
         </div>
+        <?php
+        function rndRGBColorCode()
+   {
+       return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
+   }
+       ?>
+       @php
+       $rndColor = rndRGBColorCode(); #function call
+      
+       @endphp
+        <input type="hidden" name="color_code" value="{{ $rndColor }}"> 
     <div class="row">
    
    <div class="form-group col-md-6">

@@ -3,6 +3,7 @@
         width: 100% !important;
     }
 </style>
+
 {{Form::open(array('url'=>'consultants','method'=>'post','id'=>'users_form','autocomplete'=>'off'))}}
 
 <div class="modal-body">
@@ -11,7 +12,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                {{Form::label('name',__('First Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
                 {{Form::text('name',null,array('class'=>'form-control','maxlength' => 35,'placeholder'=>__('Enter User Name'),'required'=>'required'))}}
                 @error('name')
                 <small class="invalid-name" role="alert">
@@ -20,6 +21,27 @@
                 @enderror
             </div>
         </div>
+     
+        <div class="col-md-6">
+            <div class="form-group">
+                {{Form::label('lname',__('Last Name'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                {{Form::text('lname',null,array('class'=>'form-control','id'=>'lname','placeholder'=>__('Enter User Last Name'),'autocomplete'=>'off','required'=>'required'))}}
+               
+
+            </div>
+        </div>
+        <?php
+        function rndRGBColorCode()
+        {
+            return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
+        }
+            ?>
+            @php
+            $rndColor = rndRGBColorCode(); #function call
+           
+            @endphp
+            <input type="hidden" name="color_code" value="{{ $rndColor }}"> 
+            <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
@@ -35,17 +57,20 @@
 
             </div>
         </div>
-    <div class="row">
-   
+
+          
    <div class="form-group col-md-6">
-                {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
-                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control','required'=>'required')) !!}
-                @error('role')
-                <small class="invalid-role" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
+    {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
+    {!! Form::select('gender', $gender, 'null',array('class' => 'form-control','required'=>'required')) !!}
+    @error('role')
+    <small class="invalid-role" role="alert">
+        <strong class="text-danger">{{ $message }}</strong>
+    </small>
+    @enderror
+</div>
             </div>
+    <div class="row">
+ 
        <div class="form-group col-md-6">
             <div class="form-group">
                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
