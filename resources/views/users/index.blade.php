@@ -62,14 +62,21 @@
 				<div class="col-auto ms-auto d-print-none">
 					<form action="{{ route('users.index') }}" method="GET">
 						<div class="input-group">
-							{{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3 mt-auto','id'=>'search','placeholder'=>__('Search by Name'))) }}
+							{{ Form::text('search',isset($_GET['search'])?$_GET['search']:'',
+								array('class' => 'form-control d-inline-block w-9 me-3 mt-auto',
+								'id'=>'search','placeholder'=>__('Search by Name'))) }}
 							<div class="input-group-btn">
-								<button type="submit" id="search_button" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+								<button type="submit" id="search_button" class="btn btn-info">
+									<i class="fa fa-search" aria-hidden="true"></i>
+								</button>
 							{!! Form::close() !!}
-							<a href="{{ route('users.index') }}" id="reset" class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Reset') }}">
+							<a href="{{ route('users.index') }}" id="reset" class="btn btn-danger"
+							   data-bs-toggle="tooltip" title="{{ __('Reset') }}">
 								<span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
 							</a>
-							<a href="#" class="btn btn-primary" data-size="lg" data-url="{{ route('users.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New User')}}" id="create" class="btn btn-primary" id="create">
+							<a href="#" class="btn btn-primary" data-size="lg" data-url="{{ route('users.create') }}"
+							   data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New User')}}"
+							   id="create" class="btn btn-primary" id="create">
 								<span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
 							</a>
 							
@@ -88,16 +95,23 @@
 					<div class="card">
 						@if(Gate::check('edit user') || Gate::check('delete user'))
 						<div class="card-header-right">
-							<div class="btn-group card-option float-end"> 
+							<div class="btn-group card-option float-end">
 								@if($user->is_active==1)
-								<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="ti ti-dots-vertical"></i> </button>
+								<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+								 aria-haspopup="true" aria-expanded="false">
+									<i class="ti ti-dots-vertical"></i>
+								</button>
 								<div class="dropdown-menu dropdown-menu-end">
 									@can('edit user')
-									<a href="#!" data-size="lg" data-url="{{ route('users.edit',$user->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}"> <i class="ti ti-pencil"></i> <span>{{__('Edit')}}</span> </a>
+									<a href="#!" data-size="lg" data-url="{{ route('users.edit',$user->id) }}" data-ajax-popup="true"
+										 class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
+										 <i class="ti ti-pencil"></i>
+										 <span>{{__('Edit')}}</span>
+									</a>
 									@endcan
 									@can('delete user')
-									{!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],'id'=>'delete-form-'.$user['id']]) !!}
-									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span> 
+									{!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],\'id'=>'delete-form-'.$user['id']]) !!}
+									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span>
 										@if($user->delete_status!=0){{__('Delete')}}
 										@else {{__('Restore')}}
 										@endif
@@ -116,19 +130,29 @@
 						<div class="card-body p-4 text-center">
 							<?php  $short=substr($user->name, 0, 1);?>
 							<?php  $short_lname=substr($user->lname, 0, 1);?>
-							 @if(!empty($user->avatar)) 
-							 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"> 
-							 @else 
+							 @if(!empty($user->avatar))
+							 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar :
+								 asset(Storage::url("uploads/avatar/avatar.png "))}}"
+								 class="avatar avatar-xl mb-3 rounded" alt="">
+							 @else
 							 @if ($user->color_code!=Null || $user->color_code!='')
-						@php $color_co =$user->color_code; @endphp
-						@else
-						@php $color_co =$color[$color_palate]; @endphp
-						@endif
-							 	<div class="avatar avatar-xl mb-3 user-initial" style="background-color:{{$color_co}};">{{strtoupper($short)}}{{strtoupper($short_lname)}}</div>
+								@php $color_co =$user->color_code; @endphp
+							@else
+								@php $color_co =$color[$color_palate]; @endphp
+							@endif
+							 	<div class="avatar avatar-xl mb-3 user-initial" style="background-color:{{$color_co}};">
+									{{strtoupper($short)}}{{strtoupper($short_lname)}}
+								</div>
 							 @endif
 							<?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
 								<h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
-								<div class="text-muted text-center" data-bs-toggle="tooltip" title="{{__('Last Login')}}">@if(!empty($user->last_login_at)) {{ $user->last_login_at }} @else  <br> @endif</div>
+								<div class="text-muted text-center" data-bs-toggle="tooltip" title="{{__('Last Login')}}">
+									@if(!empty($user->last_login_at))
+									{{ $user->last_login_at }}
+									@else
+									<br>
+									@endif
+								</div>
 								<div class="mt-3"> <span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span> </div>
 						</div>
 						@php $color_palate++; @endphp

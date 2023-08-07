@@ -5,79 +5,74 @@
         <h5 class="sub-title"><strong>{{__('Basic Info')}}</strong></h5>
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="form-group">
-            {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter client Name'),'required'=>'required','id'=>'billings_name')) }}
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-6">
-    <div class="form-group">
-        {{ Form::label('lname', __('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-        {{ Form::text('lname', null, array('class' => 'form-control','placeholder'=>__('Enter Last Name'),'required'=>'required')) }}
-    </div>
-</div>
-
-<?php
-function rndRGBColorCode()
-{
-return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
-}
-?>
-@php
-$rndColor = rndRGBColorCode(); #function call
-
-@endphp
-<input type="hidden" name="color_code" value="{{ $rndColor }}"> 
-
-    <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="form-group">
-            {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'required'=>'required')) }}
-            <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
-                <span class="text-danger">{{__('Email Already Exist!')}}</span>
-            </span>
-        </div>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="form-group">
-            {{ Form::label('password', __('Password'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
-            @error('password')
-            <small class="invalid-password" role="alert">
-                <strong class="text-danger">{{ $message }}</strong>
-            </small>
-            @enderror
-        </div>
-    </div> 
-</div>
-<div class="row">
-    <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="form-group">
-            {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {!! Form::select('gender', $gender, 'null',array('class' => 'form-control','required'=>'required')) !!}
-            @error('role')
-            <small class="invalid-role" role="alert">
-                <strong class="text-danger">{{ $message }}</strong>
-            </small>
-            @enderror
-        </div>
-    </div>
-    <div class="col-lg-8 col-md-4 col-sm-6">
-        <div class="form-group">
-            {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-            <div class="form-icon-user">
-                {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
+                <div class="form-group">
+                    {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter client Name'),'required'=>'required','id'=>'billings_name')) }}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="form-group">
+                    {{ Form::label('lname', __('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{ Form::text('lname', null, array('class' => 'form-control','placeholder'=>__('Enter Last Name'),'required'=>'required')) }}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="form-group">
+                    {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'required'=>'required')) }}
+                    <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
+                        <span class="text-danger">{{__('Email Already Exist!')}}</span>
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-12">
-        <div class="form-group">
-            {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
-            <div class="form-icon-user">
-                {{Form::file('avatar',null,array('class'=>'form-control'))}}
+
+        @php
+        $rndColor = Utility::rndRGBColorCode(); #function call
+        @endphp
+        <input type="hidden" name="color_code" value="{{ $rndColor }}">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="form-group">
+                    {{ Form::label('password', __('Password'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
+                    @error('password')
+                    <small class="invalid-password" role="alert">
+                        <strong class="text-danger">{{ $message }}</strong>
+                    </small>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="form-group">
+                    {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {!! Form::select('gender', $gender, 'null',array('class' => 'form-control','required'=>'required')) !!}
+                    @error('role')
+                    <small class="invalid-role" role="alert">
+                        <strong class="text-danger">{{ $message }}</strong>
+                    </small>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="form-group">
+                    {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                    <div class="form-icon-user">
+                        {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-lg-8 col-md-4 col-sm-6">
+                <div class="form-group">
+                    {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
+                    <div class="form-icon-user">
+                        {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                    </div>
+                </div>
+            </div>
+        </div>
     {{-- <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="form-group">
             {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
@@ -103,7 +98,6 @@ $rndColor = rndRGBColorCode(); #function call
             </div>
         </div>
     </div> --}}
-</div>
 {{-- <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="form-group">

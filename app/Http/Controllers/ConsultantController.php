@@ -437,4 +437,44 @@ class ConsultantController extends Controller
     
     }
 
+    public function userPassword($id)
+    {
+        $eId        = \Crypt::decrypt($id);
+        $user = Consultant::find($eId);
+
+        return view('consultants.reset', compact('user'));
+
+    }
+
+    public function userPasswordReset(Request $request, $id)
+    {
+       
+        $validator = \Validator::make(
+            $request->all(), [
+                               'password' => 'required|confirmed|same:password_confirmation',
+                           ]
+        );
+
+        if($validator->fails())
+        {
+            $messages = $validator->getMessageBag();
+            
+
+            return redirect()->back()->with('error', $messages->first());
+        }
+
+
+        $user                 = Consultant::where('id', $id)->first();
+        $user->forceFill([
+                             'password' => Hash::make($request->password),
+                         ])->save();
+
+        return redirect()->route('consultants.index')->with(
+            'success', 'User Password successfully updated.'
+        );
+
+
+    }
+
+
 }

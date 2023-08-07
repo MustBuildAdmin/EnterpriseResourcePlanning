@@ -41,7 +41,7 @@
 
 <div class="row">
 	<div class="col-md-6">
-	   <h2>Manage Client</h2>
+	   <h2>{{ __('Manage Client') }}</h2>
 	</div>
 	<div class="col-md-6 float-end">
 	   <form action="{{ route('clients.index') }}" method="GET">

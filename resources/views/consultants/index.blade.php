@@ -53,12 +53,14 @@
 				<!-- Page title actions -->
 				<div class="col-auto ms-auto d-print-none">
 					<form action="{{ route('consultants.index') }}" method="GET">
-						<div class="input-group"> 
-							{{ Form::text('search',isset($_GET['search'])?$_GET['search']:'', array('class' => 'form-control d-inline-block w-9 me-3 mt-auto','id'=>'search','placeholder'=>__('Search by Name'))) }}
+						<div class="input-group">
+							{{ Form::text('search',isset($_GET['search'])?$_GET['search']:'',
+							array('class' => 'form-control d-inline-block w-9 me-3 mt-auto',
+							'id'=>'search','placeholder'=>__('Search by Name'))) }}
 							<div class="input-group-btn">
-								<button type="submit" id="search_button" class="btn btn-info"> 
-									<i class="fa fa-search" aria-hidden="true"></i> 
-								</button> 
+								<button type="submit" id="search_button" class="btn btn-info">
+									<i class="fa fa-search" aria-hidden="true"></i>
+								</button>
 								{!! Form::close() !!}
 								<a href="{{ route('users.index') }}" id="reset" class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Reset') }}"> 
 									<span class="btn-inner--icon">

@@ -25,22 +25,6 @@
                         <input type="text" name="lname" value="{{$user->lname}}" class="form-control" placeholder="{{__('Enter Last Name')}}" required>
                     </div>
                 </div>
-                <?php
-                function rndRGBColorCode()
-           {
-               return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')'; #using the inbuilt random function
-           }
-               ?>
-               @php
-               $rndColor = rndRGBColorCode(); #function call
-              
-               @endphp
-                @if ($user->color_code!=Null || $user->color_code!='')
-                @php $color_co =$user->color_code; @endphp
-                @else
-                @php $color_co =$rndColor; @endphp
-                @endif
-                <input type="hidden" name="color_code" value="{{ $color_co }}"> 
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
@@ -51,19 +35,47 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="form-group">
-                    {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                    {!! Form::select('gender', $gender, $user->gender,
-                        array('class' => 'form-control','required'=>'required')) !!}
-                    @error('role')
-                    <small class="invalid-role" role="alert">
-                        <strong class="text-danger">{{ $message }}</strong>
-                    </small>
-                    @enderror
+            </div>
+             
+            @php
+                $rndColor = Utility::rndRGBColorCode(); #function call
+            @endphp
+            @if ($user->color_code!=Null || $user->color_code!='')
+                @php $color_co =$user->color_code; @endphp
+            @else
+                @php $color_co =$rndColor; @endphp
+            @endif
+            <input type="hidden" name="color_code" value="{{ $color_co }}">
+               <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="form-group">
+                            {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                            {!! Form::select('gender', $gender, $user->gender,
+                                array('class' => 'form-control','required'=>'required')) !!}
+                            @error('role')
+                            <small class="invalid-role" role="alert">
+                                <strong class="text-danger">{{ $message }}</strong>
+                            </small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="form-group">
+                            {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                            <div class="form-icon-user">
+                                {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div class="form-group">
+                            {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
+                            <div class="form-icon-user">
+                                {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
             {{-- <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
@@ -122,7 +134,6 @@
                 </div>
             
             </div> --}}
-            <div class="row">
                 {{-- <div class="col-lg-6 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
@@ -131,24 +142,8 @@
                         </div>
                     </div>
                 </div> --}}
-                <div class="col-lg-6 col-md-4 col-sm-6">
-                    <div class="form-group">
-                        {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                        <div class="form-icon-user">
-                            {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
-                        <div class="form-icon-user">
-                            {{Form::file('avatar',null,array('class'=>'form-control'))}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+             
+        
         @if(!$customFields->isEmpty())
             @include('custom_fields.formBuilder')
         @endif

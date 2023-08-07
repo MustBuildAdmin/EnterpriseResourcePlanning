@@ -4153,6 +4153,9 @@ Route::resource('consultants', 'ConsultantController')->middleware(
 
 Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
 
+Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
+        ->name('consultants.password.update');
+
 Route::resource('plans', 'PlanController')->middleware(
     [
         'auth',

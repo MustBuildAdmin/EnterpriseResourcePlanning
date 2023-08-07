@@ -9,8 +9,10 @@
 @push('script-page')
 @endpush
 @section('breadcrumb')
+<ul>
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item">{{__('Client')}}</li>
+</ul>
 @endsection
 @section('action-btn')
     <div class="float-end">
@@ -69,7 +71,7 @@
                             </div>
                             <div class="card-body full-card">
                                 <div class="img-fluid rounded-circle card-avatar">
-                                    <img src="{{(!empty($client->avatar))? asset(Storage::url("uploads/avatar/".$client->avatar)): asset(Storage::url("uploads/avatar/avatar.png"))}}"  class="img-user wid-80 rounded-circle">
+                                    <img src="{{(!empty($client->avatar))? asset(Storage::url("uploads/avatar/".$client->avatar)): asset(Storage::url("uploads/avatar/avatar.png"))}}"  class="img-user wid-80 rounded-circle" alt="">
                                 </div>
                                 <h4 class="mt-2 text-primary">{{ $client->name }}</h4>
                                 <p></p>
