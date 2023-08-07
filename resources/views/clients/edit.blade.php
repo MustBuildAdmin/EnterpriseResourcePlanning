@@ -296,7 +296,8 @@
                             @foreach($statelist as $key => $value)
                                 <option value="{{$value->iso2}}"
                                     @if($user->shipping_state==$value->iso2) selected @endif>
-                                    {{$value->name}}</option>
+                                    {{$value->name}}
+                                </option>
                             @endforeach
                     </select>
                         </div>
@@ -306,7 +307,8 @@
                     <div class="form-group">
                         {{Form::label('shipping_city',__('City'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required',$disabled_enabled))}}
+                            {{Form::text('shipping_city',null,array('class'=>'form-control',
+                            'required'=>'required',$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -315,7 +317,8 @@
                     <div class="form-group">
                         {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            <input {{$disabled_enabled}} class="form-control" name="shipping_phone" type="number" id="shipping_phone" maxlength="16" placeholder="+91 111 111 1111"  value='{{$user->shipping_phone}}'>
+                            <input {{$disabled_enabled}} class="form-control" name="shipping_phone" type="number" id="shipping_phone"
+                             maxlength="16" placeholder="+91 111 111 1111"  value='{{$user->shipping_phone}}'>
                             <span class="invalid-name edit_shipping_mobile_duplicate"
                                 role="alert" style="display: none;">
                                 <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
@@ -328,7 +331,8 @@
                     <div class="form-group">
                         {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            {{Form::number('shipping_zip',null,array('class'=>'form-control','id'=>'shipping_zip',$disabled_enabled))}}
+                            {{Form::number('shipping_zip',null,array('class'=>'form-control',
+                            'id'=>'shipping_zip',$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -337,7 +341,8 @@
                         {{Form::label('shipping_address',__('Address'),array('class'=>'form-label')) }}
                         <label class="form-label" for="example2cols1Input"></label>
                         <div class="input-group">
-                            {{Form::textarea('shipping_address',null,array('class'=>'form-control','rows'=>3,$disabled_enabled))}}
+                            {{Form::textarea('shipping_address',null,array('class'=>'form-control',
+                            'rows'=>3,$disabled_enabled))}}
                         </div>
                     </div>
                 </div>

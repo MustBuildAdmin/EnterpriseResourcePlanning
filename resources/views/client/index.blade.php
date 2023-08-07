@@ -75,7 +75,8 @@
                                                 {!! Form::close() !!}
                                             @endcan
 
-                                            <a href="#!" data-url="{{route('clients.reset',\Crypt::encrypt($client->id))}}"
+                                            <a href="#!"
+                                               data-url="{{route('clients.reset',\Crypt::encrypt($client->id))}}"
                                                data-ajax-popup="true"
                                                class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}">
                                                 <i class="ti ti-adjustments"></i>
@@ -87,7 +88,7 @@
                             </div>
                             <div class="card-body full-card">
                                 <div class="img-fluid rounded-circle card-avatar">
-                                    <img src="{{(!empty($client->avatar))? 
+                                    <img src="{{(!empty($client->avatar))?
                                          asset(Storage::url("uploads/avatar/".$client->avatar)):
                                          asset(Storage::url("uploads/avatar/avatar.png"))}}"
                                          class="img-user wid-80 rounded-circle" alt="">
@@ -101,7 +102,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="align-items-center h6 mt-2" data-bs-toggle="tooltip" title="{{__('Last Login')}}">
+                                <div class="align-items-center h6 mt-2"
+                                     data-bs-toggle="tooltip" title="{{__('Last Login')}}">
                                     {{ (!empty($client->last_login_at)) ? $client->last_login_at : '' }}
                                 </div>
                             </div>

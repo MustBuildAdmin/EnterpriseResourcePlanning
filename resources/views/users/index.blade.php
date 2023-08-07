@@ -110,7 +110,8 @@
 									</a>
 									@endcan
 									@can('delete user')
-									{!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],\'id'=>'delete-form-'.$user['id']]) !!}
+									{!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],
+									'id'=>'delete-form-'.$user['id']]) !!}
 									<a href="#!" class="dropdown-item bs-pass-para"> <i class="ti ti-archive"></i> <span>
 										@if($user->delete_status!=0){{__('Delete')}}
 										@else {{__('Restore')}}
@@ -119,7 +120,12 @@
 									</a>
 									{!! Form::close() !!}
 									@endcan
-									<a href="#!" data-url="{{route('users.reset',\Crypt::encrypt($user->id))}}" data-ajax-popup="true" data-size="md" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}"> <i class="ti ti-adjustments"></i> <span>  {{__('Reset Password')}}</span> </a>
+									<a href="#!" data-url="{{route('users.reset',\Crypt::encrypt($user->id))}}"
+										 data-ajax-popup="true" data-size="md" class="dropdown-item"
+										  data-bs-original-title="{{__('Reset Password')}}">
+										  <i class="ti ti-adjustments"></i>
+										  <span>  {{__('Reset Password')}}</span>
+									</a>
 								</div>
 								@else
 								<a href="#" class="action-item"><i class="ti ti-lock"></i></a>
@@ -138,7 +144,7 @@
 							 @if ($user->color_code!=Null || $user->color_code!='')
 								@php $color_co =$user->color_code; @endphp
 							@else
-								@php $color_co =$color[$color_palate]; @endphp
+								@php $color_co =Utility::rndRGBColorCode(); @endphp
 							@endif
 							 	<div class="avatar avatar-xl mb-3 user-initial" style="background-color:{{$color_co}};">
 									{{strtoupper($short)}}{{strtoupper($short_lname)}}
@@ -153,15 +159,20 @@
 									<br>
 									@endif
 								</div>
-								<div class="mt-3"> <span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span> </div>
+								<div class="mt-3">
+									<span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span>
+								</div>
 						</div>
-						@php $color_palate++; @endphp
+						
 						@if(\Auth::user()->type != 'super admin')
 						<div class="d-flex">
 							
-							<a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}" href="#" class="card-btn" onclick="copyToClipboard(this)">
+							<a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}"
+								 href="#" class="card-btn" onclick="copyToClipboard(this)">
 								<!-- Download SVG icon from http://tabler-icons.io/i/mail -->
-								<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
+								 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+								  stroke-linecap="round" stroke-linejoin="round">
 									<path stroke="none" d="M0 0h24v24H0z" fill="none" />
 									<path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
 									<path d="M3 7l9 6l9 -6" />
@@ -169,58 +180,80 @@
 								{{__('Email')}}
 							</a>
 							
-							<a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}" class="card-btn" onclick="copyToClipboardphone(this)">
+							<a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
+								 class="card-btn" onclick="copyToClipboardphone(this)">
 								<!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-								<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
+								 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+								  stroke-linejoin="round">
 									<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-									<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+									<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16
+									 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
 								</svg>
 									{{__('Mobile')}}
 							</a>
 						</div>
 						@else
 						<div class="row justify-content-between align-items-center">
-							<div class="col-6 text-center"> 
-								<span class="d-block font-bold mb-0">{{!empty($user->currentPlan)?$user->currentPlan->name:''}}</span> 
+							<div class="col-6 text-center">
+								<span class="d-block font-bold mb-0">
+									{{!empty($user->currentPlan)?$user->currentPlan->name:''}}
+								</span>
 							</div>
-							<div class="col-6 text-center Id "> 
-								<a href="#" data-url="{{ route('plan.upgrade',$user->id) }}" data-size="lg" data-ajax-popup="true" class="btn btn-outline-primary" data-title="{{__('Upgrade Plan')}}">{{__('Upgrade Plan')}}</a> 
+							<div class="col-6 text-center Id ">
+								<a href="#" data-url="{{ route('plan.upgrade',$user->id) }}" data-size="lg" data-ajax-popup="true"
+									 class="btn btn-outline-primary" data-title="{{__('Upgrade Plan')}}">
+									 {{__('Upgrade Plan')}}
+								</a>
 							</div>
 							<div class="col-12">
-								<hr class="my-3"> 
+								<hr class="my-3">
 							</div>
-							<div class="col-12 text-center pb-2"> 
-								<span class="text-dark text-xs">{{__('Plan Expired : ') }} {{!empty($user->plan_expire_date) ? \Auth::user()->dateFormat($user->plan_expire_date): __('Unlimited')}}</span> 
+							<div class="col-12 text-center pb-2">
+								<span class="text-dark text-xs">{{__('Plan Expired : ') }}
+									{{!empty($user->plan_expire_date) ? \Auth::user()->dateFormat($user->plan_expire_date): __('Unlimited')}}
+								</span>
 							</div>
 						</div>
 						<div class="d-flex">
 							<a href="#" class="card-btn" title="{{__('Users')}}">
-								<!-- Download SVG icon from http://tabler-icons.io/i/mail --><i class="ti ti-users card-icon-text-space"></i> {{$user->totalCompanyUser($user->id)}}</a>
+								<!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+								<i class="ti ti-users card-icon-text-space"></i>
+								{{$user->totalCompanyUser($user->id)}}
+							</a>
 							<a href="#" class="card-btn" title="{{__('Customers')}}">
-								<!-- Download SVG icon from http://tabler-icons.io/i/mail --><i class="ti ti-users card-icon-text-space"></i> {{$user->totalCompanyCustomer($user->id)}}</a>
+								<!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+								<i class="ti ti-users card-icon-text-space"></i>
+								{{$user->totalCompanyCustomer($user->id)}}
+							</a>
 							<a href="#" class="card-btn" title="{{__('Vendors')}}">
-								<!-- Download SVG icon from http://tabler-icons.io/i/phone --><i class="ti ti-users card-icon-text-space"></i> {{$user->totalCompanyVender($user->id)}}</a>
+								<!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+								<i class="ti ti-users card-icon-text-space"></i>
+								{{$user->totalCompanyVender($user->id)}}
+							</a>
 						</div>
 						@endif
 					</div>
-				</div> 
+				</div>
 				@empty
 				<div class="page-body">
 					<div class="container-xl d-flex flex-column justify-content-center">
 						<div class="empty">
-							<div class="empty-img"><img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}" height="128" alt=""> </div>
+							<div class="empty-img">
+								<img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}" height="128" alt="">
+							</div>
 							<p class="empty-title"> {{__('No User Found')}}</p>
 						</div>
 					</div>
-				</div> 
-				@endforelse 
+				</div>
+				@endforelse
 			</div>
 			<div class="d-flex mt-4">
 				<ul class="pagination ms-auto"> {!! $users->links() !!} </ul>
 			</div>
 		</div>
 	</div>
-</div> 
+</div>
 
 @include('new_layouts.footer')
 <script>
