@@ -11,8 +11,8 @@ use App\Models\NOC;
 use App\Models\Consultant;
 use App\Models\UserCompany;
 use App\Models\Company_type;
-use Auth;
-use File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Models\Utility;
 use App\Models\Order;
 use App\Models\Plan;
@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Session;
 use Spatie\Permission\Models\Role;
-
+use Config;
 
 
 class ConsultantController extends Controller
@@ -117,16 +117,6 @@ class ConsultantController extends Controller
             return redirect()->back();
         }
     }
-    public static function generateRandomString($length = 10)
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[random_int(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
     
     public function store(Request $request)
     {
@@ -161,7 +151,7 @@ class ConsultantController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
@@ -378,7 +368,7 @@ class ConsultantController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
 
-                $role          = Role::findById($request->role);
+                // $role          = Role::findById($request->role);
                 $input         = $request->all();
                 $input['type']='Consultant';
                 $input['color_code']=$request->color_code;
