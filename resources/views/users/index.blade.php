@@ -38,11 +38,7 @@
 @php
    // $profile=asset(Storage::url('uploads/avatar/'));
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
-	$color_palate = 0;
-	$color = ['#4585b5','#cd3850', '#a7c57a', '#97ca49',
-			  '#d75bac','#a2d2ff','#ffafcc','#1d3557',
-			  '#606c38','#bc6c25','#ffbe0b','#fb5607',
-			  '#588157','#5e548e'];
+	
 @endphp
 <div class="page-wrapper">
 	<!-- Page header -->
