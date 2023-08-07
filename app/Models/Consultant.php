@@ -27,6 +27,7 @@ class Consultant extends Authenticatable
         'name',
         'lname',
         'email',
+        'avatar',
         'phone',
         'gender',
         'country',

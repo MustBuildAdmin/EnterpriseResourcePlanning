@@ -156,6 +156,28 @@ class ConsultantController extends Controller
 
                     return redirect()->back()->with('error', $messages->first());
                 }
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                
+                    $dir = Config::get('constants.USER_IMG');
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
                 $user               = new Consultant();
                 $user['name']       = $request->name;
                 $user['email']      = $request->email;
@@ -169,6 +191,9 @@ class ConsultantController extends Controller
                 $user['address']=$request->address;
                 $user['type']='Consultant';
                 $user['color_code']=$request->color_code;
+                if(isset($url)){
+                    $user['avatar']=$url;
+                }
                 $user->save();
                 // $role_r = Role::findByName('company');
                 // $user->assignRole($role_r);
@@ -269,7 +294,7 @@ class ConsultantController extends Controller
         if($request->reporting_to!=null){
             $string_version = implode(',', $request->reporting_to);
         }else{
-            $string_version = Null;
+            $string_version = null;
         }
        
         if(\Auth::user()->can('edit consultant'))
@@ -290,11 +315,35 @@ class ConsultantController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
 
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+                
+                    $dir = Config::get('constants.USER_IMG');
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
                 $role = Role::findByName('company');
                 $input = $request->all();
                 $input['type'] = $role->name;
                 // $input['reporting_to']=$string_version;
-
+                if(isset($url)){
+                    $input['avatar']=$url;
+                }
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);
                 DB::table('users')->where('id',$id)->update(['company_type'=>$request->company_type]);
