@@ -3,7 +3,8 @@
         width: 100% !important;
     }
 </style>
-{{Form::model($user,array('route' => array('consultants.update', $user->id), 'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
+{{Form::model($user,array('route' => array('consultants.update', $user->id),
+    'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
     <div class="modal-body">
         <div class="row">
             <div class="col-md-6">
@@ -97,7 +98,8 @@
                 <div class="form-group">
                     {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111" value='{{$user->phone}}' required>
+                        <input class="form-control" name="phone" type="number" id="phone" maxlength="16"
+                         placeholder="+91 111 111 1111" value='{{$user->phone}}' required>
                         <span class="invalid-name edit_mobile_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
@@ -106,7 +108,8 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}<span style='color:red;'>*</span>
+                    {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
                     </div>

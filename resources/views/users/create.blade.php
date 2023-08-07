@@ -3,14 +3,16 @@
         width: 100% !important;
     }
 </style>
-{{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form','autocomplete'=>'off','enctype'=>"multipart/form-data"))}}
+{{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form',
+'autocomplete'=>'off','enctype'=>"multipart/form-data"))}}
 
     <div class="modal-body">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                    {{Form::text('name',null,array('class'=>'form-control','maxlength' => 35,'placeholder'=>__('Enter User Name'),'required'=>'required'))}}
+                    {{Form::text('name',null,array('class'=>'form-control','maxlength' => 35,
+                     'placeholder'=>__('Enter User Name'),'required'=>'required'))}}
                     @error('name')
                     <small class="invalid-name" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -35,10 +37,11 @@
             <div class="col-md-6">
                 <div class="form-group">
                     {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                    {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
+                    {{Form::text('email',null,array('class'=>'form-control','id'=>'email',
+                    'placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
                     <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
                         <span class="text-danger">{{__('Email Already Exist!')}}</span>
-                    </span> 
+                    </span>
                     @error('email')
                     <small class="invalid-email" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -49,7 +52,8 @@
             </div>
             <div class="form-group col-md-6">
                 {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
-                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
+                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control',
+                'required'=>'required')) !!}
                 @error('role')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
@@ -67,9 +71,11 @@
             @if(\Auth::user()->type != 'super admin')
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{ Form::label('Reportto', __('Reporting to'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                    {{ Form::label('Reportto', __('Reporting to'), ['class' => 'form-label']) }}
+                    <span class="text-danger">*</span>
                         <div id="reporting_toerr">
-                        {!! Form::select('reporting_to[]', $users, null,array('id' => 'choices-multiple1','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
+                        {!! Form::select('reporting_to[]', $users, null,array('id' => 'choices-multiple1',
+                        'class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
                         </div>
                     </div>
                 </div>
@@ -78,9 +84,11 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <div class="form-group">
-                        {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            <select class="form-control country" name="country" id='country' placeholder="Select Country" required>
+                            <select class="form-control country" name="country" id="country"
+                             placeholder="Select Country" required>
                                 <option value="">{{ __('Select Country ...') }}</option>
                                 @foreach($country as $key => $value)
                                     <option value="{{$value->iso2}}">{{$value->name}}</option>
@@ -92,7 +100,8 @@
                 </div>
                 <div class="form-group col-md-6">
                     <div class="form-group">
-                        {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('state',__('State'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
                             <select class="form-control" name="state" id='state' placeholder="Select State" required>
                                 <option value="">{{ __('Select State ...') }}</option>
@@ -105,7 +114,8 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <div class="form-group">
-                        {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('city',__('City'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
                             {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
                         </div>
@@ -114,9 +124,11 @@
 
                 <div class="form-group col-md-6">
                     <div class="form-group">
-                        {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111"  required>
+                            <input class="form-control" name="phone" type="number" id="phone"
+                             maxlength="16" placeholder="+91 111 111 1111"  required>
                             <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                                 <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                             </span>
@@ -128,7 +140,8 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <div class="form-group">
-                        {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
                             {{Form::text('zip',null,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
                         </div>
@@ -136,8 +149,10 @@
                 </div>
                 <div class="form-group col-md-6">
                     <div class="form-group">
-                        {{Form::label('password',__('Password'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                        {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
+                        {{Form::label('password',__('Password'),['class'=>'form-label'])}}
+                        <span style='color:red;'>*</span>
+                        {{Form::password('password',array('class'=>'form-control',
+                        'placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
                         @error('password')
                         <small class="invalid-password" role="alert">
                             <strong class="text-danger">{{ $message }}</strong>
@@ -149,9 +164,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        {{Form::label('address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,'required'=>'required'))}}
+                            {{Form::textarea('address',null,array('class'=>'form-control',
+                            'rows'=>3,'required'=>'required'))}}
                         </div>
                     </div>
                 </div>
@@ -160,7 +177,8 @@
          <div class="row">
             <div class="form-group col-md-6">
                 {{ Form::label('role', __('User Role'),['class'=>'form-label']) }}
-                {!! Form::select('role', $roles, null,array('class' => 'form-control select2','required'=>'required')) !!}
+                {!! Form::select('role', $roles, null,array('class' => 'form-control',
+                'required'=>'required')) !!}
                 @error('role')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>

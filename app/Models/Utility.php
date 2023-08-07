@@ -3727,7 +3727,7 @@ class Utility extends Model
         public static function rndRGBColorCode()
         {
             #using the inbuilt random function
-            return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')';
+            return 'rgb(' . random_int(0, 255) . ',' . random_int(0, 255) . ',' . random_int(0, 255) . ')';
         }
 
 }

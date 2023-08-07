@@ -1,37 +1,37 @@
 @include('new_layouts.header')
 <style>
-#create {
-	height: 35px !important;
-	width: 12% !important;
-}
+	#create {
+		height: 35px !important;
+		width: 12% !important;
+	}
 
-#reset{
-	
-	width: 12% !important;
-}
+	#reset{
+		
+		width: 12% !important;
+	}
 
-#search_button {
-	height: 35px !important;
-	width: 12% !important;
-}
+	#search_button {
+		height: 35px !important;
+		width: 12% !important;
+	}
 
-.dropdown-toggle::after {
-    display: none;
-    position: absolute;
-    top: 50%;
-    right: 20px;
-}
-.avatar.avatar-xl.mb-3.user-initial {
-    border-radius: 50%;
-    color: #FFF;
-}
+	.dropdown-toggle::after {
+		display: none;
+		position: absolute;
+		top: 50%;
+		right: 20px;
+	}
+	.avatar.avatar-xl.mb-3.user-initial {
+		border-radius: 50%;
+		color: #FFF;
+	}
 
-.avatar-xl {
-    --tblr-avatar-size: 6.2rem;
-}
+	.avatar-xl {
+		--tblr-avatar-size: 6.2rem;
+	}
 </style>
 @php
-    $profile=\App\Models\Utility::get_file('uploads/avatar');		
+    $profile=\App\Models\Utility::get_file('uploads/avatar');
 @endphp
 <div class="page-wrapper">
 	<!-- Page header -->
