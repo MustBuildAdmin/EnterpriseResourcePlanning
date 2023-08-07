@@ -4,13 +4,14 @@
     }
 </style>
 {{Form::model($user,array('route' => array('consultants.update', $user->id),
-    'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
+  'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
     <div class="modal-body">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group ">
                     {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                    {{Form::text('name',null,array('class'=>'form-control font-style','maxlength' => 35,'placeholder'=>__('Enter User Name')))}}
+                    {{Form::text('name',null,array('class'=>'form-control font-style',
+                    'maxlength' => 35,'placeholder'=>__('Enter User Name')))}}
                     @error('name')
                     <small class="invalid-name" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -21,7 +22,8 @@
             <div class="col-md-6">
                 <div class="form-group">
                     {{Form::label('lastname',__('LastName'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                    <input type="text" class="form-control" value="{{$user->lname}}" id="lname" name="lname" placeholder="{{ __('Enter User Last Name') }}" autocomplete="off" required>
+                    <input type="text" class="form-control" value="{{$user->lname}}"
+                     id="lname" name="lname" placeholder="{{ __('Enter User Last Name') }}" autocomplete="off" required>
                 </div>
             </div>
             @php
@@ -38,7 +40,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                        {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
+                        {{Form::email('email',null,array('class'=>'form-control','id'=>'email',
+                        'placeholder'=>__('Enter User Email')))}}
                         <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Email Already Exist!')}}</span>
                         </span>
@@ -52,7 +55,8 @@
         
                 <div class="form-group col-md-6">
                         {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
-                        {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control select2','required'=>'required')) !!}
+                        {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control',
+                        'required'=>'required')) !!}
                         @error('role')
                         <small class="invalid-role" role="alert">
                             <strong class="text-danger">{{ $message }}</strong>
@@ -62,12 +66,17 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <select class="form-control country" name="country" id='country'placeholder="Select Country" required>
+                        <select class="form-control country" name="country" id="country"
+                         placeholder="Select Country" required>
                             <option value="">{{ __('Select Country ...') }}</option>
                             @foreach($countrylist as $key => $value)
-                                <option value="{{$value->iso2}}" @if($user->country==$value->iso2) selected @endif>{{$value->name}}</option>
+                                <option value="{{$value->iso2}}"
+                                    @if($user->country==$value->iso2) selected @endif>
+                                    {{$value->name}}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -80,7 +89,10 @@
                         <select class="form-control state" name="state" id='state' placeholder="Select State" required>
                             <option value="">{{ __('Select State ...') }}</option>
                                 @foreach($statelist as $key => $value)
-                                    <option value="{{$value->iso2}}" @if($user->state==$value->iso2) selected @endif>{{$value->name}}</option>
+                                    <option value="{{$value->iso2}}"
+                                        @if($user->state==$value->iso2) selected @endif>
+                                        {{$value->name}}
+                                    </option>
                                 @endforeach
                         </select>
                     </div>

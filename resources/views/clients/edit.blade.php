@@ -17,7 +17,8 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                        {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter Client Name'),
+                        {{ Form::text('name', null, array('class' => 'form-control',
+                        'placeholder'=>__('Enter Client Name'),
                         'required'=>'required','id'=>'billings_name')) }}
                     </div>
                 </div>
@@ -317,7 +318,8 @@
                     <div class="form-group">
                         {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
-                            <input {{$disabled_enabled}} class="form-control" name="shipping_phone" type="number" id="shipping_phone"
+                            <input {{$disabled_enabled}} class="form-control" name="shipping_phone"
+                             type="number" id="shipping_phone"
                              maxlength="16" placeholder="+91 111 111 1111"  value='{{$user->shipping_phone}}'>
                             <span class="invalid-name edit_shipping_mobile_duplicate"
                                 role="alert" style="display: none;">
