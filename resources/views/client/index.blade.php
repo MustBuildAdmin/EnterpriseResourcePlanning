@@ -16,7 +16,9 @@
 @endsection
 @section('action-btn')
     <div class="float-end">
-        <a href="#" data-size="md" data-url="{{ route('clients.create') }}" data-ajax-popup="true"  data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
+        <a href="#" data-size="md" data-url="{{ route('clients.create') }}"
+         data-ajax-popup="true"  data-bs-toggle="tooltip"
+         title="{{__('Create')}}"  class="btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
         </a>
     </div>
@@ -39,29 +41,43 @@
                                         </button>
 
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="{{ route('clients.show',$client->id) }}"  class="dropdown-item" data-bs-original-title="{{__('View')}}">
+                                            <a href="{{ route('clients.show',$client->id) }}"  class="dropdown-item"
+                                               data-bs-original-title="{{__('View')}}">
                                                 <i class="ti ti-eye"></i>
                                                 <span>{{__('Show')}}</span>
                                             </a>
 
                                             @can('edit client')
-                                                <a href="#!" data-size="md" data-url="{{ route('clients.edit',$client->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
+                                                <a href="#!" data-size="md"
+                                                   data-url="{{ route('clients.edit',$client->id) }}"
+                                                   data-ajax-popup="true" class="dropdown-item"
+                                                   data-bs-original-title="{{__('Edit User')}}">
                                                     <i class="ti ti-pencil"></i>
                                                     <span>{{__('Edit')}}</span>
                                                 </a>
                                             @endcan
 
                                             @can('delete client')
-                                                {!! Form::open(['method' => 'DELETE', 'route' => ['clients.destroy', $client['id']],'id'=>'delete-form-'.$client['id']]) !!}
+                                                {!! Form::open(['method' => 'DELETE',
+                                                   'route' => ['clients.destroy', $client['id']],
+                                                   'id'=>'delete-form-'.$client['id']]) !!}
                                                 <a href="#!"  class="dropdown-item bs-pass-para">
                                                     <i class="ti ti-archive"></i>
-                                                    <span> @if($client->delete_status!=0){{__('Delete')}} @else {{__('Restore')}}@endif</span>
+                                                    <span>
+                                                        @if($client->delete_status!=0)
+                                                        {{__('Delete')}}
+                                                        @else
+                                                        {{__('Restore')}}
+                                                        @endif
+                                                    </span>
                                                 </a>
 
                                                 {!! Form::close() !!}
                                             @endcan
 
-                                            <a href="#!" data-url="{{route('clients.reset',\Crypt::encrypt($client->id))}}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}">
+                                            <a href="#!" data-url="{{route('clients.reset',\Crypt::encrypt($client->id))}}"
+                                               data-ajax-popup="true"
+                                               class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}">
                                                 <i class="ti ti-adjustments"></i>
                                                 <span>  {{__('Reset Password')}}</span>
                                             </a>
@@ -71,7 +87,10 @@
                             </div>
                             <div class="card-body full-card">
                                 <div class="img-fluid rounded-circle card-avatar">
-                                    <img src="{{(!empty($client->avatar))? asset(Storage::url("uploads/avatar/".$client->avatar)): asset(Storage::url("uploads/avatar/avatar.png"))}}"  class="img-user wid-80 rounded-circle" alt="">
+                                    <img src="{{(!empty($client->avatar))? 
+                                         asset(Storage::url("uploads/avatar/".$client->avatar)):
+                                         asset(Storage::url("uploads/avatar/avatar.png"))}}"
+                                         class="img-user wid-80 rounded-circle" alt="">
                                 </div>
                                 <h4 class="mt-2 text-primary">{{ $client->name }}</h4>
                                 <p></p>

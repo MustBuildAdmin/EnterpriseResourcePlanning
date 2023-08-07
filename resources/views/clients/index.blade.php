@@ -31,11 +31,6 @@
 </style>
 @php
 	   $profile=\App\Models\Utility::get_file('uploads/avatar');
-	   $color_palate = 0;
-	$color = ['#4585b5','#cd3850', '#a7c57a', '#97ca49',
-			  '#d75bac','#a2d2ff','#ffafcc','#1d3557',
-			  '#606c38','#bc6c25','#ffbe0b','#fb5607',
-			  '#588157','#5e548e'];
 @endphp
 @include('crm.side-menu')
 
@@ -123,17 +118,19 @@
 					  @if ($client->color_code!=Null || $client->color_code!='')
 						@php $color_co =$client->color_code; @endphp
 						@else
-						@php $color_co =$color[$color_palate]; @endphp
+						@php $color_co =Utility::rndRGBColorCode(); @endphp
 						@endif
                         <?php  $short_lname=substr($client->lname, 0, 1);?>
-					  <div class="avatar avatar-xl mb-3 user-initial" style="background-color:{{$color_co}} ">{{strtoupper($short)}}{{strtoupper($short_lname)}}</div>
+					  <div class="avatar avatar-xl mb-3 user-initial" style="background-color:{{$color_co}};">
+						{{strtoupper($short)}}{{strtoupper($short_lname)}}
+					  </div>
 					  @endif
 					  <?php $name = strlen($client->name) > 20 ? substr($client->name,0,19)."..." : $client->name;?>
 					  <?php $email = strlen($client->email) > 20 ? substr($client->email,0,19)."..." : $client->email;?>
 					  <h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
 					  <h5 class="m-0 mb-1"><span title="{{ $client->email }}">{{ $email }}</span></h5>
 				   </div>
-				   @php $color_palate++; @endphp
+				 
 				   <div class="d-flex">
 					  <a data-bs-toggle="tooltip" title="@if($client->clientDeals){{$client->clientDeals->count()}}@endif"
 						href="#" class="card-btn">

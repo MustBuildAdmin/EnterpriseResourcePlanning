@@ -1,5 +1,6 @@
 
-{{ Form::model($client, array('route' => array('clients.update', $client->id), 'method' => 'PUT' ,'enctype'=>"multipart/form-data")) }}
+{{ Form::model($client, array('route' => array('clients.update', $client->id),
+'method' => 'PUT' ,'enctype'=>"multipart/form-data")) }}
 <div class="modal-body">
     <div class="row">
         <h5 class="sub-title"><strong>{{__('Basic Info')}}</strong></h5>
@@ -16,18 +17,22 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                        {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter Client Name'),'required'=>'required','id'=>'billings_name')) }}
+                        {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter Client Name'),
+                        'required'=>'required','id'=>'billings_name')) }}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
-                        {{ Form::label('lname', __('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                        <input type="text" name="lname" value="{{$user->lname}}" class="form-control" placeholder="{{__('Enter Last Name')}}" required>
+                        {{ Form::label('lname', __('Last Name'),['class'=>'form-label']) }}
+                        <span style='color:red;'>*</span>
+                        <input type="text" name="lname" value="{{$user->lname}}" class="form-control"
+                         placeholder="{{__('Enter Last Name')}}" required>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
-                        {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                        {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}
+                        <span style='color:red;'>*</span>
                         {{ Form::email('email', null, array('class' => 'form-control',
                         'placeholder'=>__('Enter Client Email'),'id'=>'email','required'=>'required')) }}
                         <span class="invalid-name email_edit_duplicate_error" role="alert" style="display: none;">
@@ -49,7 +54,8 @@
                <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <div class="form-group">
-                            {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                            {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
+                            <span style='color:red;'>*</span>
                             {!! Form::select('gender', $gender, $user->gender,
                                 array('class' => 'form-control','required'=>'required')) !!}
                             @error('role')
@@ -61,9 +67,11 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <div class="form-group">
-                            {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                            {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}
+                            <span style='color:red;'>*</span>
                             <div class="form-icon-user">
-                                {{Form::number('tax_number',null,array('class'=>'form-control','maxlength' => 20,'required'=>'required'))}}
+                                {{Form::number('tax_number',null,array('class'=>'form-control',
+                                'maxlength' => 20,'required'=>'required'))}}
                             </div>
                         </div>
                     </div>
@@ -79,13 +87,16 @@
             {{-- <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
-                        {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
                             <select class="form-control country" name="country" id='country'
                                         placeholder="Select Country" required>
                                         <option value="">{{ __('Select Country ...') }}</option>
                                         @foreach($countrylist as $key => $value)
-                                            <option value="{{$value->iso2}}" @if($user->country==$value->iso2) selected @endif>{{$value->name}}</option>
+                                            <option value="{{$value->iso2}}"
+                                                 @if($user->country==$value->iso2) selected @endif>{{$value->name}}
+                                            </option>
                                         @endforeach
                             </select>
                         </div>
@@ -167,7 +178,10 @@
                                     placeholder="Select Country" >
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($countrylist as $key => $value)
-                                        <option value="{{$value->iso2}}" @if($user->billing_country==$value->iso2) selected @endif>{{$value->name}}</option>
+                                        <option value="{{$value->iso2}}"
+                                             @if($user->billing_country==$value->iso2) selected @endif>
+                                             {{$value->name}}
+                                        </option>
                                     @endforeach
                         </select>
                     </div>
@@ -182,7 +196,10 @@
                                     placeholder="Select State" >
                                     <option value="">{{ __('Select State ...') }}</option>
                                     @foreach($statelist as $key => $value)
-                                        <option value="{{$value->iso2}}" @if($user->billing_state==$value->iso2) selected @endif>{{$value->name}}</option>
+                                        <option value="{{$value->iso2}}"
+                                             @if($user->billing_state==$value->iso2) selected @endif>
+                                             {{$value->name}}
+                                        </option>
                                     @endforeach
                         </select>
                     </div>
@@ -201,7 +218,8 @@
                 <div class="form-group">
                     {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        <input class="form-control" name="billing_phone" type="number" id="billing_phone" maxlength="16" placeholder="+91 111 111 1111" value='{{$user->billing_phone}}'>
+                        <input class="form-control" name="billing_phone" type="number" id="billing_phone" maxlength="16"
+                         placeholder="+91 111 111 1111" value='{{$user->billing_phone}}'>
                         <span class="invalid-name edit_billing_duplicate" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
@@ -226,8 +244,13 @@
             </div>
         </div>
         <div class="custom-control custom-checkbox mt-n1">
-            <input type="checkbox" name="copy_status" class="custom-control-input checkbox1" id="checkbox1" @if($user->copy_status==1) checked @else @endif>
-            <label class="custom-control-label" for="checkbox1">  <h6 class="sub-title"><strong>Do you copy a billing address<strong></h6></label>
+            <input type="checkbox" name="copy_status" class="custom-control-input checkbox1"
+             id="checkbox1" @if($user->copy_status==1) checked @else @endif>
+            <label class="custom-control-label" for="checkbox1">
+                <h6 class="sub-title">
+                    <strong>Do you copy a billing address<strong>
+                </h6>
+            </label>
         </div>
         @if(App\Models\Utility::getValByName('shipping_display')=='on')
             <div class="col-md-12 text-end">
@@ -252,7 +275,12 @@
                                     placeholder="Select Country" {{$disabled_enabled}}>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($countrylist as $key => $value)
-                                        <option value="{{$value->iso2}}" @isset($user->shipping_country)@if($user->shipping_country==$value->iso2) selected @endif @endisset>{{$value->name}}</option>
+                                        <option value="{{$value->iso2}}"
+                                            @isset($user->shipping_country)
+                                            @if($user->shipping_country==$value->iso2) selected @endif
+                                            @endisset>
+                                            {{$value->name}}
+                                        </option>
                                     @endforeach
                             </select>
                         </div>
@@ -266,7 +294,9 @@
                             placeholder="Select Country" {{$disabled_enabled}}>
                             <option value="">{{ __('Select State ...') }}</option>
                             @foreach($statelist as $key => $value)
-                                <option value="{{$value->iso2}}" @if($user->shipping_state==$value->iso2) selected @endif>{{$value->name}}</option>
+                                <option value="{{$value->iso2}}"
+                                    @if($user->shipping_state==$value->iso2) selected @endif>
+                                    {{$value->name}}</option>
                             @endforeach
                     </select>
                         </div>
