@@ -1,33 +1,33 @@
 @include('new_layouts.header')
 <style>
-#create {
-	height: 35px !important;
-	width: 12% !important;
-}
+	#create {
+		height: 35px !important;
+		width: 12% !important;
+	}
 
-#search_button {
-	height: 35px !important;
-	width: 12% !important;
-}
+	#search_button {
+		height: 35px !important;
+		width: 12% !important;
+	}
 
-#reset {
-	width: 12% !important;
-}
+	#reset {
+		width: 12% !important;
+	}
 
-.user-initial {
-	width: 101px;
-	height: 100px;
-	border-radius: 50%;
-	background-color: #e0e0e0;
-	color: #FFF;
-	font-size: 42px;
-	text-align: center;
+	.user-initial {
+		width: 101px;
+		height: 100px;
+		border-radius: 50%;
+		background-color: #e0e0e0;
+		color: #FFF;
+		font-size: 42px;
+		text-align: center;
 
-}
+	}
 
-.avatar-xl {
-    --tblr-avatar-size: 6.2rem;
-}
+	.avatar-xl {
+		--tblr-avatar-size: 6.2rem;
+	}
 </style>
 @php
 	   $profile=\App\Models\Utility::get_file('uploads/avatar');
