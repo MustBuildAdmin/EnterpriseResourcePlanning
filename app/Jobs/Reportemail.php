@@ -35,12 +35,13 @@ class Reportemail implements ShouldQueue
         $project_id=$this->podcast;
     ///   sending report  ############################################
                        $project=Project::where('id',$project_id)->first();
-                       $project_task=Con_task::where('project_id',$project_id)->whereIn('main_id', function($query){
+                       $instance_id=$project->instance_id;
+                       $project_task=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->whereIn('main_id', function($query){
                            $query->select('task_id')
                            ->from('task_progress')
                            ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
                        })->get();
-                       $actual_current_progress=Con_task::where('project_id',$project_id)->orderBy('id','ASC')->pluck('progress')->first();
+                       $actual_current_progress=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->orderBy('id','ASC')->pluck('progress')->first();
                        $actual_current_progress=round($actual_current_progress);
                        $actual_remaining_progress=100-$actual_current_progress;
                        $actual_remaining_progress=round($actual_remaining_progress);
@@ -119,7 +120,7 @@ class Reportemail implements ShouldQueue
                        $taskdata2=array();
                        $today_task_update=DB::table('task_progress')->where('project_id',$project_id)->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
                        foreach ($today_task_update as $key => $value) {
-                           $main_task=Con_task::where('main_id',$value->task_id)->first();
+                           $main_task=Con_task::where(['main_id'=>$value->task_id,'instance_id'=>$instance_id])->first();
                            $user=User::find($value->user_id);
                            if($user){
                                $user_name=$user->name;

@@ -23,7 +23,7 @@ class LinkController extends Controller
         $link->instance_id = Session::get('project_instance');
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->update(['predecessors'=>$request->target]);
  
         return response()->json([
             "action"=> "inserted",
@@ -38,7 +38,7 @@ class LinkController extends Controller
         $link->source = $request->source;
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->update(['predecessors'=>$request->target]);
         return response()->json([
             "action"=> "updated"
         ]);
@@ -49,7 +49,7 @@ class LinkController extends Controller
         $link->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $link->delete();
 
-        Con_task::where(['id'=>$link->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>0]);
+        Con_task::where(['id'=>$link->source,'project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->update(['predecessors'=>0]);
         return response()->json([
             "action"=> "deleted"
         ]);

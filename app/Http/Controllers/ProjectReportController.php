@@ -268,12 +268,12 @@ class ProjectReportController extends Controller
             if(\Auth::user()->type == 'company' || \Auth::user()->type =='super admin' )
             {
                 $project=Project::where('id',Session::get('project_id'))->first();
-                $project_task=Con_task::where('project_id',Session::get('project_id'))->whereIn('main_id', function($query){
+                $project_task=Con_task::where(['project_id'=> Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->whereIn('main_id', function($query){
                     $query->select('task_id')
                     ->from('task_progress')
                     ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
                 })->get();
-                $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))->orderBy('id','ASC')->pluck('progress')->first();
+                $actual_current_progress=Con_task::where(['project_id'=> Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->orderBy('id','ASC')->pluck('progress')->first();
                 $actual_current_progress=round($actual_current_progress);
                 //$todayprogress=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('created_at',Carbon::now())->get();
                 $actual_remaining_progress=100-$actual_current_progress;
@@ -360,8 +360,10 @@ class ProjectReportController extends Controller
                 }
                 $taskdata2=array();
                 $today_task_update=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
+                $instance_id=Session::get('project_instance');
+
                 foreach ($today_task_update as $key => $value) {
-                    $main_task=Con_task::where('main_id',$value->task_id)->first();
+                    $main_task=Con_task::where(['main_id'=>$value->task_id,'instance_id'=>$instance_id])->first();
                     $user=User::find($value->user_id);
                     if($user){
                         $user_name=$user->name;
@@ -486,12 +488,12 @@ class ProjectReportController extends Controller
         public function fetch_task_details(Request $request){
 
             try {
-
+                $instance_id=Session::get('project_instance');
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if($setting['company_type']==2){
                     $data=Con_task::whereRaw("find_in_set('" .$request->state_id . "',users)")
                     ->select('main_id as id', 'text as name')
-                    ->where('project_id',$request->get_id)
+                    ->where(['project_id'=>$request->get_id,'instance_id'=>$instance_id])
                     ->get();
                 }else{
                     $data=ProjectTask::whereRaw("find_in_set('$request->state_id',project_tasks.assign_to)")

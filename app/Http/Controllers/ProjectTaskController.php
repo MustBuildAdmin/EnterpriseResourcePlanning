@@ -176,6 +176,7 @@ class ProjectTaskController extends Controller
 
     public function get_all_task(Request $request){
         $project_id     = Session::get('project_id');
+        $instance_id     = Session::get('project_instance');
         $get_start_date = $request->start_date;
         $get_end_date   = $request->end_date;
         $status_task    = $request->status_task;
@@ -204,6 +205,7 @@ class ProjectTaskController extends Controller
                         ->whereNotNull('pro.instance_id')
                         ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)")
                         ->where('project_id', $project_id)
+                        ->where('instance_id', $instance_id)
                         ->where('type','task');
 
                 if($get_end_date != null && $status_task != null){
@@ -239,6 +241,7 @@ class ProjectTaskController extends Controller
                         ->join('projects as pro','pro.id','con_tasks.project_id')
                         ->whereNotNull('pro.instance_id')
                         ->where('project_id', $project_id)
+                        ->where('instance_id', $instance_id)
                         ->where('type','task');
 
                 if(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null && $status_task != null){
@@ -362,9 +365,11 @@ class ProjectTaskController extends Controller
     public function main_task_list(Request $request){
         if(Session::has('project_id')){
             $project_id = Session::get('project_id');
+            $instance_id=Session::get('project_instance');
         }
         else{
             $project_id = 0;
+            $instance_id=0;
         }
         $setting  = Utility::settings(\Auth::user()->creatorId());
         if($setting['company_type']==2){
@@ -375,7 +380,7 @@ class ProjectTaskController extends Controller
                 ->join('projects as pro', function($join) use($project_id) {
                     $join->on('pro.id', '=', 'con_tasks.project_id')
                     ->on('pro.instance_id', '=', 'con_tasks.instance_id')
-                    ->where('pro.id', $project_id);
+                    ->where('pro.id', $project_id)->where('pro.instance_id', $instance_id);
                 })
                 ->whereNotNull('pro.instance_id')
                 ->whereIn('con_tasks.project_id', $project_id)
@@ -395,6 +400,7 @@ class ProjectTaskController extends Controller
                     })
                     ->whereNotNull('pro.instance_id')
                     ->where('con_tasks.project_id', $project_id)
+                    ->where('con_tasks.instance_id', $instance_id)
                     ->where('type','project')
                     ->orwhereNull('type')
                     ->orderBy('con_tasks.main_id','ASC')
@@ -415,14 +421,16 @@ class ProjectTaskController extends Controller
     public function edit_assigned_to(Request $request){
         if(Session::has('project_id')){
             $project_id = Session::get('project_id');
+            $instance_id=Session::get('project_instance');
         }
         else{
             $project_id = 0;
+            $instance_id=0;
         }
         $task_main_id = $request->task_id;
         $con_task = $get_popup_data_con = Con_task::Select('con_tasks.*','projects.project_name','projects.description')
                     ->join('projects','projects.id','con_tasks.project_id')
-                    ->where('main_id',$task_main_id)->first();
+                    ->where('main_id',$task_main_id)->where('instance_id',$instance_id)->first();
     
         $assigned_to =  User::select("users.name", "users.id")
             ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
@@ -477,9 +485,11 @@ class ProjectTaskController extends Controller
     { 
         if(Session::has('project_id')){
             $project_id = Session::get('project_id');
+            $instance_id=Session::get('project_instance');
         }
         else{
             $project_id = 0;
+            $instance_id=0;
         }
 
         $usr = Auth::user();
@@ -526,7 +536,7 @@ class ProjectTaskController extends Controller
                             });
                     }
                     else{
-                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id)->orderBy('con_tasks.start_date','ASC');
                     }
                     
                     if(isset($_GET['task_types'])){
@@ -576,14 +586,14 @@ class ProjectTaskController extends Controller
                             });
                     }
                     else if($project_id != 0 && $_GET['end_date'] != ""){
-                        $tasks->whereDate('con_tasks.end_date', ">", $_GET['end_date'])->where('con_tasks.project_id', $project_id);
+                        $tasks->whereDate('con_tasks.end_date', ">", $_GET['end_date'])->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id);
                     }
                     else if($project_id != 0){
-                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id)
                         ->orderBy('con_tasks.end_date','ASC');
                     }
                     else{
-                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id)
                         ->orderBy('con_tasks.end_date','ASC');
                     }
 
@@ -606,6 +616,7 @@ class ProjectTaskController extends Controller
                                         })
                                         ->whereNotNull('pro.instance_id')
                                         ->where('con_tasks.project_id', $project_id)
+                                        ->where('con_tasks.instance_id', $instance_id)
                                         ->orderBy('main_id','DESC')
                                         ->get();
                     
@@ -1711,6 +1722,7 @@ class ProjectTaskController extends Controller
             $user = \Auth::user();
 
             $user_project_id=$request->id;
+            $project_get= Project::where(['id'=>$user_project_id])->first();
 
             // dd($request->all());
             $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -1749,7 +1761,8 @@ class ProjectTaskController extends Controller
                 if($user->type == 'client')
                 {
                     $project_id=Project::where('client_id',$user->id)->pluck('id')->first();
-                    $projects = Con_task::where('client_id', '=', $project_id);
+
+                    $projects = Con_task::where('client_id', '=', $project_id)->where('instance_id','=',$project_get->instance_id);
                     $users=[];
                     $status=[];
                     $project_title=[];
@@ -1760,6 +1773,7 @@ class ProjectTaskController extends Controller
                         $projects = Con_task::select('con_tasks.*')
                             ->leftjoin('project_users', 'project_users.project_id', 'con_tasks.project_id')
                             ->where('con_tasks.project_id', '=', $request->project_list)
+                            ->where('instance_id','=',$project_get->instance_id)
                             ->groupBy('con_tasks.id');
 
                         // $projects->whereIn('parent', function($query){
@@ -1795,7 +1809,7 @@ class ProjectTaskController extends Controller
                     $projects = $projects->orderBy('id','desc')->get();
 
                     $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
-                    $task_name = Con_task::select('main_id as id','text as name')->where('con_tasks.project_id', '=', $request->id)->get();
+                    $task_name = Con_task::select('main_id as id','text as name')->where('con_tasks.project_id', '=', $request->id)->where('instance_id','=',$project_get->instance_id)->get();
                     $status = Con_task::$priority;
 
                 }
