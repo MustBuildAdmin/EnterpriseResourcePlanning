@@ -4,7 +4,7 @@
     }
 </style>
 {{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form',
-'autocomplete'=>'off','enctype'=>"multipart/form-data"))}}
+  'autocomplete'=>'off','enctype'=>"multipart/form-data"))}}
 
     <div class="modal-body">
         <div class="row">
