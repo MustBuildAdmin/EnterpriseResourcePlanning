@@ -26,6 +26,7 @@ use DB;
 use Session;
 use Hash;
 use Exception;
+use App\Models\Instance;
 
 class RevisionController extends Controller
 {
@@ -40,6 +41,16 @@ class RevisionController extends Controller
             $holidayDateGet  = $request->holiday_date;
             $var             = rand('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$projectId;
             $instanceIdSet   = Hash::make($var);
+            $getPro = DB::table('projects')->where('id',$projectId)->first();
+
+            if($getPro != null){
+                $instanceStore = new Instance;
+                $instanceStore->instance   = $instanceIdSet;
+                $instanceStore->start_date = $getPro->start_date;
+                $instanceStore->end_date   = $getPro->end_date;
+                $instanceStore->project_id = $projectId;
+                $instanceStore->save();
+            }
 
             $nonWorkingDaysInsert = array(
                 'project_id'       => $projectId,

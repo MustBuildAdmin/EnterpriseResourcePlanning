@@ -719,8 +719,9 @@ class ProjectController extends Controller
         {
             Session::put('project_id',$project_id);
             Session::put('project_instance',$instance_id);
-            $project= Project::where(['id'=>$project_id,'instance_id'=>$instance_id])->first();
-            if(isset($project)){
+            $projectCheck = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->first();
+            $project = Project::where(['id'=>$project_id])->first();
+            if(isset($projectCheck)){
                 $usr           = Auth::user();
                 if(\Auth::user()->type == 'client'){
                 $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
@@ -730,13 +731,10 @@ class ProjectController extends Controller
                 if(in_array($project_id, $user_projects))
                 {
                     // test the holidays
-                        if($project->holidays==0){
-                            $holidays=Project_holiday::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->first();
-                            if(!$holidays){
-                                return redirect()->back()->with('error', __('No holidays are listed.'));
-                            }
-                        }
-
+                    $holidays = Project_holiday::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->first();
+                    // if(!$holidays){
+                    //     return redirect()->back()->with('error', __('No holidays are listed.'));
+                    // }
 
                     // end
                     $project_data = [];
