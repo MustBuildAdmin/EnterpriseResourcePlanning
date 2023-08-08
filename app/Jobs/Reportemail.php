@@ -36,12 +36,14 @@ class Reportemail implements ShouldQueue
     ///   sending report  ############################################
                        $project=Project::where('id',$project_id)->first();
                        $instance_id=$project->instance_id;
-                       $project_task=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->whereIn('main_id', function($query){
+                       $project_task=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])
+                       ->whereIn('main_id', function($query){
                            $query->select('task_id')
                            ->from('task_progress')
                            ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
                        })->get();
-                       $actual_current_progress=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->orderBy('id','ASC')->pluck('progress')->first();
+                       $actual_current_progress=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])
+                       ->orderBy('id','ASC')->pluck('progress')->first();
                        $actual_current_progress=round($actual_current_progress);
                        $actual_remaining_progress=100-$actual_current_progress;
                        $actual_remaining_progress=round($actual_remaining_progress);
@@ -51,8 +53,10 @@ class Reportemail implements ShouldQueue
                            $planned_start=date("d-m-Y", strtotime($value->start_date));
                            $planned_end=date("d-m-Y", strtotime($value->end_date));
 
-                           $actual_start=DB::table('task_progress')->where('project_id',$project_id)->where('task_id',$value->main_id)->max('created_at');
-                           $actual_end=DB::table('task_progress')->where('project_id',$project_id)->where('task_id',$value->main_id)->min('created_at');
+                           $actual_start=DB::table('task_progress')->where('project_id',$project_id)
+                           ->where('task_id',$value->main_id)->max('created_at');
+                           $actual_end=DB::table('task_progress')->where('project_id',$project_id)
+                           ->where('task_id',$value->main_id)->min('created_at');
                            $flag=0;
                            if($actual_start){
                                $flag=1;
@@ -118,9 +122,11 @@ class Reportemail implements ShouldQueue
                                );
                        }
                        $taskdata2=array();
-                       $today_task_update=DB::table('task_progress')->where('project_id',$project_id)->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
+                       $today_task_update=DB::table('task_progress')->where('project_id',$project_id)
+                       ->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
                        foreach ($today_task_update as $key => $value) {
-                           $main_task=Con_task::where(['main_id'=>$value->task_id,'instance_id'=>$instance_id])->first();
+                           $main_task=Con_task::where(['main_id'=>$value->task_id,'instance_id'=>$instance_id])
+                           ->first();
                            $user=User::find($value->user_id);
                            if($user){
                                $user_name=$user->name;
@@ -150,7 +156,10 @@ class Reportemail implements ShouldQueue
                        }
 
                        if($to){
-                           $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
+                           $pdf = Pdf::loadView('project_report.email',
+                           compact('taskdata','project','project_task','actual_current_progress',
+                           'actual_remaining_progress','taskdata2'))
+                           ->setPaper('a4', 'landscape')->setWarnings(false);
                            $data["email"] = $to;
                            $data["title"] = $project->project_name."- Daily Productivity Report";
                            $data["body"] = "Please find the attachment of the Today Productivity report";
@@ -165,7 +174,7 @@ class Reportemail implements ShouldQueue
                            });
                            $dir = 'uploads/cronreport/';
                            $image_path = date('ymdhis').$project_id.'.pdf';
-                           $path = Utility::upload_file($pdf->output(),'attachment',$image_path,$dir,[]);
+                           Utility::upload_file($pdf->output(),'attachment',$image_path,$dir,[]);
                            $insert=array(
                             'project_id'=>$project_id,
                             'url'=>$dir.$image_path,
