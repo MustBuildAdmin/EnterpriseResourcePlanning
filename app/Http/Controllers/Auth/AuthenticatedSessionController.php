@@ -135,6 +135,9 @@ class AuthenticatedSessionController extends Controller
                 return redirect('projects');
 
             }
+            elseif($user->type =='consultant'){
+                return redirect('consultant_index');
+            }
             else
             {
                 return redirect('users');
@@ -150,6 +153,8 @@ class AuthenticatedSessionController extends Controller
                
                 return redirect()->intended(RouteServiceProvider::HOME);
 
+            }elseif($user->type =='consultant'){
+                return redirect()->intended(RouteServiceProvider::CONSHOME);
             }
             else
             {

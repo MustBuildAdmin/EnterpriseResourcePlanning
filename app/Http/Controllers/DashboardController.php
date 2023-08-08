@@ -167,6 +167,11 @@ class DashboardController extends Controller
         }
     }
 
+    public function consultant_index(){
+
+        return view('consultants.dashboard.index');
+    }
+
     public function project_dashboard_index()
     {
         $user = Auth::user();

@@ -466,12 +466,20 @@ Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscre
     );
 
 
+Route::get('/consultant_index', 'DashboardController@consultant_index')->name('consultant_index')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
     [
         'XSS',
         'revalidate',
     ]
 );
+
 
 Route::get('/', 'DashboardController@account_dashboard')->name('new_home')->middleware(
     [

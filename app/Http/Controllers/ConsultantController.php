@@ -280,12 +280,6 @@ class ConsultantController extends Controller
 
     public function update(Request $request, $id)
     {
-      
-        if($request->reporting_to!=null){
-            $string_version = implode(',', $request->reporting_to);
-        }else{
-            $string_version = null;
-        }
        
         if(\Auth::user()->can('edit consultant'))
         {
@@ -358,7 +352,6 @@ class ConsultantController extends Controller
                     $request->all(), [
                                         'name' => 'required|max:120',
                                         'email' => 'required|email|unique:users,email,' . $id,
-                                        'role' => 'required',
                                         'gender'=>'required'
                                    ]
                 );
@@ -369,16 +362,14 @@ class ConsultantController extends Controller
                 }
 
            
-                $input         = $request->all();
+                $input        = $request->all();
                 $input['type']='Consultant';
                 $input['color_code']=$request->color_code;
-                $input['reporting_to']=$string_version;
                 $user->fill($input)->save();
                 // Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                 // CustomField::saveData($user, $request->customField);
 
-                $roles[] = $request->role;
-                $user->roles()->sync($roles);
+               
 
                 return redirect()->route('consultants.index')->with(
                     'success', 'User successfully updated.'
