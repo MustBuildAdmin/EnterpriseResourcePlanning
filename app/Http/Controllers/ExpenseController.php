@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 
 class ExpenseController extends Controller
 {
+    public $var = 'Permission Denied.';
+
     public function index($project_id)
     {
         if(\Auth::user()->can('manage expense'))
@@ -30,7 +32,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -47,7 +49,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -96,7 +98,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -115,7 +117,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -157,7 +159,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -176,7 +178,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
