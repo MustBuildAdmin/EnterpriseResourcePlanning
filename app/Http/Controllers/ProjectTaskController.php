@@ -535,7 +535,8 @@ class ProjectTaskController extends Controller
 
                 if(\Auth::user()->type != 'company'){
                     // Construction User
-                    $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress',
+                    $tasks = Con_task::select('con_tasks.text','con_tasks.users',
+                    'con_tasks.duration','con_tasks.progress',
                     'con_tasks.start_date','con_tasks.end_date','con_tasks.id',
                     'con_tasks.instance_id','con_tasks.main_id','pro.project_name',
                     'pro.id as project_id','pro.instance_id as pro_instance_id')
@@ -621,7 +622,8 @@ class ProjectTaskController extends Controller
                     else{
                         $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`)
                          and date(`con_tasks`.`end_date`)')
-                        ->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id)
+                        ->where('con_tasks.project_id', $project_id)
+                        ->where('con_tasks.instance_id', $instance_id)
                         ->orderBy('con_tasks.end_date','ASC');
                     }
 
@@ -959,7 +961,8 @@ class ProjectTaskController extends Controller
 
             if(date('Y-m-d') >= $get_date){
                 //Previous
-                $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)->select('percentage','description')->first();
+                $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)
+                ->select('percentage','description')->first();
 
                 if($get_popup_data != null){
                     $data = array(
@@ -1093,14 +1096,16 @@ class ProjectTaskController extends Controller
 
             if($task->is_complete == 0)
             {
-                $last_stage        = TaskStage::orderBy('order', 'DESC')->where('created_by',\Auth::user()->creatorId())->first();
+                $last_stage        = TaskStage::orderBy('order', 'DESC')
+                ->where('created_by',\Auth::user()->creatorId())->first();
                 $task->is_complete = 1;
                 $task->marked_at   = date('Y-m-d');
                 $task->stage_id    = $last_stage->id;
             }
             else
             {
-                $first_stage       = TaskStage::orderBy('order', 'ASC')->where('created_by',\Auth::user()->creatorId())->first();
+                $first_stage       = TaskStage::orderBy('order', 'ASC')
+                ->where('created_by',\Auth::user()->creatorId())->first();
                 $task->is_complete = 0;
                 $task->marked_at   = NULL;
                 $task->stage_id    = $first_stage->id;
