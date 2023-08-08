@@ -1490,8 +1490,8 @@ class ProjectController extends Controller
         $project = Project::find($projectID);
         if($project){
             $instance_id=Session::get('project_instance');
-            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
-            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
+            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
+            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
             return response()->json([
                 "data" => $task,
                 "links" => $link,
