@@ -41,6 +41,7 @@ use Config;
 
 class ProjectController extends Controller
 {
+    public $permdin = 'Permission Denied.';
     /**
      * Display a listing of the resource.
      *
@@ -55,7 +56,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -83,7 +84,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -584,7 +585,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -862,7 +863,7 @@ class ProjectController extends Controller
                         $actual_percentage= '0';
                         $no_working_days=$project->estimated_days;// include the last day
                         $date2=date_create($project->end_date);
-                    }  
+                    }
                     if($actual_percentage > 100){
                         $actual_percentage=100;
                     }
@@ -894,12 +895,12 @@ class ProjectController extends Controller
                     }else{
                         $workdone_percentage=0;
                     }
-                    $remaing_percenatge=round(100-$current_Planed_percentage);
+                    round(100-$current_Planed_percentage);
                     $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))
                     ->where('con_tasks.instance_id',Session::get('project_instance'))
                     ->where('con_tasks.type','task')->where('con_tasks.start_date','like',$cur.'%')->get();
                     $not_started=0;
-                    foreach ($project_task as $key => $value) {
+                    foreach ($project_task as $value) {
                         $result=Task_progress::where('task_id',$value->main_id)->first();
                         if(!$result){
                             $not_started=$not_started+1;
@@ -926,15 +927,15 @@ class ProjectController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Permission Denied.'));
+                    return redirect()->back()->with('error', __($permdin));
                 }
             }else{
-                return redirect()->back()->with('error', __('Permission Denied.'));
+                return redirect()->back()->with('error', __($permdin));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
     public function check_instance($id){
@@ -967,7 +968,8 @@ class ProjectController extends Controller
             {
                 // test the holidays
                     if($project->holidays==0){
-                        $holidays=Project_holiday::where(['project_id'=>$project->id,'instance_id'=>$project->instance_id])
+                        $holidays=Project_holiday::where(['project_id'=>$project->id,
+                        'instance_id'=>$project->instance_id])
                         ->first();
                         if(!$holidays){
                             return redirect()->back()->with('error', __('No holidays are listed.'));
@@ -1154,12 +1156,12 @@ class ProjectController extends Controller
                     $workdone_percentage=0;
                 }
                 $workdone_percentage=$workdone_percentage*100;
-                $remaing_percenatge=round(100-$current_Planed_percentage);
+                round(100-$current_Planed_percentage);
                 $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))
                 ->where('con_tasks.instance_id',Session::get('project_instance'))->where('con_tasks.type','task')
                 ->where('con_tasks.start_date','like',$cur.'%')->get();
                 $not_started=0;
-                foreach ($project_task as $key => $value) {
+                foreach ($project_task as $value) {
                     $result=Task_progress::where('task_id',$value->main_id)->first();
                     if(!$result){
                         $not_started=$not_started+1;
@@ -1185,12 +1187,12 @@ class ProjectController extends Controller
             }
             else
             {
-                return redirect()->back()->with('error', __('Permission Denied.'));
+                return redirect()->back()->with('error', __($permdin));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1214,8 +1216,9 @@ class ProjectController extends Controller
             $project = Project::findOrfail($project->id);
             $setting  = Utility::settings(\Auth::user()->creatorId());
             $country  = Utility::getcountry();
-
-            $project_holidays = Project_holiday::where(['project_id'=>$project->id,'instance_id'=>$project->instance_id])->orderBy('date','ASC')->get();
+            $project_holidays = Project_holiday::where(['project_id'=>$project->id,
+            'instance_id'=>$project->instance_id])
+            ->orderBy('date','ASC')->get();
 
             if($project->country != null){
                 $statelist = Utility::getstate($project->country);
@@ -1231,15 +1234,13 @@ class ProjectController extends Controller
             }
             else
             {
-                return response()->json(['error' => __('Permission denied.')], 401);
+                return response()->json(['error' => __($permdin)], 401);
             }
 
-            return view('projects.edit',compact('project','users','repoter','setting',
-            'country','statelist','project_holidays'));
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1343,13 +1344,13 @@ class ProjectController extends Controller
                 return redirect()->route('construction_main')->with('success', __('Project Updated Successfully'));
             }
             else{
-                return redirect()->route('construction_main')->with('eror', 
+                return redirect()->route('construction_main')->with('eror',
                 __('Your Project was Freezed! Cannot modfiy the data'));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1367,7 +1368,7 @@ class ProjectController extends Controller
             $projectID=$project->id;
             $instance_id=$project->instance_id;
             Con_task::where(['project_id'=>$projectID,'instance_id'=>$instance_id])->delete();
-            $project_holidays_delete=Project_holiday::where(['project_id'=>$projectID,
+            Project_holiday::where(['project_id'=>$projectID,
             'instance_id'=>$project->instance_id])->delete();
             Instance::where('project_id',$projectID)->delete();
 
@@ -1380,7 +1381,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1446,7 +1447,7 @@ class ProjectController extends Controller
             }
             else
             {
-                return redirect()->back()->with('error', __('Permission Denied.'));
+                return redirect()->back()->with('error', __($permdin));
             }
 
     }
@@ -1514,7 +1515,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1561,7 +1562,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1575,7 +1576,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1612,7 +1613,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1627,7 +1628,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1641,7 +1642,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1652,7 +1653,9 @@ class ProjectController extends Controller
         {
             $usr           = Auth::user();
             if(\Auth::user()->type == 'client'){
-              $user_projects = Project::where('client_id',\Auth::user()->id)->where('created_by',\Auth::user()->creatorId())->pluck('id','id')->toArray();;
+              $user_projects = Project::where('client_id',\Auth::user()->id)
+              ->where('created_by',\Auth::user()->creatorId())
+              ->pluck('id','id')->toArray();;
             }else{
               $user_projects = $usr->projects()->pluck('project_id', 'project_id')->toArray();
             }
@@ -1662,7 +1665,8 @@ class ProjectController extends Controller
 
                 if(!empty($request->keyword))
                 {
-                    $projects->where('project_name', 'LIKE', $request->keyword . '%')->orWhereRaw('FIND_IN_SET("' . $request->keyword . '",tags)');
+                    $projects->where('project_name', 'LIKE', $request->keyword . '%')
+                    ->orWhereRaw('FIND_IN_SET("' . $request->keyword . '",tags)');
                 }
                 if(!empty($request->status))
                 {
@@ -1674,7 +1678,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1690,9 +1694,10 @@ class ProjectController extends Controller
             {
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if($setting['company_type']==2){
-                    $project_holidays=Project_holiday::select('date')->where(['project_id'=>$projectID,'instance_id'=>$project->instance_id])->get();
-                    return view('construction_project.gantt', compact('project', 'tasks', 'duration','project_holidays'));
-                    //return view('projects.congantt', compact('project', 'tasks', 'duration'));
+                    $project_holidays=Project_holiday::select('date')
+                    ->where(['project_id'=>$projectID,'instance_id'=>$project->instance_id])->get();
+                    return view('construction_project.gantt',
+                    compact('project', 'tasks', 'duration','project_holidays'));
                 }else{
                     $tasksobj = $project->tasks;
                     foreach($tasksobj as $task)
@@ -1708,7 +1713,8 @@ class ProjectController extends Controller
                         $tmp['extra']        = [
                             'priority' => ucfirst(__($task->priority)),
                             'comments' => count($task->comments),
-                            'duration' => Utility::getDateFormated($task->start_date) . ' - ' . Utility::getDateFormated($task->end_date),
+                            'duration' => Utility::getDateFormated($task->start_date) . ' - ' .
+                            Utility::getDateFormated($task->end_date),
                         ];
                         $tasks[]             = $tmp;
                     }
@@ -1721,7 +1727,7 @@ class ProjectController extends Controller
 
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1736,14 +1742,6 @@ class ProjectController extends Controller
                 "data" => $task,
                 "links" => $link,
             ]);
-            // $project_data=json_decode($project->project_json);
-            // if(isset($project_data->data)){
-            //     return json_encode($project_data->data);
-            // }else{
-            //     $project=array();
-            //     return json_encode($project);
-            // }
-
         }else{
 
             return '';
@@ -1898,12 +1896,12 @@ class ProjectController extends Controller
             }
             else
             {
-                return redirect()->back()->with('error', __('Permission denied.'));
+                return redirect()->back()->with('error', __($permdin));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1932,7 +1930,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', 'Permission denied.');
+            return redirect()->back()->with('error', __($permdin));
         }
 
     }
@@ -2006,7 +2004,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -2032,7 +2030,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', 'Permission denied.');
+            return redirect()->back()->with('error', __($permdin));
         }
 
 
@@ -2074,7 +2072,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -2091,7 +2089,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -2122,12 +2120,12 @@ class ProjectController extends Controller
             }
             else
             {
-                return redirect()->back()->with('error', __('Permission denied.'));
+                return redirect()->back()->with('error', __($permdin));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -2161,7 +2159,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', 'Permission denied.');
+            return redirect()->back()->with('error',__($permdin));
         }
 
 
