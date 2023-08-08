@@ -38,9 +38,9 @@ class ExpenseController extends Controller
         if(\Auth::user()->can('create expense'))
         {
             $project = Project::find($project_id);
-            $instance_id=$project->instance_id;
+            $instanceid=$project->instance_id;
             $tasks=Con_task::select('main_id as id', 'text as name')
-            ->where(['project_id'=>$project_id,'instance_id'=>$instance_id])
+            ->where(['project_id'=>$project_id,'instance_id'=>$instanceid])
             ->get();
             return view('expenses.create', compact('project','tasks'));
         }
