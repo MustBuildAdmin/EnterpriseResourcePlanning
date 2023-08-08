@@ -23,7 +23,8 @@ class ExpenseController extends Controller
                 $amount= 0;
             }
            
-            $expense_cnt = Utility::projectCurrencyFormat($project_id, $amount) . '/' . Utility::projectCurrencyFormat($project_id, $project->budget);
+            $expense_cnt = Utility::projectCurrencyFormat($project_id, $amount);
+            $expense_cnt=$expense_cnt. '/' . Utility::projectCurrencyFormat($project_id, $project->budget);
 
             return view('expenses.index', compact('project', 'expense_cnt'));
         }

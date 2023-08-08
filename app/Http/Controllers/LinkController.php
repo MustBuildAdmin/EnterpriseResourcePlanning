@@ -23,7 +23,9 @@ class LinkController extends Controller
         $link->instance_id = Session::get('project_instance');
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->update(['predecessors'=>$request->target]);
+        Con_task::where(['id'=>$request->source,
+        'project_id'=>Session::get('project_id'),
+        'instance_id'=>Session::get('project_instance')])->update(['predecessors'=>$request->target]);
  
         return response()->json([
             "action"=> "inserted",

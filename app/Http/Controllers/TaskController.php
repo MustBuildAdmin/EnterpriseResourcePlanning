@@ -12,7 +12,8 @@ class TaskController extends Controller
 {
     public function store(Request $request){
 
-        $maxid=Con_task::where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->max('id');
+        $maxid=Con_task::where(['project_id'=>Session::get('project_id'),
+        'instance_id'=>Session::get('project_instance')])->max('id');
         if($maxid==null){
             $maxid=0;
         }
@@ -40,7 +41,9 @@ class TaskController extends Controller
         // update  the type
         Con_task::where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')])
         ->where('id',$request->parent)->update(['type'=>'project']);
-        $checkparent=Con_task::where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->where(['parent'=>$task->id])->get();
+        $checkparent=Con_task::where(['project_id'=>Session::get('project_id'),
+        'instance_id'=>Session::get('project_instance')])
+        ->where(['parent'=>$task->id])->get();
         if(count($checkparent)>0){
             $task->type="project";
         }else{
@@ -70,15 +73,18 @@ class TaskController extends Controller
         $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $task->delete();
          // checking whether its having parent or not
-         $checkparent=Con_task::where(['project_id'=> Session::get('project_id'),'instance_id'=>Session::get('project_instance')])
+         $checkparent=Con_task::where(['project_id'=> Session::get('project_id'),
+         'instance_id'=>Session::get('project_instance')])
                                 ->where(['parent'=>$row->parent])->first();
          if($checkparent){
              // update  the type
-             Con_task::where(['project_id'=> Session::get('project_id'),'instance_id'=>Session::get('project_instance')])
+             Con_task::where(['project_id'=> Session::get('project_id'),
+             'instance_id'=>Session::get('project_instance')])
                       ->where('id',$row->parent)->update(['type'=>'project']);
          }else{
               // update  the type
-              Con_task::where(['project_id'=> Session::get('project_id'),'instance_id'=>Session::get('project_instance')])
+              Con_task::where(['project_id'=> Session::get('project_id'),
+              'instance_id'=>Session::get('project_instance')])
                         ->where('id',$row->parent)->update(['type'=>'task']);
          }
         return response()->json([
@@ -103,7 +109,8 @@ class TaskController extends Controller
             }
             $task->users = $implodeusers;
         }
-        $checkparent=Con_task::where(['project_id'=> Session::get('project_id'),'instance_id'=>Session::get('project_instance')])->where(['parent'=>$task->id])->get();
+        $checkparent=Con_task::where(['project_id'=> Session::get('project_id'),
+        'instance_id'=>Session::get('project_instance')])->where(['parent'=>$task->id])->get();
         // update  the type
         Con_task::where(['project_id'=> Session::get('project_id'),'instance_id'=>Session::get('project_instance')])
                  ->where('id',$request->parent)->update(['type'=>'project']);
