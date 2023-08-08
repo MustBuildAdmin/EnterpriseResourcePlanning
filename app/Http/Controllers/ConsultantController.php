@@ -154,9 +154,9 @@ class ConsultantController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
+                    $imagepath = $dir . $fileNameToStore;
+                    if (\File::exists($imagepath)) {
+                        \File::delete($imagepath);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -227,7 +227,7 @@ class ConsultantController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-                $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
+                Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
 
                 return redirect()->route('consultants.index')->with('success', __('User successfully created.'));
             }

@@ -75,7 +75,8 @@
                     <span class="text-danger">*</span>
                         <div id="reporting_toerr">
                         {!! Form::select('reporting_to[]', $users, null,array('id' => 'choices-multiple1',
-                        'class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
+                            'class' => 'form-control chosen-select get_reportto',
+                            'multiple'=>'true','required'=>'required')) !!}
                         </div>
                     </div>
                 </div>
@@ -178,7 +179,7 @@
             <div class="form-group col-md-6">
                 {{ Form::label('role', __('User Role'),['class'=>'form-label']) }}
                 {!! Form::select('role', $roles, null,array('class' => 'form-control',
-                'required'=>'required')) !!}
+                    'required'=>'required')) !!}
                 @error('role')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
@@ -196,11 +197,13 @@
          </div>
         @elseif(\Auth::user()->type == 'super admin')
         <div class="row">
-            {!! Form::hidden('role', 'company', null,array('class' => 'form-control select2','required'=>'required')) !!}
+            {!! Form::hidden('role', 'company', null,array('class' => 'form-control',
+            'required'=>'required')) !!}
             <div class="col-md-6">
                 <div class="form-group">
                     {{Form::label('company_name',__('Company Name'),['class'=>'form-label']) }}
-                    {{Form::text('company_name',null,array('class'=>'form-control','maxlength' => 35,'placeholder'=>__('Enter Company Name'),'required'=>'required'))}}
+                    {{Form::text('company_name',null,array('class'=>'form-control','maxlength' => 35,
+                      'placeholder'=>__('Enter Company Name'),'required'=>'required'))}}
                     @error('company_name')
                     <small class="invalid-name" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -219,7 +222,8 @@
         </div>
             <div class="form-group col-md-6">
                 {{ Form::label('company_type', __('Company'),['class'=>'form-label']) }}
-                {!! Form::select('company_type', $company_type, null,array('class' => 'form-control select2','required'=>'required')) !!}
+                {!! Form::select('company_type', $company_type, null,array('class' => 'form-control',
+                    'required'=>'required')) !!}
                 @error('company_type')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
