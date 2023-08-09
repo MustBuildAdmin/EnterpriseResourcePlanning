@@ -711,15 +711,15 @@ class ProjectController extends Controller
 
     }
     public function instance_project($instance_id,$project_id){
-        $get_instance=Instance::where(['id'=>$instance_id])->first();
-        $instance_id=$get_instance->instance;
+        $getInstance=Instance::where(['id'=>$instance_id])->first();
+        $instanceId=$getInstance->instance;
         Session::forget('project_id');
         Session::forget('project_instance');
         if(\Auth::user()->can('view project'))
         {
             Session::put('project_id',$project_id);
-            Session::put('project_instance',$instance_id);
-            $projectCheck = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->first();
+            Session::put('project_instance',$instanceId);
+            $projectCheck = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->first();
             $project = Project::where(['id'=>$project_id])->first();
             if(isset($projectCheck)){
                 $usr           = Auth::user();
@@ -731,7 +731,7 @@ class ProjectController extends Controller
                 if(in_array($project_id, $user_projects))
                 {
                     // test the holidays
-                    $holidays = Project_holiday::where(['project_id'=>$project_id,'instance_id'=>$instance_id])->first();
+                    $holidays = Project_holiday::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->first();
                     // if(!$holidays){
                     //     return redirect()->back()->with('error', __('No holidays are listed.'));
                     // }
@@ -739,7 +739,7 @@ class ProjectController extends Controller
                     // end
                     $project_data = [];
                     // Task Count
-                    $tasks = Con_task::where('project_id',$project_id)->where('instance_id',$instance_id)->get();
+                    $tasks = Con_task::where('project_id',$project_id)->where('instance_id',$instanceId)->get();
                     $project_task         = $tasks->count();
                     $completedTask = Con_task::where('project_id',$project_id)->where('progress',100)->get();
 
