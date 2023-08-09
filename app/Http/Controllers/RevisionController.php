@@ -36,6 +36,7 @@ class RevisionController extends Controller
     public function revision_store(Request $request){
         try {
             $projectId       = Session::get('project_id');
+            $instanceId=Session::get('project_instance');
             $nonWorkingDays  = implode(',',$request->non_working_days);
             $holidayDateGet  = $request->holiday_date;
             $var             = rand('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$projectId;
@@ -66,7 +67,8 @@ class RevisionController extends Controller
             }
 
             $getConInstance = DB::table('con_tasks')->select('instance_id','project_id')
-                            ->where('project_id',$projectId)->orderBy('main_id','DESC')->first();
+                            ->where(['project_id'=>$projectId,'instance_id'=>$instanceId])
+                            ->orderBy('main_id','DESC')->first();
 
             if($getConInstance != null){
                 $conInstanceGet = $getConInstance->instance_id;

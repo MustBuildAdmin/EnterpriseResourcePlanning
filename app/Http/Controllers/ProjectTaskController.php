@@ -26,10 +26,10 @@ use Session;
 
 class ProjectTaskController extends Controller
 {
+    public $permdin = 'Permission Denied.';
     public function index($project_id)
     {
 
-        $usr = \Auth::user();
         if(\Auth::user()->can('manage project task'))
         {
             $project = Project::find($project_id);
@@ -49,7 +49,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -64,7 +64,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -135,7 +135,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -160,10 +160,12 @@ class ProjectTaskController extends Controller
             if($result==1){
                 if($view == 'list'){
                     $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
-                    return view('construction_project.taskboard', compact('view','tasks','project_id','user_id','start_date','end_date','setting','user_data'));
+                    return view('construction_project.taskboard',
+                    compact('view','tasks','project_id','user_id','start_date','end_date','setting','user_data'));
                 }else{
                     $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();
-                    return view('project_task.grid', compact('tasks','view','project_id','user_id','start_date','end_date','setting'));
+                    return view('project_task.grid',
+                    compact('tasks','view','project_id','user_id','start_date','end_date','setting'));
                 }
             }else{
                 return redirect()->back()->with('error', __('Project Not Freezed.'));
@@ -176,6 +178,7 @@ class ProjectTaskController extends Controller
 
     public function get_all_task(Request $request){
         $project_id     = Session::get('project_id');
+        $instance_id     = Session::get('project_instance');
         $get_start_date = $request->start_date;
         $get_end_date   = $request->end_date;
         $status_task    = $request->status_task;
@@ -192,18 +195,19 @@ class ProjectTaskController extends Controller
         // 3 > Pending Task
         // 4 > Completed Task
 
-        $usr = Auth::user();
-
         $setting  = Utility::settings(\Auth::user()->creatorId());
         if($setting['company_type']==2){
 
             if(\Auth::user()->type != 'company'){
-                $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress',
+                'con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                'con_tasks.instance_id','con_tasks.main_id','pro.project_name',
+                'pro.id as project_id','pro.instance_id as pro_instance_id')
                         ->join('projects as pro','pro.id','con_tasks.project_id')
                         ->whereNotNull('pro.instance_id')
                         ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)")
                         ->where('project_id', $project_id)
+                        ->where('instance_id', $instance_id)
                         ->where('type','task');
 
                 if($get_end_date != null && $status_task != null){
@@ -228,20 +232,25 @@ class ProjectTaskController extends Controller
                     $tasks->where('progress','>=','100');
                 }
                 else{
-                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`)
+                    and date(`con_tasks`.`end_date`)')
                     ->orderBy('con_tasks.start_date','ASC');
                 }
             }
             else{
                 // Construction Company
-                $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress',
+                'con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                'con_tasks.instance_id','con_tasks.main_id','pro.project_name',
+                'pro.id as project_id','pro.instance_id as pro_instance_id')
                         ->join('projects as pro','pro.id','con_tasks.project_id')
                         ->whereNotNull('pro.instance_id')
                         ->where('project_id', $project_id)
+                        ->where('instance_id', $instance_id)
                         ->where('type','task');
 
-                if(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null && $status_task != null){
+                if(count($json_user_id) != 0 &&
+                $get_start_date != null && $get_end_date != null && $status_task != null){
                     $tasks->where(function ($query) use ($json_user_id) {
                         foreach($json_user_id as $get_user_id){
                             if($get_user_id != ""){
@@ -341,7 +350,8 @@ class ProjectTaskController extends Controller
                     $tasks->where('progress','>=','100');
                 }
                 else{
-                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                    $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and
+                     date(`con_tasks`.`end_date`)')
                     ->orderBy('con_tasks.end_date','ASC');
                 }
             }
@@ -362,20 +372,24 @@ class ProjectTaskController extends Controller
     public function main_task_list(Request $request){
         if(Session::has('project_id')){
             $project_id = Session::get('project_id');
+            $instance_id=Session::get('project_instance');
         }
         else{
             $project_id = 0;
+            $instance_id=0;
         }
         $setting  = Utility::settings(\Auth::user()->creatorId());
         if($setting['company_type']==2){
             
             if(\Auth::user()->type != 'company'){
-                $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration',
+                'con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id',
+                'pro.instance_id as pro_instance_id')
                 ->join('projects as pro', function($join) use($project_id) {
                     $join->on('pro.id', '=', 'con_tasks.project_id')
                     ->on('pro.instance_id', '=', 'con_tasks.instance_id')
-                    ->where('pro.id', $project_id);
+                    ->where('pro.id', $project_id)->where('pro.instance_id', $instance_id);
                 })
                 ->whereNotNull('pro.instance_id')
                 ->whereIn('con_tasks.project_id', $project_id)
@@ -386,8 +400,10 @@ class ProjectTaskController extends Controller
                 ->get();
             }
             else{
-                $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                $show_parent_task = Con_task::
+                select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress',
+                'con_tasks.start_date','con_tasks.end_date','con_tasks.id','con_tasks.instance_id',
+                    'con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
                     ->join('projects as pro', function($join) use($project_id) {
                         $join->on('pro.id', '=', 'con_tasks.project_id')
                         ->on('pro.instance_id', '=', 'con_tasks.instance_id')
@@ -395,6 +411,7 @@ class ProjectTaskController extends Controller
                     })
                     ->whereNotNull('pro.instance_id')
                     ->where('con_tasks.project_id', $project_id)
+                    ->where('con_tasks.instance_id', $instance_id)
                     ->where('type','project')
                     ->orwhereNull('type')
                     ->orderBy('con_tasks.main_id','ASC')
@@ -415,14 +432,16 @@ class ProjectTaskController extends Controller
     public function edit_assigned_to(Request $request){
         if(Session::has('project_id')){
             $project_id = Session::get('project_id');
+            $instance_id=Session::get('project_instance');
         }
         else{
             $project_id = 0;
+            $instance_id=0;
         }
         $task_main_id = $request->task_id;
-        $con_task = $get_popup_data_con = Con_task::Select('con_tasks.*','projects.project_name','projects.description')
+        $con_task = Con_task::Select('con_tasks.*','projects.project_name','projects.description')
                     ->join('projects','projects.id','con_tasks.project_id')
-                    ->where('main_id',$task_main_id)->first();
+                    ->where('main_id',$task_main_id)->where('instance_id',$instance_id)->first();
     
         $assigned_to =  User::select("users.name", "users.id")
             ->leftjoin('project_users as project','project.user_id', '=', 'users.id')
@@ -432,11 +451,12 @@ class ProjectTaskController extends Controller
 
         $total_pecentage = Task_progress::where('task_id',$task_main_id)->sum('percentage');
 
-        return view('project_task_con.edit_assigned_to', compact('task_main_id','con_task','assigned_to','total_pecentage'));
+        return view('project_task_con.edit_assigned_to',
+        compact('task_main_id','con_task','assigned_to','total_pecentage'));
     }
 
     public function update_assigned_to(Request $request){
-        $task_main_id = $request->task_main_id; 
+        $task_main_id = $request->task_main_id;
         if($request->users != null){
             $assigned_to = json_encode($request->users);
         }
@@ -460,7 +480,8 @@ class ProjectTaskController extends Controller
               $bugs = Bug::whereIn('project_id', $user_projects)->where('created_by',\Auth::user()->creatorId())->get();
             }
             else{
-              $bugs = Bug::where('created_by',\Auth::user()->creatorId())->whereRaw("find_in_set('" . \Auth::user()->id . "',assign_to)")->get();
+              $bugs = Bug::where('created_by',\Auth::user()->creatorId())
+              ->whereRaw("find_in_set('" . \Auth::user()->id . "',assign_to)")->get();
             }
           }
           if($view == 'list'){
@@ -468,18 +489,19 @@ class ProjectTaskController extends Controller
           }else{
             return view('projects.allBugGridView', compact('bugs','bugStatus','view'));
           }
-          return redirect()->back()->with('error', __('Permission Denied.'));
     }
 
 
     // For Load Task using ajax
     public function taskboardView(Request $request)
-    { 
+    {
         if(Session::has('project_id')){
             $project_id = Session::get('project_id');
+            $instance_id=Session::get('project_instance');
         }
         else{
             $project_id = 0;
+            $instance_id=0;
         }
 
         $usr = Auth::user();
@@ -513,8 +535,11 @@ class ProjectTaskController extends Controller
 
                 if(\Auth::user()->type != 'company'){
                     // Construction User
-                    $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $tasks = Con_task::select('con_tasks.text','con_tasks.users',
+                    'con_tasks.duration','con_tasks.progress',
+                    'con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name',
+                    'pro.id as project_id','pro.instance_id as pro_instance_id')
                             ->join('projects as pro','pro.id','con_tasks.project_id')
                             ->whereNotNull('pro.instance_id')
                             ->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
@@ -526,7 +551,10 @@ class ProjectTaskController extends Controller
                             });
                     }
                     else{
-                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)->orderBy('con_tasks.start_date','ASC');
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and 
+                        date(`con_tasks`.`end_date`)')
+                        ->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id)
+                        ->orderBy('con_tasks.start_date','ASC');
                     }
                     
                     if(isset($_GET['task_types'])){
@@ -540,8 +568,10 @@ class ProjectTaskController extends Controller
                         }
                     }
 
-                    $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration',
+                    'con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id',
+                    'pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
                                         ->join('projects as pro', function($join) {
                                             $join->on('pro.id', '=', 'con_tasks.project_id')
                                             ->on('pro.instance_id', '=', 'con_tasks.instance_id');
@@ -555,12 +585,16 @@ class ProjectTaskController extends Controller
                 }
                 else{
                     // Construction Company
-                    $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $tasks = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration',
+                    'con_tasks.progress',
+                    'con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name',
+                    'pro.id as project_id','pro.instance_id as pro_instance_id')
                             ->join('projects as pro','pro.id','con_tasks.project_id')
                             ->whereNotNull('pro.instance_id');
 
-                    if($project_id != 0 && $_GET['user_id'] != "" && $_GET['start_date'] != "" && $_GET['end_date'] != ""){
+                    if($project_id != 0 && $_GET['user_id'] != "" &&
+                     $_GET['start_date'] != "" && $_GET['end_date'] != ""){
                         $tasks->where('project_id', $project_id)
                             ->whereRaw("find_in_set('" . $_GET['user_id'] . "',users)")
                             ->where(function ($query) use ($get_start_date, $get_end_date) {
@@ -576,14 +610,20 @@ class ProjectTaskController extends Controller
                             });
                     }
                     else if($project_id != 0 && $_GET['end_date'] != ""){
-                        $tasks->whereDate('con_tasks.end_date', ">", $_GET['end_date'])->where('con_tasks.project_id', $project_id);
+                        $tasks->whereDate('con_tasks.end_date', ">", $_GET['end_date'])
+                        ->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id);
                     }
                     else if($project_id != 0){
-                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`)
+                         and date(`con_tasks`.`end_date`)')
+                        ->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id)
                         ->orderBy('con_tasks.end_date','ASC');
                     }
                     else{
-                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')->where('con_tasks.project_id', $project_id)
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`)
+                         and date(`con_tasks`.`end_date`)')
+                        ->where('con_tasks.project_id', $project_id)
+                        ->where('con_tasks.instance_id', $instance_id)
                         ->orderBy('con_tasks.end_date','ASC');
                     }
 
@@ -598,14 +638,18 @@ class ProjectTaskController extends Controller
                         }
                     }
                     
-                    $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
+                    $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users',
+                    'con_tasks.duration','con_tasks.progress',
+                    'con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                    'con_tasks.instance_id','con_tasks.main_id','pro.project_name',
+                    'pro.id as project_id','pro.instance_id as pro_instance_id')
                                         ->join('projects as pro', function($join) {
                                             $join->on('pro.id', '=', 'con_tasks.project_id')
                                             ->on('pro.instance_id', '=', 'con_tasks.instance_id');
                                         })
                                         ->whereNotNull('pro.instance_id')
                                         ->where('con_tasks.project_id', $project_id)
+                                        ->where('con_tasks.instance_id', $instance_id)
                                         ->orderBy('main_id','DESC')
                                         ->get();
                     
@@ -613,7 +657,8 @@ class ProjectTaskController extends Controller
                 
                 $tasks = $tasks->get();
 
-                $returnHTML = view('project_task_con.' . $request->view, compact('tasks','project_select','get_user_data','show_parent_task'))->render();
+                $returnHTML = view('project_task_con.' . $request->view,
+                compact('tasks','project_select','get_user_data','show_parent_task'))->render();
             }
             else{
                 $task = ProjectTask::whereIn('project_id', $user_projects)->get();
@@ -699,19 +744,24 @@ class ProjectTaskController extends Controller
             $get_con_task = Con_task::where('main_id',$task_id)->first();
             $end_date     = $get_con_task->end_date != null ? explode(" ",$get_con_task->end_date) : array();
 
-            $get_popup_data_con = Con_task::Select('con_tasks.*','projects.project_name','projects.description')->join('projects','projects.id','con_tasks.project_id')->where('main_id',$task_id)->first();
+            $get_popup_data_con = Con_task::Select('con_tasks.*','projects.project_name','projects.description')
+            ->join('projects','projects.id','con_tasks.project_id')->where('main_id',$task_id)->first();
 
             if(\Auth::user()->type != 'company'){
-                $get_task_progress = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
-                    ->leftjoin("task_progress_file as file",\DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
+                $get_task_progress = Task_progress::
+                select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
+                    ->leftjoin("task_progress_file as file",
+                    \DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
                     ->where('task_progress.task_id',$task_id)->where('user_id',\Auth::user()->id)
                     ->where('task_progress.project_id',$get_popup_data_con->project_id)
                     ->groupBy('task_progress.id')
                     ->get();
                 
             }else{
-                $get_task_progress = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
-                    ->leftjoin("task_progress_file as file",\DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
+                $get_task_progress = Task_progress::
+                select('task_progress.*',\DB::raw('group_concat(file.filename) as filename'))
+                    ->leftjoin("task_progress_file as file",
+                    \DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
                     ->where('task_progress.task_id',$task_id)
                     ->where('task_progress.project_id',$get_popup_data_con->project_id)
                     ->groupBy('task_progress.id')
@@ -721,7 +771,8 @@ class ProjectTaskController extends Controller
             $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');
 
             if(date('Y-m-d') >= $get_date){
-                $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)->select('percentage','description')->first();
+                $get_popup_data = Task_progress::where('task_id',$task_id)
+                ->whereDate('created_at',$get_date)->select('percentage','description')->first();
 
                 if($get_popup_data != null){
                     $data = array(
@@ -754,7 +805,8 @@ class ProjectTaskController extends Controller
 
         $total_count_of_task = Task_progress::where('task_id',$task_id)->get()->count();
 
-        $remaining_working_days=Utility::remaining_duration_calculator($get_con_task->end_date,$get_con_task->project_id);
+        $remaining_working_days=Utility::
+        remaining_duration_calculator($get_con_task->end_date,$get_con_task->project_id);
         $remaining_working_days=$remaining_working_days-1;// include the last day
 
         $completed_days=$get_con_task->duration-$remaining_working_days;
@@ -770,7 +822,8 @@ class ProjectTaskController extends Controller
             $current_Planed_percentage=100;
         }
         
-        return view('construction_project.task_particular_list',compact('task_id','data','total_pecentage', 'current_Planed_percentage'));
+        return view('construction_project.task_particular_list',
+        compact('task_id','data','total_pecentage', 'current_Planed_percentage'));
     }
 
     public function add_particular_task(Request $request){
@@ -790,11 +843,11 @@ class ProjectTaskController extends Controller
         
         $task_progress_id = $request->task_progress_id;
         $task_id          = $request->task_id;
-        $user_id          = \Auth::user()->id;
-        $project_id       = Session::get('project_id');
         $task             = Con_task::where('main_id',$task_id)->first();
-        $check_data       = Task_progress::select('task_progress.*',\DB::raw('group_concat(file.filename) as filename, group_concat(file.id) as file_id'))
-                                ->leftjoin("task_progress_file as file",\DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
+        $check_data       = Task_progress::select('task_progress.*',
+        \DB::raw('group_concat(file.filename) as filename, group_concat(file.id) as file_id'))
+                                ->leftjoin("task_progress_file as file",
+                                \DB::raw("FIND_IN_SET(file.id,task_progress.file_id)"),">",\DB::raw("'0'"))
                                 ->where('task_progress.id',$task_progress_id)
                                 ->where('task_progress.task_id',$task_id)
                                 ->where('task_progress.project_id',$task->project_id)
@@ -832,7 +885,9 @@ class ProjectTaskController extends Controller
         $user_id    = \Auth::user()->id;
         $project_id = Session::get('project_id');
         $task       = Con_task::where('main_id',$task_id)->first();
-        $check_data = Task_progress::where('id',$taskprogress_id)->where('task_id',$task_id)->where('project_id',$task->project_id)->where('user_id',$user_id)->first();
+        $check_data = Task_progress::where('id',$taskprogress_id)
+        ->where('task_id',$task_id)->where('project_id',$task->project_id)
+        ->where('user_id',$user_id)->first();
 
         if($check_data != null){
             $get_data = [
@@ -906,7 +961,8 @@ class ProjectTaskController extends Controller
 
             if(date('Y-m-d') >= $get_date){
                 //Previous
-                $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)->select('percentage','description')->first();
+                $get_popup_data = Task_progress::where('task_id',$task_id)->whereDate('created_at',$get_date)
+                ->select('percentage','description')->first();
 
                 if($get_popup_data != null){
                     $data = array(
@@ -949,7 +1005,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -965,7 +1021,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -995,7 +1051,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1012,7 +1068,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1026,7 +1082,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1040,14 +1096,16 @@ class ProjectTaskController extends Controller
 
             if($task->is_complete == 0)
             {
-                $last_stage        = TaskStage::orderBy('order', 'DESC')->where('created_by',\Auth::user()->creatorId())->first();
+                $last_stage        = TaskStage::orderBy('order', 'DESC')
+                ->where('created_by',\Auth::user()->creatorId())->first();
                 $task->is_complete = 1;
                 $task->marked_at   = date('Y-m-d');
                 $task->stage_id    = $last_stage->id;
             }
             else
             {
-                $first_stage       = TaskStage::orderBy('order', 'ASC')->where('created_by',\Auth::user()->creatorId())->first();
+                $first_stage       = TaskStage::orderBy('order', 'ASC')
+                ->where('created_by',\Auth::user()->creatorId())->first();
                 $task->is_complete = 0;
                 $task->marked_at   = NULL;
                 $task->stage_id    = $first_stage->id;
@@ -1063,7 +1121,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1089,7 +1147,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1105,7 +1163,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1144,7 +1202,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1168,7 +1226,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1183,7 +1241,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1220,7 +1278,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1240,7 +1298,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1256,7 +1314,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1305,7 +1363,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1327,7 +1385,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1428,7 +1486,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1544,7 +1602,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1564,7 +1622,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
     // Calendar View
@@ -1649,7 +1707,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
     }
 
@@ -1675,7 +1733,7 @@ class ProjectTaskController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($permdin));
         }
 
 
@@ -1711,6 +1769,7 @@ class ProjectTaskController extends Controller
             $user = \Auth::user();
 
             $user_project_id=$request->id;
+            $project_get= Project::where(['id'=>$user_project_id])->first();
 
             // dd($request->all());
             $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -1749,7 +1808,8 @@ class ProjectTaskController extends Controller
                 if($user->type == 'client')
                 {
                     $project_id=Project::where('client_id',$user->id)->pluck('id')->first();
-                    $projects = Con_task::where('client_id', '=', $project_id);
+
+                    $projects = Con_task::where('client_id', '=', $project_id)->where('instance_id','=',$project_get->instance_id);
                     $users=[];
                     $status=[];
                     $project_title=[];
@@ -1760,6 +1820,7 @@ class ProjectTaskController extends Controller
                         $projects = Con_task::select('con_tasks.*')
                             ->leftjoin('project_users', 'project_users.project_id', 'con_tasks.project_id')
                             ->where('con_tasks.project_id', '=', $request->project_list)
+                            ->where('instance_id','=',$project_get->instance_id)
                             ->groupBy('con_tasks.id');
 
                         // $projects->whereIn('parent', function($query){
@@ -1795,7 +1856,7 @@ class ProjectTaskController extends Controller
                     $projects = $projects->orderBy('id','desc')->get();
 
                     $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
-                    $task_name = Con_task::select('main_id as id','text as name')->where('con_tasks.project_id', '=', $request->id)->get();
+                    $task_name = Con_task::select('main_id as id','text as name')->where('con_tasks.project_id', '=', $request->id)->where('instance_id','=',$project_get->instance_id)->get();
                     $status = Con_task::$priority;
 
                 }

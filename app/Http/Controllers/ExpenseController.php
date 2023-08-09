@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 
 class ExpenseController extends Controller
 {
+    public $var = 'Permission Denied.';
+
     public function index($project_id)
     {
         if(\Auth::user()->can('manage expense'))
@@ -23,13 +25,14 @@ class ExpenseController extends Controller
                 $amount= 0;
             }
            
-            $expense_cnt = Utility::projectCurrencyFormat($project_id, $amount) . '/' . Utility::projectCurrencyFormat($project_id, $project->budget);
+            $expense_cnt = Utility::projectCurrencyFormat($project_id, $amount);
+            $expense_cnt=$expense_cnt. '/' . Utility::projectCurrencyFormat($project_id, $project->budget);
 
             return view('expenses.index', compact('project', 'expense_cnt'));
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -38,14 +41,15 @@ class ExpenseController extends Controller
         if(\Auth::user()->can('create expense'))
         {
             $project = Project::find($project_id);
+            $instanceid=$project->instance_id;
             $tasks=Con_task::select('main_id as id', 'text as name')
-            ->where('project_id',$project_id)
+            ->where(['project_id'=>$project_id,'instance_id'=>$instanceid])
             ->get();
             return view('expenses.create', compact('project','tasks'));
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -94,7 +98,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -104,14 +108,16 @@ class ExpenseController extends Controller
         {
             $project = Project::find($project_id);
             $expense = Expense::find($expense_id);
+            $instanceid=$project->instance_id;
+
             $tasks=Con_task::select('main_id as id', 'text as name')
-            ->where('project_id',$project_id)
+            ->where(['project_id'=>$project_id,'instance_id'=>$instanceid])
             ->get();
             return view('expenses.edit', compact('project', 'expense','tasks'));
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -153,7 +159,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
@@ -172,7 +178,7 @@ class ExpenseController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission Denied.'));
+            return redirect()->back()->with('error', __($var));
         }
     }
 
