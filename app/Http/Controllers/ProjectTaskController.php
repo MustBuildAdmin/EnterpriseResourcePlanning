@@ -156,7 +156,9 @@ class ProjectTaskController extends Controller
                     ->where('project.project_id',$project_id)
                     ->groupBy('users.id')
                     ->get();
-            $result=Project::where('id',$project_id)->pluck('freeze_status')->first();
+            $result= Instance::where('project_id',$request->project_id)
+                        ->where('instance',Session::get('project_instance'))->pluck('freeze_status')->first();
+
             if($result==1){
                 if($view == 'list'){
                     $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();

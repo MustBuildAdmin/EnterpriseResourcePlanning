@@ -1284,8 +1284,6 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('edit project'))
         {
-            if($request->freeze_status != 1){
-
                 $validator = \Validator::make(
                     $request->all(), [
                                     'project_name' => 'required',
@@ -1369,10 +1367,6 @@ class ProjectController extends Controller
                 }
 
                 return redirect()->route('construction_main')->with('success', __('Project Updated Successfully'));
-            }
-            else{
-                return redirect()->route('construction_main')->with('eror', __('Your Project was Freezed! Cannot modfiy the data'));
-            }
         }
         else
         {
@@ -1785,14 +1779,19 @@ class ProjectController extends Controller
     public function freeze_status_change(Request $request)
     {
         try {
-
-            $project=Project::find($request->project_id);
-            $instance_id=$project->instance_id;
-            $con_task=Con_task::where(['project_id'=>$request->project_id,'instance_id'=>$instance_id])->orderBy('id', 'ASC')->first();
-            $data = array('freeze_status'=>1,'start_date'=>$con_task->start_date,'end_date'=>$con_task->end_date,'estimated_days'=>$con_task->duration);
+            $instanceId  = Session::get('project_instance');
+            $conTask     = Con_task::where(['project_id'=>$request->project_id,'instance_id'=>$instanceId])
+                                ->orderBy('id', 'ASC')->first();
+            $data        = array(
+                                'start_date'=>$conTask->start_date,
+                                'end_date'=>$conTask->end_date,
+                                'estimated_days'=>$conTask->duration
+                            );
+            $instanceData = array('freeze_status'=>1,'start_date'=>$conTask->start_date,'end_date'=>$conTask->end_date);
 
             $getPreviousInstance = Con_task::where('project_id',$request->project_id)
-                                        ->where('instance_id','!=',$instance_id)->orderBy('id', 'Desc')->first();
+                                        ->where('instance_id','!=',$instanceId)->orderBy('id', 'Desc')->first();
+
             if($getPreviousInstance != null){
                 $setPreviousInstance = $getPreviousInstance->instance_id;
                 $getPreData = Con_task::where('project_id',$request->project_id)
@@ -1800,7 +1799,7 @@ class ProjectController extends Controller
                 foreach($getPreData as $insertPre){
                     Con_task::where([
                                 'project_id'=>$request->project_id,
-                                'instance_id'=>$instance_id,
+                                'instance_id'=>$instanceId,
                                 'id'=>$insertPre->id
                             ])
                     ->update(['progress' => $insertPre->progress]);
@@ -1808,6 +1807,7 @@ class ProjectController extends Controller
             }
 
             Project::where('id',$request->project_id)->update($data);
+            Instance::where('project_id',$request->project_id)->where('instance',$instanceId)->update($instanceData);
             return redirect()->back()->with('success', __('Freezed Status successfully changed.'));
 
 
@@ -1832,11 +1832,9 @@ class ProjectController extends Controller
     }
     public function get_freeze_status(Request $request){
         try {
-
-
-                $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
                 
-                return $result;
+            return Instance::where('project_id',$request->project_id)
+                    ->where('instance',Session::get('project_instance'))->pluck('freeze_status')->first();
 
         } catch (Exception $e) {
 
