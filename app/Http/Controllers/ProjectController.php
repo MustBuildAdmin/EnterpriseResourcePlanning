@@ -1489,12 +1489,11 @@ class ProjectController extends Controller
             Session::put('project_member',$user_array);
             $returnHTML = view('projects.get_member', compact('project'))->render();
 
-            $total_data = array(
+            
+            return  array(
                 $user_array,
                 $returnHTML
             );
-
-            return $total_data;
 
             return response()->json(
                 [
