@@ -1659,10 +1659,11 @@ class ProjectController extends Controller
                 $sort     = explode('-', 'created_at-desc');
                 $projects = Project::whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
 
-                if(!empty($request->keyword))
-                {
+                if(!empty($request->keyword)){
+                    $query='find_in_set("' . $request->keyword . '",tags)';
                     $projects->where('project_name', 'LIKE', $request->keyword . '%')
-                    ->orWhereRaw('find_in_set("' . $request->keyword . '",tags)');
+                    ->orWhereRaw($query);
+
                 }
                 if(!empty($request->status))
                 {
