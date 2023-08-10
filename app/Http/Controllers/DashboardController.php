@@ -658,6 +658,10 @@ class DashboardController extends Controller
             elseif(Auth::user()->type == 'client')
             {
                 return view('new_layouts.home');
+                
+            }elseif(Auth::user()->type == 'consultant'){
+
+                return redirect()->route('consultant_index');
             }
             else
             {
