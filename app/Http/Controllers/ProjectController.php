@@ -483,22 +483,6 @@ class ProjectController extends Controller
 
             }
 
-            $get_project_name = $request->project_name;
-
-            if(\Auth::user()->type=='company'){
-                $get_user_id = Auth::user()->id;
-                $receiver = Auth::user()->email;
-            }else{
-                $get_user_id = Auth::user()->creatorId();
-                $get_email = DB::table('users')->where('id',Auth::user()->creatorId())->first();
-                if($get_email != null){
-                    $receiver = $get_email->email;
-                }
-                else{
-                    $receiver = Auth::user()->email;
-                }
-            }
-
             if(\Auth::user()->type=='company'){
 
                 ProjectUser::create(
