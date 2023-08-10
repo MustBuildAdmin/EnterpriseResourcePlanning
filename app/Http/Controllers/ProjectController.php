@@ -719,6 +719,17 @@ class ProjectController extends Controller
         {
             Session::put('project_id',$project_id);
             Session::put('project_instance',$instanceId);
+            
+            $CheckInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
+            Session::put('latest_project_instance',$CheckInstanceFreeze->instance);
+
+            if($CheckInstanceFreeze->freeze_status == 1){
+                Session::put('current_revision_freeze', 1); //Freezed
+            }
+            else{
+                Session::put('current_revision_freeze', 0); //Not Freeze
+            }
+
             $projectCheck = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->first();
             $project = Project::where(['id'=>$project_id])->first();
             if(isset($projectCheck)){
