@@ -499,28 +499,6 @@ class ProjectController extends Controller
                 }
             }
 
-            $expires_at = date("Y-m-d H:i:s", strtotime("+30 minutes"));
-            $settings   = Utility::settings();
-            $sender     = $settings['company_email'] != "" ? $settings['company_email'] : "must-info@mustbuildapp.com";
-
-            $boq_insert = array(
-                'project_id'      => $project->id,
-                'security_code'   => rand(10000000,99999999),
-                'code_expires_at' => $expires_at,
-                'user_id'         => $get_user_id,
-                'sender'          => $sender,
-                'receiver'        => 'must-info@mustbuildapp.com',
-                'project_name'    => $request->project_name
-            );
-
-            DB::table('boq_email')->insert($boq_insert);
-
-            Mail::send('projects.boq_email',$boq_insert, function($message) use($boq_insert) {
-                $message->to($boq_insert['sender'])
-                        ->subject($boq_insert['project_name']. " | BOQ File Upload")
-                        ->from($boq_insert['receiver']);
-            });
-
             if(\Auth::user()->type=='company'){
 
                 ProjectUser::create(
