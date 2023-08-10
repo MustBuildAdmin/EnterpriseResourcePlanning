@@ -16,6 +16,7 @@ use App\Models\ActivityLog;
 use App\Models\ProjectTask;
 use App\Models\TaskComment;
 use App\Models\TaskChecklist;
+use App\Models\Instance;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -156,7 +157,9 @@ class ProjectTaskController extends Controller
                     ->where('project.project_id',$project_id)
                     ->groupBy('users.id')
                     ->get();
-            $result=Project::where('id',$project_id)->pluck('freeze_status')->first();
+            $result= Instance::where('project_id',$project_id)
+                        ->where('instance',Session::get('project_instance'))->pluck('freeze_status')->first();
+
             if($result==1){
                 if($view == 'list'){
                     $tasks = ProjectTask::where('created_by',\Auth::user()->creatorId())->get();

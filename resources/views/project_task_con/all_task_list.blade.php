@@ -53,9 +53,16 @@
                 @endphp
                 <tr>
                     <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
-                            <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
-                        </a>
+                        @if(Session::get('current_revision_freeze') == 1 &&
+                        Session::get('project_instance') != Session::get('latest_project_instance'))
+                            <a style="text-decoration: none;">
+                                <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
+                            </a>
+                        @else
+                            <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                                <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
+                            </a>
+                        @endif
                     </td>
                     <td style="width:10%;">
                         @if (strtotime($task->end_date) < time() && $task->progress < 100)
@@ -125,10 +132,17 @@
                     @if(\Auth::user()->type == 'company')
                         <td style="width:10%;" class="text-center w-15">
                             <div class="actions">
-                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
-                                    data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="floatrght btn btn-primary mb-3">
-                                    <i class="ti ti-pencil"></i>
-                                </a>
+                                @if(Session::get('current_revision_freeze') == 1 &&
+                                Session::get('project_instance') != Session::get('latest_project_instance'))
+                                    <a style="height: 36px;" href="#">
+                                        -
+                                    </a>
+                                @else
+                                    <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
+                                        data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="floatrght btn btn-primary mb-3">
+                                        <i class="ti ti-pencil"></i>
+                                    </a>
+                                @endif
                             </div>
                         </td>
                     @endif
