@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project_holiday;
 use App\Models\Project;
+use App\Models\Instance;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
@@ -14,8 +15,11 @@ class Project_holiday_Controller extends Controller
     {
         // if(\Auth::user()->can('manage branch'))
         // {
-            $project = Project::where('id', Session::get('project_id') )->first();
-            $holidays = Project_holiday::with(['project_name'])->where(['project_id'=> Session::get('project_id'),'instance_id'=>$project->instance_id])->get();
+            $project = Instance::where('project_id', Session::get('project_id'))
+                        ->where('instance', Session::get('project_instance'))->first();
+            $holidays = Project_holiday::with(['project_name'])
+                            ->where(['project_id'=> Session::get('project_id'),
+                            'instance_id'=>Session::get('project_instance')])->get();
             return view('project_holidays.index', compact('project','holidays'));
         // }
         // else
