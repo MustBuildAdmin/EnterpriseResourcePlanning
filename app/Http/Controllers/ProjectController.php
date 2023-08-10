@@ -1665,7 +1665,7 @@ class ProjectController extends Controller
                 if(!empty($request->keyword))
                 {
                     $projects->where('project_name', 'LIKE', $request->keyword . '%')
-                    ->orWhereRaw('FIND_IN_SET("' . $request->keyword . '",tags)');
+                    ->orWhereRaw('find_in_set("' . $request->keyword . '",tags)');
                 }
                 if(!empty($request->status))
                 {
