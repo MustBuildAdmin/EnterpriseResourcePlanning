@@ -75,7 +75,7 @@
                                         <!-- href="{{ route('projects.show', $project) }}" -->
                                             <a class="text-dark"  data-size="lg"
                                                 data-url="{{ route('projects.check_instance',$project->id) }}"
-                                                data-title="Choose Your Revision" data-ajax-popup="true" 
+                                                data-title="Choose Your Revision" data-ajax-popup="true"
                                                 data-bs-toggle="tooltip">{{ $project->project_name }}</a>
                                         </h5>
                                     </div>

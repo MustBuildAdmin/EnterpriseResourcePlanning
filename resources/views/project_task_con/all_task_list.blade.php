@@ -132,7 +132,8 @@
                     @if(\Auth::user()->type == 'company')
                         <td style="width:10%;" class="text-center w-15">
                             <div class="actions">
-                                @if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance'))
+                                @if(Session::get('current_revision_freeze') == 1 &&
+                                Session::get('project_instance') != Session::get('latest_project_instance'))
                                     <a style="height: 36px;" href="#">
                                         -
                                     </a>
