@@ -417,7 +417,8 @@ class ProjectController extends Controller
                             $link= new Link();
                             $link->project_id=$project->id;
                             $link->instance_id=$instance_id;
-                            $old_predis=Con_task::where(['id'=>$value['target'],'project_id'=>$project->id,'instance_id'=>$instance_id])->pluck('predecessors')->first();
+                            $old_predis=Con_task::where(['id'=>$value['target'],'project_id'=>$project->id,
+                            'instance_id'=>$instance_id])->pluck('predecessors')->first();
                             if($old_predis!=''){
                                 $predis=$old_predis.','.$value['source'];
                                 if($value['lag']!=0){
@@ -571,7 +572,8 @@ class ProjectController extends Controller
             //Telegram Notification
             $setting  = Utility::settings(\Auth::user()->creatorId());
             if(isset($setting['telegram_project_notification']) && $setting['telegram_project_notification'] ==1){
-                $msg = __("New").' '.$request->project_name.' '.__("project").' '.__(" created by").' ' .\Auth::user()->name.'.';
+                $msg = __("New").' '.$request->project_name.' '.__("project");
+                $msg=$msg.' '.__(" created by").' ' .\Auth::user()->name.'.';
                 Utility::send_telegram_msg($msg);
             }
             if(isset($request->holidays)){
