@@ -35,6 +35,12 @@
         @endphp
         <input type="hidden" name="color_code" value="{{ $rndColor }}">
 
+        @php
+        $password = Utility::randomPassword(); #function call
+        @endphp
+
+        <input type="hidden" name="password" value="{{ $password }}">
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -199,7 +205,7 @@ $(document).on("change", '#country', function () {
     $(document).ready(function(){
         $(document).on("keyup", '#email', function () {
             $.ajax({
-                url : '{{ route("check_duplicate_email_consultant") }}',
+                url : '{{ route("check_duplicate_email") }}',
                 type : 'GET',
                 data : { 'getname' : $("#email").val(),'formname' : "Users" },
                 success : function(data) {

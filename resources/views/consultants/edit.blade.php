@@ -36,6 +36,8 @@
             @endif
             <input type="hidden" name="color_code" value="{{ $color_co }}">
 
+            <input type="hidden" name="password" value="{{$user->password}}">
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -202,19 +204,20 @@
             }
         });
         
+        
         $(document).on("keyup", '#email', function () {
             $.ajax({
-                url : '{{ route("check_duplicate_email_consultant") }}',
+                url : '{{ route("check_duplicate_email") }}',
                 type : 'GET',
                 data : { 'getid': "{{$user->id}}", 'getname' : $("#email").val(), 'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
-                        $("#edit_consultant").prop('disabled',false);
-                        $(".email_duplicate_error").css('display','none');
+                        $("input#edit_consultant").prop('disabled',false);
+                        $("span.invalid-name.duplicate_error").css('display','none');
                     }
                     else{
-                        $("#edit_consultant").prop('disabled',true);
-                        $(".email_duplicate_error").css('display','block');
+                        $("input#edit_consultant").prop('disabled',true);
+                        $("span.invalid-name.duplicate_error").css('display','block');
                     }
                 },
                 error : function(request,error)

@@ -8,7 +8,7 @@ use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
 use App\Models\JoiningLetter;
 use App\Models\NOC;
-use App\Models\Consultant;
+use App\Models\User;
 use App\Models\UserCompany;
 use App\Models\Company_type;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +36,7 @@ class ConsultantController extends Controller
         {
             if(\Auth::user()->type == 'super admin')
             {
-                $users =Consultant::where([
+                $users =User::where([
                     ['name', '!=', Null],
                     [function ($query) use ($request) {
                         if (($s = $request->search)) {
@@ -45,14 +45,14 @@ class ConsultantController extends Controller
                             ->get();
                         }
                     }]
-                ])->where('created_by', '=', $user->creatorId())->paginate(8);
-                $user_count=Consultant::where('created_by', '=', $user->creatorId())->get()->count();
+                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
+                $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->get()->count();
                 // $users = Consultant::where('created_by', '=', $user->creatorId())->get();
             }
             else
             {
                 // $users = Consultant::where('created_by', '=', $user->creatorId())->get();
-                $users =Consultant::where([
+                $users =User::where([
                     ['name', '!=', Null],
                     [function ($query) use ($request) {
                         if (($s = $request->search)) {
@@ -61,8 +61,8 @@ class ConsultantController extends Controller
                             ->get();
                         }
                     }]
-                ])->where('created_by', '=', $user->creatorId())->paginate(8);
-                $user_count=Consultant::where('created_by', '=', $user->creatorId())->get()->count();
+                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
+                $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->get()->count();
             }
             
             // return view('user.index')->with('users', $users);
@@ -83,7 +83,7 @@ class ConsultantController extends Controller
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
         $company_type=Company_type::where('status',1)->get()->pluck('name', 'id');
-        $users =Consultant::where([
+        $users =User::where([
             ['name', '!=', Null],
             [function ($query) use ($request) {
                 if (($s = $request->search)) {
@@ -94,7 +94,7 @@ class ConsultantController extends Controller
             }]
         ])->where('created_by', '=', $user->creatorId())->get()->pluck('name', 'id');
         if(count($users)<=0){
-            $users =Consultant::where([
+            $users =User::where([
                 ['name', '!=', Null],
                 [function ($query) use ($request) {
                     if (($s = $request->search)) {
@@ -121,14 +121,8 @@ class ConsultantController extends Controller
     public function store(Request $request)
     {
 
-        if($request->reporting_to!=null){
-            $string_version = implode(',', $request->reporting_to);
-        }else{
-            $string_version = Null;
-        }
-       
 
-        if(\Auth::user()->can('create consultant'))
+        if(\Auth::user()->can('create user'))
         {
             $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
             if(\Auth::user()->type == 'super admin')
@@ -136,7 +130,8 @@ class ConsultantController extends Controller
                 $validator = \Validator::make(
                     $request->all(), [
                                        'name' => 'required|max:120',
-                                       'email' => 'required|email|unique:consultants',
+                                       'email' => 'required|email|unique:users',
+                                       'password' => 'required|min:6',
                                        'gender'=>'required'
                                    ]
                 );
@@ -154,9 +149,9 @@ class ConsultantController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $imagepath = $dir . $fileNameToStore;
-                    if (\File::exists($imagepath)) {
-                        \File::delete($imagepath);
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -168,32 +163,55 @@ class ConsultantController extends Controller
                     }
 
                 }
-                $user               = new Consultant();
+                $user               = new User();
                 $user['name']       = $request->name;
+                $user['lname']       = $request->lname;
                 $user['email']      = $request->email;
                 $user['gender']      = $request->gender;
-                $user['phone']      = $request->phone;
+                $psw                = $request->password;
+                $user['password']   = Hash::make($request->password);
+                $user['type']       = 'consultant';
+                $user['default_pipeline'] = 1;
+                $user['plan'] = 1;
+                $user['lang']       = !empty($default_language) ? $default_language->value : '';
                 $user['created_by'] = \Auth::user()->creatorId();
+                $user['plan']       = Plan::first()->id;
                 $user['country']=$request->country;
                 $user['state']=$request->state;
                 $user['city']=$request->city;
+                $user['phone']=$request->phone;
                 $user['zip']=$request->zip;
                 $user['address']=$request->address;
-                $user['type']='Consultant';
+                $user['company_type']       = $request->company_type;
                 $user['color_code']=$request->color_code;
+                $user['company_name']       = $request->company_name;
                 if(isset($url)){
                     $user['avatar']=$url;
                 }
                 $user->save();
-                // $role_r = Role::findByName('company');
-                // $user->assignRole($role_r);
+                $role_r = Role::findByName('company');
+                $user->assignRole($role_r);
+                $user->userDefaultDataRegister($user->id);
+                $user->userWarehouseRegister($user->id);
+                Utility::chartOfAccountTypeData($user->id);
+                Utility::chartOfAccountData1($user->id);
+                Utility::pipeline_lead_deal_Stage($user->id);
+                Utility::project_task_stages($user->id);
+                Utility::labels($user->id);
+                Utility::sources($user->id);
+                Utility::jobStage($user->id);
+                GenerateOfferLetter::defaultOfferLetterRegister($user->id);
+                ExperienceCertificate::defaultExpCertificatRegister($user->id);
+                JoiningLetter::defaultJoiningLetterRegister($user->id);
+                NOC::defaultNocCertificateRegister($user->id);
             }
             else
             {
                 $validator = \Validator::make(
                     $request->all(), [
                                        'name' => 'required|max:120',
-                                       'email' => 'required|email|unique:consultants',
+                                       'email' => 'required|email|unique:users',
+                                       'password' => 'required|min:6',
                                        'gender'=>'required'
 
                                    ]
@@ -204,34 +222,73 @@ class ConsultantController extends Controller
                     return redirect()->back()->with('error', $messages->first());
                 }
 
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+                
+                    $dir = Config::get('constants.USER_IMG');
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
 
                 $objUser    = \Auth::user()->creatorId();
-                $objUser =Consultant::find($objUser);
-                $user = Consultant::find(\Auth::user()->created_by);
-                $request['created_by'] = \Auth::user()->creatorId();
-                $request['gender']      = $request->gender;
-                $user = Consultant::create($request->all());
-                // if($request['type'] != 'client')
-                    // \App\Models\Utility::employeeDetails($user->id,\Auth::user()->creatorId());
-               
+                $objUser =User::find($objUser);
+                $user = User::find(\Auth::user()->created_by);
+                $total_user = $objUser->countUsers();
+                $plan       = Plan::find($objUser->plan);
+                if($total_user < $plan->max_users || $plan->max_users == -1)
+                {
+                    // $role_r                = Role::findById($request->role);
+                    $psw                   = $request->password;
+                    $request['password']   = Hash::make($request->password);
+                    $request['type']       = 'consultant';
+                    $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
+                    $request['created_by'] = \Auth::user()->creatorId();
+                    $request['gender']      = $request->gender;
+                    if(isset($url)){
+                        $request['avatar']=$url;
+                    }
+                   
+                    $user = User::create($request->all());
+                    // $user->assignRole($role_r);
+                    if($request['type'] != 'client')
+                      \App\Models\Utility::employeeDetails($user->id,\Auth::user()->creatorId());
+                }
+                else
+                {
+                    return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
+                }
             }
             // Send Email
             $setings = Utility::settings();
 
-            if($setings['create_user'] == 1) {
-             
-                $user->password = $this->generateRandomString();
-                $user->type = 'Consultant';
+            if($setings['create_consultant'] == 1) {
+                $user->password = $psw;
+                $user->type = 'consultant';
 
                 $userArr = [
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-                Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
+                $resp = Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
-                return redirect()->route('consultants.index')->with('success', __('User successfully created.'));
+                return redirect()->route('consultants.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
             }
-            return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
+            return redirect()->route('consultants.index')->with('success', __('User successfully created.'));
 
         }
         else
@@ -249,13 +306,13 @@ class ConsultantController extends Controller
         $company_type=Company_type::get()->pluck('name', 'id');
         if(\Auth::user()->can('edit consultant'))
         {
-            $user              = Consultant::findOrFail($id);
+            $user              = User::findOrFail($id);
           
             $countrylist=Utility::getcountry();
             $statelist=Utility::getstate($user->country);
             $user->customField = CustomField::getData($user, 'user');
             $customFields      = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
-            $users =Consultant::where([
+            $users =User::where([
                 ['name', '!=', Null],
                 [function ($query) use ($request) {
                     if (($s = $request->search)) {
@@ -280,12 +337,18 @@ class ConsultantController extends Controller
 
     public function update(Request $request, $id)
     {
+      
+        if($request->reporting_to!=null){
+            $string_version = implode(',', $request->reporting_to);
+        }else{
+            $string_version = null;
+        }
        
-        if(\Auth::user()->can('edit consultant'))
+        if(\Auth::user()->can('edit user'))
         {
             if(\Auth::user()->type == 'super admin')
             {
-                $user = Consultant::findOrFail($id);
+                $user = User::findOrFail($id);
                 $validator = \Validator::make(
                     $request->all(), [
                                        'name' => 'required|max:120',
@@ -307,9 +370,9 @@ class ConsultantController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $imagepath = $dir . $fileNameToStore;
-                    if (\File::exists($imagepath)) {
-                        \File::delete($imagepath);
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -321,9 +384,11 @@ class ConsultantController extends Controller
                     }
 
                 }
-                $role = Role::findByName('company');
+//                $role = Role::findById($request->role);
+                // $role = Role::findByName('company');
                 $input = $request->all();
-                $input['type'] = $role->name;
+                // $input['type'] = $role->name;
+                $input['color_code']=$request->color_code;
                 // $input['reporting_to']=$string_version;
                 if(isset($url)){
                     $input['avatar']=$url;
@@ -338,8 +403,8 @@ class ConsultantController extends Controller
                 );
                 $data =DB::table('settings')->where('created_by',$id)->update($insert2);
 
-                $roles[] = $role->id;
-                $user->roles()->sync($roles);
+                // $roles[] = $role->id;
+                // $user->roles()->sync($roles);
 
                 return redirect()->route('consultants.index')->with(
                     'success', 'User successfully updated.'
@@ -347,7 +412,7 @@ class ConsultantController extends Controller
             }
             else
             {
-                $user = Consultant::findOrFail($id);
+                $user = User::findOrFail($id);
                 $validator = \Validator::make(
                     $request->all(), [
                                         'name' => 'required|max:120',
@@ -360,16 +425,40 @@ class ConsultantController extends Controller
                     $messages = $validator->getMessageBag();
                     return redirect()->back()->with('error', $messages->first());
                 }
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                
+                    $dir = Config::get('constants.USER_IMG');
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
 
-           
-                $input        = $request->all();
-                $input['type']='Consultant';
-                $input['color_code']=$request->color_code;
+                }
+                // $role          = Role::findById($request->role);
+                $input         = $request->all();
+                // $input['type'] = $role->name;
+                if(isset($url)){
+                    $input['avatar']=$url;
+                }
                 $user->fill($input)->save();
-                // Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
-                // CustomField::saveData($user, $request->customField);
+                Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
+                CustomField::saveData($user, $request->customField);
 
-               
+                // $roles[] = $request->role;
+                // $user->roles()->sync($roles);
 
                 return redirect()->route('consultants.index')->with(
                     'success', 'User successfully updated.'
@@ -384,12 +473,13 @@ class ConsultantController extends Controller
     }
 
 
+
     public function destroy($id)
     {
 
         if(\Auth::user()->can('delete consultant'))
         {
-            $user = Consultant::find($id);
+            $user = User::find($id);
             if($user)
             {
                 if(\Auth::user()->type == 'super admin')
@@ -404,11 +494,11 @@ class ConsultantController extends Controller
                     }
                     $user->save();
                 }
-                if(\Auth::user()->type == 'company')
+                if(\Auth::user()->type == 'consultant')
                 {
                     $employee = Employee::where(['user_id' => $user->id])->delete();
                     if($employee){
-                        $delete_user = Consultant::where(['id' => $user->id])->delete();
+                        $delete_user = User::where(['id' => $user->id])->delete();
                         if($delete_user){
                             return redirect()->route('consultants.index')->with('success', __('User successfully deleted .'));
                         }else{
@@ -432,45 +522,12 @@ class ConsultantController extends Controller
         }
     }
 
-    public function check_duplicate_email_consultant(Request $request){
-        
-        try {
-            $formname  = $request->form_name;
-            $checkname = $request->get_name;
-            $getid     = $request->get_id;
     
-            if($formname == "Users"){
-                if($getid == null){
-                    $getcheckval = Consultant::where('email',$checkname)->first();
-                }
-                else{
-                    $getcheckval = Consultant::where('email',$checkname)->where('id','!=',$getid)->first();
-                }
-            }
-            else{
-                $getcheckval = "Not Empty";
-            }
-        
-            if($getcheckval == null){
-                return 1; //Success
-            }
-            else{
-                return 0; //Error
-            }
-        
-        } catch (Exception $e) {
-
-            return $e->getMessage();
-
-        }
-        
-    
-    }
 
     public function userPassword($id)
     {
         $eId        = \Crypt::decrypt($id);
-        $user = Consultant::find($eId);
+        $user = User::find($eId);
 
         return view('consultants.reset', compact('user'));
 
@@ -494,7 +551,7 @@ class ConsultantController extends Controller
         }
 
 
-        $user                 = Consultant::where('id', $id)->first();
+        $user                 = User::where('id', $id)->first();
         $user->forceFill([
                              'password' => Hash::make($request->password),
                          ])->save();
