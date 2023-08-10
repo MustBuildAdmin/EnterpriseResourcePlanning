@@ -425,6 +425,11 @@ class ProjectReportController extends Controller
         }
         // cron email
         public function cronmail(Request $request){
+            // record
+            $array=array('date'=>date('d-m-Y H:i:s'));
+            DB::table('cron_attempts')->insert($array);
+            // recordend
+            
             $time=Carbon::now()->format('H:i');
             $project=Project::where('end_date','>=',Carbon::now()->format('Y-m-d'))->where('report_time',$time)->get();
             foreach ($project as $key => $value3) {
