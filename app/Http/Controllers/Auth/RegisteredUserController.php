@@ -82,7 +82,7 @@ class RegisteredUserController extends Controller
             'company_name' => $request->company_name,
             'company_type'=>$request->company_type,
             'password' => Hash::make($password),
-             'type' => 'company',
+             'type' => $request->type,
              'default_pipeline' => 1,
               'plan' => 1,
               'lang' => Utility::getValByName('default_language'),
