@@ -97,11 +97,11 @@ class Activity_logs_con extends Model
             }
             elseif($this->log_type == 'Added Progress')
             {
-                return $user_name . ' ' . __('Added a Progress for this') . " <b>" . $remark['title'] . "</b>";
+                return $user_name . ' ' . __('Added a Progress for this Task') . " <b>" . $remark['title'] . "</b>";
             }
             elseif($this->log_type == 'Updated Progress')
             {
-                return $user_name . ' ' . __('Updated a Progress for this') . " <b>" . $remark['title'] . "</b>";
+                return $user_name . ' ' . __('Updated a Progress for this Task') . " <b>" . $remark['title'] . "</b>";
             }
         }
         else
