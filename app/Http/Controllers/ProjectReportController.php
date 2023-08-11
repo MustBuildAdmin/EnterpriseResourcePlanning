@@ -267,7 +267,7 @@ class ProjectReportController extends Controller
 
             if(\Auth::user()->type == 'company' || \Auth::user()->type =='super admin' )
             {
-                $project=Project::where('id',Session::get('project_id'))->first(); 
+                $project=Project::where('id',Session::get('project_id'))->first();
                 $project_task=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))->whereIn('main_id', function($query){
                     $query->select('task_id')
                     ->from('task_progress')
@@ -396,7 +396,7 @@ class ProjectReportController extends Controller
                 // return Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
                 $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
                 $pdf_name=$project->project_name.date('Y-m-d').'.pdf';
-                return $pdf->download($pdf_name);	
+                return $pdf->download($pdf_name);
                 // $data["email"] = $to;
                 // $data["title"] = $project->project_name."- Daily Productivity Report";
                 // $data["body"] = "Please find the attachment of the Today Productivity report";
@@ -425,11 +425,11 @@ class ProjectReportController extends Controller
         }
         // cron email
         public function cronmail(Request $request){
-           
             // record
             $array=array('date'=>date('d-m-Y H:i:s'));
             DB::table('cron_attempts')->insert($array);
             // recordend
+
             $time=Carbon::now()->format('H:i');
             $project=Project::where('end_date','>=',Carbon::now()->format('Y-m-d'))->where('report_time',$time)->get();
             foreach ($project as $key => $value3) {
@@ -445,7 +445,7 @@ class ProjectReportController extends Controller
 
             }
         }
-        
+
         public function fetch_user_details(Request $request){
 
             try {
