@@ -1,6 +1,5 @@
 @include('new_layouts.header')
 {{-- @extends('layouts.admin') --}}
-<script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{asset('assets/js/js/dhtmlxgantt.js?v=7.0.11')}}"></script>
 <link href="{{asset('assets/js/css/skins/dhtmlxgantt_material.css?v=7.0.11')}}" rel="stylesheet">
 
@@ -185,7 +184,7 @@ $holidays=implode(':',$holidays);
     <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
 
-@include('new_layouts.footer')
+<!-- @include('new_layouts.footer') -->
 
 <script type="text/javascript">
     // check freeze status
