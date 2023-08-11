@@ -415,7 +415,8 @@
           </div>
     </div>
    </div>
-        <div class="col-lg-4 bgwhite">
+   @if($project->freeze_status==1)
+    <div class="col-lg-4 bgwhite">
         <div class="card">
           <div class="card">
             <div class="card-body">
@@ -515,6 +516,7 @@
         </div>
   </div>
  </div>
+ @endif
         <div class="col-lg-4 bgwhite">
           <div class="card">
             <div class="card-header">
