@@ -2161,9 +2161,13 @@ class ProjectController extends Controller
             $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
             if($check_data == null){
                 Task_progress::insert($array);
+                ActivityController::activity_store(Auth::user()->id,
+                Session::get('project_id'), "Added Progress", $task->text);
             }
             else{
                 Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+                ActivityController::activity_store(Auth::user()->id,
+                Session::get('project_id'), "Updated Progress", $task->text);
             }
 
             $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');
