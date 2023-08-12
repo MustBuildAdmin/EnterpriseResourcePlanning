@@ -45,7 +45,7 @@ class ConsultantController extends Controller
                         }
                     }]
                 ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $user_count=User::where('created_by', '=', $user->creatorId())
+                $usercount=User::where('created_by', '=', $user->creatorId())
                                 ->where('type', '=', 'consultant')
                                 ->get()
                                 ->count();
@@ -62,13 +62,13 @@ class ConsultantController extends Controller
                         }
                     }]
                 ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $user_count=User::where('created_by', '=', $user->creatorId())
+                $usercount=User::where('created_by', '=', $user->creatorId())
                                 ->where('type', '=', 'consultant')
                                 ->get()
                                 ->count();
             }
             
-            return view('consultants.index')->with('users', $users)->with('user_count', $user_count);
+            return view('consultants.index')->with('users', $users)->with('usercount', $usercount);
         }
         else
         {
@@ -399,8 +399,6 @@ class ConsultantController extends Controller
                 );
                 $data =DB::table('settings')->where('created_by',$id)->update($insert2);
 
-                // $roles[] = $role->id;
-                // $user->roles()->sync($roles);
 
                 return redirect()->route('consultants.index')->with(
                     'success', 'User successfully updated.'
@@ -488,9 +486,10 @@ class ConsultantController extends Controller
                 {
                     $employee = Employee::where(['user_id' => $user->id])->delete();
                     if($employee){
-                        $delete_user = User::where(['id' => $user->id])->delete();
-                        if($delete_user){
-                            return redirect()->route('consultants.index')->with('success', __('User successfully deleted .'));
+                        $deleteuser = User::where(['id' => $user->id])->delete();
+                        if($deleteuser){
+                            return redirect()->route('consultants.index')
+                                             ->with('success', __('User successfully deleted .'));
                         }else{
                             return redirect()->back()->with('error', __('Something is wrong.'));
                         }
