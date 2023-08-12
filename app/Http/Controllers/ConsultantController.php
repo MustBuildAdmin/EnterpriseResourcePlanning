@@ -175,7 +175,6 @@ class ConsultantController extends Controller
                 $user['plan'] = 1;
                 $user['lang']       = !empty($default_language) ? $default_language->value : '';
                 $user['created_by'] = \Auth::user()->creatorId();
-                $user['plan']       = Plan::first()->id;
                 $user['country']=$request->country;
                 $user['state']=$request->state;
                 $user['city']=$request->city;
@@ -286,7 +285,8 @@ class ConsultantController extends Controller
                 ];
                 $resp = Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
-                return redirect()->route('consultants.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
+                return redirect()->route('consultants.index')
+                ->with('success', __('User successfully created.'));
             }
             return redirect()->route('consultants.index')->with('success', __('User successfully created.'));
 
