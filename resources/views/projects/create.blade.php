@@ -65,7 +65,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
+                                {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip',
+                                'required'=>'required'))}}
                             </div>
                         </div>
                     </div>
@@ -121,7 +122,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
-                                {{ Form::text('estimated_days', null, ['class' => 'form-control estimated_days' ,'readonly'=>true]) }}
+                                {{ Form::text('estimated_days', null,
+                                ['class' => 'form-control estimated_days' ,'readonly'=>true]) }}
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6">
