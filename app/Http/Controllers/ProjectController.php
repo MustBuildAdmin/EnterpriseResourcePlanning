@@ -483,44 +483,6 @@ class ProjectController extends Controller
 
             }
 
-            $get_project_name = $request->project_name;
-
-            if(\Auth::user()->type=='company'){
-                $get_user_id = Auth::user()->id;
-                $receiver = Auth::user()->email;
-            }else{
-                $get_user_id = Auth::user()->creatorId();
-                $get_email = DB::table('users')->where('id',Auth::user()->creatorId())->first();
-                if($get_email != null){
-                    $receiver = $get_email->email;
-                }
-                else{
-                    $receiver = Auth::user()->email;
-                }
-            }
-
-            $expires_at = date("Y-m-d H:i:s", strtotime("+30 minutes"));
-            $settings   = Utility::settings();
-            $sender     = $settings['company_email'] != "" ? $settings['company_email'] : "must-info@mustbuildapp.com";
-
-            $boq_insert = array(
-                'project_id'      => $project->id,
-                'security_code'   => rand(10000000,99999999),
-                'code_expires_at' => $expires_at,
-                'user_id'         => $get_user_id,
-                'sender'          => $sender,
-                'receiver'        => 'must-info@mustbuildapp.com',
-                'project_name'    => $request->project_name
-            );
-
-            DB::table('boq_email')->insert($boq_insert);
-
-            Mail::send('projects.boq_email',$boq_insert, function($message) use($boq_insert) {
-                $message->to($boq_insert['sender'])
-                        ->subject($boq_insert['project_name']. " | BOQ File Upload")
-                        ->from($boq_insert['receiver']);
-            });
-
             if(\Auth::user()->type=='company'){
 
                 ProjectUser::create(
@@ -2164,9 +2126,13 @@ class ProjectController extends Controller
             $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
             if($check_data == null){
                 Task_progress::insert($array);
+                ActivityController::activity_store(Auth::user()->id,
+                Session::get('project_id'), "Added Progress", $task->text);
             }
             else{
                 Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+                ActivityController::activity_store(Auth::user()->id,
+                Session::get('project_id'), "Updated Progress", $task->text);
             }
 
             $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');

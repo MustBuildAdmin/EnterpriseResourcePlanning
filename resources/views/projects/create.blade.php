@@ -6,6 +6,13 @@
         width: 100%!important;
         height: fit-content;
     }
+    .estimated_days:focus {
+        box-shadow: unset;
+        border: 1px solid #ccc !important;
+    }
+    .estimated_days:hover {
+        border: 1px solid #ccc !important;
+    }
 </style>
 <div class="modal-body">
     <div class="container">
@@ -58,7 +65,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('zip',null,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
+                                {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip',
+                                'required'=>'required'))}}
                             </div>
                         </div>
                     </div>
@@ -114,7 +122,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
-                                {{ Form::text('estimated_days', null, ['class' => 'form-control' ,'readonly'=>true]) }}
+                                {{ Form::text('estimated_days', null,
+                                ['class' => 'form-control estimated_days' ,'readonly'=>true]) }}
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6">
