@@ -1,4 +1,5 @@
 @include('new_layouts.header')
+@include('consultants.dashboard.side_bar',['hrm_header' => 'Dashboard'])
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <div>
         <!-- Page header -->

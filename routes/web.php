@@ -4851,6 +4851,10 @@ Route::any('download_report', 'ProjectReportController@download_report')->name('
 Route::any('revision', 'RevisionController@revision')->name('revision');
 Route::any('revision_store', 'RevisionController@revision_store')->name('revision_store');
 
+/*New Diary route*/
+Route::any('new_vo_change', 'DiaryController@new_vo_change')->name('new_vo_change');
+Route::any('new_drawing', 'DiaryController@new_drawing')->name('new_drawing');
+Route::any('new_rfi', 'DiaryController@new_rfi')->name('new_rfi');
 
 
 Route::any('{any}', function() {
