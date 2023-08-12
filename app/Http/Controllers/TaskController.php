@@ -114,6 +114,9 @@ class TaskController extends Controller
         }
         $task->save();
 
+        ActivityController::activity_store(Auth::user()->id,
+            Session::get('project_id'), "Updated Task", $request->text);
+
         return response()->json([
             "action"=> "updated"
         ]);
