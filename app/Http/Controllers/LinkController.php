@@ -24,7 +24,11 @@ class LinkController extends Controller
         $link->instance_id = Session::get('project_instance');
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])
+            ->update(['predecessors'=>$request->target]);
+
+        ActivityController::activity_store(Auth::user()->id,
+        Session::get('project_id'), "Store Predecessors", $request->target);
 
         return response()->json([
             "action"=> "inserted1",
@@ -39,7 +43,11 @@ class LinkController extends Controller
         $link->source = $request->source;
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>$request->target]);
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])
+        ->update(['predecessors'=>$request->target]);
+
+        ActivityController::activity_store(Auth::user()->id,
+        Session::get('project_id'), "Update Predecessors", $request->target);
         return response()->json([
             "action"=> "updated"
         ]);
@@ -49,6 +57,9 @@ class LinkController extends Controller
         $link = Link::find($id);
         $link->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $link->delete();
+
+        ActivityController::activity_store(Auth::user()->id,
+        Session::get('project_id'), "Deleted Predecessors", $id);
 
         Con_task::where(['id'=>$link->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>0]);
         return response()->json([
