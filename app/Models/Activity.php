@@ -115,6 +115,9 @@ class Activity extends Model
             {
                 $icon = 'list';
             }
+            else{
+                $icon = 'list';
+            }
         }
 
         return $icon;
