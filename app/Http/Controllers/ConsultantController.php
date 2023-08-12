@@ -46,7 +46,10 @@ class ConsultantController extends Controller
                         }
                     }]
                 ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->get()->count();
+                $user_count=User::where('created_by', '=', $user->creatorId())
+                                ->where('type', '=', 'consultant')
+                                ->get()
+                                ->count();
                 // $users = Consultant::where('created_by', '=', $user->creatorId())->get();
             }
             else
@@ -62,7 +65,10 @@ class ConsultantController extends Controller
                         }
                     }]
                 ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->get()->count();
+                $user_count=User::where('created_by', '=', $user->creatorId())
+                                ->where('type', '=', 'consultant')
+                                ->get()
+                                ->count();
             }
             
             // return view('user.index')->with('users', $users);
@@ -149,9 +155,9 @@ class ConsultantController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
+                    $imagepath = $dir . $fileNameToStore;
+                    if (\File::exists($imagepath)) {
+                        \File::delete($imagepath);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -188,8 +194,8 @@ class ConsultantController extends Controller
                     $user['avatar']=$url;
                 }
                 $user->save();
-                $role_r = Role::findByName('company');
-                $user->assignRole($role_r);
+                $roler = Role::findByName('company');
+                $user->assignRole($roler);
                 $user->userDefaultDataRegister($user->id);
                 $user->userWarehouseRegister($user->id);
                 Utility::chartOfAccountTypeData($user->id);
@@ -229,9 +235,9 @@ class ConsultantController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
+                    $imagepath = $dir . $fileNameToStore;
+                    if (\File::exists($imagepath)) {
+                        \File::delete($imagepath);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -246,12 +252,12 @@ class ConsultantController extends Controller
 
                 $objUser    = \Auth::user()->creatorId();
                 $objUser =User::find($objUser);
-                $user = User::find(\Auth::user()->created_by);
-                $total_user = $objUser->countUsers();
+                User::find(\Auth::user()->created_by);
+                $totaluser = $objUser->countUsers();
                 $plan       = Plan::find($objUser->plan);
-                if($total_user < $plan->max_users || $plan->max_users == -1)
+                if($totaluser < $plan->max_users || $plan->max_users == -1)
                 {
-                    // $role_r                = Role::findById($request->role);
+    
                     $psw                   = $request->password;
                     $request['password']   = Hash::make($request->password);
                     $request['type']       = 'consultant';
@@ -263,9 +269,10 @@ class ConsultantController extends Controller
                     }
                    
                     $user = User::create($request->all());
-                    // $user->assignRole($role_r);
-                    if($request['type'] != 'client')
-                      \App\Models\Utility::employeeDetails($user->id,\Auth::user()->creatorId());
+                    if($request['type'] != 'client'){
+                        Utility::employeeDetails($user->id,\Auth::user()->creatorId());
+                    }
+                    
                 }
                 else
                 {
@@ -338,12 +345,7 @@ class ConsultantController extends Controller
     public function update(Request $request, $id)
     {
       
-        if($request->reporting_to!=null){
-            $string_version = implode(',', $request->reporting_to);
-        }else{
-            $string_version = null;
-        }
-       
+      
         if(\Auth::user()->can('edit user'))
         {
             if(\Auth::user()->type == 'super admin')
@@ -370,9 +372,9 @@ class ConsultantController extends Controller
                     $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
+                    $imagepath = $dir . $fileNameToStore;
+                    if (\File::exists($imagepath)) {
+                        \File::delete($imagepath);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -384,10 +386,8 @@ class ConsultantController extends Controller
                     }
 
                 }
-//                $role = Role::findById($request->role);
-                // $role = Role::findByName('company');
                 $input = $request->all();
-                // $input['type'] = $role->name;
+        
                 $input['color_code']=$request->color_code;
                 // $input['reporting_to']=$string_version;
                 if(isset($url)){
@@ -430,12 +430,12 @@ class ConsultantController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
+                    $imagepath = $dir . $fileNameToStore;
+                    if (\File::exists($imagepath)) {
+                        \File::delete($imagepath);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -447,19 +447,13 @@ class ConsultantController extends Controller
                     }
 
                 }
-                // $role          = Role::findById($request->role);
                 $input         = $request->all();
-                // $input['type'] = $role->name;
                 if(isset($url)){
                     $input['avatar']=$url;
                 }
                 $user->fill($input)->save();
                 Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                 CustomField::saveData($user, $request->customField);
-
-                // $roles[] = $request->role;
-                // $user->roles()->sync($roles);
-
                 return redirect()->route('consultants.index')->with(
                     'success', 'User successfully updated.'
                 );

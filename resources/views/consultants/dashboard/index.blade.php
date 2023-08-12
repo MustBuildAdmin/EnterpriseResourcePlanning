@@ -537,7 +537,7 @@
                               </div>
                               <div class="col">
                                 <div class="text-truncate">
-                                  <strong>Sunny Airey</strong> 
+                                  <strong>Sunny Airey</strong>
                                   upload 3 new photos to category
                                    <strong>Inspirations</strong>.
                                 </div>
@@ -605,7 +605,7 @@
                               <div class="col">
                                 <div class="text-truncate">
                                   <strong>Arlie Armstead</strong>
-                                  sent a Review Request to 
+                                  sent a Review Request to
                                   <strong>Amanda Blake</strong>.
                                 </div>
                                 <div class="text-muted">2 days ago</div>
@@ -903,7 +903,10 @@
                 </div>
               </div>
               <div class="col-md-6 col-lg-4">
-                <a href="https://github.com/sponsors/codecalm" class="card card-sponsor" target="_blank" rel="noopener" style="background-image: url(./static/sponsor-banner-homepage.svg)" aria-label="Sponsor Tabler!">
+                <a href="https://github.com/sponsors/codecalm" class="card card-sponsor"
+                 target="_blank" rel="noopener"
+                  style="background-image: url(./static/sponsor-banner-homepage.svg)"
+                   aria-label="Sponsor Tabler!">
                   <div class="card-body"></div>
                 </a>
               </div>
@@ -912,7 +915,7 @@
                   <div class="card-header">
                     <h3 class="card-title">Social Media Traffic</h3>
                   </div>
-                  <table class="table card-table table-vcenter">
+                  <table class="table card-table table-vcenter" aria-describedby="social">
                     <thead>
                       <tr>
                         <th>Network</th>
@@ -993,7 +996,8 @@
                     <h3 class="card-title">Tasks</h3>
                   </div>
                   <div class="table-responsive">
-                    <table class="table card-table table-vcenter">
+                    <table class="table card-table table-vcenter" aria-describedby="tasks">
+                      <th></th>
                       <tr>
                         <td class="w-1 pe-0">
                           <input type="checkbox" class="form-check-input m-0 align-middle"
@@ -1242,7 +1246,9 @@
                               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                               <path d="M8 9h8" />
                               <path d="M8 13h6" />
-                              <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z" />
+                              <path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3
+                               3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3
+                                -3h12z" />
                             </svg> 5
                           </a>
                         </td>
@@ -1299,7 +1305,9 @@
                           </a>
                         </td>
                         <td>
-                          <span class="avatar avatar-sm" style="background-image: url(./static/avatars/001f.jpg)"></span>
+                          <span class="avatar avatar-sm"
+                           style="background-image: url(./static/avatars/001f.jpg)">
+                          </span>
                         </td>
                       </tr>
                     </table>
@@ -1314,9 +1322,12 @@
                   <div class="card-body border-bottom py-3">
                     <div class="d-flex">
                       <div class="text-muted"> Show <div class="mx-2 d-inline-block">
-                          <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
+                          <input type="text" class="form-control form-control-sm"
+                           value="8" size="3" aria-label="Invoices count">
                         </div> entries </div>
-                      <div class="ms-auto text-muted"> Search: <div class="ms-2 d-inline-block">
+                    <div class="ms-auto text-muted">
+                        Search:
+                        <div class="ms-2 d-inline-block">
                           <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
                         </div>
                       </div>
