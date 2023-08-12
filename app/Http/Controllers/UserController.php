@@ -61,7 +61,7 @@ class UserController extends Controller
                             ->get();
                         }
                     }]
-                ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->paginate(8);
+                ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('type', '!=', 'consultant')->paginate(8);
                 $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->count();
             }
             
