@@ -40,7 +40,6 @@ class ConsultantController extends Controller
                     ['name', '!=', Null],
                     [function ($query) use ($request) {
                         if (($s = $request->search)) {
-                            $user = \Auth::user();
                             $query->orWhere('name', 'LIKE', '%' . $s . '%')
                             ->get();
                         }
@@ -50,13 +49,11 @@ class ConsultantController extends Controller
                                 ->where('type', '=', 'consultant')
                                 ->get()
                                 ->count();
-                // $users = Consultant::where('created_by', '=', $user->creatorId())->get();
             }
             else
             {
-                // $users = Consultant::where('created_by', '=', $user->creatorId())->get();
                 $users =User::where([
-                    ['name', '!=', Null],
+                    ['name', '!=', null],
                     [function ($query) use ($request) {
                         if (($s = $request->search)) {
                             $user = \Auth::user();
@@ -71,7 +68,6 @@ class ConsultantController extends Controller
                                 ->count();
             }
             
-            // return view('user.index')->with('users', $users);
             return view('consultants.index')->with('users', $users)->with('user_count', $user_count);
         }
         else

@@ -67,7 +67,8 @@
         <div class=""></div>
         <li class="nav-item ">
           <select class="btn btn-primary my-1 me-2 font_size"
-           onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" id="language"> 
+           onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);"
+            id="language">
            @foreach (Utility::languages() as $language)
            <option class="" @if ($lang==$language) selected @endif value="{{ route('register', $language) }}">
             {{ Str::upper($language) }}
@@ -77,7 +78,8 @@
         </li>
       </div>
       <a href="/" class="navbar-brand navbar-brand-autodark">
-        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt="">
+        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png"
+        height="60" class="backgroundimge" alt="">
       </a>
       <form class="card card-md" id="registration" method="POST" action="{{ route('register') }}">
         <div class="card-body"> @csrf <h2 class="card-title text-center mb-4">{{ __('Sign Up') }}</h2>
@@ -102,15 +104,6 @@
             @enderror
           </div>
           <input type="hidden" name="password" value="{{Utility::randomPassword()}}">
-          <!-- <div class="mb-3"><label for="password" class="form-label">{{ __('Password') }}</label><input id="password" type="password" data-indicator="pwindicator" class="form-control pwstrength @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                          @error('password')
-          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-      @enderror
-                          <div id="pwindicator" class="pwindicator"><div class="bar"></div><div class="label"></div></div></div><div class="mb-3"><label for="password_confirmation" class="form-label">{{ __('Password Confirmation') }}</label><input id="password_confirmation" type="password" data-indicator="password_confirmation" class="form-control pwstrength @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password">
-                          @error('password_confirmation')
-          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-      @enderror
-                          <div id="password_confirmation" class="pwindicator"><div class="bar"></div><div class="label"></div></div></div> -->
           <div class="mb-3">
             <label for="company_name" class="form-label">{{ __('Company Name') }}
               <span class="error_class">*</span>
