@@ -155,22 +155,21 @@ background-color: #cfcfcf;
     </thead>
     <tbody>
      @forelse($taskdata as $key => $value)
-      @if($value['percentage_as_today'] != $value['actual_percent'])
+      @if( $value['actual_percent'] < $value['percentage_as_today'])
         <tr style="background-color: #dc3545;color: white;">
       @else
         <tr>
-
       @endif
         <td>{{$value['title']}}</td>
         <td>{{$value['planed_start']}}</td>
         <td>{{$value['planed_end']}}</td>
         <td>{{$value['duration']}}</td>
-        <td>{{$value['percentage_as_today']}}</td>
+        <td>{{$value['percentage_as_today']}}%</td>
         <td>Planned Value</td>
         <td>{{$value['actual_start']}}</td>
         <td>{{$value['actual_end']}}</td>
         <td>{{$value['actual_duration']}}</td>
-        <td>{{$value['actual_percent']}}</td>
+        <td>{{$value['actual_percent']}}%</td>
         <td>Earned Value</td>
       </tr>
      @empty
@@ -226,4 +225,5 @@ background-color: #cfcfcf;
 </section>
 </body>
 </html>
+
 
