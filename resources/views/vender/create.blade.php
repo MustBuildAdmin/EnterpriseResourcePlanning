@@ -24,7 +24,7 @@
                 {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{-- <input class="form-control" name="contact" type="number" id="contact" maxlength="16"  placeholder="+91 111 111 1111" required > --}}
-                    {{Form::text('contact',null,array('class'=>'form-control','maxlength' => '13','Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
+                    {{Form::number('contact',null,array('class'=>'form-control','max' => '10','Placeholder'=>'','required'=>'required'))}}
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group billing_phone">
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{Form::text('billing_phone',null,array('class'=>'form-control','maxlength' => 13,'Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
+                {{Form::number('billing_phone',null,array('class'=>'form-control','max' => 10,'Placeholder'=>'','required'=>'required'))}}
                 {{-- {{Form::text('billing_phone',null,array('class'=>'form-control'))}} --}}
 
             </div>
@@ -173,7 +173,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group shipping_phone">
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    {{Form::text('shipping_phone',null,array('class'=>'form-control','maxlength' => 13,'Placeholder'=>'+91 111 111 1111','required'=>'required'))}}
+                    {{Form::number('shipping_phone',null,array('class'=>'form-control','max' => 10,'Placeholder'=>'','required'=>'required'))}}
                     {{-- {{Form::text('shipping_phone',null,array('class'=>'form-control'))}} --}}
 
                 </div>

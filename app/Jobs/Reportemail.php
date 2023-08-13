@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\Con_task;
 use Carbon\Carbon;
 use DB;
@@ -113,12 +114,12 @@ class Reportemail implements ShouldQueue
                                    'planed_start'=>$planned_start,
                                    'planed_end'=>$planned_end,
                                    'duration'=>$value->duration.' Days',
-                                   'percentage_as_today'=>round($current_percentage).'%',
+                                   'percentage_as_today'=>round($current_percentage),
                                    'actual_start'=>$actual_start,
                                    'actual_end'=>$actual_end,
                                    'actual_duration'=>$value->duration.' Days',
                                    'remain_duration'=>$value->duration.' Days',
-                                   'actual_percent'=>round($value->progress).'%',
+                                   'actual_percent'=>round($value->progress),
                                );
                        }
                        $taskdata2=array();

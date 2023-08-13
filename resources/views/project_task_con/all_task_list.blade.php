@@ -165,7 +165,7 @@
             searching: true,
             info: true,
             paging: true,
-            // bSort: false,
+            aaSorting: []
         });
     }
 </script>

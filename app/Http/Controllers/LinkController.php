@@ -17,22 +17,25 @@ class LinkController extends Controller
         }
         $link = new Link();
         $link->id = $max_id+1;
+        $rowid=$max_id+1;
         $link->type = $request->type;
         $link->source = $request->source;
         $link->project_id = Session::get('project_id');
         $link->instance_id = Session::get('project_instance');
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['id'=>$request->source,
-        'project_id'=>Session::get('project_id'),
-        'instance_id'=>Session::get('project_instance')])->update(['predecessors'=>$request->target]);
- 
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])
+            ->update(['predecessors'=>$request->target]);
+
+        ActivityController::activity_store(Auth::user()->id,
+        Session::get('project_id'), "Store Predecessors", $request->target);
+
         return response()->json([
-            "action"=> "inserted",
-            "tid" => $link->id
+            "action"=> "inserted1",
+            "tid" => $rowid
         ]);
     }
- 
+
     public function update($id, Request $request){
         $link = Link::find($id);
         $link->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
@@ -40,23 +43,25 @@ class LinkController extends Controller
         $link->source = $request->source;
         $link->target = $request->target;
         $link->save();
-        Con_task::where(['id'=>$request->source,
-        'project_id'=>Session::get('project_id'),
-        'instance_id'=>Session::get('project_instance')])
+        Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])
         ->update(['predecessors'=>$request->target]);
+
+        ActivityController::activity_store(Auth::user()->id,
+        Session::get('project_id'), "Update Predecessors", $request->target);
         return response()->json([
             "action"=> "updated"
         ]);
     }
- 
+
     public function destroy($id){
         $link = Link::find($id);
         $link->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
         $link->delete();
 
-        Con_task::where(['id'=>$link->source,
-        'project_id'=>Session::get('project_id'),
-        'instance_id'=>Session::get('project_instance')])->update(['predecessors'=>0]);
+        ActivityController::activity_store(Auth::user()->id,
+        Session::get('project_id'), "Deleted Predecessors", $id);
+
+        Con_task::where(['id'=>$link->source,'project_id'=>Session::get('project_id')])->update(['predecessors'=>0]);
         return response()->json([
             "action"=> "deleted"
         ]);

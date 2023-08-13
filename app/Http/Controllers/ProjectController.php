@@ -465,44 +465,6 @@ class ProjectController extends Controller
 
             }
 
-            $get_project_name = $request->project_name;
-
-            if(\Auth::user()->type=='company'){
-                $get_user_id = Auth::user()->id;
-                $receiver = Auth::user()->email;
-            }else{
-                $get_user_id = Auth::user()->creatorId();
-                $get_email = DB::table('users')->where('id',Auth::user()->creatorId())->first();
-                if($get_email != null){
-                    $receiver = $get_email->email;
-                }
-                else{
-                    $receiver = Auth::user()->email;
-                }
-            }
-
-            $expires_at = date("Y-m-d H:i:s", strtotime("+30 minutes"));
-            $settings   = Utility::settings();
-            $sender     = $settings['company_email'] != "" ? $settings['company_email'] : "must-info@mustbuildapp.com";
-
-            $boq_insert = array(
-                'project_id'      => $project->id,
-                'security_code'   => rand(10000000,99999999),
-                'code_expires_at' => $expires_at,
-                'user_id'         => $get_user_id,
-                'sender'          => $sender,
-                'receiver'        => 'must-info@mustbuildapp.com',
-                'project_name'    => $request->project_name
-            );
-
-            DB::table('boq_email')->insert($boq_insert);
-
-            Mail::send('projects.boq_email',$boq_insert, function($message) use($boq_insert) {
-                $message->to($boq_insert['sender'])
-                        ->subject($boq_insert['project_name']. " | BOQ File Upload")
-                        ->from($boq_insert['receiver']);
-            });
-
             if(\Auth::user()->type=='company'){
 
                 ProjectUser::create(
@@ -1134,6 +1096,9 @@ class ProjectController extends Controller
                 if($actual_percentage < 0){
                     $actual_percentage=0;
                 }
+
+
+
                 $cur= date('Y-m-d');
                 ############### END ##############################
                 ############### Remaining days ###################
@@ -1154,16 +1119,21 @@ class ProjectController extends Controller
                 if($current_Planed_percentage <0){
                     $current_Planed_percentage=0;
                 }
+
+
+
+
                 if($current_Planed_percentage>0){
                     $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;
                 }else{
                     $workdone_percentage=0;
                 }
                 $workdone_percentage=$workdone_percentage*100;
-                round(100-$current_Planed_percentage);
-                $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))
-                ->where('con_tasks.instance_id',Session::get('project_instance'))->where('con_tasks.type','task')
-                ->where('con_tasks.start_date','like',$cur.'%')->get();
+                if($workdone_percentage>100){
+                    $workdone_percentage=100;
+                }
+                $remaing_percenatge=round(100-$current_Planed_percentage);
+                $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))->where('con_tasks.type','task')->where('con_tasks.start_date','like',$cur.'%')->get();
                 $not_started=0;
                 foreach ($project_task as $value) {
                     $result=Task_progress::where('task_id',$value->main_id)->first();
@@ -1276,7 +1246,7 @@ class ProjectController extends Controller
                 $project->project_name = $request->project_name;
                 $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
                 $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
-                
+
                 if($request->hasFile('project_image'))
                 {
                     if (\File::exists($project->project_image)) {
@@ -1290,11 +1260,11 @@ class ProjectController extends Controller
                     $dir              = Config::get('constants.Projects_image');
                     $url              = "";
                     $path             = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
-    
+
                     if ($path["flag"] == 1) {
                         $url = $path["url"];
                     }
-    
+
                     $project->project_image = $url;
                 }
                 if(isset($request->holidays)){
@@ -1361,7 +1331,7 @@ class ProjectController extends Controller
     {
         if(\Auth::user()->can('delete project'))
         {
-           
+
             $projectID=$project->id;
             $instance_id=$project->instance_id;
             Con_task::where(['project_id'=>$projectID,'instance_id'=>$instance_id])->delete();
@@ -1733,8 +1703,8 @@ class ProjectController extends Controller
         $project = Project::find($projectID);
         if($project){
             $instance_id=Session::get('project_instance');
-            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
-            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->get();
+            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
+            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
             return response()->json([
                 "data" => $task,
                 "links" => $link,
@@ -1801,17 +1771,19 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function get_gantt_task_count(Request $request){
-        
+
          $instance_id=Session::get('project_instance');
          $task=Con_task::where('project_id',$request->project_id)->where('instance_id',$instance_id)->get();
          return count($task);
-       
+
     }
     public function get_freeze_status(Request $request){
         try {
-                
-            return Instance::where('project_id',$request->project_id)
-                    ->where('instance',Session::get('project_instance'))->pluck('freeze_status')->first();
+
+
+                $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
+
+                return $result;
 
         } catch (Exception $e) {
 
@@ -2279,7 +2251,7 @@ class ProjectController extends Controller
 
     public function taskupdate(Request $request)
     {
-       
+
         $validator = \Validator::make(
             $request->all(), [
                 'task_id' => 'required',
@@ -2293,7 +2265,7 @@ class ProjectController extends Controller
         {
             return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
         }
-        
+
 
         $get_all_dates    = [];
         $fileNameToStore1 = '';
@@ -2430,10 +2402,13 @@ class ProjectController extends Controller
             ->whereDate('created_at',$request->get_date)->first();
             if($check_data == null){
                 Task_progress::insert($array);
+                ActivityController::activity_store(Auth::user()->id,
+                Session::get('project_id'), "Added Progress", $task->text);
             }
             else{
-                Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)
-                ->where('created_at',$request->get_date)->update($array);
+                Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+                ActivityController::activity_store(Auth::user()->id,
+                Session::get('project_id'), "Updated Progress", $task->text);
             }
 
             $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');

@@ -30,7 +30,7 @@ class Project_holiday_Controller extends Controller
 
     public function create()
     {
-            $projects = Project::where('created_by', \Auth::user()->creatorId())->get();
+            $projects = Project::where('id',Session::get('project_id'))->get();
             return view('project_holidays.create',compact('projects'));
     }
 
@@ -65,7 +65,7 @@ class Project_holiday_Controller extends Controller
     public function edit($id)
     {
             $project_holiday = Project_holiday::where('id',$id)->first();
-            $projects = Project::where('created_by', \Auth::user()->creatorId())->get();
+            $projects = Project::where('id',Session::get('project_id'))->get();
             return view('project_holidays.edit', compact('projects','project_holiday'));
 
     }

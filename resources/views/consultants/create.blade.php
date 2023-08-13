@@ -25,7 +25,7 @@
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
-                    <span class="text-danger">Email Already Exist!</span>
+                    <span class="text-danger">{{__('Email Already Exist!')}}</span>
                 </span> 
                 @error('email')
                 <small class="invalid-email" role="alert">
@@ -39,7 +39,7 @@
    
    <div class="form-group col-md-6">
                 {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
-                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
+                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control','required'=>'required')) !!}
                 @error('role')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
@@ -84,6 +84,9 @@
                 {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111"  required>
+                    <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
+                        <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                    </span>
                     {{-- {{Form::text('phone',null,array('class'=>'form-control'))}} --}}
                 </div>
             </div>
@@ -119,7 +122,7 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary"  id="create_user">
+    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary"  id="create_consultant">
 </div>
 
 {{Form::close()}}
@@ -171,15 +174,36 @@ $(document).on("change", '#country', function () {
             $.ajax({
                 url : '{{ route("check_duplicate_email_consultant") }}',
                 type : 'GET',
-                data : { 'get_name' : $("#email").val(),'form_name' : "Users" },
+                data : { 'getname' : $("#email").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
-                        $("#create_user").prop('disabled',false);
+                        $("#create_consultant").prop('disabled',false);
                         $(".email_duplicate_error").css('display','none');
                     }
                     else{
-                        $("#create_user").prop('disabled',true);
+                        $("#create_consultant").prop('disabled',true);
                         $(".email_duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    // alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
+        $(document).on("keyup", '#phone', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_mobile") }}',
+                type : 'GET',
+                data : { 'getname' : $("#phone").val(),'formname' : "Users" },
+                success : function(data) {
+                    if(data == 1){
+                        $("#create_consultant").prop('disabled',false);
+                        $(".mobile_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $("#create_consultant").prop('disabled',true);
+                        $(".mobile_duplicate_error").css('display','block');
                     }
                 },
                 error : function(request,error)

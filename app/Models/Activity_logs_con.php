@@ -95,6 +95,38 @@ class Activity_logs_con extends Model
             {
                 return $user_name . " " . __('Moved the deal') . " <b>" . $remark['title'] . "</b> " . __('from') . " " . __(ucwords($remark['old_status'])) . " " . __('to') . " " . __(ucwords($remark['new_status']));
             }
+            elseif($this->log_type == 'Added Progress')
+            {
+                return $user_name . ' ' . __('Added a Progress for this Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == 'Updated Progress')
+            {
+                return $user_name . ' ' . __('Updated a Progress for this Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == 'Added New Task')
+            {
+                return $user_name . ' ' . __('Added New Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == 'Deleted Task')
+            {
+                return $user_name . ' ' . __('Deleted Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == 'Updated Task')
+            {
+                return $user_name . ' ' . __('Updated Task') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == 'Store Predecessors')
+            {
+                return $user_name . ' ' . __('Store Predecessors') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == 'Update Predecessors')
+            {
+                return $user_name . ' ' . __('Update Predecessors') . " <b>" . $remark['title'] . "</b>";
+            }
+            elseif($this->log_type == 'Deleted Predecessors')
+            {
+                return $user_name . ' ' . __('Deleted Predecessors') . " <b>" . $remark['title'] . "</b>";
+            }
         }
         else
         {
