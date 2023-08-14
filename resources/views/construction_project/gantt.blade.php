@@ -327,8 +327,9 @@ $holidays=implode(':',$holidays);
                             <div class="align" >
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
+
                                         {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
-                                       
+
                                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                                                 <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
                                                     data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
@@ -336,11 +337,11 @@ $holidays=implode(':',$holidays);
                                                     Set Baseline
                                                 </a>
                                             {!! Form::close() !!}
-                                       
-                                        <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
-                                        <button class="btn btn-outline-primary action w-20" name="redo" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Redo</button>
-                                        <button class="btn btn-outline-primary action w-20" name="indent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Indent</button>
-                                        <button class="btn btn-outline-primary action w-20" name="outdent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Outdent</button>
+
+                                        <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Undo</button>
+                                        <button class="btn btn-outline-primary action w-20" name="redo" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Redo</button>
+                                        <button class="btn btn-outline-primary action w-20" name="indent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Indent</button>
+                                        <button class="btn btn-outline-primary action w-20" name="outdent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Outdent</button>
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
@@ -351,7 +352,7 @@ $holidays=implode(':',$holidays);
                                 </div>
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleOverlay();" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Overlay</button>
+                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleOverlay();" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Overlay</button> --}}
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
                                             onclick="gantt.ext.fullscreen.toggle();" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Fullscreen</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="closeAll()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Collaspe
@@ -431,11 +432,13 @@ $holidays=implode(':',$holidays);
 </div>
     <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
+    <input type='hidden' id='frezee_status' value='{{$project->freeze_status}}'>
 
 @include('new_layouts.footer')
 
 <script type="text/javascript">
     // check freeze status
+    var frezee_status_actual=$('#frezee_status').val();
         $( document ).ready(function() {
 
                 // check freeze status
@@ -456,7 +459,7 @@ $holidays=implode(':',$holidays);
 
     // check freeze status
 
-    // check gantt task count 
+    // check gantt task count
         var tempcsrf1 = '{!! csrf_token() !!}';
         $.post("{{route('projects.get_gantt_task_count')}}", {_token: tempcsrf1,project_id: {{$project->id}}},
         function (resp, textStatus, jqXHR) {
@@ -475,7 +478,7 @@ $holidays=implode(':',$holidays);
 
         });
 
-    // check gantt task count 
+    // check gantt task count
 
 		//zoom
 
@@ -610,82 +613,160 @@ $holidays=implode(':',$holidays);
 		};
 
         gantt.config.reorder_grid_columns = true;
-		gantt.config.columns = [
-			{ name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
-			{
-				name: "text", label: "Task Name",width: 150,
-				resize: true
-			},
-			{
-				name: "start_date", label: "Start Date", width: 80, align: "center",
-				 resize: true			},
-			{
-				name: "end_date", label: "End Date", width: 80, align: "center",
-				resize: true
-			},
-            {
-				name: "duration", label: "Duration", width: 80, align: "center",
-				 resize: true
-			},
+        if(frezee_status_actual!=1){
+                gantt.config.columns = [
+                    { name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
+                    {
+                        name: "text", label: "Task Name",width: 150,
+                        resize: true
+                    },
+                    {
+                        name: "start_date", label: "Start Date", width: 80, align: "center",
+                        resize: true			},
+                    {
+                        name: "end_date", label: "End Date", width: 80, align: "center",
+                        resize: true
+                    },
+                    {
+                        name: "duration", label: "Duration", width: 80, align: "center",
+                        resize: true
+                    },
 
-			// {
-			// 	name: "place", label: "Place", width: 80, align: "center",
-			// 	editor: editors.end_date, resize: true
-			// },
-			// {
-			// 	name: "location", label: "Location", width: 80, align: "center",
-			// 	editor: editors.end_date, resize: true
-			// },
-			// {
-			// 	name: "material", label: "Material Qunatity", width: 110, align: "center",
-			// 	editor: editors.end_date, resize: true
-			// },
-			{
-				name: "predecessors", label: "Predecessors", width: 110, align: "left",
-				editor: editors.predecessors, resize: true, template: function (task) {
-					var links = task.$target;
-					var labels = [];
-					for (var i = 0; i < links.length; i++) {
-						var link = gantt.getLink(links[i]);
-						labels.push(linksFormatter.format(link));
-					}
-					return labels.join(", ")
-				}
-			},
-			// totalSlackColumn,
-			freeSlackColumn,
-			{ name: "add" }
-		];
+                    // {
+                    // 	name: "place", label: "Place", width: 80, align: "center",
+                    // 	editor: editors.end_date, resize: true
+                    // },
+                    // {
+                    // 	name: "location", label: "Location", width: 80, align: "center",
+                    // 	editor: editors.end_date, resize: true
+                    // },
+                    // {
+                    // 	name: "material", label: "Material Qunatity", width: 110, align: "center",
+                    // 	editor: editors.end_date, resize: true
+                    // },
+                    {
+                        name: "predecessors", label: "Predecessors", width: 110, align: "left",
+                        editor: editors.predecessors, resize: true, template: function (task) {
+                            var links = task.$target;
+                            var labels = [];
+                            for (var i = 0; i < links.length; i++) {
+                                var link = gantt.getLink(links[i]);
+                                labels.push(linksFormatter.format(link));
+                            }
+                            return labels.join(", ")
+                        }
+                    },
+                    // totalSlackColumn,
+                    freeSlackColumn,
+                    { name: "add" }
+                ];
+                  // scale length
+                        gantt.config.scale_height = 20*2;
+                        gantt.config.min_column_width = 50;
+                        gantt.config.scales = [
+                            { unit:"month", step:1, date:"%M, %Y"	},
+                            { unit:"day", step:1, date:"%d %M"	}
+                        ];
 
-        // scale length
-        gantt.config.scale_height = 20*2;
-	gantt.config.min_column_width = 50;
-	gantt.config.scales = [
-		{ unit:"month", step:1, date:"%M, %Y"	},
-		{ unit:"day", step:1, date:"%d %M"	}
-	];
+                        gantt.config.layout = {
+                            css: "gantt_container",
+                            cols: [
+                                {
+                                    width:680,
+                                    min_width: 300,
+                                    rows:[
+                                        {view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"},
+                                        {view: "scrollbar", id: "gridScroll", group:"horizontal"}
+                                    ]
+                                },
+                                {resizer: true, width: 1},
+                                {
+                                    rows:[
+                                        {view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
+                                        {view: "scrollbar", id: "scrollHor", group:"horizontal"}
+                                    ]
+                                },
+                                {view: "scrollbar", id: "scrollVer"}
+                            ]
+                        };
 
-	gantt.config.layout = {
-		css: "gantt_container",
-		cols: [
-			{
-				width:680,
-				min_width: 300,
-				rows:[
-					{view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"},
-					{view: "scrollbar", id: "gridScroll", group:"horizontal"}
-				]
-			},
-			{resizer: true, width: 1},
-			{
-				rows:[
-					{view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
-					{view: "scrollbar", id: "scrollHor", group:"horizontal"}
-				]
-			},
-			{view: "scrollbar", id: "scrollVer"}
-		]
-	};
+        }else{
+            gantt.config.columns = [
+                    { name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
+                    {
+                        name: "text", label: "Task Name",width: 150,
+                        resize: true
+                    },
+                    {
+                        name: "start_date", label: "Start Date", width: 80, align: "center",
+                        resize: true			},
+                    {
+                        name: "end_date", label: "End Date", width: 80, align: "center",
+                        resize: true
+                    },
+                    {
+                        name: "duration", label: "Duration", width: 80, align: "center",
+                        resize: true
+                    },
+
+                    // {
+                    // 	name: "place", label: "Place", width: 80, align: "center",
+                    // 	editor: editors.end_date, resize: true
+                    // },
+                    // {
+                    // 	name: "location", label: "Location", width: 80, align: "center",
+                    // 	editor: editors.end_date, resize: true
+                    // },
+                    // {
+                    // 	name: "material", label: "Material Qunatity", width: 110, align: "center",
+                    // 	editor: editors.end_date, resize: true
+                    // },
+                    {
+                        name: "predecessors", label: "Predecessors", width: 110, align: "left",
+                        editor: editors.predecessors, resize: true, template: function (task) {
+                            var links = task.$target;
+                            var labels = [];
+                            for (var i = 0; i < links.length; i++) {
+                                var link = gantt.getLink(links[i]);
+                                labels.push(linksFormatter.format(link));
+                            }
+                            return labels.join(", ")
+                        }
+                    },
+                    // totalSlackColumn,
+                    freeSlackColumn,
+                ];
+                                  // scale length
+                gantt.config.scale_height = 20*2;
+                gantt.config.min_column_width = 50;
+                gantt.config.scales = [
+                { unit:"month", step:1, date:"%M, %Y"	},
+                { unit:"day", step:1, date:"%d %M"	}
+                ];
+
+                gantt.config.layout = {
+                css: "gantt_container",
+                cols: [
+                    {
+                        width:620,
+                        min_width: 300,
+                        rows:[
+                            {view: "grid", scrollX: "gridScroll", scrollable: true, scrollY: "scrollVer"},
+                            {view: "scrollbar", id: "gridScroll", group:"horizontal"}
+                            ]
+                        },
+                        {resizer: true, width: 1},
+                        {
+                        rows:[
+                            {view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
+                            {view: "scrollbar", id: "scrollHor", group:"horizontal"}
+                        ]
+                        },
+                            {view: "scrollbar", id: "scrollVer"}
+                        ]
+                        };
+        }
+
 
 	gantt.attachEvent("onParse", function() {
 		gantt.eachTask(function(task) {
@@ -877,10 +958,9 @@ $holidays=implode(':',$holidays);
                     //     );
                     // }
                 }
-
-
+if(frezee_status_actual!=1){
         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/erp/public/");
+        // var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
@@ -899,8 +979,9 @@ $holidays=implode(':',$holidays);
                     //  gantt.load("{{route('projects.gantt_data',[$project->id])}}");
                 }
             });
+}
 
-            
+
             gantt.templates.link_class = function (link) {
                 var types = gantt.config.links;
                 switch (link.type) {
