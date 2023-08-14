@@ -12,14 +12,17 @@
 </style>
 
 @foreach($project->users as $user)
-    <li class="list-group-item px-0">
+@if($user->type!='company')
+<li class="list-group-item px-0">
         <div class="row align-items-center justify-content-between">
             <div class="col-sm-auto mb-3 mb-sm-0">
                 <div class="d-flex align-items-center">
                     
-{{--                        <img src="@if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif " alt="kal" class="img-user">--}}
+{{--                        <img alt="" src="@if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"
+@else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif " alt="kal" class="img-user">--}}
                         @if($user->avatar)
-                            <img  src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"  alt="image" class="user-initial">
+                            <img  src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"
+                            alt="image" class="user-initial">
                         @else
                             <?php  $short=substr($user->name, 0, 1);?>
                             <span class="user-initial">{{strtoupper($short)}}</span>
@@ -33,12 +36,15 @@
             </div>
             <div class="col-sm-auto text-sm-end d-flex align-items-center">
                 <div class="action-btn bg-danger ms-2">
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['projects.user.destroy',  [$project->id,$user->id]]]) !!}
-                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
+                    {!! Form::open(['method' => 'DELETE',
+                        'route' => ['projects.user.destroy',  [$project->id,$user->id]]]) !!}
+                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip"
+                    title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
 
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
-    </li>
+</li>
+@endif
 @endforeach

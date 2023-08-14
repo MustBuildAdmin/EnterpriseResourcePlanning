@@ -328,7 +328,7 @@ $(document).on("click", '.freeze_button', function () {
     })
     swalWithBootstrapButtons.fire({
         title: 'Are you sure?',
-        text: "It will freeze gantt chart if you take the action. Do you want to continue?",
+        text: "This action is IRREVERSIBLE. Do you want to continue?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',

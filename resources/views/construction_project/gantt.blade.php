@@ -327,10 +327,14 @@ $holidays=implode(':',$holidays);
                             <div class="align" >
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
-                                        {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
+                                        {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
+                                             'id' => 'gantt_chart_submit',
+                                             'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
                                        
                                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                                                <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
+                                                <a href="#" class="btn btn-outline-primary w-20 freeze_button"
+                                                style='width: 100%;' data-bs-toggle="tooltip"
+                                                title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
                                                     data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                                     {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
                                                     Set Baseline
@@ -383,7 +387,8 @@ $holidays=implode(':',$holidays);
                                     @if($project)
                                     <input type='hidden' value='0' id='project_id'>
                                     <div class="card-body" style='max-height:512px;overflow:auto;'>
-                                        <div id="gantt_here" style='width:100%; height:491px; position: relative;' onload="script();"></div>
+                                        <div id="gantt_here" style='width:100%; height:491px; position: relative;'
+                                         onload="script();"></div>
                                     </div>
                                     @else
                                     <h1>404</h1>
@@ -396,7 +401,8 @@ $holidays=implode(':',$holidays);
                                             <div class="gantt_control" >
 
                                             </div>
-                                                <div id="gantt_here" style='width:100%; height:677px; position: relative;'onload="script();"  ></div>
+                                                <div id="gantt_here" style='width:100%; height:677px; position: relative;'
+                                                onload="script();"  ></div>
                                             </div>
 
                                             @else
@@ -405,9 +411,12 @@ $holidays=implode(':',$holidays);
                                                     {{ __('Page Not Found') }}
                                                 </div>
                                                 <div class="page-search">
-                                                    <p class="text-muted mt-3">{{ __("It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
+                                                    <p class="text-muted mt-3">
+                                                        {{ __("It's looking like you may have taken a wrong turn. Don't worry...
+                                                             it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
                                                     <div class="mt-3">
-                                                        <a class="btn-return-home badge-blue" href="{{route('home')}}"><i class="ti ti-reply"></i> {{ __('Return Home')}}</a>
+                                                        <a class="btn-return-home badge-blue" href="{{route('home')}}">
+                                                            <i class="ti ti-reply"></i> {{ __('Return Home')}}</a>
                                                     </div>
                                                 </div>
                                             @endif

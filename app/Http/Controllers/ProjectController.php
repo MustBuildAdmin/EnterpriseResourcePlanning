@@ -41,7 +41,6 @@ use Config;
 
 class ProjectController extends Controller
 {
-    public $permdin = 'Permission Denied.';
     /**
      * Display a listing of the resource.
      *
@@ -56,7 +55,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -84,7 +83,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -549,7 +548,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -653,6 +652,7 @@ class ProjectController extends Controller
 
     }
     public function instance_project($instance_id,$project_id){
+      
         $getInstance=Instance::where(['id'=>$instance_id])->first();
         $instanceId=$getInstance->instance;
         Session::forget('project_id');
@@ -885,7 +885,7 @@ class ProjectController extends Controller
                     $ongoing_task=Con_task::where('project_id',$project_id)
                     ->where('instance_id',Session::get('project_instance'))
                     ->where('type','task')->where('progress','<',100)->where('progress','>',0)->count();
-
+                    
                     return view('construction_project.dashboard',
                     compact('project','ongoing_task','project_data','total_sub','actual_percentage',
                     'workdone_percentage','current_Planed_percentage','not_started','notfinished',
@@ -893,15 +893,15 @@ class ProjectController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __($permdin));
+                    return redirect()->back()->with('error', __('Permission Denied.'));
                 }
             }else{
-                return redirect()->back()->with('error', __($permdin));
+                return redirect()->back()->with('error', __('Permission Denied.'));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
     public function check_instance($id){
@@ -1154,19 +1154,19 @@ class ProjectController extends Controller
                 $ongoing_task=Con_task::where('project_id',$project->id)
                 ->where('instance_id',Session::get('project_instance'))
                 ->where('type','task')->where('progress','<',100)->where('progress','>',0)->count();
-
+               
                 return view('construction_project.dashboard',compact('project','ongoing_task','project_data',
                 'total_sub','actual_percentage','workdone_percentage','current_Planed_percentage',
                 'not_started','notfinished','remaining_working_days','completed_task'));
             }
             else
             {
-                return redirect()->back()->with('error', __($permdin));
+                return redirect()->back()->with('error', __('Permission Denied.'));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1208,13 +1208,13 @@ class ProjectController extends Controller
             }
             else
             {
-                return response()->json(['error' => __($permdin)], 401);
+                return response()->json(['error' => __('Permission Denied.')], 401);
             }
 
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1317,7 +1317,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1348,7 +1348,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1414,7 +1414,7 @@ class ProjectController extends Controller
             }
             else
             {
-                return redirect()->back()->with('error', __($permdin));
+                return redirect()->back()->with('error', __('Permission Denied.'));
             }
 
     }
@@ -1444,7 +1444,7 @@ class ProjectController extends Controller
             if($project != null){
                 foreach($project->users as $user){
 
-                    if($user->type!='company' || $user->type!='admin')
+                    if($user->type!='company')
                     {
                         $user_array[] = [
                             'key' => $user->id,
@@ -1481,7 +1481,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1528,7 +1528,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1542,7 +1542,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1579,7 +1579,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1594,7 +1594,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1608,7 +1608,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1645,7 +1645,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1694,7 +1694,7 @@ class ProjectController extends Controller
 
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1703,7 +1703,8 @@ class ProjectController extends Controller
         $project = Project::find($projectID);
         if($project){
             $instance_id=Session::get('project_instance');
-            $task=Con_task::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
+            $task=Con_task::where('project_id',$projectID)
+            ->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
             $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
             return response()->json([
                 "data" => $task,
@@ -1867,12 +1868,12 @@ class ProjectController extends Controller
             }
             else
             {
-                return redirect()->back()->with('error', __($permdin));
+                return redirect()->back()->with('error', __('Permission Denied.'));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -1901,7 +1902,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
 
     }
@@ -1975,7 +1976,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -2001,7 +2002,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
 
 
@@ -2043,7 +2044,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -2060,7 +2061,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -2091,12 +2092,12 @@ class ProjectController extends Controller
             }
             else
             {
-                return redirect()->back()->with('error', __($permdin));
+                return redirect()->back()->with('error', __('Permission Denied.'));
             }
         }
         else
         {
-            return redirect()->back()->with('error', __($permdin));
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 
@@ -2130,7 +2131,7 @@ class ProjectController extends Controller
         }
         else
         {
-            return redirect()->back()->with('error',__($permdin));
+            return redirect()->back()->with('error',__('Permission Denied.'));
         }
 
 
