@@ -147,7 +147,7 @@ class ConsultantController extends Controller
                 {
                     $messages = $validator->getMessageBag();
 
-                    echo redirect()->back()->with('error', $messages->first());
+                    return redirect()->back()->with('error', $messages->first());
                 }
                 if(isset($request->avatar)){
                     
@@ -281,7 +281,7 @@ class ConsultantController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-                
+
                 Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
                 return redirect()->route('consultants.index')
