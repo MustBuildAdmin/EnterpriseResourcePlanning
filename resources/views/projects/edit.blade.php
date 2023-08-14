@@ -59,7 +59,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('zip',$project->zipcode,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
+                                {{Form::text('zip',$project->zipcode,array('class'=>'form-control','id'=>'zip',
+                                'required'=>'required', 'minlength'=>5))}}
                             </div>
                         </div>
                     </div>
