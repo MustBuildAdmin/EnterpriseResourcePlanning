@@ -255,30 +255,11 @@
 <script>
 
     var key_i=2;
+    check_validation = 0;
     $(document).on("click", '.addmore', function () {
 
-        check_validation = 0;
         if ($("#holidays").prop('checked') == false) {
-            $( ".holiday_date" ).each(function(index) {
-                get_inc_id = $(this).data('date_id');
-
-                get_date_val = $("#holiday_date"+get_inc_id).val();
-                get_desc_val = $("#holiday_description"+get_inc_id).val();
-
-                if(get_date_val == ""){
-                    $(".holiday_date_label"+get_inc_id).show();
-                    check_validation = 1;
-                }
-                else if(get_desc_val == ""){
-                    $(".holiday_description_label"+get_inc_id).show();
-                    check_validation = 1;
-                }
-                else{
-                    $(".holiday_date_label"+get_inc_id).hide();
-                    $(".holiday_description_label"+get_inc_id).hide();
-                    check_validation = 0;
-                }
-            });
+            holidayValidation();
         }
 
         if(check_validation == 0){
@@ -292,6 +273,34 @@
             key_i++;
         }
     });
+
+    function holidayValidation(){
+        $( ".holiday_date" ).each(function(index) {
+            get_inc_id = $(this).data('date_id');
+
+            get_date_val = $("#holiday_date"+get_inc_id).val();
+            get_desc_val = $("#holiday_description"+get_inc_id).val();
+
+            if(get_date_val == "" && get_desc_val == ""){
+                $(".holiday_date_label"+get_inc_id).show();
+                $(".holiday_description_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else if(get_date_val == ""){
+                $(".holiday_date_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else if(get_desc_val == ""){
+                $(".holiday_description_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else{
+                $(".holiday_date_label"+get_inc_id).hide();
+                $(".holiday_description_label"+get_inc_id).hide();
+                check_validation = 0;
+            }
+        });
+    }
 
     $(document).on("click", '.delete_key', function () {
         case_count = $('.case:checkbox:checked').length;
@@ -392,16 +401,41 @@
                 get_reportto         = $(".get_reportto").val();
                 get_non_working_days = $(".get_non_working_days").val();
                
-                if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
+                if (newIndex < currentIndex) {
+                    return true;
+                }
+                else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
                 else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
+                else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
+                    if ($("#holidays").prop('checked') == false) {
+                        holidayValidation();
+                        if(check_validation == 1){
+                            $(".current").attr('aria-disabled','true');
+                            return false;
+                        }
+                        else{
+                            $(".current").attr('aria-disabled','false');
+                            $(".current").removeClass('error');
+                        }
+                    }
+                    else{
+                        $(".current").attr('aria-disabled','false');
+                        $(".current").removeClass('error');
+                    }
+                }
                 else{
                     form.validate().settings.ignore = ":disabled,:hidden";
                 }
                 return form.valid();
+            },
+            labels: {
+                finish: 'Finish <i class="fa fa-chevron-right"></i>',
+                next: 'Next <i class="fa fa-chevron-right"></i>',
+                previous: '<i class="fa fa-chevron-left"></i> Previous'
             },
             onFinishing: function (event, currentIndex)
             {
