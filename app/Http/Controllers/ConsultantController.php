@@ -143,12 +143,8 @@ class ConsultantController extends Controller
                                        'gender'=>'required'
                                    ]
                 );
-                if($validator->fails())
-                {
-                    $messages = $validator->getMessageBag();
-
-                    return redirect()->back()->with('error', $messages->first());
-                }
+                $this->validator_alert($validator);
+               
                 if(isset($request->avatar)){
                     
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
@@ -158,17 +154,13 @@ class ConsultantController extends Controller
                 
                     $dir = Config::get('constants.USER_IMG');
                     $imagepath = $dir . $fileNameToStore;
-                    if (\File::exists($imagepath)) {
-                        \File::delete($imagepath);
-                    }
+                    
+                    $this->file_exists($imagepath);
+                   
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
+                    $this->image_alert($path);
 
                 }
                 $user               = new User();
@@ -212,11 +204,8 @@ class ConsultantController extends Controller
 
                                    ]
                 );
-                if($validator->fails())
-                {
-                    $messages = $validator->getMessageBag();
-                    return redirect()->back()->with('error', $messages->first());
-                }
+
+                $this->validator_alert($validator);
 
                 if(isset($request->avatar)){
                     
@@ -232,13 +221,8 @@ class ConsultantController extends Controller
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
-
+                    $this->image_alert($path);
+                  
                 }
 
                 $objUser    = \Auth::user()->creatorId();
@@ -315,6 +299,30 @@ class ConsultantController extends Controller
 
             return redirect()->route('consultants.index')
             ->with('success', __('Consultants successfully created.'));
+        }
+    }
+
+    public function validator_alert($validator){
+        if($validator->fails())
+        {
+            $messages = $validator->getMessageBag();
+
+            return redirect()->back()->with('error', $messages->first());
+        }
+    }
+
+    public function image_alert($path){
+        if($path['flag'] == 1){
+            $url = $path['url'];
+        }else{
+            return redirect()->back()->with('error', __($path['msg']));
+        }
+
+    }
+
+    public function file_exists($imagepath){
+        if (\File::exists($imagepath)) {
+            \File::delete($imagepath);
         }
     }
 
