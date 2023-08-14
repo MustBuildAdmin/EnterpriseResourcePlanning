@@ -66,7 +66,7 @@
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip',
-                                'required'=>'required'))}}
+                                'required'=>'required', 'minlength'=>5))}}
                             </div>
                         </div>
                     </div>
