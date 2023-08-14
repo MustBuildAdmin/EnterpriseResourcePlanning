@@ -19,10 +19,9 @@
         height: 100px;
         border-radius: 50%;
         background-color: #e0e0e0;
-        color: #FFF;
+        color: #fff;
         font-size: 42px;
         text-align: center;
-
     }
 
     .avatar-xl {
@@ -33,7 +32,6 @@
     $profile = \App\Models\Utility::get_file('uploads/avatar');
 @endphp
 @include('crm.side-menu')
-
 <div class="row">
     <div class="col-md-6">
         <h2>{{ __('Manage Client') }}</h2>
@@ -140,12 +138,10 @@
                                     </div>
                                 @endif
                                 @php
-                                    $name = strlen($client->name) > 20 ?
-                                            substr($client->name, 0, 19) . '...' : $client->name;
+                                    $name = strlen($client->name) > 20 ? substr($client->name, 0, 19) . '...' : $client->name;
                                 @endphp
                                 @php
-                                    $email = strlen($client->email) > 20 ?
-                                             substr($client->email, 0, 19) . '...' : $client->email;
+                                    $email = strlen($client->email) > 20 ? substr($client->email, 0, 19) . '...' : $client->email;
                                 @endphp
                                 <h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
                                 <h5 class="m-0 mb-1"><span title="{{ $client->email }}">{{ $email }}</span>
@@ -164,7 +160,7 @@
                                         <path d="M21 10h-18"></path>
                                         <path
                                             d="M3 4m0 4a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v8a4 4 0 0 1 -4
-											   4h-10a4 4 0 0 1 -4 -4z">
+4h-10a4 4 0 0 1 -4 -4z">
                                         </path>
                                         <path d="M7 10v1.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5 -1.5v-1.5"></path>
                                     </svg>
