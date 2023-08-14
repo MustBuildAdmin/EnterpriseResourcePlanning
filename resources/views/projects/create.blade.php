@@ -81,19 +81,6 @@
 </style>
 <div class="modal-body">
     <div class="container">
-        <center>
-            <section class="wrappers loader_show_hide" style="display: none;">
-                <div class="cards">
-                  <div class="loader">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                  </div>
-                </div>
-            </section>
-        </center>
-
         {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_project_form', 'class' => 'create_project_form']) }}
             <div>
                 <h3>{{ __('Project Details') }}</h3>
@@ -330,8 +317,30 @@
     </div>
 </div>
 
-<script>
+<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" 
+    aria-hidden="true" data-toggle="modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <center>
+                    <section class="wrappers loader_show_hide">
+                        <div class="cards">
+                        <div class="loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        </div>
+                    </section>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    $('#loding_popup').modal({backdrop: 'static', keyboard: false});
     var key_i=2;
     check_validation = 0;
     $(document).on("click", '.addmore', function () {
@@ -540,6 +549,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         var finishButton = form.find('a[href="#finish"]').removeAttr('href');
+                        $(".loding_popup").modal('show');
                         form.submit();
                     }
                     else if (result.dismiss === Swal.DismissReason.cancel) {

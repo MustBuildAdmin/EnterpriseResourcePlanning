@@ -6,6 +6,78 @@
         width: 100%!important;
         height: fit-content;
     }
+    .estimated_days:focus {
+        box-shadow: unset;
+        border: 1px solid #ccc !important;
+    }
+    .estimated_days:hover {
+        border: 1px solid #ccc !important;
+    }
+
+    /* Loader */
+    .wrappers{
+        display: flex;
+        justify-content: center;
+    }
+    .cards {
+        display: flex;
+        padding: 24px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .loader{
+        border-radius: 50%;
+        position: relative;
+        display: inline-block;
+        height: 0px;
+        width: 0px;
+    }
+
+    .loader span{
+        position: absolute;
+        display: block;
+        background: #ddd;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        top: -20px;
+        perspective: 100000px;
+    }
+    .loader span:nth-child(1) {
+        left:30px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: 0s;
+        background: #ff756f;
+    }
+    .loader span:nth-child(2) {
+        left:6px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .2s;
+        background: #ffde6f;
+    }
+    .loader span:nth-child(3) {
+        left:-20px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .4s;
+        background: #01de6f;
+    }
+    .loader span:nth-child(4) {
+        left: -44px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .6s;
+        background: #6f75ff;
+    }
+
+    @keyframes bounce2 {
+        0%, 56%, 100% {
+            transform: translateY(0px);
+        }
+        25% {
+            transform: translateY(-30px);
+        }
+    }
 </style>
 <div class="modal-body">
     <div class="container">
@@ -263,8 +335,30 @@
     </div>
 </div>
 
-<script>
+<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" 
+    aria-hidden="true" data-toggle="modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <center>
+                    <section class="wrappers loader_show_hide">
+                        <div class="cards">
+                        <div class="loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        </div>
+                    </section>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    $('#loding_popup').modal({backdrop: 'static', keyboard: false});
     disabled_all();
     function disabled_all(){
         freeze_status = $("#freeze_status").val();
@@ -507,6 +601,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             var finishButton = form.find('a[href="#finish"]').removeAttr('href');
+                            $(".loding_popup").modal('show');
                             form.submit();
                         }
                         else if (result.dismiss === Swal.DismissReason.cancel) {
