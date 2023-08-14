@@ -130,7 +130,7 @@ class ConsultantController extends Controller
     {
 
 
-        if(\Auth::user()->can('create user'))
+        if(\Auth::user()->can('create consultant'))
         {
             $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
             if(\Auth::user()->type == 'super admin')
@@ -272,21 +272,9 @@ class ConsultantController extends Controller
             }
             // Send Email
             $setings = Utility::settings();
+            $this->mail($setings,$user,$psw);
 
-            if($setings['create_consultant'] == 1) {
-                $user->password = $psw;
-                $user->type = 'consultant';
-
-                $userArr = [
-                    'email' => $user->email,
-                    'password' => $user->password,
-                ];
-
-                Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
-
-                return redirect()->route('consultants.index')
-                ->with('success', __('Consultants successfully created.'));
-            }
+           
             return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
 
         }
@@ -311,6 +299,23 @@ class ConsultantController extends Controller
         ExperienceCertificate::defaultExpCertificatRegister($user->id);
         JoiningLetter::defaultJoiningLetterRegister($user->id);
         NOC::defaultNocCertificateRegister($user->id);
+    }
+
+    public function mail($setings,$user,$psw){
+        if($setings['create_consultant'] == 1) {
+            $user->password = $psw;
+            $user->type = 'consultant';
+
+            $userArr = [
+                'email' => $user->email,
+                'password' => $user->password,
+            ];
+
+            Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+
+            return redirect()->route('consultants.index')
+            ->with('success', __('Consultants successfully created.'));
+        }
     }
 
     public function edit(Request $request,$id)
@@ -363,7 +368,7 @@ class ConsultantController extends Controller
     {
       
       
-        if(\Auth::user()->can('edit user'))
+        if(\Auth::user()->can('edit consultant'))
         {
             if(\Auth::user()->type == 'super admin')
             {
