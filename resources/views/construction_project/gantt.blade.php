@@ -309,6 +309,7 @@
 			background-color: #d6d6d6;
 		}
 </style>
+   
 @php
 $holidays=array();
 
@@ -321,6 +322,17 @@ $holidays=implode(':',$holidays);
 @endphp
 @include('construction_project.side-menu')
 {{-- @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"]) --}}
+<div class="text-center container container-slim py-4 loader_show_hide">
+    <div class="mb-3">
+    <a href="." class="navbar-brand navbar-brand-autodark">
+        <img src="./static/logo-small.svg" height="36" alt="">
+    </a>
+    </div>
+    <div class="text-secondary mb-3">Preparing application</div>
+    <div class="progress progress-sm">
+    <div class="progress-bar progress-bar-indeterminate"></div>
+    </div>
+</div>
 <div id="additional_elements" class="gantt-container">
                         <div class="col d-flex flex-column" >
 
@@ -440,7 +452,7 @@ $holidays=implode(':',$holidays);
 </div>
     <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
-
+   
 @include('new_layouts.footer')
 
 <script type="text/javascript">
@@ -926,3 +938,8 @@ $holidays=implode(':',$holidays);
             };
         });
 </script>
+<style>
+.loader_show_hide{
+    display:none;
+}
+</style>

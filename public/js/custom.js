@@ -336,8 +336,9 @@ $(document).on("click", '.freeze_button', function () {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-
+            $('.loader_show_hide').show()
             form.submit();
+            
 
         } else if (
             result.dismiss === Swal.DismissReason.cancel
