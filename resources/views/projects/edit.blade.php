@@ -506,6 +506,7 @@
                         reverseButtons: true
                     }).then((result) => {
                         if (result.isConfirmed) {
+                            var finishButton = form.find('a[href="#finish"]').removeAttr('href');
                             form.submit();
                         }
                         else if (result.dismiss === Swal.DismissReason.cancel) {
