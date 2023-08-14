@@ -75,13 +75,13 @@ class RegisteredUserController extends Controller
         ]);
 
 
-        $password="Change@123";
+      
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'company_name' => $request->company_name,
             'company_type'=>$request->company_type,
-            'password' => Hash::make($password),
+            'password' => Hash::make($request->password),
              'type' => $request->type,
              'default_pipeline' => 1,
               'plan' => 1,
@@ -105,6 +105,7 @@ class RegisteredUserController extends Controller
             $url=url('').'/password-set/'.$token.'?email='.$request->email;
             $userArr = [
                 'email' => $request->email,
+                'password' => $request->password,
                 'set_password_url' => $url,
             ];
 

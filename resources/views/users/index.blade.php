@@ -40,8 +40,6 @@
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
 	
 @endphp
-<link rel="stylesheet" href="{{ asset('phone/css/intlTelInput.css') }}">
-<link rel="stylesheet" href="{{ asset('phone/css/phone.css') }}">
 <div class="page-wrapper">
 	<!-- Page header -->
 
@@ -254,9 +252,6 @@
 </div>
 
 @include('new_layouts.footer')
-<script src="{{ asset('phone/js/intlTelInput.js') }}"></script>
-<script src="{{ asset('phone/js/intlTelInput.min.js') }}"></script>
-<script src="{{ asset('phone/js/utils.min.js') }}"></script>
 <script>
 function copyToClipboard(element) {
   var $temp = $("<input>");

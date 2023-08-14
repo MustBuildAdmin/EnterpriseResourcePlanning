@@ -61,7 +61,10 @@ class UserController extends Controller
                             ->get();
                         }
                     }]
-                ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->paginate(8);
+                ])->where('created_by', '=', $user->creatorId())
+                ->where('type', '!=', 'client')
+                ->where('type', '!=', 'consultant')
+                ->paginate(8);
                 $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->count();
             }
             
@@ -295,7 +298,8 @@ class UserController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-                $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
+
+                $resp=Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
 
                 return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
             }
