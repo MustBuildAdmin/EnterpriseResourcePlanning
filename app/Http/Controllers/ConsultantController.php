@@ -281,7 +281,8 @@ class ConsultantController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-                $resp = Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+                
+                Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
                 return redirect()->route('consultants.index')
                 ->with('success', __('Consultants successfully created.'));

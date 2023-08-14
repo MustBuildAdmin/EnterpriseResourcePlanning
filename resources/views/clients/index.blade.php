@@ -140,12 +140,12 @@
                                     </div>
                                 @endif
                                 @php
-                                    $name = strlen($client->name) > 20 ? substr($client->name, 0, 19) . '...' :
-									        $client->name;
+                                    $name = strlen($client->name) > 20 ?
+                                            substr($client->name, 0, 19) . '...' : $client->name;
                                 @endphp
                                 @php
-                                    $email = strlen($client->email) > 20 ? substr($client->email, 0, 19) . '...' :
-									         $client->email;
+                                    $email = strlen($client->email) > 20 ?
+                                             substr($client->email, 0, 19) . '...' : $client->email;
                                 @endphp
                                 <h3 class="m-0 mb-1"><a href="#">{{ $name }}</a></h3>
                                 <h5 class="m-0 mb-1"><span title="{{ $client->email }}">{{ $email }}</span>
