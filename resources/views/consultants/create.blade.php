@@ -4,7 +4,8 @@
     }
 </style>
 
-{{Form::open(array('url'=>'consultants','method'=>'post','id'=>'users_form','autocomplete'=>'off'))}}
+{{Form::open(array('url'=>'consultants','method'=>'post','id'=>'users_form','autocomplete'=>'off',
+'enctype'=>"multipart/form-data"))}}
 
     <div class="modal-body">
         <div class="row">

@@ -80,13 +80,19 @@ class ConsultantController extends Controller
     public function create(Request $request)
     {
 
-        $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
+        $customFields = CustomField::where('created_by', '=', \Auth::user()
+                        ->creatorId())
+                        ->where('module', '=', 'user')
+                        ->get();
         $user  = \Auth::user();
-        $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
+        $roles = Role::where('created_by', '=', $user->creatorId())
+                ->where('name','!=','client')
+                ->get()
+                ->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
         $company_type=Company_type::where('status',1)->get()->pluck('name', 'id');
         $users =User::where([
-            ['name', '!=', Null],
+            ['name', '!=', null],
             [function ($query) use ($request) {
                 if (($s = $request->search)) {
                     $user = \Auth::user();
@@ -97,7 +103,7 @@ class ConsultantController extends Controller
         ])->where('created_by', '=', $user->creatorId())->get()->pluck('name', 'id');
         if(count($users)<=0){
             $users =User::where([
-                ['name', '!=', Null],
+                ['name', '!=', null],
                 [function ($query) use ($request) {
                     if (($s = $request->search)) {
                         $user = \Auth::user();
@@ -126,7 +132,7 @@ class ConsultantController extends Controller
 
         if(\Auth::user()->can('create user'))
         {
-            $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+            $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
             if(\Auth::user()->type == 'super admin')
             {
                 $validator = \Validator::make(
@@ -141,7 +147,7 @@ class ConsultantController extends Controller
                 {
                     $messages = $validator->getMessageBag();
 
-                    return redirect()->back()->with('error', $messages->first());
+                    echo redirect()->back()->with('error', $messages->first());
                 }
                 if(isset($request->avatar)){
                     
@@ -175,7 +181,7 @@ class ConsultantController extends Controller
                 $user['type']       = 'consultant';
                 $user['default_pipeline'] = 1;
                 $user['plan'] = 1;
-                $user['lang']       = !empty($default_language) ? $default_language->value : '';
+                $user['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : '';
                 $user['created_by'] = \Auth::user()->creatorId();
                 $user['country']=$request->country;
                 $user['state']=$request->state;
@@ -192,19 +198,8 @@ class ConsultantController extends Controller
                 $user->save();
                 $roler = Role::findByName('company');
                 $user->assignRole($roler);
-                $user->userDefaultDataRegister($user->id);
-                $user->userWarehouseRegister($user->id);
-                Utility::chartOfAccountTypeData($user->id);
-                Utility::chartOfAccountData1($user->id);
-                Utility::pipeline_lead_deal_Stage($user->id);
-                Utility::project_task_stages($user->id);
-                Utility::labels($user->id);
-                Utility::sources($user->id);
-                Utility::jobStage($user->id);
-                GenerateOfferLetter::defaultOfferLetterRegister($user->id);
-                ExperienceCertificate::defaultExpCertificatRegister($user->id);
-                JoiningLetter::defaultJoiningLetterRegister($user->id);
-                NOC::defaultNocCertificateRegister($user->id);
+                $this->save_sub_role($user);
+              
             }
             else
             {
@@ -257,7 +252,7 @@ class ConsultantController extends Controller
                     $psw                   = $request->password;
                     $request['password']   = Hash::make($request->password);
                     $request['type']       = 'consultant';
-                    $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
+                    $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
                     $request['created_by'] = \Auth::user()->creatorId();
                     $request['gender']      = $request->gender;
                     if(isset($url)){
@@ -289,9 +284,9 @@ class ConsultantController extends Controller
                 $resp = Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
                 return redirect()->route('consultants.index')
-                ->with('success', __('User successfully created.'));
+                ->with('success', __('Consultants successfully created.'));
             }
-            return redirect()->route('consultants.index')->with('success', __('User successfully created.'));
+            return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
 
         }
         else
@@ -301,10 +296,29 @@ class ConsultantController extends Controller
 
     }
 
+    public function save_sub_role($user){
+        $user->userDefaultDataRegister($user->id);
+        $user->userWarehouseRegister($user->id);
+        Utility::chartOfAccountTypeData($user->id);
+        Utility::chartOfAccountData1($user->id);
+        Utility::pipeline_lead_deal_Stage($user->id);
+        Utility::project_task_stages($user->id);
+        Utility::labels($user->id);
+        Utility::sources($user->id);
+        Utility::jobStage($user->id);
+        GenerateOfferLetter::defaultOfferLetterRegister($user->id);
+        ExperienceCertificate::defaultExpCertificatRegister($user->id);
+        JoiningLetter::defaultJoiningLetterRegister($user->id);
+        NOC::defaultNocCertificateRegister($user->id);
+    }
+
     public function edit(Request $request,$id)
     {
         $user  = \Auth::user();
-        $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
+        $roles = Role::where('created_by', '=', $user->creatorId())
+                ->where('name','!=','client')
+                ->get()
+                ->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
         $company_type=Company_type::get()->pluck('name', 'id');
         if(\Auth::user()->can('edit consultant'))
@@ -314,9 +328,12 @@ class ConsultantController extends Controller
             $countrylist=Utility::getcountry();
             $statelist=Utility::getstate($user->country);
             $user->customField = CustomField::getData($user, 'user');
-            $customFields      = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
+            $customFields      = CustomField::where('created_by', '=', \Auth::user()
+                                ->creatorId())
+                                ->where('module', '=', 'user')
+                                ->get();
             $users =User::where([
-                ['name', '!=', Null],
+                ['name', '!=', null],
                 [function ($query) use ($request) {
                     if (($s = $request->search)) {
                         $user = \Auth::user();
@@ -324,11 +341,14 @@ class ConsultantController extends Controller
                         ->get();
                     }
                 }]
-            ])->where('created_by', '=', $user->creatorId())->where('id', '!=', $id)->orwhere('id', '=', $user->creatorId())->get()->pluck('name', 'id');
+            ])->where('created_by', '=', $user->creatorId())
+            ->where('id', '!=', $id)
+            ->orwhere('id', '=', $user->creatorId())
+            ->get()
+            ->pluck('name', 'id');
           
-
-            // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
-            return view('consultants.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users'));
+            return view('consultants.edit', compact('user','gender', 'roles', 'customFields',
+                        'countrylist','statelist','company_type','users'));
         }
         else
         {
@@ -385,7 +405,7 @@ class ConsultantController extends Controller
                 $input = $request->all();
         
                 $input['color_code']=$request->color_code;
-                // $input['reporting_to']=$string_version;
+             
                 if(isset($url)){
                     $input['avatar']=$url;
                 }
@@ -401,7 +421,7 @@ class ConsultantController extends Controller
 
 
                 return redirect()->route('consultants.index')->with(
-                    'success', 'User successfully updated.'
+                    'success', 'Consultant successfully updated.'
                 );
             }
             else
@@ -449,7 +469,7 @@ class ConsultantController extends Controller
                 Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                 CustomField::saveData($user, $request->customField);
                 return redirect()->route('consultants.index')->with(
-                    'success', 'User successfully updated.'
+                    'success', 'Consultant successfully updated.'
                 );
             }
         }
@@ -489,7 +509,7 @@ class ConsultantController extends Controller
                         $deleteuser = User::where(['id' => $user->id])->delete();
                         if($deleteuser){
                             return redirect()->route('consultants.index')
-                                             ->with('success', __('User successfully deleted .'));
+                                             ->with('success', __('Consultant successfully deleted .'));
                         }else{
                             return redirect()->back()->with('error', __('Something is wrong.'));
                         }
@@ -498,7 +518,7 @@ class ConsultantController extends Controller
                     }
                 }
 
-                return redirect()->route('consultants.index')->with('error', __('User permission denied.'));
+                return redirect()->route('consultants.index')->with('error', __('Consultant permission denied.'));
             }
             else
             {
@@ -546,7 +566,7 @@ class ConsultantController extends Controller
                          ])->save();
 
         return redirect()->route('consultants.index')->with(
-            'success', 'User Password successfully updated.'
+            'success', 'Consultants Password successfully updated.'
         );
 
 

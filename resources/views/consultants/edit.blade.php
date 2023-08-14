@@ -4,7 +4,7 @@
     }
 </style>
 {{Form::model($user,array('route' => array('consultants.update', $user->id),
-  'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off')) }}
+  'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off','enctype'=>"multipart/form-data")) }}
     <div class="modal-body">
         <div class="row">
             <div class="col-md-6">
