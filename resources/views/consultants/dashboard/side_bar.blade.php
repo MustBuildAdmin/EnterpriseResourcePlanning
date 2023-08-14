@@ -88,7 +88,7 @@
                                     {{ __('VO Change Order') }}
                                 </a>
                                 @endcan
-                            </div>
+                                </div>
 							</div>
 						</div>
 					</li>
