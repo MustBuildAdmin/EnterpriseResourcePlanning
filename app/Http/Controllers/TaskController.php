@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Con_task;
+use App\Models\Project;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use Session;
@@ -46,7 +47,11 @@ class TaskController extends Controller
         }else{
             $task->type="task";
         }
-        $task->save();
+        $frezee=Project::where('id',Session::get('project_id'))->first();
+        if($frezee->freeze_status!=1){
+            $task->save();
+        }
+
 
         ActivityController::activity_store(Auth::user()->id,
         Session::get('project_id'), "Added New Task", $request->text);
@@ -58,7 +63,7 @@ class TaskController extends Controller
     }
 
     public function destroy($id){
-      
+
         $task = Con_task::find($id);
         $row=Con_task::where(['project_id'=>Session::get('project_id'),
                               'instance_id'=>Session::get('project_instance'),'id'=>$id])->first();
@@ -66,9 +71,13 @@ class TaskController extends Controller
             ActivityController::activity_store(Auth::user()->id,
                                 Session::get('project_id'), "Deleted Task", $row->text);
         }
-        
-        $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
-        $task->delete();
+        $frezee=Project::where('id',Session::get('project_id'))->first();
+        if($frezee->freeze_status!=1){
+            $task->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
+            $task->delete();
+        }
+
+
          // checking whether its having parent or not
          $checkparent=Con_task::where('project_id', Session::get('project_id'))
                                 ->where(['parent'=>$row->parent])->first();
@@ -112,7 +121,10 @@ class TaskController extends Controller
         }else{
             $task->type="task";
         }
-        $task->save();
+        $frezee=Project::where('id',Session::get('project_id'))->first();
+        if($frezee->freeze_status!=1){
+            $task->save();
+        }
 
         ActivityController::activity_store(Auth::user()->id,
             Session::get('project_id'), "Updated Task", $request->text);

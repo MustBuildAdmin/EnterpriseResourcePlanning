@@ -1434,7 +1434,7 @@ class ProjectController extends Controller
 
             }
 
-            return view('projects.gantt', compact('project', 'tasks', 'duration'));
+            //return view('projects.gantt', compact('project', 'tasks', 'duration'));
         }
 
         else
