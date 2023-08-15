@@ -653,7 +653,7 @@ class ProjectController extends Controller
     }
     public function instance_project($instance_id,$project_id){
       
-        $returnpermission=1;
+        $returnpermission=0;
         $getInstance=Instance::where(['id'=>$instance_id])->first();
         $instanceId=$getInstance->instance;
         Session::forget('project_id');
@@ -678,9 +678,9 @@ class ProjectController extends Controller
             if(isset($projectCheck)){
                 $usr           = Auth::user();
                 if(\Auth::user()->type == 'client'){
-                $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
+                    $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
                 }else{
-                $user_projects = $usr->projects->pluck('id')->toArray();
+                    $user_projects = $usr->projects->pluck('id')->toArray();
                 }
                 if(in_array($project_id, $user_projects))
                 {
@@ -886,25 +886,16 @@ class ProjectController extends Controller
                     $ongoing_task=Con_task::where('project_id',$project_id)
                     ->where('instance_id',Session::get('project_instance'))
                     ->where('type','task')->where('progress','<',100)->where('progress','>',0)->count();
-                    
+                    $returnpermission=1;
                     return view('construction_project.dashboard',
                     compact('project','ongoing_task','project_data','total_sub','actual_percentage',
                     'workdone_percentage','current_Planed_percentage','not_started','notfinished',
                     'remaining_working_days','completed_task'));
                 }
-                else
-                {
-                    $returnpermission=0;
-                }
-            }else{
-                $returnpermission=0;
             }
         }
-        else
-        {
-            $returnpermission=0;
-        }
-        if($returnpermission==0){
+       
+        if($returnpermission!=1){
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
