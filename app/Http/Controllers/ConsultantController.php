@@ -309,28 +309,6 @@ class ConsultantController extends Controller
         }
     }
 
-   
-    public function plan($request){
-        if($totaluser < $plan->max_users || $plan->max_users == -1)
-        {
-
-            $psw                   = $request->password;
-            $request['password']   = Hash::make($request->password);
-            $request['type']       = 'consultant';
-            $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
-            $request['created_by'] = \Auth::user()->creatorId();
-            $request['gender']      = $request->gender;
-            $this->image_url($user);
-           
-           User::create($request->all());
-           
-            
-        }
-        else
-        {
-            return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
-        }
-    }
 
     public function edit(Request $request,$id)
     {
