@@ -144,25 +144,7 @@ class ConsultantController extends Controller
                                    ]
                 );
                 $this->validator_alert($validator);
-               
-                if(isset($request->avatar)){
-                    
-                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                
-                    $dir = Config::get('constants.USER_IMG');
-                    $imagepath = $dir . $fileNameToStore;
-                    
-                    $this->file_exists($imagepath);
-                   
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    $this->image_alert($path);
-
-                }
+               $this->image_upload($request->avatar);
                 $user               = new User();
                 $user['name']       = $request->name;
                 $user['lname']       = $request->lname;
@@ -207,52 +189,15 @@ class ConsultantController extends Controller
 
                 $this->validator_alert($validator);
 
-                if(isset($request->avatar)){
-                    
-                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                
-                    $dir = Config::get('constants.USER_IMG');
-                    $imagepath = $dir . $fileNameToStore;
-                    if (\File::exists($imagepath)) {
-                        \File::delete($imagepath);
-                    }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-                    $this->image_alert($path);
-                  
-                }
+                $this->image_upload($request->avatar);
 
                 $objUser    = \Auth::user()->creatorId();
                 $objUser =User::find($objUser);
                 User::find(\Auth::user()->created_by);
                 $totaluser = $objUser->countUsers();
                 $plan       = Plan::find($objUser->plan);
-                if($totaluser < $plan->max_users || $plan->max_users == -1)
-                {
-    
-                    $psw                   = $request->password;
-                    $request['password']   = Hash::make($request->password);
-                    $request['type']       = 'consultant';
-                    $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
-                    $request['created_by'] = \Auth::user()->creatorId();
-                    $request['gender']      = $request->gender;
-                    if(isset($url)){
-                        $request['avatar']=$url;
-                    }
-                   
-                    $user = User::create($request->all());
-                    if($request['type'] != 'client'){
-                        Utility::employeeDetails($user->id,\Auth::user()->creatorId());
-                    }
-                    
-                }
-                else
-                {
-                    return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
-                }
+                $all=$request->all();
+                $this->plan($totaluser,$plan,$all);
             }
             // Send Email
             $setings = Utility::settings();
@@ -323,6 +268,53 @@ class ConsultantController extends Controller
     public function file_exists($imagepath){
         if (\File::exists($imagepath)) {
             \File::delete($imagepath);
+        }
+    }
+
+    public function plan($totaluser,$plan,Request $all){
+        if($totaluser < $plan->max_users || $plan->max_users == -1)
+                {
+    
+                    $psw                   = $all->password;
+                    $all['password']   = Hash::make($all->password);
+                    $all['type']       = 'consultant';
+                    $all['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
+                    $all['created_by'] = \Auth::user()->creatorId();
+                    $all['gender']      = $all->gender;
+                    if(isset($url)){
+                        $all['avatar']=$url;
+                    }
+                   
+                    $user = User::create($request->all());
+                    if($all['type'] != 'client'){
+                        Utility::employeeDetails($user->id,\Auth::user()->creatorId());
+                    }
+                    
+                }
+                else
+                {
+                    return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
+                }
+    }
+
+    public function image_upload(Request $request){
+        if(isset($request->avatar)){
+                    
+            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension       = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        
+            $dir = Config::get('constants.USER_IMG');
+            $imagepath = $dir . $fileNameToStore;
+            
+            $this->file_exists($imagepath);
+           
+            $url = '';
+            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+
+            $this->image_alert($path);
+
         }
     }
 
