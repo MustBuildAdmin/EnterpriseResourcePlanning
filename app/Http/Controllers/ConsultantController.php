@@ -196,7 +196,7 @@ class ConsultantController extends Controller
                 if($totaluser < $plan->max_users || $plan->max_users == -1)
                 {
     
-                    $psw                   = $request->password;
+                   
                     $request['password']   = Hash::make($request->password);
                     $request['type']       = 'consultant';
                     $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
@@ -266,7 +266,29 @@ class ConsultantController extends Controller
         }
     }
 
+    public function image_upload($img){
+        if(isset($img->avatar)){
+                    
+            $filenameWithExt = $img->file('avatar')->getClientOriginalName();
+            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension       = $img->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        
+            $dir = Config::get('constants.USER_IMG');
+            $imagepath = $dir . $fileNameToStore;
+            
+            $this->file_exists($imagepath);
+           
+            $path = Utility::upload_file($img,'avatar',$fileNameToStore,$dir,[]);
+
+            $this->image_alert($path);
+
+        }
+    }
+
+
     public function image_alert($path){
+        $url = '';
         if($path['flag'] == 1){
             $url = $path['url'];
         }else{
@@ -287,27 +309,7 @@ class ConsultantController extends Controller
         }
     }
 
-    public function image_upload($img){
-        if(isset($img->avatar)){
-                    
-            $filenameWithExt = $img->file('avatar')->getClientOriginalName();
-            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension       = $img->file('avatar')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        
-            $dir = Config::get('constants.USER_IMG');
-            $imagepath = $dir . $fileNameToStore;
-            
-            $this->file_exists($imagepath);
-           
-            $url = '';
-            $path = Utility::upload_file($img,'avatar',$fileNameToStore,$dir,[]);
-
-            $this->image_alert($path);
-
-        }
-    }
-
+   
     public function plan($request){
         if($totaluser < $plan->max_users || $plan->max_users == -1)
         {
