@@ -18,8 +18,6 @@
             <div class="col-sm-auto mb-3 mb-sm-0">
                 <div class="d-flex align-items-center">
                     
-{{--                        <img alt="" src="@if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"
-@else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif " alt="kal" class="img-user">--}}
                         @if($user->avatar)
                             <img  src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"
                             alt="image" class="user-initial">

@@ -341,45 +341,68 @@ $holidays=implode(':',$holidays);
                                     <div class='col-md-12' style='display: flex;'>
                                         {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
                                              'id' => 'gantt_chart_submit',
-                                             'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
+                                             'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;
+                                             margin-bottom: 6px;']) }}
                                        
                                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                                                 <a href="#" class="btn btn-outline-primary w-20 freeze_button"
                                                 style='width: 100%;' data-bs-toggle="tooltip"
-                                                title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
-                                                    data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                                                    {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
+                                                title="{{ __('Click to change Set Baseline status') }}"
+                                                data-original-title="{{ __('Delete') }}"
+                                data-confirm="{{ __('Are You Sure?') . '|' .
+                                    __('This action can not be undone. Do you want to continue?') }}"
+                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                                     Set Baseline
                                                 </a>
                                             {!! Form::close() !!}
                                        
-                                        <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
-                                        <button class="btn btn-outline-primary action w-20" name="redo" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Redo</button>
-                                        <button class="btn btn-outline-primary action w-20" name="indent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Indent</button>
-                                        <button class="btn btn-outline-primary action w-20" name="outdent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Outdent</button>
+                                        <button class="btn btn-outline-primary action w-20" name="undo"
+                                        aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;
+                                        margin-top: 4px;margin-right: 6px;'>Undo</button>
+                                        <button class="btn btn-outline-primary action w-20" name="redo"
+                                         style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                         margin-right: 6px;'>Redo</button>
+                                        <button class="btn btn-outline-primary action w-20" name="indent"
+                                         style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                         margin-right: 6px;'>Indent</button>
+                                        <button class="btn btn-outline-primary action w-20" name="outdent"
+                                         style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                         margin-right: 6px;'>Outdent</button>
 
-                                        <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
+                                        <button class="btn btn-outline-primary w-20" type="button"
+                                         onclick='gantt.exportToExcel({ callback:show_result })'
+                                          style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                          margin-right: 6px;'>Export to Excel</button>
 
-                                       <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)"
+                                         style='width: 11%;margin-bottom: 6px;height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Show Slack</button>
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()"
+                                         style='width: 11%;margin-bottom: 6px;height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
                                     </div>
                                 </div>
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleOverlay();" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Overlay</button>
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleOverlay();"
+                                        style='width: 11%;margin-bottom: 6px; height: 38px;
+                                        margin-top: 4px;margin-right: 6px;'>
+                                        Overlay</button>
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
-                                            onclick="gantt.ext.fullscreen.toggle();" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Fullscreen</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="closeAll()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Collaspe
+                                            onclick="gantt.ext.fullscreen.toggle();"
+                                             style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                             margin-right: 6px;'>Fullscreen</button>
+                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
+                                         onclick="closeAll()" style='width: 11%;margin-bottom: 6px; height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Collaspe
                                             All</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="openAll()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Expand
+                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
+                                         onclick="openAll()" style='width: 11%;margin-bottom: 6px; height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Expand
                                             All</button>
-                                        <!-- <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
-                                            In</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
-                                            Out</button> -->
-
-                                        <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
+                                        <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)"
+                                         style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;
+                                         margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
                                                 <option value="">Select Timescale</option>
@@ -413,7 +436,8 @@ $holidays=implode(':',$holidays);
                                             <div class="gantt_control" >
 
                                             </div>
-                                                <div id="gantt_here" style='width:100%; height:677px; position: relative;'
+                                                <div id="gantt_here" style='width:100%; height:677px;
+                                                position: relative;'
                                                 onload="script();"  ></div>
                                             </div>
 
@@ -424,8 +448,10 @@ $holidays=implode(':',$holidays);
                                                 </div>
                                                 <div class="page-search">
                                                     <p class="text-muted mt-3">
-                                                        {{ __("It's looking like you may have taken a wrong turn. Don't worry...
-                                                             it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
+                                                        {{ __("It's looking like you may have taken a wrong turn.
+                                                             Don't worry... it happens to the best of us.
+                                                        Here's a little tip that might help you get back on track.")}}
+                                                    </p>
                                                     <div class="mt-3">
                                                         <a class="btn-return-home badge-blue" href="{{route('home')}}">
                                                             <i class="ti ti-reply"></i> {{ __('Return Home')}}</a>
@@ -436,7 +462,10 @@ $holidays=implode(':',$holidays);
 
                                     </div>
                                     <div class="page-search">
-                                      <p class="text-muted mt-3">{{ __("It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
+                                      <p class="text-muted mt-3">
+                                        {{ __("It's looking like you may have taken a wrong turn.
+                                         Don't worry... it happens to the best of us.
+                                          Here's a little tip that might help you get back on track.")}}</p>
                                       <div class="mt-3">
                                         <a class="btn-return-home badge-blue" href="{{route('home')}}">
                                           <i class="ti ti-reply"></i> {{ __('Return Home')}}
@@ -477,7 +506,7 @@ $holidays=implode(':',$holidays);
 
     // check freeze status
 
-    // check gantt task count 
+    // check gantt task count
         var tempcsrf1 = '{!! csrf_token() !!}';
         $.post("{{route('projects.get_gantt_task_count')}}", {_token: tempcsrf1,project_id: {{$project->id}}},
         function (resp, textStatus, jqXHR) {
@@ -496,7 +525,7 @@ $holidays=implode(':',$holidays);
 
         });
 
-    // check gantt task count 
+    // check gantt task count
 
 		//zoom
 
@@ -599,7 +628,8 @@ $holidays=implode(':',$holidays);
 		// 	title: "Start project: " + dateToStr(start)
 		// });
 		gantt.config.scale_height = 50;
-		gantt.templates.task_class = gantt.templates.grid_row_class = gantt.templates.task_row_class = function (start, end, task) {
+		gantt.templates.task_class = gantt.templates.grid_row_class =
+         gantt.templates.task_row_class = function (start, end, task) {
 			if (gantt.isSelectedTask(task.id))
 				return "gantt_selected";
 		};
@@ -749,12 +779,7 @@ $holidays=implode(':',$holidays);
 		return true;
 	});
 	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
-		// if(task && predecessor){
-		// 	gantt.message({
-		// 		text: "<b>" + task.text + "</b> has been rescheduled to " + gantt.templates.task_date(new_date) + " due to <b>" + predecessor.text + "</b> constraint",
-		// 		expire: 4000
-		// 	});
-		// }
+		
 	});
 
 
@@ -784,7 +809,8 @@ $holidays=implode(':',$holidays);
             gantt.form_blocks["multiselect"] = {
                 render: function (sns) {
                     var height = (sns.height || "23") + "px";
-                    var html = "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect' style='height:" + height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
+                    var html = "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect'
+                     style='height:" + height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
                     if (sns.options) {
                         multi_data = get_editon_multiselect();
                         $.each(multi_data['0'], function(multi_key, multi_value) {
