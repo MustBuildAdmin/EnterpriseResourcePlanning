@@ -288,7 +288,7 @@ class ConsultantController extends Controller
 
 
     public function image_alert($path){
-        $url = '';
+
         if($path['flag'] == 1){
             $url = $path['url'];
         }else{
