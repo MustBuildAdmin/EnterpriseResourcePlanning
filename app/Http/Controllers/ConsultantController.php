@@ -129,9 +129,6 @@ class ConsultantController extends Controller
     public function store(Request $request)
     {
 
-
-        if(\Auth::user()->can('create consultant'))
-        {
             $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
             if(\Auth::user()->type == 'super admin')
             {
@@ -144,7 +141,8 @@ class ConsultantController extends Controller
                                    ]
                 );
                 $this->validator_alert($validator);
-               $this->image_upload($request->avatar);
+                $img=$request->avatar;
+                $this->image_upload($img);
                 $user               = new User();
                 $user['name']       = $request->name;
                 $user['lname']       = $request->lname;
@@ -166,9 +164,8 @@ class ConsultantController extends Controller
                 $user['company_type']       = $request->company_type;
                 $user['color_code']=$request->color_code;
                 $user['company_name']       = $request->company_name;
-                if(isset($url)){
-                    $user['avatar']=$url;
-                }
+                $this->image_url($user);
+             
                 $user->save();
                 $roler = Role::findByName('company');
                 $user->assignRole($roler);
@@ -188,16 +185,33 @@ class ConsultantController extends Controller
                 );
 
                 $this->validator_alert($validator);
-
-                $this->image_upload($request->avatar);
+                $img=$request->avatar;
+                $this->image_upload($img);
 
                 $objUser    = \Auth::user()->creatorId();
                 $objUser =User::find($objUser);
-                User::find(\Auth::user()->created_by);
+                $user = User::find(\Auth::user()->created_by);
                 $totaluser = $objUser->countUsers();
                 $plan       = Plan::find($objUser->plan);
-                $all=$request->all();
-                $this->plan($totaluser,$plan,$all);
+                if($totaluser < $plan->max_users || $plan->max_users == -1)
+                {
+    
+                    $psw                   = $request->password;
+                    $request['password']   = Hash::make($request->password);
+                    $request['type']       = 'consultant';
+                    $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
+                    $request['created_by'] = \Auth::user()->creatorId();
+                    $request['gender']      = $request->gender;
+                    $this->image_url($user);
+                   
+                   User::create($request->all());
+                   
+                    
+                }
+                else
+                {
+                    return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
+                }
             }
             // Send Email
             $setings = Utility::settings();
@@ -206,11 +220,7 @@ class ConsultantController extends Controller
            
             return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
 
-        }
-        else
-        {
-            return redirect()->back();
-        }
+       
 
     }
 
@@ -271,38 +281,18 @@ class ConsultantController extends Controller
         }
     }
 
-    public function plan($totaluser,$plan,Request $all){
-        if($totaluser < $plan->max_users || $plan->max_users == -1)
-                {
-    
-                    $psw                   = $all->password;
-                    $all['password']   = Hash::make($all->password);
-                    $all['type']       = 'consultant';
-                    $all['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
-                    $all['created_by'] = \Auth::user()->creatorId();
-                    $all['gender']      = $all->gender;
-                    if(isset($url)){
-                        $all['avatar']=$url;
-                    }
-                   
-                    $user = User::create($request->all());
-                    if($all['type'] != 'client'){
-                        Utility::employeeDetails($user->id,\Auth::user()->creatorId());
-                    }
-                    
-                }
-                else
-                {
-                    return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
-                }
+    public function image_url($user){
+        if(isset($url)){
+            $user['avatar']=$url;
+        }
     }
 
-    public function image_upload(Request $request){
-        if(isset($request->avatar)){
+    public function image_upload($img){
+        if(isset($img->avatar)){
                     
-            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+            $filenameWithExt = $img->file('avatar')->getClientOriginalName();
             $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension       = $request->file('avatar')->getClientOriginalExtension();
+            $extension       = $img->file('avatar')->getClientOriginalExtension();
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
         
             $dir = Config::get('constants.USER_IMG');
@@ -311,10 +301,32 @@ class ConsultantController extends Controller
             $this->file_exists($imagepath);
            
             $url = '';
-            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+            $path = Utility::upload_file($img,'avatar',$fileNameToStore,$dir,[]);
 
             $this->image_alert($path);
 
+        }
+    }
+
+    public function plan($request){
+        if($totaluser < $plan->max_users || $plan->max_users == -1)
+        {
+
+            $psw                   = $request->password;
+            $request['password']   = Hash::make($request->password);
+            $request['type']       = 'consultant';
+            $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
+            $request['created_by'] = \Auth::user()->creatorId();
+            $request['gender']      = $request->gender;
+            $this->image_url($user);
+           
+           User::create($request->all());
+           
+            
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
         }
     }
 
@@ -380,41 +392,15 @@ class ConsultantController extends Controller
                                        'gender'=>'required'
                                    ]
                 );
-                if($validator->fails())
-                {
-                    $messages = $validator->getMessageBag();
-                    return redirect()->back()->with('error', $messages->first());
-                }
+                $this->validator_alert($validator);
 
-                if(isset($request->avatar)){
-                    
-                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                
-                    $dir = Config::get('constants.USER_IMG');
-                    $imagepath = $dir . $fileNameToStore;
-                    if (\File::exists($imagepath)) {
-                        \File::delete($imagepath);
-                    }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
-
-                }
+                $img=$request->avatar;
+                $this->image_upload($img);
                 $input = $request->all();
         
                 $input['color_code']=$request->color_code;
              
-                if(isset($url)){
-                    $input['avatar']=$url;
-                }
+                $this->image_url($user);
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);
                 DB::table('users')->where('id',$id)->update(['company_type'=>$request->company_type]);
@@ -440,37 +426,11 @@ class ConsultantController extends Controller
                                         'gender'=>'required'
                                    ]
                 );
-                if($validator->fails())
-                {
-                    $messages = $validator->getMessageBag();
-                    return redirect()->back()->with('error', $messages->first());
-                }
-                if(isset($request->avatar)){
-                    
-                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                
-                    $dir = Config::get('constants.USER_IMG');
-                    $imagepath = $dir . $fileNameToStore;
-                    if (\File::exists($imagepath)) {
-                        \File::delete($imagepath);
-                    }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
-
-                }
+                $this->validator_alert($validator);
+                $img=$request->avatar;
+                $this->image_upload($img);
                 $input         = $request->all();
-                if(isset($url)){
-                    $input['avatar']=$url;
-                }
+                $this->image_url($user);
                 $user->fill($input)->save();
                 Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                 CustomField::saveData($user, $request->customField);
