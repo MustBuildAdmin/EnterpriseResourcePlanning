@@ -653,7 +653,7 @@ class ProjectController extends Controller
     }
     public function instance_project($instance_id,$project_id){
       
-        $return_permission=1;
+        $returnpermission=1;
         $getInstance=Instance::where(['id'=>$instance_id])->first();
         $instanceId=$getInstance->instance;
         Session::forget('project_id');
@@ -894,17 +894,17 @@ class ProjectController extends Controller
                 }
                 else
                 {
-                    $return_permission=0;
+                    $returnpermission=0;
                 }
             }else{
-                $return_permission=0;
+                $returnpermission=0;
             }
         }
         else
         {
-            $return_permission=0;
+            $returnpermission=0;
         }
-        if($return_permission==0){
+        if($returnpermission==0){
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
