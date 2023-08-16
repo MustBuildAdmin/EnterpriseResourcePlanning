@@ -466,12 +466,20 @@ Route::any('ConstructionDrawingscreate','DiaryController@ConstructionDrawingscre
     );
 
 
+Route::get('/consultant_index', 'DashboardController@consultant_index')->name('consultant_index')->middleware(
+    [
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::get('/home', 'DashboardController@account_dashboard_index')->name('new_home')->middleware(
     [
         'XSS',
         'revalidate',
     ]
 );
+
 
 Route::get('/', 'DashboardController@account_dashboard')->name('new_home')->middleware(
     [
@@ -4162,6 +4170,12 @@ Route::resource('consultants', 'ConsultantController')->middleware(
         'revalidate',
     ]
 );
+
+Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
+
+Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
+        ->name('consultants.password.update');
+
 Route::resource('plans', 'PlanController')->middleware(
     [
         'auth',
@@ -4849,6 +4863,10 @@ Route::any('download_report', 'ProjectReportController@download_report')->name('
 Route::any('revision', 'RevisionController@revision')->name('revision');
 Route::any('revision_store', 'RevisionController@revision_store')->name('revision_store');
 
+/*New Diary route*/
+Route::any('new_vo_change', 'DiaryController@new_vo_change')->name('new_vo_change');
+Route::any('new_drawing', 'DiaryController@new_drawing')->name('new_drawing');
+Route::any('new_rfi', 'DiaryController@new_rfi')->name('new_rfi');
 
 
 Route::any('{any}', function() {

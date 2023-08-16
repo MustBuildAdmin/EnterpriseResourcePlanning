@@ -167,6 +167,11 @@ class DashboardController extends Controller
         }
     }
 
+    public function consultant_index(){
+
+        return view('consultants.dashboard.index');
+    }
+
     public function project_dashboard_index()
     {
         $user = Auth::user();
@@ -653,6 +658,10 @@ class DashboardController extends Controller
             elseif(Auth::user()->type == 'client')
             {
                 return view('new_layouts.home');
+                
+            }elseif(Auth::user()->type == 'consultant'){
+
+                return redirect()->route('consultant_index');
             }
             else
             {
