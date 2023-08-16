@@ -228,7 +228,12 @@
                                     );
                                 @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, null,
+<<<<<<< HEAD
                                     array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true','required'=>'required')) 
+=======
+                                    array('id' => 'non_working_days','class' => 'form-control
+                                    chosen-select get_non_working_days','multiple'=>'true'))
+>>>>>>> b4cb85b7 (erp)
                                 !!}
                             </div>
                         </div>

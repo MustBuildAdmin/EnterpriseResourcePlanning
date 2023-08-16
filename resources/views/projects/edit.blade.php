@@ -236,7 +236,8 @@
                                 @endphp
                                 @php $non_working_days_set=explode(',',$project->non_working_days); @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, $non_working_days_set,
-                                    array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true','required'=>'required')) 
+                                    array('id' => 'non_working_days','class' => 'form-control chosen-select
+                                    get_non_working_days','multiple'=>'true'))
                                 !!}
                             </div>
                         </div>
