@@ -37,7 +37,7 @@ class Reportemail implements ShouldQueue
         $project_id=$this->podcast;
     ///   sending report  ############################################
                        $project=Project::where('id',$project_id)->first();
-                       $project_task=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))
+                       $project_task=Con_task::where('project_id',$project_id)->where('instance_id',$project->instance_id)
                        ->where('updated_at','like',Carbon::now()->format('Y-m-d').'%')->where('type','project')->get();
                     //    $project_task=Con_task::where('project_id',$project_id)->whereIn('main_id', function($query){
                     //        $query->select('task_id')
