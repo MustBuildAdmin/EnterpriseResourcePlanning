@@ -133,7 +133,8 @@
                         {{Form::label('city',__('City'),array('class'=>'form-label')) }}
                         <span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                            {{Form::text('city',null,array('class'=>'form-control','oninput'=>'process(this)',
+                            'required'=>'required'))}}
                         </div>
                     </div>
                 </div>
@@ -290,6 +291,11 @@ $(document).on("change", '#country', function () {
 
     $(document).ready(function() {
 
+     
+        $(document).on('submit', 'form', function() {
+            $('#create_user').attr('disabled', 'disabled');
+        });
+
         $(".chosen-select").chosen({
             placeholder_text:"{{ __('Reporting to') }}"
         });
@@ -373,6 +379,14 @@ $(document).on("change", '#country', function () {
         }
        
     });
+
+   
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 
 </script>
 

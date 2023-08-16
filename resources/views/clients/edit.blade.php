@@ -46,12 +46,12 @@
             @php
                 $rndColor = Utility::rndRGBColorCode(); #function call
             @endphp
-            @if ($user->color_code!=Null || $user->color_code!='')
+            @if ($user->color_code!=null || $user->color_code!='')
                 @php $color_co =$user->color_code; @endphp
             @else
                 @php $color_co =$rndColor; @endphp
             @endif
-            <input type="hidden" name="color_code" value="{{ $color_co }}">
+            <input type="text" name="color_code" value="{{ $color_co }}">
                <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <div class="form-group">
@@ -210,7 +210,8 @@
                 <div class="form-group">
                     {{Form::label('billing_city',__('City'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required'))}}
+                        {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required',
+                        'oninput'=>'process(this)'))}}
                     </div>
                 </div>
             </div>
@@ -309,7 +310,7 @@
                         {{Form::label('shipping_city',__('City'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
                             {{Form::text('shipping_city',null,array('class'=>'form-control',
-                            'required'=>'required',$disabled_enabled))}}
+                            'required'=>'required','oninput'=>'process(this)',$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -564,4 +565,10 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             });
         });
     });
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 </script>

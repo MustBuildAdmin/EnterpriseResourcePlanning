@@ -47,13 +47,13 @@
         @php
             $rndColor = Utility::rndRGBColorCode(); #function call
         @endphp
-        @if ($user->color_code!=Null || $user->color_code!='')
+        @if ($user->color_code!=null || $user->color_code!='')
              @php $color_co =$user->color_code; @endphp
         @else
              @php $color_co =$rndColor; @endphp
         @endif
 
-            <input type="hidden" name="color_code" value="{{ $color_co }}">
+            <input type="text" name="color_code" value="{{ $color_co }}">
 
             <div class="row">
                 <div class="col-md-6">
@@ -152,7 +152,8 @@
                     <div class="form-group">
                         {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                            {{Form::text('city',null,array('class'=>'form-control','oninput'=>'process(this)',
+                            'required'=>'required'))}}
                         </div>
                     </div>
                 </div>
@@ -333,7 +334,12 @@
         }
        
     });
-   
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 </script>
 <style>
 div#reporting_toerr {

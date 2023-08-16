@@ -104,7 +104,8 @@
                 <div class="form-group">
                     {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                        {{Form::text('city',null,array('class'=>'form-control','required'=>'required',
+                        'oninput'=>'process(this)'))}}
                     </div>
                 </div>
             </div>
@@ -270,6 +271,12 @@
         }
        
     });
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
    
 </script>
 <style>

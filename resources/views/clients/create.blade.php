@@ -195,7 +195,7 @@
                 <span style='color:red;'>*</span>
                 <div class="form-icon-user">
                       {{Form::text('billing_city',null,array('class'=>'form-control',
-                      'required'=>'required','id'=>'billing_city'))}}
+                      'required'=>'required','id'=>'billing_city','oninput'=>'process(this)'))}}
                 </div>
             </div>
         </div>
@@ -296,7 +296,7 @@
                     <div class="form-icon-user">
                         <div class="form-icon-user">
                             {{Form::text('shipping_city',null,array('class'=>'form-control',
-                            'required'=>'required','id'=>'shipping_city'))}}
+                            'required'=>'required','id'=>'shipping_city','oninput'=>'process(this)'))}}
                         </div>
                     </div>
                 </div>
@@ -549,5 +549,11 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         });
             
     });
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 
 </script>
