@@ -13,6 +13,71 @@
     .estimated_days:hover {
         border: 1px solid #ccc !important;
     }
+
+    /* Loader */
+    .wrappers{
+        display: flex;
+        justify-content: center;
+    }
+    .cards {
+        display: flex;
+        padding: 24px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .loader{
+        border-radius: 50%;
+        position: relative;
+        display: inline-block;
+        height: 0px;
+        width: 0px;
+    }
+
+    .loader span{
+        position: absolute;
+        display: block;
+        background: #ddd;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        top: -20px;
+        perspective: 100000px;
+    }
+    .loader span:nth-child(1) {
+        left:30px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: 0s;
+        background: #ff756f;
+    }
+    .loader span:nth-child(2) {
+        left:6px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .2s;
+        background: #ffde6f;
+    }
+    .loader span:nth-child(3) {
+        left:-20px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .4s;
+        background: #01de6f;
+    }
+    .loader span:nth-child(4) {
+        left: -44px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .6s;
+        background: #6f75ff;
+    }
+
+    @keyframes bounce2 {
+        0%, 56%, 100% {
+            transform: translateY(0px);
+        }
+        25% {
+            transform: translateY(-30px);
+        }
+    }
 </style>
 <div class="modal-body">
     <div class="container">
@@ -66,7 +131,7 @@
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip',
-                                'required'=>'required'))}}
+                                'required'=>'required', 'minlength'=>5))}}
                             </div>
                         </div>
                     </div>
@@ -163,7 +228,7 @@
                                     );
                                 @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, null,
-                                    array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true','required'=>'required')) 
+                                    array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true')) 
                                 !!}
                             </div>
                         </div>
@@ -252,33 +317,36 @@
     </div>
 </div>
 
-<script>
+<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" 
+    aria-hidden="true" data-toggle="modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <center>
+                    <section class="wrappers loader_show_hide">
+                        <div class="cards">
+                        <div class="loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        </div>
+                    </section>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    $('#loding_popup').modal({backdrop: 'static', keyboard: false});
     var key_i=2;
+    check_validation = 0;
     $(document).on("click", '.addmore', function () {
 
-        check_validation = 0;
         if ($("#holidays").prop('checked') == false) {
-            $( ".holiday_date" ).each(function(index) {
-                get_inc_id = $(this).data('date_id');
-
-                get_date_val = $("#holiday_date"+get_inc_id).val();
-                get_desc_val = $("#holiday_description"+get_inc_id).val();
-
-                if(get_date_val == ""){
-                    $(".holiday_date_label"+get_inc_id).show();
-                    check_validation = 1;
-                }
-                else if(get_desc_val == ""){
-                    $(".holiday_description_label"+get_inc_id).show();
-                    check_validation = 1;
-                }
-                else{
-                    $(".holiday_date_label"+get_inc_id).hide();
-                    $(".holiday_description_label"+get_inc_id).hide();
-                    check_validation = 0;
-                }
-            });
+            holidayValidation();
         }
 
         if(check_validation == 0){
@@ -292,6 +360,34 @@
             key_i++;
         }
     });
+
+    function holidayValidation(){
+        $( ".holiday_date" ).each(function(index) {
+            get_inc_id = $(this).data('date_id');
+
+            get_date_val = $("#holiday_date"+get_inc_id).val();
+            get_desc_val = $("#holiday_description"+get_inc_id).val();
+
+            if(get_date_val == "" && get_desc_val == ""){
+                $(".holiday_date_label"+get_inc_id).show();
+                $(".holiday_description_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else if(get_date_val == ""){
+                $(".holiday_date_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else if(get_desc_val == ""){
+                $(".holiday_description_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else{
+                $(".holiday_date_label"+get_inc_id).hide();
+                $(".holiday_description_label"+get_inc_id).hide();
+                check_validation = 0;
+            }
+        });
+    }
 
     $(document).on("click", '.delete_key', function () {
         case_count = $('.case:checkbox:checked').length;
@@ -392,16 +488,38 @@
                 get_reportto         = $(".get_reportto").val();
                 get_non_working_days = $(".get_non_working_days").val();
                
-                if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
+                if (newIndex < currentIndex) {
+                    return true;
+                }
+                else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
-                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
-                    form.validate().settings.ignore = ":disabled";
+                else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
+                    if ($("#holidays").prop('checked') == false) {
+                        holidayValidation();
+                        if(check_validation == 1){
+                            $(".current").attr('aria-disabled','true');
+                            return false;
+                        }
+                        else{
+                            $(".current").attr('aria-disabled','false');
+                            $(".current").removeClass('error');
+                        }
+                    }
+                    else{
+                        $(".current").attr('aria-disabled','false');
+                        $(".current").removeClass('error');
+                    }
                 }
                 else{
                     form.validate().settings.ignore = ":disabled,:hidden";
                 }
                 return form.valid();
+            },
+            labels: {
+                finish: 'Finish <i class="fa fa-chevron-right"></i>',
+                next: 'Next <i class="fa fa-chevron-right"></i>',
+                previous: '<i class="fa fa-chevron-left"></i> Previous'
             },
             onFinishing: function (event, currentIndex)
             {
@@ -427,6 +545,8 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        var finishButton = form.find('a[href="#finish"]').removeAttr('href');
+                        $(".loding_popup").modal('show');
                         form.submit();
                     }
                     else if (result.dismiss === Swal.DismissReason.cancel) {
