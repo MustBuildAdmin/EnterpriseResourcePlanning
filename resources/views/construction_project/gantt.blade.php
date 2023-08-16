@@ -337,11 +337,26 @@ $holidays=implode(':',$holidays);
                                                     Set Baseline
                                                 </a>
                                             {!! Form::close() !!}
+                                       
+                                            <button class="btn btn-outline-primary action w-20" name="undo undo_action"
+                                            aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;
+                                            margin-top: 4px;margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Undo</button>
 
-                                        <button class="btn btn-outline-primary action w-20" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Undo</button>
-                                        <button class="btn btn-outline-primary action w-20" name="redo" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Redo</button>
-                                        <button class="btn btn-outline-primary action w-20" name="indent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Indent</button>
-                                        <button class="btn btn-outline-primary action w-20" name="outdent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'  @if($project->freeze_status==1) disabled @endif>Outdent</button>
+                                            <button class="btn btn-outline-primary action w-20 redo_action" name="redo"
+                                            style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                            margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Redo</button>
+
+                                            <button class="btn btn-outline-primary action w-20 indent_action"
+                                            name="indent" style='width: 11%;margin-bottom: 6px;
+                                            height: 38px;margin-top: 4px;margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Indent</button>
+
+                                            <button class="btn btn-outline-primary action w-20 outdent_action"
+                                            name="outdent" style='width: 11%;margin-bottom: 6px;
+                                            height: 38px;margin-top: 4px;margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Outdent</button>
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
@@ -450,9 +465,17 @@ $holidays=implode(':',$holidays);
                if(resp=='1'){
                     gantt.config.readonly = true;
                     $('.freeze_button').addClass('disabled');
+                    $('.undo_action').addClass('disabled');
+                    $('.redo_action').addClass('disabled');
+                    $('.indent_action').addClass('disabled');
+                    $('.outdent_action').addClass('disabled');
                }else{
                     gantt.config.readonly = false;
                     $('.freeze_button').removeClass('disabled');
+                    $('.undo_action').removeClass('disabled');
+                    $('.redo_action').removeClass('disabled');
+                    $('.indent_action').removeClass('disabled');
+                    $('.outdent_action').removeClass('disabled');
                }
 
             });
@@ -466,6 +489,10 @@ $holidays=implode(':',$holidays);
             console.log(resp,"resprespresp")
             if(resp==0){
                 $('.freeze_button').addClass('disabled');
+                $('.undo_action').addClass('disabled');
+                $('.redo_action').addClass('disabled');
+                $('.indent_action').addClass('disabled');
+                $('.outdent_action').addClass('disabled');
             }
             // if(resp=='1'){
             //     gantt.config.readonly = true;
