@@ -18,6 +18,17 @@
     line-height: 43px;
     margin: 1px;
 }
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 25px;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+  /* background: orange; */
+  text-transform:capitalize;
+}
 </style>
 <script src="{{ asset('WizardSteps/js/jquery.steps.js') }}"></script>
 <div class="page-wrapper">
@@ -70,7 +81,9 @@
                             <div class="card">
                                 <div class="card-header border-0 pb-0">
                                     <div class="d-flex align-items-center">
-                                        <img {{ $project->img_image }} class="img-fluid wid-30 me-2" alt="">
+                                        <?php $color = substr(md5(rand()), 0, 6);?>
+                                    <div class="circle" style="background:#<?php echo $color; ?>"><?= substr($project->project_name,0,2) ?></div>
+                                        <!-- <img src="{{ $project->img_image }}" class="img-fluid wid-30 me-2" alt=""> -->
                                         <h5 class="mb-0">
                                         <!-- href="{{ route('projects.show', $project) }}" -->
                                             <a class="text-dark"  data-size="lg"
@@ -105,7 +118,7 @@
                                                     @can('delete project')
                                                         {!! Form::open(['method' => 'DELETE',
                                                             'route' => ['projects.destroy', $project->id]]) !!}
-                                                        <a href="#!" class="dropdown-item bs-pass-para">
+                                                        <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
                                                             <i class="ti ti-archive"></i>
                                                             <span> {{ __('Delete') }}</span>
                                                         </a>

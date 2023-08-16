@@ -287,7 +287,34 @@ $(document).on("click", '.bs-pass-para-dup', function () {
         }
     })
 });
+$(document).on("click", '.bs-pass-para-deleteproject', function () {
+    var form = $(this).closest("form");
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "Do you really want to delete this project? This process cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
 
+            form.submit();
+
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+        }
+    })
+});
 $(document).on("click", '.bs-pass-para', function () {
     var form = $(this).closest("form");
     const swalWithBootstrapButtons = Swal.mixin({
