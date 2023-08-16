@@ -1,7 +1,20 @@
 <style>
     div#choices_multiple1_chosen {
         width: 100% !important;
+        border-color:#e6e7e9 !important;
     }
+    .chosen-container-multi .chosen-choices
+    {
+    border: none;
+    cursor: text;
+    padding: 0.2325rem 0.75rem;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    text-indent: 0;
+   }
 </style>
 {{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form',
   'autocomplete'=>'off','enctype'=>"multipart/form-data"))}}

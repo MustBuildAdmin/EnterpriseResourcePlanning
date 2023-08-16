@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
+use Config;
 
 class RegisteredUserController extends Controller
 {
@@ -141,10 +141,25 @@ class RegisteredUserController extends Controller
             JoiningLetter::defaultJoiningLetterRegister($user->id);
             NOC::defaultNocCertificateRegister($user->id);
 
-
-            $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
-            event(new Registered($user));
-            return redirect()->route('login')->with('success_register', __($userArr['set_password_url']));
+            if($request->type=='company'){
+                $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
+                event(new Registered($user));
+                return redirect()->route('login')->with('success_register', __($userArr['set_password_url']));
+            }else{
+                $user->password = $request->password;
+                $user->type = 'consultant';
+    
+                $userArr = [
+                    'email' => $user->email,
+                    'password' => $user->password,
+                ];
+    
+                Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+                event(new Registered($user));
+                return redirect()->route('login')->with('success_register',Config::get('constants.CONSULTANT_MAIL'));
+                
+            }
+          
 
             // return \Redirect::to('login');
         }

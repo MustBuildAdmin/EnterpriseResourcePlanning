@@ -214,6 +214,7 @@ class ConsultantController extends Controller
                 }
             }
             // Send Email
+            $psw                = $request->password;
             $setings = Utility::settings();
             $this->mail($setings,$user,$psw);
 
@@ -242,6 +243,7 @@ class ConsultantController extends Controller
 
     public function mail($setings,$user,$psw){
         if($setings['create_consultant'] == 1) {
+         
             $user->password = $psw;
             $user->type = 'consultant';
 
@@ -282,6 +284,7 @@ class ConsultantController extends Controller
             $path = Utility::upload_file($img,'avatar',$fileNameToStore,$dir,[]);
 
             $this->image_alert($path);
+            return $path;
 
         }
     }
