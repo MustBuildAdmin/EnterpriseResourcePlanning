@@ -335,8 +335,9 @@
     </div>
 </div>
 
-<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" 
-    aria-hidden="true" data-toggle="modal">
+<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalCenterTitle"
+aria-hidden="true" data-toggle="modal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
