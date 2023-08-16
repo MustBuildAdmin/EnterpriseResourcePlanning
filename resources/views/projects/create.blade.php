@@ -227,7 +227,8 @@
                                     );
                                 @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, null,
-                                    array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true')) 
+                                    array('id' => 'non_working_days','class' => 'form-control
+                                    chosen-select get_non_working_days','multiple'=>'true'))
                                 !!}
                             </div>
                         </div>
