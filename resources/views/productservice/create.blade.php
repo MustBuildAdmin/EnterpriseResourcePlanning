@@ -58,8 +58,8 @@
         </div>
 
         <div class="form-group col-md-6">
-            {{ Form::label('tax_id', __('Tax'),['class'=>'form-label']) }}
-            {{ Form::select('tax_id[]', $tax,null, array('class' => 'form-control select2','id'=>'choices-multiple1','multiple')) }}
+            {{ Form::label('tax_id', __('Tax'),['class'=>'form-label']) }}<span class="text-danger">*</span>
+            {{ Form::select('tax_id[]', $tax,null, array('class' => 'form-control select2','id'=>'choices-multiple1','multiple','required'=>'required')) }}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span class="text-danger">*</span>
@@ -76,7 +76,7 @@
 
         <div class="form-group col-md-6">
             {{ Form::label('quantity', __('Quantity'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::text('quantity',null, array('class' => 'form-control','required'=>'required')) }}
+            {{ Form::number('quantity',null, array('class' => 'form-control','required'=>'required','min'=>'0')) }}
         </div>
         <div class="col-md-6">
             <div class="form-group">

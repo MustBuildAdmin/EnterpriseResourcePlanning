@@ -25,7 +25,7 @@
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::text('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
-                    <span class="text-danger">Email Already Exist!</span>
+                    <span class="text-danger">{{__('Email Already Exist!')}}</span>
                 </span> 
                 @error('email')
                 <small class="invalid-email" role="alert">
@@ -95,7 +95,9 @@
                 {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111"  required>
-                    {{-- {{Form::text('phone',null,array('class'=>'form-control'))}} --}}
+                    <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
+                        <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -234,7 +236,7 @@ $(document).on("change", '#country', function () {
             $.ajax({
                 url : '{{ route("check_duplicate_email") }}',
                 type : 'GET',
-                data : { 'get_name' : $("#email").val(),'form_name' : "Users" },
+                data : { 'getname' : $("#email").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#create_user").prop('disabled',false);
@@ -251,6 +253,28 @@ $(document).on("change", '#country', function () {
                 }
             });
         });
+        $(document).on("keyup", '#phone', function () {
+            $.ajax({
+                url : '{{ route("check_duplicate_mobile") }}',
+                type : 'GET',
+                data : { 'getname' : $("#phone").val(),'formname' : "Users" },
+                success : function(data) {
+                    if(data == 1){
+                        $("#create_user").prop('disabled',false);
+                        $(".mobile_duplicate_error").css('display','none');
+                    }
+                    else{
+                        $("#create_user").prop('disabled',true);
+                        $(".mobile_duplicate_error").css('display','block');
+                    }
+                },
+                error : function(request,error)
+                {
+                    // alert("Request: "+JSON.stringify(request));
+                }
+            });
+        });
+        
     });
 
     $('#users_form').validate({

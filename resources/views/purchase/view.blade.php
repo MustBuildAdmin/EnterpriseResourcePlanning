@@ -45,7 +45,7 @@
                                     <h6 class="text-primary my-3">{{__('Create Purchase')}}</h6>
                                     <p class="text-muted text-sm mb-3"><i class="ti ti-clock mr-2"></i>{{__('Created on ')}}{{\Auth::user()->dateFormat($purchase->purchase_date)}}</p>
                                     @can('edit purchase')
-                                        <a href="{{ route('purchase.edit',\Crypt::encrypt($purchase->id)) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil mr-2"></i>{{__('Edit')}}</a>
+                                        <a href="{{ route('purchase.edit',\Crypt::encrypt($purchase->id)) }}" class="btn  btn-primary" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil mr-2"></i>{{__('Edit')}}</a>
 
                                     @endcan
                                 </div>
@@ -66,7 +66,7 @@
 
                                     @if($purchase->status==0)
                                         @can('send purchase')
-                                            <a href="{{ route('purchase.sent',$purchase->id) }}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-original-title="{{__('Mark Sent')}}"><i class="ti ti-send mr-2"></i>{{__('Send')}}</a>
+                                            <a href="{{ route('purchase.sent',$purchase->id) }}" class="btn  btn-warning" data-bs-toggle="tooltip" data-original-title="{{__('Mark Sent')}}"><i class="ti ti-send mr-2"></i>{{__('Send')}}</a>
                                         @endcan
                                     @endif
                                 </div>
@@ -78,7 +78,7 @@
                                     <p class="text-muted text-sm mb-3">{{__('Status')}} : {{__('Awaiting payment')}} </p>
                                     @if($purchase->status!= 0)
                                         @can('create payment purchase')
-                                            <a href="#" data-url="{{ route('purchase.payment',$purchase->id) }}" data-ajax-popup="true" data-title="{{__('Add Payment')}}" class="btn btn-sm btn-info" data-original-title="{{__('Add Payment')}}"><i class="ti ti-report-money mr-2"></i>{{__('Add Payment')}}</a> <br>
+                                            <a href="#" data-url="{{ route('purchase.payment',$purchase->id) }}" data-ajax-popup="true" data-title="{{__('Add Payment')}}" class="btn  btn-info" data-original-title="{{__('Add Payment')}}"><i class="ti ti-report-money mr-2"></i>{{__('Add Payment')}}</a> <br>
                                         @endcan
                                     @endif
 
@@ -97,19 +97,19 @@
                 <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
 {{--                    @if(!empty($purchasePayment))--}}
 {{--                        <div class="all-button-box mx-2">--}}
-{{--                            <a href="#" data-url="{{ route('bill.debit.note',$purchase->id) }}" data-ajax-popup="true" data-title="{{__('Add Debit Note')}}" class="btn btn-sm btn-primary">--}}
+{{--                            <a href="#" data-url="{{ route('bill.debit.note',$purchase->id) }}" data-ajax-popup="true" data-title="{{__('Add Debit Note')}}" class="btn  btn-primary">--}}
 {{--                                {{__('Add Debit Note')}}--}}
 {{--                            </a>--}}
 {{--                        </div>--}}
 
 {{--                    @endif--}}
                     <div class="all-button-box mx-2">
-                        <a href="{{ route('purchase.resent',$purchase->id) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ route('purchase.resent',$purchase->id) }}" class="btn  btn-primary">
                             {{__('Resend Purchase')}}
                         </a>
                     </div>
                     <div class="all-button-box">
-                        <a href="{{ route('purchase.pdf', Crypt::encrypt($purchase->id))}}" target="_blank" class="btn btn-sm btn-primary">
+                        <a href="{{ route('purchase.pdf', Crypt::encrypt($purchase->id))}}" target="_blank" class="btn  btn-primary">
                             {{__('Download')}}
                         </a>
                     </div>
@@ -348,7 +348,7 @@
                                                             <td class="text-end">{{ \Auth::user()->priceFormat($taxPrice) }}</td>
                                                         </tr>
                                                     @endif
-                                                    
+
                                                 @endforeach
                                             @endif
                                             <tr>

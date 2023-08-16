@@ -1,3 +1,9 @@
+@php
+    $lang= Auth::user()->lang;
+@endphp
+
+
+
 <style>
     .navbar-expand-lg {
         top: 8em !important;
@@ -69,6 +75,75 @@
                         @endif
 
                     </li>
+
+
+                    @if( Gate::check('manage job') || Gate::check('create job') || Gate::check('manage job application') || Gate::check('manage custom question') || Gate::check('show interview schedule') || Gate::check('show career'))
+                    <li class="active nav-item dropdown">
+                                        <a class="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career') ? 'nav-link dropdown-toggle show' : 'nav-link dropdown-toggle'}}   " href="#"\
+                                        aria-expanded="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career') ? 'true' : 'false' }}"
+                                        href="#recruitment" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" >{{__('Recruitment Setup')}}</a>
+
+                                        <div class="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career')  ? 'dropdown-menu show'
+                            : 'dropdown-menu'}}"
+                            data-bs-popper= "{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career')  ? 'static'
+                            : ''}}"
+                            >
+                            <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                            @can('manage job')
+                                <a class="dash-item {{ (Request::route()->getName() == 'job.index' || Request::route()->getName() == 'job.create' || Request::route()->getName() == 'job.edit' || Request::route()->getName() == 'job.show'   ? 'active dropdown-item' : 'dropdown-item')}}"
+                                    href="{{route('job.index')}}">
+                                    {{__('Jobs')}}
+                                </a>
+                                @endcan
+                                @can('create job')
+                                <a class="dash-item {{ ( Request::route()->getName() == 'job.create' ? 'active dropdown-item' : 'dropdown-item')}}"
+                                    href="{{route('job.create')}}">
+                                    {{__('Job Create')}}
+                                </a>
+                                @endcan
+                                @can('manage job application')
+                                <a class="dash-item {{ (request()->is('job-application*') ? 'active dropdown-item' : 'dropdown-item')}}"
+                                    href="{{route('job.application.candidate')}}">
+                                    {{__('Job Application')}}
+                                </a>
+                                @endcan
+                                @can('manage job application')
+                                <a class="dash-item {{ (request()->is('job-onboard*')  ? 'active dropdown-item' : 'dropdown-item')}}"
+                                    href="{{route('job.index')}}">
+                                    {{__('Job On-boarding')}}
+                                </a>
+                                @endcan
+                                @can('manage custom question')
+                                <a class="dash-item  {{ (request()->is('custom-question*')  ? 'active dropdown-item' : 'dropdown-item')}}"
+                                href="{{route('custom-question.index')}}">
+                                {{__('Custom Question')}}
+                                </a>
+                                @endcan
+                                @can('show interview schedule')
+                                <a class="dash-item {{ (request()->is('interview-schedule*') ? 'active dropdown-item' : 'dropdown-item')}}"
+                                href="{{route('interview-schedule.index')}}">
+                                 {{__('Interview Schedule')}}
+                                </a>
+                                @endcan
+                                @can('show career')
+                                <a class="dash-item {{ (request()->is('career*') ? 'active dropdown-item' : 'dropdown-item')}}"
+                                href="{{route('career',[\Auth::user()->creatorId(),$lang])}}">
+                                {{__('Career')}}
+                                </a>
+                                @endcan
+                            </div>
+                            </div>
+                        
+                        </div>
+                    </li>
+                    @endif
+
+
+
+
+
+
                     <li class="active nav-item dropdown">
                         <a class="{{ Request::segment(1) == 'holiday-calender' ||
                         Request::segment(1) == 'holiday' ||

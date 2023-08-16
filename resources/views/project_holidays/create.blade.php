@@ -12,9 +12,8 @@
             <div class="form-group">
                 {{Form::label('project',__('Project'),['class'=>'form-label'])}}
                 <select class="form-control" required name='project_id'>
-                    <option value="">{{__('Select_Project')}}</option>
                         @foreach($projects as $key => $value)
-                            <option value="{{$value->id}}">{{$value->project_name}}</option>
+                            <option value="{{$value->id}}" >{{$value->project_name}}</option>
                         @endforeach
                 </select>
                 <br>

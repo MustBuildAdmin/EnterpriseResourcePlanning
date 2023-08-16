@@ -415,7 +415,8 @@
           </div>
     </div>
    </div>
-        <div class="col-lg-4 bgwhite">
+   @if($project->freeze_status==1)
+    <div class="col-lg-4 bgwhite">
         <div class="card">
           <div class="card">
             <div class="card-body">
@@ -424,7 +425,7 @@
                         <i class="ti ti-clipboard-list"></i>
                     </div>
                     <div class="ms-3">
-                        <p class="text-muted mb-0">{{__('Project Progress Status As of Toaday')}}</p>
+                        <p class="text-muted mb-0">{{__('Project Progress Status As of Today')}}</p>
                         {{-- <h4 class="mb-0">{{ $project_data['task_chart']['total'] }}</h4> --}}
 
                     </div>
@@ -515,6 +516,7 @@
         </div>
   </div>
  </div>
+ @endif
         <div class="col-lg-4 bgwhite">
           <div class="card">
             <div class="card-header">
