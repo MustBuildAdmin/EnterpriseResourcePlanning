@@ -338,10 +338,18 @@ $holidays=implode(':',$holidays);
                                                 </a>
                                             {!! Form::close() !!}
                                        
-                                        <button class="btn btn-outline-primary action w-20 undo_action" name="undo" aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
-                                        <button class="btn btn-outline-primary action w-20 redo_action" name="redo" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Redo</button>
-                                        <button class="btn btn-outline-primary action w-20 indent_action" name="indent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Indent</button>
-                                        <button class="btn btn-outline-primary action w-20 outdent_action" name="outdent" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Outdent</button>
+                                            <button class="btn btn-outline-primary action w-20" name="undo undo_action" aria-current="page"
+                                            style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Undo</button>
+                                            <button class="btn btn-outline-primary action w-20 redo_action" name="redo"
+                                            style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Redo</button>
+                                            <button class="btn btn-outline-primary action w-20 indent_action" name="indent"
+                                            style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Indent</button>
+                                            <button class="btn btn-outline-primary action w-20 outdent_action" name="outdent"
+                                            style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'
+                                            @if($project->freeze_status==1) disabled @endif>Outdent</button>
 
                                         <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
 
