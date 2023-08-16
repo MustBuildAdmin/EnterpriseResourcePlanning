@@ -3,15 +3,18 @@
     <div class="row">
         <div class="form-group">
             {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::text('name', null, array('class' => 'form-control','placeholder'=>__('Enter client Name'),'required'=>'required')) }}
+            {{ Form::text('name', null, array('class' => 'form-control',
+            'placeholder'=>__('Enter client Name'),'required'=>'required')) }}
         </div>
         <div class="form-group">
             {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'required'=>'required')) }}
+            {{ Form::email('email', null, array('class' => 'form-control',
+            'placeholder'=>__('Enter Client Email'),'required'=>'required')) }}
         </div>
         <div class="form-group">
             {{ Form::label('password', __('Password'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{Form::password('password',array('class'=>'form-control','placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
+            {{Form::password('password',array('class'=>'form-control',
+            'placeholder'=>__('Enter User Password'),'required'=>'required','minlength'=>"6"))}}
             @error('password')
             <small class="invalid-password" role="alert">
                 <strong class="text-danger">{{ $message }}</strong>
@@ -21,7 +24,8 @@
         <div class="row">
             <div class="form-group">
                 {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2','required'=>'required')) !!}
+                {!! Form::select('gender', $gender, 'null',array('class' => 'form-control select2',
+                'required'=>'required')) !!}
                 @error('role')
                 <small class="invalid-role" role="alert">
                     <strong class="text-danger">{{ $message }}</strong>
@@ -59,7 +63,8 @@
             <div class="form-group">
                 {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111"  required>
+                    <input class="form-control" name="phone" type="number" id="phone"
+                     maxlength="16" placeholder="+91 111 111 1111"  required>
                     {{-- {{Form::text('phone',null,array('class'=>'form-control'))}} --}}
                 </div>
             </div>
