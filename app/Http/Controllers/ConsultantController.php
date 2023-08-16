@@ -148,7 +148,6 @@ class ConsultantController extends Controller
                 $user['lname']       = $request->lname;
                 $user['email']      = $request->email;
                 $user['gender']      = $request->gender;
-                $psw                = $request->password;
                 $user['password']   = Hash::make($request->password);
                 $user['type']       = 'consultant';
                 $user['default_pipeline'] = 1;
@@ -284,7 +283,7 @@ class ConsultantController extends Controller
             $path = Utility::upload_file($img,'avatar',$fileNameToStore,$dir,[]);
 
             $this->image_alert($path);
-            return $path;
+      
 
         }
     }
@@ -294,6 +293,8 @@ class ConsultantController extends Controller
 
         if($path['flag'] == 1){
             $url = $path['url'];
+
+           
         }else{
             return redirect()->back()->with('error', __($path['msg']));
         }

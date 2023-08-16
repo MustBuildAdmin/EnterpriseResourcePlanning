@@ -142,7 +142,8 @@ class RegisteredUserController extends Controller
             NOC::defaultNocCertificateRegister($user->id);
 
             if($request->type=='company'){
-                $resp = Utility::sendEmailTemplateHTML('create_user_set_password', [$user->id => $user->email], $userArr);
+                $resp = Utility::sendEmailTemplateHTML('create_user_set_password',
+                 [$user->id => $user->email], $userArr);
                 event(new Registered($user));
                 return redirect()->route('login')->with('success_register', __($userArr['set_password_url']));
             }else{
