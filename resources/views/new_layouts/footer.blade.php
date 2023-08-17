@@ -54,7 +54,6 @@
 <!-- Tabler Core -->
 <script src="{{ asset('assets/dist/js/tabler.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/demo.min.js') }}"></script>
-<!-- <script src='https://kit.fontawesome.com/a076d05399.js'></script> -->
 
 <script src="{{ asset('assets/js/plugins/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
@@ -63,7 +62,9 @@
     <script type="text/javascript">
         var defaults = {
             'messageLocales': {
-                /*'en': 'We use cookies to make sure you can have the best experience on our website. If you continue to use this site we assume that you will be happy with it.'*/
+                /*'en':
+                'We use cookies to make sure you can have the best experience on our website.
+                If you continue to use this site we assume that you will be happy with it.'*/
                 'en': "{{ App\Models\Utility::getValByName1('cookie_text') }}"
             },
             'buttonLocales': {
