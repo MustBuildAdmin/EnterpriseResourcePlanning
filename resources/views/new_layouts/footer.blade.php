@@ -54,7 +54,7 @@
 <!-- Tabler Core -->
 <script src="{{ asset('assets/dist/js/tabler.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/demo.min.js') }}"></script>
-<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+<!-- <script src='https://kit.fontawesome.com/a076d05399.js'></script> -->
 
 <script src="{{ asset('assets/js/plugins/sweetalert2.all.min.js') }}"></script>
 <script src="{{ asset('js/custom.js') }}"></script>
