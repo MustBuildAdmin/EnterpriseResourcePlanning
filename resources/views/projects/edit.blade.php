@@ -456,7 +456,7 @@
                     })
                     swalWithBootstrapButtons.fire({
                         title: 'Are you sure?',
-                        text: "Do You Want Create Project?",
+                        text: "Do you want to submit changes?",
                         icon: 'success',
                         showCancelButton: true,
                         confirmButtonText: 'Yes',

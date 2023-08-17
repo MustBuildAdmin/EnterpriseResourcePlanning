@@ -81,11 +81,10 @@
                             <div class="card">
                                 <div class="card-header border-0 pb-0">
                                     <div class="d-flex align-items-center">
-                                        <?php $color = substr(md5(rand()), 0, 6);?>
-                                    <div class="circle" style="background:#<?php echo $color; ?>"><?= substr($project->project_name,0,2) ?></div>
-                                        <!-- <img src="{{ $project->img_image }}" class="img-fluid wid-30 me-2" alt=""> -->
+                                        <?php $color = sprintf("#%06x",random_int(0,16777215));?>
+                                    <div class="circle" style="background:#<?php echo $color; ?>">
+                                    <?= substr($project->project_name,0,2) ?></div>
                                         <h5 class="mb-0">
-                                        <!-- href="{{ route('projects.show', $project) }}" -->
                                             <a class="text-dark"  data-size="lg"
                                                 data-url="{{ route('projects.check_instance',$project->id) }}"
                                                 data-title="Choose Your Revision" data-ajax-popup="true"
@@ -109,7 +108,7 @@
                                                         <a href="#!" data-size="xl"
                                                             data-url="{{ route('projects.edit', $project->id) }}"
                                                             data-ajax-popup="true" class="dropdown-item"
-                                                            data-bs-original-title="{{ __('Edit User') }}">
+                                                            data-bs-original-title="{{ __('Edit Project') }}">
                                                             <i class="ti ti-pencil"></i>
                                                             <span>{{ __('Edit') }}</span>
                                                         </a>
@@ -128,7 +127,8 @@
                                                 @endif
                                                 @can('edit project')
                                                     <a href="#!" data-size="xl"
-                                                        data-url="{{ route('invite.project.member.view', $project->id) }}"
+                                                    data-url="{{ route('invite.project.member.view',
+                                                         $project->id) }}"
                                                         data-ajax-popup="true" class="dropdown-item"
                                                         data-bs-original-title="{{ __('Invite User') }}">
                                                         <i class="ti ti-send"></i>
@@ -156,20 +156,24 @@
                                                     $status_set = 'in_progress';
                                                 }
                                             @endphp
-                                            <span class="badge rounded-pill bg-{{ \App\Models\Project::$status_color[$status_set] }}">{{ __(\App\Models\Project::$project_status[$status_set]) }}</span>
+                                            <span class="badge rounded-pill bg-{{ \App\Models\Project::
+                                                $status_color[$status_set] }}">
+                                                {{ __(\App\Models\Project::$project_status[$status_set]) }}</span>
                                         </div>
 
                                     </div>
                                     <p class="text-muted text-sm mt-3">{{ $project->description }}</p>
                                     <small>{{ __('MEMBERS') }}</small>
                                     <div class="user-group" style='display: flex;'>
-                                        @if (isset($project->users) && !empty($project->users) && count($project->users) > 0)
+                                        @if (isset($project->users) && !empty($project->users)
+                                         && count($project->users) > 0)
                                             @foreach ($project->users as $key => $user)
                                             <?php  $short=substr($user->name, 0, 1);?>
                                                 @if ($key < 3)
                                                     @if ($user->avatar)
                                                         <a href="#" class="avatar rounded-circle avatar-sm">
-                                                            <img  src="{{ asset('/storage/uploads/avatar/' . $user->avatar) }}"
+                                                            <img  src="{{ asset('/storage/uploads/avatar/'
+                                                                 . $user->avatar) }}"
                                                                 alt="image" data-bs-toggle="tooltip"
                                                                 title="{{ $user->name }}" class="user-initial">
                                                         </a>
@@ -191,7 +195,8 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <h6
-                                                    class="mb-0 {{ strtotime($project->start_date) < time() ? 'text-danger' : '' }}">
+                                                    class="mb-0 {{ strtotime($project->start_date) < time()
+                                                         ? 'text-danger' : '' }}">
                                                     {{ Utility::getDateFormated($project->start_date) }}</h6>
                                                 <p class="text-muted text-sm mb-0">{{ __('Start Date') }}</p>
                                             </div>
