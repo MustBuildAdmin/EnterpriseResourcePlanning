@@ -30,10 +30,7 @@
 <!-- vendor css -->
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" id="main-style-link">
 <link rel="stylesheet" href="{{ asset('assets/css/customizer.css') }}">
-
-<link rel="stylesheet" href="{{ asset('css/custom.css') }}" id="main-style-link">
-
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins/bootstrap-switch-button.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/plugins/bootstrap-switch-button.min.css') }}">
 
 
     @stack('css-page')
