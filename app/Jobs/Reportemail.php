@@ -15,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Utility;
+use Session;
 
 class Reportemail implements ShouldQueue
 {
@@ -36,11 +37,13 @@ class Reportemail implements ShouldQueue
         $project_id=$this->podcast;
     ///   sending report  ############################################
                        $project=Project::where('id',$project_id)->first();
-                       $project_task=Con_task::where('project_id',$project_id)->whereIn('main_id', function($query){
-                           $query->select('task_id')
-                           ->from('task_progress')
-                           ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
-                       })->get();
+                       $project_task=Con_task::where('project_id',$project_id)->where('instance_id',$project->instance_id)
+                       ->where('updated_at','like',Carbon::now()->format('Y-m-d').'%')->where('type','project')->get();
+                    //    $project_task=Con_task::where('project_id',$project_id)->whereIn('main_id', function($query){
+                    //        $query->select('task_id')
+                    //        ->from('task_progress')
+                    //        ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
+                    //    })->get();
                        $actual_current_progress=Con_task::where('project_id',$project_id)->orderBy('id','ASC')->pluck('progress')->first();
                        $actual_current_progress=round($actual_current_progress);
                        $actual_remaining_progress=100-$actual_current_progress;
@@ -152,8 +155,10 @@ class Reportemail implements ShouldQueue
                        if($to){
                            $pdf = Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
                            $data["email"] = $to;
-                           $data["title"] = $project->project_name."- Daily Productivity Report";
-                           $data["body"] = "Please find the attachment of the Today Productivity report";
+                        //    $parts = explode('@', $to);
+                        //    $name = $parts[0];
+                           $data["title"] = 'Daily Site Workdone Producivity Report '.date('d-m-Y').' Project Name: '.$project->project_name;
+                           $data["body"] = "Hello Team <br> Please find the attached report detailing today's productivity and key accomplishments";
                        }
                        try
                        {

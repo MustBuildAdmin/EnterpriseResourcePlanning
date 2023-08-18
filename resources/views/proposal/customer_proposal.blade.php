@@ -23,7 +23,6 @@
   <link rel="stylesheet" href="{{ asset('assets/css/ac.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/stylesheet.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         #card-element {

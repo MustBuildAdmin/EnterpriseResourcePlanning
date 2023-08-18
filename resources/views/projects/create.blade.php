@@ -23,7 +23,6 @@
         display: flex;
         padding: 24px;
         border-radius: 5px;
-        display: flex;
         align-items: center;
         justify-content: center;
     }
@@ -229,7 +228,8 @@
                                     );
                                 @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, null,
-                                    array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true','required'=>'required')) 
+                                    array('id' => 'non_working_days','class' => 'form-control
+                                    chosen-select get_non_working_days','multiple'=>'true'))
                                 !!}
                             </div>
                         </div>
@@ -318,7 +318,8 @@
     </div>
 </div>
 
-<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" 
+<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true" data-toggle="modal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -494,9 +495,6 @@
                     return true;
                 }
                 else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
                 else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){

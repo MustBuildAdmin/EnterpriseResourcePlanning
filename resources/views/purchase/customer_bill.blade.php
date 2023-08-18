@@ -78,7 +78,6 @@ $company_favicon=Utility::getValByName('company_favicon');
     @endif
 
     <link rel="stylesheet" href="{{ asset('assets/css/customizer.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}" id="main-style-link">
 
     @stack('css-page')
 </head>

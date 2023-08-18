@@ -236,7 +236,8 @@
                                 @endphp
                                 @php $non_working_days_set=explode(',',$project->non_working_days); @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, $non_working_days_set,
-                                    array('id' => 'non_working_days','class' => 'form-control chosen-select get_non_working_days','multiple'=>'true','required'=>'required')) 
+                                    array('id' => 'non_working_days','class' => 'form-control chosen-select
+                                    get_non_working_days','multiple'=>'true'))
                                 !!}
                             </div>
                         </div>
@@ -331,8 +332,9 @@
     </div>
 </div>
 
-<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" 
-    aria-hidden="true" data-toggle="modal">
+<div class="modal fade loding_popup" id="loding_popup" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalCenterTitle"
+aria-hidden="true" data-toggle="modal">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-body">
@@ -518,9 +520,6 @@
                     return true;
                 }
                 else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
                 else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
