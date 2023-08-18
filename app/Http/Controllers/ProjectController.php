@@ -139,9 +139,9 @@ class ProjectController extends Controller
                 $project->project_image = $url;
             }
 
-            if(isset($request->holidays)){
-                $project->holidays= $request->holidays;
-            }
+            $set_holidays = $request->holidays == "on" ? 1 : 0;
+            $project->holidays = $set_holidays;
+
             if(isset($request->non_working_days)){
                 $project->non_working_days=implode(',',$request->non_working_days);
             }
@@ -180,7 +180,7 @@ class ProjectController extends Controller
                 'project_id'=>$project->id,
             );
             Instance::insert($insert_data);
-            if($request->holidays==0){
+            if($set_holidays==0){
                 $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
                 foreach ($holidays_list as $key => $value) {
                     $insert=array(
@@ -555,14 +555,9 @@ class ProjectController extends Controller
                 $msg = __("New").' '.$request->project_name.' '.__("project").' '.__(" created by").' ' .\Auth::user()->name.'.';
                 Utility::send_telegram_msg($msg);
             }
-            if(isset($request->holidays)){
-                return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
-            }else{
-                Session::put('project_id',$project->id);
-                Session::put('project_instance',$project->instance_id);
-                return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
-                // return redirect('project_holiday')->with('success', __('Project Add Successfully'));
-            }
+            
+            return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
+            
 
         }
         else
@@ -1023,9 +1018,10 @@ class ProjectController extends Controller
 
                     $project->project_image = $url;
                 }
-                if(isset($request->holidays)){
-                    $project->holidays= $request->holidays;
-                }
+
+                $set_holidays = $request->holidays == "on" ? 1 : 0;
+                $project->holidays = $set_holidays;
+
                 if(isset($request->non_working_days)){
                     $project->non_working_days=implode(',',$request->non_working_days);
                 }
@@ -1048,7 +1044,7 @@ class ProjectController extends Controller
                 $project->longitude = $request->longitude;
                 $project->save();
 
-                if($project->holidays==0){
+                if($set_holidays==0){
                     $holiday_date = $request->holiday_date;
 
                     foreach ($holiday_date as $holi_key => $holi_value) {
