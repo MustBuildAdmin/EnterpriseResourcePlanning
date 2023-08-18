@@ -313,9 +313,10 @@ class UserController extends Controller
 
     }
 
-    public function edit(Request $request,$id)
+    public function edit(Request $request,$id,$color_co)
     {
         $user  = \Auth::user();
+  
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
         $company_type=Company_type::get()->pluck('name', 'id');
@@ -340,7 +341,7 @@ class UserController extends Controller
           
 
             // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
-            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users'));
+            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users','color_co'));
         }
         else
         {

@@ -644,6 +644,14 @@ Route::resource('users', 'UserController')->middleware(
     ]
 );
 
+Route::get('users/edit/{id}/{color_code}', 'UserController@edit')->name('user.edit.new')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::any('check_duplicate_email', 'UserController@check_duplicate_email')->name('check_duplicate_email')->middleware(
     [
         'auth',
@@ -4151,6 +4159,9 @@ Route::resource('users', 'UserController')->middleware(
         'revalidate',
     ]
 );
+
+Route::get('users/{id}/edit/{cid}', ['as'=>'use.edit','uses'=>'UserController@edit']);
+
 Route::resource('consultants', 'ConsultantController')->middleware(
     [
         'auth',
