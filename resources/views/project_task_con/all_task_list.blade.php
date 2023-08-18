@@ -50,6 +50,10 @@
                     if($current_Planed_percentage > 100){
                         $current_Planed_percentage=100;
                     }
+                    if($current_Planed_percentage < 0){
+                        $current_Planed_percentage=0;
+                    }
+
                 @endphp
                 <tr>
                     <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
