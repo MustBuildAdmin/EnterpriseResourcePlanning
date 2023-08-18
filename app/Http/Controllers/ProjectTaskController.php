@@ -754,6 +754,9 @@ class ProjectTaskController extends Controller
         if($current_Planed_percentage > 100){
             $current_Planed_percentage=100;
         }
+        if($current_Planed_percentage < 0){
+            $current_Planed_percentage=0;
+        }
         
         return view('construction_project.task_particular_list',compact('task_id','data','total_pecentage', 'current_Planed_percentage'));
     }
