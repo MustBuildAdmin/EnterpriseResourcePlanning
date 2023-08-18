@@ -26,13 +26,11 @@
                      id="lname" name="lname" placeholder="{{ __('Enter User Last Name') }}" autocomplete="off" required>
                 </div>
             </div>
-            @php
-            $rndColor = Utility::rndRGBColorCode(); #function call
-            @endphp
-            @if ($user->color_code!=Null || $user->color_code!='')
+           
+            @if ($user->color_code!=null || $user->color_code!='')
                 @php $color_co =$user->color_code; @endphp
             @else
-                @php $color_co =$rndColor; @endphp
+                @php $color_co =$color_co; @endphp
             @endif
             <input type="hidden" name="color_code" value="{{ $color_co }}">
 

@@ -81,8 +81,13 @@
                                                 <span>{{ __('Show') }}</span>
                                             </a>
                                             @can('edit client')
+                                            @if ($client->color_code != null || $client->color_code != '')
+                                                @php $color_co =$client->color_code; @endphp
+                                            @else
+                                                @php $color_co =Utility::rndRGBColorCode(); @endphp
+                                            @endif
                                                 <a href="#!" data-size="xl"
-                                                    data-url="{{ route('clients.edit', $client->id) }}"
+                                                    data-url="{{ route('clients.edit.new',[$client->id,$color_co]) }}"
                                                     data-ajax-popup="true" class="dropdown-item"
                                                     data-bs-original-title="{{ __('Edit User') }}"> <i
                                                         class="ti ti-pencil"></i>
@@ -126,11 +131,7 @@
                                         : asset(Storage::url('uploads/avatar/avatar.png ')) }}"
                                         class="avatar avatar-xl mb-3 rounded" alt="">
                                 @else
-                                    @if ($client->color_code != null || $client->color_code != '')
-                                        @php $color_co =$client->color_code; @endphp
-                                    @else
-                                        @php $color_co =Utility::rndRGBColorCode(); @endphp
-                                    @endif
+                                   
                                     <?php $short_lname = substr($client->lname, 0, 1); ?>
                                     <div class="avatar avatar-xl mb-3 user-initial"
                                         style="background-color:{{ $color_co }};">

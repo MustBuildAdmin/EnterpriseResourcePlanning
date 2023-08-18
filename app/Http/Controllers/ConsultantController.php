@@ -314,7 +314,7 @@ class ConsultantController extends Controller
     }
 
 
-    public function edit(Request $request,$id)
+    public function edit(Request $request,$id,$color_co)
     {
         $user  = \Auth::user();
         $roles = Role::where('created_by', '=', $user->creatorId())
@@ -350,7 +350,7 @@ class ConsultantController extends Controller
             ->pluck('name', 'id');
           
             return view('consultants.edit', compact('user','gender', 'roles', 'customFields',
-                        'countrylist','statelist','company_type','users'));
+                        'countrylist','statelist','company_type','users','color_co'));
         }
         else
         {

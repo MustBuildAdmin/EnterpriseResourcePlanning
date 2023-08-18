@@ -1237,6 +1237,9 @@ Route::resource('clients', 'ClientController')->middleware(
         'XSS',
     ]
 );
+
+Route::get('clients/edit/{color_code}', 'ClientController@edit')->name('clients.edit.new')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
+
 Route::any('client-reset-password/{id}', 'ClientController@clientPassword')->name('clients.reset');
 Route::post('client-reset-password/{id}', 'ClientController@clientPasswordReset')->name('client.password.update');
 // Deal Module
@@ -4169,6 +4172,8 @@ Route::resource('consultants', 'ConsultantController')->middleware(
         'revalidate',
     ]
 );
+
+Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->name('consultants.edit.new')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
 
 Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
 

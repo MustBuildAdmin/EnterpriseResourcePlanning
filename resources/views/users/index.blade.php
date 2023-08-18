@@ -99,7 +99,7 @@
 								</button>
 								@if ($user->color_code!=Null || $user->color_code!='')
 								@php $color_co =$user->color_code; @endphp
-							@else
+								@else
 								@php $color_co =Utility::rndRGBColorCode(); @endphp
 							@endif
 								<div class="dropdown-menu dropdown-menu-end">

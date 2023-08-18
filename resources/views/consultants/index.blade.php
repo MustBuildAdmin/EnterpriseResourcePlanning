@@ -90,9 +90,14 @@
 								 aria-haspopup="true" aria-expanded="false">
 									<i class="ti ti-dots-vertical"></i>
 								</button>
+									@if ($user->color_code!=null || $user->color_code!='')
+											@php $color_co =$user->color_code; @endphp
+									@else
+											@php $color_co =Utility::rndRGBColorCode(); @endphp
+									@endif
 								<div class="dropdown-menu dropdown-menu-end">
 									@can('edit consultant')
-									<a href="#!" data-size="lg" data-url="{{ route('consultants.edit',$user->id) }}"
+									<a href="#!" data-size="lg" data-url="{{ route('consultants.edit.new',[$user->id,$color_co]) }}"
 										 data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
 										 <i class="ti ti-pencil"></i>
 										 <span>{{__('Edit')}}</span>
@@ -114,11 +119,7 @@
 								 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar :
 								 	asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded" alt="">
 								  @else
-										@if ($user->color_code!=Null || $user->color_code!='')
-												@php $color_co =$user->color_code; @endphp
-										@else
-												@php $color_co =Utility::rndRGBColorCode(); @endphp
-										@endif
+										
 										<div class="avatar avatar-xl mb-3 user-initial" style='background-color:{{$color_co}}'>
 											{{strtoupper($short)}}{{strtoupper($short_lname)}}
 										</div>

@@ -318,7 +318,7 @@ class ClientController extends Controller
         }
     }
 
-    public function edit(User $client)
+    public function edit(User $client,$color_co)
     {
         if(\Auth::user()->can('edit client'))
         {
