@@ -13,7 +13,7 @@
 <script src="{{asset('assets/js/js/criticalPath.js')}}"></script>
 <script src="{{asset('assets/js/js/overlay.js')}}"></script>
 <script src="{{asset('assets/js/js/export.js')}}"></script>
-<script src="{{asset('assets/js/js/lightBox.js')}}"></script>
+{{-- <script src="{{asset('assets/js/js/lightBox.js')}}"></script> --}}
 <script src="{{asset('assets/js/js/expandAndCollapse.js')}}"></script>
 <script src="{{asset('assets/js/js/taskPostion.js')}}"></script>
 <script src="{{asset('assets/js/js/slack.js')}}"></script>
@@ -337,7 +337,7 @@ $holidays=implode(':',$holidays);
                                                     Set Baseline
                                                 </a>
                                             {!! Form::close() !!}
-                                       
+
                                             <button class="btn btn-outline-primary action w-20" name="undo undo_action"
                                             aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;
                                             margin-top: 4px;margin-right: 6px;'
@@ -930,11 +930,17 @@ $holidays=implode(':',$holidays);
             }
 
 		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+
+
         gantt.config.lightbox.sections = [
                 { name:"description", height:200, map_to:"text", type:"my_editor", focus:true},
                 { name:"users",height:60, type:"multiselect", options:gantt.serverList("people"), map_to:"users"},
                 { name:"time", height:72, type:"duration", map_to:"auto"}
             ];
+        gantt.config.lightbox.project_sections  = [
+                { name:"description", height:200, map_to:"text", type:"my_editor", focus:true},
+        ];
+
 
         // holidays
              gantt.config.work_time = true;
@@ -987,7 +993,7 @@ $holidays=implode(':',$holidays);
                 }
 if(frezee_status_actual!=1){
         var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        // var dp = new gantt.dataProcessor("/erpnew/public/");
+        //var dp = new gantt.dataProcessor("/erp/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",

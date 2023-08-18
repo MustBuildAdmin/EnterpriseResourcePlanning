@@ -84,19 +84,19 @@
                                 </li>
                             </ul>
                             <br>
-                            
-                            <center>
-                                <section class="wrappers loader_show_hide">
-                                    <div class="cards">
-                                        <div class="loader">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                        </div>
+                            <div class="page page-center">
+                                <div class="container container-slim py-4">
+                                    <div class="text-center">
+                                    <div class="mb-3">
+                                        <a href="." class="navbar-brand navbar-brand-autodark"><img src="./static/logo-small.svg" height="36" alt=""></a>
                                     </div>
-                                </section>
-                            </center>
+                                    <div class="text-secondary mb-3">Please Wait...</div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar progress-bar-indeterminate"></div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="tab-content" id="pills-tabContent">
                                 {{-- All Task --}}
@@ -118,7 +118,7 @@
                                             @endif
                 
                                             @if(\Auth::user()->type == 'company')
-                                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-0">
+                                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-0">
                                                     <div class="btn-box">
                                                         {{ Form::label('start_date', __('Planned Start Date'),['class'=>'form-label'])}}
                                                         {{ Form::date('start_date', null, array('class' => 'form-control month-btn start_date')) }}
@@ -126,7 +126,7 @@
                                                 </div>
                                             @endif
                 
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
+                                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2">
                                                 <div class="btn-box">
                                                     @if(\Auth::user()->type == 'company')
                                                         {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
