@@ -660,7 +660,6 @@ function getContacts() {
             cssMediaQueries();
         },
         error: () => {
-            console.log('Server error, check your response');
         }
     });
 }
@@ -686,7 +685,7 @@ function updateContatctItem(user_id) {
                 cssMediaQueries();
             },
             error: () => {
-                console.error('Server error, check your response');
+                
             }
         });
     }
@@ -713,7 +712,7 @@ function star(user_id) {
 
             },
             error: () => {
-                console.error('Server error, check your response');
+                
             }
         });
     }
@@ -738,7 +737,7 @@ function getFavoritesList() {
             cssMediaQueries();
         },
         error: () => {
-            console.error('Server error, check your response');
+            
         }
     });
 }
@@ -758,7 +757,7 @@ function getSharedPhotos(user_id) {
             $('.shared-photos-list').html(data.shared);
         },
         error: () => {
-            console.error('Server error, check your response');
+            
         }
     });
 }
@@ -786,7 +785,7 @@ function messengerSearch(input) {
             cssMediaQueries();
         },
         error: () => {
-            console.error('Server error, check your response');
+            
         }
     });
 }
@@ -833,7 +832,7 @@ function deleteConversation(id) {
             });
         },
         error: () => {
-            console.error('Server error, check your response');
+            
         }
     });
 }
@@ -891,7 +890,7 @@ function updateSettings() {
             }
         },
         error: () => {
-            console.error('Server error, check your response');
+            
         }
     });
 }
@@ -911,7 +910,7 @@ function setActiveStatus(status, user_id) {
             // Nothing to do
         },
         error: () => {
-            console.error('Server error, check your response');
+            
         }
     });
 }
