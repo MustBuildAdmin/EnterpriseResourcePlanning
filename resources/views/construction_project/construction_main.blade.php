@@ -214,13 +214,26 @@
                 @endforeach
             </div>
         @else
-            <div class="col-xl-12 col-lg-12 col-sm-12">
-                <div class="card">
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row g-0">
+                <div class="col d-flex flex-column">
                     <div class="card-body">
-                        <h6 class="text-center mb-0">{{ __('No Projects Found.') }}</h6>
+                    <div class="container-xl d-flex flex-column justify-content-center">
+                        <div class="empty">
+                        <div class="empty-img">
+                            <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}"
+                             height="128" alt="">
+                        </div>
+                        <p class="empty-title">{{ __('No Projects Found.') }}
+                        </p>
+                        </div>
+                    </div>
                     </div>
                 </div>
+                </div>
             </div>
+        </div>
         @endif
     </div>
 </div>
