@@ -108,7 +108,12 @@
                                         @endphp
                                         @forelse ($file_explode as $file_show)
                                             @if($file_show != "")
-                                                <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}</span> <br>
+                                                <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}
+                                                </span>&nbsp;&nbsp;&nbsp;
+                                                <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;cursor: pointer;">
+                                                    <li class="fa fa-download"></li>
+                                                </span>
+                                                <br>
                                             @else
                                                 -
                                             @endif
