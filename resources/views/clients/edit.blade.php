@@ -1,6 +1,6 @@
 
 {{ Form::model($client, array('route' => array('clients.update', $client->id),
-'method' => 'PUT' ,'enctype'=>"multipart/form-data")) }}
+'method' => 'PUT' ,'enctype'=>"multipart/form-data",'id'=>'edit_client')) }}
 <div class="modal-body">
     <div class="row">
         <h5 class="sub-title"><strong>{{__('Basic Info')}}</strong></h5>
@@ -44,12 +44,8 @@
             </div>
              
          
-            @if ($user->color_code!=null || $user->color_code!='')
-                @php $color_co =$user->color_code; @endphp
-            @else
-                @php $color_co =$color_co; @endphp
-            @endif
-            <input type="text" name="color_code" value="{{ $color_co }}">
+          
+            <input type="text" id="color_code" name="color_code" value="">
                <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <div class="form-group">

@@ -318,11 +318,12 @@ class ClientController extends Controller
         }
     }
 
-    public function edit(User $client,$color_co)
+    public function edit(User $client)
     {
         if(\Auth::user()->can('edit client'))
         {
             $user = \Auth::user();
+            dd($client);
             if($client->created_by == $user->creatorId())
             {
                 $user  = User::findOrFail($client->id);

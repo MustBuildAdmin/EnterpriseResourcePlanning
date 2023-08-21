@@ -82,14 +82,15 @@
                                             </a>
                                             @can('edit client')
                                             @if ($client->color_code != null || $client->color_code != '')
-                                                @php $color_co =$client->color_code; @endphp
+                                                @php $colorcode =$client->color_code; @endphp
                                             @else
-                                                @php $color_co =Utility::rndRGBColorCode(); @endphp
+                
+                                                @php $colorcode =Utility::rndRGBColorCode(); @endphp
                                             @endif
                                                 <a href="#!" data-size="xl"
-                                                    data-url="{{ route('clients.edit.new',[$client->id,$color_co]) }}"
+                                                    data-url="{{ route('clients.edit',[$client->id,]) }}"
                                                     data-ajax-popup="true" class="dropdown-item"
-                                                    data-bs-original-title="{{ __('Edit User') }}"> <i
+                                                    data-bs-original-title="{{ __('Edit Client') }}"> <i
                                                         class="ti ti-pencil"></i>
                                                     <span>{{ __('Edit') }}</span>
                                                 </a>
@@ -134,7 +135,7 @@
                                    
                                     <?php $short_lname = substr($client->lname, 0, 1); ?>
                                     <div class="avatar avatar-xl mb-3 user-initial"
-                                        style="background-color:{{ $color_co }};">
+                                        style="background-color:{{ $colorcode }};">
                                         {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
                                     </div>
                                 @endif
@@ -206,4 +207,19 @@
         </div>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true"], div[data-ajax-popup="true"]', function () {
+
+
+var title1 = $(this).data("id");
+console.log("title1",title1);
+setTimeout(() => {
+    $('div[data-ajax-popup="true"] input#color_code').val("fghgfhfhg");
+}, 500);
+
+
+});
+});
+    </script>
 @include('new_layouts.footer')

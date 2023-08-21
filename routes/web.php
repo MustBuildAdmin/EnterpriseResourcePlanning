@@ -1231,14 +1231,20 @@ Route::group(
 );
 
 // Client Module
+
 Route::resource('clients', 'ClientController')->middleware(
     [
         'auth',
         'XSS',
+        'revalidate',
     ]
 );
 
-Route::get('clients/edit/{color_code}', 'ClientController@edit')->name('clients.edit.new')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
+Route::get('clients/edit/{id}/{color_code}', 'ClientController@edit')->name('clients.edit.new')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
+
+
+
+
 
 Route::any('client-reset-password/{id}', 'ClientController@clientPassword')->name('clients.reset');
 Route::post('client-reset-password/{id}', 'ClientController@clientPasswordReset')->name('client.password.update');
