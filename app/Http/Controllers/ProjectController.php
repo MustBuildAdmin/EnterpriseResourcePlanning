@@ -2055,7 +2055,7 @@ class ProjectController extends Controller
                     $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
                     $extension1       = $file_req->getClientOriginalExtension();
                     $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
-                    $dir              = "uploads/task_particular_list/";
+                    $dir              = "uploads/task_particular_list";
                     $image_path       = $dir . $filenameWithExt1;
 
                     if (\File::exists($image_path)) {
