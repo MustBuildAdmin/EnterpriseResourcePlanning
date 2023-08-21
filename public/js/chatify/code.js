@@ -3,7 +3,7 @@
  * Global variables
  *-------------------------------------------------------------
  */
-var messenger,
+let messenger,
     auth_id = $('meta[name=url]').attr('data-user'),
     route = $('meta[name=route]').attr('content'),
     url = $('meta[name=url]').attr('content'),
@@ -18,7 +18,6 @@ const messagesContainer = $('.messenger-messagingView .m-body'),
     messengerTitleDefault = $('.messenger-headTitle').text(),
     messageInput = $('#message-form .m-send');
 
-// console.log(auth_id);
 
 /**
  *-------------------------------------------------------------
@@ -162,10 +161,10 @@ let app_modal = function ({
                           }) {
     const modal = $('.app-modal[data-name=' + name + ']');
     // header
-    header ? modal.find('.app-modal-header').html(header) : '';
+    header && modal.find('.app-modal-header').html(header);
 
     // body
-    body ? modal.find('.app-modal-body').html(body) : '';
+    body && modal.find('.app-modal-body').html(body);
 
     // buttons
     buttons == true
@@ -475,11 +474,10 @@ function cancelUpdatingAvatar() {
  */
 
 // subscribe to the channel
-var channel = pusher.subscribe('private-chatify');
+let channel = pusher.subscribe('private-chatify');
 
 // Listen to messages, and append if data received
 channel.bind('messaging', function (data) {
-    // console.info(data.from_id+' - '+data.to_id+'\n'+auth_id+' - '+messenger);
     if (data.from_id == messenger.split('_')[1] && data.to_id == auth_id) {
         // remove message hint
         $(".message-hint").remove();
@@ -520,8 +518,7 @@ channel.bind('client-seen', function (data) {
 // listen to contact item updates event
 channel.bind('client-contactItem', function (data) {
     if (data.update_for == auth_id) {
-        data.updating == true ? updateContatctItem(data.update_to)
-            : /*console.error('[Contact Item updates] Updating failed!')*/ '';
+        data.updating && updateContatctItem(data.update_to);
     }
 });
 
@@ -950,7 +947,7 @@ $(document).ready(function () {
 
     // tabs on click, show/hide...
     $('.messenger-listView-tabs a').on('click', function () {
-        var dataView = $(this).attr('data-view');
+        let dataView = $(this).attr('data-view');
         $('.messenger-listView-tabs a').removeClass('active-tab');
         $(this).addClass('active-tab');
         $('.messenger-tab').hide();
@@ -1066,20 +1063,14 @@ $(document).ready(function () {
     $('#message-form .m-send').on('keydown', () => {
         if (typingNow < 1) {
             // Trigger typing
-            let triggered = isTyping(true);
-            /*triggered ? console.info('[+] Triggered')
-                : console.error('[+] Not triggered');*/
-            // Typing now
+             this.isTyping(true);
             typingNow = 1;
         }
         // Clear typing timeout
         clearTimeout(typingTimeout);
         // Typing timeout
         typingTimeout = setTimeout(function () {
-            triggered = isTyping(false);
-            /*triggered ? console.info('[-] Triggered')
-                : console.error('[-] Not triggered');*/
-            // Clear typing now
+            this.isTyping(false);
             typingNow = 0;
         }, 1000);
     });
