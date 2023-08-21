@@ -102,7 +102,7 @@ class ProjectController extends Controller
                 $request->all(), [
                                 'project_name' => 'required',
                                 // 'project_image' => 'required',
-                                'non_working_days'=>'required'
+                                // 'non_working_days'=>'required'
                                 // 'status'=>'required'
                             ]
             );
@@ -139,9 +139,9 @@ class ProjectController extends Controller
                 $project->project_image = $url;
             }
 
-            if(isset($request->holidays)){
-                $project->holidays= $request->holidays;
-            }
+            $setHolidays = $request->holidays == "on" ? 1 : 0;
+            $project->holidays = $setHolidays;
+
             if(isset($request->non_working_days)){
                 $project->non_working_days=implode(',',$request->non_working_days);
             }
@@ -180,7 +180,7 @@ class ProjectController extends Controller
                 'project_id'=>$project->id,
             );
             Instance::insert($insert_data);
-            if($request->holidays==0){
+            if($setHolidays==0){
                 $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
                 foreach ($holidays_list as $key => $value) {
                     $insert=array(
@@ -555,14 +555,9 @@ class ProjectController extends Controller
                 $msg = __("New").' '.$request->project_name.' '.__("project").' '.__(" created by").' ' .\Auth::user()->name.'.';
                 Utility::send_telegram_msg($msg);
             }
-            if(isset($request->holidays)){
-                return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
-            }else{
-                Session::put('project_id',$project->id);
-                Session::put('project_instance',$project->instance_id);
-                return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
-                // return redirect('project_holiday')->with('success', __('Project Add Successfully'));
-            }
+            
+            return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
+            
 
         }
         else
@@ -646,13 +641,15 @@ class ProjectController extends Controller
         $check_name = $request->project_name;
 
         if($form_name == "ProjectCreate"){
-            $get_check_val = Project::where('project_name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            $getCheckVal = Project::where('created_by',\Auth::user()->creatorId())
+            ->whereRaw("LOWER(REPLACE(`project_name`, ' ' ,''))  = ?", [strtolower (str_replace(' ', '', $check_name))])
+            ->first();
         }
         else{
-            $get_check_val = "Not Empty";
+            $getCheckVal = "Not Empty";
         }
 
-        if($get_check_val == null){
+        if($getCheckVal == null){
             echo 'true';
             // return 1; //Success
         }
@@ -1023,9 +1020,10 @@ class ProjectController extends Controller
 
                     $project->project_image = $url;
                 }
-                if(isset($request->holidays)){
-                    $project->holidays= $request->holidays;
-                }
+
+                $setHolidays = $request->holidays == "on" ? 1 : 0;
+                $project->holidays = $setHolidays;
+
                 if(isset($request->non_working_days)){
                     $project->non_working_days=implode(',',$request->non_working_days);
                 }
@@ -1048,7 +1046,7 @@ class ProjectController extends Controller
                 $project->longitude = $request->longitude;
                 $project->save();
 
-                if($project->holidays==0){
+                if($setHolidays==0){
                     $holiday_date = $request->holiday_date;
 
                     foreach ($holiday_date as $holi_key => $holi_value) {
@@ -2059,7 +2057,7 @@ class ProjectController extends Controller
                     $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
                     $extension1       = $file_req->getClientOriginalExtension();
                     $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
-                    $dir              = "uploads/task_particular_list/";
+                    $dir              = "uploads/task_particular_list";
                     $image_path       = $dir . $filenameWithExt1;
 
                     if (\File::exists($image_path)) {

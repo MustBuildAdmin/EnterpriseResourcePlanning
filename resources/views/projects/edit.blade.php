@@ -125,7 +125,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required',
+                                'oninput'=>'alphaOnly(this)'))}}
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6">
@@ -221,7 +222,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -245,7 +246,9 @@
                                 {{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}
                                 <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='holidays' @if($project->holidays==1) checked @endif>
+                                        <input class="form-check-input" type="checkbox"
+                                        name='holidays' id='holidays'
+                                        @if($project->holidays==1) checked @endif>
                                         <label class="form-check-label" for="holidays">
                                             {{__('holidays')}}
                                         </label>
@@ -265,26 +268,21 @@
                         }
                     @endphp
                     <div class="card-body table-border-style holidays_show_hide" style="overflow: scroll; height: 80%;{{$holiday_show}}">
-                        {{Form::label('holiday',__('Add Extra Project Holiday'),['class'=>'form-label'])}}
+                        {{Form::label('holiday',__('Add Project Holidays'),['class'=>'form-label'])}}
                         <div class="table-responsive holiday_table" id="holiday_table">
                             <table class="table" id="example2" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th><input class='check_all' type='checkbox' onclick="select_all_key()"/></th>
                                         <th>{{__('Date')}}</th>
-                                        <th>{{__('Description')}}</th>
+                                        <th>{{__('Holiday Name')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php $set_key = 1; @endphp
                                     @forelse ($project_holidays as $holiday_show)
-                                        @if($set_key == 1)
-                                            <tr data-count_id="{{$set_key}}" id="{{$set_key}}">
-                                                <td><input type='checkbox' disabled/></td>
-                                        @else
                                             <tr data-count_id="{{$set_key}}" id="{{$set_key}}" class="duplicate_tr">
-                                                <td><input type='checkbox' class='case'/></td>
-                                        @endif
+                                            <td><input type='checkbox' class='case'/></td>
                                             <td style="width: 30%;">
                                                 <input value="{{$holiday_show->date}}" type="date" class="form-control holiday_date get_date" id="holiday_date{{$set_key}}" name="holiday_date[]">
                                                 <label style='display:none;color:red;' class='holiday_date_label{{$set_key}}'>This Field is Required </label>
@@ -361,6 +359,7 @@ aria-hidden="true" data-toggle="modal">
 
 <script>
     $('#loding_popup').modal({backdrop: 'static', keyboard: false});
+    $('#commonModal').modal({backdrop: 'static', keyboard: false});
     disabled_all();
     function disabled_all(){
         freeze_status = $("#freeze_status").val();
@@ -712,4 +711,10 @@ aria-hidden="true" data-toggle="modal">
     $('#commonModal').on('hidden.bs.modal', function () {
         location.reload();
     });
+
+    function alphaOnly(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 </script>

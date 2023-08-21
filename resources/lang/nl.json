@@ -2688,5 +2688,6 @@
   "Location" : "Plaats",
   "Drawing References (if any)" : "Tekeningreferenties (indien aanwezig)",
   "S.No" : "S.Nr",
-  "Remarks/ Notes" : "Opmerkingen/notities"
+  "Remarks/ Notes" : "Opmerkingen/notities",
+  "Construction Management System": "Bouw Management Systeem" 
 }

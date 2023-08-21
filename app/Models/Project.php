@@ -32,7 +32,7 @@ class Project extends Model
     public static $project_status=[
         'in_progress' => 'In Progress',
         'on_hold' => 'On Hold',
-        'complete' => 'Complete',
+        'complete' => 'Completed',
         'canceled' => 'Canceled'
     ];
 
