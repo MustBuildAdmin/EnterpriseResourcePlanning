@@ -518,7 +518,7 @@ channel.bind('client-seen', function (data) {
 // listen to contact item updates event
 channel.bind('client-contactItem', function (data) {
     if (data.update_for == auth_id) {
-        data.updating == true && updateContatctItem(data.update_to);
+        data.updating && updateContatctItem(data.update_to);
     }
 });
 
@@ -1063,14 +1063,14 @@ $(document).ready(function () {
     $('#message-form .m-send').on('keydown', () => {
         if (typingNow < 1) {
             // Trigger typing
-            let triggered = isTyping(true);
+             this.isTyping(true);
             typingNow = 1;
         }
         // Clear typing timeout
         clearTimeout(typingTimeout);
         // Typing timeout
         typingTimeout = setTimeout(function () {
-          let  triggered = isTyping(false);
+            this.isTyping(false);
             typingNow = 0;
         }, 1000);
     });
