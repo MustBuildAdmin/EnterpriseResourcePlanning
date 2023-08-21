@@ -110,9 +110,10 @@
                                             @if($file_show != "")
                                                 <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}
                                                 </span>&nbsp;&nbsp;&nbsp;
-                                                <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;cursor: pointer;">
+                                                <a href="{{route('task_file_download',[$task_progress->task_id,"$file_show"])}}"
+                                                    class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;cursor: pointer;">
                                                     <li class="fa fa-download"></li>
-                                                </span>
+                                                </a>
                                                 <br>
                                             @else
                                                 -
