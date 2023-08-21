@@ -843,29 +843,29 @@ class ProjectTaskController extends Controller
     }
 
     public function task_file_download(Request $request){
-        $task_id  = $request->task_id;
+        $taskId  = $request->task_id;
         $filename = $request->filename;
         $documentPath=\App\Models\Utility::get_file('uploads/task_particular_list');
 
         $ducumentUpload = DB::table('task_progress_file')
-            ->where('task_id',$task_id)
+            ->where('task_id',$taskId)
             ->Where('filename', 'like', '%'.$filename.'%')
             ->where('status',0)->first();
             
         if($ducumentUpload != null)
         {
-            $file_path = $documentPath . '/' . $ducumentUpload->filename;
+            $filePath = $documentPath . '/' . $ducumentUpload->filename;
             $filename  = $ducumentUpload->filename;
 
-            if(!Storage::disk('s3')->exists($file_path)) {
+            if(!Storage::disk('s3')->exists($filePath)) {
                 $headers = [
-                    'Content-Type' => 'your_content_type', 
+                    'Content-Type' => 'your_content_type',
                     'Content-Description' => 'File Transfer',
                     'Content-Disposition' => "attachment; filename={$filename}",
                     'filename'=> $filename
                 ];
 
-                return response($file_path, 200, $headers);
+                return response($filePath, 200, $headers);
             }
             else{
                 return redirect()->back()->with('error', __('File is not exist.'));
