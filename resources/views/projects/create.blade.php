@@ -215,7 +215,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -467,7 +467,7 @@ aria-labelledby="exampleModalCenterTitle"
             },
             messages: {
                 project_name: {
-                    remote: "Project Name already in use!"
+                    remote: "Sorry, that project name already exists!"
                 }
             }
         });

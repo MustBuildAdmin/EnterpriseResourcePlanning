@@ -102,7 +102,7 @@ class ProjectController extends Controller
                 $request->all(), [
                                 'project_name' => 'required',
                                 // 'project_image' => 'required',
-                                'non_working_days'=>'required'
+                                // 'non_working_days'=>'required'
                                 // 'status'=>'required'
                             ]
             );
@@ -641,7 +641,9 @@ class ProjectController extends Controller
         $check_name = $request->project_name;
 
         if($form_name == "ProjectCreate"){
-            $get_check_val = Project::where('project_name',$check_name)->where('created_by',\Auth::user()->creatorId())->first();
+            $get_check_val = Project::where('created_by',\Auth::user()->creatorId())
+            ->whereRaw("LOWER(REPLACE(`project_name`, ' ' ,''))  = ?", [strtolower (str_replace(' ', '', $check_name))])
+            ->first();
         }
         else{
             $get_check_val = "Not Empty";
