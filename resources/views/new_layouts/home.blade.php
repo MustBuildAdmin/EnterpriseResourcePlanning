@@ -245,7 +245,7 @@
                                  </span>
                               </div>
                               <div class="col">
-                                 <div class="font-weight-medium mt-2">{{__('Construction')}}</div>
+                                 <div class="font-weight-medium mt-2">{{__('Construction Management System')}}</div>
                               </div>
                            </div>
                         </div>
