@@ -246,7 +246,9 @@
                                 {{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}
                                 <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name='holidays' id='holidays' @if($project->holidays==1) checked @endif>
+                                        <input class="form-check-input" type="checkbox"
+                                        name='holidays' id='holidays'
+                                        @if($project->holidays==1) checked @endif>
                                         <label class="form-check-label" for="holidays">
                                             {{__('holidays')}}
                                         </label>

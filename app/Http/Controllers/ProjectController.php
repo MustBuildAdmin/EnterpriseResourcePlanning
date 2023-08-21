@@ -139,8 +139,8 @@ class ProjectController extends Controller
                 $project->project_image = $url;
             }
 
-            $set_holidays = $request->holidays == "on" ? 1 : 0;
-            $project->holidays = $set_holidays;
+            $setHolidays = $request->holidays == "on" ? 1 : 0;
+            $project->holidays = $setHolidays;
 
             if(isset($request->non_working_days)){
                 $project->non_working_days=implode(',',$request->non_working_days);
@@ -180,7 +180,7 @@ class ProjectController extends Controller
                 'project_id'=>$project->id,
             );
             Instance::insert($insert_data);
-            if($set_holidays==0){
+            if($setHolidays==0){
                 $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
                 foreach ($holidays_list as $key => $value) {
                     $insert=array(
@@ -641,15 +641,15 @@ class ProjectController extends Controller
         $check_name = $request->project_name;
 
         if($form_name == "ProjectCreate"){
-            $get_check_val = Project::where('created_by',\Auth::user()->creatorId())
+            $getCheckVal = Project::where('created_by',\Auth::user()->creatorId())
             ->whereRaw("LOWER(REPLACE(`project_name`, ' ' ,''))  = ?", [strtolower (str_replace(' ', '', $check_name))])
             ->first();
         }
         else{
-            $get_check_val = "Not Empty";
+            $getCheckVal = "Not Empty";
         }
 
-        if($get_check_val == null){
+        if($getCheckVal == null){
             echo 'true';
             // return 1; //Success
         }
@@ -1021,8 +1021,8 @@ class ProjectController extends Controller
                     $project->project_image = $url;
                 }
 
-                $set_holidays = $request->holidays == "on" ? 1 : 0;
-                $project->holidays = $set_holidays;
+                $setHolidays = $request->holidays == "on" ? 1 : 0;
+                $project->holidays = $setHolidays;
 
                 if(isset($request->non_working_days)){
                     $project->non_working_days=implode(',',$request->non_working_days);
@@ -1046,7 +1046,7 @@ class ProjectController extends Controller
                 $project->longitude = $request->longitude;
                 $project->save();
 
-                if($set_holidays==0){
+                if($setHolidays==0){
                     $holiday_date = $request->holiday_date;
 
                     foreach ($holiday_date as $holi_key => $holi_value) {
