@@ -123,7 +123,8 @@
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required',
+                                'oninput'=>'alphaOnly(this)'))}}
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-6">
@@ -214,7 +215,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -237,7 +238,7 @@
                                 {{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}
                                 <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="1" name='holidays' id='holidays'>
+                                        <input class="form-check-input" type="checkbox" name='holidays' id='holidays'>
                                         <label class="form-check-label" for="holidays">
                                             {{__('holidays')}}
                                         </label>
@@ -249,19 +250,19 @@
 
                     <br>
                     <div class="card-body table-border-style holidays_show_hide" style="overflow: scroll; height: 80%;">
-                        {{Form::label('holiday',__('Add Extra Project Holiday'),['class'=>'form-label'])}}
+                        {{Form::label('holiday',__('Add Project Holidays'),['class'=>'form-label'])}}
                         <div class="table-responsive holiday_table" id="holiday_table">
                             <table class="table" id="example2" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th><input class='check_all' type='checkbox' onclick="select_all_key()"/></th>
                                         <th>{{__('Date')}}</th>
-                                        <th>{{__('Description')}}</th>
+                                        <th>{{__('Holiday Name')}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr data-count_id="1" id="1">
-                                        <td><input type='checkbox' disabled/></td>
+                                        <td><input type='checkbox' class='case'/></td>
                                         <td style="width: 30%;">
                                             <input type="date" data-date_id='1' class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]">
                                             <label style='display:none;color:red;' class='holiday_date_label1'>This Field is Required </label>
@@ -342,6 +343,7 @@ aria-labelledby="exampleModalCenterTitle"
 
 <script>
     $('#loding_popup').modal({backdrop: 'static', keyboard: false});
+    $('#commonModal').modal({backdrop: 'static', keyboard: false});
     var key_i=2;
     check_validation = 0;
     $(document).on("click", '.addmore', function () {
@@ -465,7 +467,7 @@ aria-labelledby="exampleModalCenterTitle"
             },
             messages: {
                 project_name: {
-                    remote: "Project Name already in use!"
+                    remote: "Sorry, that project name already exists!"
                 }
             }
         });
@@ -696,4 +698,10 @@ aria-labelledby="exampleModalCenterTitle"
             }
         });
     });
+
+    function alphaOnly(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 </script>

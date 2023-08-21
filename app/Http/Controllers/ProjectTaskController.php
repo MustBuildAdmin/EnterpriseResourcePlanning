@@ -842,6 +842,41 @@ class ProjectTaskController extends Controller
         return $get_data;
     }
 
+    public function task_file_download(Request $request){
+        $taskId  = $request->task_id;
+        $filename = $request->filename;
+        $documentPath=\App\Models\Utility::get_file('uploads/task_particular_list');
+
+        $ducumentUpload = DB::table('task_progress_file')
+            ->where('task_id',$taskId)
+            ->Where('filename', 'like', '%'.$filename.'%')
+            ->where('status',0)->first();
+            
+        if($ducumentUpload != null)
+        {
+            $filePath = $documentPath . '/' . $ducumentUpload->filename;
+            $filename  = $ducumentUpload->filename;
+
+            if(!Storage::disk('s3')->exists($filePath)) {
+                $headers = [
+                    'Content-Type' => 'your_content_type',
+                    'Content-Description' => 'File Transfer',
+                    'Content-Disposition' => "attachment; filename={$filename}",
+                    'filename'=> $filename
+                ];
+
+                return response($filePath, 200, $headers);
+            }
+            else{
+                return redirect()->back()->with('error', __('File is not exist.'));
+            }
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('File is not exist.'));
+        }
+    }
+
     public function taskboard_get(Request $request){
         try {
 
