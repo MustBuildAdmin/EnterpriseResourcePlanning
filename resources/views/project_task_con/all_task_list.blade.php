@@ -53,7 +53,8 @@
                 @endphp
                 <tr>
                     <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
-                        @if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance'))
+                        @if(Session::get('current_revision_freeze') == 1 &&
+                        Session::get('project_instance') != Session::get('latest_project_instance'))
                             <a style="text-decoration: none;">
                                 <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
                             </a>
@@ -131,7 +132,8 @@
                     @if(\Auth::user()->type == 'company')
                         <td style="width:10%;" class="text-center w-15">
                             <div class="actions">
-                                @if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance'))
+                                @if(Session::get('current_revision_freeze') == 1 &&
+                                Session::get('project_instance') != Session::get('latest_project_instance'))
                                     <a style="height: 36px;" href="#">
                                         -
                                     </a>

@@ -698,10 +698,10 @@ class ProjectController extends Controller
             Session::put('project_id',$project_id);
             Session::put('project_instance',$instanceId);
             
-            $CheckInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
-            Session::put('latest_project_instance',$CheckInstanceFreeze->instance);
+            $checkInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
+            Session::put('latest_project_instance',$checkInstanceFreeze->instance);
 
-            if($CheckInstanceFreeze->freeze_status == 1){
+            if($checkInstanceFreeze->freeze_status == 1){
                 Session::put('current_revision_freeze', 1); //Freezed
             }
             else{
@@ -719,12 +719,6 @@ class ProjectController extends Controller
                 }
                 if(in_array($project_id, $user_projects))
                 {
-                    // test the holidays
-                    $holidays = Project_holiday::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->first();
-                    // if(!$holidays){
-                    //     return redirect()->back()->with('error', __('No holidays are listed.'));
-                    // }
-
                     // end
                     $project_data = [];
                     // Task Count
