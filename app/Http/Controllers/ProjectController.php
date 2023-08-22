@@ -167,6 +167,17 @@ class ProjectController extends Controller
             $project->status = "in_progress";
             ///---------end-----------------
             $project->save();
+
+            if(isset($request->non_working_days)){
+                $nonWorkingDaysInsert = array(
+                    'project_id'       => $project->id,
+                    'non_working_days' => implode(',',$request->non_working_days),
+                    'instance_id'      => $instance_id,
+                    'created_by'       => \Auth::user()->creatorId()
+                );
+                DB::table('non_working_days')->insert($nonWorkingDaysInsert);
+            }
+
             $insert_data=array(
                 'instance'=>$instance_id,
                 'start_date'=>date("Y-m-d H:i:s", strtotime($request->start_date)),
@@ -1284,6 +1295,34 @@ class ProjectController extends Controller
                 $project->latitude = $request->latitude;
                 $project->longitude = $request->longitude;
                 $project->save();
+
+                if(isset($request->non_working_days)){
+                    $checkNonWorkingDay = DB::table('non_working_days')
+                        ->where('project_id',$project->id)
+                        ->where('instance_id',$project->instance_id)
+                        ->first();
+
+                    if($checkNonWorkingDay == null){
+                        $nonWorkingDaysInsert = array(
+                            'project_id'       => $project->id,
+                            'non_working_days' => implode(',',$request->non_working_days),
+                            'instance_id'      => $project->instance_id,
+                            'created_by'       => \Auth::user()->creatorId()
+                        );
+                        DB::table('non_working_days')->insert($nonWorkingDaysInsert);
+                    }
+                    else{
+                        $nonWorkingDaysUpdate = array(
+                            'project_id'       => $project->id,
+                            'non_working_days' => implode(',',$request->non_working_days),
+                            'created_by'       => \Auth::user()->creatorId()
+                        );
+                        DB::table('non_working_days')
+                            ->where('project_id',$project->id)
+                            ->where('instance_id',$project->instance_id)
+                            ->update($nonWorkingDaysUpdate);
+                    }
+                }
 
                 if($project->holidays==0){
                     $holiday_date = $request->holiday_date;
