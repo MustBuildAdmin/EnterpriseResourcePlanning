@@ -90,7 +90,7 @@
                                                     $getInstance = DB::table('instance')
                                                                     ->where('instance',$project->instance_id)
                                                                     ->where('project_id',$project->id)
-                                                                    ->where('freeze_status',1)->first();
+                                                                    ->where('freeze_status',0)->first();
                                                 @endphp
                                                 @if($getInstance != null)
                                                     @can('edit project')
