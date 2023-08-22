@@ -38,11 +38,26 @@ class RevisionController extends Controller
         try {
             $projectId       = Session::get('project_id');
             $instanceId=Session::get('project_instance');
-            $nonWorkingDays  = implode(',',$request->non_working_days);
             $holidayDateGet  = $request->holiday_date;
+
+
             $var             = rand('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$projectId;
             $instanceIdSet   = Hash::make($var);
             $getPro = DB::table('projects')->where('id',$projectId)->first();
+
+            if(isset($request->non_working_days)){
+                if(gettype($request->non_working_days)=='array'){
+                    $nonWorkingDays  = implode(',',$request->non_working_days);
+                    $nonWorkingDaysInsert = array(
+                        'project_id'       => $projectId,
+                        'non_working_days' => $nonWorkingDays,
+                        'instance_id'      => $instanceIdSet,
+                        'created_by'       => \Auth::user()->creatorId()
+                    );
+
+                    DB::table('non_working_days')->insert($nonWorkingDaysInsert);
+                }
+            }
 
             if($getPro != null){
                 $instanceStore = new Instance;
@@ -53,18 +68,11 @@ class RevisionController extends Controller
                 $instanceStore->save();
             }
 
-            $nonWorkingDaysInsert = array(
-                'project_id'       => $projectId,
-                'non_working_days' => $nonWorkingDays,
-                'instance_id'      => $instanceIdSet,
-                'created_by'       => \Auth::user()->creatorId()
-            );
 
-            DB::table('non_working_days')->insert($nonWorkingDaysInsert);
 
             if($holidayDateGet != ""){
                 foreach($holidayDateGet as $holi_key => $holi_value){
-                
+
                     $holidayInsert = array(
                         'project_id'  => $projectId,
                         'date'        => $holi_value,
@@ -72,7 +80,7 @@ class RevisionController extends Controller
                         'instance_id' => $instanceIdSet,
                         'created_by'  => \Auth::user()->creatorId()
                     );
-    
+
                     Project_holiday::insert($holidayInsert);
                 }
             }
