@@ -1816,9 +1816,9 @@ class ProjectController extends Controller
         try {
 
 
-                $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
-
-                return $result;
+            return Instance::where('project_id',$request->project_id)
+                    ->where('instance',Session::get('project_instance'))
+                    ->pluck('freeze_status')->first();
 
         } catch (Exception $e) {
 
