@@ -686,7 +686,7 @@ class ProjectController extends Controller
 
             $projectCheck = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->first();
             $project = Project::where(['id'=>$project_id])->first();
-            if(isset($projectCheck)){
+            // if(isset($projectCheck)){
                 $usr           = Auth::user();
                 if(\Auth::user()->type == 'client'){
                     $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
@@ -903,7 +903,7 @@ class ProjectController extends Controller
                     'workdone_percentage','current_Planed_percentage','not_started','notfinished',
                     'remaining_working_days','completed_task'));
                 }
-            }
+            // }
         }
        
         if($returnpermission!=1){
@@ -912,7 +912,13 @@ class ProjectController extends Controller
     }
     public function check_instance($id){
         $get_project_instances=Instance::where('project_id',$id)->get();
-        return view('construction_project.instance_view', compact('get_project_instances'));
+        if(count($get_project_instances)>1){
+            return view('construction_project.instance_view', compact('get_project_instances'));
+
+        }else{
+            return redirect()->route('projects.instance_project', [$get_project_instances[0]['id'],$id]);
+        }
+       
     }
     /**
      * Display the specified resource.
