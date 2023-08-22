@@ -88,9 +88,8 @@
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 @php
                                                     $getInstance = DB::table('instance')
-                                                                    ->where('instance',$project->instance_id)
                                                                     ->where('project_id',$project->id)
-                                                                    ->where('freeze_status',0)->first();
+                                                                    ->where('freeze_status',1)->first();
                                                 @endphp
                                                 @if($getInstance != null)
                                                     @can('edit project')
