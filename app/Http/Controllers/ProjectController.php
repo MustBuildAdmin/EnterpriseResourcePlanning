@@ -686,7 +686,9 @@ class ProjectController extends Controller
 
             $projectCheck = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->first();
             $project = Project::where(['id'=>$project_id])->first();
-            if(isset($projectCheck)){
+           
+          //  if(isset($projectCheck)){
+             
                 $usr           = Auth::user();
                 if(\Auth::user()->type == 'client'){
                     $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
@@ -903,7 +905,7 @@ class ProjectController extends Controller
                     'workdone_percentage','current_Planed_percentage','not_started','notfinished',
                     'remaining_working_days','completed_task'));
                 }
-            }
+           // }
         }
        
         if($returnpermission!=1){
@@ -1790,6 +1792,7 @@ class ProjectController extends Controller
 
             Project::where('id',$request->project_id)->update($data);
             Instance::where('project_id',$request->project_id)->where('instance',$instanceId)->update($instanceData);
+            Session::put('current_revision_freeze', 1);
             return redirect()->back()->with('success', __('Freezed Status successfully changed.'));
 
 

@@ -321,13 +321,14 @@
                         <span class="list">{{ __('Holidays') }}</span>
                     </a>
                 </li>
-
-                <li class="{{ (Request::route()->getName() == 'revision') ? ' active' : '' }}" style="display: none;">
+                @if(Session::get('current_revision_freeze')==1)
+                <li class="{{ (Request::route()->getName() == 'revision') ? ' active' : '' }}" >
                     <a  class="accordion-collapse collapse list-unstyled" href="{{ url('revision') }}">
                         <span class="icon"><img  alt='support' src="{{asset('assets/images/icons/support.png')}}"/></span>
                         <span class="list">{{ __('Revision') }}</span>
                     </a>
                 </li>
+                @endif
 
 
                     {{-- <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>

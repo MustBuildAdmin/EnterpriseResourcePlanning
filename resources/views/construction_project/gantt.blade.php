@@ -809,8 +809,7 @@ $holidays=implode(':',$holidays);
             gantt.form_blocks["multiselect"] = {
                 render: function (sns) {
                     var height = (sns.height || "23") + "px";
-                    var html = "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect'
-                     style='height:" + height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
+                    var html = "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect' style='height:" + height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
                     if (sns.options) {
                         multi_data = get_editon_multiselect();
                         $.each(multi_data['0'], function(multi_key, multi_value) {
@@ -926,8 +925,8 @@ $holidays=implode(':',$holidays);
                 }
 
 
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/erp/public/");
+        //var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("/erp/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
