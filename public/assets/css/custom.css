@@ -545,3 +545,22 @@ table.dataTable th {
   width: 26px;
   border-radius: 24px;
 }
+.timeline-wrapper{
+    position: relative;
+    flex-wrap: nowrap;
+    text-align: center;
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+.timeline-wrapper .timeline-icons:before {
+    right: -12px;
+}
+.timeline-wrapper .timeline-icons:before, .timeline-wrapper .timeline-icons:after {
+    content: "";
+    height: 2px;
+    background: #e4e8f7;
+    width: calc(50% - 16px);
+    position: absolute;
+    top: 22px;
+    z-index: 1;
+}
