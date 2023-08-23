@@ -530,7 +530,7 @@ class ProjectTaskController extends Controller
                             });
                     }
                     else{
-                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and 
+                        $tasks->whereRaw('"'.date('Y-m-d').'" between date(`con_tasks`.`start_date`) and
                         date(`con_tasks`.`end_date`)')
                         ->where('con_tasks.project_id', $project_id)->where('con_tasks.instance_id', $instance_id)
                         ->orderBy('con_tasks.start_date','ASC');
@@ -1749,6 +1749,11 @@ class ProjectTaskController extends Controller
 
             $user_project_id=$request->id;
             $project_get= Project::where(['id'=>$user_project_id])->first();
+            if(Session::has('project_instance')){
+                $instanceId=Session::get('project_instance');
+            }else{
+                $instanceId=$project_get->instance_id;
+            }
 
             // dd($request->all());
             $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -1788,7 +1793,8 @@ class ProjectTaskController extends Controller
                 {
                     $project_id=Project::where('client_id',$user->id)->pluck('id')->first();
 
-                    $projects = Con_task::where('client_id', '=', $project_id)->where('instance_id','=',$project_get->instance_id);
+                    $projects = Con_task::where('client_id', '=', $project_id)
+                    ->where('instance_id','=',$instanceId);
                     $users=[];
                     $status=[];
                     $project_title=[];
@@ -1799,13 +1805,9 @@ class ProjectTaskController extends Controller
                         $projects = Con_task::select('con_tasks.*')
                             ->leftjoin('project_users', 'project_users.project_id', 'con_tasks.project_id')
                             ->where('con_tasks.project_id', '=', $request->project_list)
-                            ->where('instance_id','=',$project_get->instance_id)
+                            ->where('instance_id','=',$instanceId)
                             ->groupBy('con_tasks.id');
 
-                        // $projects->whereIn('parent', function($query){
-                        //     $query->select('main_id')
-                        //     ->from('con_tasks');
-                        // });
                         $projects->whereIn('main_id', function($query){
                             $query->select('task_id')
                             ->from('task_progress')
@@ -1818,7 +1820,6 @@ class ProjectTaskController extends Controller
                             ->from('task_progress')
                             ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
                         });
-                        // $projects = Con_task::where('con_tasks.project_id', '=', $request->id);
                     }
 
                     if(isset($request->all_users)&& !empty($request->all_users)){
@@ -1835,13 +1836,15 @@ class ProjectTaskController extends Controller
                     $projects = $projects->orderBy('id','desc')->get();
 
                     $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
-                    $task_name = Con_task::select('main_id as id','text as name')->where('con_tasks.project_id', '=', $request->id)->where('instance_id','=',$project_get->instance_id)->get();
+                    $task_name = Con_task::select('main_id as id','text as name')
+                    ->where('con_tasks.project_id', '=', $request->id)->where('instance_id','=',$instanceId)->get();
                     $status = Con_task::$priority;
 
                 }
                 else
                 {
-                    $projects = ProjectTask::select('project_tasks.*')->leftjoin('project_users', 'project_users.project_id', 'projects.id')
+                    $projects = ProjectTask::select('project_tasks.*')
+                    ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
                     ->where('project_users.user_id', '=', $user->id);
 
                 }
@@ -1849,7 +1852,9 @@ class ProjectTaskController extends Controller
                 $user_projects = $usr->projects()->pluck('project_id','project_id')->toArray();
                 $project_title = Project::whereIn('id',$user_projects)->orderBy('id','DESC')->get();
 
-                return view('project_report.view_task_report2', compact('projects','users','status','project_title','user_project_id','task_name','get_user_data','get_all_user_data'));
+                return view('project_report.view_task_report2',
+                 compact('projects','users','status','project_title','user_project_id',
+                 'task_name','get_user_data','get_all_user_data'));
 
             }else{
 
@@ -1903,7 +1908,8 @@ class ProjectTaskController extends Controller
 
                     }else{
 
-                        $projects = ProjectTask::where('project_tasks.created_by', '=', $user->id)->where('project_tasks.project_id', '=', $request->id);
+                        $projects = ProjectTask::where('project_tasks.created_by', '=', $user->id)
+                        ->where('project_tasks.project_id', '=', $request->id);
                     }
 
                     if(isset($request->task_name)&& !empty($request->task_name)){
