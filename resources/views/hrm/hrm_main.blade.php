@@ -70,7 +70,7 @@
                                 </span>
                                 <span class="nav-link-title">{{ __('Employee Setup 33') }}</span></a>
 
-                            <a href="{{ route('employeenew.index') }}" class="nav-link">
+                            <!-- <a href="{{ route('employeenew.index') }}" class="nav-link">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -83,7 +83,7 @@
                                         <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                                     </svg>
                                 </span>
-                                <span class="nav-link-title">{{ __('Employee Setup New') }}</span></a>
+                                <span class="nav-link-title">{{ __('Employee Setup New') }}</span></a> -->
                         @endif
 
                     </li>
