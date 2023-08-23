@@ -45,7 +45,7 @@
              
          
           
-            <input type="text" id="color_code" name="color_code" value="">
+            <input type="hidden" id="color_code" name="color_code" value="">
                <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <div class="form-group">
@@ -153,7 +153,7 @@
         @if(!$customFields->isEmpty())
             @include('custom_fields.formBuilder')
         @endif
-     
+        <h5 class="sub"></h5>
         <h5 class="sub-title"><strong>{{__('Billing Address')}}</strong></h5>
         <hr>
         <div class="row">
@@ -565,4 +565,10 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         let numbers = value.replace(/[^a-zA-Z]/g, "");
         input.value = numbers;
     }
+
+    $(function() { 
+        var getcolor=$('#colortype').val()
+       $('#color_code').val(getcolor);
+     });
+   
 </script>

@@ -157,7 +157,7 @@ class RegisteredUserController extends Controller
     
                 Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
                 event(new Registered($user));
-                return redirect()->route('login')->with('success_register',Config::get('constants.CONSULTANT_MAIL'));
+                return redirect()->route('login')->with('success',Config::get('constants.CONSULTANT_MAIL'));
                 
             }
           

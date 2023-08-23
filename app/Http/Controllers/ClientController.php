@@ -323,7 +323,7 @@ class ClientController extends Controller
         if(\Auth::user()->can('edit client'))
         {
             $user = \Auth::user();
-            dd($client);
+         
             if($client->created_by == $user->creatorId())
             {
                 $user  = User::findOrFail($client->id);

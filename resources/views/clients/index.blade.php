@@ -87,9 +87,10 @@
                 
                                                 @php $colorcode =Utility::rndRGBColorCode(); @endphp
                                             @endif
-                                                <a href="#!" data-size="xl"
-                                                    data-url="{{ route('clients.edit',[$client->id,]) }}"
-                                                    data-ajax-popup="true" class="dropdown-item"
+                                                <a href="#!" data-size="xl" data-ajax-popup="true"
+                                                    data-url="{{ route('clients.edit',[$client->id]) }}" 
+                                                    data-color="{{$colorcode}}"
+                                                    data-ajax-popup="true" class="dropdown-item getcolorcode"
                                                     data-bs-original-title="{{ __('Edit Client') }}"> <i
                                                         class="ti ti-pencil"></i>
                                                     <span>{{ __('Edit') }}</span>
@@ -207,19 +208,5 @@
         </div>
     </div>
 </div>
-<script>
-$(document).ready(function() {
-    $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true"], div[data-ajax-popup="true"]', function () {
 
-
-var title1 = $(this).data("id");
-console.log("title1",title1);
-setTimeout(() => {
-    $('div[data-ajax-popup="true"] input#color_code').val("fghgfhfhg");
-}, 500);
-
-
-});
-});
-    </script>
 @include('new_layouts.footer')

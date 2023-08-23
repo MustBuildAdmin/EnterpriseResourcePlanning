@@ -98,7 +98,7 @@
 								<div class="dropdown-menu dropdown-menu-end">
 									@can('edit consultant')
 									<a href="#!" data-size="lg" data-url="{{ route('consultants.edit.new',[$user->id,$color_co]) }}"
-										 data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
+										 data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit Consultant')}}">
 										 <i class="ti ti-pencil"></i>
 										 <span>{{__('Edit')}}</span>
 										</a>
