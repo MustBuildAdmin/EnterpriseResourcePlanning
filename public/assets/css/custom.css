@@ -64,10 +64,11 @@
 }
 
 #sidebar ul li a {
-    padding: 20px;
+padding: 20px;
     font-size: 0.94em;
-    color: #fff;
+     color: #fff;
     display: flex;
+    /* align-items: center; */
     justify-content: start;
     line-height: 33px;
 }
@@ -234,13 +235,19 @@ ul.collapse li{
   font-size: 0px;
 }
 #toggleIcon{
-  background: #fafbfc;
-  color: #7c7a7a;
+  background: #3421c0;
+  color: #fff;
   width: 30px;
   height: 30px;
-  margin-left: -36px;
+  margin-left: -59px;
   z-index: 99;
-  top: 6%;
+  position: absolute;
+  margin-top: -30px;
+  top: 2.5%;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid;
 }
 .sidebar--Collapse ul li a.dropdown-toggle::after{
   opacity: 0;
@@ -258,9 +265,13 @@ ul.collapse li{
     color: #7c7a7a;
     width: 30px;
     height: 30px;
-    margin-left: -36px;
+    margin-left: -80px;
     z-index: 99;
-    top: 6%;
+    position: relative;
+    margin-top: -30px;
+    top: 4%;
+    line-height: 30px;
+    text-align: center;
 }
 
 table.dataTable th {
@@ -544,28 +555,4 @@ table.dataTable th {
   text-align: center;
   width: 26px;
   border-radius: 24px;
-}
-.timeline-wrapper{
-    position: relative;
-    flex-wrap: nowrap;
-    text-align: center;
-    overflow-x: auto;
-    padding-bottom: 20px;
-}
-.timeline-wrapper .timeline-icons:before {
-    right: -12px;
-}
-.timeline-wrapper .timeline-icons:before, .timeline-wrapper .timeline-icons:after {
-    content: "";
-    height: 2px;
-    background: #e4e8f7;
-    width: calc(50% - 16px);
-    position: absolute;
-    top: 22px;
-    z-index: 1;
-}
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
 }
