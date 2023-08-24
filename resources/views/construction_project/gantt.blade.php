@@ -33,7 +33,7 @@
         margin: 0px;
         overflow: hidden;
         background: #fff;
-        z-index: 9999 !important;
+        /* z-index: 9999 !important; */
     }
 
     .status_line {
