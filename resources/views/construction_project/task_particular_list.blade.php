@@ -108,7 +108,17 @@
                                         @endphp
                                         @forelse ($file_explode as $file_show)
                                             @if($file_show != "")
-                                                <span class="badge badge-primary" style="background-color:#007bff;margin-top: 5px;">{{$file_show}}</span> <br>
+                                                <span class="badge badge-primary"
+                                                style="background-color:#007bff;margin-top: 5px;">{{$file_show}}
+                                                </span>&nbsp;&nbsp;&nbsp;
+                                                <a href="{{route('task_file_download',
+                                                    [$task_progress->task_id,"$file_show"])}}"
+                                                    class="badge badge-primary"
+                                                    style="background-color:#007bff;
+                                                    margin-top: 5px;cursor: pointer;">
+                                                    <i class="fa fa-download"></i>
+                                                </a>
+                                                <br>
                                             @else
                                                 -
                                             @endif

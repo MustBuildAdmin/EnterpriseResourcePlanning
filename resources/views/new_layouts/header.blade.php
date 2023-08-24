@@ -59,7 +59,6 @@
 	{{-- <script src="{{ asset('assets/js/datatables.min.js') }}"></script>--}}
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
-	<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
 
 	{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
 

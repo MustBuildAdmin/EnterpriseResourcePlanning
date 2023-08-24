@@ -2524,5 +2524,6 @@
   "Location" : "Расположение",
   "Drawing References (if any)" : "Ссылки на чертежи (если есть)",
   "S.No" : "С. Нет",
-  "Remarks/ Notes" : "Замечания/Примечания"
+  "Remarks/ Notes" : "Замечания/Примечания",
+  "Construction Management System": "Система управления строительством" 
 }

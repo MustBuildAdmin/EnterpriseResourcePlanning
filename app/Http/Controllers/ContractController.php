@@ -741,6 +741,13 @@ class ContractController extends Controller
     }
 
 
+    public function userPassword($id)
+    {
+        $eId        = \Crypt::decrypt($id);
+        $user = User::find($eId);
+        return view('users.reset', compact('user'));
+
+    }
 
 
 
