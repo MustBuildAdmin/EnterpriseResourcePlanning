@@ -357,7 +357,7 @@ $holidays=implode(':',$holidays);
                                                 </a>
                                             {!! Form::close() !!}
 
-                                            <button class="btn btn-outline-primary action w-20" name="undo undo_action"
+                                            <button class="btn btn-outline-primary action w-20 undo_action" name="undo"
                                             aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;
                                             margin-top: 4px;margin-right: 6px;'
                                             @if($project->freeze_status==1) disabled @endif>Undo</button>
@@ -684,7 +684,10 @@ $holidays=implode(':',$holidays);
         gantt.config.reorder_grid_columns = true;
         if(frezee_status_actual!=1){
                 gantt.config.columns = [
-                    { name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
+                    {
+                        name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,
+                        tree: true ,resize: true
+                    },
                     {
                         name: "text", label: "Task Name",width: 150,
                         resize: true
@@ -761,7 +764,10 @@ $holidays=implode(':',$holidays);
 
         }else{
             gantt.config.columns = [
-                    { name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
+                    {
+                        name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,
+                        tree: true ,resize: true
+                    },
                     {
                         name: "text", label: "Task Name",width: 150,
                         resize: true
@@ -1029,8 +1035,8 @@ $holidays=implode(':',$holidays);
                     // }
                 }
 if(frezee_status_actual!=1){
-        var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        //var dp = new gantt.dataProcessor("/erp/public/");
+        // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
+        var dp = new gantt.dataProcessor("/tracer-two/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",

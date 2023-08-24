@@ -153,7 +153,7 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a href="{{ route('drawing_list') }}"
-                                        class="dropdown-item"">{{ __('Drawing') }}</a>
+                                        class="dropdown-item">{{ __('Drawing') }}</a>
                                     @can('manage directions')
                                         <a href="{{ route('show_consultant_direction') }}"
                                             class="dropdown-item">{{ __('Directions') }}</a>

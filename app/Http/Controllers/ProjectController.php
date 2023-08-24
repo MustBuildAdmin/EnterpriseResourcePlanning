@@ -24,6 +24,7 @@ use App\Models\ProjectTask;
 use App\Models\ProjectUser;
 use App\Models\Task_progress;
 use App\Models\Instance;
+use App\Models\NonWorkingDaysModal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
@@ -659,257 +660,7 @@ class ProjectController extends Controller
         // Loading Project Function
 
     }
-    public function instance_project($instance_id,$project_id){
-      
-        $returnpermission=0;
-        $getInstance=Instance::where(['id'=>$instance_id])->first();
-        $instanceId=$getInstance->instance;
-        $instance_id=$instanceId;
-        Session::forget('project_id');
-        Session::forget('project_instance');
-        if(\Auth::user()->can('view project'))
-        {
-            Session::put('project_id',$project_id);
-            Session::put('project_instance',$instanceId);
-            
-            $checkInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
-            Session::put('latest_project_instance',$checkInstanceFreeze->instance);
-
-            if($checkInstanceFreeze->freeze_status == 1){
-                Session::put('current_revision_freeze', 1); //Freezed
-            }
-            else{
-                Session::put('current_revision_freeze', 0); //Not Freeze
-            }
-
-            $projectCheck = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->first();
-            $project = Project::where(['id'=>$project_id])->first();
-           
-          //  if(isset($projectCheck)){
-             
-                $usr           = Auth::user();
-                if(\Auth::user()->type == 'client'){
-                    $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();
-                }else{
-                    $user_projects = $usr->projects->pluck('id')->toArray();
-                }
-                if(in_array($project_id, $user_projects))
-                {
-                    // end
-                    $project_data = [];
-                    // Task Count
-                    $tasks = Con_task::where('project_id',$project_id)->where('instance_id',$instanceId)->get();
-                    $project_task         = $tasks->count();
-                    $completedTask = Con_task::where(['project_id'=>$project_id,
-                    'instance_id'=>$instance_id])->where('progress',100)->get();
-
-                    $project_done_task    = $completedTask->count();
-
-                    $project_data['task'] = [
-                        'total' => number_format($project_task),
-                        'done' => number_format($project_done_task),
-                        'percentage' => Utility::getPercentage($project_done_task, $project_task),
-                    ];
-
-                    // end Task Count
-
-                    // Expense
-                    $expAmt = 0;
-                    foreach($project->expense as $expense)
-                    {
-                        $expAmt += $expense->amount;
-                    }
-
-                    $project_data['expense'] = [
-                        'allocated' => $project->budget,
-                        'total' => $expAmt,
-                        'percentage' => Utility::getPercentage($expAmt, $project->budget),
-                    ];
-                    // end expense
-
-
-                    // Users Assigned
-                    $total_users = User::where('created_by', '=', $usr->id)->count();
-
-
-                    $project_data['user_assigned'] = [
-                        'total' => number_format($total_users) . '/' . number_format($total_users),
-                        'percentage' => Utility::getPercentage($total_users, $total_users),
-                    ];
-                    // end users assigned
-
-                    // Day left
-                    $total_day                = Carbon::parse($project->start_date)
-                    ->diffInDays(Carbon::parse($project->end_date));
-                    $remaining_day            = Carbon::parse($project->start_date)->diffInDays(now());
-                    if($total_day<$remaining_day){
-                        $remaining_day=$total_day;
-                    }
-                    $project_data['day_left'] = [
-                        'day' => number_format($remaining_day) . '/' . number_format($total_day),
-                        'percentage' => Utility::getPercentage($remaining_day, $total_day),
-                    ];
-                    // end Day left
-
-                    // Open Task
-                        $remaining_task = Con_task::where(['project_id'=> $project_id,'instance_id'=>$instance_id])
-                        ->where('progress', '=', 100)->count();
-                        $total_task     = $project_data['task']['total'];
-
-                    $project_data['open_task'] = [
-                        'tasks' => number_format($remaining_task) . '/' . number_format($total_task),
-                        'percentage' => Utility::getPercentage($remaining_task, $total_task),
-                    ];
-                    // end open task
-
-                    // Milestone
-                    $total_milestone           = $project->milestones()->count();
-                    $complete_milestone        = $project->milestones()->where('status', 'LIKE', 'complete')->count();
-                    $project_data['milestone'] = [
-                        'total' => number_format($complete_milestone) . '/' . number_format($total_milestone),
-                        'percentage' => Utility::getPercentage($complete_milestone, $total_milestone),
-                    ];
-                    // End Milestone
-
-                    // Time spent
-
-                        $times = $project->timesheets()->where('created_by', '=', $usr->id)->pluck('time')->toArray();
-                    $totaltime                  = str_replace(':', '.', Utility::timeToHr($times));
-                    $project_data['time_spent'] = [
-                        'total' => number_format($totaltime) . '/' . number_format($totaltime),
-                        'percentage' => Utility::getPercentage(number_format($totaltime), $totaltime),
-                    ];
-                    // end time spent
-
-                    // Allocated Hours
-                    $hrs = Project::projectHrs($project_id);
-                    $project_data['task_allocated_hrs'] = [
-                        'hrs' => number_format($hrs['allocated']) . '/' . number_format($hrs['allocated']),
-                        'percentage' => Utility::getPercentage($hrs['allocated'], $hrs['allocated']),
-                    ];
-                    // end allocated hours
-
-                    // Chart
-                    $seven_days      = Utility::getLastSevenDays();
-                    $chart_task      = [];
-                    $chart_timesheet = [];
-                    $cnt             = 0;
-                    $cnt1            = 0;
-
-                    foreach(array_keys($seven_days) as $k => $date)
-                    {
-                            $task_cnt     = $project->tasks()->where('is_complete', '=', 1)
-                            ->whereRaw("find_in_set('" . $usr->id . "',assign_to)")
-                            ->where('marked_at', 'LIKE', $date)->count();
-                            $arrTimesheet = $project->timesheets()->where('created_by', '=', $usr->id)
-                            ->where('date', 'LIKE', $date)->pluck('time')->toArray();
-
-                        // Task Chart Count
-                        $cnt += $task_cnt;
-
-                        // Timesheet Chart Count
-                        $timesheet_cnt = str_replace(':', '.', Utility::timeToHr($arrTimesheet));
-                        $cn[]          = $timesheet_cnt;
-                        $cnt1          += $timesheet_cnt;
-
-                        $chart_task[]      = $task_cnt;
-                        $chart_timesheet[] = $timesheet_cnt;
-                    }
-
-                    $project_data['task_chart']      = [
-                        'chart' => $chart_task,
-                        'total' => $cnt,
-                    ];
-                    $project_data['timesheet_chart'] = [
-                        'chart' => $chart_timesheet,
-                        'total' => $cnt1,
-                    ];
-
-                    // end chart
-
-                    $total_sub=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])
-                    ->where('type','task')->count();
-                    $first_task=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])
-                    ->orderBy('id','ASC')->first();
-                    if($first_task){
-                        $workdone_percentage= $first_task->progress;
-                        $actual_percentage= $first_task->progress;
-                        $no_working_days=$first_task->duration;// include the last day
-                        $date2=date_create($first_task->end_date);
-                    }else{
-                        $workdone_percentage= '0';
-                        $actual_percentage= '0';
-                        $no_working_days=$project->estimated_days;// include the last day
-                        $date2=date_create($project->end_date);
-                    }
-                    if($actual_percentage > 100){
-                        $actual_percentage=100;
-                    }
-                    if($actual_percentage < 0){
-                        $actual_percentage=0;
-                    }
-                    $cur= date('Y-m-d');
-                    ############### END ##############################
-                    ############### Remaining days ###################
-                    $remaining_working_days=Utility::remaining_duration_calculator($date2,$project_id);
-                    $remaining_working_days=$remaining_working_days-1;// include the last day
-                    ############### Remaining days ##################
-                    $completed_days=$no_working_days-$remaining_working_days;
-                    // percentage calculator
-                    if($no_working_days>0){
-                        $perday=100/$no_working_days;
-                    }else{
-                        $perday=0;
-                    }
-                    $current_Planed_percentage=round($completed_days*$perday);
-                    if($current_Planed_percentage > 100){
-                        $current_Planed_percentage=100;
-                    }
-                    if($current_Planed_percentage <0){
-                        $current_Planed_percentage=0;
-                    }
-                    if($current_Planed_percentage>0){
-                        $workdone_percentage=$workdone_percentage=$workdone_percentage/$current_Planed_percentage;
-                    }else{
-                        $workdone_percentage=0;
-                    }
-                    round(100-$current_Planed_percentage);
-                    $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))
-                    ->where('con_tasks.instance_id',Session::get('project_instance'))
-                    ->where('con_tasks.type','task')->where('con_tasks.start_date','like',$cur.'%')->get();
-                    $not_started=0;
-                    foreach ($project_task as $value) {
-                        $result=Task_progress::where('task_id',$value->main_id)->first();
-                        if(!$result){
-                            $not_started=$not_started+1;
-                        }
-                    }
-                    if($remaining_working_days<0){
-                        $remaining_working_days=0;
-                    }
-                    $notfinished=Con_task::where('project_id',$project_id)
-                    ->where('instance_id',Session::get('project_instance'))->where('type','task')
-                    ->where('end_date','<',$cur)->where('progress','!=','100')->count();
-                    $completed_task=Con_task::where('project_id',$project_id)
-                    ->where('instance_id',Session::get('project_instance'))->where('type','task')
-                    ->where('end_date','<',$cur)->where('progress','100')->count();
-
-                    $ongoing_task=Con_task::where('project_id',$project_id)
-                    ->where('instance_id',Session::get('project_instance'))
-                    ->where('type','task')->where('progress','<',100)->where('progress','>',0)->count();
-                    $returnpermission=1;
-                    return view('construction_project.dashboard',
-                    compact('project','ongoing_task','project_data','total_sub','actual_percentage',
-                    'workdone_percentage','current_Planed_percentage','not_started','notfinished',
-                    'remaining_working_days','completed_task'));
-                }
-           // }
-        }
-       
-        if($returnpermission!=1){
-            return redirect()->back()->with('error', __('Permission Denied.'));
-        }
-    }
+    
     public function check_instance($id){
         $get_project_instances=Instance::where('project_id',$id)->get();
         if(count($get_project_instances)>1){
@@ -1755,20 +1506,22 @@ class ProjectController extends Controller
     {
         $project = Project::find($projectID);
         if($project){
-            $instance_id=Session::get('project_instance');
-            $task=Con_task::where('project_id',$projectID)
-            ->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
-            $link=Link::where('project_id',$projectID)->where('instance_id',$instance_id)->orderBy('id', 'ASC')->get();
+            $instanceId = Session::get('project_instance');
+            $task       = Con_task::where('project_id',$projectID)
+                            ->where('instance_id',$instanceId)
+                            ->orderBy('id', 'ASC')->get();
+                            
+            $link       = Link::where('project_id',$projectID)
+                            ->where('instance_id',$instanceId)
+                            ->orderBy('id', 'ASC')->get();
+
             return response()->json([
                 "data" => $task,
                 "links" => $link,
             ]);
         }else{
-
             return '';
         }
-
-
     }
 
     /**
@@ -1827,23 +1580,20 @@ class ProjectController extends Controller
      */
     public function get_gantt_task_count(Request $request){
 
-         $instance_id=Session::get('project_instance');
-         $task=Con_task::where('project_id',$request->project_id)->where('instance_id',$instance_id)->get();
-         return count($task);
+        $instanceId = Session::get('project_instance');
+        $task       = Con_task::where('project_id',$request->project_id)
+                        ->where('instance_id',$instanceId)->get();
+        return count($task);
 
     }
     public function get_freeze_status(Request $request){
         try {
-
-
-                $result=Project::where('id',$request->project_id)->pluck('freeze_status')->first();
-
-                return $result;
-
-        } catch (Exception $e) {
-
-                return $e->getMessage();
-
+            return Instance::where('project_id',$request->project_id)
+                ->where('instance',Session::get('project_instance'))
+                ->pluck('freeze_status')->first();
+        }
+        catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 
@@ -2306,6 +2056,15 @@ class ProjectController extends Controller
 
     public function taskupdate(Request $request)
     {
+        $projectId  = Session::get('project_id');
+        $getProject = Project::find($projectId);
+
+        if(Session::has('project_id')){
+            $instanceId=Session::get('project_instance');
+        }
+        else{
+            $instanceId = $getProject->instance_id;
+        }
 
         $validator = \Validator::make(
             $request->all(), [
@@ -2326,12 +2085,15 @@ class ProjectController extends Controller
         $fileNameToStore1 = '';
         $url              = '';
         $task_id          = $request->task_id;
-        $task             = Con_task::where('main_id',$task_id)->first();
-        $project_get     = Project::where('id',$task->project_id)->first();
+        $task             = Con_task::where('main_id',$task_id)
+                                ->where('instance_id',$instanceId)->first();
+        $nonWorkingDay    = NonWorkingDaysModal::where('project_id',$task->project_id)
+                                ->where('instance_id',$instanceId)
+                                ->orderBy('id','DESC')->first();
         $get_non_work_day = [];
 
-        if($project_get->non_working_days != null){
-            $split_non_working = explode(',',$project_get->non_working_days);
+        if($nonWorkingDay != null && $nonWorkingDay->non_working_days != null){
+            $split_non_working = explode(',',$nonWorkingDay->non_working_days);
             foreach($split_non_working as $non_working){
                 if($non_working == 0){$get_non_work_day[]     = "Sunday";}
                 elseif($non_working == 1){$get_non_work_day[] = "Monday";}
@@ -2346,14 +2108,16 @@ class ProjectController extends Controller
         $getCurrentDay = date('l', strtotime($request->get_date));
 
         if(\Auth::user()->type == 'company'){
-            $get_holiday = Holiday::where('created_by',\Auth::user()->id)->get();
+            $getHoliday = Project_holiday::where('created_by',\Auth::user()->id)
+                            ->where('instance_id',$instanceId)->get();
         }
         else{
-            $get_holiday = Holiday::where('created_by',\Auth::user()->creatorId())->get();
+            $getHoliday = Project_holiday::where('created_by',\Auth::user()->creatorId())
+                            ->where('instance_id',$instanceId)->get();
         }
 
-        foreach($get_holiday as $check_holiday){
-            $get_all_dates[] = $this->getBetweenDates($check_holiday->date, $check_holiday->end_date);
+        foreach($getHoliday as $check_holiday){
+            $get_all_dates[] = $check_holiday->date;
         }
 
         $holiday_merge    = $this->array_flatten($get_all_dates);
@@ -2368,6 +2132,7 @@ class ProjectController extends Controller
 
         $checkPercentage = Task_progress::where('task_id',$task_id)
         ->where('project_id',$task->project_id)
+        ->where('instance_id',$instanceId)
         ->whereDate('created_at',$request->get_date)->first();
         $checkPercentageGet = isset($checkPercentage->percentage) ? $checkPercentage->percentage : 0;
 
@@ -2422,7 +2187,9 @@ class ProjectController extends Controller
             }
             else{
                 $get_file_id = Task_progress::where('task_id',$task_id)
-                ->where('project_id',$task->project_id)->whereDate('created_at',$request->get_date)->first();
+                ->where('project_id',$task->project_id)
+                ->where('instance_id',$instanceId)
+                ->whereDate('created_at',$request->get_date)->first();
                 if($get_file_id != null){
                     $implode_file_id = $get_file_id->file_id;
                 }
@@ -2448,13 +2215,16 @@ class ProjectController extends Controller
                 'description' => $request->description,
                 'user_id'     => $request->user_id,
                 'project_id'  => $task->project_id,
+                'instance_id' => $instanceId,
                 'date_status' => $date_status,
                 'file_id'     => $implode_file_id,
                 'created_at'  => $request->get_date, //Planned Date
                 'record_date' => date('Y-m-d H:m:s') //Actual Date
             );
 
-            $check_data = Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)
+            $check_data = Task_progress::where('task_id',$task_id)
+            ->where('project_id',$task->project_id)
+            ->where('instance_id',$instanceId)
             ->whereDate('created_at',$request->get_date)->first();
             if($check_data == null){
                 Task_progress::insert($array);
@@ -2462,30 +2232,35 @@ class ProjectController extends Controller
                 Session::get('project_id'), "Added Progress", $task->text);
             }
             else{
-                Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)
+                Task_progress::where('task_id',$task_id)
+                ->where('project_id',$task->project_id)
+                ->where('instance_id',$instanceId)
                 ->where('created_at',$request->get_date)->update($array);
                 ActivityController::activity_store(Auth::user()->id,
                 Session::get('project_id'), "Updated Progress", $task->text);
             }
 
-            $total_pecentage = Task_progress::where('task_id',$task_id)->sum('percentage');
+            $total_pecentage = Task_progress::where('task_id',$task_id)
+                                ->where('instance_id',$instanceId)
+                                ->sum('percentage');
             $per_percentage  = $total_pecentage/$no_working_days;
             $per_percentage  = round($per_percentage);
-            Con_task::where('main_id',$task_id)->update(['progress'=>$per_percentage]);
+            Con_task::where('main_id',$task_id)
+                ->where('instance_id',$instanceId)->update(['progress'=>$per_percentage]);
             // update the  gantt
             // dd($task);
             ###################################################
-            $alltask =Con_task::where(['project_id'=>$task->project_id,'instance_id'=>$task->instance_id])
+            $alltask =Con_task::where(['project_id'=>$task->project_id,'instance_id'=>$instanceId])
             ->where('type','project')->get();
             foreach ($alltask as $key => $value) {
                     $task_id=$value->main_id;
                     $total_percentage=Con_task::where(['project_id'=>$task->project_id,
-                    'instance_id'=>$task->instance_id])
+                    'instance_id'=>$instanceId])
                     ->where('parent',$value->id)->avg('progress');
                     $total_percentage=round($total_percentage);
                     if($total_percentage!=null){
                         Con_task::where('main_id',$task_id)
-                        ->where(['project_id'=>$task->project_id,'instance_id'=>$task->instance_id])
+                        ->where(['project_id'=>$task->project_id,'instance_id'=>$instanceId])
                         ->update(['progress'=>$total_percentage]);
                     }
             }

@@ -3423,7 +3423,7 @@ Route::get(
 Route::get(
     'instance_project/{instance_id}/{project_id}', [
     'as' => 'projects.instance_project',
-    'uses' => 'ProjectController@instance_project',
+    'uses' => 'RevisionController@instance_project',
 ]
 )->middleware(
     [
