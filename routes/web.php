@@ -4186,7 +4186,9 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
 Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
 
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
-        ->name('consultants.password.update');
+->name('consultants.password.update');
+
+Route::get('consultant-scott-search', 'ConsultantController@scott_search')->name('consultant.scott-search')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
 
 Route::resource('plans', 'PlanController')->middleware(
     [

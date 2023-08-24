@@ -4,6 +4,10 @@
 		height: 35px !important;
 		width: 12% !important;
 	}
+	#invite{
+		height: 35px !important;
+		width: 12% !important;
+	}
 
 	#reset{
 		
@@ -64,9 +68,16 @@
 										@can('create consultant')
 									<a href="#" class="btn btn-primary" data-size="lg" data-url="{{ route('consultants.create') }}"
 									 data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Consultant')}}"
-									  id="create" class="btn btn-primary" id="create">
+									  id="create" class="btn btn-primary">
 										<span class="btn-inner--icon">
 											<i class="fa fa-plus"></i>
+										</span>
+									</a>
+									<a href="{{ route('consultant.scott-search') }}" class="btn btn-primary" data-bs-toggle="tooltip" 
+									title="{{__('Invite Consultant')}}"
+									  id="invite" class="btn btn-primary">
+										<span class="btn-inner--icon">
+											<i class="ti ti-send"></i>
 										</span>
 									</a>
 									@endcan
