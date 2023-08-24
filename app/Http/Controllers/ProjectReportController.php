@@ -273,14 +273,15 @@ class ProjectReportController extends Controller
             if(\Auth::user()->type == 'company' || \Auth::user()->type =='super admin' )
             {
                 $project=Project::where('id',Session::get('project_id'))->first();
-                $project_task=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))
-                ->where('updated_at','like',Carbon::now()->format('Y-m-d').'%')->where('type','project')->get();
-                // $project_task=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))->whereIn('main_id', function($query){
-                //     $query->select('task_id')
-                //     ->from('task_progress')
-                //     ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
-                // })->get();
-                $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))->orderBy('id','ASC')->pluck('progress')->first();
+                $project_task=Con_task::where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))->whereIn('main_id', function($query){
+                    $query->select('task_id')
+                    ->from('task_progress')
+                    ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
+                })->get();
+                $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))->orderBy('id','ASC')
+                ->pluck('progress')->first();
                 $actual_current_progress=round($actual_current_progress);
                 $actual_remaining_progress=100-$actual_current_progress;
                 $actual_remaining_progress=round($actual_remaining_progress);

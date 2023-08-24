@@ -664,6 +664,7 @@ class ProjectController extends Controller
         $returnpermission=0;
         $getInstance=Instance::where(['id'=>$instance_id])->first();
         $instanceId=$getInstance->instance;
+        $instance_id=$instanceId;
         Session::forget('project_id');
         Session::forget('project_instance');
         if(\Auth::user()->can('view project'))
@@ -911,7 +912,13 @@ class ProjectController extends Controller
     }
     public function check_instance($id){
         $get_project_instances=Instance::where('project_id',$id)->get();
-        return view('construction_project.instance_view', compact('get_project_instances'));
+        if(count($get_project_instances)>1){
+            return view('construction_project.instance_view', compact('get_project_instances'));
+
+        }else{
+            return redirect()->route('projects.instance_project', [$get_project_instances[0]['id'],$id]);
+        }
+
     }
     /**
      * Display the specified resource.
@@ -1138,7 +1145,8 @@ class ProjectController extends Controller
                     $workdone_percentage=100;
                 }
                 $remaing_percenatge=round(100-$current_Planed_percentage);
-                $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))->where('con_tasks.type','task')->where('con_tasks.start_date','like',$cur.'%')->get();
+                $project_task=Con_task::where('con_tasks.project_id',Session::get('project_id'))
+                ->where('con_tasks.type','task')->where('con_tasks.start_date','like',$cur.'%')->get();
                 $not_started=0;
                 foreach ($project_task as $value) {
                     $result=Task_progress::where('task_id',$value->main_id)->first();
@@ -1195,8 +1203,13 @@ class ProjectController extends Controller
             $project = Project::findOrfail($project->id);
             $setting  = Utility::settings(\Auth::user()->creatorId());
             $country  = Utility::getcountry();
+            if(Session::has('project_instance')){
+                $instanceId=Session::get('project_instance');
+            }else{
+                $instanceId=$project->instance_id;
+            }
             $project_holidays = Project_holiday::where(['project_id'=>$project->id,
-            'instance_id'=>$project->instance_id])
+            'instance_id'=>$instanceId])
             ->orderBy('date','ASC')->get();
 
             if($project->country != null){
@@ -1295,18 +1308,22 @@ class ProjectController extends Controller
                 $project->latitude = $request->latitude;
                 $project->longitude = $request->longitude;
                 $project->save();
-
+                if(Session::has('project_instance')){
+                    $instanceId=Session::get('project_instance');
+                }else{
+                    $instanceId=$project->instance_id;
+                }
                 if(isset($request->non_working_days)){
                     $checkNonWorkingDay = DB::table('non_working_days')
                         ->where('project_id',$project->id)
-                        ->where('instance_id',$project->instance_id)
+                        ->where('instance_id',$instanceId)
                         ->first();
 
                     if($checkNonWorkingDay == null){
                         $nonWorkingDaysInsert = array(
                             'project_id'       => $project->id,
                             'non_working_days' => implode(',',$request->non_working_days),
-                            'instance_id'      => $project->instance_id,
+                            'instance_id'      => $instanceId,
                             'created_by'       => \Auth::user()->creatorId()
                         );
                         DB::table('non_working_days')->insert($nonWorkingDaysInsert);
@@ -1319,7 +1336,7 @@ class ProjectController extends Controller
                         );
                         DB::table('non_working_days')
                             ->where('project_id',$project->id)
-                            ->where('instance_id',$project->instance_id)
+                            ->where('instance_id',$instanceId)
                             ->update($nonWorkingDaysUpdate);
                     }
                 }
@@ -1331,7 +1348,7 @@ class ProjectController extends Controller
                         Holiday::where('created_by', '=', \Auth::user()->creatorId())
                         ->where('date',$holi_value)->first();
                         $project_holidays_list = Project_holiday::
-                        where(['project_id'=>$project->id,'instance_id'=>$project->instance_id])
+                        where(['project_id'=>$project->id,'instance_id'=>$instanceId])
                         ->where('date',$holi_value)->first();
                         if($project_holidays_list == null){
                             $insert = array(
@@ -1339,7 +1356,7 @@ class ProjectController extends Controller
                                 'date'=>$holi_value,
                                 'description'=>$request->holiday_description[$holi_key],
                                 'created_by'=>\Auth::user()->creatorId(),
-                                'instance_id'=>$project->instance_id
+                                'instance_id'=>$instanceId
 
                             );
                             Project_holiday::insert($insert);
@@ -1367,10 +1384,14 @@ class ProjectController extends Controller
         {
 
             $projectID=$project->id;
-            $instance_id=$project->instance_id;
-            Con_task::where(['project_id'=>$projectID,'instance_id'=>$instance_id])->delete();
+            if(Session::has('project_instance')){
+                $instanceId=Session::get('project_instance');
+            }else{
+                $instanceId=$project->instance_id;
+            }
+            Con_task::where(['project_id'=>$projectID,'instance_id'=>$instanceId])->delete();
             Project_holiday::where(['project_id'=>$projectID,
-            'instance_id'=>$project->instance_id])->delete();
+            'instance_id'=>$instanceId])->delete();
             Instance::where('project_id',$projectID)->delete();
 
             if(!empty($project->image))
@@ -1496,12 +1517,6 @@ class ProjectController extends Controller
                 $returnHTML
             );
 
-            return response()->json(
-                [
-                    'success' => true,
-                    'html' => $returnHTML,
-                ]
-            );
         }
     }
 
@@ -1690,13 +1705,17 @@ class ProjectController extends Controller
         {
             $project = Project::find($projectID);
             $tasks   = [];
-
+            if(Session::has('project_instance')){
+                $instanceId=Session::get('project_instance');
+            }else{
+                $instanceId=$project->instance_id;
+            }
             if($project)
             {
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if($setting['company_type']==2){
                     $project_holidays=Project_holiday::select('date')
-                    ->where(['project_id'=>$projectID,'instance_id'=>$project->instance_id])->get();
+                    ->where(['project_id'=>$projectID,'instance_id'=>$instanceId])->get();
                     return view('construction_project.gantt',
                     compact('project', 'tasks', 'duration','project_holidays'));
                 }else{
@@ -2353,7 +2372,8 @@ class ProjectController extends Controller
         $checkPercentageGet = isset($checkPercentage->percentage) ? $checkPercentage->percentage : 0;
 
         if(in_array($request->get_date,$holiday_merge)){
-            return redirect()->back()->with('error', __($request->get_date.' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
+            return redirect()->back()->with('error', __($request->get_date.
+            ' You have chosen a non-working day; if you want to update the progress, please select a working day.'));
         }
         else if(in_array($getCurrentDay,$get_non_work_day)){
             return redirect()->back()->with('error', __('This day is a non-working day.'));
@@ -2442,7 +2462,8 @@ class ProjectController extends Controller
                 Session::get('project_id'), "Added Progress", $task->text);
             }
             else{
-                Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)->where('created_at',$request->get_date)->update($array);
+                Task_progress::where('task_id',$task_id)->where('project_id',$task->project_id)
+                ->where('created_at',$request->get_date)->update($array);
                 ActivityController::activity_store(Auth::user()->id,
                 Session::get('project_id'), "Updated Progress", $task->text);
             }
@@ -2476,15 +2497,20 @@ class ProjectController extends Controller
     public function taskpersentage_update($project_id)
     {
         $project    = Project::find($project_id);
+        if(Session::has('project_instance')){
+            $instanceId=Session::get('project_instance');
+        }else{
+            $instanceId=$project->instance_id;
+        }
 
-        $alltask =Con_task::where(['project_id'=>$project_id,'instance_id'=>$project->instance_id])->get();
+        $alltask =Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])->get();
         foreach ($alltask as $key => $value) {
                 $task_id=$value->main_id;
-                $total_percentage=Con_task::where(['project_id'=>$project_id,'instance_id'=>$project->instance_id])
+                $total_percentage=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])
                 ->where('parent',$value->id)->avg('progress');
                 $total_percentage=round($total_percentage);
                 if($total_percentage!=NUll){
-                    Con_task::where('main_id',$task_id)->where(['instance_id'=>$project->instance_id])
+                    Con_task::where('main_id',$task_id)->where(['instance_id'=>$instanceId])
                     ->update(['progress'=>$total_percentage]);
                 }
         }

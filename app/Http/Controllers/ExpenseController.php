@@ -41,9 +41,13 @@ class ExpenseController extends Controller
         if(\Auth::user()->can('create expense'))
         {
             $project = Project::find($project_id);
-            $instanceid=$project->instance_id;
+            if(Session::has('project_instance')){
+                $instanceId=Session::get('project_instance');
+            }else{
+                $instanceId=$project->instance_id;
+            }
             $tasks=Con_task::select('main_id as id', 'text as name')
-            ->where(['project_id'=>$project_id,'instance_id'=>$instanceid])
+            ->where(['project_id'=>$project_id,'instance_id'=>$instanceId])
             ->get();
             return view('expenses.create', compact('project','tasks'));
         }
@@ -108,10 +112,14 @@ class ExpenseController extends Controller
         {
             $project = Project::find($project_id);
             $expense = Expense::find($expense_id);
-            $instanceid=$project->instance_id;
+            if(Session::has('project_instance')){
+                $instanceId=Session::get('project_instance');
+            }else{
+                $instanceId=$project->instance_id;
+            }
 
             $tasks=Con_task::select('main_id as id', 'text as name')
-            ->where(['project_id'=>$project_id,'instance_id'=>$instanceid])
+            ->where(['project_id'=>$project_id,'instance_id'=>$instanceId])
             ->get();
             return view('expenses.edit', compact('project', 'expense','tasks'));
         }
