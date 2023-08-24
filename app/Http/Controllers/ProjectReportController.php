@@ -277,6 +277,7 @@ class ProjectReportController extends Controller
                 ->where('instance_id',Session::get('project_instance'))->whereIn('main_id', function($query){
                     $query->select('task_id')
                     ->from('task_progress')
+                    ->where('instance_id',Session::get('project_instance'))
                     ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
                 })->get();
                 $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))
@@ -292,8 +293,10 @@ class ProjectReportController extends Controller
                     $planned_end=date("d-m-Y", strtotime($value->end_date));
 
                     $actual_start=DB::table('task_progress')->where('project_id',Session::get('project_id'))
+                    ->where('instance_id',Session::get('project_instance'))
                     ->where('task_id',$value->main_id)->max('created_at');
                     $actual_end=DB::table('task_progress')->where('project_id',Session::get('project_id'))
+                    ->where('instance_id',Session::get('project_instance'))
                     ->where('task_id',$value->main_id)->min('created_at');
                     $flag=0;
                     if($actual_start){
@@ -366,6 +369,7 @@ class ProjectReportController extends Controller
                 }
                 $taskdata2=array();
                 $today_task_update=DB::table('task_progress')->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
                 ->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
                 $instance_id=Session::get('project_instance');
 
