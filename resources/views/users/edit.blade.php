@@ -2,101 +2,159 @@
     div#choices_multiple1_chosen {
         width: 100% !important;
     }
+    .chosen-container-multi .chosen-choices
+    {
+    border: none;
+    cursor: text;
+    padding: 0.2325rem 0.75rem;
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    text-indent: 0;
+   }
 </style>
 {{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off','enctype'=>"multipart/form-data")) }}
-<div class="modal-body">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group ">
-                {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                {{Form::text('name',null,array('class'=>'form-control font-style','maxlength' => 35,'placeholder'=>__('Enter User Name')))}}
-                @error('name')
-                <small class="invalid-name" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
-                <span class="invalid-name duplicate_error" role="alert" style="display: none;">
-                    <span class="text-danger">{{__('Email Already Exist!')}}</span>
-                </span> 
-                @error('email')
-                <small class="invalid-email" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
-            </div>
-        </div>
+    <div class="modal-body">
         <div class="row">
-            <div class="form-group col-md-6">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{Form::text('name',null,array('class'=>'form-control font-style','maxlength' => 35,'placeholder'=>__('Enter User Name')))}}
+                    @error('name')
+                    <small class="invalid-name" role="alert">
+                        <strong class="text-danger">{{ $message }}</strong>
+                    </small>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{Form::label('lname',__('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    <input type="text" name="lname" class="form-control" maxlength="35" value="{{$user->lname}}"
+                     placeholder="{{__('Enter Last Name')}}" required>
+                    @error('name')
+                    <small class="invalid-name" role="alert">
+                        <strong class="text-danger">{{ $message }}</strong>
+                    </small>
+                    @enderror
+                </div>
+            </div>
+        </div>
+     
+     
+        @php
+            $rndColor = Utility::rndRGBColorCode(); #function call
+        @endphp
+        @if ($user->color_code!=Null || $user->color_code!='')
+             @php $color_co =$user->color_code; @endphp
+        @else
+             @php $color_co =$rndColor; @endphp
+        @endif
+
+            <input type="hidden" name="color_code" value="{{ $color_co }}">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                        {{Form::email('email',null,array('class'=>'form-control','id'=>'email','placeholder'=>__('Enter User Email')))}}
+                        <span class="invalid-name duplicate_error" role="alert" style="display: none;">
+                            <span class="text-danger">{{__('Email Already Exist!')}}</span>
+                        </span>
+                        @error('email')
+                        <small class="invalid-email" role="alert">
+                            <strong class="text-danger">{{ $message }}</strong>
+                        </small>
+                        @enderror
+                    </div>
+                </div>
+        
+                <div class="form-group col-md-6">
                     {{ Form::label('gender', __('Gender'),['class'=>'form-label']) }}
                     {!! Form::select('gender', $gender, $user->gender,array('class' => 'form-control',
                         'required'=>'required')) !!}
                     @error('role')
-                    <small class="invalid-role" role="alert">
-                        <strong class="text-danger">{{ $message }}</strong>
-                    </small>
+                        <small class="invalid-role" role="alert">
+                            <strong class="text-danger">{{ $message }}</strong>
+                        </small>
                     @enderror
-            </div>
-            @if(\Auth::user()->type != 'super admin')
-            <?php $reporting_to=explode(",",$user->reporting_to); ?>
-            <div class="form-group col-md-6">
-                <div class="form-group">
-                {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                <div class="form-icon-user" id="reporting_toerr">
-                    <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select get_reportto' required multiple>
-                        @foreach($users as $key => $value)
-                            @if(in_array($key,$reporting_to)) 
-                                <option value="{{$key}}" selected>{{$value}}</option>
-                            @else
-                                <option value="{{$key}}">{{$value}}</option>
-                            @endif
-                            
-                        @endforeach
-                    </select>
-                </div>
                 </div>
             </div>
-            @endif
-            <div class="form-group col-md-6">
-                <div class="form-group">
-                    {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    <div class="form-icon-user">
-                        <select class="form-control country" name="country" id='country'placeholder="Select Country" required>
+
+            <div class="row">
+                @if(\Auth::user()->type != 'super admin')
+                <?php $reporting_to=explode(",",$user->reporting_to); ?>
+                    <div class="form-group col-md-6">
+                        <div class="form-group">
+                            {{Form::label('reporting_to',__('Reporting to'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                            <div class="form-icon-user" id="reporting_toerr">
+                                <select  name="reporting_to[]" id='choices-multiple1' class='chosen-select get_reportto' required multiple>
+                                    @foreach($users as $key => $value)
+                                        @if(in_array($key,$reporting_to))
+                                            <option value="{{$key}}" selected>{{$value}}</option>
+                                        @else
+                                            <option value="{{$key}}">{{$value}}</option>
+                                        @endif
+                                        
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="form-group col-md-6">
+                        {{ Form::label('company_type', __('Company'),['class'=>'form-label']) }}
+                        {!! Form::select('company_type', $company_type, $user->company_type,
+                            array('class' => 'form-control','required'=>'required')) !!}
+                        @error('company_type')
+                        <small class="invalid-role" role="alert">
+                            <strong class="text-danger">{{ $message }}</strong>
+                        </small>
+                        @enderror
+                    </div>
+                @endif
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            <select class="form-control country" name="country" id="country" required>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($countrylist as $key => $value)
                                         <option value="{{$value->iso2}}" @if($user->country==$value->iso2) selected @endif>{{$value->name}}</option>
                                     @endforeach
-                        </select>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                </div>
 
                 <div class="form-group col-md-6">
-                        <div class="form-group">
-                            {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                            <div class="form-icon-user">
-                                <select class="form-control state" name="state" id='state' placeholder="Select State" required>
-                                            <option value="">{{ __('Select State ...') }}</option>
-                                            @foreach($statelist as $key => $value)
-                                                <option value="{{$value->iso2}}" @if($user->state==$value->iso2) selected @endif>{{$value->name}}</option>
-                                            @endforeach
-                                </select>
-                            </div>
+                    <div class="form-group">
+                        {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            <select class="form-control state" name="state" id='state' placeholder="Select State" required>
+                                <option value="">{{ __('Select State ...') }}</option>
+                                @foreach($statelist as $key => $value)
+                                    <option value="{{$value->iso2}}" @if($user->state==$value->iso2) selected @endif>{{$value->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
+                    </div>
                 </div>
+            </div>
 
+            <div class="row">
                 <div class="form-group col-md-6">
-                        <div class="form-group">
-                            {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                            <div class="form-icon-user">
-                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
-                            </div>
+                    <div class="form-group">
+                        {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        <div class="form-icon-user">
+                            {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
                         </div>
+                    </div>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -110,7 +168,8 @@
                         </div>
                     </div>
                 </div>
-
+            </div>
+            <div class="row">
                 <div class="form-group col-md-6">
                     <div class="form-group">
                         {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}<span style='color:red;'>*</span>
@@ -132,14 +191,15 @@
                     </div>
                 @endif
 
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
-                            <div class="form-icon-user">
-                                {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3))}}
-                            </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
+                        <div class="form-icon-user">
+                            {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3))}}
                         </div>
                     </div>
+                </div>
+            </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
@@ -151,18 +211,7 @@
                 </div>
 
        
-        @if(\Auth::user()->type == 'super admin')
-            <div class="form-group col-md-6">
-                {{ Form::label('company_type', __('Company'),['class'=>'form-label']) }}
-                {!! Form::select('company_type', $company_type, $user->company_type,
-                    array('class' => 'form-control','required'=>'required')) !!}
-                @error('company_type')
-                <small class="invalid-role" role="alert">
-                    <strong class="text-danger">{{ $message }}</strong>
-                </small>
-                @enderror
-            </div>
-        @endif
+      
         @if(!$customFields->isEmpty())
             <div class="col-md-6">
                 <div class="tab-pane fade show" id="tab-2" role="tabpanel">

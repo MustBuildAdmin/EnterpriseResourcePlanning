@@ -1,9 +1,10 @@
-{{Form::model($user,array('route' => array('user.password.update', $user->id), 'method' => 'post')) }}
+{{Form::model($user,array('route' => array('consultants.password.update', $user->id), 'method' => 'post')) }}
 <div class="modal-body">
     <div class="row">
         <div class="form-group">
             {{ Form::label('password', __('Password')) }}
-            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+             name="password" required autocomplete="new-password">
             @error('password')
             <span class="invalid-feedback" role="alert">
                <strong>{{ $message }}</strong>
@@ -12,7 +13,8 @@
         </div>
         <div class="form-group">
             {{ Form::label('password_confirmation', __('Confirm Password')) }}
-            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+            <input id="password-confirm" type="password" class="form-control"
+             name="password_confirmation" required autocomplete="new-password">
         </div>
         <div id="not_match" style="display:none;color:red;">{{ __("Passwords Don't Match") }}</div>
     </div>

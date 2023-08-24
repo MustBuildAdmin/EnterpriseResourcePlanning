@@ -61,7 +61,10 @@ class UserController extends Controller
                             ->get();
                         }
                     }]
-                ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->paginate(8);
+                ])->where('created_by', '=', $user->creatorId())
+                ->where('type', '!=', 'client')
+                ->where('type', '!=', 'consultant')
+                ->paginate(8);
                 $user_count=User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->count();
             }
             
@@ -171,6 +174,7 @@ class UserController extends Controller
                 }
                 $user               = new User();
                 $user['name']       = $request->name;
+                $user['lname']       = $request->lname;
                 $user['email']      = $request->email;
                 $user['gender']      = $request->gender;
                 // $user['phone']      = $request->phone;
@@ -189,6 +193,7 @@ class UserController extends Controller
                 $user['zip']=$request->zip;
                 $user['address']=$request->address;
                 $user['company_type']       = $request->company_type;
+                $user['color_code']=$request->color_code;
                 // $user['reporting_to']=$string_version;
                 $user['company_name']       = $request->company_name;
                 if(isset($url)){
@@ -293,7 +298,8 @@ class UserController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-                $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
+
+                $resp=Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
 
                 return redirect()->route('users.index')->with('success', __('User successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
             }
@@ -376,7 +382,7 @@ class UserController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
@@ -397,6 +403,7 @@ class UserController extends Controller
                 $role = Role::findByName('company');
                 $input = $request->all();
                 $input['type'] = $role->name;
+                $input['color_code']=$request->color_code;
                 // $input['reporting_to']=$string_version;
                 if(isset($url)){
                     $input['avatar']=$url;

@@ -2687,5 +2687,6 @@
   "Location" : "Standort",
   "Drawing References (if any)" : "Zeichnungsreferenzen (falls vorhanden)",
   "S.No" : "S.Nr",
-  "Remarks/ Notes" : "Bemerkungen/Anmerkungen"
+  "Remarks/ Notes" : "Bemerkungen/Anmerkungen",
+  "Construction Management System": "Baumanagement system"
 }

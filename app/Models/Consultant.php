@@ -25,7 +25,9 @@ class Consultant extends Authenticatable
 
     protected $fillable = [
         'name',
+        'lname',
         'email',
+        'avatar',
         'phone',
         'gender',
         'country',
@@ -33,6 +35,8 @@ class Consultant extends Authenticatable
         'city',
         'address',
         'zip',
+        'type',
+        'color_code',
         'created_by',
         'is_deleted'
     ];
@@ -47,5 +51,7 @@ class Consultant extends Authenticatable
             return $this->created_by;
         }
     }
+
+
 
    }
