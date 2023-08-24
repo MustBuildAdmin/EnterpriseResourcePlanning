@@ -39,6 +39,7 @@ use App\Jobs\Projecttypetask;
 use Mail;
 use Carbon\CarbonPeriod;
 use Config;
+use Exception;
 
 class ProjectController extends Controller
 {
