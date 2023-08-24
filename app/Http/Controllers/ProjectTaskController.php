@@ -811,7 +811,6 @@ class ProjectTaskController extends Controller
         $remaining_working_days=Utility::
         remaining_duration_calculator($get_con_task->end_date,$get_con_task->project_id);
         $remaining_working_days=$remaining_working_days-1;// include the last day
-
         $completed_days=$get_con_task->duration-$remaining_working_days;
         // percentage calculator
         if($get_con_task->duration>0){
@@ -819,6 +818,7 @@ class ProjectTaskController extends Controller
         }else{
             $perday=0;
         }
+       
 
         $current_Planed_percentage=round($completed_days*$perday);
         if($current_Planed_percentage > 100){
@@ -827,6 +827,7 @@ class ProjectTaskController extends Controller
         if($current_Planed_percentage < 0){
             $current_Planed_percentage=0;
         }
+        
         
         return view('construction_project.task_particular_list',
         compact('task_id','data','total_pecentage', 'current_Planed_percentage'));
