@@ -28,7 +28,14 @@
   color: #aaa;
   font-style: italic;
 }
+.avatar.avatar-xl.mb-3.user-initial {
+	border-radius: 50%;
+	color: #FFF;
+}
 
+.avatar-xl {
+	--tblr-avatar-size: 6.2rem;
+}
 </style>
 
 @php
@@ -54,7 +61,7 @@
 			<div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
 			  <div class="input-group">
 				<input type="search" name="search"
-				value="{{ request()->get('search') }}" placeholder="What're you searching for?" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+				value="{{ request()->get('search') }}" placeholder="Search Consultant Name or Email" aria-describedby="button-addon1" class="form-control border-0 bg-light">
 				<div class="input-group-append">
 				  <button id="button-addon1" type="submit" class="btn btn-link text-primary"><i class="fa fa-search"></i></button>
 				</div>
