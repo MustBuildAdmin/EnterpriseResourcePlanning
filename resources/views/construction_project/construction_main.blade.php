@@ -83,24 +83,26 @@
                                     <div class="d-flex align-items-center">
                                         <?php $color = sprintf("#%06x",random_int(0,16777215));?>
                                     <div class="circle" style="background:#<?php echo $color; ?>">
-                                    <?= substr($project->project_name,0,2) ?></div>
-                                        <h5 class="mb-0">
-                                        <?php
-                                            $project_instances=\App\Models\Instance::where('project_id',$project->id)
-                                            ->get();?>
-                                             @if(count($project_instances)>1)
-                                            <a class="text-dark"  data-size="lg"
-                                                data-url="{{ route('projects.check_instance',$project->id) }}"
-                                                data-title="Choose Your Revision" data-ajax-popup="true"
-                                                data-bs-toggle="tooltip">{{ $project->project_name }}</a>
-                                                @else
-                                                <a class="text-dark"  data-size="lg"
-                                                href="{{ route('projects.instance_project',
-                                                     [$project_instances[0]['id'],$project->id]) }}"
-                                                data-bs-toggle="tooltip">{{ $project->project_name }}</a>
-                                            @endif
-                                        </h5>
+                                    <?= substr($project->project_name,0,2) ?>
                                     </div>
+                                    <h5 class="mb-0">
+                                        @php
+                                            $project_instances=\App\Models\Instance::where('project_id',$project->id)
+                                            ->get();
+                                        @endphp
+                                        @if(count($project_instances)>1)
+                                            <a class="text-dark"  data-size="lg"
+                                            data-url="{{ route('projects.check_instance',$project->id) }}"
+                                            data-title="Choose Your Revision" data-ajax-popup="true"
+                                            data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                                        @else
+                                            <a class="text-dark"  data-size="lg"
+                                            href="{{ route('projects.instance_project',
+                                                    [$project_instances[0]['id'],$project->id]) }}"
+                                            data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                                        @endif
+                                    </h5>
+                                </div>
                                     <div class="card-header-right">
                                         <div class="btn-group card-option">
                                             <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
@@ -110,8 +112,9 @@
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 @php
                                                     $getInstance = DB::table('instance')
-                                                                    ->where('project_id',$project->id)
-                                                                    ->where('freeze_status',1)->first();
+                                                        ->where('instance',$project->instance_id)
+                                                        ->where('project_id',$project->id)
+                                                        ->where('freeze_status',0)->first();
                                                 @endphp
                                                 @if($getInstance != null)
                                                     @can('edit project')
@@ -124,17 +127,18 @@
                                                         </a>
                                                     @endcan
                                              
-                                                    @can('delete project')
-                                                        {!! Form::open(['method' => 'DELETE',
-                                                            'route' => ['projects.destroy', $project->id]]) !!}
-                                                        <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
-                                                            <i class="ti ti-archive"></i>
-                                                            <span> {{ __('Delete') }}</span>
-                                                        </a>
-
-                                                        {!! Form::close() !!}
-                                                    @endcan
+                                                   
                                                 @endif
+                                                @can('delete project')
+                                                    {!! Form::open(['method' => 'DELETE',
+                                                        'route' => ['projects.destroy', $project->id]]) !!}
+                                                    <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
+                                                        <i class="ti ti-archive"></i>
+                                                        <span> {{ __('Delete') }}</span>
+                                                    </a>
+
+                                                    {!! Form::close() !!}
+                                                @endcan
                                                 @can('edit project')
                                                     <a href="#!" data-size="xl"
                                                     data-url="{{ route('invite.project.member.view',

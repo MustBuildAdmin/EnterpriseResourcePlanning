@@ -49,7 +49,7 @@ class ClientController extends Controller
             ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->paginate(8);
             // $clients = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'client')->paginate(1);
 
-            return view('client.index', compact('clients'));
+            return view('clients.index', compact('clients'));
         }
         else
         {
@@ -186,6 +186,7 @@ class ClientController extends Controller
                         $client = User::create(
                             [
                                 'name' => $request->name,
+                                'lname' => $request->lname,
                                 'email' => $request->email,
                                 'job_title' => $request->job_title,
                                 'password' => Hash::make($request->password),
@@ -215,7 +216,8 @@ class ClientController extends Controller
                                 'shipping_phone'=>$shipping_phone,
                                 'shipping_zip'=>$shipping_zip,
                                 'shipping_address'=>$shipping_address,
-                                'copy_status'=>$copy_status
+                                'copy_status'=>$copy_status,
+                                'color_code'=>$request->color_code
                             ]
                         );
 
@@ -423,6 +425,7 @@ class ClientController extends Controller
                     $post['avatar']=$url;
                 }
                 $post['email'] = $request->email;
+                $post['lname'] = $request->lname;
                 $post['country']=$request->country;
                 $post['state']=$request->state;
                 $post['city']=$request->city;
@@ -445,6 +448,7 @@ class ClientController extends Controller
                 $post['shipping_zip']=$shipping_zip;
                 $post['shipping_address']=$shipping_address;
                 $post['copy_status']=$copy_status;
+                $post['color_code']=$request->color_code;
                
                 $client->update($post);
 

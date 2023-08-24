@@ -2688,5 +2688,6 @@
   "Location" : "Beliggenhed",
   "Drawing References (if any)" : "tegningsreferencer (hvis nogen)",
   "S.No" : "S.nr",
-  "Remarks/ Notes" : "Bemærkninger/Noter"
+  "Remarks/ Notes" : "Bemærkninger/Noter",
+  "Construction Management System":"Byggeledelses system"
 }

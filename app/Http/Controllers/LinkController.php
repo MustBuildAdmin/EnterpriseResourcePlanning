@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Con_task;
 use App\Models\Link;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Session;
+use Auth;
 
 class LinkController extends Controller
 {
@@ -23,7 +25,12 @@ class LinkController extends Controller
         $link->project_id = Session::get('project_id');
         $link->instance_id = Session::get('project_instance');
         $link->target = $request->target;
-        $link->save();
+
+        $frezee=Project::where('id',Session::get('project_id'))->first();
+        if($frezee->freeze_status!=1){
+            $link->save();
+        }
+
         Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])
             ->update(['predecessors'=>$request->target]);
 
@@ -42,7 +49,11 @@ class LinkController extends Controller
         $link->type = $request->type;
         $link->source = $request->source;
         $link->target = $request->target;
-        $link->save();
+        $frezee=Project::where('id',Session::get('project_id'))->first();
+        if($frezee->freeze_status!=1){
+            $link->save();
+        }
+
         Con_task::where(['id'=>$request->source,'project_id'=>Session::get('project_id')])
         ->update(['predecessors'=>$request->target]);
 
@@ -56,7 +67,11 @@ class LinkController extends Controller
     public function destroy($id){
         $link = Link::find($id);
         $link->where(['project_id'=>Session::get('project_id'),'instance_id'=>Session::get('project_instance')]);
-        $link->delete();
+        $frezee=Project::where('id',Session::get('project_id'))->first();
+        if($frezee->freeze_status!=1){
+            $link->delete();
+        }
+
 
         ActivityController::activity_store(Auth::user()->id,
         Session::get('project_id'), "Deleted Predecessors", $id);

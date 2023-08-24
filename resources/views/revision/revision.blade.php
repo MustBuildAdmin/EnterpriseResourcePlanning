@@ -40,7 +40,7 @@
                                 <div class="col-sm-12 col-md-12">
                                     <div class="form-group">
                                         {{Form::label('non_working_days',__('non_working_days'),
-                                        ['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                        ['class'=>'form-label'])}}
                                         @php
                                             $non_working_days = array(
                                                 '1' => 'Monday',
@@ -55,7 +55,7 @@
                                         {!! Form::select('non_working_days[]', $non_working_days, null,
                                             array('id' => 'non_working_days',
                                             'class' => 'form-control chosen-select get_non_working_days',
-                                            'multiple'=>'true','required'=>'required'))
+                                            'multiple'=>'true'))
                                         !!}
                                     </div>
                                 </div>
@@ -204,14 +204,7 @@
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                get_non_working_days = $(".get_non_working_days").val();
-               
-                if(currentIndex == 0 && newIndex == 1 && get_non_working_days == ""){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else{
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                }
+                form.validate().settings.ignore = ":disabled,:hidden";
                 return form.valid();
             },
             labels: {

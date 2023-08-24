@@ -37,7 +37,7 @@ class RevisionController extends Controller
     public function revision_store(Request $request){
         try {
             $projectId       = Session::get('project_id');
-            $instanceId=Session::get('project_instance');
+            $instanceId      = Session::get('project_instance');
             $holidayDateGet  = $request->holiday_date;
 
 
@@ -104,10 +104,265 @@ class RevisionController extends Controller
                 );
             }
 
-            return redirect()->back()->with('success', __('Revision Added Successfully'));
+            return redirect()->route('construction_main')->with('success', __('Revision Added Successfully'));
         }
         catch (Exception $e) {
             return $e->getMessage();
+        }
+    }
+
+    public function instance_project($instance_id,$project_id){
+      
+        $returnpermission = 0;
+        $getInstance      = Instance::where('project_id',$project_id)->where(['id'=>$instance_id])->first();
+        $instanceId       = $getInstance->instance;
+        $usr              = Auth::user();
+
+        Session::forget('project_id');
+        Session::forget('project_instance');
+        Session::forget('latest_project_instance');
+        Session::forget('current_revision_freeze');
+
+        if(\Auth::user()->can('view project'))
+        {
+            Session::put('project_id',$project_id);
+            Session::put('project_instance',$instanceId);
+
+            $tasks = Con_task::where('project_id',$project_id)->where('instance_id',$instanceId)->get();
+            
+            $checkInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
+            Session::put('latest_project_instance',$checkInstanceFreeze->instance);
+
+            if($getInstance->freeze_status == 1){
+                Session::put('current_revision_freeze', 1); //Freezed
+            }
+            else{
+                Session::put('current_revision_freeze', 0); //Not Freeze
+            }
+
+            $project = Project::where(['id'=>$project_id])->first();
+
+            $userProjects = \Auth::user()->type == 'client' ?
+                Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray() :
+                $usr->projects->pluck('id')->toArray();
+
+            if(in_array($project_id, $userProjects))
+            {
+                
+                $project_data = [];
+
+                // Task Count
+                $projectTask     = $tasks->count();
+                $projectDoneTask = $tasks->where('progress',100)->count();
+
+                $project_data['task'] = [
+                    'done'       => number_format($projectDoneTask),
+                    'total'      => number_format($projectTask),
+                    'percentage' => Utility::getPercentage($projectDoneTask, $projectTask),
+                ];
+                // end Task Count
+
+                // Expense
+                $expAmt = 0;
+                foreach($project->expense as $expense)
+                {
+                    $expAmt += $expense->amount;
+                }
+
+                $project_data['expense'] = [
+                    'allocated'  => $project->budget,
+                    'total'      => $expAmt,
+                    'percentage' => Utility::getPercentage($expAmt, $project->budget),
+                ];
+                // end expense
+
+                // Users Assigned
+                $totalUsers = User::where('created_by', '=', $usr->id)->count();
+
+                $project_data['user_assigned'] = [
+                    'total'      => number_format($totalUsers) . '/' . number_format($totalUsers),
+                    'percentage' => Utility::getPercentage($totalUsers, $totalUsers),
+                ];
+                // end users assigned
+
+                // Day left
+                $totalDay     = Carbon::parse($project->start_date)->diffInDays(Carbon::parse($project->end_date));
+                $remainingDay = Carbon::parse($project->start_date)->diffInDays(now());
+
+                if($totalDay < $remainingDay){
+                    $remainingDay = $totalDay;
+                }
+                $project_data['day_left'] = [
+                    'day'        => number_format($remainingDay) . '/' . number_format($totalDay),
+                    'percentage' => Utility::getPercentage($remainingDay, $totalDay),
+                ];
+                // end Day left
+
+                // Open Task
+                $totalTask = $project_data['task']['total'];
+
+                $project_data['open_task'] = [
+                    'tasks'      => number_format($projectDoneTask) . '/' . number_format($totalTask),
+                    'percentage' => Utility::getPercentage($projectDoneTask, $totalTask),
+                ];
+                // end open task
+
+                // Milestone
+                $totalMilestone           = $project->milestones()->count();
+                $completeMilestone        = $project->milestones()->where('status', 'LIKE', 'complete')->count();
+                $project_data['milestone'] = [
+                    'total'      => number_format($completeMilestone) . '/' . number_format($totalMilestone),
+                    'percentage' => Utility::getPercentage($completeMilestone, $totalMilestone),
+                ];
+                // End Milestone
+
+                // Time spent
+                $times = $project->timesheets()->where('created_by', '=', $usr->id)->pluck('time')->toArray();
+                $totaltime = str_replace(':', '.', Utility::timeToHr($times));
+                $project_data['time_spent'] = [
+                    'total' => number_format($totaltime) . '/' . number_format($totaltime),
+                    'percentage' => Utility::getPercentage(number_format($totaltime), $totaltime),
+                ];
+                // end time spent
+
+                // Allocated Hours
+                $hrs = Project::projectHrs($project_id);
+                $project_data['task_allocated_hrs'] = [
+                    'hrs' => number_format($hrs['allocated']) . '/' . number_format($hrs['allocated']),
+                    'percentage' => Utility::getPercentage($hrs['allocated'], $hrs['allocated']),
+                ];
+                // end allocated hours
+
+                // Chart
+                $sevenDays      = Utility::getLastSevenDays();
+                $chartTask      = [];
+                $chartTimesheet = [];
+                $cnt            = 0;
+                $cnt1           = 0;
+
+                foreach(array_keys($sevenDays) as $k => $date)
+                {
+                    $taskCnt     = $project->tasks()->where('is_complete', '=', 1)
+                        ->whereRaw("find_in_set('" . $usr->id . "',assign_to)")
+                        ->where('marked_at', 'LIKE', $date)->count();
+
+                    $arrTimesheet = $project->timesheets()->where('created_by', '=', $usr->id)
+                        ->where('date', 'LIKE', $date)->pluck('time')->toArray();
+
+                    // Task Chart Count
+                    $cnt += $taskCnt;
+
+                    // Timesheet Chart Count
+                    $timesheetCnt = str_replace(':', '.', Utility::timeToHr($arrTimesheet));
+                    $cn[]         = $timesheetCnt;
+                    $cnt1         += $timesheetCnt;
+
+                    $chartTask[]      = $taskCnt;
+                    $chartTimesheet[] = $timesheetCnt;
+                }
+
+                $project_data['task_chart']      = [
+                    'chart' => $chartTask,
+                    'total' => $cnt,
+                ];
+                $project_data['timesheet_chart'] = [
+                    'chart' => $chartTimesheet,
+                    'total' => $cnt1,
+                ];
+                // end chart
+
+                $total_sub = $tasks->where('type','task')->count();
+                $firstTask = Con_task::where(['project_id'=>$project_id,'instance_id'=>$instanceId])
+                    ->orderBy('id','ASC')->first();
+                if($firstTask){
+                    $workdone_percentage = $firstTask->progress;
+                    $actual_percentage   = $firstTask->progress;
+                    $no_working_days     = $firstTask->duration;// include the last day
+                    $date2               = date_create($firstTask->end_date);
+                }else{
+                    $workdone_percentage = '0';
+                    $actual_percentage   = '0';
+                    $no_working_days     = $project->estimated_days;// include the last day
+                    $date2               = date_create($project->end_date);
+                }
+
+                if($actual_percentage > 100){
+                    $actual_percentage = 100;
+                }
+
+                if($actual_percentage < 0){
+                    $actual_percentage = 0;
+                }
+
+                $cur = date('Y-m-d');
+
+                ############### Remaining days ###################
+                    $remaining_working_days = Utility::remaining_duration_calculator($date2,$project_id);
+                    $remaining_working_days = $remaining_working_days-1; // include the last day
+                ############### Remaining days ##################
+
+                $completed_days = $no_working_days-$remaining_working_days;
+
+                // percentage calculator
+                if($no_working_days>0){
+                    $perday = 100/$no_working_days;
+                }else{
+                    $perday = 0;
+                }
+
+                $current_Planed_percentage = round($completed_days*$perday);
+                if($current_Planed_percentage > 100){
+                    $current_Planed_percentage = 100;
+                }
+                if($current_Planed_percentage < 0){
+                    $current_Planed_percentage = 0;
+                }
+                if($current_Planed_percentage > 0){
+                    $workdone_percentage=$workdone_percentage = $workdone_percentage/$current_Planed_percentage;
+                }else{
+                    $workdone_percentage = 0;
+                }
+
+                round(100-$current_Planed_percentage);
+                $projectTasks = Con_task::where('con_tasks.project_id',$project_id)
+                    ->where('con_tasks.instance_id',$instanceId)
+                    ->where('con_tasks.type','task')
+                    ->where('con_tasks.start_date','like',$cur.'%')->get();
+
+                $not_started = 0;
+                foreach ($projectTasks as $value) {
+                    $result = Task_progress::where('task_id',$value->main_id)->first();
+                    if(!$result){
+                        $not_started = $not_started+1;
+                    }
+                }
+
+                if($remaining_working_days<0){
+                    $remaining_working_days=0;
+                }
+
+                $notfinished=Con_task::where('project_id',$project_id)
+                    ->where('instance_id',$instanceId)->where('type','task')
+                    ->where('end_date','<',$cur)->where('progress','!=','100')->count();
+                $completed_task=Con_task::where('project_id',$project_id)
+                    ->where('instance_id',$instanceId)->where('type','task')
+                    ->where('end_date','<',$cur)->where('progress','100')->count();
+
+                $ongoing_task=Con_task::where('project_id',$project_id)
+                    ->where('instance_id',$instanceId)
+                    ->where('type','task')->where('progress','<',100)->where('progress','>',0)->count();
+
+                $returnpermission = 1;
+
+                return view('construction_project.dashboard',
+                    compact('project','ongoing_task','project_data','total_sub','actual_percentage',
+                    'workdone_percentage','current_Planed_percentage','not_started','notfinished',
+                    'remaining_working_days','completed_task'));
+            }
+        }
+       
+        if($returnpermission!=1){
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
 }

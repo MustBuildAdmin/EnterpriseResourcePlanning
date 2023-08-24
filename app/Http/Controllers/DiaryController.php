@@ -2455,4 +2455,38 @@ class DiaryController extends Controller
             dd($e->getMessage());
         }
     }
+
+    public function new_vo_change(){
+
+        try {
+                return view('diary.new_diary.vo_change_order.index');
+
+        } catch (Exception $e) {
+                dd($e->getMessage());
+        }
+
+    }
+
+    public function new_drawing(){
+
+        try {
+                return view('diary.new_diary.drawing.index');
+
+        } catch (Exception $e) {
+                dd($e->getMessage());
+        }
+
+    }
+
+    public function new_rfi(){
+
+        try {
+                return view('diary.new_diary.rfi.index');
+
+        } catch (Exception $e) {
+                dd($e->getMessage());
+        }
+
+    }
+
 }

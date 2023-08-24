@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Twilio\Rest\Client;
 use Session;
+use App\Models\NonWorkingDaysModal;
 
 use Exception;
 
@@ -88,6 +89,7 @@ class Utility extends Model
             "display_landing_page" => "on",
             "employee_prefix" => "#EMP00",
             'create_user' => '1',
+            'create_consultant'=> '1',
             'award_create' => '1',
             'lead_assign' => '1',
             'deal_assign' =>'1',
@@ -323,6 +325,7 @@ class Utility extends Model
         'create_user' => 'Create User',
         'create_client' =>'Create Client',
         'create_support' =>'Create Support',
+        'create_consultant'=> 'Create Consultant',
         'lead_assign' =>'Lead Assign',
         'deal_assign' =>'Deal Assign',
         'award_send' => 'Award Send',
@@ -3693,8 +3696,15 @@ class Utility extends Model
             $instance_id=$project->instance_id;
            }
            $holidays=DB::table('project_holidays')->where(['project_id'=>$id,'instance_id'=>$instance_id])->get();
+           $nonWorkingDay    = NonWorkingDaysModal::where('project_id',$id)
+                                ->where('instance_id',$instance_id)->pluck('non_working_days')->first();
            if($project){
-                $weekarray=explode(',',$project->non_working_days);
+                if($nonWorkingDay){
+                    $weekarray=explode(',',$project->non_working_days);
+                }else{
+                    $weekarray=array();
+                }
+                
                 $excluded_dates =array();
 
                 if(count($holidays)>0){
@@ -3721,6 +3731,23 @@ class Utility extends Model
            }
 
 
+        }
+
+        public static function rndRGBColorCode()
+        {
+            #using the inbuilt random function
+            return 'rgb(' . random_int(0, 255) . ',' . random_int(0, 255) . ',' . random_int(0, 255) . ')';
+        }
+
+        public static function randomPassword() {
+            $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+            $pass = array(); //remember to declare $pass as an array
+            $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+            for ($i = 0; $i < 8; $i++) {
+                $n = random_int(0, $alphaLength);
+                $pass[] = $alphabet[$n];
+            }
+            return implode($pass); //turn the array into a string
         }
 
 }
