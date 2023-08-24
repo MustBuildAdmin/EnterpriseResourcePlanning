@@ -127,17 +127,18 @@
                                                         </a>
                                                     @endcan
                                              
-                                                    @can('delete project')
-                                                        {!! Form::open(['method' => 'DELETE',
-                                                            'route' => ['projects.destroy', $project->id]]) !!}
-                                                        <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
-                                                            <i class="ti ti-archive"></i>
-                                                            <span> {{ __('Delete') }}</span>
-                                                        </a>
-
-                                                        {!! Form::close() !!}
-                                                    @endcan
+                                                   
                                                 @endif
+                                                @can('delete project')
+                                                    {!! Form::open(['method' => 'DELETE',
+                                                        'route' => ['projects.destroy', $project->id]]) !!}
+                                                    <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
+                                                        <i class="ti ti-archive"></i>
+                                                        <span> {{ __('Delete') }}</span>
+                                                    </a>
+
+                                                    {!! Form::close() !!}
+                                                @endcan
                                                 @can('edit project')
                                                     <a href="#!" data-size="xl"
                                                     data-url="{{ route('invite.project.member.view',

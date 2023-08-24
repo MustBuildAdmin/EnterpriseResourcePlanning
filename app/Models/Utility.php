@@ -14,6 +14,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Twilio\Rest\Client;
 use Session;
+use App\Models\NonWorkingDaysModal;
 
 use Exception;
 
@@ -3695,8 +3696,15 @@ class Utility extends Model
             $instance_id=$project->instance_id;
            }
            $holidays=DB::table('project_holidays')->where(['project_id'=>$id,'instance_id'=>$instance_id])->get();
+           $nonWorkingDay    = NonWorkingDaysModal::where('project_id',$id)
+                                ->where('instance_id',$instance_id)->pluck('non_working_days')->first();
            if($project){
-                $weekarray=explode(',',$project->non_working_days);
+                if($nonWorkingDay){
+                    $weekarray=explode(',',$project->non_working_days);
+                }else{
+                    $weekarray=array();
+                }
+                
                 $excluded_dates =array();
 
                 if(count($holidays)>0){

@@ -1462,7 +1462,7 @@ class ProjectController extends Controller
             }else{
                 $instanceId=$project->instance_id;
             }
-            $freezeCheck = Instance::where('project_id',$projectID)->where('instance_id',$instanceId)->first();
+            $freezeCheck = Instance::where('project_id',$projectID)->where('instance',$instanceId)->first();
             if($project)
             {
                 $setting  = Utility::settings(\Auth::user()->creatorId());

@@ -33,7 +33,7 @@
         margin: 0px;
         overflow: hidden;
         background: #fff;
-        z-index: 9999 !important;
+        /* z-index: 9999 !important; */
     }
 
     .status_line {
@@ -340,10 +340,10 @@ $holidays=implode(':',$holidays);
                             <div class="align" >
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
-                                        {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
-                                             'id' => 'gantt_chart_submit',
-                                             'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;
-                                             margin-bottom: 6px;']) }}
+                                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
+                                              'id' => 'gantt_chart_submit',
+                                              'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;
+                                              margin-bottom: 6px;']) }}
                                        
                                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                                                 <a href="#" class="btn btn-outline-primary w-20 freeze_button"
@@ -488,7 +488,7 @@ $holidays=implode(':',$holidays);
 </div>
     <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
-    <input type='hidden' id='frezee_status' value='{{$project->freeze_status}}'>
+    <input type='hidden' id='frezee_status' value='{{$freezeCheck->freeze_status}}'>
 
 @include('new_layouts.footer')
 
@@ -1036,7 +1036,7 @@ $holidays=implode(':',$holidays);
                 }
 if(frezee_status_actual!=1){
         // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        var dp = new gantt.dataProcessor("/tracer-two/public/");
+        var dp = new gantt.dataProcessor("/erp/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
