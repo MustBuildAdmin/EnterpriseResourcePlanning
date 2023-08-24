@@ -1,212 +1,144 @@
 
 <style>
-    /* pagination */
-    .pagination {
-        height: 36px;
-        margin: 18px 0;
-        color: #6c58bF;
-    }
-
-    .pagination ul {
-        display: inline-block;
-        *display: inline;
-        /* IE7 inline-block hack */
-        *zoom: 1;
-        margin-left: 0;
-        color: #ffffff;
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .pagination li {
-        display: inline;
-        color: #6c58bF;
-    }
-
-    .pagination a {
-        float: left;
-        padding: 0 14px;
-        line-height: 34px;
-        color: #6c58bF;
-        text-decoration: none;
-        border: 1px solid #ddd;
-        border-left-width: 0;
-    }
-
-    .pagination a:hover,
-    .pagination .active a {
-        background-color: var(--tblr-pagination-active-bg);
-        color: #ffffff;
-    }
-
-    .pagination a:focus {
-        background-color: #ffffff;
-        color: #ffffff;
-    }
-
-
-    .pagination .active a {
-        color: #ffffff;
-        cursor: default;
-    }
-
-    .pagination .disabled span,
-    .pagination .disabled a,
-    .pagination .disabled a:hover {
-        color: #999999;
-        background-color: transparent;
-        cursor: default;
-    }
-
-    .pagination li:first-child a {
-        border-left-width: 1px;
-        -webkit-border-radius: 3px 0 0 3px;
-        -moz-border-radius: 3px 0 0 3px;
-        border-radius: 3px 0 0 3px;
-    }
-
-    .pagination li:last-child a {
-        -webkit-border-radius: 0 3px 3px 0;
-        -moz-border-radius: 0 3px 3px 0;
-        border-radius: 0 3px 3px 0;
-    }
-
-    .pagination-centered {
-        text-align: center;
-    }
-
-    .pagination-right {
-        text-align: right;
-    }
-
-    .pager {
-        margin-left: 0;
-        margin-bottom: 18px;
-        list-style: none;
-        text-align: center;
-        color: #6c58bF;
-        *zoom: 1;
-    }
-
-    .pager:before,
-    .pager:after {
-        display: table;
-        content: "";
-    }
-
-    .pager:after {
-        clear: both;
-    }
-
-    .pager li {
-        display: inline;
-        color: #6c58bF;
-    }
-
-    .pager a {
-        display: inline-block;
-        padding: 5px 14px;
-        color: #6c58bF;
-        background-color: #fff;
-        border: 1px solid #ddd;
-        -webkit-border-radius: 15px;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-    }
-
-    .pager a:hover {
-        text-decoration: none;
-        background-color: #f5f5f5;
-    }
-
-    .pager .next a {
-        float: right;
-    }
-
-    .pager .previous a {
-        float: left;
-    }
-
-    .pager .disabled a,
-    .pager .disabled a:hover {
-        color: #999999;
-    }
-
-    .dataTables_wrapper .dataTables_paginate {
-        float: right;
-        text-align: right;
-        padding-top: 0.25em;
+    .navbar-expand-lg {
+        top: 8em !important;
     }
 </style>
-
-<div class="wrapper">
+<div class="page">
     <!-- Sidebar  -->
-    <nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
-        <div class="sidebar">
-            <ul class="list-unstyled components nav nav-sidebar">
-                @can('manage client')
-                <li class="{{ (Request::route()->getName() == 'clients.index' || Request::segment(1) == 'clients' || Request::route()->getName() == 'clients.edit') ? ' active' : '' }}">
-                    <a href="{{ route('clients.index') }}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
-                            class="list">{{__('Clients')}}</span></a>
-                </li>
-                @endcan
-                @can('manage lead')
-                <li class="{{ (Request::route()->getName() == 'leads.list' || Request::route()->getName() == 'leads.index' || Request::route()->getName() == 'leads.show') ? ' active' : '' }}">
-                    <a href="{{ route('leads.index') }}"><span class="icon"><i class="ti ti-dashboard"></i></span><span
-                            class="list">{{__('Leads')}}</span></a>
-                </li>
-                @endcan
-                @can('manage deal')
-                <li class="{{ (Request::route()->getName() == 'deals.list' || Request::route()->getName() == 'deals.index' || Request::route()->getName() == 'deals.show') ? ' active' : '' }}">
-                    <a href="{{ route('deals.index') }}"><span
-                            class="icon"><i class="ti ti-users"></i>
-                        </span><span class="list">{{__('Deals')}}</span>
-                    </a>
-                </li>
-                @endcan
-                @can('manage form builder')
-                <li class="{{ (Request::segment(1) == 'form_builder' || Request::segment(1) == 'form_response')?'active open':''}}">
-                    <a href="{{route('form_builder.index')}}"> <span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                            class="list">{{__('Form Builder')}}</span></a>
-                </li>
-                @endcan
-                @if(\Auth::user()->type=='company')
-                <li class="{{ (Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show')?'active':''}}">
-                    <a href="{{route('contract.index')}}"><span class="icon"><i class="ti ti-calendar-stats"></i></span><span
-                            class="list">{{__('Contract')}}</span></a>
-                </li>
-                @endif
-                @if(Gate::check('manage lead stage') || Gate::check('manage pipeline') ||Gate::check('manage source') ||Gate::check('manage label') || Gate::check('manage stage'))
-                <li class='{{(Request::segment(1) == 'stages' || Request::segment(1) == 'labels' || Request::segment(1) == 'sources' || Request::segment(1) == 'lead_stages' || Request::segment(1) == 'pipelines' || Request::segment(1) == 'product-category' || Request::segment(1) == 'product-unit' || Request::segment(1) == 'payment-method' || Request::segment(1) == 'custom-field' || Request::segment(1) == 'chart-of-account-type')? 'active dash-trigger' :''}}'>
-                    <a href="{{ route('pipelines.index') }}"><span class="icon"><i class="ti ti-chart-infographic"></i></span><span
-                            class="list">{{__('CRM System Setup')}}</span></a>
-                </li>
-                @endif
-
-            </ul>
+    <aside  class="navbar navbar-vertical navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+                aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+     
+        <div class="collapse navbar-collapse" id="sidebar-menu">
+        <ul class="navbar-nav pt-lg-3">
+                 @can('manage client')
+        <li class="nav-item">
+            
+                        <a href="{{ route('clients.index') }}" class="{{ (Request::route()->getName() == 'clients.index' || Request::segment(1) == 'clients' || Request::route()->getName() == 'clients.edit') ? ' active nav-link' : 'nav-link' }}">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
+                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
+                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title"> {{__('Clients')}} </span></a>
+                    </li>
+                    @endcan
+                    @can('manage lead')
+                      <li class="nav-item">
+                      <a href="{{ route('leads.index') }}" class="{{ (Request::route()->getName() == 'leads.list' || Request::route()->getName() == 'leads.index' || Request::route()->getName() == 'leads.show') ? ' active nav-link' : 'nav-link' }}">
+                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
+                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
+                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title"> {{__('Leads')}} </span></a>
+                      </li>
+                    @endcan
+                    @can('manage deal')
+                    <li class="nav-item">
+                      <a  href="{{ route('deals.index') }}" class="{{ (Request::route()->getName() == 'deals.list' || Request::route()->getName() == 'deals.index' || Request::route()->getName() == 'deals.show') ? ' active nav-link' : 'nav-link' }}">
+                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
+                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
+                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title"> {{__('Deals')}} </span></a>
+                      </li>
+                      @endcan
+                      @can('manage form builder')
+                      <li class="nav-item">
+                      <a  href="{{route('form_builder.index')}}" class="{{ (Request::segment(1) == 'form_builder' || Request::segment(1) == 'form_response') ? ' active nav-link' : 'nav-link' }}">
+                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
+                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
+                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title"> {{__('Form Builder')}}</span></a>
+                      </li>
+                      @endcan
+                      @if(\Auth::user()->type=='company')
+                      <li class="nav-item">
+                      <a  href="{{route('contract.index')}}" class="{{ (Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show') ? ' active nav-link' : 'nav-link' }}">
+                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
+                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
+                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">{{__('Contract')}}</span></a>
+                      </li>
+                      @endif
+                      @if(Gate::check('manage lead stage') || Gate::check('manage pipeline') ||Gate::check('manage source') ||Gate::check('manage label') || Gate::check('manage stage'))
+                      <li class="nav-item">
+                      <a  href="{{ route('pipelines.index') }}"
+                         class="{{(Request::segment(1) == 'stages' || Request::segment(1) == 'labels' || Request::segment(1) == 'sources' || Request::segment(1) == 'lead_stages' || Request::segment(1) == 'pipelines' || Request::segment(1) == 'product-category' || Request::segment(1) == 'product-unit' || Request::segment(1) == 'payment-method' || Request::segment(1) == 'custom-field' || Request::segment(1) == 'chart-of-account-type') ? ' active nav-link' : 'nav-link' }}">
+                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
+                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
+                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">{{__('CRM System Setup')}}</span></a>
+                      </li>
+                      @endif
+        </ul>
         </div>
-    </nav>
+        </div>
+    </aside>
 
+
+<div class="page-wrapper">
       <!-- Page Content  -->
-      <div id="content" class="page-wrapper">
-<div class="collapseToggle">
-<span id="toggleIcon" class="fa fa-chevron-left"></span>
-</div>
+      <div id="content" class="container-fluid">
+
 @isset($hrm_header)
 <h2 class="mb-4">{{ __($hrm_header) }}</h2>
 @endisset
 
 
-<script type="text/javascript">
-$('.collapseToggle').on('click', function() {
-$(".sidebar").toggleClass('sidebar--Collapse');
-$('.main').toggleClass('main--slide');
-$('#toggleIcon').toggleClass('rotate');
-});
-</script>
+
 {{-- @include('new_layouts.footer') --}}
