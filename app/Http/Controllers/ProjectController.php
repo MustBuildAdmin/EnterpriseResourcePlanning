@@ -1462,6 +1462,7 @@ class ProjectController extends Controller
             }else{
                 $instanceId=$project->instance_id;
             }
+            $freezeCheck = Instance::where('project_id',$projectID)->where('instance_id',$instanceId)->first();
             if($project)
             {
                 $setting  = Utility::settings(\Auth::user()->creatorId());
@@ -1469,7 +1470,7 @@ class ProjectController extends Controller
                     $project_holidays=Project_holiday::select('date')
                     ->where(['project_id'=>$projectID,'instance_id'=>$instanceId])->get();
                     return view('construction_project.gantt',
-                    compact('project', 'tasks', 'duration','project_holidays'));
+                    compact('project', 'tasks', 'duration','project_holidays','freezeCheck'));
                 }else{
                     $tasksobj = $project->tasks;
                     foreach($tasksobj as $task)
