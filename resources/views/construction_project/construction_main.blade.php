@@ -85,10 +85,20 @@
                                     <div class="circle" style="background:#<?php echo $color; ?>">
                                     <?= substr($project->project_name,0,2) ?></div>
                                         <h5 class="mb-0">
+                                        <?php
+                                            $project_instances=\App\Models\Instance::where('project_id',$project->id)
+                                            ->get();?>
+                                             @if(count($project_instances)>1)
                                             <a class="text-dark"  data-size="lg"
                                                 data-url="{{ route('projects.check_instance',$project->id) }}"
                                                 data-title="Choose Your Revision" data-ajax-popup="true"
                                                 data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                                                @else
+                                                <a class="text-dark"  data-size="lg"
+                                                href="{{ route('projects.instance_project',
+                                                     [$project_instances[0]['id'],$project->id]) }}"
+                                                data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                                            @endif
                                         </h5>
                                     </div>
                                     <div class="card-header-right">
