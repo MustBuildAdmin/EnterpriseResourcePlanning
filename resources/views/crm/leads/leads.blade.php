@@ -10,7 +10,7 @@
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 
-<div class="page-wrapper">
+<div class="container-fluid">
     <div class="row">
        <div class="col-md-6">
           <h2>{{__('Manage Leads')}}</h2>
