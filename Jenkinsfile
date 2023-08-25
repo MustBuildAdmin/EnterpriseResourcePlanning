@@ -7,12 +7,8 @@ pipeline {
     stages{
         stage('Deploy to dev') {
             steps{
-                'sudo rm -rf /var/www/html/erpdev/*'
-                 'scp -r /var/lib/jenkins/workspace/construction_management/*  /var/www/html/erpdev/'
-                'cd /var/www/html/erpdev/'
-                 'composer install --no-interaction'
-                 'php artisan key:generate'
-                 'sudo chmod -R 777 /var/www/html/'
+                sh 'sudo rm -rf /var/www/html/erpdev/*'
+                sh 'scp -r /var/lib/jenkins/workspace/construction_management/*  /var/www/html/erpdev/'
             }
         }
        
