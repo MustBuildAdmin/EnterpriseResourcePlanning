@@ -280,6 +280,7 @@ class ConsultantController extends Controller
                    
                     $user = User::create($request->all());
                     $user->assignRole($role_r);
+                    $user->userDefaultDataRegister($user->id);
                     if($request['type'] != 'client')
                       Utility::employeeDetails($user->id,\Auth::user()->creatorId());
                 }
@@ -299,6 +300,7 @@ class ConsultantController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
+                $user->userDefaultDataRegister($user->id);
 
                 $resp=Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 

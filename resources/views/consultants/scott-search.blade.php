@@ -83,35 +83,14 @@
 			@forelse($users as $user)
 			<div class="col-md-6 col-lg-3">
 				<div class="card">
-					@if(Gate::check('edit consultant') || Gate::check('delete consultant'))
-					<div class="card-header-right">
-						<div class="btn-group card-option float-end">
-							<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-							 aria-haspopup="true" aria-expanded="false">
-								<i class="ti ti-dots-vertical"></i>
-							</button>
+					
 								@if ($user->color_code!=null || $user->color_code!='')
 										@php $color_co =$user->color_code; @endphp
 								@else
 										@php $color_co =Utility::rndRGBColorCode(); @endphp
 								@endif
-							<div class="dropdown-menu dropdown-menu-end">
-								@can('edit consultant')
-								<a href="#!" data-size="lg" data-url="{{ route('consultants.edit.new',[$user->id,$color_co]) }}"
-									 data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit Consultant')}}">
-									 <i class="ti ti-pencil"></i>
-									 <span>{{__('Edit')}}</span>
-									</a>
-								@endcan
-								<a href="#!" data-url="{{route('consultants.reset',\Crypt::encrypt($user->id))}}"
-									 data-ajax-popup="true" data-size="md" class="dropdown-item"
-									 data-bs-original-title="{{__('Reset Password')}}">
-									 <i class="ti ti-adjustments"></i>
-									 <span>  {{__('Reset Password')}}</span>
-								</a>
-							</div>
-						</div>
-					</div> @endif
+							
+			
 					<div class="card-body p-4 text-center">
 						<?php  $short=substr($user->name, 0, 1);?>
 							<?php  $short_lname=substr($user->lname, 0, 1);?>
