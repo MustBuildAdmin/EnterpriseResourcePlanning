@@ -422,7 +422,7 @@ class ProjectTaskController extends Controller
         $task_main_id = $request->task_id;
         $con_task = Con_task::Select('con_tasks.*','projects.project_name','projects.description')
                     ->join('projects','projects.id','con_tasks.project_id')
-                    ->where('main_id',$task_main_id)->where('instance_id',$instance_id)->first();
+                    ->where('con_tasks.main_id',$task_main_id)->where('con_tasks.instance_id',$instance_id)->first();
     
         $assigned_to =  User::select("users.name", "users.id")
             ->leftjoin('project_users as project','project.user_id', '=', 'users.id')

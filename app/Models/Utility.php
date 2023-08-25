@@ -3697,10 +3697,10 @@ class Utility extends Model
            }
            $holidays=DB::table('project_holidays')->where(['project_id'=>$id,'instance_id'=>$instance_id])->get();
            $nonWorkingDay    = NonWorkingDaysModal::where('project_id',$id)
-                                ->where('instance_id',$instance_id)->pluck('non_working_days')->first();
+                                ->where('instance_id',$instance_id)->first();
            if($project){
-                if($nonWorkingDay){
-                    $weekarray=explode(',',$project->non_working_days);
+                if($nonWorkingDay != null){
+                    $weekarray=explode(',',$nonWorkingDay->non_working_days);
                 }else{
                     $weekarray=array();
                 }

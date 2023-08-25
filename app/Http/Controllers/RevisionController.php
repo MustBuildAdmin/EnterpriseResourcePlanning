@@ -133,10 +133,10 @@ class RevisionController extends Controller
 
                 DB::select(
                     "INSERT INTO task_progress_file(
-                        task_id,project_id,instance_id,file_name,file_path,status
+                        task_id,project_id,instance_id,filename,file_path,status
                     )
                     SELECT task_id,project_id,'".$instanceIdSet."' as instance_id,
-                    file_name,file_path,status
+                    filename,file_path,status
                     FROM task_progress_file WHERE project_id = " . $projectId . " AND
                     instance_id='" . $conInstanceGet . "'"
                 );
