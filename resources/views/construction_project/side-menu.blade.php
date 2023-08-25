@@ -17,7 +17,7 @@
     <!-- Sidebar  -->
     <aside id="sidebar" class="navbar navbar-vertical navbar-expand-lg">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu">
                 aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -153,33 +153,45 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a href="{{ route('drawing_list') }}"
-                                        class="dropdown-item">{{ __('Drawing') }}</a>
+                                        class="dropdown-item">{{ __('Drawing') }}
+                                        <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
+                                    
+                                    </a>
                                     @can('manage directions')
                                         <a href="{{ route('show_consultant_direction') }}"
-                                            class="dropdown-item">{{ __('Directions') }}</a>
+                                            class="dropdown-item">{{ __('Directions') }}
+                                            <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
+                                        </a>
                                     @endcan
                                     @can('manage project specification')
                                         <a href="{{ route('show_project_specification') }}" class="dropdown-item">
                                             {{ __('Specifications') }}
+                                            <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                                         </a>
                                     @endcan
-                                    <a href="{{ route('procurement_material') }}" class="dropdown-item">
+                                    <!-- <a href="{{ route('procurement_material') }}" class="dropdown-item">
                                         <span class="list">{{ __('Material Supply Log') }}</span>
-                                    </a>
+                                        <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
+                                    </a> -->
 
                                     @can('manage RFI')
                                         <a href="{{ route('rfi_show_info') }}"
-                                            class="dropdown-item">{{ __('RFI') }}</a>
+                                            class="dropdown-item">{{ __('RFI') }}
+                                            <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
+                                        </a>
                                     @endcan
 
                                     @can('manage site reports')
                                         <a href="{{ route('daily_reports') }}"
-                                            class="dropdown-item">{{ __('Site Reports') }}</a>
+                                            class="dropdown-item">{{ __('Site Reports') }}
+                                            <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                        </a>
                                     @endcan
 
                                     @can('manage vochange')
                                         <a href="{{ route('variation_scope_change') }}"
-                                            class="dropdown-item">{{ __('VO / Change Order') }}</a>
+                                            class="dropdown-item">{{ __('VO/CO') }}
+                                            <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span></a>
                                     @endcan
                                 </div>
                             </div>
@@ -213,7 +225,7 @@
                                                 <div class="dropdown-menu-columns">
                                                     <div class="dropdown-menu-column">
                                                         <a    class="dropdown-item"
-                                                href="{{ route('qaqc.concrete') }}">{{ __('Concrete') }}</a>
+                                                href="{{ route('qaqc.concrete') }}">{{ __('Concrete') }}    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>  </a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,10 +252,8 @@
                                     <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                                 </svg>
                             </span>
-                            <span class="nav-link-title"> {{ __('Project Members') }} </span></a>
+                            <span class="nav-link-title"> {{ __('Team Members') }} </span></a>
                     </li>
-
-
 
                     <li class="nav-item">
                         <a href="{{ url('project_holiday') }}" class="nav-link">
@@ -262,6 +272,25 @@
                                 </svg>
                             </span>
                             <span class="nav-link-title"> {{ __('Holidays') }} </span></a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
+                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
+                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title"> {{ __('History') }} </span></a>
                     </li>
 
                     @if(Session::get('current_revision_freeze')==1)

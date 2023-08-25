@@ -663,7 +663,7 @@ class ProjectController extends Controller
     }
     
     public function check_instance($id){
-        $get_project_instances=Instance::where('project_id',$id)->get();
+        $get_project_instances=Instance::where('project_id',$id)->orderBy('id','ASC')->get();
         if(count($get_project_instances)>1){
             return view('construction_project.instance_view', compact('get_project_instances'));
 
@@ -680,14 +680,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        Session::forget('project_id');
-        Session::forget('project_instance');
+
         if(\Auth::user()->can('view project'))
         {
-            Session::put('project_id',$project->id);
-            
-            Session::put('project_instance',$project->instance_id);
-
             $usr           = Auth::user();
             if(\Auth::user()->type == 'client'){
               $user_projects = Project::where('client_id',\Auth::user()->id)->pluck('id','id')->toArray();

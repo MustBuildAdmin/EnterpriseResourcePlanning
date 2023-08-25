@@ -18,6 +18,7 @@ use App\Models\ProjectTask;
 use App\Models\Project_holiday;
 use App\Models\TaskComment;
 use App\Models\TaskChecklist;
+use App\Models\NonWorkingDaysModal;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -31,7 +32,26 @@ use App\Models\Instance;
 class RevisionController extends Controller
 {
     public function revision(Request $request){
-        return view('revision.revision');
+
+        $projectId   = Session::get('project_id');
+        $instanceId  = Session::get('project_instance');
+        $getInstance = Instance::where('project_id',$projectId)
+            ->orderBy('id','DESC')->first();
+
+        $nonWorkingDays = NonWorkingDaysModal::where('instance_id',$getInstance->instance)
+            ->orderBy('id','DESC')->first();
+
+        $projectHolidays = Project_holiday::where('instance_id',$getInstance->instance)
+            ->orderBy('id','DESC')->get();
+
+        if($nonWorkingDays != null){
+            $setNonWorkingDays = explode(',',$nonWorkingDays->non_working_days);
+        }
+        else{
+            $setNonWorkingDays = [];
+        }
+
+        return view('revision.revision',compact('setNonWorkingDays','projectHolidays'));
     }
 
     public function revision_store(Request $request){
@@ -40,10 +60,9 @@ class RevisionController extends Controller
             $instanceId      = Session::get('project_instance');
             $holidayDateGet  = $request->holiday_date;
 
-
             $var             = rand('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$projectId;
             $instanceIdSet   = Hash::make($var);
-            $getPro = DB::table('projects')->where('id',$projectId)->first();
+            $getPro          = DB::table('projects')->where('id',$projectId)->first();
 
             if(isset($request->non_working_days)){
                 if(gettype($request->non_working_days)=='array'){
@@ -68,9 +87,7 @@ class RevisionController extends Controller
                 $instanceStore->save();
             }
 
-
-
-            if($holidayDateGet != ""){
+            if($holidayDateGet != null){
                 foreach($holidayDateGet as $holi_key => $holi_value){
 
                     $holidayInsert = array(
@@ -102,6 +119,86 @@ class RevisionController extends Controller
                     float_val,type FROM con_tasks WHERE project_id = " . $projectId . " AND
                     instance_id='" . $conInstanceGet . "'"
                 );
+
+                DB::select(
+                    "INSERT INTO task_progress(
+                        task_id,assign_to,percentage,date_status,description,user_id,project_id,instance_id,
+                        file_id,record_date,created_at,updated_at
+                    )
+                    SELECT task_id,assign_to,percentage,date_status,description,user_id,project_id,
+                    '".$instanceIdSet."' as instance_id,file_id,record_date,created_at,updated_at
+                    FROM task_progress WHERE project_id = " . $projectId . " AND
+                    instance_id='" . $conInstanceGet . "'"
+                );
+
+                DB::select(
+                    "INSERT INTO task_progress_file(
+                        task_id,project_id,instance_id,filename,file_path,status
+                    )
+                    SELECT task_id,project_id,'".$instanceIdSet."' as instance_id,
+                    filename,file_path,status
+                    FROM task_progress_file WHERE project_id = " . $projectId . " AND
+                    instance_id='" . $conInstanceGet . "'"
+                );
+
+                $taskProgresskData = Task_progress::where('project_id',$projectId)
+                    ->where('instance_id',$instanceIdSet)->get();
+
+                $taskFileData = DB::table('task_progress_file')
+                    ->where('project_id',$projectId)
+                    ->where('instance_id',$instanceIdSet)->get();
+
+                $taskProgressTaskId = [];
+                $taskFileDataId = [];
+
+                if(!empty($taskProgresskData)){
+                    foreach($taskProgresskData as $taskProgress){
+                        if(!in_array($taskProgress->task_id,$taskProgressTaskId)){
+                            $getCorrectData = Con_task::select('id','text','duration','start_date','end_date','type')
+                                ->where('main_id',$taskProgress->task_id)
+                                ->first();
+    
+                            $getOrginalTask = Con_task::where('id',$getCorrectData->id)
+                                ->where('project_id',$projectId)
+                                ->where('start_date',$getCorrectData->start_date)
+                                ->where('end_date',$getCorrectData->end_date)
+                                ->where('instance_id',$instanceIdSet)->first();
+    
+                            if($getOrginalTask != null){
+                                Task_progress::where('project_id',$projectId)
+                                ->where('instance_id',$instanceIdSet)
+                                ->where('task_id',$taskProgress->task_id)
+                                ->update(['task_id' => $getOrginalTask->main_id]);
+                            }
+                            $taskProgressTaskId[] = $taskProgress->task_id;
+                        }
+                    }
+                }
+                
+                if(!empty($taskFileData)){
+                    foreach($taskFileData as $taskFileDataSet){
+                        if(!in_array($taskFileDataSet->task_id,$taskFileDataId)){
+                            $getCorrectData = Con_task::select('id','text','duration','start_date','end_date','type')
+                                ->where('main_id',$taskFileDataSet->task_id)
+                                ->first();
+
+                            $getOrginalTask = Con_task::where('id',$getCorrectData->id)
+                                ->where('project_id',$projectId)
+                                ->where('start_date',$getCorrectData->start_date)
+                                ->where('end_date',$getCorrectData->end_date)
+                                ->where('instance_id',$instanceIdSet)->first();
+
+                            if($getOrginalTask != null){
+                                DB::table('task_progress_file')
+                                ->where('project_id',$projectId)
+                                ->where('instance_id',$instanceIdSet)
+                                ->where('task_id',$taskFileDataSet->task_id)
+                                ->update(['task_id' => $getOrginalTask->main_id]);
+                            }
+                            $taskFileDataId[] = $taskFileDataSet->task_id;
+                        }
+                    }
+                }
             }
 
             return redirect()->route('construction_main')->with('success', __('Revision Added Successfully'));
