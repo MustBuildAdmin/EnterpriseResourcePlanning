@@ -663,7 +663,7 @@ class ProjectController extends Controller
     }
     
     public function check_instance($id){
-        $get_project_instances=Instance::where('project_id',$id)->get();
+        $get_project_instances=Instance::where('project_id',$id)->orderBy('id','ASC')->get();
         if(count($get_project_instances)>1){
             return view('construction_project.instance_view', compact('get_project_instances'));
 
