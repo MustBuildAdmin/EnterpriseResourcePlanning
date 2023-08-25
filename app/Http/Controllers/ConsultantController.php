@@ -300,6 +300,7 @@ class ConsultantController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
+                $user->userDefaultDataRegister($user->id);
 
                 $resp=Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
