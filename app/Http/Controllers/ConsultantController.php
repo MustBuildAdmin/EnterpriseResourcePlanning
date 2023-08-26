@@ -225,7 +225,6 @@ class ConsultantController extends Controller
                                        'name' => 'required|max:120',
                                        'email' => 'required|email|unique:users',
                                        'password' => 'required|min:6',
-                                     
                                        'gender'=>'required'
 
                                    ]
@@ -300,13 +299,13 @@ class ConsultantController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-                $user->userDefaultDataRegister($user->id);
+               
 
                 $resp=Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
-                return redirect()->route('consultant.index')->with('success', __('Consultant successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
+                return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
             }
-            return redirect()->route('consultant.index')->with('success', __('Consultant successfully created.'));
+            return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
 
         }
         else
