@@ -5,6 +5,14 @@ pipeline {
     }
 
     stages{
+        stage('prepare env') {
+            steps{
+                sh 'sudo apt-get install php-xml'
+                sh 'sudo apt-get install php-mbstring'
+                sh 'sudo apt-get install php-curl'
+                sh 'sudo apt-get install php8.1-gd'
+            }
+        }.
         stage('Deploy to dev') {
             steps{
                 sh 'sudo rm -rf /var/www/html/erpdev/*'
