@@ -9,7 +9,7 @@ pipeline {
                 sh 'sudo apt-get install php8.1-gd'
             }
         }
-        stage('AWS DevEnv') {
+        stage('AWS Dev Env') {
             steps{
                 sh 'sudo rm -rf /var/www/html/erpdev/*'
                 sh 'scp -r /var/lib/jenkins/workspace/construction-dev/*  /var/www/html/erpdev/'
