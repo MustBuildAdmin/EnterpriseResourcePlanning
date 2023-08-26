@@ -8,7 +8,7 @@ pipeline {
                 sh 'sudo apt-get install php-curl'
                 sh 'sudo apt-get install php8.1-gd'
             }
-        }.
+        }
         stage('AWS DevEnv') {
             steps{
                 sh 'sudo rm -rf /var/www/html/erpdev/*'
