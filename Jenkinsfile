@@ -1,11 +1,7 @@
 pipeline {
     agent any
-    environment {
-        production_server="http://13.234.199.245/"
-    }
-
     stages{
-        stage('prepare env') {
+        stage('Prepare Env') {
             steps{
                 sh 'sudo apt-get install php-xml'
                 sh 'sudo apt-get install php-mbstring'
@@ -13,7 +9,7 @@ pipeline {
                 sh 'sudo apt-get install php8.1-gd'
             }
         }.
-        stage('Deploy to dev') {
+        stage('AWS DevEnv') {
             steps{
                 sh 'sudo rm -rf /var/www/html/erpdev/*'
                 sh 'scp -r /var/lib/jenkins/workspace/construction-dev/*  /var/www/html/erpdev/'
@@ -23,7 +19,7 @@ pipeline {
                  sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
-           stage('Deploy to Test') {
+           stage('AWS QC Env') {
             steps{
                 sh 'sudo rm -rf /var/www/html/erptest/*'
                 sh 'scp -r /var/lib/jenkins/workspace/construction-dev/*  /var/www/html/erptest/'
