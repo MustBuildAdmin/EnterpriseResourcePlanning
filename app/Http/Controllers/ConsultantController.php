@@ -616,13 +616,25 @@ class ConsultantController extends Controller
 
     public function scott_search(Request $request)
     {
+          
+        return view('consultants.scott-search');
+    }
+
+    public function scott_result(Request $request)
+    {
         if($request->filled('search')){
             $users = User::search($request->search)->where('type','consultant')->get();
         }else{
             $users = array();
         }
+
+        $returnHTML = view("consultants.result",compact('users'))->render();
+
+        return response()->json([
+            "success" => true,
+            "html" => $returnHTML,
+        ]);
           
-        return view('consultants.scott-search', compact('users'));
     }
 
 
