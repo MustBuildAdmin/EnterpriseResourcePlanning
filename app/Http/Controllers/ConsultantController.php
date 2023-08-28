@@ -258,6 +258,8 @@ class ConsultantController extends Controller
         return redirect()->back()->with('error', $messages->first());
     }
 
+    $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+
     if(isset($request->avatar)){
         
         $filenameWithExt = $request->file('avatar')->getClientOriginalName();
@@ -307,6 +309,23 @@ class ConsultantController extends Controller
             Utility::employeeDetails($user->id,\Auth::user()->creatorId());
         }
          
+    }
+    $setings = Utility::settings();
+
+    if($setings['create_consultant'] == 1) {
+        $user->password = $psw;
+        $user->type = $role_r->name;
+
+        $userArr = [
+            'email' => $user->email,
+            'password' => $user->password,
+        ];
+       
+
+        $resp=Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+
+        return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.') .
+        ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
     }
     else
     {

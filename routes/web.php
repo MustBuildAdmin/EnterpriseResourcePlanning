@@ -4197,7 +4197,14 @@ Route::resource('consultants', 'ConsultantController')->middleware(
     ]
 );
 
-Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->name('consultants.edit.new')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
+Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->name('consultants.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
 
