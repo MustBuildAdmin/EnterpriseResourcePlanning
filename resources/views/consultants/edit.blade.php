@@ -28,11 +28,11 @@
             </div>
            
             @if ($user->color_code!=null || $user->color_code!='')
-                @php $color_co =$user->color_code; @endphp
+                @php $colorcor =$user->color_code; @endphp
             @else
-                @php $color_co =$color_co; @endphp
+                @php $colorcor =$colorco; @endphp
             @endif
-            <input type="hidden" name="color_code" value="{{ $color_co }}">
+            <input type="hidden" name="color_code" value="{{ $colorcor }}">
 
             <input type="hidden" name="password" value="{{$user->password}}">
 
