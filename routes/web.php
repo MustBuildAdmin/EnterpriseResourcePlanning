@@ -2423,6 +2423,18 @@ Route::get('lastlogin', 'EmployeeController@lastLogin')->name('lastlogin')->midd
         'XSS',
     ]
 );
+Route::get('employee_data/{id}', 'EmployeeNewPageController@employee_details')->name('employee.data')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::resource('employeenew', 'EmployeeNewPageController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::resource('employee', 'EmployeeController')->middleware(
     [
         'auth',
