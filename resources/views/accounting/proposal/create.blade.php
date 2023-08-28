@@ -28,7 +28,7 @@
                       <div class="col-md-3">
                           <div class="form-group" id="customer-box">
                               {{ Form::label('customer_id', __('Customer'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                              {{ Form::select('customer_id', $customers,$customerId, array('class' => 'form-control select','id'=>'customer','data-url'=>route('proposal.customer'),'required'=>'required')) }}
+                              {{ Form::select('customer_id', $customers,$customerId, array('class' => 'form-select','id'=>'customer','data-url'=>route('proposal.customer'),'required'=>'required')) }}
                           </div>
                       </div>
                       <div class="col-md-3">
@@ -40,7 +40,7 @@
                       <div class="col-md-3">
                             <div class="form-group">
                                 {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
+                                {{ Form::select('category_id', $category,null, array('class' => 'form-select','required'=>'required')) }}
                             </div>
                       </div>
                       <div class="col-md-3">

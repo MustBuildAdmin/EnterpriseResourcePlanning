@@ -70,7 +70,7 @@
                                         <div class="btn-box">
                                             {{ Form::label('year', __('Year'),['class'=>'form-label'])}}
 
-                                            {{ Form::select('year',$yearList,isset($_GET['year'])?$_GET['year']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('year',$yearList,isset($_GET['year'])?$_GET['year']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
 

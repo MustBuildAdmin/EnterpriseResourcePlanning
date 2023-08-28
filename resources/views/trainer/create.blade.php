@@ -4,7 +4,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('branch',__('Branch*'),['class'=>'form-label'])}}
-                {{Form::select('branch',$branches,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('branch',$branches,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">

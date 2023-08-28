@@ -398,7 +398,7 @@
                         <div class="col-md-6">
                             <div class="form-group" id="vender-box">
                                 {{ Form::label('vender_id', __('Vendor'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                {{ Form::select('vender_id', $venders,null, array('class' => 'form-control select','id'=>'vender','data-url'=>route('purchase.vender'),'required'=>'required')) }}
+                                {{ Form::select('vender_id', $venders,null, array('class' => 'form-select','id'=>'vender','data-url'=>route('purchase.vender'),'required'=>'required')) }}
                             </div>
                             <div id="vender_detail" class="d-none">
                             </div>
@@ -408,13 +408,13 @@
                                 <div class="col-md-6">
                                 <div class="form-group">
                                     {{ Form::label('warehouse_id', __('Warehouse'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                    {{ Form::select('warehouse_id', $warehouse,null, array('class' => 'form-control select','required'=>'required')) }}
+                                    {{ Form::select('warehouse_id', $warehouse,null, array('class' => 'form-select','required'=>'required')) }}
                                 </div>
                             </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                        {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
+                                        {{ Form::select('category_id', $category,null, array('class' => 'form-select','required'=>'required')) }}
                                     </div>
                                 </div>
 
@@ -479,7 +479,7 @@
                                 {{ Form::hidden('id',null, array('class' => 'form-control id')) }}
                                 <td width="25%">
                                     <div class="form-group">
-                                        {{ Form::select('item', $product_services,null, array('class' => 'form-control select item','data-url'=>route('purchase.product'))) }}
+                                        {{ Form::select('item', $product_services,null, array('class' => 'form-select item','data-url'=>route('purchase.product'))) }}
                                     </div>
                                 </td>
                                 <td>

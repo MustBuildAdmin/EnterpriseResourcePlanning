@@ -14,7 +14,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     {{ Form::label('type', __('Type'), ['class' => 'form-label']) }}<span style='color:red;'>*</span>
-                    {{ Form::select('type', $commissions, null, ['class' => 'form-control select amount_type', 'required' => 'required']) }}
+                    {{ Form::select('type', $commissions, null, ['class' => 'form-select amount_type', 'required' => 'required']) }}
                 </div>
             </div>
 

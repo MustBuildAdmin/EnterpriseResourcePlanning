@@ -181,7 +181,7 @@
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                 <div class="btn-box">
                                     {{ Form::label('job', __('Job'),['class'=>'form-label']) }}
-                                    {{ Form::select('job', $jobs,$filter['job'], array('class' => 'form-control select')) }}
+                                    {{ Form::select('job', $jobs,$filter['job'], array('class' => 'form-select')) }}
                                 </div>
                             </div>
                             <div class="col-auto float-end ms-2 mt-4">

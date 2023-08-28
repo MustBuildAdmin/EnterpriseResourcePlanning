@@ -15,7 +15,7 @@
                         <div class="col-md-6">
                             <div class="form-group" id="customer-box">
                                     {{ Form::label('customer_id', __('Client'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                    {{ Form::select('customer_id', $customers,null, array('class' => 'form-control select ','id'=>'customer','data-url'=>route('proposal.customer'),'required'=>'required')) }}
+                                    {{ Form::select('customer_id', $customers,null, array('class' => 'form-select ','id'=>'customer','data-url'=>route('proposal.customer'),'required'=>'required')) }}
                             </div>
                             <div id="customer_detail" class="d-none">
                             </div>
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="col-md-6">
                                         {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                                        {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
+                                        {{ Form::select('category_id', $category,null, array('class' => 'form-select','required'=>'required')) }}
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -106,7 +106,7 @@
                             <tr>
                                 {{ Form::hidden('id',null, array('class' => 'form-control id')) }}
                                 <td width="25%" class="form-group pt-0">
-                                    {{ Form::select('item', $product_services,null, array('class' => 'form-control select item','data-url'=>route('proposal.product'))) }}
+                                    {{ Form::select('item', $product_services,null, array('class' => 'form-select item','data-url'=>route('proposal.product'))) }}
                                 </td>
                                 <td>
                                     <div class="form-group price-input input-group search-form">

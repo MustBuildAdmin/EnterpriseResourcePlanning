@@ -13,7 +13,7 @@
         </div>
         <div class="col-6 form-group">
             {{ Form::label('user_id', __('User'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('user_id', $users,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('user_id', $users,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="col-6 form-group">
             {{ Form::label('name', __('Name'),['class'=>'form-label']) }}<span class="text-danger">*</span>
@@ -29,11 +29,11 @@
         </div>
         <div class="col-6 form-group">
             {{ Form::label('pipeline_id', __('Pipeline'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('pipeline_id', $pipelines,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('pipeline_id', $pipelines,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="col-6 form-group">
             {{ Form::label('stage_id', __('Stage'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('stage_id', [''=>__('Select Stage')],null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('stage_id', [''=>__('Select Stage')],null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="col-12 form-group">
             {{ Form::label('sources', __('Sources'),['class'=>'form-label']) }}<span class="text-danger">*</span>

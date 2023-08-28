@@ -514,6 +514,23 @@ aria-labelledby="exampleModalCenterTitle"
                         $(".current").removeClass('error');
                     }
                 }
+                else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
+                    if ($("#holidays").prop('checked') == false) {
+                        holidayValidation();
+                        if(check_validation == 1){
+                            $(".current").attr('aria-disabled','true');
+                            return false;
+                        }
+                        else{
+                            $(".current").attr('aria-disabled','false');
+                            $(".current").removeClass('error');
+                        }
+                    }
+                    else{
+                        $(".current").attr('aria-disabled','false');
+                        $(".current").removeClass('error');
+                    }
+                }
                 else{
                     form.validate().settings.ignore = ":disabled,:hidden";
                 }

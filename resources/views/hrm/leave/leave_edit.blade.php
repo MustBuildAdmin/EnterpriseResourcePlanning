@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('employee_id',__('Employee') ,['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                {{Form::select('employee_id',$employees,null,array('class'=>'form-control select','required'=>'required','placeholder'=>__('Select Employee')))}}
+                {{Form::select('employee_id',$employees,null,array('class'=>'form-select','required'=>'required','placeholder'=>__('Select Employee')))}}
             </div>
         </div>
     </div>
@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('leave_type_id',__('Leave Type'),['class'=>'form-label'])}}<span class="text-danger pl-1">*</span>
-                {{Form::select('leave_type_id',$leavetypes,null,array('class'=>'form-control select','placeholder'=>__('Select Leave Type')))}}
+                {{Form::select('leave_type_id',$leavetypes,null,array('class'=>'form-select','placeholder'=>__('Select Leave Type')))}}
             </div>
         </div>
     </div>
