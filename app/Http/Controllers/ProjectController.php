@@ -550,9 +550,9 @@ class ProjectController extends Controller
                 $msg=$msg.' '.__(" created by").' ' .\Auth::user()->name.'.';
                 Utility::send_telegram_msg($msg);
             }
-            
+
             return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
-            
+
 
         }
         else
@@ -661,7 +661,7 @@ class ProjectController extends Controller
         // Loading Project Function
 
     }
-    
+
     public function check_instance($id){
         $get_project_instances=Instance::where('project_id',$id)->orderBy('id','ASC')->get();
         if(count($get_project_instances)>1){
@@ -914,7 +914,7 @@ class ProjectController extends Controller
                 $ongoing_task=Con_task::where('project_id',$project->id)
                 ->where('instance_id',Session::get('project_instance'))
                 ->where('type','task')->where('progress','<',100)->where('progress','>',0)->count();
-               
+
                 return view('construction_project.dashboard',compact('project','ongoing_task','project_data',
                 'total_sub','actual_percentage','workdone_percentage','current_Planed_percentage',
                 'not_started','notfinished','remaining_working_days','completed_task'));
@@ -1258,7 +1258,7 @@ class ProjectController extends Controller
             Session::put('project_member',$user_array);
             $returnHTML = view('projects.get_member', compact('project'))->render();
 
-            
+
             return  array(
                 $user_array,
                 $returnHTML
@@ -1464,8 +1464,12 @@ class ProjectController extends Controller
                 if($setting['company_type']==2){
                     $project_holidays=Project_holiday::select('date')
                     ->where(['project_id'=>$projectID,'instance_id'=>$instanceId])->get();
+
+                    $nonWorkingDay    = NonWorkingDaysModal::where('project_id',$projectID)
+                    ->where('instance_id',$instanceId)->pluck('non_working_days')->first();
+
                     return view('construction_project.gantt',
-                    compact('project', 'tasks', 'duration','project_holidays','freezeCheck'));
+                    compact('project', 'tasks', 'duration','project_holidays','freezeCheck','nonWorkingDay' ));
                 }else{
                     $tasksobj = $project->tasks;
                     foreach($tasksobj as $task)
@@ -1507,7 +1511,7 @@ class ProjectController extends Controller
             $task       = Con_task::where('project_id',$projectID)
                             ->where('instance_id',$instanceId)
                             ->orderBy('id', 'ASC')->get();
-                            
+
             $link       = Link::where('project_id',$projectID)
                             ->where('instance_id',$instanceId)
                             ->orderBy('id', 'ASC')->get();

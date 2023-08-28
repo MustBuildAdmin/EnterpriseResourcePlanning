@@ -310,7 +310,7 @@
 			background-color: #d6d6d6;
 		}
 </style>
-   
+
 @php
 $holidays=array();
 
@@ -344,7 +344,7 @@ $holidays=implode(':',$holidays);
                                               'id' => 'gantt_chart_submit',
                                               'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;
                                               margin-bottom: 6px;']) }}
-                                       
+
                                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                                                 <a href="#" class="btn btn-outline-primary w-20 freeze_button"
                                                 style='width: 100%;' data-bs-toggle="tooltip"
@@ -486,7 +486,7 @@ $holidays=implode(':',$holidays);
 
                         </div>
 </div>
-    <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
+    <input type='hidden' id='weekends' value='{{$nonWorkingDay}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
     <input type='hidden' id='frezee_status' value='{{$freezeCheck->freeze_status}}'>
 
@@ -884,7 +884,7 @@ $holidays=implode(':',$holidays);
 		return true;
 	});
 	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
-		
+
 	});
 
 
@@ -1036,7 +1036,7 @@ $holidays=implode(':',$holidays);
                 }
 if(frezee_status_actual!=1){
         // var dp = new gantt.dataProcessor("https://erptest.mustbuildapp.com/");
-        var dp = new gantt.dataProcessor("/erp/public/");
+        var dp = new gantt.dataProcessor("/erpnew/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode:"REST",
