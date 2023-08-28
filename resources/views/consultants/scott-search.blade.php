@@ -104,35 +104,40 @@ form-control:focus {
 @include('new_layouts.footer')
 <script>
 	$(document).on('keyup', '#scott_search', function () {
-		console.log("1",1);
+	
 
 	var tempcsrf = '{!! csrf_token() !!}';
 
 	var search = $(this).val();
 
 	if ($('input[name="search"]').val().length >= 3) {
-		console.log("2",2);
-	$.ajax({
+		
+		$.ajax({
 
-		type: "POST",
-		url: "{{ route('consultant.scott-result') }}",
-		data: {
-			_token: tempcsrf,
-			search: search,
-		},
-		cache: false,
-		success: function(data) {
+			type: "POST",
+			url: "{{ route('consultant.scott-result') }}",
+			data: {
+				_token: tempcsrf,
+				search: search,
+			},
+			cache: false,
+			success: function(data) {
 
-			// $('form#myForm').submit();
-			$("#content_id").html(data.html);
-	console.log("fhhhf",data.html);
+			
+				$("#content_id").html(data.html);
+		
 
-		},
-		error: function(XMLHttpRequest, textStatus, errorThrown) {
-			alert("Error: " + errorThrown);
-		}
-	});
-}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert("Error: " + errorThrown);
+			}
+		});
+
+	}else{
+
+		$("#content_id").html('');
+
+	}
 
 	});
 	</script>
