@@ -60,7 +60,8 @@ form-control:focus {
     <div class="col-md-6">
       <div class="col-auto ms-auto d-print-none float-end">
         <div class="input-group-btn">
-          <a id="invite" href="{{ route('consultants.index') }}" class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
+          <a id="invite" href="{{ route('consultants.index') }}" class="btn btn-danger" data-bs-toggle="tooltip"
+		   title="{{ __('Back') }}">
             <span class="btn-inner--icon">
               <i class="fa fa-arrow-left"></i>
             </span>
@@ -80,7 +81,9 @@ form-control:focus {
 		  <form action="" id="myForm">
 			<div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
 			  <div class="input-group">
-				<input type="search" id="scott_search" name="search" value="{{ request()->get('search') }}" placeholder="Search Consultant Name or Email or Mobile" aria-describedby="button-addon1" class="form-control border-0 bg-light">
+				<input type="search" id="scott_search" name="search" value="{{ request()->get('search') }}"
+				 placeholder="Search Consultant Name or Email or Mobile" aria-describedby="button-addon1"
+				  class="form-control border-0 bg-light">
 				<div class="input-group-append">
 				  <button id="button-addon1" type="submit" class="btn btn-link text-primary">
 					<i id="search_icon" class="fa fa-search"></i>

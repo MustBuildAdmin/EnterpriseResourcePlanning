@@ -134,7 +134,7 @@ class ConsultantController extends Controller
 
         if(\Auth::user()->can('create consultant'))
         {
-            $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+            $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
             if(\Auth::user()->type == 'super admin')
             {
                 $validator = \Validator::make(
@@ -156,12 +156,12 @@ class ConsultantController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
+                    $imagepath = $dir . $fileNameToStore;
+                    if (\File::exists($imagepath)) {
+                        \File::delete($imagepath);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -184,7 +184,7 @@ class ConsultantController extends Controller
                 $user['type']       = 'company';
                 $user['default_pipeline'] = 1;
                 $user['plan'] = 1;
-                $user['lang']       = !empty($default_language) ? $default_language->value : '';
+                $user['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : '';
                 $user['created_by'] = \Auth::user()->creatorId();
                 $user['plan']       = Plan::first()->id;
                 $user['country']=$request->country;
@@ -195,7 +195,6 @@ class ConsultantController extends Controller
                 $user['address']=$request->address;
                 $user['company_type']       = $request->company_type;
                 $user['color_code']=$request->color_code;
-                // $user['reporting_to']=$string_version;
                 $user['company_name']       = $request->company_name;
                 if(isset($url)){
                     $user['avatar']=$url;
@@ -203,7 +202,6 @@ class ConsultantController extends Controller
                 $user->save();
                 $role_r = Role::findByName('consultant');
                 $user->assignRole($role_r);
-//                $user->userDefaultData();
                 $user->userDefaultDataRegister($user->id);
                 $user->userWarehouseRegister($user->id);
                 Utility::chartOfAccountTypeData($user->id);
@@ -240,12 +238,12 @@ class ConsultantController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
+                    $imagepath = $dir . $fileNameToStore;
+                    if (\File::exists($imagepath)) {
+                        \File::delete($imagepath);
                     }
                     $url = '';
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
@@ -269,7 +267,7 @@ class ConsultantController extends Controller
                     $psw                   = $request->password;
                     $request['password']   = Hash::make($request->password);
                     $request['type']       = 'consultant';
-                    $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
+                    $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
                     $request['created_by'] = \Auth::user()->creatorId();
                     $request['gender']      = $request->gender;
                 

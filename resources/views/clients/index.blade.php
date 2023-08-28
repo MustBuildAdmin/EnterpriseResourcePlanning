@@ -88,7 +88,7 @@
                                                 @php $colorcode =Utility::rndRGBColorCode(); @endphp
                                             @endif
                                                 <a href="#!" data-size="xl" data-ajax-popup="true"
-                                                    data-url="{{ route('clients.edit',[$client->id]) }}" 
+                                                    data-url="{{ route('clients.edit',[$client->id]) }}"
                                                     data-color="{{$colorcode}}"
                                                     data-ajax-popup="true" class="dropdown-item getcolorcode"
                                                     data-bs-original-title="{{ __('Edit Client') }}"> <i

@@ -333,11 +333,21 @@
                                             </div>
                                         @elseif($emailTemplate->slug=='create_consultant')
                                             <div class="row">
-                                                <p class="col-4">{{__('App Name')}} : <span class="pull-end text-primary">{app_name}</span></p>
-                                                <p class="col-4">{{__('Company Name')}} : <span class="pull-right text-primary">{company_name}</span></p>
-                                                <p class="col-4">{{__('App Url')}} : <span class="pull-right text-primary">{app_url}</span></p>
-                                                <p class="col-4">{{__('Email')}} : <span class="pull-right text-primary">{email}</span></p>
-                                                <p class="col-4">{{__('Password')}} : <span class="pull-right text-primary">{password}</span></p>
+                                                <p class="col-4">{{__('App Name')}} :
+                                                    <span class="pull-end text-primary">{app_name}</span>
+                                                </p>
+                                                <p class="col-4">{{__('Company Name')}} :
+                                                    <span class="pull-right text-primary">{company_name}</span>
+                                                </p>
+                                                <p class="col-4">{{__('App Url')}} :
+                                                    <span class="pull-right text-primary">{app_url}</span>
+                                                </p>
+                                                <p class="col-4">{{__('Email')}} :
+                                                    <span class="pull-right text-primary">{email}</span>
+                                                </p>
+                                                <p class="col-4">{{__('Password')}} :
+                                                    <span class="pull-right text-primary">{password}</span>
+                                                </p>
                                             </div>
 
                                             @endif

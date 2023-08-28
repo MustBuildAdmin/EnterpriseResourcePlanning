@@ -313,7 +313,7 @@ class UserController extends Controller
 
     }
 
-    public function edit(Request $request,$id,$color_co)
+    public function edit(Request $request,$id,$colorco)
     {
         $user  = \Auth::user();
   
@@ -337,11 +337,17 @@ class UserController extends Controller
                         ->get();
                     }
                 }]
-            ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('id', '!=', $id)->orwhere('id', '=', $user->creatorId())->get()->pluck('name', 'id');
+            ])->where('created_by', '=', $user->creatorId())
+              ->where('type', '!=', 'client')
+              ->where('id', '!=', $id)
+              ->orwhere('id', '=', $user->creatorId())
+              ->get()
+              ->pluck('name', 'id');
           
 
             // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
-            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users','color_co'));
+            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist',
+                        'statelist','company_type','users','colorco'));
         }
         else
         {

@@ -566,7 +566,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         input.value = numbers;
     }
 
-    $(function() { 
+    $(function() {
         var getcolor=$('#colortype').val()
        $('#color_code').val(getcolor);
      });

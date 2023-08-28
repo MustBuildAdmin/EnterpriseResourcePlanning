@@ -73,7 +73,7 @@
 											<i class="fa fa-plus"></i>
 										</span>
 									</a>
-									<a href="{{ route('consultant.scott-search') }}" class="btn btn-primary" data-bs-toggle="tooltip" 
+									<a href="{{ route('consultant.scott-search') }}" class="btn btn-primary" data-bs-toggle="tooltip"
 									title="{{__('Invite Consultant')}}"
 									  id="invite" class="btn btn-primary">
 										<span class="btn-inner--icon">

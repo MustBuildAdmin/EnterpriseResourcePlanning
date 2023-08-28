@@ -1240,10 +1240,14 @@ Route::resource('clients', 'ClientController')->middleware(
     ]
 );
 
-Route::get('clients/edit/{id}/{color_code}', 'ClientController@edit')->name('clients.edit.new')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
-
-
-
+Route::get('clients/edit/{id}/{color_code}', 'ClientController@edit')->name('clients.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate'
+    ]
+);
 
 
 Route::any('client-reset-password/{id}', 'ClientController@clientPassword')->name('clients.reset');
@@ -4188,9 +4192,24 @@ Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
 ->name('consultants.password.update');
 
-Route::get('consultant-scott-search', 'ConsultantController@scott_search')->name('consultant.scott-search')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
+Route::get('consultant-scott-search', 'ConsultantController@scott_search')
+->name('consultant.scott-search')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
-Route::any('consultant-scott-result', 'ConsultantController@scott_result')->name('consultant.scott-result')->middleware( [ 'auth', 'XSS', 'revalidate', ] );
+
+Route::any('consultant-scott-result', 'ConsultantController@scott_result')
+->name('consultant.scott-result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 
 Route::resource('plans', 'PlanController')->middleware(

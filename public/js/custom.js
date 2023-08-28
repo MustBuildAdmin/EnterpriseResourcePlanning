@@ -98,7 +98,7 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
     var title = (title1 != undefined) ? title1 : title2;
     var size = ($(this).data('size') == '') ? 'md' : $(this).data('size');
     var url = $(this).data('url');
-    var color = $(this).data("color");
+    let color = $(this).data("color");
     console.log("cologgr",color);
     $("#colortype").val(color);
     $("#commonModal .modal-title").html(title);
