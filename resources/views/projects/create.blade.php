@@ -215,7 +215,7 @@
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -467,7 +467,7 @@ aria-labelledby="exampleModalCenterTitle"
             },
             messages: {
                 project_name: {
-                    remote: "Project Name already in use!"
+                    remote: "Sorry, that project name already exists!"
                 }
             }
         });
@@ -497,8 +497,22 @@ aria-labelledby="exampleModalCenterTitle"
                 else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
-                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
-                    form.validate().settings.ignore = ":disabled";
+                else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
+                    if ($("#holidays").prop('checked') == false) {
+                        holidayValidation();
+                        if(check_validation == 1){
+                            $(".current").attr('aria-disabled','true');
+                            return false;
+                        }
+                        else{
+                            $(".current").attr('aria-disabled','false');
+                            $(".current").removeClass('error');
+                        }
+                    }
+                    else{
+                        $(".current").attr('aria-disabled','false');
+                        $(".current").removeClass('error');
+                    }
                 }
                 else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
                     if ($("#holidays").prop('checked') == false) {

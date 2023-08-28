@@ -524,9 +524,6 @@ aria-hidden="true" data-toggle="modal">
                 else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
                     form.validate().settings.ignore = ":disabled";
                 }
-                else if(currentIndex == 2 && newIndex == 3 && get_non_working_days == ""){
-                    form.validate().settings.ignore = ":disabled";
-                }
                 else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
                     if ($("#holidays").prop('checked') == false) {
                         holidayValidation();
