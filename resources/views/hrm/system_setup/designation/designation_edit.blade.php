@@ -6,7 +6,7 @@
     <div class="col-12">
         <div class="form-group">
             {{ Form::label('department_id', __('Department*'),['class'=>'form-label']) }}
-            {{ Form::select('department_id', $departments,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('department_id', $departments,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="form-group">
             {{Form::label('name',__('Name*'),['class'=>'form-label'])}}

@@ -5,13 +5,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('branch',__('Branch'),['class'=>'form-label'])}}<span class="text-danger pl-1">*</span>
-                {{Form::select('branch',$brances,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('branch',$brances,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('goal_type',__('GoalTypes'),['class'=>'form-label'])}}<span class="text-danger pl-1">*</span>
-                {{Form::select('goal_type',$goalTypes,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('goal_type',$goalTypes,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">
@@ -47,7 +47,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('status',__('Status'),['class'=>'form-label'])}}
-                {{Form::select('status',$status,null,array('class'=>'form-control select'))}}
+                {{Form::select('status',$status,null,array('class'=>'form-select'))}}
             </div>
         </div>
         <div class="col-md-12">

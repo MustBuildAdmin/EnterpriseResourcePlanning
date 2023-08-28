@@ -4,7 +4,7 @@
         @if(\Auth::user()->type!='employee')
             <div class="form-group col-lg-12">
                 {{ Form::label('employee_id', __('Employee*'),['class'=>'form-label'])}}
-                {{ Form::select('employee_id', $employees,null, array('class' => 'form-control select','required'=>'required','placeholder'=>'Select Employee')) }}
+                {{ Form::select('employee_id', $employees,null, array('class' => 'form-select','required'=>'required','placeholder'=>'Select Employee')) }}
             </div>
         @endif
         <div class="form-group col-lg-6 col-md-6">

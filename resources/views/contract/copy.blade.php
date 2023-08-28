@@ -9,13 +9,13 @@
         </div>
         <div class="form-group col-md-6">
                 {{ Form::label('client', __('Client'),['class'=>'form-label'])}}
-                {{ Form::select('client', $clients, null, ['class' => 'form-control select client_select', 'id' => 'client_select']) }}
+                {{ Form::select('client', $clients, null, ['class' => 'form-select client_select', 'id' => 'client_select']) }}
             </div>
 
             <div class="col-md-6 form-group">
                 {{ Form::label('project', __('Project'), ['class' => 'form-label']) }}
                 <div class="project-div">
-                {{ Form::select('project', $project, null, ['class' => 'form-control select project_select', 'id' => 'project_id', 'name' => 'project_id[]']) }}
+                {{ Form::select('project', $project, null, ['class' => 'form-select project_select', 'id' => 'project_id', 'name' => 'project_id[]']) }}
                 </div>
             </div>
         <div class="form-group col-md-6">

@@ -79,13 +79,13 @@
                                     <input type="hidden" value="{{$training->id}}" name="id">
                                     <div class="form-group">
                                         {{Form::label('performance',__('Performance'),['class'=>'form-label text-dark'])}}
-                                        {{Form::select('performance',$performance,null,array('class'=>'form-control select'))}}
+                                        {{Form::select('performance',$performance,null,array('class'=>'form-select'))}}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         {{Form::label('status',__('Status'),['class'=>'form-label text-dark'])}}
-                                        {{Form::select('status',$status,null,array('class'=>'form-control select'))}}
+                                        {{Form::select('status',$status,null,array('class'=>'form-select'))}}
                                     </div>
                                 </div>
                             </div>

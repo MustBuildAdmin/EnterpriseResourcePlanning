@@ -9,11 +9,11 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('projects', __('Project'),['class'=>'form-label'])}}
-            {{ Form::select('project_id', $projects, null, ['class' => 'form-control select project_select', 'id' => 'project_select', 'data-toggle' => 'select']) }}
+            {{ Form::select('project_id', $projects, null, ['class' => 'form-select project_select', 'id' => 'project_select', 'data-toggle' => 'select']) }}
         </div>
         <div class="form-group col-md-6" id="user_div">
             {{ Form::label('projects', __('Users'),['class'=>'form-label'])}}
-            <select class="form-control select employee_select" id="user_id" name="user_id[]" >
+            <select class="form-select employee_select" id="user_id" name="user_id[]" >
                 <option value="">{{__('Select User')}}</option>
 
             </select>

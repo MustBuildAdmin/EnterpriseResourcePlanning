@@ -70,7 +70,7 @@
                                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 date">
                                             <div class="btn-box">
                                                 {{ Form::label('vender', __('Vendor'),['class'=>'form-label'])}}
-                                                {{ Form::select('vender',$vender,isset($_GET['vender'])?$_GET['vender']:'', array('class' => 'form-control select')) }}
+                                                {{ Form::select('vender',$vender,isset($_GET['vender'])?$_GET['vender']:'', array('class' => 'form-select')) }}
                                             </div>
                                         </div>
                                     @endif
@@ -78,7 +78,7 @@
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                         <div class="btn-box">
                                             {{ Form::label('status', __('Status'),['class'=>'form-label'])}}
-                                            {{ Form::select('status', [''=>'Select Status'] + $status,isset($_GET['status'])?$_GET['status']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('status', [''=>'Select Status'] + $status,isset($_GET['status'])?$_GET['status']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
 

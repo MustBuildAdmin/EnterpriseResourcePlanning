@@ -7,7 +7,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('priority', __('Priority'),['class'=>'form-label']) }}
-            {!! Form::select('priority', $priority, null,array('class' => 'form-control select','required'=>'required')) !!}
+            {!! Form::select('priority', $priority, null,array('class' => 'form-select','required'=>'required')) !!}
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('start_date', __('Start Date'),['class'=>'form-label']) }}
@@ -19,11 +19,11 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('status', __('Bug Status'),['class'=>'form-label']) }}
-            {!! Form::select('status', $status, null,array('class' => 'form-control select','required'=>'required')) !!}
+            {!! Form::select('status', $status, null,array('class' => 'form-select','required'=>'required')) !!}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('assign_to', __('Assigned To'),['class'=>'form-label']) }}
-            {{ Form::select('assign_to', $users, null,array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('assign_to', $users, null,array('class' => 'form-select','required'=>'required')) }}
         </div>
     </div>
     <div class="row">

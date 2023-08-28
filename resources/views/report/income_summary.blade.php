@@ -137,20 +137,20 @@
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                         <div class="btn-box">
                                             {{ Form::label('year', __('Year'),['class'=>'form-label'])}}
-                                            {{ Form::select('year',$yearList,isset($_GET['year'])?$_GET['year']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('year',$yearList,isset($_GET['year'])?$_GET['year']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                         <div class="btn-box">
                                             {{ Form::label('category', __('Category'),['class'=>'form-label'])}}
-                                            {{ Form::select('category',$category,isset($_GET['category'])?$_GET['category']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('category',$category,isset($_GET['category'])?$_GET['category']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
 
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                         <div class="btn-box">
                                             {{ Form::label('customer', __('Customer'),['class'=>'form-label'])}}
-                                            {{ Form::select('customer',$customer,isset($_GET['customer'])?$_GET['customer']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('customer',$customer,isset($_GET['customer'])?$_GET['customer']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
 
