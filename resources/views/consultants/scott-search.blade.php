@@ -23,7 +23,7 @@
 	--tblr-avatar-size: 6.2rem;
 }
 
-form-control:focus {
+.form-control:focus {
 	box-shadow: none;
 }
 
@@ -53,55 +53,55 @@ form-control:focus {
 
 
 <div class="page-wrapper">
-  <div class="row">
-    <div class="col-md-6">
-      <h2>{{ __('Invite Consultants') }}</h2>
-    </div>
-    <div class="col-md-6">
-      <div class="col-auto ms-auto d-print-none float-end">
-        <div class="input-group-btn">
-          <a id="invite" href="{{ route('consultants.index') }}" class="btn btn-danger" data-bs-toggle="tooltip"
-		   title="{{ __('Back') }}">
-            <span class="btn-inner--icon">
-              <i class="fa fa-arrow-left"></i>
-            </span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="container">
-	<!-- For demo purpose -->
-	
-	<!-- End -->
-	<div class="row mb-5">
-	  <div class="col-lg-8 mx-auto">
-		<div class="bg-white p-5 rounded">
-		  <!-- Custom rounded search bars with input group -->
-		  <form action="" id="myForm">
-			<div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
-			  <div class="input-group">
-				<input type="search" id="scott_search" name="search" value="{{ request()->get('search') }}"
-				 placeholder="Search Consultant Name or Email or Mobile" aria-describedby="button-addon1"
-				  class="form-control border-0 bg-light">
-				<div class="input-group-append">
-				  <button id="button-addon1" type="submit" class="btn btn-link text-primary">
-					<i id="search_icon" class="fa fa-search"></i>
-				  </button>
-				</div>
-			  </div>
-			</div>
-		  </form>
-		  <!-- End -->
-		</div>
-	  </div>
-	</div>
-	
-	<div id="content_id">
-	</div>
-	</div>
-  </div>
-  </div>
+<div class="row">
+<div class="col-md-6">
+<h2>{{ __('Invite Consultants') }}</h2>
+</div>
+<div class="col-md-6">
+<div class="col-auto ms-auto d-print-none float-end">
+<div class="input-group-btn">
+<a id="invite" href="{{ route('consultants.index') }}" class="btn btn-danger" data-bs-toggle="tooltip"
+title="{{ __('Back') }}">
+<span class="btn-inner--icon">
+<i class="fa fa-arrow-left"></i>
+</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="container">
+<!-- For demo purpose -->
+
+<!-- End -->
+<div class="row mb-5">
+<div class="col-lg-8 mx-auto">
+<div class="bg-white p-5 rounded">
+<!-- Custom rounded search bars with input group -->
+<form action="" id="myForm">
+<div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+<div class="input-group">
+<input type="search" id="scott_search" name="search" value="{{ request()->get('search') }}"
+placeholder="Search Consultant Name or Email or Mobile" aria-describedby="button-addon1"
+class="form-control border-0 bg-light">
+<div class="input-group-append">
+<button id="button-addon1" type="submit" class="btn btn-link text-primary">
+<i id="search_icon" class="fa fa-search"></i>
+</button>
+</div>
+</div>
+</div>
+</form>
+<!-- End -->
+</div>
+</div>
+</div>
+
+<div id="content_id">
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 @include('new_layouts.footer')

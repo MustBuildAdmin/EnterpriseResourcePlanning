@@ -117,8 +117,8 @@ class ConsultantController extends Controller
         {
             $country=Utility::getcountry();
 
-            // return view('user.create', compact('roles','gender', 'customFields','country','company_type'));
-            return view('consultants.create', compact('roles','gender', 'customFields','country','company_type','users'));
+            return view('consultants.create', compact('roles','gender', 'customFields',
+                        'country','company_type','users'));
         }
         else
         {
@@ -226,12 +226,11 @@ class ConsultantController extends Controller
                 ];
                
 
-                $resp=Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+            Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
-                return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.') .
-                ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
+            
             }
-            return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
+            return redirect()->route('consultants.index')->with('success', Config::get('constants.CONSULTANT_MAIL'));
 
         }
         else
@@ -322,10 +321,9 @@ class ConsultantController extends Controller
         ];
        
 
-        $resp=Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+        Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
-        return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.') .
-        ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
+        return redirect()->route('consultants.index')->with('success', Config::get('constants.CONSULTANT_MAIL'));
     }
     else
     {
