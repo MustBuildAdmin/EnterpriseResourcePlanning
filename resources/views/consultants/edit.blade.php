@@ -132,7 +132,8 @@
                 <div class="form-group">
                     {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                        {{Form::file('avatar',null,array('class'=>'form-control',
+                                     'accept'=>'image/*, .png, .jpeg, .jpg'))}}
                     </div>
                 </div>
             </div>

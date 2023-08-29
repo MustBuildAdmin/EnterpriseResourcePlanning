@@ -234,27 +234,11 @@ class ConsultantController extends Controller
        
 
     }
-    public function error_message(Request $request){
-      
-        $validator = \Validator::make(
-            $request->all(), [
-                            'name' => 'required|max:120',
-                            'email' => 'required|email|unique:users',
-                            'password' => 'required|min:6',
-                            'gender'=>'required'
-
-                        ]
-        );
-        if($validator->fails())
-        {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-    }
+ 
 
   public function normal_store(Request $request){
 
-    $this->error_message($request);
+   
     $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
 
     if(isset($request->avatar)){
@@ -287,7 +271,7 @@ class ConsultantController extends Controller
     $plan       = Plan::find($objUser->plan);
     if($totaluser < $plan->max_users || $plan->max_users == -1)
     {
-        $role_r = Role::findByName('consultant');
+        $roler = Role::findByName('consultant');
         $psw                   = $request->password;
         $request['password']   = Hash::make($request->password);
         $request['type']       = 'consultant';
@@ -300,18 +284,16 @@ class ConsultantController extends Controller
         }
        
         $user = User::create($request->all());
-        $user->assignRole($role_r);
+        $user->assignRole($roler);
         $user->userDefaultDataRegister($user->id);
-        if($request['type'] != 'client'){
-            Utility::employeeDetails($user->id,\Auth::user()->creatorId());
-        }
+       
          
     }
     $setings = Utility::settings();
 
     if($setings['create_consultant'] == 1) {
         $user->password = $psw;
-        $user->type = $role_r->name;
+        $user->type = $roler->name;
 
         $userArr = [
             'email' => $user->email,
