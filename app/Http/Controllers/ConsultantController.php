@@ -130,8 +130,7 @@ class ConsultantController extends Controller
     {
 
 
-        if(\Auth::user()->can('create consultant'))
-        {
+        
             $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
             
             
@@ -232,31 +231,30 @@ class ConsultantController extends Controller
             }
             return redirect()->route('consultants.index')->with('success', Config::get('constants.CONSULTANT_MAIL'));
 
-        }
-        else
-        {
-            return redirect()->back();
-        }
+       
 
     }
+    public function error_message(Request $request){
+      
+        $validator = \Validator::make(
+            $request->all(), [
+                            'name' => 'required|max:120',
+                            'email' => 'required|email|unique:users',
+                            'password' => 'required|min:6',
+                            'gender'=>'required'
 
+                        ]
+        );
+        if($validator->fails())
+        {
+            $messages = $validator->getMessageBag();
+            return redirect()->back()->with('error', $messages->first());
+        }
+    }
 
   public function normal_store(Request $request){
-    $validator = \Validator::make(
-        $request->all(), [
-                           'name' => 'required|max:120',
-                           'email' => 'required|email|unique:users',
-                           'password' => 'required|min:6',
-                           'gender'=>'required'
 
-                       ]
-    );
-    if($validator->fails())
-    {
-        $messages = $validator->getMessageBag();
-        return redirect()->back()->with('error', $messages->first());
-    }
-
+    $this->error_message($request);
     $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
 
     if(isset($request->avatar)){

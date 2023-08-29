@@ -4,7 +4,12 @@
     }
 </style>
 
-{{Form::open(array('url'=>'consultants','method'=>'post','id'=>'users_form','autocomplete'=>'off',
+@if(\Auth::user()->type == 'super admin')
+    @php $url='consultants' @endphp
+@else
+    @php $url='save_consultant' @endphp
+@endif
+{{Form::open(array('url'=>$url,'method'=>'post','id'=>'users_form','autocomplete'=>'off',
 'enctype'=>"multipart/form-data"))}}
 
     <div class="modal-body">
@@ -91,7 +96,7 @@
                 <div class="form-group">
                     {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <select class="form-control" name="state" id='state' placeholder="Select State" required>
+                        <select class="form-control" name="state" id='state' placeholder="Select State" >
                             <option value="">{{ __('Select State ...') }}</option>
                         </select>
                     </div>

@@ -99,7 +99,7 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
     var size = ($(this).data('size') == '') ? 'md' : $(this).data('size');
     var url = $(this).data('url');
     let color = $(this).data("color");
-    console.log("cologgr",color);
+
     $("#colortype").val(color);
     $("#commonModal .modal-title").html(title);
     $("#commonModal .modal-dialog").addClass('modal-' + size);
