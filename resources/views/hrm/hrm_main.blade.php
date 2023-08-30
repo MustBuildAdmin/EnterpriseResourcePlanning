@@ -71,7 +71,7 @@
                                         <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                                     </svg>
                                 </span>
-                                <span class="nav-link-title">{{ __('Employee Setup 33') }}</span></a>
+                                <span class="nav-link-title">{{ __('Employee Setup') }}</span></a>
 
                             <!-- <a href="{{ route('employeenew.index') }}" class="nav-link">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">

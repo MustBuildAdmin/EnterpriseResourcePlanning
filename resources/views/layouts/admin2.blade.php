@@ -67,6 +67,154 @@
                             class="navbar-brand-image">
                     </a>
                 </h1>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+				<div class="navbar navbar-light">
+					<div class="container-fluid">
+						<ul class="navbar-nav">
+							
+
+       <li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">
+                                        Home
+                                    </span> </a>
+							</li><li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">Human Resource</span> </a>
+							</li>
+    <li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">Accounting System </span> </a>
+							</li>
+    <li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">CRM</span> </a>
+							</li>
+  <li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">Consultants</span> </a>
+							</li>
+    <li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">Consultants</span> </a>
+							</li>
+    <li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">Construction Management System</span> </a>
+							</li>
+
+    						
+    <li class="nav-item">
+								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                        </svg>
+                                    </span> <span class="nav-link-title">Support System</span> </a>
+							</li>
+						</ul>
+						
+						<div class="dropdown dash-h-item drp-language order-md-last">
+							<a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+								<i class="fas fa-globe"></i>
+                                <span class="drp-text hide-mob">EN</span>
+
+                            </a>
+							<div class="dropdown-menu dash-h-dropdown dropdown-menu-end">
+                                                                    <a href="http://localhost:8000/change-language/ar" class="dropdown-item ">
+                                        <span>AR</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/da" class="dropdown-item ">
+                                        <span>DA</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/de" class="dropdown-item ">
+                                        <span>DE</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/en" class="dropdown-item  text-danger ">
+                                        <span>EN</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/es" class="dropdown-item ">
+                                        <span>ES</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/fr" class="dropdown-item ">
+                                        <span>FR</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/it" class="dropdown-item ">
+                                        <span>IT</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/ja" class="dropdown-item ">
+                                        <span>JA</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/nl" class="dropdown-item ">
+                                        <span>NL</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/pl" class="dropdown-item ">
+                                        <span>PL</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/pt" class="dropdown-item ">
+                                        <span>PT</span>
+                                    </a>
+                                                                    <a href="http://localhost:8000/change-language/ru" class="dropdown-item ">
+                                        <span>RU</span>
+                                    </a>
+                                								<h></h>
+                                                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
                 <div class="navbar-nav flex-row order-md-last">
                     <div class="nav-item d-none d-md-flex me-3">
 
@@ -246,7 +394,7 @@
                 </div>
             </div>
         </header>
-        <header class="navbar-expand-md">
+        <!-- <header class="navbar-expand-md">
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar navbar-light">
                     <div class="container-xl">
@@ -293,7 +441,7 @@
                     </div>
                 </div>
             </div>
-        </header>
+        </header> -->
         <main class="page-wrapper">
             <section class="row">
             {{-- <aside class="col-2">
