@@ -3049,6 +3049,10 @@ Route::get(
         'XSS',
     ]
 );
+
+Route::get('task_autocomplete', 'ProjectTaskController@task_autocomplete')->name('task_autocomplete')->middleware(['auth','XSS',]);
+
+
 Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth','XSS',]);
 Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')->middleware(['auth','XSS',]);
 Route::get('edit_assigned_to', 'ProjectTaskController@edit_assigned_to')->name('edit_assigned_to')->middleware(['auth','XSS',]);

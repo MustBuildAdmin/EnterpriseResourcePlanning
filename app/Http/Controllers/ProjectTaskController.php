@@ -1934,4 +1934,28 @@ class ProjectTaskController extends Controller
 
           }
     }
+
+    public function task_autocomplete(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = Con_task::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array(); 
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData); 
+    }
 }

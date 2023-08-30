@@ -2,6 +2,10 @@
 {{-- @extends('layouts.admin') --}}
 <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
+
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <style>
     .wrappers{
         display: flex;
@@ -71,117 +75,357 @@
         @include('construction_project.side-menu')
         <div class="row">
             <div class="row min-750" id="taskboard_view">
-                <div class="card">
-                    <div class="card-body" id="show_search_function">
-                        <div class="row d-flex align-items-center justify-content-center">
-                            @if(\Auth::user()->type == 'company')
-                                <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
-                                    <div class="btn-box">
-                                        {{ Form::label('assigned_to', __('Assigned To'),['class'=>'form-label'])}}
-                                        <select class="select form-select chosen-select" name="users" id="users" multiple>
-                                            <option value="" class="" disabled>{{ __('Assigned To') }}</option>
-                                            @foreach ($user_data as $users)
-                                                <option value="{{$users->id}}">{{$users->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if(\Auth::user()->type == 'company')
-                                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-0">
-                                    <div class="btn-box">
-                                        {{ Form::label('start_date', __('Planned Start Date'),['class'=>'form-label'])}}
-                                        {{ Form::date('start_date', null, array('class' => 'form-control month-btn start_date','onchange' => 'start_date_change()')) }}
-                                    </div>
-                                </div>
-                            @endif
-
-                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
-                                <div class="btn-box">
-                                    @if(\Auth::user()->type == 'company')
-                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
-                                    @else
-                                        {{ Form::label('end_date', __('Planned End Date'),['class'=>'form-label'])}}
-                                    @endif
-
-                                    {{ Form::date('end_date', date('Y-m-d') , array('class' => 'form-control month-btn end_date','onchange' => 'end_date_change()')) }}
-
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
-                                <div class="btn-box">
-                                    {{ Form::label('status', __('Filter Type'),['class'=>'form-label'])}}
-                                    <select onchange="status_task(this)" name="status_task" id="status_task" class="form-control">
-                                        <option value="">Select Status</option>
-                                        <option value="3">Pending Task</option>
-                                        <option value="4">Completed Task</option>
-                                    </select>
-                                </div>
-                            </div>
-                            {{-- <div class="col-auto float-end ms-2 mt-4">
-                                <a href="#" class="btn btn-sm btn-primary" onclick="submit_button();">
-                                    <span class="btn-inner--icon"><i class="ti ti-search"></i></span>
-                                </a>
-                            </div> --}}
-                     
-                                <div class="text-center mt-3">
-                                    <a href="#" class="btn btn-primary"
-                                       onclick="submit_button();" data-bs-toggle="tooltip"
-                                       title="{{__('Search')}}">
-                                        <span class="btn-inner--icon"><i class="fas fa-search"></i></span>
-                                    </a>
-                                    <a href="{{ url()->previous() }}"
-                                      class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
-                                      <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
-                                    </a>
-                                </div>
-                             
-                        </div>
-                    </div>
-                    {{--  --}}
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="col-12">
-                                <br>
-                                <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="col-12">
+                            <br>
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
                                     <li class="nav-item" role="presentation">
-                                        <button onclick="alltask();" class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">{{__('All Tasks')}}</button>
+                                        <a href="#tabs-home-7" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler  me-2 icon-tabler-calendar-star" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M11 21h-5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v3.5"></path>
+                                                <path d="M16 3v4"></path>
+                                                <path d="M8 3v4"></path>
+                                                <path d="M4 11h11"></path>
+                                                <path d="M17.8 20.817l-2.172 1.138a.392 .392 0 0 1 -.568 -.41l.415 -2.411l-1.757 -1.707a.389 .389 0 0 1 .217 -.665l2.428 -.352l1.086 -2.193a.392 .392 0 0 1 .702 0l1.086 2.193l2.428 .352a.39 .39 0 0 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567 .411l-2.172 -1.138z"></path>
+                                            </svg>
+                                            Sub Tasks
+                                        </a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button onclick="maintask();" class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">{{__('Main Tasks')}}</button>
+                                        <a href="#tabs-profile-7" class="nav-link" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler me-2 icon-tabler-calendar-up" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5"></path>
+                                                <path d="M16 3v4"></path>
+                                                <path d="M8 3v4"></path>
+                                                <path d="M4 11h16"></path>
+                                                <path d="M19 22v-6"></path>
+                                                <path d="M22 19l-3 -3l-3 3"></path>
+                                            </svg>
+                                            Summary
+                                        </a>
                                     </li>
                                 </ul>
-                                <br>
+                            </div>
 
-                                <center>
-                                    <section class="wrappers loader_show_hide">
-                                        <div class="cards">
-                                          <div class="loader">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                          </div>
+                            <center>
+                                <section class="wrappers loader_show_hide">
+                                    <div class="cards">
+                                        <div class="loader">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
                                         </div>
-                                    </section>
-                                </center>
+                                    </div>
+                                </section>
+                            </center>
 
-                                <div class="tab-content" id="pills-tabContent">
-                                    {{-- All Task --}}
-                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                        <div class="card-body table-border-style">
-                                            <div class="table-responsive" id="all_task_append">
-
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Task Lists Information</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-2 border-end p-3">
+                                                            <form>
+                                                                <div class="col-md-12">
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">Search By Task Name or Id</label>
+                                                                            <select type="text" class="form-select" placeholder="Search By Task Name or Id" id="task-name" value="" multiple>
+                                                                            <option value="HTML">HTML</option>
+                                                                            <option value="JavaScript">JavaScript</option>
+                                                                            <option value="CSS">CSS</option>
+                                                                            <option value="jQuery">jQuery</option>
+                                                                            <option value="Bootstrap">Bootstrap</option>
+                                                                            <option value="Ruby">Ruby</option>
+                                                                            <option value="Python">Python</option>
+                                                                            </select>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="col-12 mb-3">
+                                                                    <label class="form-label required">Task  Planned Start Date</label>
+                                                                    <div class="input-icon">
+                                                                        <span class="input-icon-addon">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
+                                                                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                                        </span>
+                                                                        <input class="form-control" placeholder="Select a Start date" id="start-date"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 mb-3">
+                                                                    <label class="form-label required">Task Planned End Date</label>
+                                                                    <div class="input-icon">
+                                                                        <span class="input-icon-addon">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                                                            stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" />
+                                                                            </svg>
+                                                                        </span>
+                                                                        <input class="form-control" placeholder="Select a End date" id="end-date"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Search Assignee</label>
+                                                                        <select type="text" class="form-select" placeholder="Search By Assignee Name" id="search-assignee" value="" multiple>
+                                                                            <option value="HTML">HTML</option>
+                                                                            <option value="JavaScript">JavaScript</option>
+                                                                            <option value="CSS">CSS</option>
+                                                                            <option value="jQuery">jQuery</option>
+                                                                            <option value="Bootstrap">Bootstrap</option>
+                                                                            <option value="Ruby">Ruby</option>
+                                                                            <option value="Python">Python</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Task Status</label>
+                                                                        <input type="text" id="skill_input" value="{{ request()->get('q') }}" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 mt-4">
+                                                                    <div class="mb-3">
+                                                                        <button class="btn btn-tabler w-100">Search</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                            
+                                                        <div class="col-md-10">
+                                                            <div class="table-responsive card p-4">
+                                                                <table class="table table-vcenter card-table" id="task-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Task ID</th>
+                                                                            <th>Task Name</th>
+                                                                            <th>Task Status</th>
+                                                                            <th>Actual Progress</th>
+                                                                            <th>Planned Progress</th>
+                                                                            <th>Planned Start Date</th>
+                                                                            <th>Planned End Date</th>
+                                                                            <th>Assigned To</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td style="width: 100px; font-size: 15px;"><a href="#">TaskId-1235</a></td>
+                                                                            <td style="width:400px; font-size: 14px;">Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
+                                                                            <td><span class="badge bg-warning me-1"></span> Pending</td>
+                                                                            <td class="sort-progress" data-progress="30">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-12 col-lg-auto">30%</div>
+                                                                                    <div class="col">
+                                                                                        <div class="progress" style="width: 5rem">
+                                                                                            <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                                <span class="visually-hidden">30% Complete</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="sort-progress" data-progress="30">
+                                                                                <div class="row align-items-center">
+                                                                                    <div class="col-12 col-lg-auto">30%</div>
+                                                                                    <div class="col">
+                                                                                        <div class="progress" style="width: 5rem">
+                                                                                            <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                                <span class="visually-hidden">30% Complete</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>15 Dec 2017</td>
+                                                                            <td>15 Dec 2017</td>
+                                                                            <td>
+                                                                                <div class="avatar-list avatar-list-stacked">
+                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                                                                    <span class="avatar avatar-xs rounded">JL</span>
+                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
+                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
+                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
+                                                                                    <span class="avatar avatar-xs rounded">+3</span>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                            <div class="card-body table-border-style">
-                                                <div class="table-responsive" id="main_task_append">
-
+                                    <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Summary Lists Information</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive card p-4">
+                                                            <table class="table table-vcenter card-table" id="summary-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Summary ID</th>
+                                                                        <th>Summary Name</th>
+                                                                        <th>Summary Status</th>
+                                                                        <th>Actual Progress</th>
+                                                                        <th>Planned Progress</th>
+                                                                        <th>Planned Start Date</th>
+                                                                        <th>Planned End Date</th>
+                                                                        <th>Assigned To</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td><a href="#">345432345432356</a></td>
+                                                                        <td>Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
+                                                                        <td><span class="badge bg-warning me-1"></span> Pending</td>
+                                                                        <td class="sort-progress" data-progress="30">
+                                                                            <div class="row align-items-center">
+                                                                                <div class="col-12 col-lg-auto">30%</div>
+                                                                                <div class="col">
+                                                                                <div class="progress" style="width: 5rem">
+                                                                                    <div class="progress-bar bg-red" style="width: 40%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                    <span class="visually-hidden">30% Complete</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            </td>
+                                                                        <td class="sort-progress" data-progress="30">
+                                                                            <div class="row align-items-center">
+                                                                                <div class="col-12 col-lg-auto">30%</div>
+                                                                                <div class="col">
+                                                                                <div class="progress" style="width: 5rem">
+                                                                                    <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                    <span class="visually-hidden">30% Complete</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            </td>
+                                                                        <td>
+                                                                            15 Dec 2017
+                                                                            </td>
+                                                                        <td>
+                                                                            15 Dec 2017
+                                                                            </td>
+                                                                        <td><div class="avatar-list avatar-list-stacked">
+                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                                                            <span class="avatar avatar-xs rounded">JL</span>
+                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
+                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
+                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
+                                                                            <span class="avatar avatar-xs rounded">+3</span>
+                                                                        </div></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                    <td><a href="#">345432345432356</a></td>
+                                                                    <td>Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
+                                                                    <td><span class="badge bg-info me-1"></span> In-Progress</td>
+                                                                    <td class="sort-progress" data-progress="30">
+                                                                        <div class="row align-items-center">
+                                                                            <div class="col-12 col-lg-auto">30%</div>
+                                                                            <div class="col">
+                                                                            <div class="progress" style="width: 5rem">
+                                                                                <div class="progress-bar" style="width: 40%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                <span class="visually-hidden">30% Complete</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        </td>
+                                                                    <td class="sort-progress" data-progress="30">
+                                                                        <div class="row align-items-center">
+                                                                            <div class="col-12 col-lg-auto">30%</div>
+                                                                            <div class="col">
+                                                                            <div class="progress" style="width: 5rem">
+                                                                                <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                <span class="visually-hidden">30% Complete</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        </td>
+                                                                    <td>
+                                                                        15 Dec 2017
+                                                                        </td>
+                                                                    <td>
+                                                                        15 Dec 2017
+                                                                        </td>
+                                                                    <td><div class="avatar-list avatar-list-stacked">
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded">JL</span>
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded">+3</span>
+                                                                    </div></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                    <td><a href="#">345432345432356</a></td>
+                                                                    <td>Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
+                                                                    <td><span class="badge bg-success me-1"></span>Completed</td>
+                                                                    <td class="sort-progress" data-progress="30">
+                                                                        <div class="row align-items-center">
+                                                                            <div class="col-12 col-lg-auto">100%</div>
+                                                                            <div class="col">
+                                                                            <div class="progress" style="width: 5rem">
+                                                                                <div class="progress-bar bg-green" style="width: 100%" role="progressbar bg-danger" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                    <span class="visually-hidden">100% Complete</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        </td>
+                                                                    <td class="sort-progress" data-progress="30">
+                                                                        <div class="row align-items-center">
+                                                                            <div class="col-12 col-lg-auto">100%</div>
+                                                                            <div class="col">
+                                                                            <div class="progress" style="width: 5rem">
+                                                                                <div class="progress-bar bg-green" style="width: 100%" role="progressbar bg-danger" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
+                                                                                <span class="visually-hidden">100% Complete</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        </td>
+                                                                    <td>
+                                                                        15 Dec 2017
+                                                                        </td>
+                                                                    <td>
+                                                                        15 Dec 2017
+                                                                        </td>
+                                                                    <td><div class="avatar-list avatar-list-stacked">
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded">JL</span>
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
+                                                                        <span class="avatar avatar-xs rounded">+3</span>
+                                                                    </div></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -198,10 +442,121 @@
 
 @include('new_layouts.footer')
 
+<script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
+<script src="{{ asset('litepicker/litepicker.js') }}"></script>
+<script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 <script>
-    $(document).ready(function() {
-        $(".chosen-select").chosen();
+    new DataTable('#summary-table, #task-table', {
+        pagingType: 'full_numbers'
     });
+
+    $(document).ready(function() {
+        $("#skill_input").tokenInput("{{route('task_autocomplete')}}", {
+            propertyToSearch:"text",
+            tokenValue:"id",
+            tokenDelimiter:",",
+            hintText: "Type your Task (or) Task ID..",
+            noResultsText: "Task not found.",
+            searchingText: "Searching...",
+            deleteText:"&#215;",
+            minChars: 2,
+            tokenLimit: 4,
+            animateDropdown: false,
+            resultsLimit:10,
+            deleteText: "&times;",
+            preventDuplicates: true,
+            theme: "bootstrap"
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.Litepicker && (new Litepicker({
+            element: document.getElementById('start-date'),
+            elementEnd: document.getElementById('end-date'),
+            singleMode: false,
+            allowRepick: true,
+            buttonText: {
+                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+            },
+        }));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var el;
+        window.TomSelect && (new TomSelect(el = document.getElementById('task-name'), {
+            copyClassesToDropdown: false,
+            plugins: ['remove_button'],
+            dropdownParent: 'body',
+            controlInput: '<input>',
+            render:{
+                item: function(data,escape) {
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+                option: function(data,escape){
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+                search: function(){
+                    console.log("ll");
+                },
+            },
+        }));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var el;
+        window.TomSelect && (new TomSelect(el = document.getElementById('search-assignee'), {
+                        copyClassesToDropdown: false,            plugins: ['remove_button'],
+            dropdownParent: 'body',
+            controlInput: '<input>',
+            render:{
+                item: function(data,escape) {
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+                option: function(data,escape){
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+            },
+        }));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var el;
+        window.TomSelect && (new TomSelect(el = document.getElementById('task-status'), {
+                        copyClassesToDropdown: false,            plugins: ['remove_button'],
+            dropdownParent: 'body',
+            controlInput: '<input>',
+            render:{
+                item: function(data,escape) {
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+                option: function(data,escape){
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+            },
+        }));
+    });
+    
     $(function () {
         alltask();
     });

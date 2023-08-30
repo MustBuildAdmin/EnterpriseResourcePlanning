@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Con_task extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     public static $priority = [
         'critical' => 'Critical',
@@ -57,5 +58,13 @@ class Con_task extends Model
     public function checklist()
     {
         return $this->hasMany('App\Models\TaskChecklist', 'task_id', 'id')->orderBy('id', 'DESC');
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text
+        ];
     }
 }
