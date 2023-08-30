@@ -1934,4 +1934,58 @@ class ProjectTaskController extends Controller
 
           }
     }
+
+    public function task_autocomplete(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = Con_task::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array(); 
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData); 
+    }
+
+    public function user_autocomplete(request $request){
+        $searchValue = $request['selectsearch'];
+        $projectId   = Session::get('project_id');
+
+        if($request->filled('selectsearch')){
+
+            $user_data = User::search($searchValue)
+                ->query(function ($query) use($projectId) {
+                    $query->join('project_users as project','users.id','=','project.user_id')
+                        ->select(['users.id', 'users.name'])
+                        ->where('project.project_id',$projectId)
+                        ->orderBy('project.id', 'DESC');
+                })
+                ->get();
+        }
+
+        $userData = array(); 
+        if(count($user_data) > 0){
+            foreach($user_data as $user){
+                $setUser = [
+                    'id' => $user->id,
+                    'name' => $user->name
+                ];
+                $userData[] = $setUser;
+            }
+        }
+
+        echo json_encode($userData); 
+    }
 }
