@@ -10,7 +10,7 @@
     @endif
     <div class="form-group col-md-6 col-lg-6">
         {{Form::label('complaint_against',__('Complaint Against*'),['class'=>'form-label'])}}
-        {{Form::select('complaint_against',$employees,null,array('class'=>'form-control select','required'=>'required','placeholder'=>'Select Employee'))}}
+        {{Form::select('complaint_against',$employees,null,array('class'=>'form-select','required'=>'required','placeholder'=>'Select Employee'))}}
     </div>
     <div class="form-group col-md-6 col-lg-6">
         {{Form::label('title',__('Title*'),['class'=>'form-label'])}}

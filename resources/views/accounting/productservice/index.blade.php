@@ -36,7 +36,7 @@
                             <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                 <div class="btn-box">
                                     {{ Form::label('category', __('Category'),['class'=>'form-label']) }}
-                                    {{ Form::select('category', $category, null, ['class' => 'form-control select','id'=>'choices-multiple', 'required' => 'required']) }}
+                                    {{ Form::select('category', $category, null, ['class' => 'form-select','id'=>'choices-multiple', 'required' => 'required']) }}
                                 </div>
                             </div>
                             <div class="col-auto float-end ms-2 mt-4">

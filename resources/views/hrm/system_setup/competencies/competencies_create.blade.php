@@ -12,7 +12,7 @@
     <div class="col-12">
         <div class="form-group">
             {{Form::label('type',__('Type*'),['class'=>'form-label'])}}
-            {{Form::select('type',$performance,null,array('class'=>'form-control select','required'=>'required','placeholder'=>'Select Type'))}}
+            {{Form::select('type',$performance,null,array('class'=>'form-select','required'=>'required','placeholder'=>'Select Type'))}}
             <br>
             <span class="invalid-name show_duplicate_error" role="alert" style="display: none;"> 
                 <strong class="text-danger">Competencies Name Already Exist!</strong>

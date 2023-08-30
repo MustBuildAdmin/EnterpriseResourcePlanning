@@ -79,7 +79,7 @@
 
 
             {{ Form::open(array('route' => 'deals.change.pipeline','id'=>'change-pipeline','class'=>'btn btn-sm ')) }}
-            {{ Form::select('default_pipeline_id', $pipelines,$pipeline->id, array('class' => 'form-control select','id'=>'default_pipeline_id')) }}
+            {{ Form::select('default_pipeline_id', $pipelines,$pipeline->id, array('class' => 'form-select','id'=>'default_pipeline_id')) }}
             {{ Form::close() }}
 
 

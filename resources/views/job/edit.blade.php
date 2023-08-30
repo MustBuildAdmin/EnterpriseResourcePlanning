@@ -38,11 +38,11 @@
                         </div>
                         <div class="form-group col-md-6">
                             {!! Form::label('branch', __('Branch*'),['class'=>'form-label']) !!}
-                            {{ Form::select('branch', $branches,null, array('class' => 'form-control select','required'=>'required')) }}
+                            {{ Form::select('branch', $branches,null, array('class' => 'form-select','required'=>'required')) }}
                         </div>
                         <div class="form-group col-md-6">
                             {!! Form::label('category', __('Job Category*'),['class'=>'form-label']) !!}
-                            {{ Form::select('category', $categories,null, array('class' => 'form-control select','required'=>'required')) }}
+                            {{ Form::select('category', $categories,null, array('class' => 'form-select','required'=>'required')) }}
                         </div>
                         <div class="form-group col-md-6">
                             {!! Form::label('position', __('Positions*'),['class'=>'form-label']) !!}
@@ -50,7 +50,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             {!! Form::label('status', __('Status*'),['class'=>'form-label']) !!}
-                            {{ Form::select('status', $status,null, array('class' => 'form-control select','required'=>'required')) }}
+                            {{ Form::select('status', $status,null, array('class' => 'form-select','required'=>'required')) }}
                         </div>
                         <div class="form-group col-md-6">
                             {!! Form::label('start_date', __('Start Date*'),['class'=>'form-label']) !!}

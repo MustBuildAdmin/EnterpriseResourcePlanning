@@ -11,11 +11,11 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('account_id', __('Account'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('account_id',$accounts,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('account_id',$accounts,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('vender_id', __('Vendor'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('vender_id', $venders,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('vender_id', $venders,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="form-group  col-md-12">
             {{ Form::label('description', __('Description'),['class'=>'form-label']) }}
@@ -23,7 +23,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('category_id', $categories,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('category_id', $categories,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('reference', __('Reference'),['class'=>'form-label']) }}

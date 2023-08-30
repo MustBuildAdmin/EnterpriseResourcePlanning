@@ -120,12 +120,12 @@
                     <div class="card-header p-2">
                         <div class="row">
                             <div class="col-md-6">
-                                {{ Form::select('customer_id', $customers,'', array('class' => 'form-control select customer_select','id'=>'customer','required'=>'required')) }}
+                                {{ Form::select('customer_id', $customers,'', array('class' => 'form-select customer_select','id'=>'customer','required'=>'required')) }}
                                 {{ Form::hidden('vc_name_hidden', '',['id' => 'vc_name_hidden']) }}
 
                             </div>
                             <div class="col-md-6">
-                                {{ Form::select('warehouse_id', $warehouses,'', array('class' => 'form-control select warehouse_select ','id'=>'warehouse','required'=>'required')) }}
+                                {{ Form::select('warehouse_id', $warehouses,'', array('class' => 'form-select warehouse_select ','id'=>'warehouse','required'=>'required')) }}
                                 {{ Form::hidden('warehouse_name_hidden', '',['id' => 'warehouse_name_hidden']) }}
 
                             </div>

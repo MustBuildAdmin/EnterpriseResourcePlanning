@@ -11,7 +11,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('role',__('Role'),['class'=>'form-label'])}}
-                {{Form::select('role',$roles,null,array('class'=>'form-control select'))}}
+                {{Form::select('role',$roles,null,array('class'=>'form-select'))}}
             </div>
         </div>
 

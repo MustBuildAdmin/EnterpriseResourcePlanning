@@ -3,7 +3,7 @@
     <div class="row">
         <div class="form-group col-md-12">
             {{ Form::label('invoice', __('Invoice'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-                <select class="form-control select" required="required" id="invoice" name="invoice" required>
+                <select class="form-select" required="required" id="invoice" name="invoice" required>
                     <option value="">{{__('Select Invoice')}}</option>
                     @foreach($invoices as $key=>$invoice)
                         <option value="{{$key}}">{{\Auth::user()->invoiceNumberFormat($invoice)}}</option>

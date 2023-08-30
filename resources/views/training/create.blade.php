@@ -5,25 +5,25 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('branch',__('Branch*'),['class'=>'form-label'])}}
-                {{Form::select('branch',$branches,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('branch',$branches,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('trainer_option',__('Trainer Option*'),['class'=>'form-label'])}}
-                {{Form::select('trainer_option',$options,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('trainer_option',$options,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('training_type',__('Training Type*'),['class'=>'form-label'])}}
-                {{Form::select('training_type',$trainingTypes,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('training_type',$trainingTypes,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('trainer',__('Trainer*'),['class'=>'form-label'])}}
-                {{Form::select('trainer',$trainers,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('trainer',$trainers,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">
@@ -35,7 +35,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('employee',__('Employee*'),['class'=>'form-label'])}}
-                {{Form::select('employee',$employees,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('employee',$employees,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">

@@ -23,7 +23,7 @@
         </div>
         <div class="col-6 exist_client d-none form-group">
             {{ Form::label('clients', __('Client'),['class'=>'form-label']) }}
-            <select name="clients" id="clients" class="form-control select">
+            <select name="clients" id="clients" class="form-select">
                 <option value="">{{ __('Select Client') }}</option>
                 @foreach($clients as $client)
                     <option value="{{ $client->email }}" @if($lead->email == $client->email) selected @endif>{{ $client->name }} ({{ $client->email }})</option>

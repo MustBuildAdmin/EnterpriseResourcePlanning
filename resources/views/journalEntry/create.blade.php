@@ -198,7 +198,7 @@
                             <tbody class="ui-sortable" data-repeater-item>
                             <tr>
                                 <td width="25%" class="form-group pt-0">
-                                    {{ Form::select('account', $accounts,'', array('class' => 'form-control select','required'=>'required')) }}
+                                    {{ Form::select('account', $accounts,'', array('class' => 'form-select','required'=>'required')) }}
 
                                 </td>
 

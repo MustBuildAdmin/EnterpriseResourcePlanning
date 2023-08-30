@@ -211,7 +211,7 @@
                                 {{ Form::hidden('id',null, array('class' => 'form-control id')) }}
                                 <td width="25%">
                                     <div class="form-group">
-                                        {{ Form::select('account', $accounts,'', array('class' => 'form-control select','id'=>'choices-multiple1','required'=>'required')) }}
+                                        {{ Form::select('account', $accounts,'', array('class' => 'form-select','id'=>'choices-multiple1','required'=>'required')) }}
                                     </div>
                                 </td>
 

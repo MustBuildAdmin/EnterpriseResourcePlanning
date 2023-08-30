@@ -5,7 +5,7 @@
     <div class="row">
         <div class="form-group col-lg-6  ">
             {{Form::label('employee_id',__('Employee'), ['class' => 'form-label'])}}
-            {{Form::select('employee_id',$employees,null,array('class'=>'form-control select'))}}
+            {{Form::select('employee_id',$employees,null,array('class'=>'form-select'))}}
         </div>
         <div class="form-group col-lg-6 ">
             {{Form::label('date',__('Date'), ['class' => 'form-label'])}}

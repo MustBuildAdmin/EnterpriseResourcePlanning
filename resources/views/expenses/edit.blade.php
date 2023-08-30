@@ -26,7 +26,7 @@
         <div class="col-12 col-md-4">
             <div class="form-group">
                 {{ Form::label('task_id', __('Task'),['class' => 'form-label']) }}
-                <select class="form-control select" name="task_id" id="task_id" required><span class="text-danger">*</span>
+                <select class="form-select" name="task_id" id="task_id" required><span class="text-danger">*</span>
                     <option class="text-muted" value="0" disabled selected> Choose Task </option>
                     @foreach($tasks as $task)
                         <option value="{{ $task->id }}" {{ ($task->id == $expense->task_id) ? 'selected' : '' }}>{{ $task->name }}</option>
