@@ -46,12 +46,12 @@
      
        
         @if ($user->color_code!=null || $user->color_code!='')
-             @php $colorco =$user->color_code; @endphp
+             @php $colorcor =$user->color_code; @endphp
         @else
-             @php $colorco =$color_co; @endphp
+             @php $colorcor =$colorco; @endphp
         @endif
 
-            <input type="text" name="color_code" value="{{ $colorco }}">
+            <input type="hidden" name="color_code" value="{{ $colorcor }}">
 
             <div class="row">
                 <div class="col-md-6">
