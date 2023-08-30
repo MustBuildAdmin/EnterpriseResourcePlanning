@@ -116,7 +116,6 @@ class ConsultantController extends Controller
         if(\Auth::user()->can('create consultant'))
         {
             $country=Utility::getcountry();
-
             return view('consultants.create', compact('roles','gender', 'customFields',
                         'country','company_type','users'));
         }
@@ -129,10 +128,7 @@ class ConsultantController extends Controller
     public function store(Request $request)
     {
 
-
-        
             $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
-            
             
                 $validator = \Validator::make(
                     $request->all(), [
@@ -177,7 +173,7 @@ class ConsultantController extends Controller
                 $user['gender']      = $request->gender;
                 $psw                = $request->password;
                 $user['password']   = Hash::make($request->password);
-                $user['type']       = 'company';
+                $user['type']       = 'consultant';
                 $user['default_pipeline'] = 1;
                 $user['plan'] = 1;
                 $user['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : '';
@@ -210,9 +206,7 @@ class ConsultantController extends Controller
                 ExperienceCertificate::defaultExpCertificatRegister($user->id);
                 JoiningLetter::defaultJoiningLetterRegister($user->id);
                 NOC::defaultNocCertificateRegister($user->id);
-            
-           
-            // Send Email
+        
             $setings = Utility::settings();
 
             if($setings['create_consultant'] == 1) {
@@ -223,16 +217,11 @@ class ConsultantController extends Controller
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
-               
-
             Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
             
             }
             return redirect()->route('consultants.index')->with('success', Config::get('constants.CONSULTANT_MAIL'));
-
-       
-
     }
  
 
@@ -359,7 +348,7 @@ class ConsultantController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd("hi");
+      
                 $user = User::findOrFail($id);
                 $validator = \Validator::make(
                     $request->all(), [
@@ -397,7 +386,7 @@ class ConsultantController extends Controller
 
                 }
 
-                $role = Role::findByName('company');
+                $role = Role::findByName('consulant');
                 $input = $request->all();
                 $input['type'] = $role->name;
                 $input['color_code']=$request->color_code;
@@ -421,9 +410,6 @@ class ConsultantController extends Controller
                 return redirect()->route('consultants.index')->with(
                     'success', 'User successfully updated.'
                 );
-           
-        
-        
     }
     
 
@@ -475,9 +461,6 @@ class ConsultantController extends Controller
                    $user->fill($input)->save();
                    Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                    CustomField::saveData($user, $request->customField);
-   
-                  
-   
                    return redirect()->route('consultants.index')->with(
                        'success', 'User successfully updated.'
                    );
