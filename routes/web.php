@@ -4215,6 +4215,15 @@ Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_
     ]
 );
 
+Route::any('update_consultant/{id}', 'ConsultantController@update_consultant')->name('consultants.update_consultant')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
 
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')

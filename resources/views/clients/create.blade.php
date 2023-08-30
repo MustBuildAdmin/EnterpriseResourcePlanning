@@ -77,8 +77,10 @@
                 <div class="form-group">
                     {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                        <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
+                        accept="image/*, .png, .jpeg, .jpg">
                     </div>
+                    <span class="show_document_error" style="color:red;"></span>
                 </div>
             </div>
         </div>
@@ -408,6 +410,11 @@ $(document).on("change", '#country', function () {
     });
 
     $(document).ready(function() {
+
+
+    $(document).on('submit', 'form', function() {
+        $('#create_client').attr('disabled', 'disabled');
+    });
 
     $(document).on("change", ".checkbox1", function () {
     var $this = $(this).parent().parent();

@@ -359,12 +359,7 @@ class ConsultantController extends Controller
 
     public function update(Request $request, $id)
     {
-      
-      
-        if(\Auth::user()->can('edit consultant'))
-        {
-            if(\Auth::user()->type == 'super admin')
-            {
+        dd("hi");
                 $user = User::findOrFail($id);
                 $validator = \Validator::make(
                     $request->all(), [
@@ -373,15 +368,43 @@ class ConsultantController extends Controller
                                        'gender'=>'required'
                                    ]
                 );
-                $this->validator_alert($validator);
+                if($validator->fails())
+                {
+                    $messages = $validator->getMessageBag();
+                    return redirect()->back()->with('error', $messages->first());
+                }
 
-                $img=$request->avatar;
-                $this->image_upload($img);
+                if(isset($request->avatar)){
+                    
+                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension       = $request->file('avatar')->getClientOriginalExtension();
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+                
+                    $dir = Config::get('constants.USER_IMG');
+                    $image_path = $dir . $fileNameToStore;
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+                    $url = '';
+                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+    
+                    if($path['flag'] == 1){
+                        $url = $path['url'];
+                    }else{
+                        return redirect()->back()->with('error', __($path['msg']));
+                    }
+
+                }
+
+                $role = Role::findByName('company');
                 $input = $request->all();
-        
+                $input['type'] = $role->name;
                 $input['color_code']=$request->color_code;
              
-                $this->image_url($user);
+                if(isset($url)){
+                    $input['avatar']=$url;
+                }
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);
                 DB::table('users')->where('id',$id)->update(['company_type'=>$request->company_type]);
@@ -392,42 +415,77 @@ class ConsultantController extends Controller
                 );
                 $data =DB::table('settings')->where('created_by',$id)->update($insert2);
 
+                $roles[] = $role->id;
+                $user->roles()->sync($roles);
 
                 return redirect()->route('consultants.index')->with(
-                    'success', 'Consultant successfully updated.'
+                    'success', 'User successfully updated.'
                 );
-            }
-            else
-            {
-                $user = User::findOrFail($id);
-                $validator = \Validator::make(
-                    $request->all(), [
-                                        'name' => 'required|max:120',
-                                        'email' => 'required|email|unique:users,email,' . $id,
-                                        'gender'=>'required'
-                                   ]
-                );
-                $this->validator_alert($validator);
-                $img=$request->avatar;
-                $this->image_upload($img);
-                $input         = $request->all();
-                $this->image_url($user);
-                $user->fill($input)->save();
-                Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
-                CustomField::saveData($user, $request->customField);
-                return redirect()->route('consultants.index')->with(
-                    'success', 'Consultant successfully updated.'
-                );
-            }
-        }
-        else
-        {
-            dd();
-            return redirect()->back();
-        }
+           
+        
+        
     }
+    
 
 
+    public function update_consultant(Request $request, $id)
+    {
+      
+        $user = User::findOrFail($id);
+                   $validator = \Validator::make(
+                       $request->all(), [
+                                           'name' => 'required|max:120',
+                                           'email' => 'required|email|unique:users,email,' . $id,
+                                           'gender'=>'required'
+                                      ]
+                   );
+                   if($validator->fails())
+                   {
+                       $messages = $validator->getMessageBag();
+                       return redirect()->back()->with('error', $messages->first());
+                   }
+                   if(isset($request->avatar)){
+                       
+                       $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+                       $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                       $extension       = $request->file('avatar')->getClientOriginalExtension();
+                       $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                   
+                       $dir = Config::get('constants.USER_IMG');
+                       $image_path = $dir . $fileNameToStore;
+                       if (\File::exists($image_path)) {
+                           \File::delete($image_path);
+                       }
+                       $url = '';
+                       $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+       
+                       if($path['flag'] == 1){
+                           $url = $path['url'];
+                       }else{
+                           return redirect()->back()->with('error', __($path['msg']));
+                       }
+   
+                   }
+                
+                   $input         = $request->all();
+                   $input['type'] = 'consultant';
+                   if(isset($url)){
+                       $input['avatar']=$url;
+                   }
+                   $user->fill($input)->save();
+                   Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
+                   CustomField::saveData($user, $request->customField);
+   
+                  
+   
+                   return redirect()->route('consultants.index')->with(
+                       'success', 'User successfully updated.'
+                   );
+               
+   
+        }
+        
+    
 
     public function destroy($id)
     {

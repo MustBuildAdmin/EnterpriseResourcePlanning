@@ -54,7 +54,7 @@
                         <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
                     </a>
                     <a href="#" class="btn btn-primary" data-size="xl" data-url="{{ route('clients.create') }}"
-                        data-ajax-popup="true" data-bs-toggle="tooltip" title="{{ __('Create') }}" id="create">
+                        data-ajax-popup="true" data-bs-toggle="tooltip" title="{{ __('Create Client') }}" id="create">
                         <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
                     </a>
                 </div>
@@ -208,5 +208,20 @@
         </div>
     </div>
 </div>
-
+<script>
+$(document).on('change', '.document_setup', function(){
+	var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+	if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+		$(".show_document_file").hide();
+		$(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+		$('input[type="submit"]').prop('disabled',true);
+		return false;
+	} else{
+		$(".show_document_file").show();
+		$(".show_document_error").hide();
+		$('input[type="submit"]').prop('disabled',false);
+		return true;
+	}
+});
+</script>
 @include('new_layouts.footer')
