@@ -1964,10 +1964,15 @@ class ProjectTaskController extends Controller
         $projectId   = Session::get('project_id');
 
         if($request->filled('selectsearch')){
-            $user_data =  User::search($searchValue)->with('projects')
+
+            $user_data = User::search($searchValue)
+                ->query(function ($query) use($projectId) {
+                    $query->join('project_users as project','users.id','=','project.user_id')
+                        ->select(['users.id', 'users.name'])
                         ->where('project.project_id',$projectId)
-                        ->groupBy('users.id')
-                        ->get();
+                        ->orderBy('project.id', 'DESC');
+                })
+                ->get();
         }
 
         $userData = array(); 
