@@ -1555,6 +1555,86 @@ class ProjectController extends Controller
                             ])
                     ->update(['progress' => $insertPre->progress]);
                 }
+
+                DB::select(
+                    "INSERT INTO task_progress(
+                        task_id,assign_to,percentage,date_status,description,user_id,project_id,instance_id,
+                        file_id,record_date,created_at,updated_at
+                    )
+                    SELECT task_id,assign_to,percentage,date_status,description,user_id,project_id,
+                    '".$instanceId."' as instance_id,file_id,record_date,created_at,updated_at
+                    FROM task_progress WHERE project_id = " . $request->project_id . " AND
+                    instance_id='" . $setPreviousInstance . "'"
+                );
+
+                DB::select(
+                    "INSERT INTO task_progress_file(
+                        task_id,project_id,instance_id,filename,file_path,status
+                    )
+                    SELECT task_id,project_id,'".$instanceId."' as instance_id,
+                    filename,file_path,status
+                    FROM task_progress_file WHERE project_id = " . $request->project_id . " AND
+                    instance_id='" . $setPreviousInstance . "'"
+                );
+
+                $taskProgresskData = Task_progress::where('project_id',$request->project_id)
+                    ->where('instance_id',$instanceId)->get();
+
+                $taskFileData = DB::table('task_progress_file')
+                    ->where('project_id',$request->project_id)
+                    ->where('instance_id',$instanceId)->get();
+
+                $taskProgressTaskId = [];
+                $taskFileDataId = [];
+
+                if(!empty($taskProgresskData)){
+                    foreach($taskProgresskData as $taskProgress){
+                        if(!in_array($taskProgress->task_id,$taskProgressTaskId)){
+                            $getCorrectData = Con_task::select('id','text','duration','start_date','end_date','type')
+                                ->where('main_id',$taskProgress->task_id)
+                                ->first();
+    
+                            $getOrginalTask = Con_task::where('id',$getCorrectData->id)
+                                ->where('project_id',$request->project_id)
+                                ->where('start_date',$getCorrectData->start_date)
+                                ->where('end_date',$getCorrectData->end_date)
+                                ->where('instance_id',$instanceId)->first();
+    
+                            if($getOrginalTask != null){
+                                Task_progress::where('project_id',$request->project_id)
+                                ->where('instance_id',$instanceId)
+                                ->where('task_id',$taskProgress->task_id)
+                                ->update(['task_id' => $getOrginalTask->main_id]);
+                            }
+                            $taskProgressTaskId[] = $taskProgress->task_id;
+                        }
+                    }
+                }
+                
+                if(!empty($taskFileData)){
+                    foreach($taskFileData as $taskFileDataSet){
+                        if(!in_array($taskFileDataSet->task_id,$taskFileDataId)){
+                            $getCorrectData = Con_task::select('id','text','duration','start_date','end_date','type')
+                                ->where('main_id',$taskFileDataSet->task_id)
+                                ->first();
+
+                            $getOrginalTask = Con_task::where('id',$getCorrectData->id)
+                                ->where('project_id',$request->project_id)
+                                ->where('start_date',$getCorrectData->start_date)
+                                ->where('end_date',$getCorrectData->end_date)
+                                ->where('instance_id',$instanceId)->first();
+
+                            if($getOrginalTask != null){
+                                DB::table('task_progress_file')
+                                ->where('project_id',$request->project_id)
+                                ->where('instance_id',$instanceId)
+                                ->where('task_id',$taskFileDataSet->task_id)
+                                ->update(['task_id' => $getOrginalTask->main_id]);
+                            }
+                            $taskFileDataId[] = $taskFileDataSet->task_id;
+                        }
+                    }
+                }
             }
 
             Project::where('id',$request->project_id)->update($data);
