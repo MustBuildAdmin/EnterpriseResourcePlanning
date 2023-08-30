@@ -129,21 +129,6 @@ class ConsultantController extends Controller
     {
 
             $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
-            
-                $validator = \Validator::make(
-                    $request->all(), [
-                                       'name' => 'required|max:120',
-                                       'email' => 'required|email|unique:users',
-                                       'password' => 'required|min:6',
-                                       'gender'=>'required'
-                                   ]
-                );
-                if($validator->fails())
-                {
-                    $messages = $validator->getMessageBag();
-
-                    return redirect()->back()->with('error', $messages->first());
-                }
                 if(isset($request->avatar)){
                     
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
@@ -350,19 +335,6 @@ class ConsultantController extends Controller
     {
       
                 $user = User::findOrFail($id);
-                $validator = \Validator::make(
-                    $request->all(), [
-                                       'name' => 'required|max:120',
-                                       'email' => 'required|email|unique:users,email,' . $id,
-                                       'gender'=>'required'
-                                   ]
-                );
-                if($validator->fails())
-                {
-                    $messages = $validator->getMessageBag();
-                    return redirect()->back()->with('error', $messages->first());
-                }
-
                 if(isset($request->avatar)){
                     
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
@@ -418,18 +390,6 @@ class ConsultantController extends Controller
     {
       
         $user = User::findOrFail($id);
-                   $validator = \Validator::make(
-                       $request->all(), [
-                                           'name' => 'required|max:120',
-                                           'email' => 'required|email|unique:users,email,' . $id,
-                                           'gender'=>'required'
-                                      ]
-                   );
-                   if($validator->fails())
-                   {
-                       $messages = $validator->getMessageBag();
-                       return redirect()->back()->with('error', $messages->first());
-                   }
                    if(isset($request->avatar)){
                        
                        $filenameWithExt = $request->file('avatar')->getClientOriginalName();
