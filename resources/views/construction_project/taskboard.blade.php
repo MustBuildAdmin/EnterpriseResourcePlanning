@@ -180,15 +180,7 @@
                                                                 <div class="col-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Search Assignee</label>
-                                                                        <select type="text" class="form-select" placeholder="Search By Assignee Name" id="search-assignee" value="" multiple>
-                                                                            <option value="HTML">HTML</option>
-                                                                            <option value="JavaScript">JavaScript</option>
-                                                                            <option value="CSS">CSS</option>
-                                                                            <option value="jQuery">jQuery</option>
-                                                                            <option value="Bootstrap">Bootstrap</option>
-                                                                            <option value="Ruby">Ruby</option>
-                                                                            <option value="Python">Python</option>
-                                                                        </select>
+                                                                        <input type="text" id="user_select" value="{{ request()->get('selectsearch') }}" >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12">
@@ -468,6 +460,24 @@
             deleteText: "&times;",
             preventDuplicates: true,
             theme: "bootstrap"
+        });
+
+        $("#user_select").tokenInput("{{route('user_autocomplete')}}", {
+            propertyToSearch:"name",
+            tokenValue:"id",
+            tokenDelimiter:",",
+            hintText: "Type your name (or) email",
+            noResultsText: "User not found.",
+            searchingText: "Searching...",
+            deleteText:"&#215;",
+            minChars: 2,
+            tokenLimit: 4,
+            animateDropdown: false,
+            resultsLimit:10,
+            deleteText: "&times;",
+            preventDuplicates: true,
+            theme: "bootstrap",
+            queryParam:"selectsearch",
         });
     });
 

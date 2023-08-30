@@ -1958,4 +1958,29 @@ class ProjectTaskController extends Controller
 
         echo json_encode($conData); 
     }
+
+    public function user_autocomplete(request $request){
+        $searchValue = $request['selectsearch'];
+        $projectId   = Session::get('project_id');
+
+        if($request->filled('selectsearch')){
+            $user_data =  User::search($searchValue)->with('projects')
+                        ->where('project.project_id',$projectId)
+                        ->groupBy('users.id')
+                        ->get();
+        }
+
+        $userData = array(); 
+        if(count($user_data) > 0){
+            foreach($user_data as $user){
+                $setUser = [
+                    'id' => $user->id,
+                    'name' => $user->name
+                ];
+                $userData[] = $setUser;
+            }
+        }
+
+        echo json_encode($userData); 
+    }
 }
