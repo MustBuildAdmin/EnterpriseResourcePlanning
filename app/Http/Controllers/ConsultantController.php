@@ -172,8 +172,8 @@ class ConsultantController extends Controller
                 $user['company_type']       = $request->company_type;
                 $user['color_code']=$request->color_code;
                 $user['company_name']       = $request->company_name;
-                if(isset($url)){
-                    $user['avatar']=$url;
+                if(isset($fileNameToStore)){
+                    $user['avatar']=$fileNameToStore;
                 }
                 $user->save();
                 $role_r = Role::findByName('consultant');
@@ -227,7 +227,7 @@ class ConsultantController extends Controller
         if (\File::exists($imagepath)) {
             \File::delete($imagepath);
         }
-        $url = '';
+      
         $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
         if($path['flag'] == 1){
@@ -246,16 +246,14 @@ class ConsultantController extends Controller
     if($totaluser < $plan->max_users || $plan->max_users == -1)
     {
         
-        $psw                   = $request->password;
-       
-     
+        $psw = $request->password;
     
         if(isset($fileNameToStore)){
             $avatar=$fileNameToStore;
         }else{
             $avatar=null;
         }
-       
+      
         $user = User::create(
             [
                 'name' => $request->name,
@@ -265,7 +263,7 @@ class ConsultantController extends Controller
                 'gender'=> $request->gender,
                 'password' => Hash::make($request->password),
                 'lang' => Utility::getValByName('default_language'),
-                'created_by' => $user->creatorId(),
+                'created_by' => \Auth::user()->creatorId(),
                 'country'=>$request->country,
                 'state'=>$request->state,
                 'city'=>$request->city,
@@ -274,21 +272,17 @@ class ConsultantController extends Controller
                 'avatar'=>$avatar,
                 'address'=>$request->address,
                 'color_code'=>$request->color_code,
-                'created_by' => \Auth::user()->creatorId(),
             ]
         );
 
-
-      
         $user->userDefaultDataRegister($user->id);
-       
-         
+    
     }
     $setings = Utility::settings();
 
     if($setings['create_consultant'] == 1) {
         $user->password = $psw;
-        $user->type = $roler->name;
+        $user->type = 'consultant';
 
         $userArr = [
             'email' => $user->email,
@@ -354,74 +348,61 @@ class ConsultantController extends Controller
 
     public function update(Request $request, $id)
     {
-      
-                $user = User::findOrFail($id);
-                if(isset($request->avatar)){
-                    
-                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                
-                    $dir = Config::get('constants.USER_IMG');
-                    $image_path = $dir . $fileNameToStore;
-                    if (\File::exists($image_path)) {
-                        \File::delete($image_path);
-                    }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
 
-                }
-
-                $post =[
-                    'name' => $request->name,
-                    'lname' => $request->lname,
-                    'email' => $request->email,
-                    'type'=> 'consultant',
-                    'gender'=> $request->gender,
-                    'password' => Hash::make($request->password),
-                    'lang' => Utility::getValByName('default_language'),
-                    'created_by' => $user->creatorId(),
-                    'country'=>$request->country,
-                    'state'=>$request->state,
-                    'city'=>$request->city,
-                    'phone'=>$request->phone,
-                    'zip'=>$request->zip,
-                    'address'=>$request->address,
-                    'color_code'=>$request->color_code,
-                    'created_by' => \Auth::user()->creatorId(),
-            ];
-
-            if(!empty($request->avatar))
-            {
-                $post['avatar']=$fileNameToStore;
-             
-            }
-          
+        $user = User::findOrFail($id);
+        if(isset($request->avatar)){
             
-            $user->update($post);
+            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension       = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        
+            $dir = Config::get('constants.USER_IMG');
+            $image_path = $dir . $fileNameToStore;
+            if (\File::exists($image_path)) {
+                \File::delete($image_path);
+            }
+         
+            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
-                CustomField::saveData($user, $request->customField);
-                DB::table('users')->where('id',$id)->update(['company_type'=>$request->company_type]);
+            if($path['flag'] == 1){
+                $url = $path['url'];
+            }else{
+                return redirect()->back()->with('error', __($path['msg']));
+            }
 
-                $insert2=array(
-                    'name'=>'company_type',
-                    'value'=>$request->company_type,
-                );
-                $data =DB::table('settings')->where('created_by',$id)->update($insert2);
+        }
 
-                $roles[] = $role->id;
-                $user->roles()->sync($roles);
+        $post =[
+                'name' => $request->name,
+                'lname' => $request->lname,
+                'email' => $request->email,
+                'type'=> 'consultant',
+                'gender'=> $request->gender,
+                'password' => Hash::make($request->password),
+                'lang' => Utility::getValByName('default_language'),
+                'country'=>$request->country,
+                'state'=>$request->state,
+                'city'=>$request->city,
+                'phone'=>$request->phone,
+                'zip'=>$request->zip,
+                'address'=>$request->address,
+                'color_code'=>$request->color_code,
+                'created_by' => \Auth::user()->creatorId(),
+        ];
 
-                return redirect()->route('consultants.index')->with(
-                    'success', 'User successfully updated.'
-                );
+        if(!empty($request->avatar))
+        {
+            $post['avatar']=$fileNameToStore;
+            
+        }
+        $user->update($post);
+
+        CustomField::saveData($user, $request->customField);
+        
+        return redirect()->route('consultants.index')->with(
+            'success', 'User successfully updated.'
+        );
     }
     
 
@@ -430,43 +411,43 @@ class ConsultantController extends Controller
     {
       
         $user = User::findOrFail($id);
-                   if(isset($request->avatar)){
-                       
-                       $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-                       $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                       $extension       = $request->file('avatar')->getClientOriginalExtension();
-                       $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                   
-                       $dir = Config::get('constants.USER_IMG');
-                       $image_path = $dir . $fileNameToStore;
-                       if (\File::exists($image_path)) {
-                           \File::delete($image_path);
-                       }
-                       $url = '';
-                       $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-       
-                       if($path['flag'] == 1){
-                           $url = $path['url'];
-                       }else{
-                           return redirect()->back()->with('error', __($path['msg']));
-                       }
-   
-                   }
-                
-                   $input         = $request->all();
-                   $input['type'] = 'consultant';
-                   if(isset($url)){
-                       $input['avatar']=$url;
-                   }
-                   $user->fill($input)->save();
-                   Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
-                   CustomField::saveData($user, $request->customField);
-                   return redirect()->route('consultants.index')->with(
-                       'success', 'User successfully updated.'
-                   );
+        if(isset($request->avatar)){
+            
+            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension       = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        
+            $dir = Config::get('constants.USER_IMG');
+            $image_path = $dir . $fileNameToStore;
+            if (\File::exists($image_path)) {
+                \File::delete($image_path);
+            }
+           
+            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+
+            if($path['flag'] == 1){
+                $url = $path['url'];
+            }else{
+                return redirect()->back()->with('error', __($path['msg']));
+            }
+
+        }
+
+        $input         = $request->all();
+        $input['type'] = 'consultant';
+        if(isset($fileNameToStore)){
+            $input['avatar']=$fileNameToStore;
+        }
+        $user->fill($input)->save();
+        Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
+        CustomField::saveData($user, $request->customField);
+        return redirect()->route('consultants.index')->with(
+            'success', 'User successfully updated.'
+        );
                
    
-        }
+    }
         
     
 

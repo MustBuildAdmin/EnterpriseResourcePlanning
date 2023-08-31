@@ -96,7 +96,7 @@
                 <div class="form-group">
                     {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <select class="form-control" name="state" id='state' placeholder="Select State" >
+                        <select class="form-control" name="state" id='state' placeholder="Select State" required>
                             <option value="">{{ __('Select State ...') }}</option>
                         </select>
                     </div>
