@@ -141,7 +141,7 @@ class ConsultantController extends Controller
                     if (\File::exists($imagepath)) {
                         \File::delete($imagepath);
                     }
-                    $url = '';
+                
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
                     if($path['flag'] == 1){
@@ -211,9 +211,6 @@ class ConsultantController extends Controller
  
 
   public function normal_store(Request $request){
-
-   
-    $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
 
     if(isset($request->avatar)){
         
