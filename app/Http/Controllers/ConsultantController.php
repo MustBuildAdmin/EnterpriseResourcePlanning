@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\Utility;
 use App\Models\Order;
+use App\Models\Consultant_companies;
 use App\Models\Plan;
 use App\Models\UserToDo;
 use Illuminate\Http\Request;
@@ -128,10 +129,6 @@ class ConsultantController extends Controller
     
     public function store(Request $request)
     {
-
-   
-       
-
         if(\Auth::user()->can('create consultant'))
         {
             $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
@@ -156,7 +153,7 @@ class ConsultantController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
@@ -178,12 +175,10 @@ class ConsultantController extends Controller
                 $user['lname']       = $request->lname;
                 $user['email']      = $request->email;
                 $user['gender']      = $request->gender;
-                // $user['phone']      = $request->phone;
                 $psw                = $request->password;
                 $user['password']   = Hash::make($request->password);
                 $user['type']       = 'company';
                 $user['default_pipeline'] = 1;
-                $user['plan'] = 1;
                 $user['lang']       = !empty($default_language) ? $default_language->value : '';
                 $user['created_by'] = \Auth::user()->creatorId();
                 $user['plan']       = Plan::first()->id;
@@ -195,7 +190,6 @@ class ConsultantController extends Controller
                 $user['address']=$request->address;
                 $user['company_type']       = $request->company_type;
                 $user['color_code']=$request->color_code;
-                // $user['reporting_to']=$string_version;
                 $user['company_name']       = $request->company_name;
                 if(isset($url)){
                     $user['avatar']=$url;
@@ -203,7 +197,6 @@ class ConsultantController extends Controller
                 $user->save();
                 $role_r = Role::findByName('consultant');
                 $user->assignRole($role_r);
-//                $user->userDefaultData();
                 $user->userDefaultDataRegister($user->id);
                 $user->userWarehouseRegister($user->id);
                 Utility::chartOfAccountTypeData($user->id);
@@ -240,7 +233,7 @@ class ConsultantController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
@@ -260,7 +253,6 @@ class ConsultantController extends Controller
 
                 $objUser    = \Auth::user()->creatorId();
                 $objUser =User::find($objUser);
-                $user = User::find(\Auth::user()->created_by);
                 $total_user = $objUser->countUsers();
                 $plan       = Plan::find($objUser->plan);
                 if($total_user < $plan->max_users || $plan->max_users == -1)
@@ -280,8 +272,19 @@ class ConsultantController extends Controller
                     $user = User::create($request->all());
                     $user->assignRole($role_r);
                     $user->userDefaultDataRegister($user->id);
-                    if($request['type'] != 'client')
-                      Utility::employeeDetails($user->id,\Auth::user()->creatorId());
+                    // Create Connection Consultant & Company
+                    if($user && $user->type=='consultant'){
+                        $requested_date = date('Y-m-d H:i:s');
+                        Consultant_companies::create([
+                            "company_id"=>\Auth::user()->creatorId(),
+                            'consultant_id'=>$user->id,
+                            'requested_date'=>$requested_date,
+                            'status'=>'requested'
+                        ]);
+                    }
+                    if($request['type'] != 'client'){
+                        Utility::employeeDetails($user->id,\Auth::user()->creatorId());
+                    }
                 }
                 else
                 {
@@ -303,7 +306,8 @@ class ConsultantController extends Controller
 
                 $resp=Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
 
-                return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '' : ''));
+                return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.')
+                 . ((!empty($resp) && !$resp['is_success'] && !empty($resp['error'])) ? $resp['error'] : ''));
             }
             return redirect()->route('consultants.index')->with('success', __('Consultant successfully created.'));
 
