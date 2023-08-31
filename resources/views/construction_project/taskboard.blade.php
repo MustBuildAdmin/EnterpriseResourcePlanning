@@ -6,79 +6,11 @@
 <link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
 
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
-<style>
-    .nav-item .active {
-        background: #c6c6c7 !important;
-        color: #000000 !important;
-    }
-    .wrappers{
-        display: flex;
-        justify-content: center;
-    }
-    .cards {
-        display: flex;
-        padding: 24px;
-        border-radius: 5px;
-        align-items: center;
-        justify-content: center;
-    }
-    .loader{
-        border-radius: 50%;
-        position: relative;
-        display: inline-block;
-        height: 0px;
-        width: 0px;
-    }
 
-    .loader span{
-        position: absolute;
-        display: block;
-        background: #ddd;
-        height: 15px;
-        width: 15px;
-        border-radius: 50%;
-        top: -20px;
-        perspective: 100000px;
-    }
-    .loader span:nth-child(1) {
-        left:30px;
-        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
-        animation-delay: 0s;
-        background: #ff756f;
-    }
-    .loader span:nth-child(2) {
-        left:6px;
-        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
-        animation-delay: .2s;
-        background: #ffde6f;
-    }
-    .loader span:nth-child(3) {
-        left:-20px;
-        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
-        animation-delay: .4s;
-        background: #01de6f;
-    }
-    .loader span:nth-child(4) {
-        left: -44px;
-        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
-        animation-delay: .6s;
-        background: #6f75ff;
-    }
-
-    @keyframes bounce2 {
-        0%, 56%, 100% {
-            transform: translateY(0px);
-        }
-        25% {
-            transform: translateY(-30px);
-        }
-    }
-</style>
     <div class="page-wrapper">
         @include('construction_project.side-menu')
-        <div class="row">
-            <div class="row min-750" id="taskboard_view">
-                <div class="col-md-12">
+            <div class="container-fluid" id="taskboard_view">
+                <div class="p-4">
                     <div class="card">
                         <div class="col-12">
                             <div class="card-header">
@@ -104,7 +36,7 @@
                                                 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567
                                                 .411l-2.172 -1.138z"></path>
                                             </svg>
-                                            Sub Tasks
+                                             Tasks
                                         </a>
                                     </li>
                                     <li class="nav-item" role="presentation">
@@ -129,7 +61,7 @@
                                 </ul>
                             </div>
 
-                            <center>
+
                                 <section class="wrappers loader_show_hide" style="display: none;">
                                     <div class="cards">
                                         <div class="loader">
@@ -140,7 +72,7 @@
                                         </div>
                                     </div>
                                 </section>
-                            </center>
+            
 
                             <div class="card-body">
                                 <div class="tab-content">
@@ -386,7 +318,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 
 @include('new_layouts.footer')

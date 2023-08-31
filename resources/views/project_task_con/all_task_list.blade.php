@@ -10,6 +10,11 @@
     line-height: 35px;
     display: grid;
 }
+
+
+.dataTables_length{
+  margin-bottom: 5%;
+}
 </style>
 
 <table class="table table-vcenter card-table" id="task-table">
@@ -23,9 +28,9 @@
         <th scope="col">{{__('Planned Start Date')}}</th>
         <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
-        @if(\Auth::user()->type == 'company')
+        <!-- @if(\Auth::user()->type == 'company')
             <th scope="col">{{__('Action')}}</th>
-        @endif
+        @endif -->
     </tr>
     </thead>
     <tbody class="list">
@@ -57,18 +62,18 @@
 
                 @endphp
                 <tr>
-                    <td style="width: 15%; font-size: 15px;">
+                    <td>
                         <a href="{{route('task_particular',['task_id' => $task->main_id,
                         'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             TaskId-{{ $task->id }}
                         </a>
                     </td>
 
-                    <td style="width: 20%; font-size: 14px;">
+                    <td>
                         {{ $task->text }}
                     </td>
 
-                    <td style="width: 23%;">
+                    <td>
                         @if (strtotime($task->end_date) < time() && $task->progress < 100)
                             <span class="badge bg-warning me-1"></span> Pending
                         @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
@@ -78,7 +83,7 @@
                         @endif
                     </td>
 
-                    <td style="width: 12%;" class="sort-progress" data-progress="{{round($task->progress)}}">
+                    <td class="sort-progress" data-progress="{{round($task->progress)}}">
                         <div class="row align-items-center">
                             <div class="col-12 col-lg-auto" style="width: 50px;">{{round($task->progress)}}%</div>
                             <div class="col">
@@ -94,7 +99,7 @@
                         </div>
                     </td>
 
-                    <td style="width: 12%;" class="sort-progress" data-progress="{{round($current_Planed_percentage)}}">
+                    <td  class="sort-progress" data-progress="{{round($current_Planed_percentage)}}">
                         <div class="row align-items-center">
                             <div class="col-12 col-lg-auto" style="width: 50px;">
                                 {{round($current_Planed_percentage)}}%
@@ -114,16 +119,16 @@
                         </div>
                     </td>
 
-                    <td style="width: 4%; font-size: 14px;"
+                    <td 
                     class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
                     </td>
 
-                    <td style="width: 4%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+                    <td  class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format_minus_day($task->end_date,\Auth::user()->id,1) }}
                     </td>
 
-                    <td style="width: 8%;">
+                    <td >
                         <div class="avatar-group">
                             @php
                                 if($task->users != ""){
@@ -161,7 +166,7 @@
                         </div>
                     </td>
 
-                    @if(\Auth::user()->type == 'company')
+                    <!-- @if(\Auth::user()->type == 'company')
                         <td class="text-center w-15" style="width: 3%;">
                             <div class="actions" style="height: 36px;">
                                 <a style="margin-top: 20%;" href="#" data-size="xl"
@@ -173,7 +178,7 @@
                                 </a>
                             </div>
                         </td>
-                    @endif
+                    @endif -->
                 </tr>
             @endif
         @empty
