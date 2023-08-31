@@ -58,7 +58,8 @@
                 @endphp
                 <tr>
                     <td style="width: 15%; font-size: 15px;">
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                        <a href="{{route('task_particular',['task_id' => $task->main_id,
+                        'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             TaskId-{{ $task->id }}
                         </a>
                     </td>
@@ -67,7 +68,7 @@
                         {{ $task->text }}
                     </td>
 
-                    <td style="width: 18%;">
+                    <td style="width: 23%;">
                         @if (strtotime($task->end_date) < time() && $task->progress < 100)
                             <span class="badge bg-warning me-1"></span> Pending
                         @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
@@ -77,15 +78,16 @@
                         @endif
                     </td>
 
-                    <td style="width: 12%;" class="sort-progress" data-progress="{{$task->progress}}">
+                    <td style="width: 12%;" class="sort-progress" data-progress="{{round($task->progress)}}">
                         <div class="row align-items-center">
-                            <div class="col-12 col-lg-auto">{{$task->progress}}%</div>
+                            <div class="col-12 col-lg-auto" style="width: 50px;">{{round($task->progress)}}%</div>
                             <div class="col">
                                 <div class="progress" style="width: 5rem">
-                                    <div class="progress-bar" style="width: {{$task->progress}}%" role="progressbar"
-                                        aria-valuenow="{{$task->progress}}" aria-valuemin="0" aria-valuemax="100"
-                                        aria-label="{{$task->progress}}% Complete">
-                                        <span class="visually-hidden">{{$task->progress}}% Complete</span>
+                                    <div class="progress-bar" style="width: {{round($task->progress)}}%"
+                                        role="progressbar" aria-valuenow="{{round($task->progress)}}"
+                                        aria-valuemin="0" aria-valuemax="100"
+                                        aria-label="{{round($task->progress)}}% Complete">
+                                        <span class="visually-hidden">{{round($task->progress)}}% Complete</span>
                                     </div>
                                 </div>
                             </div>
@@ -94,24 +96,30 @@
 
                     <td style="width: 12%;" class="sort-progress" data-progress="{{round($current_Planed_percentage)}}">
                         <div class="row align-items-center">
-                            <div class="col-12 col-lg-auto">{{round($current_Planed_percentage)}}%</div>
+                            <div class="col-12 col-lg-auto" style="width: 50px;">
+                                {{round($current_Planed_percentage)}}%
+                            </div>
                             <div class="col">
                                 <div class="progress" style="width: 5rem">
-                                    <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%" role="progressbar"
-                                        aria-valuenow="{{round($current_Planed_percentage)}}" aria-valuemin="0" aria-valuemax="100"
-                                        aria-label="{{round($current_Planed_percentage)}}% Complete">
-                                        <span class="visually-hidden">{{round($current_Planed_percentage)}}% Complete</span>
+                                    <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%"
+                                    role="progressbar" aria-valuenow="{{round($current_Planed_percentage)}}"
+                                    aria-valuemin="0" aria-valuemax="100"
+                                    aria-label="{{round($current_Planed_percentage)}}% Complete">
+                                        <span class="visually-hidden">
+                                            {{round($current_Planed_percentage)}}% Complete
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </td>
 
-                    <td style="width: 5%; font-size: 14px;" class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
+                    <td style="width: 4%; font-size: 14px;"
+                    class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
                     </td>
 
-                    <td style="width: 5%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+                    <td style="width: 4%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
                         {{ Utility::site_date_format_minus_day($task->end_date,\Auth::user()->id,1) }}
                     </td>
 
@@ -139,7 +147,7 @@
                                             @else
                                                 src="{{asset('/storage/uploads/avatar/avatar.png')}}"
                                             @endif
-                                        title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
+                                        title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb" alt="avatar">
                                         </a>
                                     @else
                                         <?php  $short=substr($user_db->name, 0, 1);?>
@@ -154,10 +162,12 @@
                     </td>
 
                     @if(\Auth::user()->type == 'company')
-                        <td class="text-center w-15" style="width: 5%;">
+                        <td class="text-center w-15" style="width: 3%;">
                             <div class="actions" style="height: 36px;">
-                                <a style="margin-top: 20%;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
-                                    data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" 
+                                <a style="margin-top: 20%;" href="#" data-size="xl"
+                                data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
+                                    data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}"
+                                    data-bs-toggle="tooltip" title="{{__('Edit')}}"
                                     class="floatrght">
                                     <i class="ti ti-pencil"></i>
                                 </a>
