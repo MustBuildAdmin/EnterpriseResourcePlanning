@@ -127,7 +127,7 @@
 							<?php  $short=substr($user->name, 0, 1);?>
 								<?php  $short_lname=substr($user->lname, 0, 1);?>
 								 @if(!empty($user->avatar))
-								 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar :
+								 	<img src="{{(!empty($user->avatar))? $profile.$user->avatar :
 								 	asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded" alt="">
 								  @else
 										

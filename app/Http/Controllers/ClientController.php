@@ -135,7 +135,7 @@ class ClientController extends Controller
                             $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                             $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                             $extension       = $request->file('avatar')->getClientOriginalExtension();
-                            $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                         
                             $dir = Config::get('constants.USER_IMAGE');
                             $image_path = $dir . $fileNameToStore;
@@ -152,8 +152,8 @@ class ClientController extends Controller
                             }
         
                     }
-                    if(isset($url)){
-                        $avatar=$url;
+                    if(isset($fileNameToStore)){
+                        $avatar=$fileNameToStore;
                     }else{
                         $avatar=null;
                     }
@@ -395,11 +395,7 @@ class ClientController extends Controller
                     }
 
                 }
-                if(isset($url)){
-                    $avatar=$url;
-                }else{
-                    $avatar=null;
-                }
+               
                 if($request->copy_status!=null){
                     $copy_status=$request->copy_status;
 
@@ -422,8 +418,8 @@ class ClientController extends Controller
                     $shipping_address = $request->shipping_address;
                 }
 
-                if(isset($url)){
-                    $post['avatar']=$url;
+                if(isset($fileNameToStore)){
+                    $post['avatar']=$fileNameToStore;
                 }
                 $post['email'] = $request->email;
                 $post['lname'] = $request->lname;

@@ -97,7 +97,7 @@
 										aria-haspopup="true" aria-expanded="false">
 											<i class="ti ti-dots-vertical"></i>
 										</button>
-									@if ($user->color_code!=Null || $user->color_code!='')
+									@if ($user->color_code!=null || $user->color_code!='')
 										@php $color_co =$user->color_code; @endphp
 									@else
 										@php $color_co =Utility::rndRGBColorCode(); @endphp
@@ -138,7 +138,7 @@
 							<?php  $short=substr($user->name, 0, 1);?>
 							<?php  $short_lname=substr($user->lname, 0, 1);?>
 							 @if(!empty($user->avatar))
-							 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar :
+							 	<img src="{{(!empty($user->avatar))? $profile.$user->avatar :
 								 asset(Storage::url("uploads/avatar/avatar.png "))}}"
 								 class="avatar avatar-xl mb-3 rounded" alt="">
 							 @else
@@ -157,7 +157,7 @@
 									@endif
 								</div>
 								<div class="mt-3">
-									<span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span>
+									<span class="badge bg-purple-lt"> {{ $user->type }}</span>
 								</div>
 						</div>
 						

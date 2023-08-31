@@ -129,7 +129,7 @@
                                 <?php $short = substr($client->name, 0, 1); ?>
                                 @if (!empty($client->avatar))
                                     <img src="{{ !empty($client->avatar)
-                                        ? $profile . \Auth::user()->avatar
+                                        ? $profile . $client->avatar
                                         : asset(Storage::url('uploads/avatar/avatar.png ')) }}"
                                         class="avatar avatar-xl mb-3 rounded" alt="">
                                 @else

@@ -245,20 +245,41 @@ class ConsultantController extends Controller
     $plan       = Plan::find($objUser->plan);
     if($totaluser < $plan->max_users || $plan->max_users == -1)
     {
-        $roler = Role::findByName('consultant');
+        
         $psw                   = $request->password;
-        $request['password']   = Hash::make($request->password);
-        $request['type']       = 'consultant';
-        $request['lang']       = !empty($defaultlanguage) ? $defaultlanguage->value : 'en';
-        $request['created_by'] = \Auth::user()->creatorId();
-        $request['gender']      = $request->gender;
+       
+     
     
-        if(isset($url)){
-            $request['avatar']=$url;
+        if(isset($fileNameToStore)){
+            $avatar=$fileNameToStore;
+        }else{
+            $avatar=null;
         }
        
-        $user = User::create($request->all());
-        $user->assignRole($roler);
+        $user = User::create(
+            [
+                'name' => $request->name,
+                'lname' => $request->lname,
+                'email' => $request->email,
+                'type'=> 'consultant',
+                'gender'=> $request->gender,
+                'password' => Hash::make($request->password),
+                'lang' => Utility::getValByName('default_language'),
+                'created_by' => $user->creatorId(),
+                'country'=>$request->country,
+                'state'=>$request->state,
+                'city'=>$request->city,
+                'phone'=>$request->phone,
+                'zip'=>$request->zip,
+                'avatar'=>$avatar,
+                'address'=>$request->address,
+                'color_code'=>$request->color_code,
+                'created_by' => \Auth::user()->creatorId(),
+            ]
+        );
+
+
+      
         $user->userDefaultDataRegister($user->id);
        
          
@@ -358,15 +379,34 @@ class ConsultantController extends Controller
 
                 }
 
-                $role = Role::findByName('consulant');
-                $input = $request->all();
-                $input['type'] = $role->name;
-                $input['color_code']=$request->color_code;
+                $post =[
+                    'name' => $request->name,
+                    'lname' => $request->lname,
+                    'email' => $request->email,
+                    'type'=> 'consultant',
+                    'gender'=> $request->gender,
+                    'password' => Hash::make($request->password),
+                    'lang' => Utility::getValByName('default_language'),
+                    'created_by' => $user->creatorId(),
+                    'country'=>$request->country,
+                    'state'=>$request->state,
+                    'city'=>$request->city,
+                    'phone'=>$request->phone,
+                    'zip'=>$request->zip,
+                    'address'=>$request->address,
+                    'color_code'=>$request->color_code,
+                    'created_by' => \Auth::user()->creatorId(),
+            ];
+
+            if(!empty($request->avatar))
+            {
+                $post['avatar']=$fileNameToStore;
              
-                if(isset($url)){
-                    $input['avatar']=$url;
-                }
-                $user->fill($input)->save();
+            }
+          
+            
+            $user->update($post);
+
                 CustomField::saveData($user, $request->customField);
                 DB::table('users')->where('id',$id)->update(['company_type'=>$request->company_type]);
 
