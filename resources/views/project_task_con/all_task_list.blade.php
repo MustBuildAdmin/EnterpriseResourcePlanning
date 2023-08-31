@@ -43,18 +43,28 @@
 
                 $remaining_working_days=Utility::remaining_duration_calculator($task->end_date,$task->project_id);
                 $remaining_working_days=$remaining_working_days-1;// include the last day
+              
 
                 ############### Remaining days ##################
 
                 $completed_days=$task->duration-$remaining_working_days;
-                // percentage calculator
-                if($task->duration>0){
-                    $perday=100/$task->duration;
+                
+                if($task->duration==1){
+                    $current_Planed_percentage=100;
                 }else{
-                    $perday=0;
+                       // percentage calculator
+                    if($task->duration>0){
+                        $perday=100/$task->duration;
+                    }else{
+                        $perday=0;
+                    }
+                
+
+                    $current_Planed_percentage=round($completed_days*$perday);
                 }
 
-                $current_Planed_percentage=round($completed_days*$perday);
+
+            
                 if($current_Planed_percentage > 100){
                     $current_Planed_percentage=100;
                 }

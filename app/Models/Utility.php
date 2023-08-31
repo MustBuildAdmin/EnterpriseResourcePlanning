@@ -3714,10 +3714,10 @@ class Utility extends Model
                 }
                 $final_count = 0;
 
+               // $start_date = Carbon::create(date('y-m-d'));
                 $start_date = Carbon::now();
                 $end_date = Carbon::create($end);
                 $date_range = CarbonPeriod::create($start_date, $end_date);
-
                 foreach ($date_range as $date) {
                     if (!in_array($date->dayOfWeek, $weekarray) && !in_array($date, $excluded_dates)) {
                         $final_count++;

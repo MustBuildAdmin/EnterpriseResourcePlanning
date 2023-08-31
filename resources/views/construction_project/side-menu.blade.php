@@ -70,6 +70,12 @@
 
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="dropdown-item">{{ __('Task Report') }}</a>
+
+                                    @if(session::has('revision_started'))
+                                        <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
+                                            class="dropdown-item">{{ __('Revision Task progress ') }}</a>
+                                    @endif
+
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
                                             <a href="{{ route('task.bug', $project_id) }}" class="dropdown-item">

@@ -694,7 +694,7 @@ class ProjectController extends Controller
                 // test the holidays
                     if($project->holidays==0){
                         $holidays=Project_holiday::where(['project_id'=>$project->id,
-                        'instance_id'=>$project->instance_id])
+                        'instance_id'=>Session::get('project_instance')])
                         ->first();
                         if(!$holidays){
                             return redirect()->back()->with('error', __('No holidays are listed.'));
@@ -705,9 +705,9 @@ class ProjectController extends Controller
                 // end
                 $project_data = [];
                 // Task Count
-                $tasks = Con_task::where('project_id',$project->id)->where('instance_id',$project->instance_id)->get();
+                $tasks = Con_task::where('project_id',$project->id)->where('instance_id',Session::get('project_instance'))->get();
                 $project_task         = $tasks->count();
-                $completedTask = Con_task::where('project_id',$project->id)->where('instance_id',$project->instance_id)
+                $completedTask = Con_task::where('project_id',$project->id)->where('instance_id',Session::get('project_instance'))
                 ->where('progress',100)->get();
 
                 $project_done_task    = $completedTask->count();
@@ -759,7 +759,7 @@ class ProjectController extends Controller
 
                 // Open Task
                     $remaining_task = Con_task::where('project_id', '=', $project->id)
-                    ->where('instance_id',$project->instance_id)
+                    ->where('instance_id',Session::get('project_instance'))
                     ->where('progress', '=', 100)->count();
                     $total_task     = $project_data['task']['total'];
 
@@ -834,9 +834,9 @@ class ProjectController extends Controller
 
                 // end chart
 
-                $total_sub=Con_task::where('project_id',$project->id)->where('instance_id',$project->instance_id)
+                $total_sub=Con_task::where('project_id',$project->id)->where('instance_id',Session::get('project_instance'))
                 ->where('type','task')->count();
-                $first_task=Con_task::where('project_id',$project->id)->where('instance_id',$project->instance_id)
+                $first_task=Con_task::where('project_id',$project->id)->where('instance_id',Session::get('project_instance'))
                 ->orderBy('id','ASC')->first();
                 if($first_task){
                     $workdone_percentage= $first_task->progress;
@@ -865,12 +865,22 @@ class ProjectController extends Controller
                 $remaining_working_days=$remaining_working_days-1;// include the last day
                 ############### Remaining days ##################
                 $completed_days=$no_working_days-$remaining_working_days;
-                // percentage calculator
-                if($no_working_days>0){
-                    $perday=100/$no_working_days;
+              
+
+                if($no_working_days==1){
+                    $current_Planed_percentage=100;
                 }else{
-                    $perday=0;
+                     // percentage calculator
+                    if($no_working_days>0){
+                        $perday=100/$no_working_days;
+                    }else{
+                        $perday=0;
+                    }
+        
+                    $current_Planed_percentage=round($completed_days*$perday);
                 }
+               
+
                 $current_Planed_percentage=round($completed_days*$perday);
                 if($current_Planed_percentage > 100){
                     $current_Planed_percentage=100;
@@ -1559,6 +1569,86 @@ class ProjectController extends Controller
                             ])
                     ->update(['progress' => $insertPre->progress]);
                 }
+
+                DB::select(
+                    "INSERT INTO task_progress(
+                        task_id,assign_to,percentage,date_status,description,user_id,project_id,instance_id,
+                        file_id,record_date,created_at,updated_at
+                    )
+                    SELECT task_id,assign_to,percentage,date_status,description,user_id,project_id,
+                    '".$instanceId."' as instance_id,file_id,record_date,created_at,updated_at
+                    FROM task_progress WHERE project_id = " . $request->project_id . " AND
+                    instance_id='" . $setPreviousInstance . "'"
+                );
+
+                DB::select(
+                    "INSERT INTO task_progress_file(
+                        task_id,project_id,instance_id,filename,file_path,status
+                    )
+                    SELECT task_id,project_id,'".$instanceId."' as instance_id,
+                    filename,file_path,status
+                    FROM task_progress_file WHERE project_id = " . $request->project_id . " AND
+                    instance_id='" . $setPreviousInstance . "'"
+                );
+
+                $taskProgresskData = Task_progress::where('project_id',$request->project_id)
+                    ->where('instance_id',$instanceId)->get();
+
+                $taskFileData = DB::table('task_progress_file')
+                    ->where('project_id',$request->project_id)
+                    ->where('instance_id',$instanceId)->get();
+
+                $taskProgressTaskId = [];
+                $taskFileDataId = [];
+
+                if(!empty($taskProgresskData)){
+                    foreach($taskProgresskData as $taskProgress){
+                        if(!in_array($taskProgress->task_id,$taskProgressTaskId)){
+                            $getCorrectData = Con_task::select('id','text','duration','start_date','end_date','type')
+                                ->where('main_id',$taskProgress->task_id)
+                                ->first();
+    
+                            $getOrginalTask = Con_task::where('id',$getCorrectData->id)
+                                ->where('project_id',$request->project_id)
+                                ->where('start_date',$getCorrectData->start_date)
+                                ->where('end_date',$getCorrectData->end_date)
+                                ->where('instance_id',$instanceId)->first();
+    
+                            if($getOrginalTask != null){
+                                Task_progress::where('project_id',$request->project_id)
+                                ->where('instance_id',$instanceId)
+                                ->where('task_id',$taskProgress->task_id)
+                                ->update(['task_id' => $getOrginalTask->main_id]);
+                            }
+                            $taskProgressTaskId[] = $taskProgress->task_id;
+                        }
+                    }
+                }
+                
+                if(!empty($taskFileData)){
+                    foreach($taskFileData as $taskFileDataSet){
+                        if(!in_array($taskFileDataSet->task_id,$taskFileDataId)){
+                            $getCorrectData = Con_task::select('id','text','duration','start_date','end_date','type')
+                                ->where('main_id',$taskFileDataSet->task_id)
+                                ->first();
+
+                            $getOrginalTask = Con_task::where('id',$getCorrectData->id)
+                                ->where('project_id',$request->project_id)
+                                ->where('start_date',$getCorrectData->start_date)
+                                ->where('end_date',$getCorrectData->end_date)
+                                ->where('instance_id',$instanceId)->first();
+
+                            if($getOrginalTask != null){
+                                DB::table('task_progress_file')
+                                ->where('project_id',$request->project_id)
+                                ->where('instance_id',$instanceId)
+                                ->where('task_id',$taskFileDataSet->task_id)
+                                ->update(['task_id' => $getOrginalTask->main_id]);
+                            }
+                            $taskFileDataId[] = $taskFileDataSet->task_id;
+                        }
+                    }
+                }
             }
 
             Project::where('id',$request->project_id)->update($data);
@@ -2222,13 +2312,27 @@ class ProjectController extends Controller
                 'created_at'  => $request->get_date, //Planned Date
                 'record_date' => date('Y-m-d H:m:s') //Actual Date
             );
-
+            $revision_array=array(
+                'task_id'=>$task_id,
+                'task_name'=>$task->text,
+                'user_id'=>$request->user_id,
+                'project_id'  => $task->project_id,
+                'instance_id' => $instanceId,
+            );
             $check_data = Task_progress::where('task_id',$task_id)
             ->where('project_id',$task->project_id)
             ->where('instance_id',$instanceId)
             ->whereDate('created_at',$request->get_date)->first();
+            $record=DB::table('instance')->where('project_id',$task->project_id)->where('freeze_status',0)->first();
             if($check_data == null){
                 Task_progress::insert($array);
+               
+                if($record){
+                    DB::table('revision_task_progress')->insert($revision_array);
+                    Con_task::where('project_id',$task->project_id)->where('instance_id',$record->instance)->where('id',$task->id)->update(['work_flag'=>'1']);
+                }
+                
+
                 ActivityController::activity_store(Auth::user()->id,
                 Session::get('project_id'), "Added Progress", $task->text);
             }
@@ -2237,6 +2341,13 @@ class ProjectController extends Controller
                 ->where('project_id',$task->project_id)
                 ->where('instance_id',$instanceId)
                 ->where('created_at',$request->get_date)->update($array);
+                if($record){
+                    DB::table('revision_task_progress')->where('project_id',$task->project_id)
+                    ->where('instance_id',$instanceId)->where('created_at',$request->get_date)->update($revision_array);
+                    Con_task::where('project_id',$task->project_id)->where('instance_id',$record->instance)->where('id',$task->id)->update(['work_flag'=>'1']);
+
+                }
+
                 ActivityController::activity_store(Auth::user()->id,
                 Session::get('project_id'), "Updated Progress", $task->text);
             }

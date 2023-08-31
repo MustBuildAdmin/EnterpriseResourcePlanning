@@ -812,15 +812,19 @@ class ProjectTaskController extends Controller
         remaining_duration_calculator($get_con_task->end_date,$get_con_task->project_id);
         $remaining_working_days=$remaining_working_days-1;// include the last day
         $completed_days=$get_con_task->duration-$remaining_working_days;
-        // percentage calculator
-        if($get_con_task->duration>0){
-            $perday=100/$get_con_task->duration;
+        if($get_con_task->duration==1){
+            $current_Planed_percentage=100;
         }else{
-            $perday=0;
+            // percentage calculator
+            if($get_con_task->duration>0){
+                $perday=100/$get_con_task->duration;
+            }else{
+                $perday=0;
+            }
+
+            $current_Planed_percentage=round($completed_days*$perday);
         }
        
-
-        $current_Planed_percentage=round($completed_days*$perday);
         if($current_Planed_percentage > 100){
             $current_Planed_percentage=100;
         }
@@ -831,6 +835,20 @@ class ProjectTaskController extends Controller
         
         return view('construction_project.task_particular_list',
         compact('task_id','data','total_pecentage', 'current_Planed_percentage'));
+    }
+
+    
+    public function revsion_task_list(Request $request){
+        $data=Instance::where('project_id',Session::get('project_id'))->where('instance','!=',Session::get('project_instance'))->orderBy('id', 'DESC')->get();
+        
+        if(count($data)>=1){
+            $previous=$data[0]->instance;
+            $result=DB::table('revision_task_progress')->where('project_id',Session::get('project_id'))->where('instance_id',$previous)->get();
+        }else{
+            $result=array();
+        }
+        return view('construction_project.revision_taskprogress',
+        compact('result'));
     }
 
     public function add_particular_task(Request $request){

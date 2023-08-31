@@ -103,18 +103,26 @@ class Reportemail implements ShouldQueue
 
                     $completed_days=$no_working_days-$remaining_working_days;
 
-                    // percentage calculator
-                    if($no_working_days>0){
-                        $perday=100/$no_working_days;
+                    if($no_working_days==1){
+                        $current_percentage=100;
                     }else{
-                        $perday=0;
-                    }
+                         // percentage calculator
+                            if($no_working_days>0){
+                                $perday=100/$no_working_days;
+                            }else{
+                                $perday=0;
+                            }
 
-                    $current_percentage=round($completed_days*$perday);
+            
+                        $current_percentage=round($completed_days*$perday);
+                    }
+                  
                     if($current_percentage > 100){
                         $current_percentage=100;
                     }
-
+                    if($current_percentage <0){
+                        $current_percentage=0;
+                    }
                 //
                 $taskdata[]=array(
                     'title'=>$value->text,

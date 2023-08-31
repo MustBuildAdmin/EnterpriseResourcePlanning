@@ -4867,7 +4867,10 @@ Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_detail
         'XSS',
     ]
 ); 
+
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report'); 
+Route::any('view_task_revision', 'ProjectTaskController@revsion_task_list')->name('project_report.revsion_task_list'); 
+
 Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con'); 
 Route::any('download_report', 'ProjectReportController@download_report')->name('download_report'); 
 
