@@ -75,9 +75,8 @@ div.token-input-dropdown-bootstrap ul li.token-input-selected-dropdown-item-boot
 ul.token-input-list-bootstrap {
     overflow: hidden;
     height: auto !important;
-    height: 1%;
-    width: 230px;
-    border: 1px solid #999;
+    width: 100%;
+    border: 1px solid #e6e7e9;
     cursor: text;
     font-size: 12px;
     font-family: Verdana, sans-serif;
@@ -93,7 +92,7 @@ ul.token-input-list-bootstrap li {
 }
 ul.token-input-list-bootstrap li input {
     border: 0;
-    width: 230px;
+    width: 100%;
     padding: 3px 8px;
     background-color: white;
     -webkit-appearance: caret;
