@@ -7,6 +7,10 @@
 
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <style>
+    .nav-item .active {
+        background: #c6c6c7 !important;
+        color: #000000 !important;
+    }
     .wrappers{
         display: flex;
         justify-content: center;
@@ -112,7 +116,7 @@
                             </div>
 
                             <center>
-                                <section class="wrappers loader_show_hide">
+                                <section class="wrappers loader_show_hide" style="display: none;">
                                     <div class="cards">
                                         <div class="loader">
                                         <span></span>
@@ -139,15 +143,7 @@
                                                                 <div class="col-md-12">
                                                                         <div class="mb-3">
                                                                             <label class="form-label">Search By Task Name or Id</label>
-                                                                            <select type="text" class="form-select" placeholder="Search By Task Name or Id" id="task-name" value="" multiple>
-                                                                            <option value="HTML">HTML</option>
-                                                                            <option value="JavaScript">JavaScript</option>
-                                                                            <option value="CSS">CSS</option>
-                                                                            <option value="jQuery">jQuery</option>
-                                                                            <option value="Bootstrap">Bootstrap</option>
-                                                                            <option value="Ruby">Ruby</option>
-                                                                            <option value="Python">Python</option>
-                                                                            </select>
+                                                                            <input type="text" id="skill_input" value="{{ request()->get('q') }}" >
                                                                         </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
@@ -186,7 +182,11 @@
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Task Status</label>
-                                                                        <input type="text" id="skill_input" value="{{ request()->get('q') }}" >
+                                                                        <select type="text" class="form-select" placeholder="Task Status" id="task-status" value="">
+                                                                            <option value="">Select Status</option>
+                                                                            <option value="completed">Completed</option>
+                                                                            <option value="pending">Pending</option>
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mt-4">
@@ -198,64 +198,8 @@
                                                         </div>
                                             
                                                         <div class="col-md-10">
-                                                            <div class="table-responsive card p-4">
-                                                                <table class="table table-vcenter card-table" id="task-table">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Task ID</th>
-                                                                            <th>Task Name</th>
-                                                                            <th>Task Status</th>
-                                                                            <th>Actual Progress</th>
-                                                                            <th>Planned Progress</th>
-                                                                            <th>Planned Start Date</th>
-                                                                            <th>Planned End Date</th>
-                                                                            <th>Assigned To</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td style="width: 100px; font-size: 15px;"><a href="#">TaskId-1235</a></td>
-                                                                            <td style="width:400px; font-size: 14px;">Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
-                                                                            <td><span class="badge bg-warning me-1"></span> Pending</td>
-                                                                            <td class="sort-progress" data-progress="30">
-                                                                                <div class="row align-items-center">
-                                                                                    <div class="col-12 col-lg-auto">30%</div>
-                                                                                    <div class="col">
-                                                                                        <div class="progress" style="width: 5rem">
-                                                                                            <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                                <span class="visually-hidden">30% Complete</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td class="sort-progress" data-progress="30">
-                                                                                <div class="row align-items-center">
-                                                                                    <div class="col-12 col-lg-auto">30%</div>
-                                                                                    <div class="col">
-                                                                                        <div class="progress" style="width: 5rem">
-                                                                                            <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                                <span class="visually-hidden">30% Complete</span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>15 Dec 2017</td>
-                                                                            <td>15 Dec 2017</td>
-                                                                            <td>
-                                                                                <div class="avatar-list avatar-list-stacked">
-                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                                                                                    <span class="avatar avatar-xs rounded">JL</span>
-                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                                                                                    <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                                                                                    <span class="avatar avatar-xs rounded">+3</span>
-                                                                                </div>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
+                                                            <div class="table-responsive card p-4" id="all_task_append">
+                                                                {{-- SUB task show --}}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -440,16 +384,12 @@
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <script>
-    new DataTable('#summary-table, #task-table', {
-        pagingType: 'full_numbers'
-    });
-
     $(document).ready(function() {
         $("#skill_input").tokenInput("{{route('task_autocomplete')}}", {
             propertyToSearch:"text",
             tokenValue:"id",
             tokenDelimiter:",",
-            hintText: "Type your Task (or) Task ID..",
+            hintText: "Search Task...",
             noResultsText: "Task not found.",
             searchingText: "Searching...",
             deleteText:"&#215;",
@@ -466,7 +406,7 @@
             propertyToSearch:"name",
             tokenValue:"id",
             tokenDelimiter:",",
-            hintText: "Type your name (or) email",
+            hintText: "Search Users...",
             noResultsText: "User not found.",
             searchingText: "Searching...",
             deleteText:"&#215;",
@@ -572,8 +512,7 @@
     });
 
     function alltask(start_date,end_date,user_id,status_task){
-        $(".loader_show_hide").show();
-        $("#show_search_function").show();
+        // $(".loader_show_hide").show();
         $("#all_task_append").html("");
         $.ajax({
             url : '{{route("get_all_task")}}',
@@ -589,7 +528,7 @@
                 if(data['success'] == true){
                     $("#all_task_append").html(data['all_task']);
                 }
-                $(".loader_show_hide").hide();
+                // $(".loader_show_hide").hide();
             },
             error : function(request,error)
             {
@@ -609,8 +548,7 @@
     }
 
     function maintask(){
-        $(".loader_show_hide").show();
-        $("#show_search_function").hide();
+        // $(".loader_show_hide").show();
         $("#main_task_append").html("");
 
         $(".start_date").val("");
@@ -627,7 +565,7 @@
                 if(data['success'] == true){
                     $("#main_task_append").html(data['main_task']);
                 }
-                $(".loader_show_hide").hide();
+                // $(".loader_show_hide").hide();
             },
             error : function(request,error)
             {
