@@ -226,7 +226,8 @@ class ClientController extends Controller
                             'client_email' => $client->email,
                             'client_password' =>  $client->password,
                         ];
-                        $resp = Utility::sendEmailTemplate('create_client', [$client->email], $clientArr);
+                        
+                        Utility::sendEmailTemplate('create_client', [$client->email], $clientArr);
 
 
                         return redirect()->route('clients.index')->with('success', __('Client successfully added.'));
