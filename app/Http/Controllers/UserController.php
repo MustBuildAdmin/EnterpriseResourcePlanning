@@ -416,7 +416,7 @@ class UserController extends Controller
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
                     }
-                    $url = '';
+                    
                     $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
                     if($path['flag'] == 1){
