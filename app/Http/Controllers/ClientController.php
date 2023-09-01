@@ -229,7 +229,7 @@ class ClientController extends Controller
                         $resp = Utility::sendEmailTemplate('create_client', [$client->email], $clientArr);
 
 
-                        return redirect()->route('clients.index')->with('success', __('Client successfully added.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
+                        return redirect()->route('clients.index')->with('success', __('Client successfully added.'));
 
                     }
 
