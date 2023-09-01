@@ -124,29 +124,32 @@ class ConsultantController extends Controller
             return redirect()->back();
         }
     }
+    public function upload($request){
+        if(isset($request->avatar)){
+        
+            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension       = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        
+            $dir = Config::get('constants.USER_IMG');
+            $imagepath = $dir . $fileNameToStore;
+            if (\File::exists($imagepath)) {
+                \File::delete($imagepath);
+            }
+          
+            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+
+            return $fileNameToStore;
     
+    
+        }
+    }
     public function store(Request $request)
     {
 
-            $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
-                if(isset($request->avatar)){
-                    
-                    $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                
-                    $dir = Config::get('constants.USER_IMG');
-                    $imagepath = $dir . $fileNameToStore;
-                    if (\File::exists($imagepath)) {
-                        \File::delete($imagepath);
-                    }
-                
-                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                   
-
-                }
+                $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+                $fileNames = $this->upload($request);
                 $user               = new User();
                 $user['name']       = $request->name;
                 $user['lname']       = $request->lname;
@@ -168,8 +171,8 @@ class ConsultantController extends Controller
                 $user['company_type']       = $request->company_type;
                 $user['color_code']=$request->color_code;
                 $user['company_name']       = $request->company_name;
-                if(isset($fileNameToStore)){
-                    $user['avatar']=$fileNameToStore;
+                if(isset($fileNames)){
+                    $user['avatar']=$fileNames;
                 }
                 $user->save();
                 $role_r = Role::findByName('consultant');
@@ -208,24 +211,9 @@ class ConsultantController extends Controller
 
   public function normal_store(Request $request){
 
-    if(isset($request->avatar)){
-        
-        $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-        $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        $extension       = $request->file('avatar')->getClientOriginalExtension();
-        $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-    
-        $dir = Config::get('constants.USER_IMG');
-        $imagepath = $dir . $fileNameToStore;
-        if (\File::exists($imagepath)) {
-            \File::delete($imagepath);
-        }
-      
-        Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-
-
-    }
-
+   
+    $fileNames = $this->upload($request);
+  
     $objUser    = \Auth::user()->creatorId();
     $objUser =User::find($objUser);
     $user = User::find(\Auth::user()->created_by);
@@ -236,10 +224,10 @@ class ConsultantController extends Controller
         
         $psw = $request->password;
     
-        if(isset($fileNameToStore)){
-            $avatar=$fileNameToStore;
+        if($fileNames != null){
+            $avatar = $fileNames;
         }else{
-            $avatar=null;
+            $avatar = null;
         }
       
         $user = User::create(
@@ -338,22 +326,7 @@ class ConsultantController extends Controller
     {
 
         $user = User::findOrFail($id);
-        if(isset($request->avatar)){
-            
-            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension       = $request->file('avatar')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        
-            $dir = Config::get('constants.USER_IMG');
-            $image_path = $dir . $fileNameToStore;
-            if (\File::exists($image_path)) {
-                \File::delete($image_path);
-            }
-         
-            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-
-        }
+        $fileNames = $this->upload($request);
 
         $post =[
                 'name' => $request->name,
@@ -373,9 +346,9 @@ class ConsultantController extends Controller
                 'created_by' => \Auth::user()->creatorId(),
         ];
 
-        if(!empty($request->avatar))
+        if(!empty($fileNames))
         {
-            $post['avatar']=$fileNameToStore;
+            $post['avatar']=$fileNames;
             
         }
         $user->update($post);
@@ -393,27 +366,12 @@ class ConsultantController extends Controller
     {
       
         $user = User::findOrFail($id);
-        if(isset($request->avatar)){
-            
-            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-            $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension       = $request->file('avatar')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-        
-            $dir = Config::get('constants.USER_IMG');
-            $image_path = $dir . $fileNameToStore;
-            if (\File::exists($image_path)) {
-                \File::delete($image_path);
-            }
-           
-            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-
-        }
+        $fileNames = $this->upload($request);
 
         $input         = $request->all();
         $input['type'] = 'consultant';
-        if(isset($fileNameToStore)){
-            $input['avatar']=$fileNameToStore;
+        if(isset($fileNames)){
+            $input['avatar']=$fileNames;
         }
         $user->fill($input)->save();
         Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
