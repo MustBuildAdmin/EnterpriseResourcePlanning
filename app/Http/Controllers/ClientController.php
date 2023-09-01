@@ -142,13 +142,7 @@ class ClientController extends Controller
                             if (\File::exists($image_path)) {
                                 \File::delete($image_path);
                             }
-                            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-            
-                            if($path['flag'] == 1){
-                                $url = $path['url'];
-                            }else{
-                                return redirect()->back()->with('error', __($path['msg']));
-                            }
+                            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
         
                     }
                     if(isset($fileNameToStore)){
@@ -385,14 +379,7 @@ class ClientController extends Controller
                         \File::delete($image_path);
                     }
                     
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
-
+                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
                 }
                
                 if($request->copy_status!=null){
