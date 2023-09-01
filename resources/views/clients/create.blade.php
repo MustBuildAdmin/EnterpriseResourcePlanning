@@ -77,8 +77,10 @@
                 <div class="form-group">
                     {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                        <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
+                        accept="image/*, .png, .jpeg, .jpg">
                     </div>
+                    <span class="show_document_error" style="color:red;"></span>
                 </div>
             </div>
         </div>
@@ -195,7 +197,7 @@
                 <span style='color:red;'>*</span>
                 <div class="form-icon-user">
                       {{Form::text('billing_city',null,array('class'=>'form-control',
-                      'required'=>'required','id'=>'billing_city'))}}
+                      'required'=>'required','id'=>'billing_city','oninput'=>'process(this)'))}}
                 </div>
             </div>
         </div>
@@ -296,7 +298,7 @@
                     <div class="form-icon-user">
                         <div class="form-icon-user">
                             {{Form::text('shipping_city',null,array('class'=>'form-control',
-                            'required'=>'required','id'=>'shipping_city'))}}
+                            'required'=>'required','id'=>'shipping_city','oninput'=>'process(this)'))}}
                         </div>
                     </div>
                 </div>
@@ -408,6 +410,11 @@ $(document).on("change", '#country', function () {
     });
 
     $(document).ready(function() {
+
+
+    $(document).on('submit', 'form', function() {
+        $('#create_client').attr('disabled', 'disabled');
+    });
 
     $(document).on("change", ".checkbox1", function () {
     var $this = $(this).parent().parent();
@@ -549,5 +556,11 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         });
             
     });
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 
 </script>

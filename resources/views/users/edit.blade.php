@@ -44,16 +44,14 @@
         </div>
      
      
-        @php
-            $rndColor = Utility::rndRGBColorCode(); #function call
-        @endphp
-        @if ($user->color_code!=Null || $user->color_code!='')
-             @php $color_co =$user->color_code; @endphp
+       
+        @if ($user->color_code!=null || $user->color_code!='')
+             @php $colorcor =$user->color_code; @endphp
         @else
-             @php $color_co =$rndColor; @endphp
+             @php $colorcor =$colorco; @endphp
         @endif
 
-            <input type="hidden" name="color_code" value="{{ $color_co }}">
+            <input type="hidden" name="color_code" value="{{ $colorcor }}">
 
             <div class="row">
                 <div class="col-md-6">
@@ -152,7 +150,8 @@
                     <div class="form-group">
                         {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            {{Form::text('city',null,array('class'=>'form-control','required'=>'required'))}}
+                            {{Form::text('city',null,array('class'=>'form-control','oninput'=>'process(this)',
+                            'required'=>'required'))}}
                         </div>
                     </div>
                 </div>
@@ -204,8 +203,10 @@
                         <div class="form-group">
                             {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                             <div class="form-icon-user">
-                                {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                                <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
+                                accept="image/*, .png, .jpeg, .jpg">
                             </div>
+                            <span class="show_document_error" style="color:red;"></span>
                         </div>
                     </div>
                 </div>
@@ -251,6 +252,10 @@
 </script>
 <script>
     $(document).ready(function() {
+
+        $(document).on('submit', 'form', function() {
+            $('#edit_user').attr('disabled', 'disabled');
+        });
 
         $(".chosen-select").chosen({
             placeholder_text:"{{ __('Reporting to') }}"
@@ -333,7 +338,12 @@
         }
        
     });
-   
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
 </script>
 <style>
 div#reporting_toerr {

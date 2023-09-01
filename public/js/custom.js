@@ -92,13 +92,15 @@ function show_toastr(type, message) {
 }
 
 $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true"], div[data-ajax-popup="true"]', function () {
-
     var data = {};
     var title1 = $(this).data("title");
     var title2 = $(this).data("bs-original-title");
     var title = (title1 != undefined) ? title1 : title2;
     var size = ($(this).data('size') == '') ? 'md' : $(this).data('size');
     var url = $(this).data('url');
+    let color = $(this).data("color");
+
+    $("#colortype").val(color);
     $("#commonModal .modal-title").html(title);
     $("#commonModal .modal-dialog").addClass('modal-' + size);
 

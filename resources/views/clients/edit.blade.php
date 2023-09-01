@@ -1,6 +1,6 @@
 
 {{ Form::model($client, array('route' => array('clients.update', $client->id),
-'method' => 'PUT' ,'enctype'=>"multipart/form-data")) }}
+'method' => 'PUT' ,'enctype'=>"multipart/form-data",'id'=>'edit_client')) }}
 <div class="modal-body">
     <div class="row">
         <h5 class="sub-title"><strong>{{__('Basic Info')}}</strong></h5>
@@ -43,15 +43,9 @@
                 </div>
             </div>
              
-            @php
-                $rndColor = Utility::rndRGBColorCode(); #function call
-            @endphp
-            @if ($user->color_code!=Null || $user->color_code!='')
-                @php $color_co =$user->color_code; @endphp
-            @else
-                @php $color_co =$rndColor; @endphp
-            @endif
-            <input type="hidden" name="color_code" value="{{ $color_co }}">
+         
+          
+            <input type="hidden" id="color_code" name="color_code" value="">
                <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-6">
                         <div class="form-group">
@@ -80,8 +74,10 @@
                         <div class="form-group">
                             {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                             <div class="form-icon-user">
-                                {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                                <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
+                                accept="image/*, .png, .jpeg, .jpg">
                             </div>
+                            <span class="show_document_error" style="color:red;"></span>
                         </div>
                     </div>
                 </div>
@@ -159,7 +155,7 @@
         @if(!$customFields->isEmpty())
             @include('custom_fields.formBuilder')
         @endif
-     
+        <h5 class="sub"></h5>
         <h5 class="sub-title"><strong>{{__('Billing Address')}}</strong></h5>
         <hr>
         <div class="row">
@@ -210,7 +206,8 @@
                 <div class="form-group">
                     {{Form::label('billing_city',__('City'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required'))}}
+                        {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required',
+                        'oninput'=>'process(this)'))}}
                     </div>
                 </div>
             </div>
@@ -309,7 +306,7 @@
                         {{Form::label('shipping_city',__('City'),array('class'=>'form-label')) }}
                         <div class="form-icon-user">
                             {{Form::text('shipping_city',null,array('class'=>'form-control',
-                            'required'=>'required',$disabled_enabled))}}
+                            'required'=>'required','oninput'=>'process(this)',$disabled_enabled))}}
                         </div>
                     </div>
                 </div>
@@ -382,7 +379,7 @@
             });
         });
 
-        $(document).on("change", '#billing_country', function () {
+    $(document).on("change", '#billing_country', function () {
     var name=$(this).val();
     var settings = {
             "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
@@ -421,6 +418,11 @@
     });
 
     $(document).ready(function() {
+
+
+    $(document).on('submit', 'form', function() {
+        $('#edit_client').attr('disabled', 'disabled');
+    });
 
     $(document).on("change", ".checkbox1", function () {
     var $this = $(this).parent().parent();
@@ -564,4 +566,16 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             });
         });
     });
+
+    function process(input){
+        let value = input.value;
+        let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
+
+    $(function() {
+        var getcolor=$('#colortype').val()
+       $('#color_code').val(getcolor);
+     });
+   
 </script>
