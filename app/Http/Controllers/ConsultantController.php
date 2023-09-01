@@ -142,13 +142,9 @@ class ConsultantController extends Controller
                         \File::delete($imagepath);
                     }
                 
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
     
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
+                   
 
                 }
                 $user               = new User();
@@ -225,13 +221,8 @@ class ConsultantController extends Controller
             \File::delete($imagepath);
         }
       
-        $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
+        Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
-        if($path['flag'] == 1){
-            $url = $path['url'];
-        }else{
-            return redirect()->back()->with('error', __($path['msg']));
-        }
 
     }
 
@@ -360,13 +351,7 @@ class ConsultantController extends Controller
                 \File::delete($image_path);
             }
          
-            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-
-            if($path['flag'] == 1){
-                $url = $path['url'];
-            }else{
-                return redirect()->back()->with('error', __($path['msg']));
-            }
+            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
         }
 
@@ -421,13 +406,7 @@ class ConsultantController extends Controller
                 \File::delete($image_path);
             }
            
-            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-
-            if($path['flag'] == 1){
-                $url = $path['url'];
-            }else{
-                return redirect()->back()->with('error', __($path['msg']));
-            }
+            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
         }
 
