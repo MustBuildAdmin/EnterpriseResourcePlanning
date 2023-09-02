@@ -6,7 +6,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     {{ Form::label('allowance_option', __('Allowance Options')) }}<span class="text-danger">*</span>
-                    {{ Form::select('allowance_option',$allowance_options,null, array('class' => 'form-control select','required'=>'required')) }}
+                    {{ Form::select('allowance_option',$allowance_options,null, array('class' => 'form-select','required'=>'required')) }}
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     {{ Form::label('type', __('Type'), ['class' => 'form-label']) }}<span style='color:red;'>*</span>
-                    {{ Form::select('type', $Allowancetypes, null, ['class' => 'form-control select amount_type', 'required' => 'required']) }}
+                    {{ Form::select('type', $Allowancetypes, null, ['class' => 'form-select amount_type', 'required' => 'required']) }}
                 </div>
             </div>
 

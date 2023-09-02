@@ -12,13 +12,14 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
-
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
     use HasRoles;
     use Notifiable;
     use HasApiTokens;
+    use Searchable;
 
 
     protected $appends = ['profile'];
@@ -2899,4 +2900,15 @@ class User extends Authenticatable
 
             ];
     }
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->name,
+            'lname' => $this->lname,
+            'email' => $this->email,
+            'phone' => $this->phone
+        ];
+    }
+
 }

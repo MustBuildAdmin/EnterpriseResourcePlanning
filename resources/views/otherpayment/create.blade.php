@@ -8,7 +8,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('type', __('Type'), ['class' => 'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::select('type', $otherpaytype, null, ['class' => 'form-control select amount_type', 'required' => 'required']) }}
+            {{ Form::select('type', $otherpaytype, null, ['class' => 'form-select amount_type', 'required' => 'required']) }}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('amount', __('Amount'),['class'=>'form-label amount_label']) }}<span style='color:red;'>*</span>

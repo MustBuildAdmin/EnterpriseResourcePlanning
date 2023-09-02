@@ -5,11 +5,11 @@
     <div class="row">
         <div class="form-group col-md-6">
             {{Form::label('candidate',__('Interviewer*'),['class'=>'form-label'])}}
-            {{ Form::select('candidate', $candidates,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('candidate', $candidates,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="form-group col-md-6">
             {{Form::label('employee',__('Assign Employee*'),['class'=>'form-label'])}}
-            {{ Form::select('employee', $employees,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('employee', $employees,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
         <div class="form-group col-md-6">
             {{Form::label('date',__('Interview Date*'),['class'=>'form-label'])}}

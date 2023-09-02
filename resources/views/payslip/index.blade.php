@@ -21,14 +21,14 @@
                     <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 col-12 mx-2">
                         <div class="btn-box">
                             {{ Form::label('month', __('Select Month'), ['class' => 'form-label']) }}
-                            {{ Form::select('month', $month, null, ['class' => 'form-control select', 'id' => 'month']) }}
+                            {{ Form::select('month', $month, null, ['class' => 'form-select', 'id' => 'month']) }}
 
                         </div>
                     </div>
                     <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 col-12 mx-2">
                         <div class="btn-box">
                             {{ Form::label('year', __('Select Year'), ['class' => 'form-label']) }}
-                            {{ Form::select('year', $year, null, ['class' => 'form-control select']) }}
+                            {{ Form::select('year', $year, null, ['class' => 'form-select']) }}
 
                         </div>
                     </div>

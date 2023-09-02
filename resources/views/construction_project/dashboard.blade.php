@@ -101,7 +101,7 @@
     </div>
     <div class="form-group  col-md-6">
       <label for="status" class="form-label">{{ __('Status') }}</label>
-      <select class="form-control select" required="required" id="status" name="status">
+      <select class="form-select" required="required" id="status" name="status">
         <option value="in_progress">{{ __('In Progress') }}</option>
         <option value="on_hold">{{ __('On Hold') }}</option>
         <option value="complete">{{ __('Complete') }}</option>

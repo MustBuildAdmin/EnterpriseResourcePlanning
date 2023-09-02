@@ -173,7 +173,7 @@
                                         <div class="btn-box">
                                         {{ Form::label('customer', __('Customer'),['class'=>'form-label']) }}
 
-                                        {{ Form::select('customer',$customer,isset($_GET['customer'])?$_GET['customer']:'', array('class' => 'form-control select')) }}
+                                        {{ Form::select('customer',$customer,isset($_GET['customer'])?$_GET['customer']:'', array('class' => 'form-select')) }}
 
                                         </div>
                                     </div>
@@ -182,7 +182,7 @@
                                         <div class="btn-box">
                                         {{ Form::label('status', __('Status'),['class'=>'form-label']) }}
 
-                                        {{ Form::select('status', [''=>'Select Status']+$status,isset($_GET['status'])?$_GET['status']:'', array('class' => 'form-control select')) }}
+                                        {{ Form::select('status', [''=>'Select Status']+$status,isset($_GET['status'])?$_GET['status']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
 

@@ -13,7 +13,7 @@
     <div class="row">
         <div class="form-group  col-md-6">
             {{ Form::label('from_account', __('From Account'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            <select name="from_account" class="form-control select from_account" required>
+            <select name="from_account" class="form-select from_account" required>
                 <option value="">Select Account</option>
                 @foreach($bankAccount as $account)
                     <option value="{{$account['id']}}">{{$account['name']}}</option>
@@ -22,7 +22,7 @@
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('to_account', __('To Account'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            <select name="to_account" class="form-control select to_account" required>
+            <select name="to_account" class="form-select to_account" required>
                 <option value="">Select Account</option>
             </select>  
         </div>

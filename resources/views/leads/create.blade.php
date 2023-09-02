@@ -7,7 +7,7 @@
         </div>
         <div class="col-6 form-group">
             {{ Form::label('user_id', __('User'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
-            {{ Form::select('user_id', $users,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('user_id', $users,null, array('class' => 'form-select','required'=>'required')) }}
             @if(count($users) == 1)
                 <div class="text-muted text-xs">
                     {{__('Please create new users')}} <a href="{{route('users.index')}}">{{__('here')}}</a>.

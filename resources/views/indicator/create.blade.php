@@ -4,13 +4,13 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('branch',__('Branch*'),['class'=>'form-label'])}}
-                {{Form::select('branch',$brances,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('branch',$brances,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{Form::label('department',__('Department*'),['class'=>'form-label'])}}
-                {{Form::select('department',$departments,null,array('class'=>'form-control select','required'=>'required'))}}
+                {{Form::select('department',$departments,null,array('class'=>'form-select','required'=>'required'))}}
             </div>
         </div>
         <div class="col-md-6">

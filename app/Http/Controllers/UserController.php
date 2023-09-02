@@ -247,14 +247,8 @@ class UserController extends Controller
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
                     }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
+
+                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
                 }
 
@@ -266,18 +260,38 @@ class UserController extends Controller
                 if($total_user < $plan->max_users || $plan->max_users == -1)
                 {
                     $role_r                = Role::findById($request->role);
-                    $psw                   = $request->password;
-                    $request['password']   = Hash::make($request->password);
-                    $request['type']       = $role_r->name;
-                    $request['lang']       = !empty($default_language) ? $default_language->value : 'en';
-                    $request['created_by'] = \Auth::user()->creatorId();
-                    $request['gender']      = $request->gender;
-                    $request['reporting_to']=$string_version;
-                    if(isset($url)){
-                        $request['avatar']=$url;
+                 
+
+                    if(isset($fileNameToStore)){
+                        $avatar=$fileNameToStore;
+                    }else{
+                        $avatar=null;
                     }
                    
-                    $user = User::create($request->all());
+                    $psw=$request->password;
+                    $user = User::create(
+                        [
+                            'name' => $request->name,
+                            'lname' => $request->lname,
+                            'email' => $request->email,
+                            'type'=> $role_r->name,
+                            'gender'=> $request->gender,
+                            'password' => Hash::make($request->password),
+                            'lang' => Utility::getValByName('default_language'),
+                            'created_by' => $user->creatorId(),
+                            'country'=>$request->country,
+                            'state'=>$request->state,
+                            'city'=>$request->city,
+                            'phone'=>$request->phone,
+                            'zip'=>$request->zip,
+                            'reporting_to'=>$string_version,
+                            'avatar'=>$avatar,
+                            'address'=>$request->address,
+                            'color_code'=>$request->color_code,
+                            'created_by' => \Auth::user()->creatorId(),
+                        ]
+                    );
+
                     $user->assignRole($role_r);
                     if($request['type'] != 'client')
                       \App\Models\Utility::employeeDetails($user->id,\Auth::user()->creatorId());
@@ -313,9 +327,10 @@ class UserController extends Controller
 
     }
 
-    public function edit(Request $request,$id)
+    public function edit(Request $request,$id,$colorco)
     {
         $user  = \Auth::user();
+  
         $roles = Role::where('created_by', '=', $user->creatorId())->where('name','!=','client')->get()->pluck('name', 'id');
         $gender=['male'=>'Male','female'=>'Female','other'=>'Other'];
         $company_type=Company_type::get()->pluck('name', 'id');
@@ -336,11 +351,17 @@ class UserController extends Controller
                         ->get();
                     }
                 }]
-            ])->where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->where('id', '!=', $id)->orwhere('id', '=', $user->creatorId())->get()->pluck('name', 'id');
+            ])->where('created_by', '=', $user->creatorId())
+              ->where('type', '!=', 'client')
+              ->where('id', '!=', $id)
+              ->orwhere('id', '=', $user->creatorId())
+              ->get()
+              ->pluck('name', 'id');
           
 
             // return view('user.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type'));
-            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist','statelist','company_type','users'));
+            return view('users.edit', compact('user','gender', 'roles', 'customFields','countrylist',
+                        'statelist','company_type','users','colorco'));
         }
         else
         {
@@ -356,7 +377,7 @@ class UserController extends Controller
         if($request->reporting_to!=null){
             $string_version = implode(',', $request->reporting_to);
         }else{
-            $string_version = Null;
+            $string_version = null;
         }
        
         if(\Auth::user()->can('edit user'))
@@ -389,14 +410,8 @@ class UserController extends Controller
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
                     }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
+                    
+                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
                 }
 //                $role = Role::findById($request->role);
@@ -405,8 +420,8 @@ class UserController extends Controller
                 $input['type'] = $role->name;
                 $input['color_code']=$request->color_code;
                 // $input['reporting_to']=$string_version;
-                if(isset($url)){
-                    $input['avatar']=$url;
+                if(isset($fileNameToStore)){
+                    $input['avatar']=$fileNameToStore;
                 }
                 $user->fill($input)->save();
                 CustomField::saveData($user, $request->customField);
@@ -446,31 +461,48 @@ class UserController extends Controller
                     $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                     $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $extension       = $request->file('avatar')->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                 
                     $dir = Config::get('constants.USER_IMG');
                     $image_path = $dir . $fileNameToStore;
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
                     }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
+                    
+                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
 
                 }
                 $role          = Role::findById($request->role);
-                $input         = $request->all();
-                $input['type'] = $role->name;
-                $input['reporting_to']=$string_version;
-                if(isset($url)){
-                    $input['avatar']=$url;
+               
+                $post =[
+                        'name' => $request->name,
+                        'lname' => $request->lname,
+                        'email' => $request->email,
+                        'type'=> $role->name,
+                        'gender'=> $request->gender,
+                        'password' => Hash::make($request->password),
+                        'lang' => Utility::getValByName('default_language'),
+                        'created_by' => $user->creatorId(),
+                        'country'=>$request->country,
+                        'state'=>$request->state,
+                        'city'=>$request->city,
+                        'phone'=>$request->phone,
+                        'zip'=>$request->zip,
+                        'reporting_to'=>$string_version,
+                        'address'=>$request->address,
+                        'color_code'=>$request->color_code,
+                        'created_by' => \Auth::user()->creatorId(),
+                ];
+
+                if(!empty($request->avatar))
+                {
+                    $post['avatar']=$fileNameToStore;
+                 
                 }
-                $user->fill($input)->save();
+              
+                
+                $user->update($post);
+
                 Utility::employeeDetailsUpdate($user->id,\Auth::user()->creatorId());
                 CustomField::saveData($user, $request->customField);
 
@@ -484,7 +516,6 @@ class UserController extends Controller
         }
         else
         {
-            dd();
             return redirect()->back();
         }
     }

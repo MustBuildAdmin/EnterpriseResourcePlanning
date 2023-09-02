@@ -4,6 +4,10 @@
 		height: 35px !important;
 		width: 12% !important;
 	}
+	#invite{
+		height: 35px !important;
+		width: 12% !important;
+	}
 
 	#reset{
 		
@@ -64,9 +68,16 @@
 										@can('create consultant')
 									<a href="#" class="btn btn-primary" data-size="lg" data-url="{{ route('consultants.create') }}"
 									 data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Consultant')}}"
-									  id="create" class="btn btn-primary" id="create">
+									  id="create" class="btn btn-primary">
 										<span class="btn-inner--icon">
 											<i class="fa fa-plus"></i>
+										</span>
+									</a>
+									<a href="{{ route('consultant.scott-search') }}" class="btn btn-primary" data-bs-toggle="tooltip"
+									title="{{__('Invite Consultant')}}"
+									  id="invite" class="btn btn-primary">
+										<span class="btn-inner--icon">
+											<i class="ti ti-send"></i>
 										</span>
 									</a>
 									@endcan
@@ -90,10 +101,15 @@
 								 aria-haspopup="true" aria-expanded="false">
 									<i class="ti ti-dots-vertical"></i>
 								</button>
+									@if ($user->color_code!=null || $user->color_code!='')
+											@php $color_co =$user->color_code; @endphp
+									@else
+											@php $color_co =Utility::rndRGBColorCode(); @endphp
+									@endif
 								<div class="dropdown-menu dropdown-menu-end">
 									@can('edit consultant')
-									<a href="#!" data-size="lg" data-url="{{ route('consultants.edit',$user->id) }}"
-										 data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
+									<a href="#!" data-size="lg" data-url="{{ route('consultants.edit.new',[$user->id,$color_co]) }}"
+										 data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit Consultant')}}">
 										 <i class="ti ti-pencil"></i>
 										 <span>{{__('Edit')}}</span>
 										</a>
@@ -111,14 +127,10 @@
 							<?php  $short=substr($user->name, 0, 1);?>
 								<?php  $short_lname=substr($user->lname, 0, 1);?>
 								 @if(!empty($user->avatar))
-								 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar :
+								 	<img src="{{(!empty($user->avatar))? $profile.$user->avatar :
 								 	asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded" alt="">
 								  @else
-										@if ($user->color_code!=Null || $user->color_code!='')
-												@php $color_co =$user->color_code; @endphp
-										@else
-												@php $color_co =Utility::rndRGBColorCode(); @endphp
-										@endif
+										
 										<div class="avatar avatar-xl mb-3 user-initial" style='background-color:{{$color_co}}'>
 											{{strtoupper($short)}}{{strtoupper($short_lname)}}
 										</div>
@@ -198,5 +210,21 @@ $(document).on('keypress', function (e) {
         if (e.which == 13) {
             swal.closeModal();
         }
+});
+
+
+$(document).on('change', '.document_setup', function(){
+	var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+	if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+		$(".show_document_file").hide();
+		$(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+		$('input[type="submit"]').prop('disabled',true);
+		return false;
+	} else{
+		$(".show_document_file").show();
+		$(".show_document_error").hide();
+		$('input[type="submit"]').prop('disabled',false);
+		return true;
+	}
 });
 </script>

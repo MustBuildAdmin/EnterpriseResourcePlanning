@@ -123,7 +123,7 @@
                         <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
                             <div class="btn-box">
                                 {{ Form::label('priority', __('Priority'),['class'=>'form-label'])}}
-                                {{ Form::select('priority', ['' => 'Select Priority'] + $status, isset($_GET['priority']) ? $_GET['priority'] : '', ['class' => 'form-control select']) }}
+                                {{ Form::select('priority', ['' => 'Select Priority'] + $status, isset($_GET['priority']) ? $_GET['priority'] : '', ['class' => 'form-select']) }}
                             </div>
                         </div> --}}
 

@@ -426,7 +426,7 @@
                                         <div class="form-group">
                                             {{Form::label('default_language',__('Default Language'),['class'=>'form-label text-dark']) }}
                                             <div class="changeLanguage">
-                                                <select name="default_language" id="default_language" class="form-control select">
+                                                <select name="default_language" id="default_language" class="form-select">
                                                     @foreach (\App\Models\Utility::languages() as $language)
                                                         <option @if ($lang == $language) selected @endif value="{{ $language }}">
                                                             {{ Str::upper($language) }}</option>

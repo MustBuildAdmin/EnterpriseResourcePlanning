@@ -644,6 +644,14 @@ Route::resource('users', 'UserController')->middleware(
     ]
 );
 
+Route::get('users/edit/{id}/{color_code}', 'UserController@edit')->name('user.edit.new')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::any('check_duplicate_email', 'UserController@check_duplicate_email')->name('check_duplicate_email')->middleware(
     [
         'auth',
@@ -1223,12 +1231,25 @@ Route::group(
 );
 
 // Client Module
+
 Route::resource('clients', 'ClientController')->middleware(
     [
         'auth',
         'XSS',
+        'revalidate',
     ]
 );
+
+Route::get('clients/edit/{id}/{color_code}', 'ClientController@edit')->name('clients.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate'
+    ]
+);
+
+
 Route::any('client-reset-password/{id}', 'ClientController@clientPassword')->name('clients.reset');
 Route::post('client-reset-password/{id}', 'ClientController@clientPasswordReset')->name('client.password.update');
 // Deal Module
@@ -2418,6 +2439,18 @@ Route::get('show-employee-profile/{id}', 'EmployeeController@profileShow')->name
     ]
 );
 Route::get('lastlogin', 'EmployeeController@lastLogin')->name('lastlogin')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get('employee_data/{id}', 'EmployeeNewPageController@employee_details')->name('employee.data')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::resource('employeenew', 'EmployeeNewPageController')->middleware(
     [
         'auth',
         'XSS',
@@ -4174,7 +4207,37 @@ Route::resource('users', 'UserController')->middleware(
         'revalidate',
     ]
 );
+
+Route::get('users/{id}/edit/{cid}', ['as'=>'use.edit','uses'=>'UserController@edit']);
+
 Route::resource('consultants', 'ConsultantController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->name('consultants.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_consultant')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('update_consultant/{id}', 'ConsultantController@update_consultant')->name('consultants.update_consultant')
+->middleware(
     [
         'auth',
         'XSS',
@@ -4185,7 +4248,27 @@ Route::resource('consultants', 'ConsultantController')->middleware(
 Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
 
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
-        ->name('consultants.password.update');
+->name('consultants.password.update');
+
+Route::get('consultant-scott-search', 'ConsultantController@scott_search')
+->name('consultant.scott-search')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+
+Route::any('consultant-scott-result', 'ConsultantController@scott_result')
+->name('consultant.scott-result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 
 Route::resource('plans', 'PlanController')->middleware(
     [

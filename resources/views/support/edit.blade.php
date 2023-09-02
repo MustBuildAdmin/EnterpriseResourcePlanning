@@ -9,16 +9,16 @@
         @if(\Auth::user()->type !='client')
             <div class="form-group col-md-6">
                 {{Form::label('user',__('Support for User'),['class'=>'form-label'])}}
-                {{Form::select('user',$users,null,array('class'=>'form-control select'))}}
+                {{Form::select('user',$users,null,array('class'=>'form-select'))}}
             </div>
         @endif
         <div class="form-group col-md-6">
             {{Form::label('priority',__('Priority'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-            {{Form::select('priority',$priority,null,array('class'=>'form-control select'))}}
+            {{Form::select('priority',$priority,null,array('class'=>'form-select'))}}
         </div>
         <div class="form-group col-md-6">
             {{Form::label('status',__('Status'),['class'=>'form-label'])}}
-            {{Form::select('status',$status,null,array('class'=>'form-control select'))}}
+            {{Form::select('status',$status,null,array('class'=>'form-select'))}}
         </div>
 
         <div class="form-group col-md-6">

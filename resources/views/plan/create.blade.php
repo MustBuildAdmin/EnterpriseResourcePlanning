@@ -12,7 +12,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('duration', __('Duration'),['class'=>'form-label']) }}
-            {!! Form::select('duration', $arrDuration, null,array('class' => 'form-control select','required'=>'required')) !!}
+            {!! Form::select('duration', $arrDuration, null,array('class' => 'form-select','required'=>'required')) !!}
         </div>
         <div class="form-group col-md-6">
             {{Form::label('max_users',__('Maximum Users'),['class'=>'form-label'])}}

@@ -9,6 +9,7 @@
 <script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.11"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"></script>
+<script src="https://export.dhtmlx.com/gantt/api.js"></script>
 <script src="{{asset('assets/js/js/zoomingConfig.js')}}"></script>
 <script src="{{asset('assets/js/js/criticalPath.js')}}"></script>
 <script src="{{asset('assets/js/js/overlay.js')}}"></script>
@@ -98,7 +99,9 @@
         background: #fff;
         /* z-index: 9999 !important; */
     }
-
+  .nav-link {
+    font-size: 0.85rem;
+  }
     .status_line {
         background-color: #0ca30a;
     }
@@ -398,7 +401,6 @@ $holidays=implode(':',$holidays);
     </div>
 </div>
 <div id="additional_elements" class="gantt-container">
-                        <div class="col d-flex flex-column" >
 
                             <div class="align" >
                                 <div class='row'>
@@ -547,7 +549,7 @@ $holidays=implode(':',$holidays);
                                 </div>
                               </div>
 
-                        </div>
+
 </div>
     <input type='hidden' id='weekends' value='{{$nonWorkingDay}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
