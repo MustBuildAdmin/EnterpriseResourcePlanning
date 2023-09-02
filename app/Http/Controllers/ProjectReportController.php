@@ -83,7 +83,9 @@ class ProjectReportController extends Controller
         }
         else
         {
-            $projects = Project::select('projects.*')->leftjoin('project_users', 'project_users.project_id', 'projects.id')->where('project_users.user_id', '=', $user->id);
+            $projects = Project::select('projects.*')
+            ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
+            ->where('project_users.user_id', '=', $user->id);
 
             if(Session::has('project_id')){
                 $projects->where('id',Session::get('project_id'));
@@ -91,9 +93,7 @@ class ProjectReportController extends Controller
         }
 
         $projects = $projects->orderby('id','desc')->get();
-//            dd($projects);
             return view('construction_project.report', compact('projects','users','status'));
-           // return view('project_report.index', compact('projects','users','status'));
         }
         public function show(Request $request,$id)
         {
@@ -116,7 +116,9 @@ class ProjectReportController extends Controller
             elseif(\Auth::user()->type == 'employee')
             {
 
-                $project = Project::select('projects.*')->leftjoin('project_users', 'project_users.project_id', 'projects.id')->where('project_users.user_id', '=', $user->id)->first();
+                $project = Project::select('projects.*')
+                ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
+                ->where('project_users.user_id', '=', $user->id)->first();
 
                 // dd($project);
             }
@@ -134,11 +136,11 @@ class ProjectReportController extends Controller
                     );
                     $daysleft = round((((strtotime($user->end_date) - strtotime(date('Y-m-d'))) / 24) / 60) / 60);
 
-                    $project_status_task = TaskStage::join("project_tasks", "project_tasks.stage_id", "=", "task_stages.id")
+                    $project_status_task = TaskStage::
+                    join("project_tasks", "project_tasks.stage_id", "=", "task_stages.id")
                         ->where('project_tasks.project_id', '=', $id)->groupBy('task_stages.name')
-                        ->selectRaw('count(project_tasks.stage_id) as count, task_stages.name as task_stages_name')->pluck('count', 'task_stages_name');
-    //                dd($project_status_task);
-
+                        ->selectRaw('count(project_tasks.stage_id) as count, task_stages.name as task_stages_name')
+                        ->pluck('count', 'task_stages_name');
                     $totaltask = ProjectTask::where('project_id',$id)->count();
 
 
@@ -155,7 +157,8 @@ class ProjectReportController extends Controller
                     }
 
 
-                    $project_priority_task = ProjectTask::where('project_id',$id)->groupBy('priority')->selectRaw('count(id) as count, priority')->pluck('count', 'priority');
+                    $project_priority_task = ProjectTask::where('project_id',$id)->groupBy('priority')
+                    ->selectRaw('count(id) as count, priority')->pluck('count', 'priority');
 
                     $arrProcessPer_priority = [];
                     $arrProcess_Label_priority = [];
@@ -179,8 +182,6 @@ class ProjectReportController extends Controller
                     ]);
 
                     $stages = TaskStage::all();
-                    // $stages = ProjectStage::where('created_by', '=', $user->id)->orderBy('order')->get();
-                    // dd($stages);
                     $milestones = Milestone::where('project_id' ,$id)->get();
                     $logged_hour_chart = 0;
                     $total_hour = 0;
@@ -214,7 +215,10 @@ class ProjectReportController extends Controller
                 $tasks = ProjectTask::where('project_id','=',$id)->get();
 
 
-                return view('project_report.show', compact('user','users', 'arrProcessPer_status_task','arrProcess_Label_priority','esti_logged_hour_chart','logged_hour_chart','arrProcessPer_priority','arrProcess_Label_status_tasks','project','milestones', 'daysleft','chartData','arrProcessClass','stages','tasks'));
+                return view('project_report.show', compact('user','users', 'arrProcessPer_status_task',
+                'arrProcess_Label_priority','esti_logged_hour_chart','logged_hour_chart','arrProcessPer_priority',
+                'arrProcess_Label_status_tasks','project','milestones', 'daysleft','chartData',
+                'arrProcessClass','stages','tasks'));
 
          }
         }
@@ -238,7 +242,8 @@ class ProjectReportController extends Controller
 
 
             foreach ($arrDuration as $date => $label) {
-                $objProject = ProjectTask::select('stage_id', \DB::raw('count(*) as total'))->whereDate('updated_at', '=', $date)->groupBy('stage_id');
+                $objProject = ProjectTask::select('stage_id', \DB::raw('count(*) as total'))
+                ->whereDate('updated_at', '=', $date)->groupBy('stage_id');
 
                 if (isset($arrParam['project_id'])) {
                     $objProject->where('project_id', '=', $arrParam['project_id']);
@@ -268,16 +273,17 @@ class ProjectReportController extends Controller
             if(\Auth::user()->type == 'company' || \Auth::user()->type =='super admin' )
             {
                 $project=Project::where('id',Session::get('project_id'))->first();
-                $project_task=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))
-                ->where('updated_at','like',Carbon::now()->format('Y-m-d').'%')->where('type','project')->get();
-                // $project_task=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))->whereIn('main_id', function($query){
-                //     $query->select('task_id')
-                //     ->from('task_progress')
-                //     ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
-                // })->get();
-                $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))->where('instance_id',Session::get('project_instance'))->orderBy('id','ASC')->pluck('progress')->first();
+                $project_task=Con_task::where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))->whereIn('main_id', function($query){
+                    $query->select('task_id')
+                    ->from('task_progress')
+                    ->where('instance_id',Session::get('project_instance'))
+                    ->where('record_date','like',Carbon::now()->format('Y-m-d').'%');
+                })->get();
+                $actual_current_progress=Con_task::where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))->orderBy('id','ASC')
+                ->pluck('progress')->first();
                 $actual_current_progress=round($actual_current_progress);
-                //$todayprogress=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('created_at',Carbon::now())->get();
                 $actual_remaining_progress=100-$actual_current_progress;
                 $actual_remaining_progress=round($actual_remaining_progress);
                 // current progress amount
@@ -286,8 +292,12 @@ class ProjectReportController extends Controller
                     $planned_start=date("d-m-Y", strtotime($value->start_date));
                     $planned_end=date("d-m-Y", strtotime($value->end_date));
 
-                    $actual_start=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('task_id',$value->main_id)->max('created_at');
-                    $actual_end=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('task_id',$value->main_id)->min('created_at');
+                    $actual_start=DB::table('task_progress')->where('project_id',Session::get('project_id'))
+                    ->where('instance_id',Session::get('project_instance'))
+                    ->where('task_id',$value->main_id)->max('created_at');
+                    $actual_end=DB::table('task_progress')->where('project_id',Session::get('project_id'))
+                    ->where('instance_id',Session::get('project_instance'))
+                    ->where('task_id',$value->main_id)->min('created_at');
                     $flag=0;
                     if($actual_start){
                         $flag=1;
@@ -320,9 +330,6 @@ class ProjectReportController extends Controller
 
                         $remaining_working_days=Utility::remaining_duration_calculator($date2,$project->id);
                         $remaining_working_days=$remaining_working_days-1;// include the last day
-
-                        // $date1=date_create($cur);
-                        // $date2=date_create($value->end_date);
 
                         // $diff=date_diff($date1,$date2);
                         // $remaining_working_days=$diff->format("%a");
@@ -361,9 +368,13 @@ class ProjectReportController extends Controller
                     );
                 }
                 $taskdata2=array();
-                $today_task_update=DB::table('task_progress')->where('project_id',Session::get('project_id'))->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
+                $today_task_update=DB::table('task_progress')->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->where('record_date','like',Carbon::now()->format('Y-m-d').'%')->get();
+                $instance_id=Session::get('project_instance');
+
                 foreach ($today_task_update as $key => $value) {
-                    $main_task=Con_task::where('main_id',$value->task_id)->first();
+                    $main_task=Con_task::where(['main_id'=>$value->task_id,'instance_id'=>$instance_id])->first();
                     $user=User::find($value->user_id);
                     if($user){
                         $user_name=$user->name;
@@ -419,11 +430,7 @@ class ProjectReportController extends Controller
                 // }
                 // return redirect()->back()->with('success', __('Email send Successfully'));
 
-            }else{
-
             }
-
-
         }
         // cron email
         public function cronmail(Request $request){
@@ -434,7 +441,8 @@ class ProjectReportController extends Controller
             $time=Carbon::now()->format('H:i');
             $project=Project::where('end_date','>=',Carbon::now()->format('Y-m-d'))->where('report_time',$time)->get();
             foreach ($project as $key => $value3) {
-                $holidays=DB::table('project_holidays')->where('project_id',$value3->id)->where('date',Carbon::now()->format('Y-m-d'))->first();
+                $holidays=DB::table('project_holidays')->where(['project_id'=>$value3->id,
+                'instance_id'=>$value3->instance_id])->where('date',Carbon::now()->format('Y-m-d'))->first();
                 if(!$holidays){
                     if(!str_contains( $value3->non_working_days, Carbon::now()->format('w'))){
                         if($value3->freeze_status==1){
@@ -492,12 +500,12 @@ class ProjectReportController extends Controller
         public function fetch_task_details(Request $request){
 
             try {
-
+                $instance_id=Session::get('project_instance');
                 $setting  = Utility::settings(\Auth::user()->creatorId());
                 if($setting['company_type']==2){
                     $data=Con_task::whereRaw("find_in_set('" .$request->state_id . "',users)")
                     ->select('main_id as id', 'text as name')
-                    ->where('project_id',$request->get_id)
+                    ->where(['project_id'=>$request->get_id,'instance_id'=>$instance_id])
                     ->get();
                 }else{
                     $data=ProjectTask::whereRaw("find_in_set('$request->state_id',project_tasks.assign_to)")
