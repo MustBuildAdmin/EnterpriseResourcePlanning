@@ -275,12 +275,17 @@ class ConsultantController extends Controller
                     // Create Connection Consultant & Company
                     if($user && $user->type=='consultant'){
                         $requested_date = date('Y-m-d H:i:s');
-                        Consultant_companies::create([
+                        $createConnection = Consultant_companies::create([
                             "company_id"=>\Auth::user()->creatorId(),
                             'consultant_id'=>$user->id,
                             'requested_date'=>$requested_date,
                             'status'=>'requested'
                         ]);
+                        $inviteUrl=url('').'/company-invitation-consultant/'.$createConnection->id;
+                        echo $inviteUrl;
+                        $resp=Utility::sendEmailTemplate('invite_consultant', [$user->id => $user->email], $userArr);
+                        print_r($resp);
+
                     }
                     if($request['type'] != 'client'){
                         Utility::employeeDetails($user->id,\Auth::user()->creatorId());
@@ -317,6 +322,19 @@ class ConsultantController extends Controller
             return redirect()->back();
         }
 
+    }
+    public function createConnection(Request $request){
+        // Need to check invitation link is valid or expired based on that need to redirect
+        $checkConnection=Consultant_companies::where(['id'=>$request->id])->first();
+        echo "<pre>";
+        print_r($checkConnection);
+        exit;
+        return view('consultants.invitation');
+    }
+
+    public function submitConnection(Request $request){
+        // Need to write consultant invitation accept/decline status
+        return view('consultants.invitation');
     }
 
 
