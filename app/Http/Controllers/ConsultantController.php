@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Mail;
 use Session;
 use Spatie\Permission\Models\Role;
 use Config;
+use Carbon\Carbon;
 
 
 class ConsultantController extends Controller
@@ -326,15 +327,29 @@ class ConsultantController extends Controller
     public function createConnection(Request $request){
         // Need to check invitation link is valid or expired based on that need to redirect
         $checkConnection=Consultant_companies::where(['id'=>$request->id])->first();
-        echo "<pre>";
-        print_r($checkConnection);
-        exit;
-        return view('consultants.invitation');
+        $companyDetails=User::where(['id'=>$checkConnection->company_id])->first();
+        $requestedDate= Carbon::parse($checkConnection->requested_date)->format('Y-m-d');
+        $expiryDate=  Carbon::parse($requestedDate)->addDays(7)->format('Y-m-d');
+        $checkValidity= Carbon::now()->between($requestedDate, $expiryDate);
+        $msg='expired';
+        if($checkValidity && $checkConnection->status=='requested'){
+            $msg='valid';
+        }else{
+            if($checkConnection->status=='requested'){
+                Consultant_companies::where(['id'=>$request->id])->update(['status'=>'expired']);
+            }else{
+                $msg=$checkConnection->status;
+            }
+        }
+        return view('consultants.invitation', compact('checkConnection','companyDetails','msg'));
     }
 
     public function submitConnection(Request $request){
-        // Need to write consultant invitation accept/decline status
-        return view('consultants.invitation');
+        $msg=$request->status;
+        Consultant_companies::where(['id'=>$request->id])->update(['status'=>$msg]);
+        $checkConnection=Consultant_companies::where(['id'=>$request->id])->first();
+        $companyDetails=User::where(['id'=>$checkConnection->company_id])->first();
+        return view('consultants.invitation', compact('checkConnection','companyDetails','msg'));
     }
 
 

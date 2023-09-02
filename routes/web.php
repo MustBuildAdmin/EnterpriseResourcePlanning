@@ -58,6 +58,8 @@ Route::any('diary_data','DiaryController@diary_display_table')->name('diary_data
     ]
 );
 Route::get('/company-invitation-consultant/{id}','ConsultantController@createConnection')->middleware('guest');
+Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@submitConnection')->middleware('guest');
+
 
 Route::get('diary/{id}','DiaryController@show')->name('diary.show')->middleware(
     [
