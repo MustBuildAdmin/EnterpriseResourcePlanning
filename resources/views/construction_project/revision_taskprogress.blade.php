@@ -26,7 +26,7 @@
             </div>
             <div class="card-body table-border-style">
                 <div class="table-responsive">
-                    <table class="table" id="example2">
+                    <table class="table" id="example2" aria-describedby="revison working progress list ">
                         <thead>
                         <tr>
                             <th scope="col">{{__('Task ID')}}</th>
@@ -49,7 +49,7 @@
                                 <div class="avatar-group">
                                     @if($user_db->avatar)
                                         <span class='avatar avatar-sm'>
-                                            <img  class="img-fluid rounded-circle" data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
+                                            <img   alt='avatar' class="img-fluid rounded-circle" data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
                                             @if($user_db->avatar)
                                                 @php $profile=\App\Models\Utility::get_file('uploads/avatar/'); @endphp
                                                 src="{{$profile.$user_db->avatar}}"

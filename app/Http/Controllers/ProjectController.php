@@ -1436,9 +1436,9 @@ class ProjectController extends Controller
                 $projects = Project::whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
 
                 if(!empty($request->keyword)){
-                    $query='find_in_set("' . $request->keyword . '",tags)';
-                    $projects->where('project_name', 'LIKE', $request->keyword . '%')
-                    ->orWhereRaw($query);
+                    // $query='find_in_set("' . $request->keyword . '",tags)';
+                    // $projects->where('project_name', 'LIKE', $request->keyword . '%')
+                    // ->orWhereRaw($query);
 
                 }
                 if(!empty($request->status))

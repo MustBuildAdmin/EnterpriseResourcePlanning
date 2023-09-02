@@ -60,9 +60,9 @@ class RevisionController extends Controller
             $instanceId      = Session::get('project_instance');
             $holidayDateGet  = $request->holiday_date;
 
-            $var             = rand('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$projectId;
+            $var             = random_int('100000','555555').date('dmyhisa').\Auth::user()->creatorId().$projectId;
             $instanceIdSet   = Hash::make($var);
-            $getPro          = DB::table('projects')->where('id',$projectId)->first();
+            $getPro          = DB::table('projects')->where('id',$projectId)->first();       
 
             if(isset($request->non_working_days)){
                 if(gettype($request->non_working_days)=='array'){
