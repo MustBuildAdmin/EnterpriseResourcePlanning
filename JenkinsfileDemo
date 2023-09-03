@@ -5,7 +5,7 @@ pipeline {
             steps{
                 sh 'sudo chmod -R 777 /var/www/html/'
                 sh 'sudo rm -rf /var/www/html/erpdemo/*'
-                sh 'scp -r /var/lib/jenkins/workspace/demo-v1/*  /var/www/html/erpdemo/'
+                sh 'scp -r /var/lib/jenkins/workspace/demo-v0.1/*  /var/www/html/erpdemo/'
                 sh 'cd /var/www/html/erpdemo/'
                 sh 'composer install --no-interaction'
                 sh 'php artisan key:generate'
