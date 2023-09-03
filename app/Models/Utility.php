@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Twilio\Rest\Client;
+use Session;
+use App\Models\NonWorkingDaysModal;
 
 use Exception;
 
@@ -127,7 +129,8 @@ class Utility extends Model
             "telegram_chatid" =>"",
             "enable_signup" => "on",
             "company_type"=>"",
-            'cookie_text' => 'We use cookies to ensure that we give you the best experience on our website. If you continue to use this site we will assume that you are happy with it.
+            'cookie_text' => 'We use cookies to ensure that we give you the best experience on our website.
+             If you continue to use this site we will assume that you are happy with it.
 ',
             "company_logo_light" => "logo-light.png",
             "company_logo_dark" =>  "logo-dark.png",
@@ -272,8 +275,8 @@ class Utility extends Model
             "telegram_accestoken" => "",
             "telegram_chatid" =>"",
             "enable_signup" => "on",
-            'cookie_text' => 'We use cookies to ensure that we give you the best experience on our website. If you continue to use this site we will assume that you are happy with it.
-',
+            'cookie_text' => 'We use cookies to ensure that we give you the best experience on our website.
+             If you continue to use this site we will assume that you are happy with it.',
             "company_logo_light" => "logo-light.png",
             "company_logo_dark" =>  "logo-dark.png",
             "company_favicon" => "favicon.png",
@@ -3678,26 +3681,30 @@ class Utility extends Model
         public static function utc_to_originaltime($time,$setting){
 
             $timezone =$setting['timezone'];
-            // dd($timezone);
-            // $timezone = 'America/New_York';
             $carbon = Carbon::parse($time, $timezone);
             $carbon->utc();
             $utcTime = $carbon->toDateTimeString();
             $dateTimeUTC= date('H:i:s', strtotime($utcTime));
             return  $dateTimeUTC;
-            // $carbon = Carbon::parse('H:i:s', $time, 'America/Hermosillo');
-            // $utcTime = $carbon->toDateTimeString();
-            // $dateTimeUTC= date('H:i:s', strtotime($utcTime));
-            // return  $dateTimeUTC;
-
         }
 
         public static function remaining_duration_calculator($end,$id){
-           $holidays=DB::table('project_holidays')->where('project_id',$id)->get();
            $project=DB::table('projects')->where('id',$id)->first();
+           if(Session::has('project_instance')){
+            $instance_id=Session::get('project_instance');
+           }else{
+            $instance_id=$project->instance_id;
+           }
+           $holidays=DB::table('project_holidays')->where(['project_id'=>$id,'instance_id'=>$instance_id])->get();
+           $nonWorkingDay    = NonWorkingDaysModal::where('project_id',$id)
+                                ->where('instance_id',$instance_id)->first();
            if($project){
-                // $weekends_array=array('MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY');
-                $weekarray=explode(',',$project->non_working_days);
+                if($nonWorkingDay != null){
+                    $weekarray=explode(',',$nonWorkingDay->non_working_days);
+                }else{
+                    $weekarray=array();
+                }
+                
                 $excluded_dates =array();
 
                 if(count($holidays)>0){
@@ -3707,10 +3714,10 @@ class Utility extends Model
                 }
                 $final_count = 0;
 
+               // $start_date = Carbon::create(date('y-m-d'));
                 $start_date = Carbon::now();
                 $end_date = Carbon::create($end);
                 $date_range = CarbonPeriod::create($start_date, $end_date);
-
                 foreach ($date_range as $date) {
                     if (!in_array($date->dayOfWeek, $weekarray) && !in_array($date, $excluded_dates)) {
                         $final_count++;

@@ -1,35 +1,35 @@
 @include('new_layouts.header')
 <style>
-    #create {
-        height: 35px !important;
-        width: 12% !important;
-    }
+#create {
+    height: 35px !important;
+    width: 12% !important;
+}
 
-    #search_button {
-        height: 35px !important;
-        width: 12% !important;
-    }
+#search_button {
+    height: 35px !important;
+    width: 12% !important;
+}
 
-    #reset {
-        width: 12% !important;
-    }
+#reset {
+    width: 12% !important;
+}
 
-    .user-initial {
-        width: 101px;
-        height: 100px;
-        border-radius: 50%;
-        background-color: #e0e0e0;
-        color: #fff;
-        font-size: 42px;
-        text-align: center;
-    }
+.user-initial {
+    width: 101px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #fff;
+    font-size: 42px;
+    text-align: center;
+}
 
-    .avatar-xl {
-        --tblr-avatar-size: 6.2rem;
-    }
+.avatar-xl {
+    --tblr-avatar-size: 6.2rem;
+}
 </style>
 @php
-    $profile = \App\Models\Utility::get_file('uploads/avatar');
+    $profile = \App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 @include('crm.side-menu')
 <div class="row">
@@ -54,7 +54,7 @@
                         <span class="btn-inner--icon"><i class="ti ti-arrow-back"></i></span>
                     </a>
                     <a href="#" class="btn btn-primary" data-size="xl" data-url="{{ route('clients.create') }}"
-                        data-ajax-popup="true" data-bs-toggle="tooltip" title="{{ __('Create') }}" id="create">
+                        data-ajax-popup="true" data-bs-toggle="tooltip" title="{{ __('Create Client') }}" id="create">
                         <span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
                     </a>
                 </div>
@@ -81,10 +81,17 @@
                                                 <span>{{ __('Show') }}</span>
                                             </a>
                                             @can('edit client')
-                                                <a href="#!" data-size="xl"
-                                                    data-url="{{ route('clients.edit', $client->id) }}"
-                                                    data-ajax-popup="true" class="dropdown-item"
-                                                    data-bs-original-title="{{ __('Edit User') }}"> <i
+                                            @if ($client->color_code != null || $client->color_code != '')
+                                                @php $colorcode =$client->color_code; @endphp
+                                            @else
+                
+                                                @php $colorcode =Utility::rndRGBColorCode(); @endphp
+                                            @endif
+                                                <a href="#!" data-size="xl" data-ajax-popup="true"
+                                                    data-url="{{ route('clients.edit',[$client->id]) }}"
+                                                    data-color="{{$colorcode}}"
+                                                    data-ajax-popup="true" class="dropdown-item getcolorcode"
+                                                    data-bs-original-title="{{ __('Edit Client') }}"> <i
                                                         class="ti ti-pencil"></i>
                                                     <span>{{ __('Edit') }}</span>
                                                 </a>
@@ -122,18 +129,14 @@
                                 <?php $short = substr($client->name, 0, 1); ?>
                                 @if (!empty($client->avatar))
                                     <img src="{{ !empty($client->avatar)
-                                        ? $profile . \Auth::user()->avatar
+                                        ? $profile . $client->avatar
                                         : asset(Storage::url('uploads/avatar/avatar.png ')) }}"
                                         class="avatar avatar-xl mb-3 rounded" alt="">
                                 @else
-                                    @if ($client->color_code != null || $client->color_code != '')
-                                        @php $color_co =$client->color_code; @endphp
-                                    @else
-                                        @php $color_co =Utility::rndRGBColorCode(); @endphp
-                                    @endif
+                                   
                                     <?php $short_lname = substr($client->lname, 0, 1); ?>
                                     <div class="avatar avatar-xl mb-3 user-initial"
-                                        style="background-color:{{ $color_co }};">
+                                        style="background-color:{{ $colorcode }};">
                                         {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
                                     </div>
                                 @endif
@@ -205,4 +208,20 @@
         </div>
     </div>
 </div>
+<script>
+$(document).on('change', '.document_setup', function(){
+    var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            $(".show_document_file").hide();
+            $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+            $('input[type="submit"]').prop('disabled',true);
+            return false;
+        } else{
+            $(".show_document_file").show();
+            $(".show_document_error").hide();
+            $('input[type="submit"]').prop('disabled',false);
+            return true;
+        }
+});
+</script>
 @include('new_layouts.footer')

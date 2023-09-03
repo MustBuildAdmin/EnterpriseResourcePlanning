@@ -577,6 +577,7 @@ class SystemController extends Controller
     }
     public function emailsettings(Request $request){
         $EmailTemplates = EmailTemplate::all();
+       
         return view('settings.emailsettings', compact('EmailTemplates'));
 
     }

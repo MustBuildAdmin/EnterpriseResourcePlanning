@@ -644,6 +644,14 @@ Route::resource('users', 'UserController')->middleware(
     ]
 );
 
+Route::get('users/edit/{id}/{color_code}', 'UserController@edit')->name('user.edit.new')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::any('check_duplicate_email', 'UserController@check_duplicate_email')->name('check_duplicate_email')->middleware(
     [
         'auth',
@@ -1223,12 +1231,25 @@ Route::group(
 );
 
 // Client Module
+
 Route::resource('clients', 'ClientController')->middleware(
     [
         'auth',
         'XSS',
+        'revalidate',
     ]
 );
+
+Route::get('clients/edit/{id}/{color_code}', 'ClientController@edit')->name('clients.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate'
+    ]
+);
+
+
 Route::any('client-reset-password/{id}', 'ClientController@clientPassword')->name('clients.reset');
 Route::post('client-reset-password/{id}', 'ClientController@clientPasswordReset')->name('client.password.update');
 // Deal Module
@@ -3421,7 +3442,28 @@ Route::post(
         'XSS',
     ]
 );
-
+Route::get(
+    'check_instance/{id}', [
+    'as' => 'projects.check_instance',
+    'uses' => 'ProjectController@check_instance',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    'instance_project/{instance_id}/{project_id}', [
+    'as' => 'projects.instance_project',
+    'uses' => 'RevisionController@instance_project',
+]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::delete(
     'projects/{id}/users/{uid}', [
                                  'as' => 'projects.user.destroy',
@@ -4165,7 +4207,37 @@ Route::resource('users', 'UserController')->middleware(
         'revalidate',
     ]
 );
+
+Route::get('users/{id}/edit/{cid}', ['as'=>'use.edit','uses'=>'UserController@edit']);
+
 Route::resource('consultants', 'ConsultantController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->name('consultants.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_consultant')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('update_consultant/{id}', 'ConsultantController@update_consultant')->name('consultants.update_consultant')
+->middleware(
     [
         'auth',
         'XSS',
@@ -4176,7 +4248,27 @@ Route::resource('consultants', 'ConsultantController')->middleware(
 Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword')->name('consultants.reset');
 
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
-        ->name('consultants.password.update');
+->name('consultants.password.update');
+
+Route::get('consultant-scott-search', 'ConsultantController@scott_search')
+->name('consultant.scott-search')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+
+Route::any('consultant-scott-result', 'ConsultantController@scott_result')
+->name('consultant.scott-result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 
 Route::resource('plans', 'PlanController')->middleware(
     [
@@ -4858,7 +4950,10 @@ Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_detail
         'XSS',
     ]
 ); 
+
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report'); 
+Route::any('view_task_revision', 'ProjectTaskController@revsion_task_list')->name('project_report.revsion_task_list'); 
+
 Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con'); 
 Route::any('download_report', 'ProjectReportController@download_report')->name('download_report'); 
 

@@ -135,25 +135,18 @@ class ClientController extends Controller
                             $filenameWithExt = $request->file('avatar')->getClientOriginalName();
                             $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                             $extension       = $request->file('avatar')->getClientOriginalExtension();
-                            $fileNameToStore = $filename . '_' . time() . '.' . $extension;  
+                            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
                         
                             $dir = Config::get('constants.USER_IMAGE');
                             $image_path = $dir . $fileNameToStore;
                             if (\File::exists($image_path)) {
                                 \File::delete($image_path);
                             }
-                            $url = '';
-                            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-            
-                            if($path['flag'] == 1){
-                                $url = $path['url'];
-                            }else{
-                                return redirect()->back()->with('error', __($path['msg']));
-                            }
+                            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
         
                     }
-                    if(isset($url)){
-                        $avatar=$url;
+                    if(isset($fileNameToStore)){
+                        $avatar=$fileNameToStore;
                     }else{
                         $avatar=null;
                     }
@@ -233,10 +226,11 @@ class ClientController extends Controller
                             'client_email' => $client->email,
                             'client_password' =>  $client->password,
                         ];
-                        $resp = Utility::sendEmailTemplate('create_client', [$client->email], $clientArr);
+                        
+                        Utility::sendEmailTemplate('create_client', [$client->email], $clientArr);
 
 
-                        return redirect()->route('clients.index')->with('success', __('Client successfully added.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
+                        return redirect()->route('clients.index')->with('success', __('Client successfully added.'));
 
                     }
 
@@ -323,6 +317,7 @@ class ClientController extends Controller
         if(\Auth::user()->can('edit client'))
         {
             $user = \Auth::user();
+         
             if($client->created_by == $user->creatorId())
             {
                 $user  = User::findOrFail($client->id);
@@ -384,21 +379,10 @@ class ClientController extends Controller
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
                     }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
-
+                    
+                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
                 }
-                if(isset($url)){
-                    $avatar=$url;
-                }else{
-                    $avatar=null;
-                }
+               
                 if($request->copy_status!=null){
                     $copy_status=$request->copy_status;
 
@@ -421,8 +405,8 @@ class ClientController extends Controller
                     $shipping_address = $request->shipping_address;
                 }
 
-                if(isset($url)){
-                    $post['avatar']=$url;
+                if(isset($fileNameToStore)){
+                    $post['avatar']=$fileNameToStore;
                 }
                 $post['email'] = $request->email;
                 $post['lname'] = $request->lname;
