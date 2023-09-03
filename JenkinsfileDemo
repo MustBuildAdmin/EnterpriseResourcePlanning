@@ -10,6 +10,12 @@ pipeline {
                 sh 'composer install --no-interaction'
                 sh 'php artisan key:generate'
                 sh 'sudo chmod -R 777 /var/www/html/'
+                script {
+                    env.DB_HOST = "localhost"
+                    env.DB_DATABASE = "must-demo"
+                    env.DB_USERNAME = "root"
+                    env.DB_PASSWORD = "password"
+                }
             }
         }    
        
