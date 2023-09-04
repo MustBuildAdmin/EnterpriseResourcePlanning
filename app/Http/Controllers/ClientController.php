@@ -142,14 +142,7 @@ class ClientController extends Controller
                             if (\File::exists($image_path)) {
                                 \File::delete($image_path);
                             }
-                            $url = '';
-                            $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-            
-                            if($path['flag'] == 1){
-                                $url = $path['url'];
-                            }else{
-                                return redirect()->back()->with('error', __($path['msg']));
-                            }
+                            Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
         
                     }
                     if(isset($fileNameToStore)){
@@ -233,10 +226,11 @@ class ClientController extends Controller
                             'client_email' => $client->email,
                             'client_password' =>  $client->password,
                         ];
-                        $resp = Utility::sendEmailTemplate('create_client', [$client->email], $clientArr);
+                        
+                        Utility::sendEmailTemplate('create_client', [$client->email], $clientArr);
 
 
-                        return redirect()->route('clients.index')->with('success', __('Client successfully added.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
+                        return redirect()->route('clients.index')->with('success', __('Client successfully added.'));
 
                     }
 
@@ -385,15 +379,8 @@ class ClientController extends Controller
                     if (\File::exists($image_path)) {
                         \File::delete($image_path);
                     }
-                    $url = '';
-                    $path = Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
-    
-                    if($path['flag'] == 1){
-                        $url = $path['url'];
-                    }else{
-                        return redirect()->back()->with('error', __($path['msg']));
-                    }
-
+                    
+                    Utility::upload_file($request,'avatar',$fileNameToStore,$dir,[]);
                 }
                
                 if($request->copy_status!=null){
