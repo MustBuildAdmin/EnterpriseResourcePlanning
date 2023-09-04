@@ -82,7 +82,7 @@
                                 <div class="card-header border-0 pb-0">
                                     <div class="d-flex align-items-center">
                                         <?php $color = sprintf("#%06x",random_int(0,16777215));?>
-                                    <div class="circle" style="background:#<?php echo $color; ?>">
+                                    <div class="circle" style="background:<?php echo $color; ?>">
                                     <?= substr($project->project_name,0,2) ?>
                                     </div>
                                     <h5 class="mb-0">
