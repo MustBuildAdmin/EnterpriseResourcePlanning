@@ -4269,7 +4269,6 @@ Route::any('consultant-scott-result', 'ConsultantController@scott_result')
     ]
 );
 
-<<<<<<< HEAD
 Route::get('get_company_details/{id}', 'ConsultantController@get_company_details')
 ->name('consultant.get_company_details')->middleware(
     [
@@ -4280,8 +4279,6 @@ Route::get('get_company_details/{id}', 'ConsultantController@get_company_details
 );
 
 
-=======
->>>>>>> eddf1db1b4d661cc4af3e1ec6a2c1202af09bf94
 
 Route::resource('plans', 'PlanController')->middleware(
     [
