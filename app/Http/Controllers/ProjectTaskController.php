@@ -181,11 +181,11 @@ class ProjectTaskController extends Controller
 
     public function get_all_task(Request $request){
         $project_id     = Session::get('project_id');
-        $instance_id     = Session::get('project_instance');
+        $instance_id    = Session::get('project_instance');
         $get_start_date = $request->start_date;
         $get_end_date   = $request->end_date;
         $status_task    = $request->status_task;
-       
+        $task_id_arr    = $request->task_id_arr;
 
         if($request->user_id != null){
             $json_user_id = json_decode($request->user_id);
@@ -213,6 +213,10 @@ class ProjectTaskController extends Controller
 
             if(\Auth::user()->type != 'company'){
                 $tasks->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
+            }
+
+            if($task_id_arr != null){
+
             }
 
             if(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null && $status_task != null){

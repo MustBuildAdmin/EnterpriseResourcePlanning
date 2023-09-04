@@ -10,6 +10,11 @@
     line-height: 35px;
     display: grid;
 }
+
+
+.dataTables_length{
+  margin-bottom: 5%;
+}
 </style>
 
 <table class="table table-vcenter card-table" id="task-table">
@@ -23,9 +28,9 @@
         <th scope="col">{{__('Planned Start Date')}}</th>
         <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
-        @if(\Auth::user()->type == 'company')
+        <!-- @if(\Auth::user()->type == 'company')
             <th scope="col">{{__('Action')}}</th>
-        @endif
+        @endif -->
     </tr>
     </thead>
     <tbody class="list">
@@ -72,75 +77,94 @@
                     $checkLatestFreezeStatus = 0;
                 }
 
-                @endphp
-                <tr>
-                    <td style="width: 15%; font-size: 15px;">
-                        @if(Session::get('current_revision_freeze') == 1 &&
-                            Session::get('project_instance') != Session::get('latest_project_instance') &&
-                            $checkLatestFreezeStatus == 1)
-                            <a href="{{route('task_particular',['task_id' => $task->main_id,
-                                'get_date' => $get_end_date])}}" style="text-decoration: none;">
-                                {{ $task->id }}
-                            </a>
-                        @else
-                            <a style="text-decoration: none;">{{ $task->id }}</a>
-                        @endif
-                    </td>
+            @endphp
+            <tr>
+                <td style="width:5%; font-size: 15px;">
+                    @if(Session::get('current_revision_freeze') == 1 &&
+                        Session::get('project_instance') != Session::get('latest_project_instance') &&
+                        $checkLatestFreezeStatus == 1)
+                        <a href="{{route('task_particular',['task_id' => $task->main_id,
+                            'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                            {{ $task->id }}
+                        </a>
+                    @else
+                        <a style="text-decoration: none;">{{ $task->id }}</a>
+                    @endif
+                </td>
 
-                    <td style="width: 20%; font-size: 14px;">
-                        {{ $task->text }}
-                    </td>
+                <td style="width:30%; font-size: 15px;">
+                    {{ $task->text }}
+                </td>
 
-                    <td style="width: 18%;">
-                        @if (strtotime($task->end_date) < time() && $task->progress < 100)
-                            <span class="badge bg-warning me-1"></span> Pending
-                        @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
-                            <span class="badge bg-success me-1"></span> Completed
-                        @else
-                            <span class="badge bg-info me-1"></span> In-Progress
-                        @endif
-                    </td>
+                <td style="width:20%;">
+                    @if (strtotime($task->end_date) < time() && $task->progress < 100)
+                        <span class="badge bg-warning me-1"></span> Pending
+                    @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
+                        <span class="badge bg-success me-1"></span> Completed
+                    @else
+                        <span class="badge bg-info me-1"></span> In-Progress
+                    @endif
+                </td>
 
-                    <td style="width: 12%;" class="sort-progress" data-progress="{{$task->progress}}">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-lg-auto">{{$task->progress}}%</div>
-                            <div class="col">
-                                <div class="progress" style="width: 5rem">
-                                    <div class="progress-bar" style="width: {{$task->progress}}%" role="progressbar"
-                                        aria-valuenow="{{$task->progress}}" aria-valuemin="0" aria-valuemax="100"
-                                        aria-label="{{$task->progress}}% Complete">
-                                        <span class="visually-hidden">{{$task->progress}}% Complete</span>
-                                    </div>
+                <td style="width:15%;" class="sort-progress"
+                    data-progress="{{round($task->progress)}}">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-auto" style="width: 50px;">{{round($task->progress)}}%</div>
+                        <div class="col">
+                            <div class="progress" style="width: 5rem">
+                                <div class="progress-bar" style="width: {{round($task->progress)}}%"
+                                    role="progressbar" aria-valuenow="{{round($task->progress)}}"
+                                    aria-valuemin="0" aria-valuemax="100"
+                                    aria-label="{{round($task->progress)}}% Complete">
+                                    <span class="visually-hidden">{{round($task->progress)}}% Complete</span>
                                 </div>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
-                    <td style="width: 12%;" class="sort-progress" data-progress="{{round($current_Planed_percentage)}}">
-                        <div class="row align-items-center">
-                            <div class="col-12 col-lg-auto">{{round($current_Planed_percentage)}}%</div>
-                            <div class="col">
-                                <div class="progress" style="width: 5rem">
-                                    <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%" role="progressbar"
-                                        aria-valuenow="{{round($current_Planed_percentage)}}" aria-valuemin="0" aria-valuemax="100"
-                                        aria-label="{{round($current_Planed_percentage)}}% Complete">
-                                        <span class="visually-hidden">{{round($current_Planed_percentage)}}% Complete</span>
-                                    </div>
+                <td style="width:15%;" class="sort-progress"
+                    data-progress="{{round($current_Planed_percentage)}}">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-auto" style="width: 50px;">
+                            {{round($current_Planed_percentage)}}%
+                        </div>
+                        <div class="col">
+                            <div class="progress" style="width: 5rem">
+                                <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%"
+                                role="progressbar" aria-valuenow="{{round($current_Planed_percentage)}}"
+                                aria-valuemin="0" aria-valuemax="100"
+                                aria-label="{{round($current_Planed_percentage)}}% Complete">
+                                    <span class="visually-hidden">
+                                        {{round($current_Planed_percentage)}}% Complete
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </td>
 
-                    <td style="width: 5%; font-size: 14px;" class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
-                        {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
-                    </td>
+                <td style="width:5%;"
+                    class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
+                    {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
+                </td>
 
-                    <td style="width: 5%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
-                        {{ Utility::site_date_format_minus_day($task->end_date,\Auth::user()->id,1) }}
-                    </td>
+                <td style="width:5%;"
+                    class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+                    {{ Utility::site_date_format_minus_day($task->end_date,\Auth::user()->id,1) }}
+                </td>
 
-                    <td style="width: 8%;">
-                        <div class="avatar-group">
+                <td style="width:10%;">
+                    <div class="avatar-group">
+                        @php
+                            if($task->users != ""){
+                                $users_data = json_decode($task->users);
+                            }
+                            else{
+                                $users_data = array();
+                            }
+                        @endphp
+                        @forelse ($users_data as $key => $get_user)
                             @php
                                 $user_db = DB::table('users')->where('id',$get_user)->first();
                             @endphp
@@ -160,24 +184,13 @@
                                     <?php  $short=substr($user_db->name, 0, 1);?>
                                     <span class="user-initial">{{strtoupper($short)}}</span>
                                 @endif
-                            @empty
-                                {{ __('Not Assigned') }}
-                            @endforelse
-                        </div>
-                    </td>
 
-                    @if(\Auth::user()->type == 'company')
-                        <td class="text-center w-15" style="width: 5%;">
-                            <div class="actions" style="height: 36px;">
-                                <a style="margin-top: 20%;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
-                                    data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" 
-                                    class="floatrght">
-                                    <i class="ti ti-pencil"></i>
-                                </a>
                             @endif
-                        </div>
-                    </td>
-                @endif
+                        @empty
+                            {{ __('Not Assigned') }}
+                        @endforelse
+                    </div>
+                </td>
             </tr>
         @empty
         @endforelse

@@ -401,100 +401,223 @@ $holidays=implode(':',$holidays);
 </div>
 <div id="additional_elements" class="gantt-container">
 
-                            <div class="align" >
-                                <div class='row'>
-                                    <div class='col-md-12' style='display: flex;'>
-                                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
-                                              'id' => 'gantt_chart_submit',
-                                              'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;
-                                              margin-bottom: 6px;']) }}
+    <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
+        <div class="container-fluid" >
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+             Project Name
+          </h1>
+          <div class="navbar-nav flex-row order-md-last">
+            <div class="d-none d-md-flex"> 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="true">
+                      <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/lifebuoy -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M15 15l3.35 3.35"></path><path d="M9 15l-3.35 3.35"></path><path d="M5.65 5.65l3.35 3.35"></path><path d="M18.35 5.65l-3.35 3.35"></path></svg>
+                      </span>
+                      <span class="nav-link-title">
+                        Export
+                      </span>
+                    </a>
+                    <div class="dropdown-menu " data-bs-popper="static">
+                      <a class="dropdown-item"   onclick='gantt.exportToMSProject()'>
+                        Export to MPP
+                      </a>
+                      <a class="dropdown-item" onclick="gantt.exportToPrimaveraP6()">
+                        Export to PrimaveraP6
+                      </a>
+                      <a class="dropdown-item" onclick='gantt.exportToExcel()'>
+                        Export to Excel
+                      </a>
+                      <a class="dropdown-item"  onclick='gantt.exportToICal()'>
+                        Export to ICal
+                      </a>
+                      <a class="dropdown-item"  onclick='gantt.exportToPDF();
+                      '>
+                        Export to PDF
+                      </a>
+                      <a class="dropdown-item"  onclick='gantt.exportToPNG();                          ;
+                      '>
+                        Export to PNG
+                      </a>
+                    </div>
+                  </li>
 
-                                            {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                                                <a href="#" class="btn btn-outline-primary w-20 freeze_button"
-                                                style='width: 100%;' data-bs-toggle="tooltip"
-                                                title="{{ __('Click to change Set Baseline status') }}"
-                                                data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|' .
-                                    __('This action can not be undone. Do you want to continue?') }}"
-                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                                                    Set Baseline
-                                                </a>
-                                            {!! Form::close() !!}
+                <div class="dropdown">
+                <div class="mb-3">
+                    <a href="#" class="btn-link" data-bs-toggle="dropdown" aria-label="Open user menu" aria-expanded="false">
+                        <div class="">
+                           
+                        </div>
+                      </a>
+                      <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item" ></a>
+                        <a href="#" class="dropdown-item"></a>
+                        <a href="#"  class="dropdown-item"></a>
+                        <a href="#"  class="dropdown-item"></a>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn-link" title="fullscreen" id="fullscreen_button"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-border-corners" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M16 4h2a2 2 0 0 1 2 2v2"></path>
+                    <path d="M20 16v2a2 2 0 0 1 -2 2h-2"></path>
+                    <path d="M8 20h-2a2 2 0 0 1 -2 -2v-2"></path>
+                    <path d="M4 8v-2a2 2 0 0 1 2 -2h2"></path>
+                 </svg></button>
+              </div>
+            
+            </div>
+        
+          <div class="collapse navbar-collapse" id="navbar-menu">
+            <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+              <ul class="navbar-nav">
+                      
+                <li class="nav-item">
+                    <a class="nav-link" name="undo" type="button" onclick="openAll()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bear-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M13 3h-5v5"></path>
+                            <path d="M8 3l7.536 7.536a5 5 0 0 1 1.464 3.534v6.93"></path>
+                         </svg>
+                         Expand
+                         All</a>
 
-                                            <button class="btn btn-outline-primary action w-20 undo_action" name="undo"
-                                            aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;
-                                            margin-top: 4px;margin-right: 6px;'
-                                            @if($freezeCheck->freeze_status==1) disabled @endif>Undo</button>
+                </li>
+                      
+                <li class="nav-item">
+                    <a class="nav-link" name="undo" type="button" onclick="closeAll()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bear-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M13 3h-5v5"></path>
+                            <path d="M8 3l7.536 7.536a5 5 0 0 1 1.464 3.534v6.93"></path>
+                         </svg>
+                         Collaspe
+                         All</a>
 
-                                            <button class="btn btn-outline-primary action w-20 redo_action" name="redo"
-                                            style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
-                                            margin-right: 6px;'
-                                            @if($freezeCheck->freeze_status==1) disabled @endif>Redo</button>
+                </li>
+                <li class="nav-item">
+                    <a class="action nav-link" name="undo" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bear-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M13 3h-5v5"></path>
+                            <path d="M8 3l7.536 7.536a5 5 0 0 1 1.464 3.534v6.93"></path>
+                         </svg>
+                        Undo</a>
 
-                                            <button class="btn btn-outline-primary action w-20 indent_action"
-                                            name="indent" style='width: 11%;margin-bottom: 6px;
-                                            height: 38px;margin-top: 4px;margin-right: 6px;'
-                                            @if($freezeCheck->freeze_status==1) disabled @endif>Indent</button>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="action nav-link" name="redo"  type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bear-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 3h5v5"></path>
+                            <path d="M17 3l-7.536 7.536a5 5 0 0 0 -1.464 3.534v6.93"></path>
+                         </svg>
+                        Redo</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="action nav-link" name="indent"  type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bar-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M20 12l-10 0"></path>
+                            <path d="M20 12l-4 4"></path>
+                            <path d="M20 12l-4 -4"></path>
+                            <path d="M4 4l0 16"></path>
+                         </svg>
+                        Indent</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="action nav-link" name="outdent"  type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-bar-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 12l10 0"></path>
+                            <path d="M4 12l4 4"></path>
+                            <path d="M4 12l4 -4"></path>
+                            <path d="M20 4l0 16"></path>
+                         </svg>
+                        Outdent</a>
+                      
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="action nav-link" name="del"  type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M4 7l16 0"></path>
+                            <path d="M10 11l0 6"></path>
+                            <path d="M14 11l0 6"></path>
+                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                         </svg>
+                        Delete</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"  onclick="updateCriticalPath(this)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-activity-heartbeat" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M3 12h4.5l1.5 -6l4 12l2 -9l1.5 3h4.5"></path>
+                       </svg>
+                       Show Critical Path
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link"  onclick="toggleSlack(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bell-school" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M10 10m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0"></path>
+                            <path d="M13.5 15h.5a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-1a2 2 0 0 1 2 -2h.5"></path>
+                            <path d="M16 17a5.698 5.698 0 0 0 4.467 -7.932l-.467 -1.068"></path>
+                            <path d="M10 10v.01"></path>
+                            <path d="M20 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+                         </svg>
+                       Show Slack
+                        </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link"  onclick="toggleChart()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-autofit-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M20 12v-6a2 2 0 0 0 -2 -2h-12a2 2 0 0 0 -2 2v8"></path>
+                            <path d="M4 18h17"></path>
+                            <path d="M18 15l3 3l-3 3"></path>
+                         </svg>
+                        Toggle Main
+                        </a>
+                  </li>
+                  <li class="nav-item">
+                    {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
 
-                                            <button class="btn btn-outline-primary action w-20 outdent_action"
-                                            name="outdent" style='width: 11%;margin-bottom: 6px;
-                                            height: 38px;margin-top: 4px;margin-right: 6px;'
-                                            @if($freezeCheck->freeze_status==1) disabled @endif>Outdent</button>
-
-                                        <button class="btn btn-outline-primary w-20" type="button"
-                                         onclick='gantt.exportToExcel({ callback:show_result })'
-                                          style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
-                                          margin-right: 6px;'>Export to Excel</button>
-
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)"
-                                         style='width: 11%;margin-bottom: 6px;height: 38px;
-                                         margin-top: 4px;margin-right: 6px;'>Show Slack</button>
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()"
-                                         style='width: 11%;margin-bottom: 6px;height: 38px;
-                                         margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
-                                    </div>
-                                </div>
-                                <div class='row'>
-                                    <div class='col-md-12' style='display: flex;'>
-                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleOverlay();"
-                                        style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
-                                        margin-right: 6px;'>Overlay</button> --}}
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
-                                            onclick="gantt.ext.fullscreen.toggle();"
-                                             style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
-                                             margin-right: 6px;'>Fullscreen</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
-                                         onclick="closeAll()" style='width: 11%;margin-bottom: 6px; height: 38px;
-                                         margin-top: 4px;margin-right: 6px;'>Collaspe
-                                            All</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
-                                         onclick="openAll()" style='width: 11%;margin-bottom: 6px; height: 38px;
-                                         margin-top: 4px;margin-right: 6px;'>Expand
-                                            All</button>
-                                        <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)"
-                                         style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;
-                                         margin-right: 6px;'>Show Critical
-                                            Path</button>
-                                            <select class="form-control" id="zoomscale" style='width:13%;'>
-                                                <option value="">Select Timescale</option>
-                                                <option value="day">day</option>
-                                                <option value="week">week</option>
-                                                <option value="month">month</option>
-                                                <option value="quarter">quarter</option>
-                                                <option value="year">year</option>
-                                            </select>
-                                    </div>
-                                </div>
-
-                            </div>
+                    {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
+                        <a href="#" class="nav-link freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
+                            data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
+                            {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
+                            Set Baseline
+                        </a>
+                    {!! Form::close() !!}
+                  </li>
+                  <li>
+                    <select class="form-control" id="zoomscale">
+                        <option value="">Select Timescale</option>
+                        <option value="day">day</option>
+                        <option value="week">week</option>
+                        <option value="month">month</option>
+                        <option value="quarter">quarter</option>
+                        <option value="year">year</option>
+                    </select>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+        
                               <div class="row">
                                 <div class="col-12">
                                   <div class="card card-stats border-0" id="myCover">
                                     @if($project)
                                     <input type='hidden' value='0' id='project_id'>
-                                    <div class="card-body" style='max-height:512px;overflow:auto;'>
-                                        <div id="gantt_here" style='width:100%; height:491px; position: relative;'
-                                         onload="script();"></div>
+                                    <div class="card-body">
+                                        <div id="gantt_here" style='width:100%; height:750px; position: relative;' onload="script();"></div>
                                     </div>
                                     @else
                                     <h1>404</h1>
@@ -548,7 +671,7 @@ $holidays=implode(':',$holidays);
                                 </div>
                               </div>
 
-
+          
 </div>
     <input type='hidden' id='weekends' value='{{$nonWorkingDay}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
