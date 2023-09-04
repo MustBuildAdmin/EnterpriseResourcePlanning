@@ -26,9 +26,9 @@
     </div>
 @endsection
 @section('content')
-    <div class="row">
+    <div class="row row-cards">
         @foreach($plans as $plan)
-            <div class="plan_card">
+            <div class="col-sm-6 col-lg-3">
                 <div class="card price-card price-1 wow animate__fadeInUp" data-wow-delay="0.2s" style="
                    visibility: visible;
                    animation-delay: 0.2s;
