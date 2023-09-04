@@ -4248,6 +4248,16 @@ Route::any('consultant-scott-result', 'ConsultantController@scott_result')
     ]
 );
 
+Route::get('get_company_details/{id}', 'ConsultantController@get_company_details')
+->name('consultant.get_company_details')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+
 
 Route::resource('plans', 'PlanController')->middleware(
     [

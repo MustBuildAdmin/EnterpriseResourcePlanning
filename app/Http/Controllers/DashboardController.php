@@ -40,7 +40,7 @@ use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use DB;
 class DashboardController extends Controller
 {
     /**
@@ -167,9 +167,19 @@ class DashboardController extends Controller
         }
     }
 
-    public function consultant_index(){
+    public function consultant_index(Request $request){
 
-        return view('consultants.dashboard.index');
+        $users = DB::table('users as t1')
+                    ->select('t1.name','t1.lname','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
+                    ->join('consultant_companies as t2', function ($join) {
+                        $join->on('t2.company_id', '=', 't1.id');
+                        $join->where('t2.status','active');
+                     })
+                    ->where('t1.type','company')
+                    ->paginate(4);
+            
+
+        return view('consultants.dashboard.index',compact('users'));
     }
 
     public function project_dashboard_index()

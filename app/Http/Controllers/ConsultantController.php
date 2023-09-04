@@ -498,5 +498,12 @@ class ConsultantController extends Controller
           
     }
 
+    public function get_company_details(Request $request,$id){
+
+        $user=User::where('id',$id)->where('type','company')->first();
+        return view('consultants.view',compact('user'));
+
+    }
+
 
 }
