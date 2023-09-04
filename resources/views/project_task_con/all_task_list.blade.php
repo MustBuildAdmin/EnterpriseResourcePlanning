@@ -28,9 +28,6 @@
         <th scope="col">{{__('Planned Start Date')}}</th>
         <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
-        <!-- @if(\Auth::user()->type == 'company')
-            <th scope="col">{{__('Action')}}</th>
-        @endif -->
     </tr>
     </thead>
     <tbody class="list">
@@ -203,7 +200,7 @@
     });
 
     function datatable2(){
-        new DataTable('#summary-table, #task-table', {
+        new DataTable('#task-table', {
             pagingType: 'full_numbers',
             aaSorting: []
         });

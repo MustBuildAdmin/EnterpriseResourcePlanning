@@ -102,7 +102,7 @@
                                                                             <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
                                                                             <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
                                                                         </span>
-                                                                        <input class="form-control" placeholder="Select a Start date" id="start-date"/>
+                                                                        <input class="form-control start_date" placeholder="Select a Start date" id="start-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
@@ -116,7 +116,7 @@
                                                                             <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" />
                                                                             </svg>
                                                                         </span>
-                                                                        <input class="form-control" placeholder="Select a End date" id="end-date"/>
+                                                                        <input class="form-control end_date" placeholder="Select a End date" id="end-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -128,10 +128,10 @@
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Task Status</label>
-                                                                        <select type="text" class="form-select" placeholder="Task Status" id="task-status" value="">
+                                                                        <select type="text" class="form-select task_status" placeholder="Task Status" id="task-status" value="">
                                                                             <option value="">Select Status</option>
-                                                                            <option value="completed">Completed</option>
-                                                                            <option value="pending">Pending</option>
+                                                                            <option value="3">Pending</option>
+                                                                            <option value="4">Completed</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -380,56 +380,6 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         var el;
-        window.TomSelect && (new TomSelect(el = document.getElementById('task-name'), {
-            copyClassesToDropdown: false,
-            plugins: ['remove_button'],
-            dropdownParent: 'body',
-            controlInput: '<input>',
-            render:{
-                item: function(data,escape) {
-                    if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                    }
-                    return '<div>' + escape(data.text) + '</div>';
-                },
-                option: function(data,escape){
-                    if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                    }
-                    return '<div>' + escape(data.text) + '</div>';
-                },
-                search: function(){
-                    console.log("ll");
-                },
-            },
-        }));
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var el;
-        window.TomSelect && (new TomSelect(el = document.getElementById('search-assignee'), {
-                        copyClassesToDropdown: false,            plugins: ['remove_button'],
-            dropdownParent: 'body',
-            controlInput: '<input>',
-            render:{
-                item: function(data,escape) {
-                    if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                    }
-                    return '<div>' + escape(data.text) + '</div>';
-                },
-                option: function(data,escape){
-                    if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                    }
-                    return '<div>' + escape(data.text) + '</div>';
-                },
-            },
-        }));
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        var el;
         window.TomSelect && (new TomSelect(el = document.getElementById('task-status'), {
                         copyClassesToDropdown: false,            plugins: ['remove_button'],
             dropdownParent: 'body',
@@ -485,16 +435,21 @@
     function submit_button(){
         start_date  = $(".start_date").val();
         end_date    = $(".end_date").val();
-        user_id     = JSON.stringify($("#users").val());
-        status_task = $("#status_task").val();
+        status_task = $(".task_status").val();
         task_id     = $('input#skill_input').tokenInput('get');
+        user_id     = $('input#user_select').tokenInput('get');
 
         var task_id_arr = [];
         $.each(task_id, function(i, obj){
             task_id_arr.push(obj.id);
         });
 
-        alltask(start_date,end_date,user_id,status_task,task_id_arr);
+        var user_id_arr = [];
+        $.each(user_id, function(i, obj){
+            user_id_arr.push(obj.id);
+        });
+
+        alltask(start_date,end_date,user_id_arr,status_task);
     }
 
     function maintask(){
@@ -522,31 +477,5 @@
                 alert("Request: "+JSON.stringify(request));
             }
         });
-    }
-
-    function status_task(get_this){
-        status = $(get_this).val();
-
-        if(status == 1){
-            $(".end_date").val("");
-            $(".start_date").val("");
-        }
-        else if(status == ""){
-            $(".end_date").val("{{date('Y-m-d')}}");
-        }
-    }
-
-    function start_date_change(){
-        status = $("#status_task").val();
-        if(status == 1){
-            $("#status_task").val("");
-        }
-    }
-
-    function end_date_change(){
-        status = $("#status_task").val();
-        if(status == 1){
-            $("#status_task").val("");
-        }
     }
 </script>

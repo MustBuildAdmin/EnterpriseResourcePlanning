@@ -186,15 +186,8 @@ class ProjectTaskController extends Controller
         $get_end_date   = $request->end_date;
         $status_task    = $request->status_task;
         $task_id_arr    = $request->task_id_arr;
+        $user_id_arr    = $request->user_id;
 
-        if($request->user_id != null){
-            $json_user_id = json_decode($request->user_id);
-        }
-        else{
-            $json_user_id = array();
-        }
-
-        // 1 > Today Task
         // 3 > Pending Task
         // 4 > Completed Task
 
@@ -216,121 +209,39 @@ class ProjectTaskController extends Controller
             }
 
             if($task_id_arr != null){
-
+                $tasks->whereIn('con_tasks.id',$task_id_arr);
             }
 
-            if(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null && $status_task != null){
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach($json_user_id as $get_user_id){
+            if($get_start_date != null && $get_end_date != null){
+                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
+                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                });
+            }
+
+            if($user_id_arr != null){
+                $tasks->where(function ($query) use ($user_id_arr) {
+                    foreach($user_id_arr as $get_user_id){
                         if($get_user_id != ""){
                             $query->orwhereJsonContains('con_tasks.users', $get_user_id);
                         }
                     }
                 });
+            }
 
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-
+            if($status_task != null){
                 if($status_task == "3"){
-                    $tasks->where('progress','<','100');
+                    $tasks->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));;
                 }
                 elseif($status_task == "4"){
                     $tasks->where('progress','>=','100');
                 }
             }
-            elseif($get_start_date != null && $get_end_date != null && $status_task != null){
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
 
-                if($status_task == "3"){
-                    $tasks->where('progress','<','100');
-                }
-                elseif($status_task == "4"){
-                    $tasks->where('progress','>=','100');
-                }
-            }
-            elseif(count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null){
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach($json_user_id as $get_user_id){
-                        if($get_user_id != ""){
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
+            if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
 
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-            }
-            elseif(count($json_user_id) != 0 && $get_end_date != null){
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach($json_user_id as $get_user_id){
-                        if($get_user_id != ""){
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
-
-                $tasks->whereDate('con_tasks.end_date', "<=", $get_end_date);
-            }
-            elseif(count($json_user_id) != 0 && $status_task != null){
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach($json_user_id as $get_user_id){
-                        if($get_user_id != ""){
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
-                
-                if($status_task == "3"){
-                    $tasks->where('project_id', $project_id)->where('progress','<','100');
-                }
-                elseif($status_task == "4"){
-                    $tasks->where('project_id', $project_id)->where('progress','=>','100');
-                }
-            }
-            elseif($get_start_date != null && $get_end_date != null){
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-            }
-            elseif($get_end_date != null && $status_task != null){
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.end_date', '>=', $get_end_date);
-                });
-
-                if($status_task == "3"){
-                    $tasks->where('progress','<','100');
-                }
-                elseif($status_task == "4"){
-                    $tasks->where('progress','>=','100');
-                }
-            }
-            elseif(count($json_user_id) != 0){
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach($json_user_id as $get_user_id){
-                        if($get_user_id != ""){
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
-            }
-            elseif($get_end_date != null){
-                $tasks->whereDate('con_tasks.end_date', "<=", $get_end_date);
-            }
-            elseif($status_task == "3"){
-                $tasks->where('progress','<','100')->whereDate('con_tasks.end_date', "<", date('Y-m-d'));
-            }
-            elseif($status_task == "4"){
-                $tasks->where('progress','>=','100');
-            }
-            else{
                 $tasks->where(function($query) {
                     $query->whereRaw('"'.date('Y-m-d').'"
                         between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
