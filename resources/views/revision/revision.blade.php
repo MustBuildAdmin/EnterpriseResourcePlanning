@@ -40,7 +40,7 @@
                                 <div class="col-sm-12 col-md-12">
                                     <div class="form-group">
                                         {{Form::label('non_working_days',__('non_working_days'),
-                                        ['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                        ['class'=>'form-label'])}}
                                         @php
                                             $non_working_days = array(
                                                 '1' => 'Monday',
@@ -52,10 +52,10 @@
                                                 '0' => 'Sunday'
                                             );
                                         @endphp
-                                        {!! Form::select('non_working_days[]', $non_working_days, null,
+                                        {!! Form::select('non_working_days[]', $non_working_days, $setNonWorkingDays,
                                             array('id' => 'non_working_days',
                                             'class' => 'form-control chosen-select get_non_working_days',
-                                            'multiple'=>'true','required'=>'required'))
+                                            'multiple'=>'true'))
                                         !!}
                                     </div>
                                 </div>
@@ -80,30 +80,40 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr data-count_id="1" id="1">
-                                                        <td><input type='checkbox' disabled/></td>
-                                                        <td style="width: 30%;">
-                                                            <input type="date" data-date_id='1'
-                                                            class="form-control holiday_date get_date"
-                                                            id="holiday_date1" name="holiday_date[]">
-                                                            <label style='display:none;color:red;'
-                                                            class='holiday_date_label1'>This Field is Required </label>
-                                                        </td>
-                                                        <td style="width: 70%;">
-                                                            <input type="text" data-desc_id='1'
-                                                            class="form-control holiday_description"
-                                                            id="holiday_description1"
-                                                            name="holiday_description[]">
-                                                            <label style='display:none;color:red;'
-                                                            class='holiday_description_label1'>
-                                                            This Field is Required </label>
-                                                        </td>
-                                                    </tr>
+                                                    @php
+                                                        $inc = 1;
+                                                    @endphp
+                                                    @forelse ($projectHolidays as $setHolidays)
+                                                        <tr id="{{$inc}}">
+                                                            <td><input type='checkbox' class="case"/></td>
+                                                            <td style="width: 30%;">
+                                                                <input type="date" data-date_id='{{$inc}}'
+                                                                value="{{$setHolidays->date}}"
+                                                                class="form-control holiday_date get_date"
+                                                                id="holiday_date{{$inc}}" name="holiday_date[]">
+                                                                <label style='display:none;color:red;'
+                                                                class='holiday_date_label{{$inc}}'>This Field is Required </label>
+                                                            </td>
+                                                            <td style="width: 70%;">
+                                                                <input type="text" data-desc_id='{{$inc}}'
+                                                                class="form-control holiday_description"
+                                                                value="{{$setHolidays->description}}"
+                                                                id="holiday_description{{$inc}}"
+                                                                name="holiday_description[]">
+                                                                <label style='display:none;color:red;'
+                                                                class='holiday_description_label{{$inc}}'>
+                                                                This Field is Required </label>
+                                                            </td>
+                                                        </tr>
+                                                        @php $inc++; @endphp
+                                                    @empty
+                                                        
+                                                    @endforelse
                                                 </tbody>
                                             </table>
                                         </div>
-
                                         <br>
+
                                         <button type="button" class='btn btn-danger delete_key'>
                                             <i class="fa fa-minus" aria-hidden="true"></i>
                                             &nbsp;&nbsp;&nbsp;&nbsp;Delete Table Row
@@ -126,31 +136,23 @@
 <script src="{{ asset('WizardSteps/js/jquery.steps.js') }}"></script>
 <script>
 
-    var key_i=2;
+    function getKeyId(){
+        getKeyI = $("#example2 tbody tr").length;
+        console.log("getKeyI",getKeyI);
+        if(getKeyI != 0){
+            return getKeyI;
+        }
+        else{
+            return 1;
+        }
+    }
+
+    var key_i = getKeyId();
+    
+    var check_validation = 0;
     $(document).on("click", '.addmore', function () {
-        check_validation = 0;
         
-        $( ".holiday_date" ).each(function(index) {
-            get_inc_id = $(this).data('date_id');
-
-            get_date_val = $("#holiday_date"+get_inc_id).val();
-            get_desc_val = $("#holiday_description"+get_inc_id).val();
-
-            if(get_date_val == ""){
-                $(".holiday_date_label"+get_inc_id).show();
-                check_validation = 1;
-            }
-            else if(get_desc_val == ""){
-                $(".holiday_description_label"+get_inc_id).show();
-                check_validation = 1;
-            }
-            else{
-                $(".holiday_date_label"+get_inc_id).hide();
-                $(".holiday_description_label"+get_inc_id).hide();
-                check_validation = 0;
-            }
-        });
-        
+        holidayValidation();
 
         if(check_validation == 0){
             var data="<tr id='"+key_i+"' class='duplicate_tr'>"+
@@ -224,15 +226,13 @@
             transitionEffect: "slideLeft",
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                get_non_working_days = $(".get_non_working_days").val();
-               
-                if(currentIndex == 0 && newIndex == 1 && get_non_working_days == ""){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else{
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                }
+                form.validate().settings.ignore = ":disabled,:hidden";
                 return form.valid();
+            },
+            labels: {
+                finish: 'Finish <i class="fa fa-chevron-right"></i>',
+                next: 'Next <i class="fa fa-chevron-right"></i>',
+                previous: '<i class="fa fa-chevron-left"></i> Previous'
             },
             onFinishing: function (event, currentIndex)
             {
@@ -241,28 +241,38 @@
             },
             onFinished: function (event, currentIndex)
             {
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-                swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: "Do You Want Create Revision for a New Instance?",
-                    icon: 'success',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'No',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                    else if (result.dismiss === Swal.DismissReason.cancel) {
-                    }
-                });
+                holidayValidation();
+
+                if(check_validation == 0){
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+                    swalWithBootstrapButtons.fire({
+                        title: 'Are you sure?',
+                        text: "Do You Want Create Revision for a New Instance?",
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                        else if (result.dismiss === Swal.DismissReason.cancel) {
+                        }
+                    });
+                }
+                else{
+                    $(".last").attr('aria-disabled','true');
+                    $(".last").addClass('error');
+                    return false;
+                }
+                
             }
         });
     });
@@ -271,5 +281,27 @@
         $('.chosen-select').chosen();
     });
 
+    function holidayValidation(){
+        $( ".holiday_date" ).each(function(index) {
+            get_inc_id = $(this).data('date_id');
+
+            get_date_val = $("#holiday_date"+get_inc_id).val();
+            get_desc_val = $("#holiday_description"+get_inc_id).val();
+
+            if(get_date_val == ""){
+                $(".holiday_date_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else if(get_desc_val == ""){
+                $(".holiday_description_label"+get_inc_id).show();
+                check_validation = 1;
+            }
+            else{
+                $(".holiday_date_label"+get_inc_id).hide();
+                $(".holiday_description_label"+get_inc_id).hide();
+                check_validation = 0;
+            }
+        });
+    }
    
 </script>

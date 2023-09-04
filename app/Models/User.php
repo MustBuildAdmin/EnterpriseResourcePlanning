@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Scout\Searchable;
 
-
 class User extends Authenticatable
 {
     use HasRoles;
@@ -2905,9 +2904,12 @@ class User extends Authenticatable
     public function toSearchableArray()
     {
         return [
-            'id' => $this->id,
             'name' => $this->name,
+            'lname' => $this->lname,
             'email' => $this->email,
+            'phone' => $this->phone,
+            'id' => $this->id,
         ];
     }
+
 }

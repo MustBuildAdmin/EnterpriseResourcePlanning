@@ -92,13 +92,15 @@ function show_toastr(type, message) {
 }
 
 $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true"], div[data-ajax-popup="true"]', function () {
-
     var data = {};
     var title1 = $(this).data("title");
     var title2 = $(this).data("bs-original-title");
     var title = (title1 != undefined) ? title1 : title2;
     var size = ($(this).data('size') == '') ? 'md' : $(this).data('size');
     var url = $(this).data('url');
+    let color = $(this).data("color");
+
+    $("#colortype").val(color);
     $("#commonModal .modal-title").html(title);
     $("#commonModal .modal-dialog").addClass('modal-' + size);
 
@@ -287,7 +289,34 @@ $(document).on("click", '.bs-pass-para-dup', function () {
         }
     })
 });
+$(document).on("click", '.bs-pass-para-deleteproject', function () {
+    var form = $(this).closest("form");
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "Do you really want to delete this project? This process cannot be undone.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
 
+            form.submit();
+
+        } else if (
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+        }
+    })
+});
 $(document).on("click", '.bs-pass-para', function () {
     var form = $(this).closest("form");
     const swalWithBootstrapButtons = Swal.mixin({
@@ -328,7 +357,7 @@ $(document).on("click", '.freeze_button', function () {
     })
     swalWithBootstrapButtons.fire({
         title: 'Are you sure?',
-        text: "It will freeze gantt chart if you take the action. Do you want to continue?",
+        text: "This action is IRREVERSIBLE. Do you want to continue?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes',
@@ -336,8 +365,9 @@ $(document).on("click", '.freeze_button', function () {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-
+            $('.loader_show_hide').show()
             form.submit();
+            
 
         } else if (
             result.dismiss === Swal.DismissReason.cancel

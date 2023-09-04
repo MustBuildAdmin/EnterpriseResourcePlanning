@@ -1,4 +1,12 @@
+body{
+  overflow-y: auto !important;
+  overflow-x: auto !important; 
+}
 
+
+.navbar-alt-main{
+  background: #206bc4;
+}
 
 
 .employee  .dataTables_wrapper {

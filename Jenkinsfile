@@ -3,6 +3,7 @@ pipeline {
     stages{
         stage('Prepare Env') {
             steps{
+                sh 'sudo apt update'
                 sh 'sudo apt-get install php-xml'
                 sh 'sudo apt-get install php-mbstring'
                 sh 'sudo apt-get install php-curl'

@@ -30,17 +30,29 @@
     </thead>
     <tbody class="list">
         @forelse ($tasks as $task)
-            @if($task->instance_id == $task->pro_instance_id)
-                @php
-                    $total_count_of_task  = DB::table('task_progress')->where('task_id',$task->main_id)->get()->count();
+            @php
 
-                    $remaining_working_days=Utility::remaining_duration_calculator($task->end_date,$task->project_id);
-                    $remaining_working_days=$remaining_working_days-1;// include the last day
+                if(Session::has('project_instance')){
+                    $instanceId = Session::get('project_instance');
+                }else{
+                    $instanceId = null;
+                }
 
-                    ############### Remaining days ##################
+                $total_count_of_task  = DB::table('task_progress')
+                    ->where('instance_id',$instanceId)
+                    ->where('task_id',$task->main_id)->get()->count();
 
-                    $completed_days=$task->duration-$remaining_working_days;
-                    // percentage calculator
+                $remaining_working_days=Utility::remaining_duration_calculator($task->end_date,$task->project_id);
+                $remaining_working_days=$remaining_working_days-1;// include the last day
+
+                ############### Remaining days ##################
+
+                $completed_days=$task->duration-$remaining_working_days;
+                
+                if($task->duration==1){
+                    $current_Planed_percentage=100;
+                }else{
+                       // percentage calculator
                     if($task->duration>0){
                         $perday=100/$task->duration;
                     }else{
@@ -48,19 +60,31 @@
                     }
 
                     $current_Planed_percentage=round($completed_days*$perday);
-                    if($current_Planed_percentage > 100){
-                        $current_Planed_percentage=100;
-                    }
-                    if($current_Planed_percentage < 0){
-                        $current_Planed_percentage=0;
-                    }
+                }
+
+                $checkLatestFreeze = DB::table('instance')
+                    ->where('instance',Session::get('latest_project_instance'))->first();
+                if($checkLatestFreeze != null){
+                    $checkLatestFreezeStatus = $checkLatestFreeze->freeze_status == 0 ?
+                        0 : 1;
+                }
+                else{
+                    $checkLatestFreezeStatus = 0;
+                }
 
                 @endphp
                 <tr>
                     <td style="width: 15%; font-size: 15px;">
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
-                            TaskId-{{ $task->id }}
-                        </a>
+                        @if(Session::get('current_revision_freeze') == 1 &&
+                            Session::get('project_instance') != Session::get('latest_project_instance') &&
+                            $checkLatestFreezeStatus == 1)
+                            <a href="{{route('task_particular',['task_id' => $task->main_id,
+                                'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                                {{ $task->id }}
+                            </a>
+                        @else
+                            <a style="text-decoration: none;">{{ $task->id }}</a>
+                        @endif
                     </td>
 
                     <td style="width: 20%; font-size: 14px;">
@@ -118,34 +142,23 @@
                     <td style="width: 8%;">
                         <div class="avatar-group">
                             @php
-                                if($task->users != ""){
-                                    $users_data = json_decode($task->users);
-                                }
-                                else{
-                                    $users_data = array();
-                                }
+                                $user_db = DB::table('users')->where('id',$get_user)->first();
                             @endphp
-                            @forelse ($users_data as $key => $get_user)
-                                @php
-                                    $user_db = DB::table('users')->where('id',$get_user)->first();
-                                @endphp
 
-                                @if($key<3)
-                                    @if($user_db->avatar)
-                                        <a href="#" class="avatar rounded-circle avatar-sm">
-                                            <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
-                                            @if($user_db->avatar)
-                                                src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}"
-                                            @else
-                                                src="{{asset('/storage/uploads/avatar/avatar.png')}}"
-                                            @endif
-                                        title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
-                                        </a>
-                                    @else
-                                        <?php  $short=substr($user_db->name, 0, 1);?>
-                                        <span class="user-initial">{{strtoupper($short)}}</span>
-                                    @endif
-
+                            @if($key<3)
+                                @if($user_db->avatar)
+                                    <a href="#" class="avatar rounded-circle avatar-sm">
+                                        <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
+                                        @if($user_db->avatar)
+                                            src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}"
+                                        @else
+                                            src="{{asset('/storage/uploads/avatar/avatar.png')}}"
+                                        @endif
+                                    title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
+                                    </a>
+                                @else
+                                    <?php  $short=substr($user_db->name, 0, 1);?>
+                                    <span class="user-initial">{{strtoupper($short)}}</span>
                                 @endif
                             @empty
                                 {{ __('Not Assigned') }}
@@ -161,11 +174,11 @@
                                     class="floatrght">
                                     <i class="ti ti-pencil"></i>
                                 </a>
-                            </div>
-                        </td>
-                    @endif
-                </tr>
-            @endif
+                            @endif
+                        </div>
+                    </td>
+                @endif
+            </tr>
         @empty
         @endforelse
     </tbody>

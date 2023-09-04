@@ -70,6 +70,12 @@
 
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="dropdown-item">{{ __('Task Report') }}</a>
+
+                                    @if(session::has('revision_started'))
+                                        <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
+                                            class="dropdown-item">{{ __('Revision Task progress ') }}</a>
+                                    @endif
+
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
                                             <a href="{{ route('task.bug', $project_id) }}" class="dropdown-item">
@@ -153,7 +159,7 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a href="{{ route('drawing_list') }}"
-                                        class="dropdown-item"">{{ __('Drawing') }}
+                                        class="dropdown-item">{{ __('Drawing') }}
                                         <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
                                     
                                     </a>
@@ -293,16 +299,27 @@
                             <span class="nav-link-title"> {{ __('History') }} </span></a>
                     </li>
 
-
-
-                    <li class="{{ Request::route()->getName() == 'revision' ? ' active' : '' }}"
-                        style="display: none;">
-                        <a class="accordion-collapse collapse list-unstyled" href="{{ url('revision') }}">
-                            <span class="icon"><img alt='support'
-                                    src="{{ asset('assets/images/icons/support.png') }}" /></span>
-                            <span class="list">{{ __('Revision') }}</span>
-                        </a>
-                    </li>
+                    @if(Session::get('current_revision_freeze')==1)
+                        <li class="nav-item">
+                            <a href="{{ url('revision') }}" class="nav-link">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M11.5 21h-5.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6">
+                                        </path>
+                                        <path d="M16 3v4"></path>
+                                        <path d="M8 3v4"></path>
+                                        <path d="M4 11h16"></path>
+                                        <path d="M15 19l2 2l4 -4"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title"> {{ __('Revision') }} </span>
+                            </a>
+                        </li>
+                    @endif
                     
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">

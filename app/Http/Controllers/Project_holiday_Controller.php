@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Project_holiday;
 use App\Models\Project;
+use App\Models\Instance;
 use Illuminate\Support\Facades\Auth;
 use Session;
 
@@ -14,14 +15,13 @@ class Project_holiday_Controller extends Controller
     {
         // if(\Auth::user()->can('manage branch'))
         // {
-            $project = Project::where('id', Session::get('project_id') )->first();
-            $holidays = Project_holiday::with(['project_name'])->where('project_id', Session::get('project_id'))->get();
+            $project = Instance::where('project_id', Session::get('project_id'))
+                        ->where('instance', Session::get('project_instance'))->first();
+            $holidays = Project_holiday::with(['project_name'])
+                            ->where(['project_id'=> Session::get('project_id'),
+                            'instance_id'=>Session::get('project_instance')])->get();
             return view('project_holidays.index', compact('project','holidays'));
-        // }
-        // else
-        // {
-        //     return redirect()->back()->with('error', __('Permission denied.'));
-        // }
+        
     }
 
     public function create()
@@ -46,12 +46,18 @@ class Project_holiday_Controller extends Controller
 
                 return redirect()->back()->with('error', $messages->first());
             }
-
+            $project = Project::where('id', $request->project_id)->first();
             $Project_holiday = new Project_holiday();
             $Project_holiday['project_id']= $request->project_id;
             $Project_holiday['date']= $request->date;
             $Project_holiday['description']     = $request->description;
             $Project_holiday['created_by'] = \Auth::user()->creatorId();
+            if(Session::has('project_instance')){
+                $instanceId=Session::get('project_instance');
+            }else{
+                $instanceId=$project->instance_id;
+            }
+            $Project_holiday['instance_id'] = $instanceId;
             $Project_holiday ->save();
 
             return redirect()->route('project_holiday.index');
@@ -82,12 +88,18 @@ class Project_holiday_Controller extends Controller
 
             return redirect()->back()->with('error', $messages->first());
         }
-
+        $project = Project::where('id', $request->project_id)->first();
         $Project_holiday =Project_holiday::find($id);
         $Project_holiday['project_id']= $request->project_id;
         $Project_holiday['date']= $request->date;
         $Project_holiday['description']     = $request->description;
         $Project_holiday['created_by'] = \Auth::user()->creatorId();
+        if(Session::has('project_instance')){
+            $instanceId=Session::get('project_instance');
+        }else{
+            $instanceId=$project->instance_id;
+        }
+        $Project_holiday['instance_id'] = $instanceId;
         $Project_holiday ->save();
 
         return redirect()->route('project_holiday.index');

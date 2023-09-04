@@ -40,6 +40,7 @@ use App\Models\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Session;
 
 class DashboardController extends Controller
 {
@@ -767,6 +768,11 @@ class DashboardController extends Controller
     public function construction_main(Request $request){
         if(\Auth::user()->can('manage project'))
         {
+            Session::forget('project_id');
+            Session::forget('project_instance');
+            Session::forget('latest_project_instance');
+            Session::forget('current_revision_freeze');
+            
             $usr           = Auth::user();
             if(\Auth::user()->type == 'client'){
               $user_projects = Project::where('client_id',\Auth::user()->id)->where('created_by',\Auth::user()->creatorId())->pluck('id','id')->toArray();;

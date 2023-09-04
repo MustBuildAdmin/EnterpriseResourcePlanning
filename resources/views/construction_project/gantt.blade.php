@@ -9,6 +9,7 @@
 <script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.11"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"></script>
+<script src="https://export.dhtmlx.com/gantt/api.js"></script>
 <script src="{{asset('assets/js/js/zoomingConfig.js')}}"></script>
 <script src="{{asset('assets/js/js/criticalPath.js')}}"></script>
 <script src="{{asset('assets/js/js/overlay.js')}}"></script>
@@ -22,6 +23,68 @@
 <script src="{{asset('assets/js/js/highlight.js')}}"></script>
 <script src="{{asset('assets/js/js/slackrow.js')}}"></script>
 <style>
+    .wrappers{
+        display: flex;
+        justify-content: center;
+    }
+    .cards {
+        display: flex;
+        padding: 24px;
+        border-radius: 5px;
+        align-items: center;
+        justify-content: center;
+    }
+    .loader{
+        border-radius: 50%;
+        position: relative;
+        display: inline-block;
+        height: 0px;
+        width: 0px;
+    }
+
+    .loader span{
+        position: absolute;
+        display: block;
+        background: #ddd;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        top: -20px;
+        perspective: 100000px;
+    }
+    .loader span:nth-child(1) {
+        left:30px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: 0s;
+        background: #ff756f;
+    }
+    .loader span:nth-child(2) {
+        left:6px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .2s;
+        background: #ffde6f;
+    }
+    .loader span:nth-child(3) {
+        left:-20px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .4s;
+        background: #01de6f;
+    }
+    .loader span:nth-child(4) {
+        left: -44px;
+        animation: bounce2 1s cubic-bezier(0.04, 0.35, 0, 1) infinite;
+        animation-delay: .6s;
+        background: #6f75ff;
+    }
+
+    @keyframes bounce2 {
+        0%, 56%, 100% {
+            transform: translateY(0px);
+        }
+        25% {
+            transform: translateY(-30px);
+        }
+    }
 .gantt_task_line.gantt_critical_task .gantt_task_content {
     color: red !important;
 }
@@ -33,9 +96,11 @@
         margin: 0px;
         overflow: hidden;
         background: #fff;
-        z-index: 9999 !important;
+        /* z-index: 9999 !important; */
     }
-
+  .nav-link {
+    font-size: 0.85rem;
+  }
     .status_line {
         background-color: #0ca30a;
     }
@@ -310,6 +375,7 @@
 			background-color: #d6d6d6;
 		}
 </style>
+
 @php
 $holidays=array();
 
@@ -322,65 +388,92 @@ $holidays=implode(':',$holidays);
 @endphp
 @include('construction_project.side-menu')
 {{-- @include('construction_project.side-menu',['hrm_header' => "Gantt Chart"]) --}}
+<div class="text-center container container-slim py-4 loader_show">
+    <div class="mb-3">
+    <a href="." class="navbar-brand navbar-brand-autodark">
+        <img src="./static/logo-small.svg" height="36" alt="">
+    </a>
+    </div>
+    <div class="text-secondary mb-3">Preparing application</div>
+    <div class="progress progress-sm">
+    <div class="progress-bar progress-bar-indeterminate"></div>
+    </div>
+</div>
 <div id="additional_elements" class="gantt-container">
-                        <div class="col d-flex flex-column" >
 
                             <div class="align" >
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
-
-                                        {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit','style'=>'margin-top: 5px;margin-right: 6px;width: 11%;margin-bottom: 6px;']) }}
+                                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
+                                              'id' => 'gantt_chart_submit',
+                                              'style'=>'margin-top: 5px;margin-right: 6px;width: 11%;
+                                              margin-bottom: 6px;']) }}
 
                                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                                                <a href="#" class="btn btn-outline-primary w-20 freeze_button" style='width: 100%;' data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}" data-original-title="{{ __('Delete') }}"
-                                                    data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}" data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                                                    {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
+                                                <a href="#" class="btn btn-outline-primary w-20 freeze_button"
+                                                style='width: 100%;' data-bs-toggle="tooltip"
+                                                title="{{ __('Click to change Set Baseline status') }}"
+                                                data-original-title="{{ __('Delete') }}"
+                                data-confirm="{{ __('Are You Sure?') . '|' .
+                                    __('This action can not be undone. Do you want to continue?') }}"
+                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                                     Set Baseline
                                                 </a>
                                             {!! Form::close() !!}
 
-                                            <button class="btn btn-outline-primary action w-20" name="undo undo_action"
+                                            <button class="btn btn-outline-primary action w-20 undo_action" name="undo"
                                             aria-current="page" style='width: 11%;margin-bottom: 6px; height: 38px;
                                             margin-top: 4px;margin-right: 6px;'
-                                            @if($project->freeze_status==1) disabled @endif>Undo</button>
+                                            @if($freezeCheck->freeze_status==1) disabled @endif>Undo</button>
 
                                             <button class="btn btn-outline-primary action w-20 redo_action" name="redo"
                                             style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
                                             margin-right: 6px;'
-                                            @if($project->freeze_status==1) disabled @endif>Redo</button>
+                                            @if($freezeCheck->freeze_status==1) disabled @endif>Redo</button>
 
                                             <button class="btn btn-outline-primary action w-20 indent_action"
                                             name="indent" style='width: 11%;margin-bottom: 6px;
                                             height: 38px;margin-top: 4px;margin-right: 6px;'
-                                            @if($project->freeze_status==1) disabled @endif>Indent</button>
+                                            @if($freezeCheck->freeze_status==1) disabled @endif>Indent</button>
 
                                             <button class="btn btn-outline-primary action w-20 outdent_action"
                                             name="outdent" style='width: 11%;margin-bottom: 6px;
                                             height: 38px;margin-top: 4px;margin-right: 6px;'
-                                            @if($project->freeze_status==1) disabled @endif>Outdent</button>
+                                            @if($freezeCheck->freeze_status==1) disabled @endif>Outdent</button>
 
-                                        <button class="btn btn-outline-primary w-20" type="button" onclick='gantt.exportToExcel({ callback:show_result })' style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Export to Excel</button>
+                                        <button class="btn btn-outline-primary w-20" type="button"
+                                         onclick='gantt.exportToExcel({ callback:show_result })'
+                                          style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                          margin-right: 6px;'>Export to Excel</button>
 
-                                       <!-- <button class="btn btn-outline-primary w-20" name="zoomtofit" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;' onclick="toggleMode(this);">Zoom to Fit</button> -->
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Slack</button>
-                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleSlack(this)"
+                                         style='width: 11%;margin-bottom: 6px;height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Show Slack</button>
+                                        <button class="btn btn-outline-primary w-20" onclick="toggleChart()"
+                                         style='width: 11%;margin-bottom: 6px;height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Toggle Main</button>
                                     </div>
                                 </div>
                                 <div class='row'>
                                     <div class='col-md-12' style='display: flex;'>
-                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleOverlay();" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Overlay</button> --}}
+                                        {{-- <button class="btn btn-outline-primary w-20" onclick="toggleOverlay();"
+                                        style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                        margin-right: 6px;'>Overlay</button> --}}
                                         <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
-                                            onclick="gantt.ext.fullscreen.toggle();" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Fullscreen</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="closeAll()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Collaspe
+                                            onclick="gantt.ext.fullscreen.toggle();"
+                                             style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;
+                                             margin-right: 6px;'>Fullscreen</button>
+                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
+                                         onclick="closeAll()" style='width: 11%;margin-bottom: 6px; height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Collaspe
                                             All</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="openAll()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Expand
+                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20"
+                                         onclick="openAll()" style='width: 11%;margin-bottom: 6px; height: 38px;
+                                         margin-top: 4px;margin-right: 6px;'>Expand
                                             All</button>
-                                        <!-- <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomIn()" style='width: 11%;margin-bottom: 6px; height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
-                                            In</button>
-                                        <button id="toggle_fullscreen" class="btn btn-outline-primary w-20" onclick="zoomOut()" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Zoom
-                                            Out</button> -->
-
-                                        <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)" style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;margin-right: 6px;'>Show Critical
+                                        <button class="btn btn-outline-primary w-20" onclick="updateCriticalPath(this)"
+                                         style='width: 11%;margin-bottom: 6px;height: 38px;margin-top: 4px;
+                                         margin-right: 6px;'>Show Critical
                                             Path</button>
                                             <select class="form-control" id="zoomscale" style='width:13%;'>
                                                 <option value="">Select Timescale</option>
@@ -400,7 +493,8 @@ $holidays=implode(':',$holidays);
                                     @if($project)
                                     <input type='hidden' value='0' id='project_id'>
                                     <div class="card-body" style='max-height:512px;overflow:auto;'>
-                                        <div id="gantt_here" style='width:100%; height:491px; position: relative;' onload="script();"></div>
+                                        <div id="gantt_here" style='width:100%; height:491px; position: relative;'
+                                         onload="script();"></div>
                                     </div>
                                     @else
                                     <h1>404</h1>
@@ -413,7 +507,9 @@ $holidays=implode(':',$holidays);
                                             <div class="gantt_control" >
 
                                             </div>
-                                                <div id="gantt_here" style='width:100%; height:677px; position: relative;'onload="script();"  ></div>
+                                                <div id="gantt_here" style='width:100%; height:677px;
+                                                position: relative;'
+                                                onload="script();"  ></div>
                                             </div>
 
                                             @else
@@ -422,9 +518,14 @@ $holidays=implode(':',$holidays);
                                                     {{ __('Page Not Found') }}
                                                 </div>
                                                 <div class="page-search">
-                                                    <p class="text-muted mt-3">{{ __("It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
+                                                    <p class="text-muted mt-3">
+                                                        {{ __("It's looking like you may have taken a wrong turn.
+                                                             Don't worry... it happens to the best of us.
+                                                        Here's a little tip that might help you get back on track.")}}
+                                                    </p>
                                                     <div class="mt-3">
-                                                        <a class="btn-return-home badge-blue" href="{{route('home')}}"><i class="ti ti-reply"></i> {{ __('Return Home')}}</a>
+                                                        <a class="btn-return-home badge-blue" href="{{route('home')}}">
+                                                            <i class="ti ti-reply"></i> {{ __('Return Home')}}</a>
                                                     </div>
                                                 </div>
                                             @endif
@@ -432,7 +533,10 @@ $holidays=implode(':',$holidays);
 
                                     </div>
                                     <div class="page-search">
-                                      <p class="text-muted mt-3">{{ __("It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
+                                      <p class="text-muted mt-3">
+                                        {{ __("It's looking like you may have taken a wrong turn.
+                                         Don't worry... it happens to the best of us.
+                                          Here's a little tip that might help you get back on track.")}}</p>
                                       <div class="mt-3">
                                         <a class="btn-return-home badge-blue" href="{{route('home')}}">
                                           <i class="ti ti-reply"></i> {{ __('Return Home')}}
@@ -444,11 +548,11 @@ $holidays=implode(':',$holidays);
                                 </div>
                               </div>
 
-                        </div>
+
 </div>
-    <input type='hidden' id='weekends' value='{{$project->non_working_days}}'>
+    <input type='hidden' id='weekends' value='{{$nonWorkingDay}}'>
     <input type='hidden' id='holidays' value='{{$holidays}}'>
-    <input type='hidden' id='frezee_status' value='{{$project->freeze_status}}'>
+    <input type='hidden' id='frezee_status' value='{{$freezeCheck->freeze_status}}'>
 
 @include('new_layouts.footer')
 
@@ -609,7 +713,8 @@ $holidays=implode(':',$holidays);
 		// 	title: "Start project: " + dateToStr(start)
 		// });
 		gantt.config.scale_height = 50;
-		gantt.templates.task_class = gantt.templates.grid_row_class = gantt.templates.task_row_class = function (start, end, task) {
+		gantt.templates.task_class = gantt.templates.grid_row_class =
+         gantt.templates.task_row_class = function (start, end, task) {
 			if (gantt.isSelectedTask(task.id))
 				return "gantt_selected";
 		};
@@ -643,7 +748,10 @@ $holidays=implode(':',$holidays);
         gantt.config.reorder_grid_columns = true;
         if(frezee_status_actual!=1){
                 gantt.config.columns = [
-                    { name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
+                    {
+                        name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,
+                        tree: true ,resize: true
+                    },
                     {
                         name: "text", label: "Task Name",width: 150,
                         resize: true
@@ -720,7 +828,10 @@ $holidays=implode(':',$holidays);
 
         }else{
             gantt.config.columns = [
-                    { name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,tree: true ,resize: true},
+                    {
+                        name: "wbs", label: "#", width: 60, align: "center", template: gantt.getWBSCode,
+                        tree: true ,resize: true
+                    },
                     {
                         name: "text", label: "Task Name",width: 150,
                         resize: true
@@ -837,12 +948,7 @@ $holidays=implode(':',$holidays);
 		return true;
 	});
 	gantt.attachEvent("onAfterTaskAutoSchedule", function (task, new_date, constraint, predecessor) {
-		// if(task && predecessor){
-		// 	gantt.message({
-		// 		text: "<b>" + task.text + "</b> has been rescheduled to " + gantt.templates.task_date(new_date) + " due to <b>" + predecessor.text + "</b> constraint",
-		// 		expire: 4000
-		// 	});
-		// }
+
 	});
 
 
@@ -930,7 +1036,13 @@ $holidays=implode(':',$holidays);
                 return null;
             }
 
-		gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+            setTimeout(
+            function()
+            {
+                gantt.load("{{route('projects.gantt_data',[$project->id])}}");
+                $('.loader_show').hide();
+            }, 3000);
+
 
 
         gantt.config.lightbox.sections = [
@@ -1032,3 +1144,8 @@ if(frezee_status_actual!=1){
             };
         });
 </script>
+<style>
+.loader_show_hide{
+    display:none;
+}
+</style>
