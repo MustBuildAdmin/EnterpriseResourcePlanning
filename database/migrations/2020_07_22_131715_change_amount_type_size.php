@@ -14,21 +14,21 @@ class ChangeAmountTypeSize extends Migration
     public function up()
     {
         Schema::table(
-            'goals', function (Blueprint $table){
-            $table->float('amount', 25, 2)->default(0.00)->change();
-        }
+            'goals', function (Blueprint $table) {
+                $table->float('amount', 25, 2)->default(0.00)->change();
+            }
         );
 
         Schema::table(
-            'revenues', function (Blueprint $table){
-            $table->float('amount', 25, 2)->default(0.00)->change();
-        }
+            'revenues', function (Blueprint $table) {
+                $table->float('amount', 25, 2)->default(0.00)->change();
+            }
         );
 
         Schema::table(
-            'payments', function (Blueprint $table){
-            $table->float('amount', 25, 2)->default(0.00)->change();
-        }
+            'payments', function (Blueprint $table) {
+                $table->float('amount', 25, 2)->default(0.00)->change();
+            }
         );
     }
 
@@ -40,21 +40,21 @@ class ChangeAmountTypeSize extends Migration
     public function down()
     {
         Schema::table(
-            'goals', function (Blueprint $table){
-            $table->dropColumn('amount');
-        }
+            'goals', function (Blueprint $table) {
+                $table->dropColumn('amount');
+            }
         );
 
         Schema::table(
-            'revenues', function (Blueprint $table){
-            $table->dropColumn('amount');
-        }
+            'revenues', function (Blueprint $table) {
+                $table->dropColumn('amount');
+            }
         );
 
         Schema::table(
-            'payments', function (Blueprint $table){
-            $table->dropColumn('amount');
-        }
+            'payments', function (Blueprint $table) {
+                $table->dropColumn('amount');
+            }
         );
 
     }

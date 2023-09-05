@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateTrainingTypesTable extends Migration
 {
@@ -14,12 +14,12 @@ class CreateTrainingTypesTable extends Migration
     public function up()
     {
         Schema::create(
-            'training_types', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'training_types', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

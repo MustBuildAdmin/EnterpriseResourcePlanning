@@ -13,7 +13,7 @@ class CreateTaskFilesTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('task_files')){
+        if (! Schema::hasTable('task_files')) {
             Schema::create('task_files', function (Blueprint $table) {
                 $table->id();
                 $table->string('file');

@@ -14,14 +14,14 @@ class CreateLeadDiscussionsTable extends Migration
     public function up()
     {
         Schema::create(
-            'lead_discussions', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('lead_id');
-            $table->text('comment');
-            $table->integer('created_by');
-            $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
-            $table->timestamps();
-        }
+            'lead_discussions', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('lead_id');
+                $table->text('comment');
+                $table->integer('created_by');
+                $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
+                $table->timestamps();
+            }
         );
     }
 

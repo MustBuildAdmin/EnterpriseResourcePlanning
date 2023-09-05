@@ -13,5 +13,4 @@ class DucumentUpload extends Model
         'description',
         'created_by',
     ];
-    
 }

@@ -30,7 +30,6 @@ class SendDealEmail extends Mailable
     public function build()
     {
 
-
         return $this->view('email.deal_mail')->with('dArr', $this->dArr)->subject($this->subject);
 
     }

@@ -12,12 +12,11 @@ class Competencies extends Model
         'created_by',
     ];
 
-//    public static $types = [
-//        'technical' => 'Technical',
-//        'organizational' => 'Organizational',
-//        'behavioural' => 'Behavioural',
-//    ];
-
+    //    public static $types = [
+    //        'technical' => 'Technical',
+    //        'organizational' => 'Organizational',
+    //        'behavioural' => 'Behavioural',
+    //    ];
 
     public function performance()
     {

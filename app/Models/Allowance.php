@@ -24,9 +24,8 @@ class Allowance extends Model
         return $this->hasOne('App\Models\AllowanceOption', 'id', 'allowance_option')->first();
     }
 
-    public static $Allowancetype =[
-        'fixed'      => 'Fixed',
+    public static $Allowancetype = [
+        'fixed' => 'Fixed',
         'percentage' => 'Percentage',
     ];
-
 }

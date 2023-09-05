@@ -14,18 +14,18 @@ class CreateDealCallsTable extends Migration
     public function up()
     {
         Schema::create(
-            'deal_calls', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('deal_id');
-            $table->string('subject');
-            $table->string('call_type', 30);
-            $table->string('duration', 20);
-            $table->integer('user_id');
-            $table->text('description')->nullable();
-            $table->text('call_result')->nullable();
-            $table->foreign('deal_id')->references('id')->on('deals')->onDelete('cascade');
-            $table->timestamps();
-        }
+            'deal_calls', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('deal_id');
+                $table->string('subject');
+                $table->string('call_type', 30);
+                $table->string('duration', 20);
+                $table->integer('user_id');
+                $table->text('description')->nullable();
+                $table->text('call_result')->nullable();
+                $table->foreign('deal_id')->references('id')->on('deals')->onDelete('cascade');
+                $table->timestamps();
+            }
         );
     }
 

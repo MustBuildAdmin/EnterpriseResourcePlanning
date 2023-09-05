@@ -9,58 +9,48 @@ class TerminationTypeController extends Controller
 {
     public function index()
     {
-        if(\Auth::user()->can('manage termination type'))
-        {
+        if (\Auth::user()->can('manage termination type')) {
             $terminationtypes = TerminationType::where('created_by', '=', \Auth::user()->creatorId())->get();
 
             return view('hrm.system_setup.termination.termination', compact('terminationtypes'));
             // return view('terminationtype.index', compact('terminationtypes'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function create()
     {
-        if(\Auth::user()->can('create termination type'))
-        {
+        if (\Auth::user()->can('create termination type')) {
             return view('hrm.system_setup.termination.termination_create');
             // return view('terminationtype.create');
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create termination type'))
-        {
+        if (\Auth::user()->can('create termination type')) {
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20|unique:termination_types',
-                               ]
+                    'name' => 'required|max:20|unique:termination_types',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $terminationtype             = new TerminationType();
-            $terminationtype->name       = $request->name;
+            $terminationtype = new TerminationType();
+            $terminationtype->name = $request->name;
             $terminationtype->created_by = \Auth::user()->creatorId();
             $terminationtype->save();
 
             return redirect()->route('terminationtype.index')->with('success', __('TerminationType  successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -72,71 +62,53 @@ class TerminationTypeController extends Controller
 
     public function edit(TerminationType $terminationtype)
     {
-        if(\Auth::user()->can('edit termination type'))
-        {
-            if($terminationtype->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('edit termination type')) {
+            if ($terminationtype->created_by == \Auth::user()->creatorId()) {
 
                 return view('hrm.system_setup.termination.termination_edit', compact('terminationtype'));
                 // return view('terminationtype.edit', compact('terminationtype'));
-            }
-            else
-            {
+            } else {
                 return response()->json(['error' => __('Permission denied.')], 401);
             }
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
     public function update(Request $request, TerminationType $terminationtype)
     {
-        if(\Auth::user()->can('edit termination type'))
-        {
-            if($terminationtype->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('edit termination type')) {
+            if ($terminationtype->created_by == \Auth::user()->creatorId()) {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20|unique:termination_types',
+                        'name' => 'required|max:20|unique:termination_types',
 
-                                   ]
+                    ]
                 );
 
                 $terminationtype->name = $request->name;
                 $terminationtype->save();
 
                 return redirect()->route('terminationtype.index')->with('success', __('TerminationType successfully updated.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function destroy(TerminationType $terminationtype)
     {
-        if(\Auth::user()->can('delete termination type'))
-        {
-            if($terminationtype->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('delete termination type')) {
+            if ($terminationtype->created_by == \Auth::user()->creatorId()) {
                 $terminationtype->delete();
 
                 return redirect()->route('terminationtype.index')->with('success', __('TerminationType successfully deleted.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }

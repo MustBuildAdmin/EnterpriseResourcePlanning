@@ -10,7 +10,6 @@ class ProductCategory extends Model
         'name', 'created_by', 'description',
     ];
 
-
     protected $hidden = [
 
     ];

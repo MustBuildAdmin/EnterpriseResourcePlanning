@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaskFilecon extends Model
 {
     protected $table = 'task_file_cons';
+
     protected $fillable = [
         'file',
         'name',

@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ProcurementMaterialSub extends Model
 {
     use HasFactory;
+
     protected $table = 'procurement_material_submission';
 }

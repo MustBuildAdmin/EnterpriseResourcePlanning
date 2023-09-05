@@ -14,21 +14,21 @@ class AddDescriptionField extends Migration
     public function up()
     {
         Schema::table(
-            'proposal_products', function (Blueprint $table){
-            $table->text('description')->nullable()->after('price');
-        }
+            'proposal_products', function (Blueprint $table) {
+                $table->text('description')->nullable()->after('price');
+            }
         );
 
         Schema::table(
-            'invoice_products', function (Blueprint $table){
-            $table->text('description')->nullable()->after('price');
-        }
+            'invoice_products', function (Blueprint $table) {
+                $table->text('description')->nullable()->after('price');
+            }
         );
 
         Schema::table(
-            'bill_products', function (Blueprint $table){
-            $table->text('description')->nullable()->after('price');
-        }
+            'bill_products', function (Blueprint $table) {
+                $table->text('description')->nullable()->after('price');
+            }
         );
 
     }
@@ -41,21 +41,21 @@ class AddDescriptionField extends Migration
     public function down()
     {
         Schema::table(
-            'proposal_products', function (Blueprint $table){
-            $table->dropColumn('description');
-        }
+            'proposal_products', function (Blueprint $table) {
+                $table->dropColumn('description');
+            }
         );
 
         Schema::table(
-            'invoice_products', function (Blueprint $table){
-            $table->dropColumn('description');
-        }
+            'invoice_products', function (Blueprint $table) {
+                $table->dropColumn('description');
+            }
         );
 
         Schema::table(
-            'bill_products', function (Blueprint $table){
-            $table->dropColumn('description');
-        }
+            'bill_products', function (Blueprint $table) {
+                $table->dropColumn('description');
+            }
         );
     }
 }

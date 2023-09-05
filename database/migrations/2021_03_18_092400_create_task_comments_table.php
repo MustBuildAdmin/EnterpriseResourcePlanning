@@ -13,7 +13,7 @@ class CreateTaskCommentsTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('task_comments')){
+        if (! Schema::hasTable('task_comments')) {
             Schema::create('task_comments', function (Blueprint $table) {
                 $table->id();
                 $table->text('comment');

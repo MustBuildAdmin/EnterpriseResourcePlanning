@@ -26,8 +26,9 @@ class Loan extends Model
     {
         return $this->hasOne('App\Models\LoanOption', 'id', 'loan_option')->first();
     }
-    public static $Loantypes=[
-        'fixed'=>'Fixed',
-        'percentage'=> 'Percentage',
+
+    public static $Loantypes = [
+        'fixed' => 'Fixed',
+        'percentage' => 'Percentage',
     ];
 }

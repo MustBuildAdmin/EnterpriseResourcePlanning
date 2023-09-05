@@ -14,11 +14,10 @@ class AddHourInProject extends Migration
     public function up()
     {
         Schema::table(
-            'projects', function (Blueprint $table){
-            $table->string('estimated_hrs')->nullable()->after('status');
-        }
+            'projects', function (Blueprint $table) {
+                $table->string('estimated_hrs')->nullable()->after('status');
+            }
         );
-
 
     }
 
@@ -30,9 +29,9 @@ class AddHourInProject extends Migration
     public function down()
     {
         Schema::table(
-            'projects', function (Blueprint $table){
-            $table->dropColumn('estimated_hrs');
-        }
+            'projects', function (Blueprint $table) {
+                $table->dropColumn('estimated_hrs');
+            }
         );
 
     }

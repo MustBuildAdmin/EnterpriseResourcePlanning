@@ -14,14 +14,14 @@ class CreateLeadActivityLogsTable extends Migration
     public function up()
     {
         Schema::create(
-            'lead_activity_logs', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('lead_id');
-            $table->string('log_type');
-            $table->text('remark')->nullable();
-            $table->timestamps();
-        }
+            'lead_activity_logs', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('lead_id');
+                $table->string('log_type');
+                $table->text('remark')->nullable();
+                $table->timestamps();
+            }
         );
     }
 

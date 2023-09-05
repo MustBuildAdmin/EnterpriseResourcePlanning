@@ -14,14 +14,14 @@ class CreateProjectstagesTable extends Migration
     public function up()
     {
         Schema::create(
-            'projectstages', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('color', 15)->nullable();
-            $table->integer('created_by')->default(0);
-            $table->integer('order')->default(0);;
-            $table->timestamps();
-        }
+            'projectstages', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->string('color', 15)->nullable();
+                $table->integer('created_by')->default(0);
+                $table->integer('order')->default(0);
+                $table->timestamps();
+            }
         );
     }
 

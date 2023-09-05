@@ -14,14 +14,14 @@ class CreateUserDealsTable extends Migration
     public function up()
     {
         Schema::create(
-            'user_deals', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('deal_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('deal_id')->references('id')->on('deals')->onDelete('cascade');
-            $table->timestamps();
-        }
+            'user_deals', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('deal_id');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('deal_id')->references('id')->on('deals')->onDelete('cascade');
+                $table->timestamps();
+            }
         );
     }
 

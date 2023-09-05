@@ -19,7 +19,6 @@ class Training extends Model
         'created_by',
     ];
 
-
     public static $options = [
         'Internal',
         'External',

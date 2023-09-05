@@ -13,7 +13,7 @@ class CreateProjectUsersTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('project_users')){
+        if (! Schema::hasTable('project_users')) {
             Schema::create('project_users', function (Blueprint $table) {
                 $table->id();
                 $table->integer('project_id');

@@ -14,14 +14,14 @@ class CreateAddNewFieldLeadTable extends Migration
     public function up()
     {
         Schema::table(
-            'leads', function (Blueprint $table){
-            $table->string('phone')->nullable()->after('email');
-        }
+            'leads', function (Blueprint $table) {
+                $table->string('phone')->nullable()->after('email');
+            }
         );
         Schema::table(
-            'deals', function (Blueprint $table){
-            $table->string('phone')->nullable()->after('name');
-        }
+            'deals', function (Blueprint $table) {
+                $table->string('phone')->nullable()->after('name');
+            }
         );
     }
 

@@ -28,31 +28,26 @@ use PayPal\Rest\ApiContext;
 
 class PaypalController extends Controller
 {
-    private   $_api_context;
+    private $_api_context;
+
     protected $invoiceData;
 
     public function setApiContext()
     {
 
-        if(\Auth::check())
-        {
+        if (\Auth::check()) {
 
             $payment_setting = Utility::getAdminPaymentSetting();
-        }
-        else
-        {
+        } else {
 
             $payment_setting = Utility::getCompanyPaymentSetting($this->invoiceData->created_by);
 
-
         }
 
-
-
         $paypal_conf['settings']['mode'] = $payment_setting['paypal_mode'];
-        $paypal_conf['client_id']        = $payment_setting['paypal_client_id'];
+        $paypal_conf['client_id'] = $payment_setting['paypal_client_id'];
 
-        $paypal_conf['secret_key']       = $payment_setting['paypal_secret_key'];
+        $paypal_conf['secret_key'] = $payment_setting['paypal_secret_key'];
 
         $this->_api_context = new ApiContext(
             new OAuthTokenCredential(
@@ -67,37 +62,30 @@ class PaypalController extends Controller
     {
 
         $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
-        $plan   = Plan::find($planID);
+        $plan = Plan::find($planID);
 
-        if($plan)
-        {
+        if ($plan) {
 
-            try
-            {
+            try {
                 $coupon_id = null;
-                $price     = $plan->price;
-                if(!empty($request->coupon))
-                {
+                $price = $plan->price;
+                if (! empty($request->coupon)) {
                     $coupons = Coupon::where('code', strtoupper($request->coupon))->where('is_active', '1')->first();
-                    if(!empty($coupons))
-                    {
-                        $usedCoupun     = $coupons->used_coupon();
+                    if (! empty($coupons)) {
+                        $usedCoupun = $coupons->used_coupon();
                         $discount_value = ($plan->price / 100) * $coupons->discount;
-                        $price          = $plan->price - $discount_value;
-                        if($coupons->limit == $usedCoupun)
-                        {
+                        $price = $plan->price - $discount_value;
+                        if ($coupons->limit == $usedCoupun) {
                             return redirect()->back()->with('error', __('This coupon code has expired.'));
                         }
                         $coupon_id = $coupons->id;
-                    }
-                    else
-                    {
+                    } else {
                         return redirect()->back()->with('error', __('This coupon code is invalid or has expired.'));
                     }
                 }
 
                 $this->setApiContext();
-                $name  = $plan->name;
+                $name = $plan->name;
                 $payer = new Payer();
                 $payer->setPaymentMethod('paypal');
                 $item_1 = new Item();
@@ -112,62 +100,47 @@ class PaypalController extends Controller
                 $redirect_urls->setReturnUrl(
                     route(
                         'plan.get.payment.status', [
-                                                     $plan->id,
-                                                     'coupon_id' => $coupon_id,
-                                                 ]
+                            $plan->id,
+                            'coupon_id' => $coupon_id,
+                        ]
                     )
                 )->setCancelUrl(
                     route(
                         'plan.get.payment.status', [
-                                                     $plan->id,
-                                                     'coupon_id' => $coupon_id,
-                                                 ]
+                            $plan->id,
+                            'coupon_id' => $coupon_id,
+                        ]
                     )
                 );
                 $payment = new Payment();
                 $payment->setIntent('Sale')->setPayer($payer)->setRedirectUrls($redirect_urls)->setTransactions([$transaction]);
 
-                try
-                {
+                try {
                     $payment->create($this->_api_context);
-                }
-                catch(\PayPal\Exception\PayPalConnectionException $ex) //PPConnectionException
-                {
-
-
-                    if(config('app.debug'))
-                    {
+                } catch (\PayPal\Exception\PayPalConnectionException $ex) { //PPConnectionException
+                    if (config('app.debug')) {
                         return redirect()->route('stripe', \Illuminate\Support\Facades\Crypt::encrypt($plan->id))->with('error', __('Connection timeout'));
-                    }
-                    else
-                    {
+                    } else {
                         return redirect()->route('stripe', \Illuminate\Support\Facades\Crypt::encrypt($plan->id))->with('error', __('Some error occur, sorry for inconvenient'));
                     }
                 }
-                foreach($payment->getLinks() as $link)
-                {
-                    if($link->getRel() == 'approval_url')
-                    {
+                foreach ($payment->getLinks() as $link) {
+                    if ($link->getRel() == 'approval_url') {
                         $redirect_url = $link->getHref();
                         break;
                     }
                 }
                 Session::put('paypal_payment_id', $payment->getId());
-                if(isset($redirect_url))
-                {
+                if (isset($redirect_url)) {
                     return Redirect::away($redirect_url);
                 }
 
                 return redirect()->route('payment', \Illuminate\Support\Facades\Crypt::encrypt($plan->id))->with('error', __('Unknown error occurred'));
-            }
-            catch(\Exception $e)
-            {
+            } catch (\Exception $e) {
 
                 return redirect()->route('plans.index')->with('error', __($e->getMessage()));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->route('plans.index')->with('error', __('Plan is deleted.'));
         }
     }
@@ -176,108 +149,86 @@ class PaypalController extends Controller
     {
         $user = Auth::user();
         $plan = Plan::find($plan_id);
-        if($plan)
-        {
+        if ($plan) {
             $this->setApiContext();
             $payment_id = Session::get('paypal_payment_id');
             Session::forget('paypal_payment_id');
-            if(empty($request->PayerID || empty($request->token)))
-            {
+            if (empty($request->PayerID || empty($request->token))) {
                 return redirect()->route('plans.index', \Illuminate\Support\Facades\Crypt::encrypt($plan->id))->with('error', __('Payment failed'));
             }
-            $payment   = Payment::get($payment_id, $this->_api_context);
+            $payment = Payment::get($payment_id, $this->_api_context);
             $execution = new PaymentExecution();
             $execution->setPayerId($request->PayerID);
-            try
-            {
-                $result  = $payment->execute($execution, $this->_api_context)->toArray();
+            try {
+                $result = $payment->execute($execution, $this->_api_context)->toArray();
                 $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
-                $status  = ucwords(str_replace('_', ' ', $result['state']));
-                if($request->has('coupon_id') && $request->coupon_id != '')
-                {
+                $status = ucwords(str_replace('_', ' ', $result['state']));
+                if ($request->has('coupon_id') && $request->coupon_id != '') {
                     $coupons = Coupon::find($request->coupon_id);
-                    if(!empty($coupons))
-                    {
-                        $userCoupon         = new UserCoupon();
-                        $userCoupon->user   = $user->id;
+                    if (! empty($coupons)) {
+                        $userCoupon = new UserCoupon();
+                        $userCoupon->user = $user->id;
                         $userCoupon->coupon = $coupons->id;
-                        $userCoupon->order  = $orderID;
+                        $userCoupon->order = $orderID;
                         $userCoupon->save();
                         $usedCoupun = $coupons->used_coupon();
-                        if($coupons->limit <= $usedCoupun)
-                        {
+                        if ($coupons->limit <= $usedCoupun) {
                             $coupons->is_active = 0;
                             $coupons->save();
                         }
                     }
                 }
-                if($result['state'] == 'approved')
-                {
+                if ($result['state'] == 'approved') {
 
-                    $order                 = new Order();
-                    $order->order_id       = $orderID;
-                    $order->name           = $user->name;
-                    $order->card_number    = '';
+                    $order = new Order();
+                    $order->order_id = $orderID;
+                    $order->name = $user->name;
+                    $order->card_number = '';
                     $order->card_exp_month = '';
-                    $order->card_exp_year  = '';
-                    $order->plan_name      = $plan->name;
-                    $order->plan_id        = $plan->id;
-                    $order->price          = $result['transactions'][0]['amount']['total'];
+                    $order->card_exp_year = '';
+                    $order->plan_name = $plan->name;
+                    $order->plan_id = $plan->id;
+                    $order->price = $result['transactions'][0]['amount']['total'];
                     $order->price_currency = env('CURRENCY');
-                    $order->txn_id         = $payment_id;
-                    $order->payment_type   = __('PAYPAL');
+                    $order->txn_id = $payment_id;
+                    $order->payment_type = __('PAYPAL');
                     $order->payment_status = $result['state'];
-                    $order->receipt        = '';
-                    $order->user_id        = $user->id;
+                    $order->receipt = '';
+                    $order->user_id = $user->id;
                     $order->save();
                     $assignPlan = $user->assignPlan($plan->id);
-                    if($assignPlan['is_success'])
-                    {
+                    if ($assignPlan['is_success']) {
                         return redirect()->route('plans.index')->with('success', __('Plan activated Successfully.'));
-                    }
-                    else
-                    {
+                    } else {
                         return redirect()->route('plans.index')->with('error', __($assignPlan['error']));
                     }
+                } else {
+                    return redirect()->route('plans.index')->with('error', __('Transaction has been '.__($status)));
                 }
-                else
-                {
-                    return redirect()->route('plans.index')->with('error', __('Transaction has been ' . __($status)));
-                }
-            }
-            catch(\Exception $e)
-            {
+            } catch (\Exception $e) {
                 return redirect()->route('plans.index')->with('error', __('Transaction has been failed.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->route('plans.index')->with('error', __('Plan is deleted.'));
         }
     }
 
     public function customerPayWithPaypal(Request $request, $invoice_id)
     {
-        $invoice                 = Invoice::find($invoice_id);
-        $this->invoiceData       = $invoice;
-        $settings                = DB::table('settings')->where('created_by', '=', $invoice->created_by)->get()->pluck('value', 'name');
-
+        $invoice = Invoice::find($invoice_id);
+        $this->invoiceData = $invoice;
+        $settings = DB::table('settings')->where('created_by', '=', $invoice->created_by)->get()->pluck('value', 'name');
 
         $get_amount = $request->amount;
 
         $request->validate(['amount' => 'required|numeric|min:0']);
 
-
         $invoice = Invoice::find($invoice_id);
 
-        if($invoice)
-        {
-            if($get_amount > $invoice->getDue())
-            {
+        if ($invoice) {
+            if ($get_amount > $invoice->getDue()) {
                 return redirect()->back()->with('error', __('Invalid amount.'));
-            }
-            else
-            {
+            } else {
                 $this->setApiContext();
 
                 $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
@@ -313,51 +264,39 @@ class PaypalController extends Controller
                 $payment = new Payment();
                 $payment->setIntent('Sale')->setPayer($payer)->setRedirectUrls($redirect_urls)->setTransactions([$transaction]);
 
-                try
-                {
+                try {
 
                     $payment->create($this->_api_context);
-                }
-                catch(\PayPal\Exception\PayPalConnectionException $ex) //PPConnectionException
-                {
-                    if(\Config::get('app.debug'))
-                    {
+                } catch (\PayPal\Exception\PayPalConnectionException $ex) { //PPConnectionException
+                    if (\Config::get('app.debug')) {
                         return redirect()->back()->with('error', __('Connection timeout'));
-                    }
-                    else
-                    {
+                    } else {
                         return redirect()->back()->with('error', __('Some error occur, sorry for inconvenient'));
                     }
                 }
-                foreach($payment->getLinks() as $link)
-                {
-                    if($link->getRel() == 'approval_url')
-                    {
+                foreach ($payment->getLinks() as $link) {
+                    if ($link->getRel() == 'approval_url') {
                         $redirect_url = $link->getHref();
                         break;
                     }
                 }
                 Session::put('paypal_payment_id', $payment->getId());
-                if(isset($redirect_url))
-                {
+                if (isset($redirect_url)) {
                     return Redirect::away($redirect_url);
                 }
 
                 return redirect()->back()->with('error', __('Unknown error occurred'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function customerGetPaymentStatus(Request $request, $invoice_id)
     {
-        $invoice                 = Invoice::find($invoice_id);
-        $this->invoiceData       = $invoice;
-        $settings                = DB::table('settings')->where('created_by', '=', $invoice->created_by)->get()->pluck('value', 'name');
-
+        $invoice = Invoice::find($invoice_id);
+        $this->invoiceData = $invoice;
+        $settings = DB::table('settings')->where('created_by', '=', $invoice->created_by)->get()->pluck('value', 'name');
 
         $this->setApiContext();
 
@@ -365,8 +304,7 @@ class PaypalController extends Controller
 
         Session::forget('paypal_payment_id');
 
-        if(empty($request->PayerID || empty($request->token)))
-        {
+        if (empty($request->PayerID || empty($request->token))) {
             return redirect()->back()->with('error', __('Payment failed'));
         }
 
@@ -375,23 +313,17 @@ class PaypalController extends Controller
         $execution = new PaymentExecution();
         $execution->setPayerId($request->PayerID);
 
-        try
-        {
-            $result   = $payment->execute($execution, $this->_api_context)->toArray();
+        try {
+            $result = $payment->execute($execution, $this->_api_context)->toArray();
             $order_id = strtoupper(str_replace('.', '', uniqid('', true)));
-            $status   = ucwords(str_replace('_', ' ', $result['state']));
-            if($result['state'] == 'approved')
-            {
+            $status = ucwords(str_replace('_', ' ', $result['state']));
+            if ($result['state'] == 'approved') {
                 $amount = $result['transactions'][0]['amount']['total'];
-            }
-            else
-            {
+            } else {
                 $amount = isset($result['transactions'][0]['amount']['total']) ? $result['transactions'][0]['amount']['total'] : '0.00';
             }
 
-
-            if($result['state'] == 'approved')
-            {
+            if ($result['state'] == 'approved') {
                 $payments = InvoicePayment::create(
                     [
 
@@ -406,38 +338,33 @@ class PaypalController extends Controller
                         'payment_type' => __('PAYPAL'),
                         'receipt' => '',
                         'reference' => '',
-                        'description' => 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
+                        'description' => 'Invoice '.Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
                     ]
                 );
 
-                if($invoice->getDue() <= 0)
-                {
+                if ($invoice->getDue() <= 0) {
                     $invoice->status = 4;
                     $invoice->save();
-                }
-                elseif(($invoice->getDue() - $payments->amount) == 0)
-                {
+                } elseif (($invoice->getDue() - $payments->amount) == 0) {
                     $invoice->status = 4;
                     $invoice->save();
-                }
-                else
-                {
+                } else {
                     $invoice->status = 3;
                     $invoice->save();
                 }
 
-                $invoicePayment              = new \App\Models\Transaction();
-                $invoicePayment->user_id     = $invoice->customer_id;
-                $invoicePayment->user_type   = 'Customer';
-                $invoicePayment->type        = 'PAYPAL';
-                $invoicePayment->created_by  = $invoice->created_by;
-                $invoicePayment->payment_id  = $invoicePayment->id;
-                $invoicePayment->category    = 'Invoice';
-                $invoicePayment->amount      = $amount;
-                $invoicePayment->date        = date('Y-m-d');
-                $invoicePayment->payment_id  = $payments->id;
-                $invoicePayment->description = 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id);
-                $invoicePayment->account     = 0;
+                $invoicePayment = new \App\Models\Transaction();
+                $invoicePayment->user_id = $invoice->customer_id;
+                $invoicePayment->user_type = 'Customer';
+                $invoicePayment->type = 'PAYPAL';
+                $invoicePayment->created_by = $invoice->created_by;
+                $invoicePayment->payment_id = $invoicePayment->id;
+                $invoicePayment->category = 'Invoice';
+                $invoicePayment->amount = $amount;
+                $invoicePayment->date = date('Y-m-d');
+                $invoicePayment->payment_id = $payments->id;
+                $invoicePayment->description = 'Invoice '.Utility::invoiceNumberFormat($settings, $invoice->invoice_id);
+                $invoicePayment->account = 0;
 
                 \App\Models\Transaction::addTransaction($invoicePayment);
 
@@ -446,42 +373,35 @@ class PaypalController extends Controller
                 Utility::bankAccountBalance($request->account_id, $request->amount, 'credit');
 
                 //Slack Notification
-                $setting  = Utility::settings($invoice->created_by);
+                $setting = Utility::settings($invoice->created_by);
                 $customer = Customer::find($invoice->customer_id);
-                if(isset($setting['payment_notification']) && $setting['payment_notification'] == 1)
-                {
-                    $msg = __("New payment of").' ' . $amount . __("created for").' ' . $customer->name . __("by").' '. $invoicePayment->type . '.';
-                    Utility::send_slack_msg($msg,$invoice->created_by);
+                if (isset($setting['payment_notification']) && $setting['payment_notification'] == 1) {
+                    $msg = __('New payment of').' '.$amount.__('created for').' '.$customer->name.__('by').' '.$invoicePayment->type.'.';
+                    Utility::send_slack_msg($msg, $invoice->created_by);
                 }
 
                 //Telegram Notification
-                $setting  = Utility::settings($invoice->created_by);
+                $setting = Utility::settings($invoice->created_by);
                 $customer = Customer::find($invoice->customer_id);
-                if(isset($setting['telegram_payment_notification']) && $setting['telegram_payment_notification'] == 1)
-                {
-                    $msg = __("New payment of").' ' . $amount . __("created for").' ' . $customer->name . __("by").' '. $invoicePayment->type . '.';
-                    Utility::send_telegram_msg($msg,$invoice->created_by);
+                if (isset($setting['telegram_payment_notification']) && $setting['telegram_payment_notification'] == 1) {
+                    $msg = __('New payment of').' '.$amount.__('created for').' '.$customer->name.__('by').' '.$invoicePayment->type.'.';
+                    Utility::send_telegram_msg($msg, $invoice->created_by);
                 }
 
                 //Twilio Notification
-                $setting  = Utility::settings($invoice->created_by);
+                $setting = Utility::settings($invoice->created_by);
                 $customer = Customer::find($invoice->customer_id);
-                if(isset($setting['twilio_payment_notification']) && $setting['twilio_payment_notification'] ==1)
-                {
-                    $msg = __("New payment of").' ' . $amount . __("created for").' ' . $customer->name . __("by").' '.  $invoicePayment->type . '.';
-                    Utility::send_twilio_msg($customer->contact,$msg,$invoice->created_by);
+                if (isset($setting['twilio_payment_notification']) && $setting['twilio_payment_notification'] == 1) {
+                    $msg = __('New payment of').' '.$amount.__('created for').' '.$customer->name.__('by').' '.$invoicePayment->type.'.';
+                    Utility::send_twilio_msg($customer->contact, $msg, $invoice->created_by);
                 }
 
                 return redirect()->back()->with('success', __('Payment successfully added'));
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Transaction has been ' . $status));
+            } else {
+                return redirect()->back()->with('error', __('Transaction has been '.$status));
             }
 
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', __('Transaction has been failed.'));
         }
 

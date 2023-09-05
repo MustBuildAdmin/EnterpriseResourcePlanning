@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RFIStatusSubSave extends Model
 {
     use HasFactory;
+
     protected $table = 'dr_rfi_sub_save';
 }

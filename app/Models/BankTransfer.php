@@ -26,5 +26,4 @@ class BankTransfer extends Model
     {
         return $this->hasOne('App\Models\BankAccount', 'id', 'to_account')->first();
     }
-
 }
