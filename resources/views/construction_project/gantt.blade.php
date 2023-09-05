@@ -1071,39 +1071,23 @@
                 });
             }
 
-        });
-        // ## holidays  ######
-        var holidays = [];
-        var holidays_list = $('#holidays').val();
-        if (holidays_list != '') {
-            var result2 = holidays_list.split(':');
-            result2.forEach(element => {
-                holidays.push(new Date(element));
-            });
-            for (var i = 0; i < holidays.length; i++) {
-                gantt.setWorkTime({
-                    date: holidays[i],
-                    hours: false
-                });
-            }
-
-            var dateToStr = gantt.date.date_to_str("%d %F");
-            //  gantt.message("Following holidays are excluded from working time:");
-            // for (var i = 0; i < holidays.length; i++) {
-            //     setTimeout(
-            //         (function (i) {
-            //             return function () {
-            //                 gantt.message(dateToStr(holidays[i]))
-            //             }
-            //         })(i)
-            //         ,
-            //         (i + 1) * 600
-            //     );
-            // }
-        }
-        if (frezee_status_actual != 1) {
-            var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
-            //var dp = new gantt.dataProcessor("/erp/public/");
+                    var dateToStr = gantt.date.date_to_str("%d %F");
+                  //  gantt.message("Following holidays are excluded from working time:");
+                    // for (var i = 0; i < holidays.length; i++) {
+                    //     setTimeout(
+                    //         (function (i) {
+                    //             return function () {
+                    //                 gantt.message(dateToStr(holidays[i]))
+                    //             }
+                    //         })(i)
+                    //         ,
+                    //         (i + 1) * 600
+                    //     );
+                    // }
+                }
+if(frezee_status_actual!=1){
+        var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
+        //var dp = new gantt.dataProcessor("/erp/public/");
             dp.init(gantt);
             dp.setTransactionMode({
                 mode: "REST",
