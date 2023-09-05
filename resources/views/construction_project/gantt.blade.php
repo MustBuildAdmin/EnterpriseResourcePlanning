@@ -216,7 +216,7 @@
 
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav navbar-gantt">
 
                         <li class="nav-item">
                             <a class="nav-link" type="button" onclick="openAll()">
