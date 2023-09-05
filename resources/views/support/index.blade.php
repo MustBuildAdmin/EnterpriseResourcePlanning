@@ -13,7 +13,7 @@
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item">{{__('Support')}}</li>
 @endsection
-
+<div class=container-fluid>
 @section('action-btn')
     <div class="float-end">
         <a href="{{ route('support.grid') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Grid View')}}">
@@ -28,6 +28,8 @@
 @endsection
 
 @section('content')
+
+
 <div class="row">
 
 
@@ -267,5 +269,6 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
 
