@@ -14,9 +14,9 @@ class AddLastLoginToUserTable extends Migration
     public function up()
     {
         Schema::table(
-            'users', function (Blueprint $table){
-            $table->datetime('last_login_at')->nullable()->after('remember_token');
-        }
+            'users', function (Blueprint $table) {
+                $table->datetime('last_login_at')->nullable()->after('remember_token');
+            }
         );
     }
 
@@ -28,9 +28,9 @@ class AddLastLoginToUserTable extends Migration
     public function down()
     {
         Schema::table(
-            'users', function (Blueprint $table){
-            $table->dropColumn('last_login_at');
-        }
+            'users', function (Blueprint $table) {
+                $table->dropColumn('last_login_at');
+            }
         );
     }
 }

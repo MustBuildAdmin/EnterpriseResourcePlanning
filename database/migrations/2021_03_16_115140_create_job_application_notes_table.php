@@ -14,14 +14,14 @@ class CreateJobApplicationNotesTable extends Migration
     public function up()
     {
         Schema::create(
-            'job_application_notes', function (Blueprint $table){
-            $table->id();
-            $table->integer('application_id')->default(0);
-            $table->integer('note_created')->default(0);
-            $table->text('note')->nullable();
-            $table->integer('created_by')->default(0);
-            $table->timestamps();
-        }
+            'job_application_notes', function (Blueprint $table) {
+                $table->id();
+                $table->integer('application_id')->default(0);
+                $table->integer('note_created')->default(0);
+                $table->text('note')->nullable();
+                $table->integer('created_by')->default(0);
+                $table->timestamps();
+            }
         );
     }
 

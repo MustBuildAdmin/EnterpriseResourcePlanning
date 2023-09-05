@@ -14,23 +14,23 @@ class CreateContractsTable extends Migration
     public function up()
     {
         Schema::create(
-            'contracts', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('client_name');
-            $table->string('subject')->nullable();
-            $table->string('value')->nullable();
-            $table->integer('type');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('description')->nullable();
-            $table->string('project_id')->nullable();
-            $table->text('contract_description')->nullable();
-            $table->string('status')->default('pending');;
-            $table->longText('client_signature')->nullable();
-            $table->longText('company_signature')->nullable();
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'contracts', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('client_name');
+                $table->string('subject')->nullable();
+                $table->string('value')->nullable();
+                $table->integer('type');
+                $table->date('start_date');
+                $table->date('end_date');
+                $table->string('description')->nullable();
+                $table->string('project_id')->nullable();
+                $table->text('contract_description')->nullable();
+                $table->string('status')->default('pending');
+                $table->longText('client_signature')->nullable();
+                $table->longText('company_signature')->nullable();
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

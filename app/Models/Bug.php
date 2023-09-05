@@ -49,10 +49,12 @@ class Bug extends Model
     {
         return $this->hasMany('App\Models\BugFile', 'bug_id', 'id')->orderBy('id', 'DESC');
     }
+
     public function project()
     {
         return $this->hasOne('App\Models\Project', 'id', 'project_id');
     }
+
     public function users()
     {
         return User::whereIn('id', explode(',', $this->assign_to))->get();

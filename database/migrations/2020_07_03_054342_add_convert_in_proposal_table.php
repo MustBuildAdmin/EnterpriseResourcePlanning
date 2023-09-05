@@ -14,10 +14,10 @@ class AddConvertInProposalTable extends Migration
     public function up()
     {
         Schema::table(
-            'proposals', function (Blueprint $table){
-            $table->integer('is_convert')->default('0')->after('discount_apply');
-            $table->integer('converted_invoice_id')->default('0')->after('discount_apply');
-        }
+            'proposals', function (Blueprint $table) {
+                $table->integer('is_convert')->default('0')->after('discount_apply');
+                $table->integer('converted_invoice_id')->default('0')->after('discount_apply');
+            }
         );
     }
 
@@ -29,10 +29,10 @@ class AddConvertInProposalTable extends Migration
     public function down()
     {
         Schema::table(
-            'proposals', function (Blueprint $table){
-            $table->dropColumn('is_convert');
-            $table->dropColumn('converted_invoice_id');
-        }
+            'proposals', function (Blueprint $table) {
+                $table->dropColumn('is_convert');
+                $table->dropColumn('converted_invoice_id');
+            }
         );
     }
 }

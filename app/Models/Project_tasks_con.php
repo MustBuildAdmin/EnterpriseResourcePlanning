@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project_tasks_con extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'description',
@@ -44,7 +45,7 @@ class Project_tasks_con extends Model
 
     public function milestone()
     {
-        return $this->hasOne('App\Models\Milestone','id', 'milestone_id');
+        return $this->hasOne('App\Models\Milestone', 'id', 'milestone_id');
     }
 
     public function users()
@@ -64,14 +65,13 @@ class Project_tasks_con extends Model
 
     public function taskProgress()
     {
-        $project    = Construction_project::find($this->project_id);
+        $project = Construction_project::find($this->project_id);
         $percentage = 0;
 
-        $total_checklist     = $this->checklist->count();
+        $total_checklist = $this->checklist->count();
         $completed_checklist = $this->checklist()->where('status', '=', '1')->count();
 
-        if($total_checklist > 0)
-        {
+        if ($total_checklist > 0) {
             $percentage = intval(($completed_checklist / $total_checklist) * 100);
         }
 
@@ -79,12 +79,15 @@ class Project_tasks_con extends Model
 
         return [
             'color' => $color,
-            'percentage' => $percentage . '%',
+            'percentage' => $percentage.'%',
         ];
     }
-    public function task_user(){
-        return $this->hasOne('App\Models\User','id','assign_to');
+
+    public function task_user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'assign_to');
     }
+
     public function checklist()
     {
         return $this->hasMany('App\Models\TaskChecklist', 'task_id', 'id')->orderBy('id', 'DESC');
@@ -102,19 +105,17 @@ class Project_tasks_con extends Model
 
     public function countTaskChecklist()
     {
-        return $this->checklist->where('status', '=', 1)->count() . '/' . $this->checklist->count();
+        return $this->checklist->where('status', '=', 1)->count().'/'.$this->checklist->count();
     }
 
     public static function deleteTask($task_ids)
     {
         $status = false;
 
-        foreach($task_ids as $key => $task_id)
-        {
+        foreach ($task_ids as $key => $task_id) {
             $task = Project_tasks_con::find($task_id);
 
-            if($task)
-            {
+            if ($task) {
                 // Delete Attachments
                 $taskattachments = TaskFilecon::where('task_id', '=', $task->id);
                 $attachmentfiles = $taskattachments->pluck('file')->toArray();
@@ -146,42 +147,37 @@ class Project_tasks_con extends Model
     // Return milestone wise tasks
     public static function getAllSectionedTaskList($request, $project, $filterdata = [], $not_task_ids = [])
     {
-        $taskArray    = $sectionArray = [];
-        $counter      = 1;
+        $taskArray = $sectionArray = [];
+        $counter = 1;
         $taskSections = $project->tasksections()->pluck('title', 'id')->toArray();
-        $section_ids  = array_keys($taskSections);
-        $task_ids     = Project::getAssignedProjectTasks($project->id, null, $filterdata)->whereNotIn('milestone_id', $section_ids)->whereNotIn('id', $not_task_ids)->orderBy('id', 'desc')->pluck('id')->toArray();
-        if(!empty($task_ids) && count($task_ids) > 0)
-        {
-            $counter                              = 0;
-            $taskArray[$counter]['section_id']    = 0;
-            $taskArray[$counter]['section_name']  = '';
+        $section_ids = array_keys($taskSections);
+        $task_ids = Project::getAssignedProjectTasks($project->id, null, $filterdata)->whereNotIn('milestone_id', $section_ids)->whereNotIn('id', $not_task_ids)->orderBy('id', 'desc')->pluck('id')->toArray();
+        if (! empty($task_ids) && count($task_ids) > 0) {
+            $counter = 0;
+            $taskArray[$counter]['section_id'] = 0;
+            $taskArray[$counter]['section_name'] = '';
             $taskArray[$counter]['sectionsClass'] = 'active';
-            foreach($task_ids as $task_id)
-            {
-                $task                            = ProjectTask::find($task_id);
-                $taskCollectionArray             = $task->toArray();
+            foreach ($task_ids as $task_id) {
+                $task = ProjectTask::find($task_id);
+                $taskCollectionArray = $task->toArray();
                 $taskCollectionArray['taskinfo'] = json_decode(app('App\Http\Controllers\ProjectTaskController')->getDefaultTaskInfo($request, $task->id), true);
 
                 $taskArray[$counter]['sections'][] = $taskCollectionArray;
             }
             $counter++;
         }
-        if(!empty($section_ids) && count($section_ids) > 0)
-        {
-            foreach($taskSections as $section_id => $section_name)
-            {
-                $tasks                               = Project::getAssignedProjectTasks($project->id, null, $filterdata)->where('project_tasks.milestone_id', $section_id)->whereNotIn('id', $not_task_ids)->orderBy('id', 'desc')->get()->toArray();
-                $taskArray[$counter]['section_id']   = $section_id;
+        if (! empty($section_ids) && count($section_ids) > 0) {
+            foreach ($taskSections as $section_id => $section_name) {
+                $tasks = Project::getAssignedProjectTasks($project->id, null, $filterdata)->where('project_tasks.milestone_id', $section_id)->whereNotIn('id', $not_task_ids)->orderBy('id', 'desc')->get()->toArray();
+                $taskArray[$counter]['section_id'] = $section_id;
                 $taskArray[$counter]['section_name'] = $section_name;
-                $sectiontasks                        = $tasks;
+                $sectiontasks = $tasks;
 
-                foreach($tasks as $onekey => $onetask)
-                {
+                foreach ($tasks as $onekey => $onetask) {
                     $sectiontasks[$onekey]['taskinfo'] = json_decode(app('App\Http\Controllers\ProjectTaskController')->getDefaultTaskInfo($request, $onetask['id']), true);
                 }
 
-                $taskArray[$counter]['sections']      = $sectiontasks;
+                $taskArray[$counter]['sections'] = $sectiontasks;
                 $taskArray[$counter]['sectionsClass'] = 'active';
                 $counter++;
             }

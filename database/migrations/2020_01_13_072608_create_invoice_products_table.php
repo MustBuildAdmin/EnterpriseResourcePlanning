@@ -14,16 +14,16 @@ class CreateInvoiceProductsTable extends Migration
     public function up()
     {
         Schema::create(
-            'invoice_products', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('invoice_id');
-            $table->integer('product_id');
-            $table->integer('quantity');
-            $table->float('tax')->default('0.00');
-            $table->float('discount')->default('0.00');
-            $table->float('price')->default('0.00');
-            $table->timestamps();
-        }
+            'invoice_products', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('invoice_id');
+                $table->integer('product_id');
+                $table->integer('quantity');
+                $table->float('tax')->default('0.00');
+                $table->float('discount')->default('0.00');
+                $table->float('price')->default('0.00');
+                $table->timestamps();
+            }
         );
     }
 

@@ -35,14 +35,13 @@ class Con_task extends Model
 
     public function taskProgress()
     {
-        $project    = Project::find($this->project_id);
+        $project = Project::find($this->project_id);
         $percentage = 0;
 
-        $total_checklist     = $this->checklist->count();
+        $total_checklist = $this->checklist->count();
         $completed_checklist = $this->checklist()->where('status', '=', '1')->count();
 
-        if($total_checklist > 0)
-        {
+        if ($total_checklist > 0) {
             $percentage = intval(($completed_checklist / $total_checklist) * 100);
         }
 
@@ -50,7 +49,7 @@ class Con_task extends Model
 
         return [
             'color' => $color,
-            'percentage' => $percentage . '%',
+            'percentage' => $percentage.'%',
         ];
     }
 

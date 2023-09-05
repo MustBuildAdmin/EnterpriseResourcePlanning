@@ -14,17 +14,17 @@ class CreateInterviewSchedulesTable extends Migration
     public function up()
     {
         Schema::create(
-            'interview_schedules', function (Blueprint $table){
-            $table->id();
-            $table->integer('candidate');
-            $table->integer('employee')->default(0);
-            $table->date('date');
-            $table->time('time');
-            $table->text('comment')->nullable();
-            $table->string('employee_response')->nullable();
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'interview_schedules', function (Blueprint $table) {
+                $table->id();
+                $table->integer('candidate');
+                $table->integer('employee')->default(0);
+                $table->date('date');
+                $table->time('time');
+                $table->text('comment')->nullable();
+                $table->string('employee_response')->nullable();
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

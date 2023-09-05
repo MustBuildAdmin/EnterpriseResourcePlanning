@@ -14,13 +14,13 @@ class CreateUserToDosTable extends Migration
     public function up()
     {
         Schema::create(
-            'user_to_dos', function (Blueprint $table){
-            $table->id();
-            $table->string('title');
-            $table->boolean('is_complete')->default(0);
-            $table->integer('user_id');
-            $table->timestamps();
-        }
+            'user_to_dos', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->boolean('is_complete')->default(0);
+                $table->integer('user_id');
+                $table->timestamps();
+            }
         );
     }
 

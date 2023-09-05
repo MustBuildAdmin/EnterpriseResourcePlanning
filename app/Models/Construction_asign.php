@@ -24,10 +24,9 @@ class Construction_asign extends Model
     {
         return $this->belongsTo('App\Models\Construction_project', 'project_id', 'id');
     }
+
     public function user_name()
     {
         return $this->belongsTo('App\Models\User', 'employe_id', 'id');
     }
-
-
 }

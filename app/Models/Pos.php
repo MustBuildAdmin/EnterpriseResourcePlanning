@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pos extends Model
@@ -22,15 +21,14 @@ class Pos extends Model
     {
         return $this->hasOne('App\Models\Customer', 'id', 'customer_id');
     }
+
     public function warehouse()
     {
         return $this->hasOne('App\Models\warehouse', 'id', 'warehouse_id');
     }
 
-    public function posPayment(){
-        return $this->hasOne('App\Models\PosPayment','pos_id','id');
+    public function posPayment()
+    {
+        return $this->hasOne('App\Models\PosPayment', 'pos_id', 'id');
     }
 }
-
-
-

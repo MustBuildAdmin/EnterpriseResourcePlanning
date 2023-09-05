@@ -6,7 +6,7 @@
 
 <style>
     .navbar-expand-lg {
-        top: 4em !important;
+        top: 4.4em !important;
     }
 </style>
     <!-- Libs JS -->
@@ -27,7 +27,7 @@
                 <ul class="navbar-nav pt-lg-3">
                     <li class="{{ Request::segment(1) == 'employee' ? 'active nav-item' : 'nav-item' }}">
                         <a href="{{ route('hrm_dashboard') }}" href="#" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -50,7 +50,7 @@
                             @endphp
                             <a href="{{ route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}"
                                 class="nav-link">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class=" d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -65,7 +65,7 @@
                                 <span class="nav-link-title"> {{ __('Employee') }} </span></a>
                         @else
                             <a href="{{ route('employee.index') }}" class="nav-link">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class=" d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -88,7 +88,7 @@
                     <li class="{{ Request::segment(1) == 'leave' ? 'active nav-item' : 'nav-item' }}">
 
                         <a href="{{route('leave.index')}}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"

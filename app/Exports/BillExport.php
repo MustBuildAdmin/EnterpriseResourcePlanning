@@ -16,13 +16,12 @@ class BillExport implements FromCollection, WithHeadings
     {
         $data = Bill::get();
 
-        foreach($data as $k => $bill)
-        {
-            unset( $bill->created_by, $bill->shipping_display,$bill->discount_apply);
-            $data[$k]["bill_id"] = \Auth::user()->invoiceNumberFormat($bill->bill_id);
-            $data[$k]["vender_id"] = \Auth::user()->customerNumberFormat($bill->vender_id);
+        foreach ($data as $k => $bill) {
+            unset($bill->created_by, $bill->shipping_display,$bill->discount_apply);
+            $data[$k]['bill_id'] = \Auth::user()->invoiceNumberFormat($bill->bill_id);
+            $data[$k]['vender_id'] = \Auth::user()->customerNumberFormat($bill->vender_id);
             $data[$k]['category_id'] = ProductServiceCategory::where('type', 2)->first()->name;
-            $data[$k]["status"]       = Bill::$statues[$bill->status];
+            $data[$k]['status'] = Bill::$statues[$bill->status];
 
         }
 
@@ -32,17 +31,17 @@ class BillExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            "ID",
-            "Bill No",
-            "Vender NO",
-            "Bill Date",
-            "Due Date",
-            "Order No",
-            "Status",
-            "Send Date",
-            "Category",
-            "created_at",
-            "updated_at",
+            'ID',
+            'Bill No',
+            'Vender NO',
+            'Bill Date',
+            'Due Date',
+            'Order No',
+            'Status',
+            'Send Date',
+            'Category',
+            'created_at',
+            'updated_at',
 
         ];
     }

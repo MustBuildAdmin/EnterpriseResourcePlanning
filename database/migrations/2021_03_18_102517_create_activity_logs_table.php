@@ -13,7 +13,7 @@ class CreateActivityLogsTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('activity_logs')){
+        if (! Schema::hasTable('activity_logs')) {
             Schema::create('activity_logs', function (Blueprint $table) {
                 $table->id();
                 $table->integer('user_id')->default(0);

@@ -16,13 +16,11 @@ class PasswordResetLinkController extends Controller
     public function create()
     {
 
-
     }
 
     /**
      * Handle an incoming password reset link request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -30,45 +28,39 @@ class PasswordResetLinkController extends Controller
     public function store(Request $request)
     {
         //ReCpatcha
-        if(env('RECAPTCHA_MODULE') == 'on')
-        {
+        if (env('RECAPTCHA_MODULE') == 'on') {
             $validation['g-recaptcha-response'] = 'required|captcha';
-        }
-        else
-        {
+        } else {
             $validation = [];
         }
         $this->validate($request, $validation);
         $request->validate([
-                               'email' => 'required|email',
-                           ]);
-
+            'email' => 'required|email',
+        ]);
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
         // need to show to the user. Finally, we'll send out a proper response.
 
-        try
-        {
+        try {
             $status = Password::sendResetLink(
                 $request->only('email')
             );
-            return $status == Password::RESET_LINK_SENT ?redirect()->route('password.request')->with('success', __('Password reset link sent to you email successfully.')) : back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
-        }
-        catch(\Exception $e)
-        {
+
+            return $status == Password::RESET_LINK_SENT ? redirect()->route('password.request')->with('success', __('Password reset link sent to you email successfully.')) : back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
+        } catch (\Exception $e) {
             return redirect()->back()->withErrors('E-Mail has been not sent due to SMTP configuration');
         }
     }
 
-//        $status = Password::sendResetLink(
-//            $request->only('email')
-//        );
-//
-//
-//        return $status == Password::RESET_LINK_SENT
-//                    ? back()->with('status', __($status))
-//                    : back()->withInput($request->only('email'))
-//                            ->withErrors(['email' => __($status)]);
-//    }
+    //        $status = Password::sendResetLink(
+    //            $request->only('email')
+    //        );
+    //
+    //
+    //        return $status == Password::RESET_LINK_SENT
+    //                    ? back()->with('status', __($status))
+    //                    : back()->withInput($request->only('email'))
+    //                            ->withErrors(['email' => __($status)]);
+    //    }
 }

@@ -10,91 +10,72 @@ class ProductServiceUnitController extends Controller
 {
     public function index()
     {
-        if(\Auth::user()->can('manage constant unit'))
-        {
+        if (\Auth::user()->can('manage constant unit')) {
             $units = ProductServiceUnit::where('created_by', '=', \Auth::user()->creatorId())->get();
-            
+
             return view('accounting.productServiceUnit.index', compact('units'));
             // return view('productServiceUnit.index', compact('units'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function create()
     {
-        if(\Auth::user()->can('create constant unit'))
-        {
+        if (\Auth::user()->can('create constant unit')) {
             return view('productServiceUnit.create');
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
-
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create constant unit'))
-        {
+        if (\Auth::user()->can('create constant unit')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20|unique:product_service_units',
-                               ]
+                    'name' => 'required|max:20|unique:product_service_units',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $category             = new ProductServiceUnit();
-            $category->name       = $request->name;
+            $category = new ProductServiceUnit();
+            $category->name = $request->name;
             $category->created_by = \Auth::user()->creatorId();
             $category->save();
 
             return redirect()->route('product-unit.index')->with('success', __('Unit successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function edit($id)
     {
-        if(\Auth::user()->can('edit constant unit'))
-        {
+        if (\Auth::user()->can('edit constant unit')) {
             $unit = ProductServiceUnit::find($id);
 
             return view('productServiceUnit.edit', compact('unit'));
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
-
     public function update(Request $request, $id)
     {
-        if(\Auth::user()->can('edit constant unit'))
-        {
+        if (\Auth::user()->can('edit constant unit')) {
             $unit = ProductServiceUnit::find($id);
-            if($unit->created_by == \Auth::user()->creatorId())
-            {
+            if ($unit->created_by == \Auth::user()->creatorId()) {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20',
-                                   ]
+                        'name' => 'required|max:20',
+                    ]
                 );
-                if($validator->fails())
-                {
+                if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
 
                     return redirect()->back()->with('error', $messages->first());
@@ -104,41 +85,30 @@ class ProductServiceUnitController extends Controller
                 $unit->save();
 
                 return redirect()->route('product-unit.index')->with('success', __('Unit successfully updated.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function destroy($id)
     {
-        if(\Auth::user()->can('delete constant unit'))
-        {
+        if (\Auth::user()->can('delete constant unit')) {
             $unit = ProductServiceUnit::find($id);
-            if($unit->created_by == \Auth::user()->creatorId())
-            {
+            if ($unit->created_by == \Auth::user()->creatorId()) {
                 $units = ProductService::where('unit_id', $unit->id)->first();
-                if(!empty($units))
-                {
+                if (! empty($units)) {
                     return redirect()->back()->with('error', __('this unit is already assign so please move or remove this unit related data.'));
                 }
                 $unit->delete();
 
                 return redirect()->route('product-unit.index')->with('success', __('Unit successfully deleted.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }

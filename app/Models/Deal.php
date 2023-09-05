@@ -45,8 +45,7 @@ class Deal extends Model
 
     public function labels()
     {
-        if($this->labels)
-        {
+        if ($this->labels) {
             return Label::whereIn('id', explode(',', $this->labels))->get();
         }
 
@@ -80,8 +79,7 @@ class Deal extends Model
 
     public function products()
     {
-        if($this->products)
-        {
+        if ($this->products) {
             return ProductService::whereIn('id', explode(',', $this->products))->get();
         }
 
@@ -90,8 +88,7 @@ class Deal extends Model
 
     public function sources()
     {
-        if($this->sources)
-        {
+        if ($this->sources) {
             return Source::whereIn('id', explode(',', $this->sources))->get();
         }
 
@@ -142,8 +139,7 @@ class Deal extends Model
     {
         $total = 0;
 
-        foreach($deals as $deal)
-        {
+        foreach ($deals as $deal) {
             $total += $deal->price;
         }
 

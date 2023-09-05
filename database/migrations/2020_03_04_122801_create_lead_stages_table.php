@@ -14,14 +14,14 @@ class CreateLeadStagesTable extends Migration
     public function up()
     {
         Schema::create(
-            'lead_stages', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('pipeline_id');
-            $table->integer('created_by');
-            $table->integer('order')->default(0);
-            $table->timestamps();
-        }
+            'lead_stages', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->integer('pipeline_id');
+                $table->integer('created_by');
+                $table->integer('order')->default(0);
+                $table->timestamps();
+            }
         );
     }
 

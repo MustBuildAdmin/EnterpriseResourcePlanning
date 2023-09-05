@@ -17,14 +17,8 @@ class StockReport extends Model
         'description',
     ];
 
-
-
-
     public function product()
     {
         return $this->hasOne('App\Models\ProductService', 'id', 'product_id');
     }
-
-
-
 }

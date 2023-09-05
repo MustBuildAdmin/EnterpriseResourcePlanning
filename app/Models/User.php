@@ -3,24 +3,19 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Traits\HasRoles;
+use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    use HasApiTokens;
     use HasRoles;
     use Notifiable;
-    use HasApiTokens;
     use Searchable;
-
 
     protected $appends = ['profile'];
 
@@ -65,14 +60,13 @@ class User extends Authenticatable
         'shipping_zip',
         'shipping_address',
         'copy_status',
-        'color_code'
+        'color_code',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -82,12 +76,9 @@ class User extends Authenticatable
 
     public function getProfileAttribute()
     {
-        if(\Storage::exists($this->avatar) && !empty($this->avatar))
-        {
+        if (\Storage::exists($this->avatar) && ! empty($this->avatar)) {
             return $this->attributes['avatar'] = asset(\Storage::url($this->avatar));
-        }
-        else
-        {
+        } else {
             return $this->attributes['avatar'] = asset(\Storage::url('avatar.png'));
         }
     }
@@ -99,24 +90,18 @@ class User extends Authenticatable
 
     public function creatorId()
     {
-        if($this->type == 'company' || $this->type == 'super admin')
-        {
+        if ($this->type == 'company' || $this->type == 'super admin') {
             return $this->id;
-        }
-        else
-        {
+        } else {
             return $this->created_by;
         }
     }
 
     public function ownerId()
     {
-        if($this->type == 'company' || $this->type == 'super admin')
-        {
+        if ($this->type == 'company' || $this->type == 'super admin') {
             return $this->id;
-        }
-        else
-        {
+        } else {
             return $this->created_by;
         }
     }
@@ -124,12 +109,9 @@ class User extends Authenticatable
     public function ownerDetails()
     {
 
-        if($this->type == 'company' || $this->type == 'super admin')
-        {
+        if ($this->type == 'company' || $this->type == 'super admin') {
             return User::where('id', $this->id)->first();
-        }
-        else
-        {
+        } else {
             return User::where('id', $this->created_by)->first();
         }
     }
@@ -143,7 +125,7 @@ class User extends Authenticatable
     {
         $settings = Utility::settings();
 
-        return (($settings['site_currency_symbol_position'] == "pre") ? $settings['site_currency_symbol'] : '') . number_format($price, Utility::getValByName('decimal_number')) . (($settings['site_currency_symbol_position'] == "post") ? $settings['site_currency_symbol'] : '');
+        return (($settings['site_currency_symbol_position'] == 'pre') ? $settings['site_currency_symbol'] : '').number_format($price, Utility::getValByName('decimal_number')).(($settings['site_currency_symbol_position'] == 'post') ? $settings['site_currency_symbol'] : '');
     }
 
     public function currencySymbol()
@@ -166,53 +148,54 @@ class User extends Authenticatable
 
         return date($settings['site_time_format'], strtotime($time));
     }
+
     public function purchaseNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["purchase_prefix"] . sprintf("%05d", $number);
+        return $settings['purchase_prefix'].sprintf('%05d', $number);
     }
+
     public function posNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["pos_prefix"] . sprintf("%05d", $number);
+        return $settings['pos_prefix'].sprintf('%05d', $number);
     }
-
 
     public function invoiceNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["invoice_prefix"] . sprintf("%05d", $number);
+        return $settings['invoice_prefix'].sprintf('%05d', $number);
     }
 
     public function proposalNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["proposal_prefix"] . sprintf("%05d", $number);
+        return $settings['proposal_prefix'].sprintf('%05d', $number);
     }
 
     public function contractNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["contract_prefix"] . sprintf("%05d", $number);
+        return $settings['contract_prefix'].sprintf('%05d', $number);
     }
 
     public function billNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["bill_prefix"] . sprintf("%05d", $number);
+        return $settings['bill_prefix'].sprintf('%05d', $number);
     }
 
     public function journalNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["journal_prefix"] . sprintf("%05d", $number);
+        return $settings['journal_prefix'].sprintf('%05d', $number);
     }
 
     public function getPlan()
@@ -223,132 +206,92 @@ class User extends Authenticatable
     public function assignPlan($planID)
     {
         $plan = Plan::find($planID);
-        if($plan)
-        {
+        if ($plan) {
             $this->plan = $plan->id;
-            if($plan->duration == 'month')
-            {
+            if ($plan->duration == 'month') {
                 $this->plan_expire_date = Carbon::now()->addMonths(1)->isoFormat('YYYY-MM-DD');
-            }
-            elseif($plan->duration == 'year')
-            {
+            } elseif ($plan->duration == 'year') {
                 $this->plan_expire_date = Carbon::now()->addYears(1)->isoFormat('YYYY-MM-DD');
-            }
-            else
-            {
-                $this->plan_expire_date= null;
+            } else {
+                $this->plan_expire_date = null;
             }
             $this->save();
 
-            $users     = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'super admin')->where('type', '!=', 'company')->where('type', '!=', 'client')->get();
-            $clients   = User::where('type', 'client')->get();
+            $users = User::where('created_by', '=', \Auth::user()->creatorId())->where('type', '!=', 'super admin')->where('type', '!=', 'company')->where('type', '!=', 'client')->get();
+            $clients = User::where('type', 'client')->get();
             $customers = Customer::where('created_by', '=', $this->id)->get();
-            $venders   = Vender::where('created_by', '=', $this->id)->get();
+            $venders = Vender::where('created_by', '=', $this->id)->get();
 
-
-            if($plan->max_users == -1)
-            {
-                foreach($users as $user)
-                {
+            if ($plan->max_users == -1) {
+                foreach ($users as $user) {
                     $user->is_active = 1;
                     $user->save();
                 }
-            }
-            else
-            {
+            } else {
                 $userCount = 0;
-                foreach($users as $user)
-                {
+                foreach ($users as $user) {
                     $userCount++;
-                    if($userCount <= $plan->max_users)
-                    {
+                    if ($userCount <= $plan->max_users) {
                         $user->is_active = 1;
                         $user->save();
-                    }
-                    else
-                    {
+                    } else {
                         $user->is_active = 0;
                         $user->save();
                     }
                 }
             }
 
-            if($plan->max_clients == -1)
-            {
-                foreach($clients as $client)
-                {
+            if ($plan->max_clients == -1) {
+                foreach ($clients as $client) {
                     $client->is_active = 1;
                     $client->save();
                 }
-            }
-            else
-            {
+            } else {
                 $clientCount = 0;
-                foreach($clients as $client)
-                {
+                foreach ($clients as $client) {
                     $clientCount++;
-                    if($clientCount <= $plan->max_clients)
-                    {
+                    if ($clientCount <= $plan->max_clients) {
                         $client->is_active = 1;
                         $client->save();
-                    }
-                    else
-                    {
+                    } else {
                         $client->is_active = 0;
                         $client->save();
                     }
                 }
             }
 
-            if($plan->max_customers == -1)
-            {
-                foreach($customers as $customer)
-                {
+            if ($plan->max_customers == -1) {
+                foreach ($customers as $customer) {
                     $customer->is_active = 1;
                     $customer->save();
                 }
-            }
-            else
-            {
+            } else {
                 $customerCount = 0;
-                foreach($customers as $customer)
-                {
+                foreach ($customers as $customer) {
                     $customerCount++;
-                    if($customerCount <= $plan->max_customers)
-                    {
+                    if ($customerCount <= $plan->max_customers) {
                         $customer->is_active = 1;
                         $customer->save();
-                    }
-                    else
-                    {
+                    } else {
                         $customer->is_active = 0;
                         $customer->save();
                     }
                 }
             }
 
-
-            if($plan->max_venders == -1)
-            {
-                foreach($venders as $vender)
-                {
+            if ($plan->max_venders == -1) {
+                foreach ($venders as $vender) {
                     $vender->is_active = 1;
                     $vender->save();
                 }
-            }
-            else
-            {
+            } else {
                 $venderCount = 0;
-                foreach($venders as $vender)
-                {
+                foreach ($venders as $vender) {
                     $venderCount++;
-                    if($venderCount <= $plan->max_venders)
-                    {
+                    if ($venderCount <= $plan->max_venders) {
                         $vender->is_active = 1;
                         $vender->save();
-                    }
-                    else
-                    {
+                    } else {
                         $vender->is_active = 0;
                         $vender->save();
                     }
@@ -356,9 +299,7 @@ class User extends Authenticatable
             }
 
             return ['is_success' => true];
-        }
-        else
-        {
+        } else {
             return [
                 'is_success' => false,
                 'error' => 'Plan is deleted.',
@@ -370,14 +311,14 @@ class User extends Authenticatable
     {
         $settings = Utility::settings();
 
-        return $settings["customer_prefix"] . sprintf("%05d", $number);
+        return $settings['customer_prefix'].sprintf('%05d', $number);
     }
 
     public function venderNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["vender_prefix"] . sprintf("%05d", $number);
+        return $settings['vender_prefix'].sprintf('%05d', $number);
     }
 
     public function countUsers()
@@ -404,9 +345,9 @@ class User extends Authenticatable
     {
         return User::where('type', '=', 'company')->whereNotIn(
             'plan', [
-                      0,
-                      1,
-                  ]
+                0,
+                1,
+            ]
         )->where('created_by', '=', \Auth::user()->id)->count();
     }
 
@@ -432,14 +373,13 @@ class User extends Authenticatable
 
     public function todayIncome()
     {
-        $revenue      = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('Date(date) = CURDATE()')->where('created_by', \Auth::user()->creatorId())->sum('amount');
-        $invoices     = Invoice:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
-        $invoiceArray = array();
-        foreach($invoices as $invoice)
-        {
+        $revenue = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('Date(date) = CURDATE()')->where('created_by', \Auth::user()->creatorId())->sum('amount');
+        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
+        $invoiceArray = [];
+        foreach ($invoices as $invoice) {
             $invoiceArray[] = $invoice->getTotal();
         }
-        $totalIncome = (!empty($revenue) ? $revenue : 0) + (!empty($invoiceArray) ? array_sum($invoiceArray) : 0);
+        $totalIncome = (! empty($revenue) ? $revenue : 0) + (! empty($invoiceArray) ? array_sum($invoiceArray) : 0);
 
         return $totalIncome;
     }
@@ -448,15 +388,14 @@ class User extends Authenticatable
     {
         $payment = Payment::where('created_by', '=', $this->creatorId())->where('created_by', \Auth::user()->creatorId())->whereRaw('Date(date) = CURDATE()')->sum('amount');
 
-        $bills = Bill:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
+        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('Date(send_date) = CURDATE()')->get();
 
-        $billArray = array();
-        foreach($bills as $bill)
-        {
+        $billArray = [];
+        foreach ($bills as $bill) {
             $billArray[] = $bill->getTotal();
         }
 
-        $totalExpense = (!empty($payment) ? $payment : 0) + (!empty($billArray) ? array_sum($billArray) : 0);
+        $totalExpense = (! empty($payment) ? $payment : 0) + (! empty($billArray) ? array_sum($billArray) : 0);
 
         return $totalExpense;
     }
@@ -464,43 +403,37 @@ class User extends Authenticatable
     public function incomeCurrentMonth()
     {
         $currentMonth = date('m');
-        $revenue      = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('MONTH(date) = ?', [$currentMonth])->sum('amount');
+        $revenue = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('MONTH(date) = ?', [$currentMonth])->sum('amount');
 
-        $invoices = Invoice:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
+        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
 
-        $invoiceArray = array();
-        foreach($invoices as $invoice)
-        {
+        $invoiceArray = [];
+        foreach ($invoices as $invoice) {
             $invoiceArray[] = $invoice->getTotal();
         }
-        $totalIncome = (!empty($revenue) ? $revenue : 0) + (!empty($invoiceArray) ? array_sum($invoiceArray) : 0);
+        $totalIncome = (! empty($revenue) ? $revenue : 0) + (! empty($invoiceArray) ? array_sum($invoiceArray) : 0);
 
         return $totalIncome;
 
     }
+
     public function incomecat()
     {
 
         $currentMonth = date('m');
-        $revenue      = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('MONTH(date) = ?', [$currentMonth])->sum('amount');
-
+        $revenue = Revenue::where('created_by', '=', $this->creatorId())->whereRaw('MONTH(date) = ?', [$currentMonth])->sum('amount');
 
         $incomes = Revenue::selectRaw('sum(revenues.amount) as amount,MONTH(date) as month,YEAR(date) as year,category_id')->leftjoin('product_service_categories', 'revenues.category_id', '=', 'product_service_categories.id')->where('product_service_categories.type', '=', 1);
 
+        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
 
-        $invoices = Invoice:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
-
-
-
-        $invoiceArray = array();
-        foreach($invoices as $invoice)
-        {
+        $invoiceArray = [];
+        foreach ($invoices as $invoice) {
             $invoiceArray[] = $invoice->getTotal();
         }
-        $totalIncome = (!empty($revenue) ? $revenue : 0) + (!empty($invoiceArray) ? array_sum($invoiceArray) : 0);
+        $totalIncome = (! empty($revenue) ? $revenue : 0) + (! empty($invoiceArray) ? array_sum($invoiceArray) : 0);
 
         return $totalIncome;
-
 
     }
 
@@ -510,117 +443,106 @@ class User extends Authenticatable
 
         $payment = Payment::where('created_by', '=', $this->creatorId())->whereRaw('MONTH(date) = ?', [$currentMonth])->sum('amount');
 
-        $bills     = Bill:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
-        $billArray = array();
-        foreach($bills as $bill)
-        {
+        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('MONTH(send_date) = ?', [$currentMonth])->get();
+        $billArray = [];
+        foreach ($bills as $bill) {
             $billArray[] = $bill->getTotal();
         }
 
-        $totalExpense = (!empty($payment) ? $payment : 0) + (!empty($billArray) ? array_sum($billArray) : 0);
+        $totalExpense = (! empty($payment) ? $payment : 0) + (! empty($billArray) ? array_sum($billArray) : 0);
 
         return $totalExpense;
     }
 
     public function getincExpBarChartData()
     {
-        $month[]          = __('January');
-        $month[]          = __('February');
-        $month[]          = __('March');
-        $month[]          = __('April');
-        $month[]          = __('May');
-        $month[]          = __('June');
-        $month[]          = __('July');
-        $month[]          = __('August');
-        $month[]          = __('September');
-        $month[]          = __('October');
-        $month[]          = __('November');
-        $month[]          = __('December');
+        $month[] = __('January');
+        $month[] = __('February');
+        $month[] = __('March');
+        $month[] = __('April');
+        $month[] = __('May');
+        $month[] = __('June');
+        $month[] = __('July');
+        $month[] = __('August');
+        $month[] = __('September');
+        $month[] = __('October');
+        $month[] = __('November');
+        $month[] = __('December');
         $dataArr['month'] = $month;
 
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyIncome = Revenue::selectRaw('sum(amount) amount')->where('created_by', '=', $this->creatorId())->whereRaw('year(`date`) = ?', [date('Y')])->whereRaw('month(`date`) = ?', $i)->first();
+            $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->get();
 
-        for($i = 1; $i <= 12; $i++)
-        {
-            $monthlyIncome = Revenue::selectRaw('sum(amount) amount')->where('created_by', '=', $this->creatorId())->whereRaw('year(`date`) = ?', array(date('Y')))->whereRaw('month(`date`) = ?', $i)->first();
-            $invoices      = Invoice:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', array(date('Y')))->whereRaw('month(`send_date`) = ?', $i)->get();
-
-            $invoiceArray = array();
-            foreach($invoices as $invoice)
-            {
+            $invoiceArray = [];
+            foreach ($invoices as $invoice) {
                 $invoiceArray[] = $invoice->getTotal();
             }
-            $totalIncome = (!empty($monthlyIncome) ? $monthlyIncome->amount : 0) + (!empty($invoiceArray) ? array_sum($invoiceArray) : 0);
+            $totalIncome = (! empty($monthlyIncome) ? $monthlyIncome->amount : 0) + (! empty($invoiceArray) ? array_sum($invoiceArray) : 0);
 
+            $incomeArr[] = ! empty($totalIncome) ? number_format($totalIncome, 2) : 0;
 
-            $incomeArr[] = !empty($totalIncome) ? number_format($totalIncome, 2) : 0;
-
-            $monthlyExpense = Payment::selectRaw('sum(amount) amount')->where('created_by', '=', $this->creatorId())->whereRaw('year(`date`) = ?', array(date('Y')))->whereRaw('month(`date`) = ?', $i)->first();
-            $bills          = Bill:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', array(date('Y')))->whereRaw('month(`send_date`) = ?', $i)->get();
-            $billArray      = array();
-            foreach($bills as $bill)
-            {
+            $monthlyExpense = Payment::selectRaw('sum(amount) amount')->where('created_by', '=', $this->creatorId())->whereRaw('year(`date`) = ?', [date('Y')])->whereRaw('month(`date`) = ?', $i)->first();
+            $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRaw('year(`send_date`) = ?', [date('Y')])->whereRaw('month(`send_date`) = ?', $i)->get();
+            $billArray = [];
+            foreach ($bills as $bill) {
                 $billArray[] = $bill->getTotal();
             }
 
-            $totalExpense = (!empty($monthlyExpense) ? $monthlyExpense->amount : 0) + (!empty($billArray) ? array_sum($billArray) : 0);
+            $totalExpense = (! empty($monthlyExpense) ? $monthlyExpense->amount : 0) + (! empty($billArray) ? array_sum($billArray) : 0);
 
-            $expenseArr[] = !empty($totalExpense) ? number_format($totalExpense, 2) : 0;
+            $expenseArr[] = ! empty($totalExpense) ? number_format($totalExpense, 2) : 0;
         }
 
-        $dataArr['income']  = $incomeArr;
+        $dataArr['income'] = $incomeArr;
         $dataArr['expense'] = $expenseArr;
 
         return $dataArr;
-
 
     }
 
     public function getIncExpLineChartDate()
     {
-        $usr           = \Auth::user();
-        $m             = date("m");
-        $de            = date("d");
-        $y             = date("Y");
-        $format        = 'Y-m-d';
-        $arrDate       = [];
+        $usr = \Auth::user();
+        $m = date('m');
+        $de = date('d');
+        $y = date('Y');
+        $format = 'Y-m-d';
+        $arrDate = [];
         $arrDateFormat = [];
 
-        for($i = 0; $i <= 15 - 1; $i++)
-        {
+        for ($i = 0; $i <= 15 - 1; $i++) {
             $date = date($format, mktime(0, 0, 0, $m, ($de - $i), $y));
 
-            $arrDay[]        = date('D', mktime(0, 0, 0, $m, ($de - $i), $y));
-            $arrDate[]       = $date;
-            $arrDateFormat[] = date("d-M", strtotime($date));;
+            $arrDay[] = date('D', mktime(0, 0, 0, $m, ($de - $i), $y));
+            $arrDate[] = $date;
+            $arrDateFormat[] = date('d-M', strtotime($date));
         }
         $dataArr['day'] = $arrDateFormat;
-        for($i = 0; $i < count($arrDate); $i++)
-        {
+        for ($i = 0; $i < count($arrDate); $i++) {
             $dayIncome = Revenue::selectRaw('sum(amount) amount')->where('created_by', \Auth::user()->creatorId())->whereRaw('date = ?', $arrDate[$i])->first();
 
-            $invoices     = Invoice:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
-            $invoiceArray = array();
-            foreach($invoices as $invoice)
-            {
+            $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
+            $invoiceArray = [];
+            foreach ($invoices as $invoice) {
                 $invoiceArray[] = $invoice->getTotal();
             }
 
-            $incomeAmount = (!empty($dayIncome->amount) ? $dayIncome->amount : 0) + (!empty($invoiceArray) ? array_sum($invoiceArray) : 0);
-            $incomeArr[]  = str_replace(",", "", number_format($incomeAmount, 2));
+            $incomeAmount = (! empty($dayIncome->amount) ? $dayIncome->amount : 0) + (! empty($invoiceArray) ? array_sum($invoiceArray) : 0);
+            $incomeArr[] = str_replace(',', '', number_format($incomeAmount, 2));
 
             $dayExpense = Payment::selectRaw('sum(amount) amount')->where('created_by', \Auth::user()->creatorId())->whereRaw('date = ?', $arrDate[$i])->first();
 
-            $bills     = Bill:: select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
-            $billArray = array();
-            foreach($bills as $bill)
-            {
+            $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->whereRAW('send_date = ?', $arrDate[$i])->get();
+            $billArray = [];
+            foreach ($bills as $bill) {
                 $billArray[] = $bill->getTotal();
             }
-            $expenseAmount = (!empty($dayExpense->amount) ? $dayExpense->amount : 0) + (!empty($billArray) ? array_sum($billArray) : 0);
-            $expenseArr[]  = str_replace(",", "", number_format($expenseAmount, 2));
+            $expenseAmount = (! empty($dayExpense->amount) ? $dayExpense->amount : 0) + (! empty($billArray) ? array_sum($billArray) : 0);
+            $expenseArr[] = str_replace(',', '', number_format($expenseAmount, 2));
         }
 
-        $dataArr['income']  = $incomeArr;
+        $dataArr['income'] = $incomeArr;
         $dataArr['expense'] = $expenseArr;
 
         return $dataArr;
@@ -644,12 +566,9 @@ class User extends Authenticatable
     public function planPrice()
     {
         $user = \Auth::user();
-        if($user->type == 'super admin')
-        {
+        if ($user->type == 'super admin') {
             $userId = $user->id;
-        }
-        else
-        {
+        } else {
             $userId = $user->created_by;
         }
 
@@ -664,44 +583,42 @@ class User extends Authenticatable
 
     public function weeklyInvoice()
     {
-        $staticstart  = date('Y-m-d', strtotime('last Week'));
-        $currentDate  = date('Y-m-d');
-        $invoices     = Invoice:: select('*')->where('created_by', \Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
+        $staticstart = date('Y-m-d', strtotime('last Week'));
+        $currentDate = date('Y-m-d');
+        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
         $invoiceTotal = 0;
-        $invoicePaid  = 0;
-        $invoiceDue   = 0;
-        foreach($invoices as $invoice)
-        {
+        $invoicePaid = 0;
+        $invoiceDue = 0;
+        foreach ($invoices as $invoice) {
             $invoiceTotal += $invoice->getTotal();
-            $invoicePaid  += ($invoice->getTotal() - $invoice->getDue());
-            $invoiceDue   += $invoice->getDue();
+            $invoicePaid += ($invoice->getTotal() - $invoice->getDue());
+            $invoiceDue += $invoice->getDue();
         }
 
         $invoiceDetail['invoiceTotal'] = $invoiceTotal;
-        $invoiceDetail['invoicePaid']  = $invoicePaid;
-        $invoiceDetail['invoiceDue']   = $invoiceDue;
+        $invoiceDetail['invoicePaid'] = $invoicePaid;
+        $invoiceDetail['invoiceDue'] = $invoiceDue;
 
         return $invoiceDetail;
     }
 
     public function monthlyInvoice()
     {
-        $staticstart  = date('Y-m-d', strtotime('last Month'));
-        $currentDate  = date('Y-m-d');
-        $invoices     = Invoice:: select('*')->where('created_by', \Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
+        $staticstart = date('Y-m-d', strtotime('last Month'));
+        $currentDate = date('Y-m-d');
+        $invoices = Invoice::select('*')->where('created_by', \Auth::user()->creatorId())->where('issue_date', '>=', $staticstart)->where('issue_date', '<=', $currentDate)->get();
         $invoiceTotal = 0;
-        $invoicePaid  = 0;
-        $invoiceDue   = 0;
-        foreach($invoices as $invoice)
-        {
+        $invoicePaid = 0;
+        $invoiceDue = 0;
+        foreach ($invoices as $invoice) {
             $invoiceTotal += $invoice->getTotal();
-            $invoicePaid  += ($invoice->getTotal() - $invoice->getDue());
-            $invoiceDue   += $invoice->getDue();
+            $invoicePaid += ($invoice->getTotal() - $invoice->getDue());
+            $invoiceDue += $invoice->getDue();
         }
 
         $invoiceDetail['invoiceTotal'] = $invoiceTotal;
-        $invoiceDetail['invoicePaid']  = $invoicePaid;
-        $invoiceDetail['invoiceDue']   = $invoiceDue;
+        $invoiceDetail['invoicePaid'] = $invoicePaid;
+        $invoiceDetail['invoiceDue'] = $invoiceDue;
 
         return $invoiceDetail;
     }
@@ -710,20 +627,19 @@ class User extends Authenticatable
     {
         $staticstart = date('Y-m-d', strtotime('last Week'));
         $currentDate = date('Y-m-d');
-        $bills       = Bill:: select('*')->where('created_by', \Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
-        $billTotal   = 0;
-        $billPaid    = 0;
-        $billDue     = 0;
-        foreach($bills as $bill)
-        {
+        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
+        $billTotal = 0;
+        $billPaid = 0;
+        $billDue = 0;
+        foreach ($bills as $bill) {
             $billTotal += $bill->getTotal();
-            $billPaid  += ($bill->getTotal() - $bill->getDue());
-            $billDue   += $bill->getDue();
+            $billPaid += ($bill->getTotal() - $bill->getDue());
+            $billDue += $bill->getDue();
         }
 
         $billDetail['billTotal'] = $billTotal;
-        $billDetail['billPaid']  = $billPaid;
-        $billDetail['billDue']   = $billDue;
+        $billDetail['billPaid'] = $billPaid;
+        $billDetail['billDue'] = $billDue;
 
         return $billDetail;
     }
@@ -732,20 +648,19 @@ class User extends Authenticatable
     {
         $staticstart = date('Y-m-d', strtotime('last Month'));
         $currentDate = date('Y-m-d');
-        $bills       = Bill:: select('*')->where('created_by', \Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
-        $billTotal   = 0;
-        $billPaid    = 0;
-        $billDue     = 0;
-        foreach($bills as $bill)
-        {
+        $bills = Bill::select('*')->where('created_by', \Auth::user()->creatorId())->where('bill_date', '>=', $staticstart)->where('bill_date', '<=', $currentDate)->get();
+        $billTotal = 0;
+        $billPaid = 0;
+        $billDue = 0;
+        foreach ($bills as $bill) {
             $billTotal += $bill->getTotal();
-            $billPaid  += ($bill->getTotal() - $bill->getDue());
-            $billDue   += $bill->getDue();
+            $billPaid += ($bill->getTotal() - $bill->getDue());
+            $billDue += $bill->getDue();
         }
 
         $billDetail['billTotal'] = $billTotal;
-        $billDetail['billPaid']  = $billPaid;
-        $billDetail['billDue']   = $billDue;
+        $billDetail['billPaid'] = $billPaid;
+        $billDetail['billDue'] = $billDue;
 
         return $billDetail;
     }
@@ -779,7 +694,7 @@ class User extends Authenticatable
     {
         $settings = Utility::settings();
 
-        return $settings["employee_prefix"] . sprintf("%05d", $number);
+        return $settings['employee_prefix'].sprintf('%05d', $number);
     }
 
     public function getBranch($branch_id)
@@ -831,8 +746,7 @@ class User extends Authenticatable
     public function checkProject($project_id)
     {
         $user_projects = $this->projects()->pluck('project_id')->toArray();
-        if(array_key_exists($project_id, $user_projects))
-        {
+        if (array_key_exists($project_id, $user_projects)) {
             $projectstatus = $user_projects[$project_id] == 'owner' ? 'Owner' : 'Shared';
         }
 
@@ -843,19 +757,13 @@ class User extends Authenticatable
     public function getImgImageAttribute()
     {
         $userDetail = Employee::where('user_id', $this->id)->first();
-        if(!empty($userDetail))
-        {
-            if(!empty($userDetail->avatar))
-            {
+        if (! empty($userDetail)) {
+            if (! empty($userDetail->avatar)) {
                 return asset(\Storage::url($userDetail->avatar));
-            }
-            else
-            {
+            } else {
                 return asset(\Storage::url('avatar.png'));
             }
-        }
-        else
-        {
+        } else {
             return asset(\Storage::url('avatar.png'));
         }
     }
@@ -863,14 +771,14 @@ class User extends Authenticatable
     // Get task users
     public function tasks()
     {
-        return ProjectTask::whereRaw("find_in_set('" . $this->id . "',assign_to)")->get();
+        return ProjectTask::whereRaw("find_in_set('".$this->id."',assign_to)")->get();
     }
 
     public function bugNumberFormat($number)
     {
         $settings = Utility::settings();
 
-        return $settings["bug_prefix"] . sprintf("%05d", $number);
+        return $settings['bug_prefix'].sprintf('%05d', $number);
     }
 
     // Get User's Contact
@@ -891,16 +799,11 @@ class User extends Authenticatable
 
     public function total_lead()
     {
-        if(\Auth::user()->type == 'company')
-        {
+        if (\Auth::user()->type == 'company') {
             return Lead::where('created_by', '=', $this->creatorId())->count();
-        }
-        elseif(\Auth::user()->type == 'client')
-        {
+        } elseif (\Auth::user()->type == 'client') {
             return Lead::where('client', '=', $this->authId())->count();
-        }
-        else
-        {
+        } else {
             return Lead::where('owner', '=', $this->authId())->count();
         }
     }
@@ -912,28 +815,20 @@ class User extends Authenticatable
 
     public function user_project()
     {
-        if(\Auth::user()->type != 'client')
-        {
+        if (\Auth::user()->type != 'client') {
             return $this->belongsToMany('App\Models\Project', 'project_users', 'user_id', 'project_id')->count();
-        }
-        else
-        {
+        } else {
             return Project::where('client_id', '=', $this->authId())->count();
         }
     }
 
     public function created_total_project_task()
     {
-        if(\Auth::user()->type == 'company')
-        {
+        if (\Auth::user()->type == 'company') {
             return ProjectTask::join('projects', 'projects.id', '=', 'project_tasks.project_id')->where('projects.created_by', '=', $this->creatorId())->count();
-        }
-        elseif(\Auth::user()->type == 'client')
-        {
+        } elseif (\Auth::user()->type == 'client') {
             return ProjectTask::join('projects', 'projects.id', '=', 'project_tasks.project_id')->where('projects.client_id', '=', $this->authId())->count();
-        }
-        else
-        {
+        } else {
             return ProjectTask::select('project_tasks.*', 'project_users.id as up_id')->join('project_users', 'project_users.project_id', '=', 'project_tasks.project_id')->where('project_users.user_id', '=', $this->authId())->count();
         }
 
@@ -941,36 +836,26 @@ class User extends Authenticatable
 
     public function project_complete_task($project_last_stage)
     {
-        if(\Auth::user()->type == 'company')
-        {
+        if (\Auth::user()->type == 'company') {
             return ProjectTask::join('projects', 'projects.id', '=', 'project_tasks.project_id')->where('projects.created_by', '=', $this->creatorId())->where('project_tasks.stage_id', '=', $project_last_stage)->count();
-        }
-        elseif(\Auth::user()->type == 'client')
-        {
+        } elseif (\Auth::user()->type == 'client') {
             $user_projects = Project::where('client_id', \Auth::user()->id)->pluck('id', 'id')->toArray();
 
             return ProjectTask::whereIn('project_id', $user_projects)->join('projects', 'projects.id', '=', 'project_tasks.project_id')->where('project_tasks.stage_id', '=', $project_last_stage)->count();
-        }
-        else
-        {
+        } else {
             return ProjectTask::select('project_tasks.*', 'project_users.id as up_id')->join('project_users', 'project_users.project_id', '=', 'project_tasks.project_id')->where('project_users.user_id', '=', $this->authId())->where('project_tasks.stage_id', '=', $project_last_stage)->count();
         }
     }
 
     public function created_top_due_task()
     {
-        if(\Auth::user()->type == 'company')
-        {
+        if (\Auth::user()->type == 'company') {
             return ProjectTask::select('projects.*', 'project_tasks.id as task_id', 'project_tasks.name', 'project_tasks.end_date as task_due_date', 'project_tasks.assign_to', 'projectstages.name as stage_name')->join('projects', 'projects.id', '=', 'project_tasks.project_id')->join('projectstages', 'project_tasks.stage_id', '=', 'projectstages.id')->where('projects.created_by', '=', \Auth::user()->creatorId())->where('project_tasks.end_date', '>', date('Y-m-d'))->limit(5)->orderBy('task_due_date', 'ASC')->get();
-        }
-        elseif(\Auth::user()->type == 'client')
-        {
+        } elseif (\Auth::user()->type == 'client') {
             $user_projects = Project::where('client_id', \Auth::user()->id)->pluck('id', 'id')->toArray();
 
             return ProjectTask::whereIn('project_id', $user_projects)->join('projects', 'projects.id', '=', 'project_tasks.project_id')->where('project_tasks.end_date', '>', date('Y-m-d'))->limit(5)->get();
-        }
-        else
-        {
+        } else {
             return ProjectTask::select('project_tasks.*', 'project_tasks.end_date as task_due_date', 'project_users.id as up_id', 'projects.project_name as project_name', 'projectstages.name as stage_name')->join('project_users', 'project_users.project_id', '=', 'project_tasks.project_id')->join('projects', 'project_users.project_id', '=', 'projects.id')->join('projectstages', 'project_tasks.stage_id', '=', 'projectstages.id')->where('project_users.user_id', '=', $this->authId())->where('project_tasks.end_date', '>', date('Y-m-d'))->limit(5)->orderBy(
                 'project_tasks.end_date', 'ASC'
             )->get();
@@ -981,62 +866,51 @@ class User extends Authenticatable
     {
         $user_type = \Auth::user()->type;
 
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
+        if ($user_type == 'company' || $user_type == 'super admin') {
             $user = User::where('id', \Auth::user()->id)->first();
 
-        }
-        else
-        {
+        } else {
             $user = User::where('id', \Auth::user()->created_by)->first();
         }
 
-        return !empty($user->plan)?Plan::find($user->plan)->crm:'';
+        return ! empty($user->plan) ? Plan::find($user->plan)->crm : '';
     }
 
     public static function show_hrm()
     {
         $user_type = \Auth::user()->type;
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
+        if ($user_type == 'company' || $user_type == 'super admin') {
             $user = User::where('id', \Auth::user()->id)->first();
-        }
-        else
-        {
+        } else {
             $user = User::where('id', \Auth::user()->created_by)->first();
         }
 
-        return !empty($user->plan)?Plan::find($user->plan)->hrm:'';
+        return ! empty($user->plan) ? Plan::find($user->plan)->hrm : '';
 
     }
 
     public static function show_account()
     {
         $user_type = \Auth::user()->type;
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
+        if ($user_type == 'company' || $user_type == 'super admin') {
             $user = User::where('id', \Auth::user()->id)->first();
-        }
-        else
-        {
+        } else {
             $user = User::where('id', \Auth::user()->created_by)->first();
         }
 
-        return !empty($user->plan)?Plan::find($user->plan)->account:'';
+        return ! empty($user->plan) ? Plan::find($user->plan)->account : '';
     }
 
     public static function show_project()
     {
         $user_type = \Auth::user()->type;
-        if($user_type == 'company' || $user_type == 'super admin')
-        {
+        if ($user_type == 'company' || $user_type == 'super admin') {
             $user = User::where('id', \Auth::user()->id)->first();
-        }
-        else
-        {
+        } else {
             $user = User::where('id', \Auth::user()->created_by)->first();
         }
-        return !empty($user->plan)?Plan::find($user->plan)->project:'';
+
+        return ! empty($user->plan) ? Plan::find($user->plan)->project : '';
 
     }
 
@@ -1087,8 +961,7 @@ class User extends Authenticatable
 
         ];
 
-        foreach($emailTemplate as $eTemp)
-        {
+        foreach ($emailTemplate as $eTemp) {
 
             EmailTemplate::create(
                 [
@@ -1144,7 +1017,7 @@ class User extends Authenticatable
 
                 ],
             ],
-            'create_client' =>[
+            'create_client' => [
                 'subject' => 'Create Client',
                 'lang' => [
                     'ar' => '<p>مرحبا { client_name } ، </p><p>أنت الآن Client ..</p><p>البريد الالكتروني : { client_email } </p><p>كلمة السرية : { client_password }</p><p>{ app_url }</p><p>شكرا</p><p>{ app_name }</p>',
@@ -1204,7 +1077,7 @@ class User extends Authenticatable
 
                 ],
             ],
-            'create_support' =>[
+            'create_support' => [
                 'subject' => 'Create Support',
                 'lang' => [
                     'ar' => '<p><span style="background-color: rgb(248, 249, 250); color: rgb(34, 34, 34); font-family: inherit; font-size: 24px; text-align: right; white-space: pre-wrap;">مرحبا</span><span style="font-size: 12pt;">&nbsp;{support_name}</span><br><br></p><p><span style="background-color: rgb(248, 249, 250); color: rgb(34, 34, 34); font-family: inherit; font-size: 24px; text-align: right; white-space: pre-wrap;">تم فتح تذكرة دعم جديدة.</span><span style="font-size: 12pt;">.</span><br><br></p><p><span style="background-color: rgb(248, 249, 250); color: rgb(34, 34, 34); font-family: inherit; font-size: 24px; text-align: right; white-space: pre-wrap;">عنوان</span><span style="font-size: 12pt;"><strong>:</strong>&nbsp;{support_title}</span><br></p><p><span style="background-color: rgb(248, 249, 250); color: rgb(34, 34, 34); font-family: inherit; font-size: 24px; text-align: right; white-space: pre-wrap;">أفضلية</span><span style="font-size: 12pt;"><strong>:</strong>&nbsp;{support_priority}</span><span style="font-size: 12pt;"><br></span></p><p><span style="background-color: rgb(248, 249, 250); color: rgb(34, 34, 34); font-family: inherit; font-size: 24px; text-align: right; white-space: pre-wrap;">تاريخ الانتهاء</span><span style="font-size: 12pt;">: {support_end_date}</span></p><p><span style="background-color: rgb(248, 249, 250); color: rgb(34, 34, 34); font-family: inherit; font-size: 24px; text-align: right; white-space: pre-wrap;">رسالة دعم</span><span style="font-size: 12pt;"><strong>:</strong></span><br><span style="font-size: 12pt;">{support_description}</span><span style="font-size: 12pt;"><br><br></span></p><p><span style="background-color: rgb(248, 249, 250); color: rgb(34, 34, 34); font-family: inherit; font-size: 24px; text-align: right; white-space: pre-wrap;">أطيب التحيات،</span><span style="font-size: 12pt;">,</span><br>{app_name}</p>',
@@ -1274,7 +1147,7 @@ class User extends Authenticatable
 
                 ],
             ],
-            'customer_invoice_send' =>[
+            'customer_invoice_send' => [
                 'subject' => 'Customer Invoice Send',
                 'lang' => [
                     'ar' => '<p>مرحب<span style="text-align: var(--bs-body-text-align);">مرحبا ، { invoice_name }</span></p><p>مرحبا بك في { app_name }</p><p>أتمنى أن يجدك هذا البريد الإلكتروني جيدا برجاء الرجوع الى رقم الفاتورة الملحقة { invoice_number } للخدمة / الخدمة.</p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">ببساطة ، اضغط على الاختيار بأسفل :&nbsp;</span></p><p>{ invoice_url }</p><p>إشعر بالحرية للوصول إلى الخارج إذا عندك أي أسئلة.</p><p>شكرا لك</p><p>Regards,</p><p>{ company_name }</p><p>{ app_url }</p><div><br></div>',
@@ -1292,7 +1165,7 @@ class User extends Authenticatable
 
                 ],
             ],
-            'invoice_payment' =>[
+            'invoice_payment' => [
                 'subject' => 'Invoice Payment',
                 'lang' => [
                     'ar' => '<p>Hej.</p>
@@ -1429,7 +1302,7 @@ class User extends Authenticatable
                     <p>{app_url}</p>',
                 ],
             ],
-            'payment_reminder' =>[
+            'payment_reminder' => [
                 'subject' => 'Payment Reminder',
                 'lang' => [
                     'ar' => '<p>عزيزي ، { payment_reminder_name }</p>
@@ -1554,7 +1427,7 @@ class User extends Authenticatable
                     <p>&nbsp;</p>',
                 ],
             ],
-            'bill_payment' =>[
+            'bill_payment' => [
                 'subject' => 'Bill Payment',
                 'lang' => [
                     'ar' => '<p>مرحبا ، { payment_name }</p><p>مرحبا بك في { app_name }</p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">نحن نكتب لإبلاغكم بأننا قد أرسلنا مدفوعات (payment_الفاتورة) } الخاصة بك.</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">لقد أرسلنا قيمتك { payment_cama } لأجل { payment_فاتورة } قمت بالاحالة في التاريخ { payment_date } من خلال { payment_method }.</span></p><p>شكرا جزيلا لك وطاب يومك ! !!!</p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">{ company_name }</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">{ app_url }</span><br></p>',
@@ -1572,7 +1445,7 @@ class User extends Authenticatable
 
                 ],
             ],
-            'bill_resend' =>[
+            'bill_resend' => [
                 'subject' => 'Bill Resend',
                 'lang' => [
                     'ar' => '<p>مرحبا ، { bill_name }</p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">مرحبا بك في { app_name }</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">أتمنى أن يجدك هذا البريد الإلكتروني جيدا برجاء الرجوع الى رقم الفاتورة الملحقة { bill_bill } لخدمة المنتج / الخدمة.</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ببساطة اضغط على الاختيار بأسفل.</span></p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; { bill_url }</p><p>إشعر بالحرية للوصول إلى الخارج إذا عندك أي أسئلة.</p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">شكرا لعملك ! !!!</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">Regards,</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">{ company_name }</span></p><p>{ app_url }</p><div><br></div>',
@@ -1715,7 +1588,7 @@ class User extends Authenticatable
                     <p>{app_url}</p>',
                 ],
             ],
-            'complaint_resend' =>[
+            'complaint_resend' => [
                 'subject' => 'Complaint Resend',
                 'lang' => [
                     'ar' => '<p>مرحبا</p><p>مرحبا بك في { app_name }</p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">(د) إدارة الموارد البشرية / الشركة لإرسال خطاب الشكاوى.</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">عزيزي { demyt_name }</span></p><p>أود أن أبلغ عن صراع بينك وبين الشخص الآخر وقد وقعت عدة حوادث خلال الأيام القليلة الماضية ، وأشعر أن الوقت قد حان للإبلاغ عن شكوى رسمية ضده / هي.</p><p>إشعر بالحرية للوصول إلى الخارج إذا عندك أي أسئلة.</p><p>شكرا لك</p><p>Regards,</p><p>قسم الموارد البشرية</p><p>{ company_name }</p><p>{ app_url }</p><div><br></div>',
@@ -1734,7 +1607,7 @@ class User extends Authenticatable
                 ],
             ],
 
-            'leave_action_send' =>[
+            'leave_action_send' => [
                 'subject' => 'Leave Action Send',
                 'lang' => [
                     'ar' => '<p>الموضوع : " إدارة الموارد البشرية / الشركة لإرسال رسالة موافقة إلى { leave_status } إجازة أو إجازة ".</p><p>مرحبا ، { leave_name }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; لدي { leave_status } طلب ترك لأجل { leave_لسبب } من { leave_start_date } الى { leave_end_date }. { total_leave_yأيام } أيام لدي { leave_status } طلب الخروج الخاص بك الى { leave_لسبب }.</p><p>ونحن نطلب منكم أن تكملوا كل أعمالكم المعلقة أو أي قضية مهمة أخرى لكي لا تواجه الشركة أي خسارة أو مشكلة أثناء غيابكم ونحن نقدر لكم مدى عمق تفكيركم في إبلاغنا بذلك مسبقا.</p><p>إشعر بالحرية للوصول إلى الخارج إذا عندك أي أسئلة.</p><p>شكرا لك</p><p>Regards,</p><p>إدارة الموارد البشرية ،</p><p>{ app_name }</p><p>{ app_url }</p><div><br></div>',
@@ -1754,7 +1627,7 @@ class User extends Authenticatable
                 ],
             ],
 
-            'payslip_send' =>[
+            'payslip_send' => [
                 'subject' => 'Payslip Send',
                 'lang' => [
                     'ar' => '<p>الموضوع : " إدارة الموارد البشرية / الشركة لإرسال شظية عن طريق البريد الإلكتروني في وقت تأكيد الدفع. "</p><p>عزيزي ، { paysp_name }</p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">&nbsp; &nbsp; &nbsp; &nbsp; أتمنى أن يجدك هذا البريد الإلكتروني جيدا برجاء الرجوع الى payalp المرفقة الى { payplip_salary_شهر }. اضغط ببساطة على الاختيار في أسفل : { payspp_url }</span><br></p><p><span style="font-family: var(--bs-body-font-family); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);">إشعر بالحرية للوصول إلى الخارج إذا عندك أي أسئلة.</span></p><p>Regards,</p><p>إدارة الموارد البشرية ،</p><p>{ app_name }</p><p>{ app_url }</p>',
@@ -2803,15 +2676,11 @@ class User extends Authenticatable
 
         ];
 
-
-
         $email = EmailTemplate::all();
 
-        foreach($email as $e)
-        {
+        foreach ($email as $e) {
 
-            foreach($defaultTemplate[$e->slug]['lang'] as $lang => $content)
-            {
+            foreach ($defaultTemplate[$e->slug]['lang'] as $lang => $content) {
                 EmailTemplateLang::create(
                     [
                         'parent_id' => $e->id,
@@ -2829,8 +2698,7 @@ class User extends Authenticatable
 
         // Make Entry In User_Email_Template
         $allEmail = EmailTemplate::all();
-        foreach($allEmail as $email)
-        {
+        foreach ($allEmail as $email) {
             UserEmailTemplate::create(
                 [
                     'template_id' => $email->id,
@@ -2847,8 +2715,7 @@ class User extends Authenticatable
         // Make Entry In User_Email_Template
         $allEmail = EmailTemplate::all();
 
-        foreach($allEmail as $email)
-        {
+        foreach ($allEmail as $email) {
             UserEmailTemplate::create(
                 [
                     'template_id' => $email->id,
@@ -2859,7 +2726,8 @@ class User extends Authenticatable
         }
     }
 
-    public static function userDefaultWarehouse(){
+    public static function userDefaultWarehouse()
+    {
         warehouse::create(
             [
                 'name' => 'North Warehouse',
@@ -2872,7 +2740,8 @@ class User extends Authenticatable
 
     }
 
-    public function userWarehouseRegister($user_id){
+    public function userWarehouseRegister($user_id)
+    {
         warehouse::create(
             [
                 'name' => 'North Warehouse',
@@ -2885,20 +2754,21 @@ class User extends Authenticatable
 
     }
 
-    public function extraKeyword(){
-            $keyArr=[
-                __('Sun'),
-                __('Mon'),
-                __('Tue'),
-                __('Wed'),
-                __('Thu'),
-                __('Fri'),
-                __('Last 7 Days'),
-                __('In Progress'),
-                __('Complete'),
-                __('Canceled'),
+    public function extraKeyword()
+    {
+        $keyArr = [
+            __('Sun'),
+            __('Mon'),
+            __('Tue'),
+            __('Wed'),
+            __('Thu'),
+            __('Fri'),
+            __('Last 7 Days'),
+            __('In Progress'),
+            __('Complete'),
+            __('Canceled'),
 
-            ];
+        ];
     }
 
     public function toSearchableArray()
@@ -2907,8 +2777,7 @@ class User extends Authenticatable
             'name' => $this->name,
             'lname' => $this->lname,
             'email' => $this->email,
-            'phone' => $this->phone
+            'phone' => $this->phone,
         ];
     }
-
 }

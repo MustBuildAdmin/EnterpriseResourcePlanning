@@ -14,15 +14,15 @@ class CreateJournalEntriesTable extends Migration
     public function up()
     {
         Schema::create(
-            'journal_entries', function (Blueprint $table){
-            $table->id();
-            $table->date('date');
-            $table->string('reference')->nullable();
-            $table->text('description')->nullable();
-            $table->integer('journal_id')->default(0);
-            $table->integer('created_by')->default(0);
-            $table->timestamps();
-        }
+            'journal_entries', function (Blueprint $table) {
+                $table->id();
+                $table->date('date');
+                $table->string('reference')->nullable();
+                $table->text('description')->nullable();
+                $table->integer('journal_id')->default(0);
+                $table->integer('created_by')->default(0);
+                $table->timestamps();
+            }
         );
     }
 

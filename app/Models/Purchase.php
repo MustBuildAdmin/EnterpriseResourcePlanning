@@ -19,6 +19,7 @@ class Purchase extends Model
         'category_id',
         'created_by',
     ];
+
     public static $statues = [
         'Draft',
         'Sent',
@@ -26,6 +27,7 @@ class Purchase extends Model
         'Partialy Paid',
         'Paid',
     ];
+
     public function vender()
     {
         return $this->hasOne('App\Models\Vender', 'id', 'vender_id');
@@ -40,33 +42,36 @@ class Purchase extends Model
     {
         return $this->hasMany('App\Models\PurchaseProduct', 'purchase_id', 'id');
     }
+
     public function payments()
     {
         return $this->hasMany('App\Models\PurchasePayment', 'purchase_id', 'id');
     }
+
     public function category()
     {
         return $this->hasOne('App\Models\ProductServiceCategory', 'id', 'category_id');
     }
+
     public function getSubTotal()
     {
         $subTotal = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $subTotal += ($product->price * $product->quantity);
         }
 
         return $subTotal;
     }
+
     public function getTotal()
     {
         return ($this->getSubTotal() + $this->getTotalTax()) - $this->getTotalDiscount();
     }
+
     public function getTotalTax()
     {
         $totalTax = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $taxes = Utility::totalTaxRate($product->tax);
 
             $totalTax += ($taxes / 100) * ($product->price * $product->quantity);
@@ -75,26 +80,27 @@ class Purchase extends Model
 
         return $totalTax;
     }
+
     public function getTotalDiscount()
     {
         $totalDiscount = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $totalDiscount += $product->discount;
         }
 
         return $totalDiscount;
     }
+
     public function getDue()
     {
         $due = 0;
-        foreach($this->payments as $payment)
-        {
+        foreach ($this->payments as $payment) {
             $due += $payment->amount;
         }
 
-        return ($this->getTotal() - $due);
+        return $this->getTotal() - $due;
     }
+
     public function lastPayments()
     {
         return $this->hasOne('App\Models\PurchasePayment', 'id', 'purchase_id');
@@ -104,6 +110,4 @@ class Purchase extends Model
     {
         return $this->hasOne('App\Models\Tax', 'id', 'tax');
     }
-
-
 }

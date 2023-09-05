@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
 use App\Models\JoiningLetter;
@@ -9,9 +10,9 @@ use App\Models\User;
 use App\Models\Utility;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -3018,7 +3019,7 @@ class UsersTableSeeder extends Seeder
 
         // Super admin
 
-        $superAdminRole        = Role::create(
+        $superAdminRole = Role::create(
             [
                 'name' => 'super admin',
                 'created_by' => 0,
@@ -3067,7 +3068,7 @@ class UsersTableSeeder extends Seeder
         $superAdmin->assignRole($superAdminRole);
 
         // customer
-        $customerRole       = Role::create(
+        $customerRole = Role::create(
             [
                 'name' => 'customer',
                 'created_by' => 0,
@@ -3085,7 +3086,7 @@ class UsersTableSeeder extends Seeder
         $customerRole->givePermissionTo($customerPermission);
 
         // vender
-        $venderRole       = Role::create(
+        $venderRole = Role::create(
             [
                 'name' => 'vender',
                 'created_by' => 0,
@@ -3615,7 +3616,7 @@ class UsersTableSeeder extends Seeder
         $company->assignRole($companyRole);
 
         // accountant
-        $accountantRole       = Role::create(
+        $accountantRole = Role::create(
             [
                 'name' => 'accountant',
                 'created_by' => $company->id,
@@ -3746,7 +3747,6 @@ class UsersTableSeeder extends Seeder
             ['name' => 'view budget plan'],
         ];
 
-
         $accountantRole->givePermissionTo($accountantPermission);
 
         $accountant = User::create(
@@ -3776,7 +3776,7 @@ class UsersTableSeeder extends Seeder
         );
 
         // accountant
-        $clientRole       = Role::create(
+        $clientRole = Role::create(
             [
                 'name' => 'client',
                 'created_by' => $company->id,
@@ -3847,13 +3847,12 @@ class UsersTableSeeder extends Seeder
         NOC::defaultNocCertificate();
 
         $data = [
-            ['name'
-            =>'local_storage_validation', 'value'=> 'jpg,jpeg,png,xlsx,xls,csv,pdf', 'created_by'=> 1, 'created_at'=> now(), 'updated_at'=> now()],
-            ['name'=>'wasabi_storage_validation', 'value'=> 'jpg,jpeg,png,xlsx,xls,csv,pdf', 'created_by'=> 1, 'created_at'=> now(), 'updated_at'=> now()],
-            ['name'=>'s3_storage_validation', 'value'=> 'jpg,jpeg,png,xlsx,xls,csv,pdf', 'created_by'=> 1, 'created_at'=> now(), 'updated_at'=> now()],
-            ['name'=>'local_storage_max_upload_size', 'value'=> 2048000, 'created_by'=> 1, 'created_at'=> now(), 'updated_at'=> now()],
-            ['name'=>'wasabi_max_upload_size', 'value'=> 2048000, 'created_by'=> 1, 'created_at'=> now(), 'updated_at'=> now()],
-            ['name'=>'s3_max_upload_size', 'value'=> 2048000, 'created_by'=> 1, 'created_at'=> now(), 'updated_at'=> now()]
+            ['name' => 'local_storage_validation', 'value' => 'jpg,jpeg,png,xlsx,xls,csv,pdf', 'created_by' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'wasabi_storage_validation', 'value' => 'jpg,jpeg,png,xlsx,xls,csv,pdf', 'created_by' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 's3_storage_validation', 'value' => 'jpg,jpeg,png,xlsx,xls,csv,pdf', 'created_by' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'local_storage_max_upload_size', 'value' => 2048000, 'created_by' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'wasabi_max_upload_size', 'value' => 2048000, 'created_by' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 's3_max_upload_size', 'value' => 2048000, 'created_by' => 1, 'created_at' => now(), 'updated_at' => now()],
         ];
         DB::table('settings')->insert($data);
 

@@ -25,7 +25,6 @@ class Transfer extends Model
         return $this->hasMany('App\Models\Branch', 'id', 'branch_id')->first();
     }
 
-
     public function employee()
     {
         return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();

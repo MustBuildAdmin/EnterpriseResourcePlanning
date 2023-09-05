@@ -14,7 +14,6 @@ class JournalEntry extends Model
         'created_by',
     ];
 
-
     public function accounts()
     {
         return $this->hasmany('App\Models\JournalItem', 'journal', 'id');
@@ -23,8 +22,7 @@ class JournalEntry extends Model
     public function totalCredit()
     {
         $total = 0;
-        foreach($this->accounts as $account)
-        {
+        foreach ($this->accounts as $account) {
             $total += $account->credit;
         }
 
@@ -34,13 +32,10 @@ class JournalEntry extends Model
     public function totalDebit()
     {
         $total = 0;
-        foreach($this->accounts as $account)
-        {
+        foreach ($this->accounts as $account) {
             $total += $account->debit;
         }
 
         return $total;
     }
-
-
 }

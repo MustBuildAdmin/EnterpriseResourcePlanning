@@ -15,9 +15,9 @@ class ChangeProductServicesTaxIdColumnType extends Migration
     {
 
         Schema::table(
-            'product_services', function (Blueprint $table){
-            $table->string('tax_id','50')->nullable()->change();
-        }
+            'product_services', function (Blueprint $table) {
+                $table->string('tax_id', '50')->nullable()->change();
+            }
         );
     }
 
@@ -29,9 +29,9 @@ class ChangeProductServicesTaxIdColumnType extends Migration
     public function down()
     {
         Schema::table(
-            'product_services', function (Blueprint $table){
-            $table->dropColumn('tax_id');
-        }
+            'product_services', function (Blueprint $table) {
+                $table->dropColumn('tax_id');
+            }
         );
     }
 }

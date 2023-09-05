@@ -14,13 +14,13 @@ class CreateJobStagesTable extends Migration
     public function up()
     {
         Schema::create(
-            'job_stages', function (Blueprint $table){
-            $table->id();
-            $table->string('title');
-            $table->integer('order')->default(0);
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'job_stages', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->integer('order')->default(0);
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 
