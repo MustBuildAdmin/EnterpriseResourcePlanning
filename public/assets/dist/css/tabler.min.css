@@ -28326,7 +28326,7 @@ i.ti.ti-pencil {
     float: right;
 }
 .navbar-nav li a {
-    padding: 10px 20px;
+    padding: 30px !important;
     font-size: 1em;
     color: #000 !important;
     display: flex;
