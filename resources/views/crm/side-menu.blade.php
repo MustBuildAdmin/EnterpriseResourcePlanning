@@ -19,7 +19,7 @@
         <li class="nav-item">
             
                         <a href="{{ route('clients.index') }}" class="{{ (Request::route()->getName() == 'clients.index' || Request::segment(1) == 'clients' || Request::route()->getName() == 'clients.edit') ? ' active nav-link' : 'nav-link' }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -37,7 +37,7 @@
                     @can('manage lead')
                       <li class="nav-item">
                       <a href="{{ route('leads.index') }}" class="{{ (Request::route()->getName() == 'leads.list' || Request::route()->getName() == 'leads.index' || Request::route()->getName() == 'leads.show') ? ' active nav-link' : 'nav-link' }}">
-                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -55,7 +55,7 @@
                     @can('manage deal')
                     <li class="nav-item">
                       <a  href="{{ route('deals.index') }}" class="{{ (Request::route()->getName() == 'deals.list' || Request::route()->getName() == 'deals.index' || Request::route()->getName() == 'deals.show') ? ' active nav-link' : 'nav-link' }}">
-                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -73,7 +73,7 @@
                       @can('manage form builder')
                       <li class="nav-item">
                       <a  href="{{route('form_builder.index')}}" class="{{ (Request::segment(1) == 'form_builder' || Request::segment(1) == 'form_response') ? ' active nav-link' : 'nav-link' }}">
-                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -91,7 +91,7 @@
                       @if(\Auth::user()->type=='company')
                       <li class="nav-item">
                       <a  href="{{route('contract.index')}}" class="{{ (Request::route()->getName() == 'contract.index' || Request::route()->getName() == 'contract.show') ? ' active nav-link' : 'nav-link' }}">
-                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -110,7 +110,7 @@
                       <li class="nav-item">
                       <a  href="{{ route('pipelines.index') }}"
                          class="{{(Request::segment(1) == 'stages' || Request::segment(1) == 'labels' || Request::segment(1) == 'sources' || Request::segment(1) == 'lead_stages' || Request::segment(1) == 'pipelines' || Request::segment(1) == 'product-category' || Request::segment(1) == 'product-unit' || Request::segment(1) == 'payment-method' || Request::segment(1) == 'custom-field' || Request::segment(1) == 'chart-of-account-type') ? ' active nav-link' : 'nav-link' }}">
-                      <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">

@@ -25,7 +25,7 @@
                 <ul class="navbar-nav pt-lg-3">
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +43,7 @@
                     <li class=" nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -138,7 +138,7 @@
                             Request::route()->getName() == 'procurement_material'
                                 ? 'true'
                                 : 'false' }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-address-book" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -206,7 +206,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-chart-area-line" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -245,7 +245,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"
@@ -263,7 +263,7 @@
 
                     <li class="nav-item">
                         <a href="{{ url('project_holiday') }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -283,7 +283,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"
@@ -302,7 +302,7 @@
                     @if(Session::get('current_revision_freeze')==1)
                         <li class="nav-item">
                             <a href="{{ url('revision') }}" class="nav-link">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class=" d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -323,7 +323,7 @@
                     
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"

@@ -110,6 +110,6 @@ $.validator.addMethod(
 </script>
 <style>
 .error {
-    color: red;
+    color: re#b72222 d;
 }
 </style>
