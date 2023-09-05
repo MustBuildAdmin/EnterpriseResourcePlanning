@@ -139,7 +139,7 @@
             </h1>
             <div class="navbar-nav flex-row order-md-last">
                 <div class="d-none d-md-flex">
-                    <li class="nav-item dropdown">
+                    <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                             data-bs-auto-close="outside" role="button" aria-expanded="true">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -182,7 +182,7 @@
                                 Export to PNG
                             </a>
                         </div>
-                    </li>
+                    </div>
 
                     <div class="dropdown">
                         <div class="mb-3">
