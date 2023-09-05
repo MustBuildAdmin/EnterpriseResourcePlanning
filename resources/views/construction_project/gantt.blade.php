@@ -219,7 +219,7 @@
                     <ul class="navbar-nav">
 
                         <li class="nav-item">
-                            <a class="nav-link" name="undo" type="button" onclick="openAll()">
+                            <a class="nav-link" type="button" onclick="openAll()">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-arrow-bear-left" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -234,7 +234,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" name="undo" type="button" onclick="closeAll()">
+                            <a class="nav-link"  type="button" onclick="closeAll()">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-arrow-bear-left" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -248,7 +248,7 @@
 
                         </li>
                         <li class="nav-item">
-                            <a class="action nav-link" name="undo" type="button">
+                            <a class="action nav-link" id="undo" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-arrow-bear-left" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -261,7 +261,7 @@
 
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="action nav-link" name="redo" type="button">
+                            <a class="action nav-link" id="redo" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-arrow-bear-right" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -273,7 +273,7 @@
                                 Redo</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="action nav-link" name="indent" type="button">
+                            <a class="action nav-link" id="indent" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-arrow-bar-right" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -287,7 +287,7 @@
                                 Indent</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="action nav-link" name="outdent" type="button">
+                            <a class="action nav-link" id="outdent" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-arrow-bar-left" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -533,7 +533,7 @@
                 for (var i = 0; i < els.length; i++) {
                     els[i].onclick = function() {
                         console.log(els[i])
-                        gantt.performAction(this.name)
+                        gantt.performAction(this.id)
                     }
                 }
 
