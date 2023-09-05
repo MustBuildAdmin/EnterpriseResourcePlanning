@@ -1135,7 +1135,7 @@
                         //         (i + 1) * 600
                         //     );
                         // }
-                    }
+                    })
                     if (frezee_status_actual != 1) {
                         var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
                         //var dp = new gantt.dataProcessor("/erp/public/");
