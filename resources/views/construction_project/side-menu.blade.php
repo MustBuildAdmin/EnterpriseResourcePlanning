@@ -10,7 +10,7 @@
 
 <style>
     .navbar-expand-lg {
-        top: 8em !important;
+        top: 4em !important;
     }
 </style>
 <div class="page">
