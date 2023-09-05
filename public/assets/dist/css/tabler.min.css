@@ -28333,6 +28333,10 @@ i.ti.ti-pencil {
     justify-content: start;
     line-height: 33px;
 }
+
+.navbar-nav li a > span {
+    line-height: 0px !important;
+}
  ul li a.active {
     color: #ffffff;
     text-decoration: none;
