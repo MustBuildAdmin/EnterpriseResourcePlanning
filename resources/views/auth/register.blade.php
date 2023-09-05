@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 <style>
     .error {
-        color: red;
+        color: #b72222 ;
     }
     .page {
         min-height: auto !important;
@@ -16,7 +16,7 @@
         background-image: unset !important;
     }
     .error_class{
-        color:red;
+        color:#b72222 ;
         font-weight:bold;
     }
     li.nav-item {
@@ -162,7 +162,15 @@
             </span>
             @enderror
           </div>
-          @endif <div class="d-grid">
+
+          @endif 
+          <div class="mb-3">
+            <label class="form-check">
+              <input type="checkbox" class="form-check-input">
+              <span class="form-check-label">Agree the <a href="#" tabindex="-1">terms and policy</a>.</span>
+            </label>
+          </div>
+          <div class="d-grid">
             <button type="submit" id='submit' class="btn btn-primary btn-block mt-2">{{ __('Register') }}</button>
           </div>
         </div>
