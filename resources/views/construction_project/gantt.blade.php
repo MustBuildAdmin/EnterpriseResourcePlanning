@@ -126,7 +126,7 @@
         <div class="progress-bar progress-bar-indeterminate"></div>
     </div>
 </div>
-<div id="additional_elements" class="gantt-container">
+<div id="additional_elements" class="container-fluid my-5">
 
     <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
         <div class="container-fluid" >
@@ -342,7 +342,7 @@
             <div class="card card-stats border-0" id="myCover">
                 @if ($project)
                     <input type='hidden' value='0' id='project_id'>
-                    <div class="card-body" style='max-height:512px;overflow:auto;'>
+                    <div class="card-body" style='min-height:512px;overflow:auto;'>
                         <div id="gantt_here" style='width:100%; height:491px; position: relative;' onload="script();">
                         </div>
                     </div>
