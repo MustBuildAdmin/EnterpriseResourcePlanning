@@ -28325,32 +28325,17 @@ i.ti.ti-pencil {
 .floatrght {
     float: right;
 }
-#sidebar ul li a {
+.navbar-nav li a {
     padding: 10px 20px;
     font-size: 1em;
     color: #000 !important;
     display: flex;
-    /* align-items: center; */
     justify-content: start;
     line-height: 33px;
 }
-#sidebar ul li a.active {
+ ul li a.active {
     color: #ffffff;
     text-decoration: none;
-}
-#sidebar ul li a:hover {
-    color: #ffffff;
-    background: #ffffff;
-    text-decoration: none;
-}
-
-#sidebar ul li a {
-    padding: 10px 20px;
-    font-size: 1em;
-    color: #fff;
-    display: flex;
-    line-height: 33px;
-    border: none;
 }
 
 .table-responsive .bg-primary {
