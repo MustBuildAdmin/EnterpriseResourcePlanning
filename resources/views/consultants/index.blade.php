@@ -102,9 +102,11 @@
 					<i class="ti ti-dots-vertical">
 					</i>
 				  </button>
-				  @if ($user->color_code!=null || $user->color_code!='') @php $color_co
-				  =$user->color_code; @endphp @else @php $color_co =Utility::rndRGBColorCode();
-				  @endphp @endif
+				  @if ($user->color_code!=null || $user->color_code!='') 
+				  		@php $color_co=$user->color_code; @endphp
+				  @else 
+				  		@php $color_co =Utility::rndRGBColorCode(); @endphp 
+				  @endif
 				  <div class="dropdown-menu dropdown-menu-end">
 					@can('edit consultant')
 					<a href="#!" data-size="lg" data-url="{{ route('consultants.edit.new',[$user->id,$color_co]) }}"
