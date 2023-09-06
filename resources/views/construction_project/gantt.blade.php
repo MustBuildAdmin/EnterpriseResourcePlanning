@@ -183,23 +183,6 @@
                             </a>
                         </div>
                     </div>
-
-                    <div class="dropdown">
-                        <div class="mb-3">
-                            <a href="#" class="btn-link" data-bs-toggle="dropdown" aria-label="Open user menu"
-                                aria-expanded="false">
-                                <div class="">
-
-                                </div>
-                            </a>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item"></a>
-                                <a href="#" class="dropdown-item"></a>
-                                <a href="#" class="dropdown-item"></a>
-                                <a href="#" class="dropdown-item"></a>
-                            </div>
-                        </div>
-                    </div>
                     <button class="btn-link" title="fullscreen" id="fullscreen_button"><svg
                             xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-border-corners"
                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -487,7 +470,6 @@
                             $('.indent_action').removeClass('disabled');
                             $('.outdent_action').removeClass('disabled');
                         }
-
                     });
 
                 // check freeze status
@@ -518,16 +500,23 @@
 
                     });
 
+                    var button = document.getElementById("fullscreen_button");
+                        button.addEventListener("click", function(){
+                            if (!gantt.getState().fullscreen) {
+                                // expanding the gantt to full screen
+                                gantt.expand();
+                            }
+                            else {
+                                // collapsing the gantt to the normal mode
+                                gantt.collapse();
+                            }
+                        }, false);
                 // check gantt task count
-
                 //zoom
-
                 var selectOption = document.getElementById("zoomscale");
                 selectOption.onchange = function(event) {
                     gantt.ext.zoom.setLevel(event.target.value)
                 }
-
-
                 //task position
                 var els = document.getElementsByClassName("action");
                 for (var i = 0; i < els.length; i++) {
@@ -536,8 +525,6 @@
                         gantt.performAction(this.id)
                     }
                 }
-
-
                 gantt.templates.rightside_text = function(start, end, task) {
                     if (task.type == gantt.config.types.milestone) {
                         return task.text;
@@ -594,8 +581,6 @@
                     keyboard_navigation: true,
                     auto_scheduling: true
                 });
-
-
                 gantt.ext.fullscreen.getFullscreenElement = function() {
                     return document.getElementById("additional_elements");
                 }
@@ -603,7 +588,6 @@
                 gantt.config.auto_scheduling = true;
                 gantt.config.auto_scheduling_strict = true;
                 gantt.config.auto_scheduling_compatibility = true;
-
                 var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
                 var today = new Date();
                 // gantt.addMarker({
