@@ -45,7 +45,7 @@
                     ->where('task_id',$task->main_id)->get()->count();
 
                 $remaining_working_days=Utility::remaining_duration_calculator($task->end_date,$task->project_id);
-                $remaining_working_days=$remaining_working_days-1;// include the last day
+                $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days-1 : 0;// include the last day
 
                 ############### Remaining days ##################
 

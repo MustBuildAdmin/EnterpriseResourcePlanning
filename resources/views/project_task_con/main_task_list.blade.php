@@ -33,7 +33,7 @@
             @php
                 $instanceId             = Session::get('project_instance');
                 $remaining_working_days = Utility::remaining_duration_calculator($show_parent->end_date,$show_parent->project_id);
-                $remaining_working_days = $remaining_working_days-1;// include the last day
+                $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days-1 : 0;// include the last day
                 $completed_days         = $show_parent->duration-$remaining_working_days;
                 
                 if($show_parent->duration==1){
