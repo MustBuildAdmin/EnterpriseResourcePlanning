@@ -14,15 +14,15 @@ class CreateJournalItemsTable extends Migration
     public function up()
     {
         Schema::create(
-            'journal_items', function (Blueprint $table){
-            $table->id();
-            $table->integer('journal')->default(0);
-            $table->integer('account')->default(0);
-            $table->text('description')->nullable();
-            $table->float('debit')->default(0.0);
-            $table->float('credit')->default(0.0);
-            $table->timestamps();
-        }
+            'journal_items', function (Blueprint $table) {
+                $table->id();
+                $table->integer('journal')->default(0);
+                $table->integer('account')->default(0);
+                $table->text('description')->nullable();
+                $table->float('debit')->default(0.0);
+                $table->float('credit')->default(0.0);
+                $table->timestamps();
+            }
         );
     }
 

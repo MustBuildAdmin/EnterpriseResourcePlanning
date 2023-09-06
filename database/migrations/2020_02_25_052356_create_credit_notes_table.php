@@ -14,15 +14,15 @@ class CreateCreditNotesTable extends Migration
     public function up()
     {
         Schema::create(
-            'credit_notes', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('invoice')->default('0');
-            $table->integer('customer')->default('0');
-            $table->float('amount', 15, 2)->default('0.00');
-            $table->date('date');
-            $table->text('description')->nullable();
-            $table->timestamps();
-        }
+            'credit_notes', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('invoice')->default('0');
+                $table->integer('customer')->default('0');
+                $table->float('amount', 15, 2)->default('0.00');
+                $table->date('date');
+                $table->text('description')->nullable();
+                $table->timestamps();
+            }
         );
     }
 

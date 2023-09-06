@@ -15,7 +15,4 @@ class BankAccount extends Model
         'bank_address',
         'created_by',
     ];
-
-
 }
-

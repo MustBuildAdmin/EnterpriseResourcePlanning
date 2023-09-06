@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SiteReport extends Model
 {
     use HasFactory;
+
     protected $table = 'dr_site_reports';
 }

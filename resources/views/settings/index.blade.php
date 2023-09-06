@@ -312,7 +312,7 @@
                                             <div class=" setting-card">
                                                 <div class="logo-content mt-4">
                                                     <img id="image" src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'logo-dark.png')}}"
-                                                         class="big-logo">
+                                                         class="big-logo" width="100" height="100">
                                                 </div>
                                                 <div class="choose-files mt-5">
                                                     <label for="full_logo">
@@ -343,7 +343,7 @@
                                             <div class=" setting-card">
                                                 <div class="logo-content mt-4">
                                                     <img id="image1" src="{{$logo.'/'.(isset($logo_light) && !empty($logo_light)?$logo_light:'logo-light.png')}}"
-                                                         class="big-logo img_setting">
+                                                         class="big-logo img_setting" width="100" height="100">
                                                 </div>
                                                 <div class="choose-files mt-5">
                                                     <label for="logo_light">

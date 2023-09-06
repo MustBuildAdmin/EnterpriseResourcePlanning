@@ -14,12 +14,12 @@ class CreateChartOfAccountTypesTable extends Migration
     public function up()
     {
         Schema::create(
-            'chart_of_account_types', function (Blueprint $table){
-            $table->id();
-            $table->string('name')->nullable();
-            $table->integer('created_by')->default(0);
-            $table->timestamps();
-        }
+            'chart_of_account_types', function (Blueprint $table) {
+                $table->id();
+                $table->string('name')->nullable();
+                $table->integer('created_by')->default(0);
+                $table->timestamps();
+            }
         );
     }
 

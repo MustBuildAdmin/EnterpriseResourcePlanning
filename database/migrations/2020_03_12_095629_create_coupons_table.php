@@ -14,16 +14,16 @@ class CreateCouponsTable extends Migration
     public function up()
     {
         Schema::create(
-            'coupons', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('code');
-            $table->float('discount')->default('0.00');
-            $table->integer('limit')->default('0');
-            $table->text('description')->nullable();
-            $table->integer('is_active')->default('1');
-            $table->timestamps();
-        }
+            'coupons', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->string('code');
+                $table->float('discount')->default('0.00');
+                $table->integer('limit')->default('0');
+                $table->text('description')->nullable();
+                $table->integer('is_active')->default('1');
+                $table->timestamps();
+            }
         );
     }
 

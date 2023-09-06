@@ -44,13 +44,11 @@ class Bill extends Model
     {
         return $this->hasMany('App\Models\BillPayment', 'bill_id', 'id');
     }
-    
 
     public function getSubTotal()
     {
         $subTotal = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $subTotal += ($product->price * $product->quantity);
         }
 
@@ -60,8 +58,7 @@ class Bill extends Model
     public function getTotalTax()
     {
         $totalTax = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $taxes = Utility::totalTaxRate($product->tax);
 
             $totalTax += ($taxes / 100) * ($product->price * $product->quantity);
@@ -74,8 +71,7 @@ class Bill extends Model
     public function getTotalDiscount()
     {
         $totalDiscount = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $totalDiscount += $product->discount;
         }
 
@@ -90,8 +86,7 @@ class Bill extends Model
     public function getDue()
     {
         $due = 0;
-        foreach($this->payments as $payment)
-        {
+        foreach ($this->payments as $payment) {
             $due += $payment->amount;
         }
 
@@ -117,7 +112,7 @@ class Bill extends Model
     {
         return $this->hasOne('App\Models\BillPayment', 'id', 'bill_id');
     }
-    
+
     public function taxes()
     {
         return $this->hasOne('App\Models\Tax', 'id', 'tax');

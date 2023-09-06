@@ -18,7 +18,7 @@ class InterviewSchedule extends Model
 
     public function applications()
     {
-       return $this->hasOne('App\Models\JobApplication','id','candidate');
+        return $this->hasOne('App\Models\JobApplication', 'id', 'candidate');
     }
 
     public function users()

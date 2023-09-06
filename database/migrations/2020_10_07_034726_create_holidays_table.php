@@ -14,14 +14,14 @@ class CreateHolidaysTable extends Migration
     public function up()
     {
         Schema::create(
-            'holidays', function (Blueprint $table){
-            $table->id();
-            $table->date('date');
-            $table->date('end_date');
-            $table->text('occasion');
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'holidays', function (Blueprint $table) {
+                $table->id();
+                $table->date('date');
+                $table->date('end_date');
+                $table->text('occasion');
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

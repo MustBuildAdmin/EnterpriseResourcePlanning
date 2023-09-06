@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 class JoiningLetter extends Model
 {
     protected $table = 'joining_letters';
+
     protected $fillable = [
         'id',
         'lang',
         'content',
         'created_by',
     ];
+
     public static function replaceVariable($content, $obj)
     {
         $arrVariable = [
@@ -28,9 +29,8 @@ class JoiningLetter extends Model
             '{end_time}',
             '{total_hours}',
 
-      
         ];
-        $arrValue    = [
+        $arrValue = [
             'date' => '-',
             'app_name' => '-',
             'employee_name' => '-',
@@ -44,24 +44,22 @@ class JoiningLetter extends Model
 
         ];
 
-        foreach($obj as $key => $val)
-        {
+        foreach ($obj as $key => $val) {
             $arrValue[$key] = $val;
         }
         $settings = Utility::settings();
-       
+
         //   dd(env('APP_NAME'));
-        $arrValue['app_name']     = env('APP_NAME');
-       
-       
+        $arrValue['app_name'] = env('APP_NAME');
+
         return str_replace($arrVariable, array_values($arrValue), $content);
     }
+
     public static function defaultJoiningLetter()
     {
-       
 
         $defaultTemplate = [
-              
+
             'ar' => '<h2 style="text-align: center;"><strong>خطاب الانضمام</strong></h2>
             <p>{date}</p>
             <p>{employee_name}</p>
@@ -182,7 +180,6 @@ class JoiningLetter extends Model
             
             <p>{date}</p>',
 
-            
             'da' => '<h3 style="text-align: center;"><strong>Tilslutningsbrev</strong></h3>
             
             
@@ -2223,29 +2220,27 @@ class JoiningLetter extends Model
             
             <p>{date}</p>
             ',
-      
-     ];
 
-        
-        foreach($defaultTemplate as $lang => $content)
-        {
+        ];
+
+        foreach ($defaultTemplate as $lang => $content) {
             JoiningLetter::create(
                 [
                     'lang' => $lang,
                     'content' => $content,
                     'created_by' => 2,
-                
+
                 ]
             );
         }
-        
+
     }
+
     public static function defaultJoiningLetterRegister($user_id)
     {
-       
 
         $defaultTemplate = [
-              
+
             'ar' => '<h2 style="text-align: center;"><strong>خطاب الانضمام</strong></h2>
             <p>{date}</p>
             <p>{employee_name}</p>
@@ -4344,21 +4339,19 @@ class JoiningLetter extends Model
             
             <p>{date}</p>
             ',
-      
-     ];
 
-        
-        foreach($defaultTemplate as $lang => $content)
-        {
+        ];
+
+        foreach ($defaultTemplate as $lang => $content) {
             JoiningLetter::create(
                 [
                     'lang' => $lang,
                     'content' => $content,
                     'created_by' => $user_id,
-                
+
                 ]
             );
         }
-        
+
     }
 }

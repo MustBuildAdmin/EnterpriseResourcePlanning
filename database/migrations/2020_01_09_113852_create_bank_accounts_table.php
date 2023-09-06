@@ -14,17 +14,17 @@ class CreateBankAccountsTable extends Migration
     public function up()
     {
         Schema::create(
-            'bank_accounts', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->string('holder_name');
-            $table->string('bank_name');
-            $table->string('account_number');
-            $table->float('opening_balance', 15, 2)->default('0.00');
-            $table->string('contact_number');
-            $table->text('bank_address');
-            $table->integer('created_by')->default('0');
-            $table->timestamps();
-        }
+            'bank_accounts', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('holder_name');
+                $table->string('bank_name');
+                $table->string('account_number');
+                $table->float('opening_balance', 15, 2)->default('0.00');
+                $table->string('contact_number');
+                $table->text('bank_address');
+                $table->integer('created_by')->default('0');
+                $table->timestamps();
+            }
         );
     }
 

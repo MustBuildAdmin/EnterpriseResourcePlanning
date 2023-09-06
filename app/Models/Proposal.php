@@ -25,7 +25,6 @@ class Proposal extends Model
         'Close',
     ];
 
-
     public function tax()
     {
         return $this->hasOne('App\Models\Tax', 'id', 'tax_id');
@@ -49,8 +48,7 @@ class Proposal extends Model
     public function getSubTotal()
     {
         $subTotal = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $subTotal += ($product->price * $product->quantity);
         }
 
@@ -60,8 +58,7 @@ class Proposal extends Model
     public function getTotalTax()
     {
         $totalTax = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $taxes = Utility::totalTaxRate($product->tax);
 
             $totalTax += ($taxes / 100) * ($product->price * $product->quantity);
@@ -73,8 +70,7 @@ class Proposal extends Model
     public function getTotalDiscount()
     {
         $totalDiscount = 0;
-        foreach($this->items as $product)
-        {
+        foreach ($this->items as $product) {
             $totalDiscount += $product->discount;
         }
 
@@ -89,8 +85,7 @@ class Proposal extends Model
     public function getDue()
     {
         $due = 0;
-        foreach($this->payments as $payment)
-        {
+        foreach ($this->payments as $payment) {
             $due += $payment->amount;
         }
 
@@ -100,7 +95,7 @@ class Proposal extends Model
     public static function change_status($proposal_id, $status)
     {
 
-        $proposal         = Proposal::find($proposal_id);
+        $proposal = Proposal::find($proposal_id);
         $proposal->status = $status;
         $proposal->update();
     }
@@ -114,5 +109,4 @@ class Proposal extends Model
     {
         return $this->hasOne('App\Models\Tax', 'id', 'tax');
     }
-
 }

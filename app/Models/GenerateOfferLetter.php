@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class GenerateOfferLetter extends Model
 {
     protected $table = 'generate_offer_letters';
+
     protected $fillable = [
         'id',
         'lang',
         'content',
         'created_by',
     ];
-
-
 
     public static function replaceVariable($content, $obj)
     {
@@ -32,9 +31,8 @@ class GenerateOfferLetter extends Model
             '{next_pay_period}',
             '{offer_expiration_date}',
 
-
         ];
-        $arrValue    = [
+        $arrValue = [
             'applicant_name' => '-',
             'app_name' => '-',
             'job_title' => '-',
@@ -42,7 +40,7 @@ class GenerateOfferLetter extends Model
             'start_date' => '-',
             'workplace_location' => '-',
             'days_of_week' => '-',
-            'salary'=>'-',
+            'salary' => '-',
             'salary_type' => '-',
             'salary_duration' => '-',
             'next_pay_period' => '-',
@@ -50,15 +48,13 @@ class GenerateOfferLetter extends Model
 
         ];
 
-        foreach($obj as $key => $val)
-        {
+        foreach ($obj as $key => $val) {
             $arrValue[$key] = $val;
         }
         $settings = Utility::settings();
 
         //   dd(env('APP_NAME'));
-        $arrValue['app_name']     = env('APP_NAME');
-
+        $arrValue['app_name'] = env('APP_NAME');
 
         return str_replace($arrVariable, array_values($arrValue), $content);
     }
@@ -66,10 +62,9 @@ class GenerateOfferLetter extends Model
     public static function defaultOfferLetter()
     {
 
-
         $defaultTemplate = [
 
-                    'ar' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>رسالة عرض</strong></span></p>
+            'ar' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>رسالة عرض</strong></span></p>
 
 
                     <p>عزيزي {applicationant_name} ،</p>
@@ -99,8 +94,7 @@ class GenerateOfferLetter extends Model
                     <p>{app_name}</p>
                     ',
 
-
-                    'da' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Tilbudsbrev</strong></span></p>
+            'da' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Tilbudsbrev</strong></span></p>
 
                     <p>K&aelig;re {applicant_name}</p>
 
@@ -123,7 +117,7 @@ class GenerateOfferLetter extends Model
                     <p>Med venlig hilsen</p>
 
                     <p>{app_name}</p>',
-                    'de' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Angebotsschreiben</strong></span></p>
+            'de' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Angebotsschreiben</strong></span></p>
 
 
                     <p>Sehr geehrter {applicant_name},</p>
@@ -154,7 +148,7 @@ class GenerateOfferLetter extends Model
                     <p>Aufrichtig,</p>
 
                     <p>{app_name}</p>',
-                    'en' => '<p style="text-align: center;"><strong>Offer Letter</strong></p>
+            'en' => '<p style="text-align: center;"><strong>Offer Letter</strong></p>
 
                     <p>Dear {applicant_name},</p>
 
@@ -174,7 +168,7 @@ class GenerateOfferLetter extends Model
 
                     <p>Sincerely,</p>
                     <p>{app_name}</p>',
-                    'es' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
+            'es' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
 
 
                     <p>Estimado {applicant_name},</p>
@@ -203,7 +197,7 @@ class GenerateOfferLetter extends Model
                     <p>Sinceramente,</p>
 
                     <p>{app_name}</p>',
-                    'fr' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettre doffre</strong></span></p>
+            'fr' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettre doffre</strong></span></p>
 
 
                     <p>Cher {applicant_name},</p>
@@ -232,7 +226,7 @@ class GenerateOfferLetter extends Model
 
                     <p>Sinc&egrave;rement,</p>
                     <p>{app_name}</p>',
-                    'id' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Surat penawaran</strong></span></p>
+            'id' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Surat penawaran</strong></span></p>
 
 
                     <p>{applicant_name} yang terhormat,</p>
@@ -262,7 +256,7 @@ class GenerateOfferLetter extends Model
                     <p>Sungguh-sungguh,</p>
 
                     <p>{app_name}</p>',
-                    'it' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettera di offerta</strong></span></p>
+            'it' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettera di offerta</strong></span></p>
 
 
                     <p>Gentile {nome_richiedente},</p>
@@ -292,7 +286,7 @@ class GenerateOfferLetter extends Model
                     <p>Cordiali saluti,</p>
 
                     <p>{app_name}</p>',
-                    'ja' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>内定通知</strong></span></p>
+            'ja' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>内定通知</strong></span></p>
 
 
                     <p>{applicant_name} 様</p>
@@ -314,7 +308,7 @@ class GenerateOfferLetter extends Model
                     <p>心から、</p>
 
                     <p>{app_name}</p>',
-                    'nl' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Aanbiedingsbrief</strong></span></p>
+            'nl' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Aanbiedingsbrief</strong></span></p>
 
 
 
@@ -353,7 +347,7 @@ class GenerateOfferLetter extends Model
                     <p>Eerlijk,</p>
 
                     <p>{app_name}</p>',
-                    'pl' => '<p style="text-align: center;"><strong><span style="font-size: 18pt;">List ofertowy</span></strong></p>
+            'pl' => '<p style="text-align: center;"><strong><span style="font-size: 18pt;">List ofertowy</span></strong></p>
 
                     <p>Drogi {applicant_name},</p>
 
@@ -378,7 +372,7 @@ class GenerateOfferLetter extends Model
                     <p>Z poważaniem,</p>
 
                     <p>{app_name}</p>',
-                    'pt' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
+            'pt' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
 
 
                     <p>Prezado {applicant_name},</p>
@@ -408,7 +402,7 @@ class GenerateOfferLetter extends Model
                     <p>Sinceramente,</p>
 
                     <p>{app_name}</p>',
-                    'ru' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Письмо с предложением</strong></span></p>
+            'ru' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Письмо с предложением</strong></span></p>
 
 
                     <p>Уважаемый {applicant_name!</p>
@@ -440,9 +434,7 @@ class GenerateOfferLetter extends Model
 
         ];
 
-
-        foreach($defaultTemplate as $lang => $content)
-        {
+        foreach ($defaultTemplate as $lang => $content) {
             GenerateOfferLetter::create(
                 [
                     'lang' => $lang,
@@ -454,13 +446,13 @@ class GenerateOfferLetter extends Model
         }
 
     }
+
     public static function defaultOfferLetterRegister($user_id)
     {
 
-
         $defaultTemplate = [
 
-                    'ar' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>رسالة عرض</strong></span></p>
+            'ar' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>رسالة عرض</strong></span></p>
 
 
                     <p>عزيزي {applicationant_name} ،</p>
@@ -490,8 +482,7 @@ class GenerateOfferLetter extends Model
                     <p>{app_name}</p>
                     ',
 
-
-                    'da' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Tilbudsbrev</strong></span></p>
+            'da' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Tilbudsbrev</strong></span></p>
 
                     <p>K&aelig;re {applicant_name}</p>
 
@@ -514,7 +505,7 @@ class GenerateOfferLetter extends Model
                     <p>Med venlig hilsen</p>
 
                     <p>{app_name}</p>',
-                    'de' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Angebotsschreiben</strong></span></p>
+            'de' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Angebotsschreiben</strong></span></p>
 
 
                     <p>Sehr geehrter {applicant_name},</p>
@@ -545,7 +536,7 @@ class GenerateOfferLetter extends Model
                     <p>Aufrichtig,</p>
 
                     <p>{app_name}</p>',
-                    'en' => '<p style="text-align: center;"><strong>Offer Letter</strong></p>
+            'en' => '<p style="text-align: center;"><strong>Offer Letter</strong></p>
 
                     <p>Dear {applicant_name},</p>
 
@@ -565,7 +556,7 @@ class GenerateOfferLetter extends Model
 
                     <p>Sincerely,</p>
                     <p>{app_name}</p>',
-                    'es' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
+            'es' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
 
 
                     <p>Estimado {applicant_name},</p>
@@ -594,7 +585,7 @@ class GenerateOfferLetter extends Model
                     <p>Sinceramente,</p>
 
                     <p>{app_name}</p>',
-                    'fr' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettre doffre</strong></span></p>
+            'fr' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettre doffre</strong></span></p>
 
 
                     <p>Cher {applicant_name},</p>
@@ -623,7 +614,7 @@ class GenerateOfferLetter extends Model
 
                     <p>Sinc&egrave;rement,</p>
                     <p>{app_name}</p>',
-                    'id' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Surat penawaran</strong></span></p>
+            'id' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Surat penawaran</strong></span></p>
 
 
                     <p>{applicant_name} yang terhormat,</p>
@@ -653,7 +644,7 @@ class GenerateOfferLetter extends Model
                     <p>Sungguh-sungguh,</p>
 
                     <p>{app_name}</p>',
-                    'it' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettera di offerta</strong></span></p>
+            'it' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Lettera di offerta</strong></span></p>
 
 
                     <p>Gentile {nome_richiedente},</p>
@@ -683,7 +674,7 @@ class GenerateOfferLetter extends Model
                     <p>Cordiali saluti,</p>
 
                     <p>{app_name}</p>',
-                    'ja' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>内定通知</strong></span></p>
+            'ja' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>内定通知</strong></span></p>
 
 
                     <p>{applicant_name} 様</p>
@@ -705,7 +696,7 @@ class GenerateOfferLetter extends Model
                     <p>心から、</p>
 
                     <p>{app_name}</p>',
-                    'nl' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Aanbiedingsbrief</strong></span></p>
+            'nl' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Aanbiedingsbrief</strong></span></p>
 
 
 
@@ -744,7 +735,7 @@ class GenerateOfferLetter extends Model
                     <p>Eerlijk,</p>
 
                     <p>{app_name}</p>',
-                    'pl' => '<p style="text-align: center;"><strong><span style="font-size: 18pt;">List ofertowy</span></strong></p>
+            'pl' => '<p style="text-align: center;"><strong><span style="font-size: 18pt;">List ofertowy</span></strong></p>
 
                     <p>Drogi {applicant_name},</p>
 
@@ -769,7 +760,7 @@ class GenerateOfferLetter extends Model
                     <p>Z poważaniem,</p>
 
                     <p>{app_name}</p>',
-                    'pt' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
+            'pt' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Carta de oferta</strong></span></p>
 
 
                     <p>Prezado {applicant_name},</p>
@@ -799,7 +790,7 @@ class GenerateOfferLetter extends Model
                     <p>Sinceramente,</p>
 
                     <p>{app_name}</p>',
-                    'ru' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Письмо с предложением</strong></span></p>
+            'ru' => '<p style="text-align: center;"><span style="font-size: 18pt;"><strong>Письмо с предложением</strong></span></p>
 
 
                     <p>Уважаемый {applicant_name!</p>
@@ -831,9 +822,7 @@ class GenerateOfferLetter extends Model
 
         ];
 
-
-        foreach($defaultTemplate as $lang => $content)
-        {
+        foreach ($defaultTemplate as $lang => $content) {
             GenerateOfferLetter::create(
                 [
                     'lang' => $lang,
@@ -845,6 +834,4 @@ class GenerateOfferLetter extends Model
         }
 
     }
-
-
 }

@@ -23,8 +23,9 @@ class SaturationDeduction extends Model
     {
         return $this->hasOne('App\Models\DeductionOption', 'id', 'deduction_option')->first();
     }
+
     public static $saturationDeductiontype = [
-        'fixed'=>'Fixed',
-        'percentage'=> 'Percentage',
+        'fixed' => 'Fixed',
+        'percentage' => 'Percentage',
     ];
 }

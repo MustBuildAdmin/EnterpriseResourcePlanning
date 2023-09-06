@@ -13,7 +13,7 @@ class CreateTaskChecklistsTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('task_checklists')){
+        if (! Schema::hasTable('task_checklists')) {
             Schema::create('task_checklists', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');

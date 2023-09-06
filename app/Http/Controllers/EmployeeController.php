@@ -20,7 +20,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 
 //use Faker\Provider\File;
 
@@ -33,78 +32,66 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('manage employee'))
-        {
-            if(Auth::user()->type == 'employee')
-            {
+        if (\Auth::user()->can('manage employee')) {
+            if (Auth::user()->type == 'employee') {
                 $employees = Employee::where('user_id', '=', Auth::user()->id)->where('user_id', '!=', 1)->get();
-            }
-            else
-            {
+            } else {
                 $employees = Employee::where('created_by', \Auth::user()->creatorId())->where('user_id', '!=', 1)->get();
             }
 
             return view('hrm.employee_setup.employee', compact('employees'));
             // return view('employee.index', compact('employees'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function create()
     {
-        if(\Auth::user()->can('create employee'))
-        {
+        if (\Auth::user()->can('create employee')) {
             $company_settings = Utility::settings();
-            $documents        = Document::where('created_by', \Auth::user()->creatorId())->get();
-            $branches         = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $departments      = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $designations     = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $employees        = User::where('created_by', \Auth::user()->creatorId())->get();
-            $employeesId      = \Auth::user()->employeeIdFormat($this->employeeNumber());
+            $documents = Document::where('created_by', \Auth::user()->creatorId())->get();
+            $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $employees = User::where('created_by', \Auth::user()->creatorId())->get();
+            $employeesId = \Auth::user()->employeeIdFormat($this->employeeNumber());
 
             return view('hrm.employee_setup.employee_create', compact('employees', 'employeesId', 'departments', 'designations', 'documents', 'branches', 'company_settings'));
             // return view('employee.create', compact('employees', 'employeesId', 'departments', 'designations', 'documents', 'branches', 'company_settings'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create employee'))
-        {
+        if (\Auth::user()->can('create employee')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
-                                   'dob' => 'required',
-                                   // 'gender' => 'required',
-                                   'phone' => 'required',
-                                   'address' => 'required',
-                                   'email' => 'required|unique:users',
-                                   'password' => 'required',
-                                   'department_id' => 'required',
-                                   'designation_id' => 'required',
-                                   'document.*' => 'mimes:jpeg,png,jpg,gif,pdf,doc|max:20480',
-                               ]
+                    'name' => 'required',
+                    'dob' => 'required',
+                    // 'gender' => 'required',
+                    'phone' => 'required',
+                    'address' => 'required',
+                    'email' => 'required|unique:users',
+                    'password' => 'required',
+                    'department_id' => 'required',
+                    'designation_id' => 'required',
+                    'document.*' => 'mimes:jpeg,png,jpg,gif,pdf,doc|max:20480',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->withInput()->with('error', $messages->first());
             }
 
-            $objUser        = User::find(\Auth::user()->creatorId());
+            $objUser = User::find(\Auth::user()->creatorId());
             $total_employee = $objUser->countEmployees();
-            $plan           = Plan::find($objUser->plan);
+            $plan = Plan::find($objUser->plan);
 
-            if($total_employee < $plan->max_employees || $plan->max_employees == -1)
-            {
+            if ($total_employee < $plan->max_employees || $plan->max_employees == -1) {
                 $user = User::create(
                     [
                         'name' => $request['name'],
@@ -118,22 +105,15 @@ class EmployeeController extends Controller
                 );
                 $user->save();
                 $user->assignRole('Employee');
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Your employee limit is over, Please upgrade plan.'));
             }
 
-
-            if(!empty($request->document) && !is_null($request->document))
-            {
+            if (! empty($request->document) && ! is_null($request->document)) {
                 $document_implode = implode(',', array_keys($request->document));
-            }
-            else
-            {
+            } else {
                 $document_implode = null;
             }
-
 
             $employee = Employee::create(
                 [
@@ -161,28 +141,24 @@ class EmployeeController extends Controller
                 ]
             );
 
-            if($request->hasFile('document'))
-            {
-                foreach($request->document as $key => $document)
-                {
+            if ($request->hasFile('document')) {
+                foreach ($request->document as $key => $document) {
 
                     $filenameWithExt = $request->file('document')[$key]->getClientOriginalName();
-                    $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    $extension       = $request->file('document')[$key]->getClientOriginalExtension();
-                    $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-                    $dir             = storage_path('uploads/document/');
-                    $image_path      = $dir . $filenameWithExt;
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $extension = $request->file('document')[$key]->getClientOriginalExtension();
+                    $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                    $dir = storage_path('uploads/document/');
+                    $image_path = $dir.$filenameWithExt;
 
-                    if(File::exists($image_path))
-                    {
+                    if (File::exists($image_path)) {
                         File::delete($image_path);
                     }
 
-                    if(!file_exists($dir))
-                    {
+                    if (! file_exists($dir)) {
                         mkdir($dir, 0777, true);
                     }
-                    $path              = $request->file('document')[$key]->storeAs('uploads/document/', $fileNameToStore);
+                    $path = $request->file('document')[$key]->storeAs('uploads/document/', $fileNameToStore);
                     $employee_document = EmployeeDocument::create(
                         [
                             'employee_id' => $employee['employee_id'],
@@ -199,23 +175,21 @@ class EmployeeController extends Controller
 
             $setings = Utility::settings();
 
-            if($setings['create_user'] == 1)
-            {
+            if ($setings['create_user'] == 1) {
                 $userArr = [
                     'email' => $user->email,
                     'password' => $user->password,
                 ];
 
                 $resp = Utility::sendEmailTemplate('create_user', [$user->id => $user->email], $userArr);
-                return redirect()->route('employee.index')->with('success', __('Employee successfully created.') . ((!empty($resp) && $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
+
+                return redirect()->route('employee.index')->with('success', __('Employee successfully created.').((! empty($resp) && $resp['is_success'] == false && ! empty($resp['error'])) ? '<br> <span class="text-danger">'.$resp['error'].'</span>' : ''));
 
             }
 
             return redirect()->route('employee.index')->with('success', __('Employee  successfully created.'));
 
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -223,24 +197,21 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $id = Crypt::decrypt($id);
-        if(\Auth::user()->can('edit employee'))
-        {
-            $documents    = Document::where('created_by', \Auth::user()->creatorId())->get();
-            $branches     = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $branches->prepend('Select Branch','');
-            $departments  = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (\Auth::user()->can('edit employee')) {
+            $documents = Document::where('created_by', \Auth::user()->creatorId())->get();
+            $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $branches->prepend('Select Branch', '');
+            $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $employee     = Employee::find($id);
-//            $employeesId  = \Auth::user()->employeeIdFormat($employee->employee_id);
-            $employeesId  = \Auth::user()->employeeIdFormat(!empty($employee) ? $employee->employee_id : '');
+            $employee = Employee::find($id);
+            //            $employeesId  = \Auth::user()->employeeIdFormat($employee->employee_id);
+            $employeesId = \Auth::user()->employeeIdFormat(! empty($employee) ? $employee->employee_id : '');
 
-            $departmentData  = Department::where('created_by', \Auth::user()->creatorId())->where('branch_id',$employee->branch_id)->get()->pluck('name', 'id');
+            $departmentData = Department::where('created_by', \Auth::user()->creatorId())->where('branch_id', $employee->branch_id)->get()->pluck('name', 'id');
 
-            return view('hrm.employee_setup.employee_edit', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents','departmentData'));
+            return view('hrm.employee_setup.employee_edit', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents', 'departmentData'));
             // return view('employee.edit', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents','departmentData'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -248,20 +219,18 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
 
-        if(\Auth::user()->can('edit employee'))
-        {
+        if (\Auth::user()->can('edit employee')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required',
-                                   'dob' => 'required',
-                                   'gender' => 'required',
-                                   'phone' => 'required|numeric',
-                                   'address' => 'required',
-                                   'document.*' => 'mimes:jpeg,png,jpg,pdf,doc|max:20480',
-                               ]
+                    'name' => 'required',
+                    'dob' => 'required',
+                    'gender' => 'required',
+                    'phone' => 'required|numeric',
+                    'address' => 'required',
+                    'document.*' => 'mimes:jpeg,png,jpg,pdf,doc|max:20480',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
@@ -269,53 +238,45 @@ class EmployeeController extends Controller
 
             $employee = Employee::findOrFail($id);
 
-            if($request->document)
-            {
-                foreach($request->document as $key => $document)
-                {
-                    if(!empty($document))
-                    {
+            if ($request->document) {
+                foreach ($request->document as $key => $document) {
+                    if (! empty($document)) {
                         $filenameWithExt = $request->file('document')[$key]->getClientOriginalName();
-                        $filename        = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                        $extension       = $request->file('document')[$key]->getClientOriginalExtension();
-                        $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-//                        $dir        = storage_path('uploads/document/');
-                        $dir             = 'uploads/document/';
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $extension = $request->file('document')[$key]->getClientOriginalExtension();
+                        $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                        //                        $dir        = storage_path('uploads/document/');
+                        $dir = 'uploads/document/';
 
-                        $image_path = $dir . $filenameWithExt;
+                        $image_path = $dir.$filenameWithExt;
 
-                        if(File::exists($image_path))
-                        {
+                        if (File::exists($image_path)) {
                             File::delete($image_path);
                         }
                         // dd($request->all());
-//                        if(!file_exists($dir))
-//                        {
-//                            mkdir($dir, 0777, true);
-//                        }
-//                        $path = $request->file('document')[$key]->storeAs('uploads/document/', $fileNameToStore);
+                        //                        if(!file_exists($dir))
+                        //                        {
+                        //                            mkdir($dir, 0777, true);
+                        //                        }
+                        //                        $path = $request->file('document')[$key]->storeAs('uploads/document/', $fileNameToStore);
 
-                        $path = \Utility::upload_coustom_file($request,'document',$fileNameToStore,$dir,$key,[]);
-                        
-                        if($path['flag'] == 1){
+                        $path = \Utility::upload_coustom_file($request, 'document', $fileNameToStore, $dir, $key, []);
+
+                        if ($path['flag'] == 1) {
                             $url = $path['url'];
-                        }else{
+                        } else {
                             return redirect()->back()->with('error', __($path['msg']));
                         }
 
-
                         $employee_document = EmployeeDocument::where('employee_id', $employee->employee_id)->where('document_id', $key)->first();
 
-                        if(!empty($employee_document))
-                        {
+                        if (! empty($employee_document)) {
                             $employee_document->document_value = $fileNameToStore;
                             $employee_document->save();
-                        }
-                        else
-                        {
-                            $employee_document                 = new EmployeeDocument();
-                            $employee_document->employee_id    = $employee->employee_id;
-                            $employee_document->document_id    = $key;
+                        } else {
+                            $employee_document = new EmployeeDocument();
+                            $employee_document->employee_id = $employee->employee_id;
+                            $employee_document->document_id = $key;
                             $employee_document->document_value = $fileNameToStore;
                             $employee_document->save();
                         }
@@ -324,32 +285,26 @@ class EmployeeController extends Controller
                 }
             }
             $employee = Employee::findOrFail($id);
-            $input    = $request->all();
+            $input = $request->all();
             $employee->fill($input)->save();
             $employee = Employee::find($id);
-            $user = User::where('id',$employee->user_id)->first();
-            if(!empty($user)){
+            $user = User::where('id', $employee->user_id)->first();
+            if (! empty($user)) {
                 $user->name = $employee->name;
                 $user->email = $employee->email;
                 $user->save();
             }
-            if($request->salary)
-            {
+            if ($request->salary) {
                 return redirect()->route('setsalary.index')->with('success', 'Employee successfully updated.');
             }
 
-            if(\Auth::user()->type != 'employee')
-            {
+            if (\Auth::user()->type != 'employee') {
                 return redirect()->route('employee.index')->with('success', 'Employee successfully updated.');
-            }
-            else
-            {
+            } else {
                 return redirect()->route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id))->with('success', 'Employee successfully updated.');
             }
 
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -357,28 +312,23 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
 
-        if(Auth::user()->can('delete employee'))
-        {
-            $employee      = Employee::findOrFail($id);
-            $user          = User::where('id', '=', $employee->user_id)->first();
+        if (Auth::user()->can('delete employee')) {
+            $employee = Employee::findOrFail($id);
+            $user = User::where('id', '=', $employee->user_id)->first();
             $emp_documents = EmployeeDocument::where('employee_id', $employee->employee_id)->get();
             $employee->delete();
             $user->delete();
             $dir = storage_path('uploads/document/');
-            foreach($emp_documents as $emp_document)
-            {
+            foreach ($emp_documents as $emp_document) {
                 $emp_document->delete();
-                if(!empty($emp_document->document_value))
-                {
-                    unlink($dir . $emp_document->document_value);
+                if (! empty($emp_document->document_value)) {
+                    unlink($dir.$emp_document->document_value);
                 }
 
             }
 
             return redirect()->route('employee.index')->with('success', 'Employee successfully deleted.');
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
 
@@ -387,23 +337,20 @@ class EmployeeController extends Controller
     public function show($id)
     {
 
-        if(\Auth::user()->can('view employee'))
-        {
-            $empId        = Crypt::decrypt($id);
-            $documents    = Document::where('created_by', \Auth::user()->creatorId())->get();
-            $branches     = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $departments  = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (\Auth::user()->can('view employee')) {
+            $empId = Crypt::decrypt($id);
+            $documents = Document::where('created_by', \Auth::user()->creatorId())->get();
+            $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            $employee     = Employee::where('id',$empId)->first();
+            $employee = Employee::where('id', $empId)->first();
 
-            $employeesId  = \Auth::user()->employeeIdFormat(!empty($employee) ? $employee->employee_id : '');
+            $employeesId = \Auth::user()->employeeIdFormat(! empty($employee) ? $employee->employee_id : '');
 
             return view('hrm.employee_setup.emp_details', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
             // return view('employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -415,11 +362,10 @@ class EmployeeController extends Controller
         return response()->json($designations);
     }
 
-    function employeeNumber()
+    public function employeeNumber()
     {
         $latest = Employee::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
-        if(!$latest)
-        {
+        if (! $latest) {
             return 1;
         }
 
@@ -428,19 +374,15 @@ class EmployeeController extends Controller
 
     public function profile(Request $request)
     {
-        if(\Auth::user()->can('manage employee profile'))
-        {
+        if (\Auth::user()->can('manage employee profile')) {
             $employees = Employee::where('created_by', \Auth::user()->creatorId());
-            if(!empty($request->branch))
-            {
+            if (! empty($request->branch)) {
                 $employees->where('branch_id', $request->branch);
             }
-            if(!empty($request->department))
-            {
+            if (! empty($request->department)) {
                 $employees->where('department_id', $request->department);
             }
-            if(!empty($request->designation))
-            {
+            if (! empty($request->designation)) {
                 $employees->where('designation_id', $request->designation);
             }
             $employees = $employees->get();
@@ -455,30 +397,24 @@ class EmployeeController extends Controller
             $designations->prepend('All', '');
 
             return view('employee.profile', compact('employees', 'departments', 'designations', 'brances'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function profileShow($id)
     {
-        if(\Auth::user()->can('show employee profile'))
-        {
-            $empId        = Crypt::decrypt($id);
-            $documents    = Document::where('created_by', \Auth::user()->creatorId())->get();
-            $branches     = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $departments  = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        if (\Auth::user()->can('show employee profile')) {
+            $empId = Crypt::decrypt($id);
+            $documents = Document::where('created_by', \Auth::user()->creatorId())->get();
+            $branches = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $departments = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $employee     = Employee::find($empId);
-            $employeesId  = \Auth::user()->employeeIdFormat($employee->employee_id);
+            $employee = Employee::find($empId);
+            $employeesId = \Auth::user()->employeeIdFormat($employee->employee_id);
 
             return view('employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -500,12 +436,9 @@ class EmployeeController extends Controller
     public function getdepartment(Request $request)
     {
 
-        if($request->branch_id == 0)
-        {
+        if ($request->branch_id == 0) {
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id')->toArray();
-        }
-        else
-        {
+        } else {
             $departments = Department::where('created_by', '=', \Auth::user()->creatorId())->where('branch_id', $request->branch_id)->get()->pluck('name', 'id')->toArray();
         }
 
@@ -517,184 +450,189 @@ class EmployeeController extends Controller
         $users = \Auth::user();
 
         $currantLang = $users->currentLanguage();
-        $joiningletter=JoiningLetter::where(['lang' =>   $currantLang,'created_by' => \Auth::user()->creatorId()])->first();
-        $date=date('Y-m-d');
+        $joiningletter = JoiningLetter::where(['lang' => $currantLang, 'created_by' => \Auth::user()->creatorId()])->first();
+        $date = date('Y-m-d');
         $employees = Employee::find($id);
         $settings = Utility::settings();
-        $secs = strtotime($settings['company_start_time'])-strtotime("00:00");
-        $result = date("H:i",strtotime($settings['company_end_time'])-$secs);
+        $secs = strtotime($settings['company_start_time']) - strtotime('00:00');
+        $result = date('H:i', strtotime($settings['company_end_time']) - $secs);
         $obj = [
-            'date' =>  \Auth::user()->dateFormat($date),
+            'date' => \Auth::user()->dateFormat($date),
             'app_name' => env('APP_NAME'),
             'employee_name' => $employees->name,
-            'address' =>!empty($employees->address)?$employees->address:'' ,
-            'designation' => !empty($employees->designation->name)?$employees->designation->name:'',
-            'start_date' => !empty($employees->company_doj)?$employees->company_doj:'',
-            'branch' => !empty($employees->Branch->name)?$employees->Branch->name:'',
-            'start_time' => !empty($settings['company_start_time'])?$settings['company_start_time']:'',
-            'end_time' => !empty($settings['company_end_time'])?$settings['company_end_time']:'',
+            'address' => ! empty($employees->address) ? $employees->address : '',
+            'designation' => ! empty($employees->designation->name) ? $employees->designation->name : '',
+            'start_date' => ! empty($employees->company_doj) ? $employees->company_doj : '',
+            'branch' => ! empty($employees->Branch->name) ? $employees->Branch->name : '',
+            'start_time' => ! empty($settings['company_start_time']) ? $settings['company_start_time'] : '',
+            'end_time' => ! empty($settings['company_end_time']) ? $settings['company_end_time'] : '',
             'total_hours' => $result,
         ];
 
         $joiningletter->content = JoiningLetter::replaceVariable($joiningletter->content, $obj);
-        return view('employee.template.joiningletterpdf', compact('joiningletter','employees'));
+
+        return view('employee.template.joiningletterpdf', compact('joiningletter', 'employees'));
 
     }
+
     public function joiningletterDoc($id)
     {
         $users = \Auth::user();
 
         $currantLang = $users->currentLanguage();
-        $joiningletter=JoiningLetter::where(['lang' =>   $currantLang,'created_by' => \Auth::user()->creatorId()])->first();
-        $date=date('Y-m-d');
+        $joiningletter = JoiningLetter::where(['lang' => $currantLang, 'created_by' => \Auth::user()->creatorId()])->first();
+        $date = date('Y-m-d');
         $employees = Employee::find($id);
         $settings = Utility::settings();
-        $secs = strtotime($settings['company_start_time'])-strtotime("00:00");
-        $result = date("H:i",strtotime($settings['company_end_time'])-$secs);
-
-
+        $secs = strtotime($settings['company_start_time']) - strtotime('00:00');
+        $result = date('H:i', strtotime($settings['company_end_time']) - $secs);
 
         $obj = [
-            'date' =>  \Auth::user()->dateFormat($date) ,
+            'date' => \Auth::user()->dateFormat($date),
 
             'app_name' => env('APP_NAME'),
             'employee_name' => $employees->name,
-            'address' =>!empty($employees->address)?$employees->address:'' ,
-            'designation' => !empty($employees->designation->name)?$employees->designation->name:'',
-            'start_date' => !empty($employees->company_doj)?$employees->company_doj:'',
-            'branch' => !empty($employees->Branch->name)?$employees->Branch->name:'',
-            'start_time' => !empty($settings['company_start_time'])?$settings['company_start_time']:'',
-            'end_time' => !empty($settings['company_end_time'])?$settings['company_end_time']:'',
+            'address' => ! empty($employees->address) ? $employees->address : '',
+            'designation' => ! empty($employees->designation->name) ? $employees->designation->name : '',
+            'start_date' => ! empty($employees->company_doj) ? $employees->company_doj : '',
+            'branch' => ! empty($employees->Branch->name) ? $employees->Branch->name : '',
+            'start_time' => ! empty($settings['company_start_time']) ? $settings['company_start_time'] : '',
+            'end_time' => ! empty($settings['company_end_time']) ? $settings['company_end_time'] : '',
             'total_hours' => $result,
             //
 
         ];
         // dd($obj);
         $joiningletter->content = JoiningLetter::replaceVariable($joiningletter->content, $obj);
-        return view('employee.template.joiningletterdocx', compact('joiningletter','employees'));
+
+        return view('employee.template.joiningletterdocx', compact('joiningletter', 'employees'));
 
     }
+
     public function ExpCertificatePdf($id)
     {
         $currantLang = \Cookie::get('LANGUAGE');
-        if (!isset($currantLang)) {
+        if (! isset($currantLang)) {
             $currantLang = 'en';
         }
-        $termination = Termination::where('employee_id',$id)->first();
-        $experience_certificate=ExperienceCertificate::where(['lang' =>   $currantLang,'created_by' => \Auth::user()->creatorId()])->first();
-        $date=date('Y-m-d');
+        $termination = Termination::where('employee_id', $id)->first();
+        $experience_certificate = ExperienceCertificate::where(['lang' => $currantLang, 'created_by' => \Auth::user()->creatorId()])->first();
+        $date = date('Y-m-d');
         $employees = Employee::find($id);
         // dd($employees->salaryType->name);
         $settings = Utility::settings();
-        $secs = strtotime($settings['company_start_time'])-strtotime("00:00");
-        $result = date("H:i",strtotime($settings['company_end_time'])-$secs);
+        $secs = strtotime($settings['company_start_time']) - strtotime('00:00');
+        $result = date('H:i', strtotime($settings['company_end_time']) - $secs);
         $date1 = date_create($employees->company_doj);
         $date2 = date_create($employees->termination_date);
-        $diff  =date_diff($date1,$date2);
-        $duration = $diff->format("%a days");
+        $diff = date_diff($date1, $date2);
+        $duration = $diff->format('%a days');
 
-        if(!empty($termination->termination_date)){
+        if (! empty($termination->termination_date)) {
 
             $obj = [
-                'date' =>  \Auth::user()->dateFormat($date),
+                'date' => \Auth::user()->dateFormat($date),
                 'app_name' => env('APP_NAME'),
                 'employee_name' => $employees->name,
-                'payroll'=>!empty($employees->salaryType->name)?$employees->salaryType->name:'',
-                'duration'=> $duration,
-                'designation' => !empty($employees->designation->name)?$employees->designation->name:'',
+                'payroll' => ! empty($employees->salaryType->name) ? $employees->salaryType->name : '',
+                'duration' => $duration,
+                'designation' => ! empty($employees->designation->name) ? $employees->designation->name : '',
 
             ];
-        }else{
+        } else {
             return redirect()->back()->with('error', __('Termination date is required.'));
         }
 
-
         $experience_certificate->content = ExperienceCertificate::replaceVariable($experience_certificate->content, $obj);
-        return view('employee.template.ExpCertificatepdf', compact('experience_certificate','employees'));
+
+        return view('employee.template.ExpCertificatepdf', compact('experience_certificate', 'employees'));
 
     }
+
     public function ExpCertificateDoc($id)
     {
         $currantLang = \Cookie::get('LANGUAGE');
-        if (!isset($currantLang)) {
+        if (! isset($currantLang)) {
             $currantLang = 'en';
         }
-        $termination = Termination::where('employee_id',$id)->first();
-        $experience_certificate=ExperienceCertificate::where(['lang' =>   $currantLang,'created_by' => \Auth::user()->creatorId()])->first();
-        $date=date('Y-m-d');
+        $termination = Termination::where('employee_id', $id)->first();
+        $experience_certificate = ExperienceCertificate::where(['lang' => $currantLang, 'created_by' => \Auth::user()->creatorId()])->first();
+        $date = date('Y-m-d');
         $employees = Employee::find($id);
         $settings = Utility::settings();
-        $secs = strtotime($settings['company_start_time'])-strtotime("00:00");
-        $result = date("H:i",strtotime($settings['company_end_time'])-$secs);
+        $secs = strtotime($settings['company_start_time']) - strtotime('00:00');
+        $result = date('H:i', strtotime($settings['company_end_time']) - $secs);
         $date1 = date_create($employees->company_doj);
         $date2 = date_create($employees->termination_date);
-        $diff  =date_diff($date1,$date2);
-        $duration = $diff->format("%a days");
-        if(!empty($termination->termination_date)){
+        $diff = date_diff($date1, $date2);
+        $duration = $diff->format('%a days');
+        if (! empty($termination->termination_date)) {
             $obj = [
-                'date' =>  \Auth::user()->dateFormat($date),
+                'date' => \Auth::user()->dateFormat($date),
                 'app_name' => env('APP_NAME'),
                 'employee_name' => $employees->name,
-                'payroll'=>!empty($employees->salaryType->name)?$employees->salaryType->name:'',
-                'duration'=> $duration,
-                'designation' => !empty($employees->designation->name)?$employees->designation->name:'',
+                'payroll' => ! empty($employees->salaryType->name) ? $employees->salaryType->name : '',
+                'duration' => $duration,
+                'designation' => ! empty($employees->designation->name) ? $employees->designation->name : '',
 
             ];
-        }else{
+        } else {
             return redirect()->back()->with('error', __('Termination date is required.'));
         }
 
         $experience_certificate->content = ExperienceCertificate::replaceVariable($experience_certificate->content, $obj);
-        return view('employee.template.ExpCertificatedocx', compact('experience_certificate','employees'));
+
+        return view('employee.template.ExpCertificatedocx', compact('experience_certificate', 'employees'));
 
     }
+
     public function NocPdf($id)
     {
         $users = \Auth::user();
 
         $currantLang = $users->currentLanguage();
-        $noc_certificate=NOC::where(['lang' =>   $currantLang,'created_by' => \Auth::user()->creatorId()])->first();
-        $date=date('Y-m-d');
+        $noc_certificate = NOC::where(['lang' => $currantLang, 'created_by' => \Auth::user()->creatorId()])->first();
+        $date = date('Y-m-d');
         $employees = Employee::find($id);
         $settings = Utility::settings();
-        $secs = strtotime($settings['company_start_time'])-strtotime("00:00");
-        $result = date("H:i",strtotime($settings['company_end_time'])-$secs);
-
+        $secs = strtotime($settings['company_start_time']) - strtotime('00:00');
+        $result = date('H:i', strtotime($settings['company_end_time']) - $secs);
 
         $obj = [
-            'date' =>  \Auth::user()->dateFormat($date),
+            'date' => \Auth::user()->dateFormat($date),
             'employee_name' => $employees->name,
-            'designation' => !empty($employees->designation->name)?$employees->designation->name:'',
+            'designation' => ! empty($employees->designation->name) ? $employees->designation->name : '',
             'app_name' => env('APP_NAME'),
         ];
 
-        $noc_certificate->content=NOC::replaceVariable($noc_certificate->content, $obj);
-        return view('employee.template.Nocpdf', compact('noc_certificate','employees'));
+        $noc_certificate->content = NOC::replaceVariable($noc_certificate->content, $obj);
+
+        return view('employee.template.Nocpdf', compact('noc_certificate', 'employees'));
 
     }
+
     public function NocDoc($id)
     {
         $users = \Auth::user();
 
         $currantLang = $users->currentLanguage();
-        $noc_certificate=NOC::where(['lang' =>   $currantLang,'created_by' => \Auth::user()->creatorId()])->first();
-        $date=date('Y-m-d');
+        $noc_certificate = NOC::where(['lang' => $currantLang, 'created_by' => \Auth::user()->creatorId()])->first();
+        $date = date('Y-m-d');
         $employees = Employee::find($id);
         $settings = Utility::settings();
-        $secs = strtotime($settings['company_start_time'])-strtotime("00:00");
-        $result = date("H:i",strtotime($settings['company_end_time'])-$secs);
-
+        $secs = strtotime($settings['company_start_time']) - strtotime('00:00');
+        $result = date('H:i', strtotime($settings['company_end_time']) - $secs);
 
         $obj = [
-            'date' =>  \Auth::user()->dateFormat($date),
+            'date' => \Auth::user()->dateFormat($date),
             'employee_name' => $employees->name,
-            'designation' => !empty($employees->designation->name)?$employees->designation->name:'',
+            'designation' => ! empty($employees->designation->name) ? $employees->designation->name : '',
             'app_name' => env('APP_NAME'),
         ];
 
-        $noc_certificate->content=NOC::replaceVariable($noc_certificate->content, $obj);
-        return view('employee.template.Nocdocx', compact('noc_certificate','employees'));
+        $noc_certificate->content = NOC::replaceVariable($noc_certificate->content, $obj);
+
+        return view('employee.template.Nocdocx', compact('noc_certificate', 'employees'));
 
     }
-
 }
