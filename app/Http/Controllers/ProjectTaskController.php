@@ -632,7 +632,8 @@ class ProjectTaskController extends Controller
                 $get_task_progress = Task_progress::select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
                     ->leftjoin('task_progress_file as file',
                         \DB::raw('FIND_IN_SET(file.id,task_progress.file_id)'), '>', \DB::raw("'0'"))
-                    ->where('task_progress.task_id', $task_id)->where('user_id', \Auth::user()->id)
+                    ->where('task_progress.task_id', $task_id)
+                    ->where('user_id', \Auth::user()->id)
                     ->where('task_progress.project_id', $get_popup_data_con->project_id)
                     ->where('task_progress.instance_id', $instanceId)
                     ->groupBy('task_progress.id')
@@ -692,7 +693,7 @@ class ProjectTaskController extends Controller
             ->get()->count();
 
         $remaining_working_days = Utility::remaining_duration_calculator($get_con_task->end_date, $get_con_task->project_id);
-        $remaining_working_days = $remaining_working_days - 1; // include the last day
+        $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days-1 : 0; // include the last day
         $completed_days = $get_con_task->duration - $remaining_working_days;
         if ($get_con_task->duration == 1) {
             $current_Planed_percentage = 100;
