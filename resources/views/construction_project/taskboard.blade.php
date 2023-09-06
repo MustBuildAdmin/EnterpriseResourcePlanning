@@ -15,7 +15,7 @@
                         <div class="col-12">
                             <div class="card-header">
                                 <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
+                                    <li class="nav-item" role="presentation" onclick="alltask()">
                                         <a href="#tabs-home-7" class="nav-link active" data-bs-toggle="tab"
                                         aria-selected="true" role="tab">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +39,7 @@
                                              Tasks
                                         </a>
                                     </li>
-                                    <li class="nav-item" role="presentation">
+                                    <li class="nav-item" role="presentation" onclick="maintask()">
                                         <a href="#tabs-profile-7" class="nav-link" data-bs-toggle="tab"
                                         aria-selected="false" tabindex="-1" role="tab">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -160,152 +160,65 @@
                                                     <h4 class="card-title">Summary Lists Information</h4>
                                                 </div>
                                                 <div class="card-body">
-                                                    <div class="col-md-12">
-                                                        <div class="table-responsive card p-4">
-                                                            <table class="table table-vcenter card-table" id="summary-table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Summary ID</th>
-                                                                        <th>Summary Name</th>
-                                                                        <th>Summary Status</th>
-                                                                        <th>Actual Progress</th>
-                                                                        <th>Planned Progress</th>
-                                                                        <th>Planned Start Date</th>
-                                                                        <th>Planned End Date</th>
-                                                                        <th>Assigned To</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <tr>
-                                                                        <td><a href="#">345432345432356</a></td>
-                                                                        <td>Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
-                                                                        <td><span class="badge bg-warning me-1"></span> Pending</td>
-                                                                        <td class="sort-progress" data-progress="30">
-                                                                            <div class="row align-items-center">
-                                                                                <div class="col-12 col-lg-auto">30%</div>
-                                                                                <div class="col">
-                                                                                <div class="progress" style="width: 5rem">
-                                                                                    <div class="progress-bar bg-red" style="width: 40%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                    <span class="visually-hidden">30% Complete</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            </td>
-                                                                        <td class="sort-progress" data-progress="30">
-                                                                            <div class="row align-items-center">
-                                                                                <div class="col-12 col-lg-auto">30%</div>
-                                                                                <div class="col">
-                                                                                <div class="progress" style="width: 5rem">
-                                                                                    <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                    <span class="visually-hidden">30% Complete</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            </td>
-                                                                        <td>
-                                                                            15 Dec 2017
-                                                                            </td>
-                                                                        <td>
-                                                                            15 Dec 2017
-                                                                            </td>
-                                                                        <td><div class="avatar-list avatar-list-stacked">
-                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                                                                            <span class="avatar avatar-xs rounded">JL</span>
-                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                                                                            <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                                                                            <span class="avatar avatar-xs rounded">+3</span>
-                                                                        </div></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                    <td><a href="#">345432345432356</a></td>
-                                                                    <td>Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
-                                                                    <td><span class="badge bg-info me-1"></span> In-Progress</td>
-                                                                    <td class="sort-progress" data-progress="30">
-                                                                        <div class="row align-items-center">
-                                                                            <div class="col-12 col-lg-auto">30%</div>
-                                                                            <div class="col">
-                                                                            <div class="progress" style="width: 5rem">
-                                                                                <div class="progress-bar" style="width: 40%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                <span class="visually-hidden">30% Complete</span>
-                                                                                </div>
-                                                                            </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        </td>
-                                                                    <td class="sort-progress" data-progress="30">
-                                                                        <div class="row align-items-center">
-                                                                            <div class="col-12 col-lg-auto">30%</div>
-                                                                            <div class="col">
-                                                                            <div class="progress" style="width: 5rem">
-                                                                                <div class="progress-bar" style="width: 30%" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                <span class="visually-hidden">30% Complete</span>
-                                                                                </div>
-                                                                            </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        </td>
-                                                                    <td>
-                                                                        15 Dec 2017
-                                                                        </td>
-                                                                    <td>
-                                                                        15 Dec 2017
-                                                                        </td>
-                                                                    <td><div class="avatar-list avatar-list-stacked">
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded">JL</span>
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded">+3</span>
-                                                                    </div></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                    <td><a href="#">345432345432356</a></td>
-                                                                    <td>Tabler is a free and open source web application UI kit based on Bootstrap 5, with hundreds responsive components and multiple layouts.</td>
-                                                                    <td><span class="badge bg-success me-1"></span>Completed</td>
-                                                                    <td class="sort-progress" data-progress="30">
-                                                                        <div class="row align-items-center">
-                                                                            <div class="col-12 col-lg-auto">100%</div>
-                                                                            <div class="col">
-                                                                            <div class="progress" style="width: 5rem">
-                                                                                <div class="progress-bar bg-green" style="width: 100%" role="progressbar bg-danger" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                    <span class="visually-hidden">100% Complete</span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        </td>
-                                                                    <td class="sort-progress" data-progress="30">
-                                                                        <div class="row align-items-center">
-                                                                            <div class="col-12 col-lg-auto">100%</div>
-                                                                            <div class="col">
-                                                                            <div class="progress" style="width: 5rem">
-                                                                                <div class="progress-bar bg-green" style="width: 100%" role="progressbar bg-danger" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" aria-label="30% Complete">
-                                                                                <span class="visually-hidden">100% Complete</span>
-                                                                                </div>
-                                                                            </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        </td>
-                                                                    <td>
-                                                                        15 Dec 2017
-                                                                        </td>
-                                                                    <td>
-                                                                        15 Dec 2017
-                                                                        </td>
-                                                                    <td><div class="avatar-list avatar-list-stacked">
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded">JL</span>
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                                                                        <span class="avatar avatar-xs rounded">+3</span>
-                                                                    </div></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
+                                                    <div class="row">
+                                                        <div class="col-md-2 border-end p-3">
+                                                            <form>
+                                                                <div class="col-md-12">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Search By Summary Name or Id</label>
+                                                                        <input type="text" id="main_skill_input" value="{{ request()->get('q') }}" >
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 mb-3">
+                                                                    <label class="form-label required">Summary Planned Start Date</label>
+                                                                    <div class="input-icon">
+                                                                        <span class="input-icon-addon">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
+                                                                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                                        </span>
+                                                                        <input class="form-control main_start_date" placeholder="Select a Start date" id="main_start-date"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 mb-3">
+                                                                    <label class="form-label required">Summary Planned End Date</label>
+                                                                    <div class="input-icon">
+                                                                        <span class="input-icon-addon">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                                                            stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" />
+                                                                            </svg>
+                                                                        </span>
+                                                                        <input class="form-control main_end_date" placeholder="Select a End date" id="main_end-date"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Summary Status</label>
+                                                                        <select type="text" class="form-select main_task_status" placeholder="Task Status"
+                                                                        id="main_task-status" value="">
+                                                                            <option value="">Select Status</option>
+                                                                            <option value="3">Pending</option>
+                                                                            <option value="4">Completed</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 mt-4">
+                                                                    <div class="mb-3">
+                                                                        <button type="button" class="btn btn-tabler w-100" onclick="main_submit_button()">Search</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+
+                                                        <div class="col-md-10">
+                                                            <div class="table-responsive card p-4" id="main_task_append">
+                                                                
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -363,6 +276,23 @@
             theme: "bootstrap",
             queryParam:"selectsearch",
         });
+
+        $("#main_skill_input").tokenInput("{{route('task_autocomplete_main')}}", {
+            propertyToSearch:"text",
+            tokenValue:"id",
+            tokenDelimiter:",",
+            hintText: "Search Summary...",
+            noResultsText: "Summary not found.",
+            searchingText: "Searching...",
+            deleteText:"&#215;",
+            minChars: 2,
+            tokenLimit: 4,
+            animateDropdown: false,
+            resultsLimit:10,
+            deleteText: "&times;",
+            preventDuplicates: true,
+            theme: "bootstrap"
+        });
     });
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -381,6 +311,42 @@
     document.addEventListener("DOMContentLoaded", function () {
         var el;
         window.TomSelect && (new TomSelect(el = document.getElementById('task-status'), {
+                        copyClassesToDropdown: false,            plugins: ['remove_button'],
+            dropdownParent: 'body',
+            controlInput: '<input>',
+            render:{
+                item: function(data,escape) {
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+                option: function(data,escape){
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+            },
+        }));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.Litepicker && (new Litepicker({
+            element: document.getElementById('main_start-date'),
+            elementEnd: document.getElementById('main_end-date'),
+            singleMode: false,
+            allowRepick: true,
+            buttonText: {
+                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+            },
+        }));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var el;
+        window.TomSelect && (new TomSelect(el = document.getElementById('main_task-status'), {
                         copyClassesToDropdown: false,            plugins: ['remove_button'],
             dropdownParent: 'body',
             controlInput: '<input>',
@@ -452,7 +418,7 @@
         alltask(start_date,end_date,user_id_arr,status_task);
     }
 
-    function maintask(){
+    function maintask(start_date,end_date,status_task,task_id_arr){
         // $(".loader_show_hide").show();
         $("#main_task_append").html("");
 
@@ -464,6 +430,10 @@
             url : '{{route("main_task_list")}}',
             type : 'GET',
             data : {
+                'start_date'  : start_date,
+                'end_date'    : end_date,
+                'status_task' : status_task,
+                'task_id_arr' : task_id_arr
             },
             cache:true,
             success : function(data) {
@@ -477,5 +447,20 @@
                 alert("Request: "+JSON.stringify(request));
             }
         });
+    }
+
+    function main_submit_button(){
+        start_date  = $(".main_start_date").val();
+        end_date    = $(".main_end_date").val();
+        status_task = $(".main_task_status").val();
+        task_id     = $('input#main_skill_input').tokenInput('get');
+      
+
+        var task_id_arr = [];
+        $.each(task_id, function(i, obj){
+            task_id_arr.push(obj.id);
+        });
+
+        maintask(start_date,end_date,status_task,task_id_arr);
     }
 </script>

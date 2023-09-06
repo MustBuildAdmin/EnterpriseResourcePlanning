@@ -10,103 +10,125 @@
     line-height: 35px;
     display: grid;
 }
-</style>
-<table class="table" id="example3">
-    <thead>
-    <tr>
-        <th scope="col">{{__('Tasks')}}</th>
-        <th scope="col">{{__('Status')}}</th>
-        <th scope="col">{{__('Actual Progress')}}</th>
-        <th scope="col">{{__('Planned Start Date')}}</th>
-        <th scope="col">{{__('Planned End Date')}}</th>
-        <th scope="col">{{__('Assigned To')}}</th>
 
-    </tr>
+.dataTables_length{
+  margin-bottom: 5%;
+}
+</style>
+
+<table class="table table-vcenter card-table" id="summary-table">
+    <thead>
+        <tr>
+            <th scope="col">{{__('SummaryId')}}</th>
+            <th scope="col">{{__('Tasks')}}</th>
+            <th scope="col">{{__('Status')}}</th>
+            <th scope="col">{{__('Actual Progress')}}</th>
+            <th scope="col">{{__('Planned Progress')}}</th>
+            <th scope="col">{{__('Planned Start Date')}}</th>
+            <th scope="col">{{__('Planned End Date')}}</th>
+        </tr>
     </thead>
     <tbody class="list">
-        @if(count($show_parent_task) > 0)
-            @foreach($show_parent_task as $show_parent)
-                <tr>
-                    <td style="width:40%;" class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
-                        <span class="h6 text-sm font-weight-bold mb-0">{{ $show_parent->text }}</span>
-                    </td>
-                    <td style="width:10%;">
-                        @if (strtotime($show_parent->end_date) < time() && $show_parent->progress < 100)
-                            <span class="badge badge-success" style="background-color:#DC3545;">Pending</span>
-                        @elseif(strtotime($show_parent->end_date) < time() && $show_parent->progress >= 100)
-                            <span class="badge badge-success" style="background-color:#28A745;">Completed</span>
-                        @else
-                            <span class="badge badge-info" style="background-color:#007bff;">In-Progress</span>
-                        @endif
-                    </td>
-                    <td style="width:10%;">
-                        @if ($show_parent->progress >= 100)
-                            <span class="badge badge-success" style="background-color:#28A745;">{{$show_parent->progress}}%</span>
-                        @else
-                            <span class="badge badge-info" style="background-color:#007bff;">{{$show_parent->progress}}%</span>
-                        @endif
-                    </td>
-                    <td  style="width:10%;"class="{{ (strtotime($show_parent->start_date) < time()) ? 'text-danger' : '' }}">
-                        {{ Utility::site_date_format($show_parent->start_date,\Auth::user()->id) }}
-                    </td>
-                    <td  style="width:10%;"class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
-                        {{ Utility::site_date_format_minus_day($show_parent->end_date,\Auth::user()->id,1) }}
-                    </td>
-                    <td style="width:10%;">
-                        <div class="avatar-group">
-                            @php
-                                if($show_parent->users != ""){
-                                    $users_data = json_decode($show_parent->users);
-                                }
-                                else{
-                                    $users_data = array();
-                                }
-                            @endphp
-                            @forelse ($users_data as $key => $get_user)
-                                @php
-                                    $user_db = DB::table('users')->where('id',$get_user)->first();
-                                @endphp
+        @forelse ($show_parent_task as $show_parent)
+            @php
+                $instanceId             = Session::get('project_instance');
+                $remaining_working_days = Utility::remaining_duration_calculator($show_parent->end_date,$show_parent->project_id);
+                $remaining_working_days = $remaining_working_days-1;// include the last day
+                $completed_days         = $show_parent->duration-$remaining_working_days;
+                
+                if($show_parent->duration==1){
+                    $current_Planed_percentage=100;
+                }else{
+                    // percentage calculator
+                    if($show_parent->duration>0){
+                        $perday = 100/$show_parent->duration;
+                    }else{
+                        $perday = 0;
+                    }
+                    $current_Planed_percentage = round($completed_days*$perday);
+                }
+            @endphp
+            <tr>
+                <td style="width:5%; font-size: 15px;">
+                    <a style="text-decoration: none;">{{ $show_parent->id }}</a>
+                </td>
 
-                                @if($key<3)
+                <td style="width:30%; font-size: 15px;">
+                    {{ $show_parent->text }}
+                </td>
 
-                                        @if($user_db->avatar)
-                                            <a href="#" class="avatar rounded-circle avatar-sm">
-                                                <img data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
-                                                @if($user_db->avatar)
-                                                    src="{{asset('/storage/uploads/avatar/'.$user_db->avatar)}}"
-                                                @else
-                                                    src="{{asset('/storage/uploads/avatar/avatar.png')}}"
-                                                @endif
-                                            title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
-                                            </a>
-                                        @else
-                                            <?php  $short=substr($user_db->name, 0, 1);?>
-                                            <span class="user-initial">{{strtoupper($short)}}</span>
-                                        @endif
+                <td style="width:20%;">
+                    @if (strtotime($show_parent->end_date) < time() && $show_parent->progress < 100)
+                        <span class="badge bg-warning me-1"></span> Pending
+                    @elseif(strtotime($show_parent->end_date) < time() && $show_parent->progress >= 100)
+                        <span class="badge bg-success me-1"></span> Completed
+                    @else
+                        <span class="badge bg-info me-1"></span> In-Progress
+                    @endif
+                </td>
 
-
-                                @endif
-                            @empty
-                                {{ __('Not Assigned') }}
-                            @endforelse
+                <td style="width:15%;" class="sort-progress"
+                    data-progress="{{round($show_parent->progress)}}">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-auto" style="width: 50px;">{{round($show_parent->progress)}}%</div>
+                        <div class="col">
+                            <div class="progress" style="width: 5rem">
+                                <div class="progress-bar" style="width: {{round($show_parent->progress)}}%"
+                                    role="progressbar" aria-valuenow="{{round($show_parent->progress)}}"
+                                    aria-valuemin="0" aria-valuemax="100"
+                                    aria-label="{{round($show_parent->progress)}}% Complete">
+                                    <span class="visually-hidden">{{round($show_parent->progress)}}% Complete</span>
+                                </div>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            @endforeach
-        @else
-        @endif
+                    </div>
+                </td>
+
+                <td style="width:15%;" class="sort-progress"
+                    data-progress="{{round($current_Planed_percentage)}}">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-auto" style="width: 50px;">
+                            {{round($current_Planed_percentage)}}%
+                        </div>
+                        <div class="col">
+                            <div class="progress" style="width: 5rem">
+                                <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%"
+                                role="progressbar" aria-valuenow="{{round($current_Planed_percentage)}}"
+                                aria-valuemin="0" aria-valuemax="100"
+                                aria-label="{{round($current_Planed_percentage)}}% Complete">
+                                    <span class="visually-hidden">
+                                        {{round($current_Planed_percentage)}}% Complete
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                <td style="width:5%;"
+                    class="{{ (strtotime($show_parent->start_date) < time()) ? 'text-danger' : '' }}">
+                    {{ Utility::site_date_format($show_parent->start_date,\Auth::user()->id) }}
+                </td>
+
+                <td style="width:5%;"
+                    class="{{ (strtotime($show_parent->end_date) < time()) ? 'text-danger' : '' }}">
+                    {{ Utility::site_date_format_minus_day($show_parent->end_date,\Auth::user()->id,1) }}
+                </td>
+            </tr>
+        @empty
+        @endforelse
     </tbody>
 </table>
 
 <script>
-    $(document).ready(function() {
-        $('#example3').dataTable().fnDestroy();
-        $('#example3').DataTable({
-            dom: 'Bfrtip',
-            searching: true,
-            info: true,
-            paging: true,
-            // bSort: false,
-        });
+    $(function () {
+        datatable2();
     });
+
+    function datatable2(){
+        new DataTable('#summary-table', {
+            pagingType: 'full_numbers',
+            aaSorting: []
+        });
+    }
 </script>

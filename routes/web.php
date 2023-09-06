@@ -3072,6 +3072,7 @@ Route::get(
 );
 
 Route::get('task_autocomplete', 'ProjectTaskController@task_autocomplete')->name('task_autocomplete')->middleware(['auth','XSS',]);
+Route::get('task_autocomplete_main', 'ProjectTaskController@task_autocomplete_main')->name('task_autocomplete_main')->middleware(['auth','XSS',]);
 Route::get('user_autocomplete', 'ProjectTaskController@user_autocomplete')->name('user_autocomplete')->middleware(['auth','XSS',]);
 
 

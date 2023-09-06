@@ -265,55 +265,60 @@ class ProjectTaskController extends Controller
     }
 
     public function main_task_list(Request $request){
-        $projectId = Session::get('project_id');
-        $getProject = Project::find($projectId);
+        $project_id     = Session::get('project_id');
+        $get_start_date = $request->start_date;
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
+        $task_id_arr    = $request->task_id_arr;
+        $instance_id    = Session::get('project_instance');
 
-        if(Session::has('project_id')){
-            $instanceId=Session::get('project_instance');
-        }
-        else{
-            $instanceId = $getProject->instance_id;
-        }
+        // 3 > Pending Task
+        // 4 > Completed Task
 
         $setting  = Utility::settings(\Auth::user()->creatorId());
         if($setting['company_type']==2){
-            
-            if(\Auth::user()->type != 'company'){
-                $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration',
+
+            $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration',
                 'con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
-                'con_tasks.instance_id','con_tasks.main_id','pro.project_name','pro.id as project_id',
-                'pro.instance_id as pro_instance_id')
-                ->join('projects as pro', function($join) use($projectId) {
-                    $join->on('pro.id', '=', 'con_tasks.project_id')
-                    ->where('pro.id', $projectId);
-                })
-                ->whereNotNull('pro.instance_id')
-                ->whereIn('con_tasks.project_id', $projectId)
-                ->whereRaw("find_in_set('" . \Auth::user()->id . "',con_tasks.users)")
-                ->where('con_tasks.type','project')
-                ->where('con_tasks.instance_id', $instanceId)
-                ->orwhereNull('con_tasks.type')
-                ->orderBy('con_tasks.main_id','ASC')
-                ->get();
-            }
-            else{
-                $show_parent_task = Con_task::
-                select('con_tasks.text','con_tasks.users','con_tasks.duration','con_tasks.progress',
-                'con_tasks.start_date','con_tasks.end_date','con_tasks.id','con_tasks.instance_id',
-                    'con_tasks.main_id','pro.project_name','pro.id as project_id','pro.instance_id as pro_instance_id')
-                    ->join('projects as pro', function($join) use($projectId) {
-                        $join->on('pro.id', '=', 'con_tasks.project_id')
-                        ->where('pro.id', $projectId);
-                    })
-                    ->whereNotNull('pro.instance_id')
-                    ->where('con_tasks.project_id', $projectId)
-                    ->where('con_tasks.instance_id', $instanceId)
-                    ->where('con_tasks.type','project')
-                    ->orwhereNull('con_tasks.type')
-                    ->orderBy('con_tasks.main_id','ASC')
-                    ->get();
+                'con_tasks.instance_id','con_tasks.main_id','pros.project_name',
+                'pros.id as project_id','pros.instance_id as pro_instance_id')
+                ->join('projects as pros','pros.id','con_tasks.project_id')
+                ->where('con_tasks.project_id', $project_id)
+                ->where('con_tasks.instance_id', $instance_id)
+                ->where('con_tasks.type','project');
+
+            if(\Auth::user()->type != 'company'){
+                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
             }
 
+            if($task_id_arr != null){
+                $show_parent_task->whereIn('con_tasks.id',$task_id_arr);
+            }
+
+            if($get_start_date != null && $get_end_date != null){
+                $show_parent_task->where(function ($query) use ($get_start_date, $get_end_date) {
+                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                });
+            }
+
+            if($status_task != null){
+                if($status_task == "3"){
+                    $show_parent_task->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));;
+                }
+                elseif($status_task == "4"){
+                    $show_parent_task->where('progress','>=','100');
+                }
+            }
+
+            if($task_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
+                $show_parent_task->orderBy('con_tasks.end_date','DESC');
+            }
+
+            $show_parent_task = $show_parent_task->get();
+            
             $returnHTML = view('project_task_con.main_task_list', compact('show_parent_task'))->render();
 
             return response()->json(
@@ -2020,6 +2025,32 @@ class ProjectTaskController extends Controller
             $consTask = Con_task::search($searchValue)
                 ->where('project_id',Session::get('project_id'))
                 ->where('instance_id',Session::get('project_instance'))
+                ->where('type','task')
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array(); 
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData); 
+    }
+
+    public function task_autocomplete_main(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = Con_task::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->where('type','project')
                 ->orderBy('text','ASC')
                 ->get();
         }
