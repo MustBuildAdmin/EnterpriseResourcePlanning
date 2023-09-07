@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use App\Models\Utility;
 use App\Models\Order;
+use App\Models\Consultant_companies;
 use App\Models\Plan;
 use App\Models\UserToDo;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Mail;
 use Session;
 use Spatie\Permission\Models\Role;
 use Config;
+use Carbon\Carbon;
 
 
 class ConsultantController extends Controller
