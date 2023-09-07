@@ -118,83 +118,15 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-actions">
-                        <a href="#" class="btn btn-success float-end" data-bs-toggle="modal"
-                            data-bs-target="#modal-large">
+                        @php $get_date = $data['get_date']; @endphp
+                        <a href="#" data-size="xl" data-url="{{ route('add_particular_task',["task_id"=>$task_id, "get_date"=>$get_date]) }}"  
+                            data-ajax-popup="true" data-title="{{$data['con_data']!=null ? $data['con_data']->text:'Task' }} Progress Update" 
+                            data-bs-toggle="modal" title="{{__('Create')}}" class="btn btn-success float-end" data-bs-target="#modal-large">
                             Progress Update
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="modal modal-blur fade" id="modal-large" tabindex="-1" role="dialog"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">TaskID-Task Name Progress Update</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="row row-cards">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Actual Date</label>
-                                                    <div class="input-icon">
-                                                        <span
-                                                            class="input-icon-addon">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon"
-                                                                width="24" height="24" viewBox="0 0 24 24"
-                                                                stroke-width="2" stroke="currentColor" fill="none"
-                                                                stroke-linecap="round" stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path
-                                                                    d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
-                                                                <path d="M16 3v4" />
-                                                                <path d="M8 3v4" />
-                                                                <path d="M4 11h16" />
-                                                                <path d="M11 15h1" />
-                                                                <path d="M12 15v3" />
-                                                            </svg>
-                                                        </span>
-                                                        <input class="form-control" placeholder="Select a date"
-                                                            id="datepicker-icon-prepend" value="2020-06-20" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Planned Date</label>
-                                                    <input type="number" min="0.1" max="100"
-                                                        class="form-control" name="example-text-input"
-                                                        placeholder="Planned Start Date">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label">Description</label>
-                                                    <textarea id="tinymce-mytextarea"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="mb-3">
-                                                    <form id="dropzone-multiple">
-                                                        <label class="form-label">Upload your Files</label>
-                                                        <input name="file" type="file" multiple />
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save
-                                        changes</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="table-responsive card p-4">
                         <table class="table table-vcenter card-table" id="task-progress">
                             <thead>
@@ -254,7 +186,7 @@
                                             @empty
                                             @endforelse
                                         </td>
-                                        <td>{{ $task_progress->description }}</td>
+                                        <td>{!! $task_progress->description !!}</td>
                                         <td>
                                             <div class="actions">
                                                 <a class="backgroundnone"
@@ -279,10 +211,7 @@
     </div>
     @include('new_layouts.footer')
     <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ asset('dropzone/dropzone-min.js') }}"></script>
-    <script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
     <script src="{{ asset('litepicker/litepicker.js') }}"></script>
-    <script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script>
@@ -290,42 +219,4 @@
             pagingType: 'full_numbers',
             aaSorting: []
         });
-    
-        document.addEventListener("DOMContentLoaded", function() {
-            window.Litepicker && (new Litepicker({
-                element: document.getElementById('datepicker-icon-prepend'),
-                buttonText: {
-                    previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-                    nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
-                },
-            }));
-        });
-    
-        document.addEventListener("DOMContentLoaded", function() {
-            let options = {
-                selector: '#tinymce-mytextarea',
-                height: 300,
-                menubar: false,
-                statusbar: false,
-                plugins: [
-                    'advlist autolink lists link image charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table paste code help wordcount'
-                ],
-                toolbar: 'undo redo | formatselect | ' +
-                    'bold italic backcolor | alignleft aligncenter ' +
-                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                    'removeformat',
-                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
-            }
-            if (localStorage.getItem("tablerTheme") === 'dark') {
-                options.skin = 'oxide-dark';
-                options.content_css = 'dark';
-            }
-            tinyMCE.init(options);
-        })
-      
-        document.addEventListener("DOMContentLoaded", function() {
-            new Dropzone("#dropzone-multiple")
-        })
     </script>
