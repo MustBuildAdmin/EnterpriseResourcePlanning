@@ -1374,6 +1374,9 @@ class ProjectController extends Controller
                 $instanceId = $project->instance_id;
             }
             $freezeCheck = Instance::where('project_id', $projectID)->where('instance', $instanceId)->first();
+
+            $projectname=Project::where('id', Session::get('project_id'))->pluck('project_name')->first();
+
             if ($project) {
                 $setting = Utility::settings(\Auth::user()->creatorId());
                 if ($setting['company_type'] == 2) {
@@ -1384,7 +1387,7 @@ class ProjectController extends Controller
                         ->where('instance_id', $instanceId)->pluck('non_working_days')->first();
 
                     return view('construction_project.gantt',
-                        compact('project', 'tasks', 'duration', 'project_holidays', 'freezeCheck', 'nonWorkingDay'));
+                        compact('project', 'tasks', 'duration', 'project_holidays', 'freezeCheck', 'nonWorkingDay','projectname'));
                 } else {
                     $tasksobj = $project->tasks;
                     foreach ($tasksobj as $task) {
