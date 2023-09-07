@@ -1386,8 +1386,8 @@ class ProjectController extends Controller
                     $nonWorkingDay = NonWorkingDaysModal::where('project_id', $projectID)
                         ->where('instance_id', $instanceId)->pluck('non_working_days')->first();
 
-                    return view('construction_project.gantt',
-                        compact('project', 'tasks', 'duration', 'project_holidays', 'freezeCheck', 'nonWorkingDay','projectname'));
+                    return view('construction_project.gantt',compact('project', 'tasks', 'duration',
+                                'project_holidays', 'freezeCheck', 'nonWorkingDay','projectname'));
                 } else {
                     $tasksobj = $project->tasks;
                     foreach ($tasksobj as $task) {
