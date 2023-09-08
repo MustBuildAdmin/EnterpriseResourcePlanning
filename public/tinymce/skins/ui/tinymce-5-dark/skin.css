@@ -2409,7 +2409,6 @@ body.tox-dialog__disable-scroll {
   display: flex;
   justify-content: center;
   width: 16px;
-  display: none;
 }
 .tox .tox-notification {
   border-radius: 3px;
