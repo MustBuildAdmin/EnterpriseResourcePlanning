@@ -28325,8 +28325,13 @@ i.ti.ti-pencil {
 .floatrght {
     float: right;
 }
+
+.navbar-gantt li a  {
+    padding: 15px 9px !important;
+    margin: 1px 4px;
+}
 .navbar-nav li a {
-    padding: 30px !important;
+    padding: 15px 9px !important;
     font-size: 1em;
     color: #000 !important;
     display: flex;
