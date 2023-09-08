@@ -16,6 +16,19 @@
         } else {
             $style = '';
         }
+
+        if (strtotime($data['con_data']->end_date) < time() && $data['con_data']->progress < 100){
+            $spanClass = 'status-red';
+            $statusData = 'Pending';
+        }
+        elseif(strtotime($data['con_data']->end_date) < time() && $data['con_data']->progress >= 100){
+            $spanClass = 'status-green';
+            $statusData = 'Completed';
+        }
+        else{
+            $spanClass = 'status-blue';
+            $statusData = 'In-Progress';
+        }
     @endphp
 
     <div class="container-fluid m-3">
@@ -32,12 +45,6 @@
                         <div class="datagrid-item">
                             <div class="datagrid-title">Task Name</div>
                             <div class="datagrid-content">{{ $data['con_data'] != null ? $data['con_data']->text : 'Task' }}
-                            </div>
-                        </div>
-                        <div class="datagrid-item">
-                            <div class="datagrid-title">Description</div>
-                            <div class="datagrid-content">
-                                {{ $data['con_data']->description != null ? $data['con_data']->description : '–' }}
                             </div>
                         </div>
 
@@ -69,30 +76,39 @@
                             <div class="datagrid-title">Task Creator</div>
                             <div class="datagrid-content">Third Party</div>
                         </div>
-                        <div class="datagrid-item">
 
+                        <div class="datagrid-item">
                             <div class="datagrid-title">Planned Start Date</div>
                             <div class="datagrid-content">
                                 {{ Utility::site_date_format($data['con_data']->start_date, \Auth::user()->id) }}</div>
                         </div>
+
                         <div class="datagrid-item">
                             <div class="datagrid-title">Planned End Date</div>
                             <div class="datagrid-content">
                                 {{ Utility::site_date_format_minus_day($data['con_data']->end_date, \Auth::user()->id, 1) }}
                             </div>
                         </div>
+
                         <div class="datagrid-item">
                             <div class="datagrid-title">Actucal Start Date</div>
-                            <div class="datagrid-content">–</div>
+                            <div class="datagrid-content">
+                                {{ isset($actualStartDate->record_date) ? Utility::site_date_format($actualStartDate->record_date, \Auth::user()->id) : '-'}}
+                            </div>
                         </div>
+
                         <div class="datagrid-item">
                             <div class="datagrid-title">Actucal End Date</div>
-                            <div class="datagrid-content">–</div>
+                            <span class="status {{$spanClass}}">
+                                {{ isset($actualEndDate->record_date) ? Utility::site_date_format($actualEndDate->record_date, \Auth::user()->id) : '-' }}
+                            </span>
                         </div>
+
                         <div class="datagrid-item">
                             <div class="datagrid-title">Planned Progress</div>
                             <div class="datagrid-content">{{ round($current_Planed_percentage) }}%</div>
                         </div>
+
                         <div class="datagrid-item">
                             <div class="datagrid-title">Actual Progress</div>
                             <div class="datagrid-content">
@@ -100,15 +116,19 @@
                         </div>
 
                         <div class="datagrid-item">
-                            <div class="datagrid-title">Age</div>
+                            <div class="datagrid-title">Planned Duration</div>
                             <div class="datagrid-content">{{ $data['con_data']->duration }} days</div>
                         </div>
+
+                        <div class="datagrid-item">
+                            <div class="datagrid-title">Actual Duration</div>
+                            <span class="status {{$spanClass}}">{{ $total_count_of_task }} days</span>
+                        </div>
+
                         <div class="datagrid-item">
                             <div class="datagrid-title">Status</div>
                             <div class="datagrid-content">
-                                <span class="status status-green">
-                                    Active
-                                </span>
+                                <span class="status {{$spanClass}}">{{$statusData}}</span>
                             </div>
                         </div>
                     </div>

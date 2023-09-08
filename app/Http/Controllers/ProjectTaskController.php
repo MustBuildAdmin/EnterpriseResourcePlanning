@@ -17,6 +17,8 @@ use App\Models\TaskFile;
 use App\Models\TaskStage;
 use App\Models\User;
 use App\Models\Utility;
+use App\Models\Project_holiday;
+use App\Models\NonWorkingDaysModal;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -602,20 +604,12 @@ class ProjectTaskController extends Controller
     public function task_particular(Request $request)
     {
 
-        $projectId = Session::get('project_id');
+        $projectId  = Session::get('project_id');
         $getProject = Project::find($projectId);
-
-        if (Session::has('project_id')) {
-            $instanceId = Session::get('project_instance');
-        } else {
-            $instanceId = $getProject->instance_id;
-        }
-
-        if ($request['get_date'] == '') {
-            $get_date = date('Y-m-d');
-        } else {
-            $get_date = $request['get_date'];
-        }
+        $instanceId = Session::has('project_id') ?
+            Session::get('project_instance') : $getProject->instance_id;
+        $get_date   = $request['get_date'] == '' ?
+            date('Y-m-d') : $request['get_date'];
 
         if (isset($request['task_id'])) {
             $task_id = $request['task_id'];
@@ -626,6 +620,7 @@ class ProjectTaskController extends Controller
                 ->join('projects', 'projects.id', 'con_tasks.project_id')
                 ->where('con_tasks.main_id', $task_id)
                 ->where('con_tasks.instance_id', $instanceId)
+                ->where('con_tasks.project_id',$projectId)
                 ->first();
 
             if (\Auth::user()->type != 'company') {
@@ -638,8 +633,8 @@ class ProjectTaskController extends Controller
                     ->where('task_progress.instance_id', $instanceId)
                     ->groupBy('task_progress.id')
                     ->get();
-
-            } else {
+            } 
+            else {
                 $get_task_progress = Task_progress::select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
                     ->leftjoin('task_progress_file as file',
                         \DB::raw('FIND_IN_SET(file.id,task_progress.file_id)'), '>', \DB::raw("'0'"))
@@ -649,10 +644,6 @@ class ProjectTaskController extends Controller
                     ->groupBy('task_progress.id')
                     ->get();
             }
-
-            $total_pecentage = Task_progress::where('task_id', $task_id)
-                ->where('instance_id', $instanceId)
-                ->sum('percentage');
 
             if ($get_date <= date('Y-m-d')) {
                 $get_popup_data = Task_progress::where('task_id', $task_id)
@@ -690,33 +681,37 @@ class ProjectTaskController extends Controller
 
         $total_count_of_task = Task_progress::where('task_id', $task_id)
             ->where('instance_id', $instanceId)
+            ->groupBy('created_at')
             ->get()->count();
+
+        $actualStartDate = Task_progress::where('task_id', $task_id)
+            ->where('instance_id', $instanceId)
+            ->orderBy('record_date','ASC')
+            ->first();
+
+        $actualEndDate = Task_progress::where('task_id', $task_id)
+            ->where('instance_id', $instanceId)
+            ->orderBy('record_date','DESC')
+            ->first();
 
         $remaining_working_days = Utility::remaining_duration_calculator($get_con_task->end_date, $get_con_task->project_id);
         $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days-1 : 0; // include the last day
         $completed_days = $get_con_task->duration - $remaining_working_days;
+
         if ($get_con_task->duration == 1) {
             $current_Planed_percentage = 100;
         } else {
             // percentage calculator
-            if ($get_con_task->duration > 0) {
-                $perday = 100 / $get_con_task->duration;
-            } else {
-                $perday = 0;
-            }
+            $perday = $get_con_task->duration > 0 ?
+                100 / $get_con_task->duration : 0;
 
             $current_Planed_percentage = round($completed_days * $perday);
         }
 
-        if ($current_Planed_percentage > 100) {
-            $current_Planed_percentage = 100;
-        }
-        if ($current_Planed_percentage < 0) {
-            $current_Planed_percentage = 0;
-        }
 
         return view('construction_project.task_particular_list',
-            compact('task_id', 'data', 'total_pecentage', 'current_Planed_percentage'));
+            compact('task_id', 'data', 'current_Planed_percentage','total_count_of_task',
+            'actualStartDate','actualEndDate'));
     }
 
     public function revsion_task_list(Request $request)
@@ -755,13 +750,36 @@ class ProjectTaskController extends Controller
             'con_data' => $get_con_task,
         ];
 
-        return view('construction_project.add_task_particular', compact('data', 'task_id'));
+        $get_all_dates = [];
+
+        if (\Auth::user()->type == 'company') {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->id)
+                ->where('instance_id', $instanceId)->get();
+        } else {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->creatorId())
+                ->where('instance_id', $instanceId)->get();
+        }
+
+        if(!empty($getHoliday)){
+            foreach ($getHoliday as $check_holiday) {
+                $get_all_dates[] = $check_holiday->date;
+            }
+        }
+
+        $get_all_dates = json_encode($get_all_dates);
+
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $projectId)
+            ->where('instance_id', $instanceId)
+            ->orderBy('id', 'DESC')->first();
+
+        return view('construction_project.add_task_particular', compact('data','task_id','nonWorkingDay'))
+            ->with('get_all_dates',$get_all_dates);
     }
 
     public function edit_particular_task(Request $request)
     {
 
-        $projectId = Session::get('project_id');
+        $projectId  = Session::get('project_id');
         $getProject = Project::find($projectId);
 
         if (Session::has('project_id')) {
@@ -804,7 +822,30 @@ class ProjectTaskController extends Controller
             ];
         }
 
-        return view('construction_project.edit_task_particular', compact('data', 'task_id'));
+        $get_all_dates = [];
+
+        if (\Auth::user()->type == 'company') {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->id)
+                ->where('instance_id', $instanceId)->get();
+        } else {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->creatorId())
+                ->where('instance_id', $instanceId)->get();
+        }
+
+        if(!empty($getHoliday)){
+            foreach ($getHoliday as $check_holiday) {
+                $get_all_dates[] = $check_holiday->date;
+            }
+        }
+
+        $get_all_dates = json_encode($get_all_dates);
+
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $projectId)
+            ->where('instance_id', $instanceId)
+            ->orderBy('id', 'DESC')->first();
+
+        return view('construction_project.edit_task_particular', compact('data', 'task_id','nonWorkingDay'))
+            ->with('get_all_dates',$get_all_dates);
     }
 
     public function edit_task_progress(Request $request)

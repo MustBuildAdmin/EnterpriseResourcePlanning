@@ -7,6 +7,8 @@
                 <div class="row min-750" id="taskboard_view">
                     <div class="col-6">
                         <div class="form-group">
+                            <input type="hidden" id="setHoliday" value="{{$get_all_dates}}">
+                            <input type="hidden" id="setWeekend" value="{{ $nonWorkingDay != null ? $nonWorkingDay->non_working_days : ''}}">
                             {{ Form::label('name', __('Planned Start to End Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
                             <div class="input-icon">
                                 <span
@@ -89,11 +91,25 @@
     $( document ).ready(function() {
         start_range = "{{date('Y-m-d',strtotime($data['con_data']->start_date))}}";
         end_range   = "{{date('Y-m-d',strtotime($data['con_data']->end_date . '-1 day'))}}";
+        var getHoliday  = JSON.parse($("#setHoliday").val());
+        var setWeekend  = $("#setWeekend").val();
+        
+        if(setWeekend != ''){
+            var splitWeekend = setWeekend.split(',').map(Number);
+        }
+        else{
+            splitWeekend = [];
+        }
         
         window.Litepicker && (new Litepicker({
             element: document.getElementById('datepicker-icon-prepend'),
             minDate: start_range,
             maxDate: end_range,
+            lockDays: getHoliday,
+            lockDaysFilter: (day) => {
+                const d = day.getDay();
+                return splitWeekend.includes(d);
+            },
             buttonText: {
                 previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
                 nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
