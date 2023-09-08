@@ -88,47 +88,80 @@
                                                             <form>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
-                                                                        <label class="form-label">Search By Task Name or Id</label>
-                                                                        <input type="text" id="skill_input" value="{{ request()->get('q') }}" >
+                                                                        <label class="form-label">
+                                                                            Search By Task Name or Id
+                                                                        </label>
+                                                                        <input type="text" id="skill_input"
+                                                                        value="{{ request()->get('q') }}" >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
-                                                                    <label class="form-label required">Task  Planned Start Date</label>
+                                                                    <label class="form-label required">
+                                                                        Task  Planned Start Date
+                                                                    </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
-                                                                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
-                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2"
+                                                                            stroke="currentColor" fill="none"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0
+                                                                            1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0
+                                                                            1 -2 -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" />
+                                                                            <path d="M4 11h16" /><path d="M11 15h1" />
+                                                                            <path d="M12 15v3" /></svg>
                                                                         </span>
-                                                                        <input class="form-control start_date" placeholder="Select a Start date" id="start-date"/>
+                                                                        <input class="form-control start_date"
+                                                                        placeholder="Select a Start date"
+                                                                        id="start-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
-                                                                    <label class="form-label required">Task Planned End Date</label>
+                                                                    <label class="form-label required">
+                                                                        Task Planned End Date
+                                                                    </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                                                                            stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
-                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" />
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2"
+                                                                            stroke="currentColor" fill="none"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round"><path stroke="none"
+                                                                            d="M0 0h24v24H0z" fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2
+                                                                            2v12a2 2 0 0 1 -2 2h-12a2 2 0 0
+                                                                            1 -2 -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" />
+                                                                            <path d="M4 11h16" /><path d="M11 15h1" />
+                                                                            <path d="M12 15v3" />
                                                                             </svg>
                                                                         </span>
-                                                                        <input class="form-control end_date" placeholder="Select a End date" id="end-date"/>
+                                                                        <input class="form-control end_date"
+                                                                        placeholder="Select a End date" id="end-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
                                                                     <div class="mb-3">
-                                                                        <label class="form-label">Search Assignee</label>
-                                                                        <input type="text" id="user_select" value="{{ request()->get('selectsearch') }}" >
+                                                                        <label class="form-label">
+                                                                            Search Assignee
+                                                                        </label>
+                                                                        <input type="text" id="user_select"
+                                                                        value="{{ request()->get('selectsearch') }}" >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Task Status</label>
-                                                                        <select type="text" class="form-select task_status" placeholder="Task Status" id="task-status" value="">
+                                                                        <select type="text"
+                                                                        class="form-select task_status"
+                                                                        placeholder="Task Status"
+                                                                        id="task-status" value="">
                                                                             <option value="">Select Status</option>
                                                                             <option value="3">Pending</option>
                                                                             <option value="4">Completed</option>
@@ -137,7 +170,11 @@
                                                                 </div>
                                                                 <div class="col-12 mt-4">
                                                                     <div class="mb-3">
-                                                                        <button type="button" class="btn btn-tabler w-100" onclick="submit_button()">Search</button>
+                                                                        <button type="button"
+                                                                        class="btn btn-tabler w-100"
+                                                                        onclick="submit_button()">
+                                                                        Search
+                                                                    </button>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -165,41 +202,72 @@
                                                             <form>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
-                                                                        <label class="form-label">Search By Summary Name or Id</label>
-                                                                        <input type="text" id="main_skill_input" value="{{ request()->get('q') }}" >
+                                                                        <label class="form-label">
+                                                                            Search By Summary Name or Id
+                                                                        </label>
+                                                                        <input type="text" id="main_skill_input"
+                                                                        value="{{ request()->get('q') }}" >
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
-                                                                    <label class="form-label required">Summary Planned Start Date</label>
+                                                                    <label class="form-label required">
+                                                                        Summary Planned Start Date
+                                                                    </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
-                                                                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
-                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2"
+                                                                            stroke="currentColor" fill="none"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0
+                                                                            1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2
+                                                                            -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" />
+                                                                            <path d="M4 11h16" /><path d="M11 15h1" />
+                                                                            <path d="M12 15v3" /></svg>
                                                                         </span>
-                                                                        <input class="form-control main_start_date" placeholder="Select a Start date" id="main_start-date"/>
+                                                                        <input class="form-control main_start_date"
+                                                                        placeholder="Select a Start date"
+                                                                        id="main_start-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
-                                                                    <label class="form-label required">Summary Planned End Date</label>
+                                                                    <label class="form-label required">
+                                                                        Summary Planned End Date
+                                                                    </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                                                                            stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
-                                                                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" />
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2"
+                                                                            stroke="currentColor" fill="none"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                            fill="none"/>
+                                                                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2
+                                                                            2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2
+                                                                            -2v-12z" />
+                                                                            <path d="M16 3v4" /><path d="M8 3v4" />
+                                                                            <path d="M4 11h16" /><path d="M11 15h1" />
+                                                                            <path d="M12 15v3" />
                                                                             </svg>
                                                                         </span>
-                                                                        <input class="form-control main_end_date" placeholder="Select a End date" id="main_end-date"/>
+                                                                        <input class="form-control main_end_date"
+                                                                        placeholder="Select a End date"
+                                                                        id="main_end-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Summary Status</label>
-                                                                        <select type="text" class="form-select main_task_status" placeholder="Task Status"
+                                                                        <select type="text"
+                                                                        class="form-selectmain_task_status"
+                                                                        placeholder="Task Status"
                                                                         id="main_task-status" value="">
                                                                             <option value="">Select Status</option>
                                                                             <option value="3">Pending</option>
@@ -209,14 +277,17 @@
                                                                 </div>
                                                                 <div class="col-12 mt-4">
                                                                     <div class="mb-3">
-                                                                        <button type="button" class="btn btn-tabler w-100" onclick="main_submit_button()">Search</button>
+                                                                        <button type="button"
+                                                                        class="btn btn-tabler w-100"
+                                                                        onclick="main_submit_button()">Search</button>
                                                                     </div>
                                                                 </div>
                                                             </form>
                                                         </div>
 
                                                         <div class="col-md-10">
-                                                            <div class="table-responsive card p-4" id="main_task_append">
+                                                            <div class="table-responsive card p-4"
+                                                            id="main_task_append">
                                                                 
                                                             </div>
                                                         </div>
@@ -302,8 +373,15 @@
             singleMode: false,
             allowRepick: true,
             buttonText: {
-                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+
+                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
             },
         }));
     });
@@ -317,13 +395,15 @@
             render:{
                 item: function(data,escape) {
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                            + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },
                 option: function(data,escape){
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                            + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },
@@ -338,8 +418,15 @@
             singleMode: false,
             allowRepick: true,
             buttonText: {
-                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+
+                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
             },
         }));
     });
@@ -353,13 +440,15 @@
             render:{
                 item: function(data,escape) {
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                            + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },
                 option: function(data,escape){
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                            + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },

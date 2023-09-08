@@ -17,7 +17,8 @@
 }
 </style>
 
-<table class="table table-vcenter card-table" id="task-table"> {{-- Sub Task --}}
+<table class="table table-vcenter card-table" id="task-table"
+aria-describedby="Sub Task">
     <thead>
     <tr>
         <th scope="col">{{__('TaskId')}}</th>

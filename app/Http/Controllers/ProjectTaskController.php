@@ -225,7 +225,7 @@ class ProjectTaskController extends Controller
             if($status_task != null){
                 if($status_task == "3"){
                     $tasks->where('progress','<','100')
-                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));;
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
                 }
                 elseif($status_task == "4"){
                     $tasks->where('progress','>=','100');
@@ -298,7 +298,7 @@ class ProjectTaskController extends Controller
             if($status_task != null){
                 if($status_task == "3"){
                     $show_parent_task->where('progress','<','100')
-                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));;
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
                 }
                 elseif($status_task == "4"){
                     $show_parent_task->where('progress','>=','100');
@@ -614,7 +614,6 @@ class ProjectTaskController extends Controller
         if (isset($request['task_id'])) {
             $task_id = $request['task_id'];
             $get_con_task = Con_task::where('main_id', $task_id)->where('instance_id', $instanceId)->first();
-            $end_date = $get_con_task->end_date != null ? explode(' ', $get_con_task->end_date) : [];
 
             $get_popup_data_con = Con_task::Select('con_tasks.*', 'projects.project_name', 'projects.description')
                 ->join('projects', 'projects.id', 'con_tasks.project_id')
@@ -624,7 +623,8 @@ class ProjectTaskController extends Controller
                 ->first();
 
             if (\Auth::user()->type != 'company') {
-                $get_task_progress = Task_progress::select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
+                $get_task_progress = Task_progress::
+                    select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
                     ->leftjoin('task_progress_file as file',
                         \DB::raw('FIND_IN_SET(file.id,task_progress.file_id)'), '>', \DB::raw("'0'"))
                     ->where('task_progress.task_id', $task_id)
@@ -633,9 +633,10 @@ class ProjectTaskController extends Controller
                     ->where('task_progress.instance_id', $instanceId)
                     ->groupBy('task_progress.id')
                     ->get();
-            } 
+            }
             else {
-                $get_task_progress = Task_progress::select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
+                $get_task_progress = Task_progress::
+                    select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
                     ->leftjoin('task_progress_file as file',
                         \DB::raw('FIND_IN_SET(file.id,task_progress.file_id)'), '>', \DB::raw("'0'"))
                     ->where('task_progress.task_id', $task_id)
@@ -694,7 +695,8 @@ class ProjectTaskController extends Controller
             ->orderBy('record_date','DESC')
             ->first();
 
-        $remaining_working_days = Utility::remaining_duration_calculator($get_con_task->end_date, $get_con_task->project_id);
+        $remaining_working_days = Utility::remaining_duration_calculator(
+            $get_con_task->end_date, $get_con_task->project_id);
         $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days-1 : 0; // include the last day
         $completed_days = $get_con_task->duration - $remaining_working_days;
 
@@ -1893,7 +1895,7 @@ class ProjectTaskController extends Controller
                 ->get();
         }
 
-        $conData = array(); 
+        $conData = array();
         if(count($consTask) > 0){
             foreach($consTask as $task){
                 $setTask = [
@@ -1904,7 +1906,7 @@ class ProjectTaskController extends Controller
             }
         }
 
-        echo json_encode($conData); 
+        echo json_encode($conData);
     }
 
     public function task_autocomplete_main(Request $request){
@@ -1918,7 +1920,7 @@ class ProjectTaskController extends Controller
                 ->get();
         }
 
-        $conData = array(); 
+        $conData = array();
         if(count($consTask) > 0){
             foreach($consTask as $task){
                 $setTask = [
@@ -1929,7 +1931,7 @@ class ProjectTaskController extends Controller
             }
         }
 
-        echo json_encode($conData); 
+        echo json_encode($conData);
     }
 
     public function user_autocomplete(request $request){
@@ -1948,7 +1950,7 @@ class ProjectTaskController extends Controller
                 ->get();
         }
 
-        $userData = array(); 
+        $userData = array();
         if(count($user_data) > 0){
             foreach($user_data as $user){
                 $setUser = [
@@ -1959,6 +1961,6 @@ class ProjectTaskController extends Controller
             }
         }
 
-        echo json_encode($userData); 
+        echo json_encode($userData);
     }
 }

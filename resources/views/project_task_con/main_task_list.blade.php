@@ -16,7 +16,8 @@
 }
 </style>
 
-<table class="table table-vcenter card-table" id="summary-table"> {{-- Main Task --}}
+<table class="table table-vcenter card-table" id="summary-table"
+aria-describedby="Main Task">
     <thead>
         <tr>
             <th scope="col">{{__('SummaryId')}}</th>

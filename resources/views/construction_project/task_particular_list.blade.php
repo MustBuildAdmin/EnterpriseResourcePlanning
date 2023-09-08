@@ -36,7 +36,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        {{$data['con_data']->id}}-{{ $data['con_data'] != null ? 
+                        {{$data['con_data']->id}}-{{ $data['con_data'] != null ?
                         $data['con_data']->text : 'Task' }} Progress Details
                     </h3>
                 </div>
@@ -157,7 +157,8 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive card p-4">
-                        <table class="table table-vcenter card-table" id="task-progress"> {{-- Task Progress --}}
+                        <table class="table table-vcenter card-table" id="task-progress"
+                        aria-describedby="Task Progress">
                             <thead>
                                 <tr>
                                     <th scope="col">{{ __('Planned Date') }}</th>
