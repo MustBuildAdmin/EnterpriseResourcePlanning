@@ -31,7 +31,7 @@
                                     </svg>
                                 </span>
                                 {{ Form::text('get_date', $data['get_date'],
-                                    array('class' => 'form-control month-btn','id' => 'datepicker-icon-prepend')) 
+                                    array('class' => 'form-control month-btn','id' => 'datepicker-icon-prepend'))
                                 }}
                             </div>
                         </div>

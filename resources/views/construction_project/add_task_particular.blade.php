@@ -8,8 +8,10 @@
                     <div class="col-6">
                         <div class="form-group">
                             <input type="hidden" id="setHoliday" value="{{$get_all_dates}}">
-                            <input type="hidden" id="setWeekend" value="{{ $nonWorkingDay != null ? $nonWorkingDay->non_working_days : ''}}">
-                            {{ Form::label('name', __('Planned Start to End Date'),['class' => 'form-label']) }}<span class="text-danger">*</span>
+                            <input type="hidden" id="setWeekend"
+                            value="{{ $nonWorkingDay != null ? $nonWorkingDay->non_working_days : ''}}">
+                            {{ Form::label('name', __('Planned Start to End Date'),
+                            ['class' => 'form-label']) }}<span class="text-danger">*</span>
 
                             <div class="input-icon">
                                 <span
@@ -20,7 +22,8 @@
                                         stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                         <path
-                                            d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                            d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2
+                                            0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
                                         <path d="M16 3v4" />
                                         <path d="M8 3v4" />
                                         <path d="M4 11h16" />
@@ -29,7 +32,7 @@
                                     </svg>
                                 </span>
                                 {{ Form::text('get_date', date('Y-m-d',strtotime($data['con_data']->start_date)),
-                                    array('class' => 'form-control month-btn','id' => 'datepicker-icon-prepend')) 
+                                    array('class' => 'form-control month-btn','id' => 'datepicker-icon-prepend'))
                                 }}
                             </div>
                         </div>
@@ -39,7 +42,8 @@
                         <div class="form-group">
                             {{ Form::label('name', __('Actual Workdone % as of Today'),['class' => 'form-label']) }}
                             <span class="text-danger">*</span>
-                            {{ Form::number('percentage', null, ['class' => 'form-control','id' => 'percentage','required'=>'required','max'=>'100','min'=>'1']) }}
+                            {{ Form::number('percentage', null, ['class' => 'form-control',
+                            'id' => 'percentage','required'=>'required','max'=>'100','min'=>'1']) }}
                             {{ Form::hidden('task_id', $task_id, ['class' => 'form-control','id'=>'task_id']) }}
                             {{ Form::hidden('user_id', \Auth::user()->id, ['class' => 'form-control']) }}
                         </div>
@@ -54,8 +58,11 @@
                     <div class="col-12">
                         <br>
                         <div class="form-group">
-                            {{ Form::label('description', __('Description'),['class' => 'form-label']) }} <span style='color:red;'>*</span>
-                            {{ Form::textarea('description', null, ['class' => 'form-control','id' => 'tinymce-mytextarea','rows'=>'3','data-toggle' => 'autosize','required'=>'required']) }}
+                            {{ Form::label('description', __('Description'),['class' => 'form-label']) }}
+                            <span style='color:red;'>*</span>
+                            {{ Form::textarea('description', null, ['class' => 'form-control',
+                            'id' => 'tinymce-mytextarea','rows'=>'3','data-toggle' => 'autosize',
+                            'required'=>'required']) }}
                         </div>
                     </div>
 
@@ -100,8 +107,15 @@
                 return splitWeekend.includes(d);
             },
             buttonText: {
-                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none"
+                d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                
+                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
             },
         }));
     });
@@ -121,7 +135,9 @@
                 'bold italic backcolor | alignleft aligncenter ' +
                 'alignright alignjustify | bullist numlist outdent indent | ' +
                 'removeformat',
-            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
+            content_style: 'body { font-family: -apple-system, BlinkMacSystemFont,'+
+            'San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;'+
+            'font-size: 14px; -webkit-font-smoothing: antialiased; }'
         }
         if (localStorage.getItem("tablerTheme") === 'dark') {
             options.skin = 'oxide-dark';
