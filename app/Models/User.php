@@ -2778,6 +2778,7 @@ class User extends Authenticatable
             'lname' => $this->lname,
             'email' => $this->email,
             'phone' => $this->phone,
+            'id' => $this->id,
         ];
     }
 }

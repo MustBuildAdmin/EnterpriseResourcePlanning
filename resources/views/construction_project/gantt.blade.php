@@ -450,7 +450,7 @@
     </div>
 </div>
 
-
+          
 </div>
 <input type='hidden' id='weekends' value='{{ $nonWorkingDay }}'>
 <input type='hidden' id='holidays' value='{{ $holidays }}'>

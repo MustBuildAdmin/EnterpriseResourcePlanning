@@ -10,11 +10,18 @@
     line-height: 35px;
     display: grid;
 }
+
+
+.dataTables_length{
+  margin-bottom: 5%;
+}
 </style>
 
-<table class="table" id="example2">
+<table class="table table-vcenter card-table" id="task-table"
+aria-describedby="Sub Task">
     <thead>
     <tr>
+        <th scope="col">{{__('TaskId')}}</th>
         <th scope="col">{{__('Tasks')}}</th>
         <th scope="col">{{__('Status')}}</th>
         <th scope="col">{{__('Actual Progress')}}</th>
@@ -22,9 +29,6 @@
         <th scope="col">{{__('Planned Start Date')}}</th>
         <th scope="col">{{__('Planned End Date')}}</th>
         <th scope="col">{{__('Assigned To')}}</th>
-        @if(\Auth::user()->type == 'company')
-            <th scope="col">{{__('Action')}}</th>
-        @endif
     </tr>
     </thead>
     <tbody class="list">
@@ -42,8 +46,8 @@
                     ->where('task_id',$task->main_id)->get()->count();
 
                 $remaining_working_days=Utility::remaining_duration_calculator($task->end_date,$task->project_id);
-                $remaining_working_days=$remaining_working_days-1;// include the last day
-              
+                $remaining_working_days = $remaining_working_days != 0 ?
+                $remaining_working_days-1 : 0;// include the last day
 
                 ############### Remaining days ##################
 
@@ -58,18 +62,8 @@
                     }else{
                         $perday=0;
                     }
-                
 
                     $current_Planed_percentage=round($completed_days*$perday);
-                }
-
-
-            
-                if($current_Planed_percentage > 100){
-                    $current_Planed_percentage=100;
-                }
-                if($current_Planed_percentage < 0){
-                    $current_Planed_percentage=0;
                 }
 
                 $checkLatestFreeze = DB::table('instance')
@@ -81,49 +75,84 @@
                 else{
                     $checkLatestFreezeStatus = 0;
                 }
+
             @endphp
             <tr>
-                <td style="width:30%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+                <td style="width:5%; font-size: 15px;">
                     @if(Session::get('current_revision_freeze') == 1 &&
-                    Session::get('project_instance') != Session::get('latest_project_instance') &&
-                    $checkLatestFreezeStatus == 1)
-                        <a style="text-decoration: none;">
-                            <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
+                        Session::get('project_instance') != Session::get('latest_project_instance') &&
+                        $checkLatestFreezeStatus == 1)
+                        <a href="{{route('task_particular',['task_id' => $task->main_id,
+                            'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                            {{ $task->id }}
                         </a>
                     @else
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
-                            <span class="h6 text-sm font-weight-bold mb-0">{{ $task->text }}</span>
-                        </a>
+                        <a style="text-decoration: none;">{{ $task->id }}</a>
                     @endif
                 </td>
-                <td style="width:10%;">
-                    @if (strtotime($task->end_date) < time() && $task->progress < 100)
-                        <span class="badge badge-success" style="background-color:#DC3545;">Pending</span>
-                    @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
-                        <span class="badge badge-success" style="background-color:#28A745;">Completed</span>
-                    @else
-                        <span class="badge badge-info" style="background-color:#007bff;">In-Progress</span>
-                    @endif
-                </td>
-                <td style="width:10%;">
 
-                    @if ($task->progress >= 100)
-                        <span class="badge badge-success" style="background-color:#28A745;">{{$task->progress}}%</span>
-                    @elseif($task->progress < $current_Planed_percentage)
-                        <span title="Planned Progress is to High Compare to Actual Progress" class="badge badge-success" style="background-color:red;">{{$task->progress}}%</span>
+                <td style="width:30%; font-size: 15px;">
+                    {{ $task->text }}
+                </td>
+
+                <td style="width:20%;">
+                    @if (strtotime($task->end_date) < time() && $task->progress < 100)
+                        <span class="badge bg-warning me-1"></span> Pending
+                    @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
+                        <span class="badge bg-success me-1"></span> Completed
                     @else
-                        <span class="badge badge-info" style="background-color:#007bff;">{{$task->progress}}%</span>
+                        <span class="badge bg-info me-1"></span> In-Progress
                     @endif
                 </td>
-                <td style="width:10%;">
-                    <span class="badge badge-info" style="background-color:#007bff;">{{ round($current_Planed_percentage) }}%</span>
+
+                <td style="width:15%;" class="sort-progress"
+                    data-progress="{{round($task->progress)}}">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-auto" style="width: 50px;">{{round($task->progress)}}%</div>
+                        <div class="col">
+                            <div class="progress" style="width: 5rem">
+                                <div class="progress-bar" style="width: {{round($task->progress)}}%"
+                                    role="progressbar" aria-valuenow="{{round($task->progress)}}"
+                                    aria-valuemin="0" aria-valuemax="100"
+                                    aria-label="{{round($task->progress)}}% Complete">
+                                    <span class="visually-hidden">{{round($task->progress)}}% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
-                <td style="width:10%;" class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
+
+                <td style="width:15%;" class="sort-progress"
+                    data-progress="{{round($current_Planed_percentage)}}">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-auto" style="width: 50px;">
+                            {{round($current_Planed_percentage)}}%
+                        </div>
+                        <div class="col">
+                            <div class="progress" style="width: 5rem">
+                                <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%"
+                                role="progressbar" aria-valuenow="{{round($current_Planed_percentage)}}"
+                                aria-valuemin="0" aria-valuemax="100"
+                                aria-label="{{round($current_Planed_percentage)}}% Complete">
+                                    <span class="visually-hidden">
+                                        {{round($current_Planed_percentage)}}% Complete
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                <td style="width:5%;"
+                    class="{{ (strtotime($task->start_date) < time()) ? 'text-danger' : '' }}">
                     {{ Utility::site_date_format($task->start_date,\Auth::user()->id) }}
                 </td>
-                <td style="width:10%;" class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
+
+                <td style="width:5%;"
+                    class="{{ (strtotime($task->end_date) < time()) ? 'text-danger' : '' }}">
                     {{ Utility::site_date_format_minus_day($task->end_date,\Auth::user()->id,1) }}
                 </td>
+
                 <td style="width:10%;">
                     <div class="avatar-group">
                         @php
@@ -161,24 +190,6 @@
                         @endforelse
                     </div>
                 </td>
-                @if(\Auth::user()->type == 'company')
-                    <td style="width:10%;" class="text-center w-15">
-                        <div class="actions">
-                            @if(Session::get('current_revision_freeze') == 1 &&
-                            Session::get('project_instance') != Session::get('latest_project_instance') &&
-                            $checkLatestFreezeStatus == 1)
-                                <a style="height: 36px;" href="#">
-                                    -
-                                </a>
-                            @else
-                                <a style="height: 36px;" href="#" data-size="xl" data-url="{{ route('edit_assigned_to',["task_id"=>$task->main_id]) }}"
-                                    data-ajax-popup="true" data-title="{{__('Edit Assigned To')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" class="floatrght btn btn-primary mb-3">
-                                    <i class="ti ti-pencil"></i>
-                                </a>
-                            @endif
-                        </div>
-                    </td>
-                @endif
             </tr>
         @empty
         @endforelse
@@ -191,12 +202,8 @@
     });
 
     function datatable2(){
-        $('#example2').dataTable().fnDestroy();
-        $('#example2').DataTable({
-            dom: 'Bfrtip',
-            searching: true,
-            info: true,
-            paging: true,
+        new DataTable('#task-table', {
+            pagingType: 'full_numbers',
             aaSorting: []
         });
     }
