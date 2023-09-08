@@ -17,6 +17,8 @@ use App\Models\TaskFile;
 use App\Models\TaskStage;
 use App\Models\User;
 use App\Models\Utility;
+use App\Models\Project_holiday;
+use App\Models\NonWorkingDaysModal;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -170,21 +172,15 @@ class ProjectTaskController extends Controller
 
     }
 
-    public function get_all_task(Request $request)
-    {
-        $project_id = Session::get('project_id');
-        $instance_id = Session::get('project_instance');
+    public function get_all_task(Request $request){
+        $project_id     = Session::get('project_id');
+        $instance_id    = Session::get('project_instance');
         $get_start_date = $request->start_date;
-        $get_end_date = $request->end_date;
-        $status_task = $request->status_task;
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
+        $task_id_arr    = $request->task_id_arr;
+        $user_id_arr    = $request->user_id;
 
-        if ($request->user_id != null) {
-            $json_user_id = json_decode($request->user_id);
-        } else {
-            $json_user_id = [];
-        }
-
-        // 1 > Today Task
         // 3 > Pending Task
         // 4 > Completed Task
 
@@ -205,104 +201,41 @@ class ProjectTaskController extends Controller
                 $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
             }
 
-            if (count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null && $status_task != null) {
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach ($json_user_id as $get_user_id) {
-                        if ($get_user_id != '') {
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
+            if($task_id_arr != null){
+                $tasks->whereIn('con_tasks.id',$task_id_arr);
+            }
 
+            if($get_start_date != null && $get_end_date != null){
                 $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
                     $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
                     $query->whereDate('con_tasks.end_date', '<', $get_end_date);
                 });
+            }
 
-                if ($status_task == '3') {
-                    $tasks->where('progress', '<', '100');
-                } elseif ($status_task == '4') {
-                    $tasks->where('progress', '>=', '100');
-                }
-            } elseif ($get_start_date != null && $get_end_date != null && $status_task != null) {
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-
-                if ($status_task == '3') {
-                    $tasks->where('progress', '<', '100');
-                } elseif ($status_task == '4') {
-                    $tasks->where('progress', '>=', '100');
-                }
-            } elseif (count($json_user_id) != 0 && $get_start_date != null && $get_end_date != null) {
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach ($json_user_id as $get_user_id) {
-                        if ($get_user_id != '') {
+            if($user_id_arr != null){
+                $tasks->where(function ($query) use ($user_id_arr) {
+                    foreach($user_id_arr as $get_user_id){
+                        if($get_user_id != ""){
                             $query->orwhereJsonContains('con_tasks.users', $get_user_id);
                         }
                     }
                 });
+            }
 
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-            } elseif (count($json_user_id) != 0 && $get_end_date != null) {
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach ($json_user_id as $get_user_id) {
-                        if ($get_user_id != '') {
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
-
-                $tasks->whereDate('con_tasks.end_date', '<=', $get_end_date);
-            } elseif (count($json_user_id) != 0 && $status_task != null) {
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach ($json_user_id as $get_user_id) {
-                        if ($get_user_id != '') {
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
-
-                if ($status_task == '3') {
-                    $tasks->where('project_id', $project_id)->where('progress', '<', '100');
-                } elseif ($status_task == '4') {
-                    $tasks->where('project_id', $project_id)->where('progress', '=>', '100');
+            if($status_task != null){
+                if($status_task == "3"){
+                    $tasks->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
                 }
-            } elseif ($get_start_date != null && $get_end_date != null) {
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-            } elseif ($get_end_date != null && $status_task != null) {
-                $tasks->where(function ($query) use ($get_end_date) {
-                    $query->whereDate('con_tasks.end_date', '>=', $get_end_date);
-                });
-
-                if ($status_task == '3') {
-                    $tasks->where('progress', '<', '100');
-                } elseif ($status_task == '4') {
-                    $tasks->where('progress', '>=', '100');
+                elseif($status_task == "4"){
+                    $tasks->where('progress','>=','100');
                 }
-            } elseif (count($json_user_id) != 0) {
-                $tasks->where(function ($query) use ($json_user_id) {
-                    foreach ($json_user_id as $get_user_id) {
-                        if ($get_user_id != '') {
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
-                        }
-                    }
-                });
-            } elseif ($get_end_date != null) {
-                $tasks->whereDate('con_tasks.end_date', '<=', $get_end_date);
-            } elseif ($status_task == '3') {
-                $tasks->where('progress', '<', '100')->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-            } elseif ($status_task == '4') {
-                $tasks->where('progress', '>=', '100');
-            } else {
-                $tasks->where(function ($query) {
+            }
+
+            if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
+
+                $tasks->where(function($query) {
                     $query->whereRaw('"'.date('Y-m-d').'"
                         between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
                         ->orwhere('progress', '<', '100')
@@ -324,54 +257,61 @@ class ProjectTaskController extends Controller
         }
     }
 
-    public function main_task_list(Request $request)
-    {
-        $projectId = Session::get('project_id');
-        $getProject = Project::find($projectId);
+    public function main_task_list(Request $request){
+        $project_id     = Session::get('project_id');
+        $get_start_date = $request->start_date;
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
+        $task_id_arr    = $request->task_id_arr;
+        $instance_id    = Session::get('project_instance');
 
-        if (Session::has('project_id')) {
-            $instanceId = Session::get('project_instance');
-        } else {
-            $instanceId = $getProject->instance_id;
-        }
+        // 3 > Pending Task
+        // 4 > Completed Task
 
-        $setting = Utility::settings(\Auth::user()->creatorId());
-        if ($setting['company_type'] == 2) {
+        $setting  = Utility::settings(\Auth::user()->creatorId());
+        if($setting['company_type']==2){
 
-            if (\Auth::user()->type != 'company') {
-                $show_parent_task = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
-                    'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
-                    'con_tasks.instance_id', 'con_tasks.main_id', 'pro.project_name', 'pro.id as project_id',
-                    'pro.instance_id as pro_instance_id')
-                    ->join('projects as pro', function ($join) use ($projectId) {
-                        $join->on('pro.id', '=', 'con_tasks.project_id')
-                            ->where('pro.id', $projectId);
-                    })
-                    ->whereNotNull('pro.instance_id')
-                    ->whereIn('con_tasks.project_id', $projectId)
-                    ->whereRaw("find_in_set('".\Auth::user()->id."',con_tasks.users)")
-                    ->where('con_tasks.type', 'project')
-                    ->where('con_tasks.instance_id', $instanceId)
-                    ->orwhereNull('con_tasks.type')
-                    ->orderBy('con_tasks.main_id', 'ASC')
-                    ->get();
-            } else {
-                $show_parent_task = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration', 'con_tasks.progress',
-                    'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id', 'con_tasks.instance_id',
-                    'con_tasks.main_id', 'pro.project_name', 'pro.id as project_id', 'pro.instance_id as pro_instance_id')
-                    ->join('projects as pro', function ($join) use ($projectId) {
-                        $join->on('pro.id', '=', 'con_tasks.project_id')
-                            ->where('pro.id', $projectId);
-                    })
-                    ->whereNotNull('pro.instance_id')
-                    ->where('con_tasks.project_id', $projectId)
-                    ->where('con_tasks.instance_id', $instanceId)
-                    ->where('con_tasks.type', 'project')
-                    ->orwhereNull('con_tasks.type')
-                    ->orderBy('con_tasks.main_id', 'ASC')
-                    ->get();
+            $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration',
+                'con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                'con_tasks.instance_id','con_tasks.main_id','pros.project_name',
+                'pros.id as project_id','pros.instance_id as pro_instance_id')
+                ->join('projects as pros','pros.id','con_tasks.project_id')
+                ->where('con_tasks.project_id', $project_id)
+                ->where('con_tasks.instance_id', $instance_id)
+                ->where('con_tasks.type','project');
+
+            if(\Auth::user()->type != 'company'){
+                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
             }
 
+            if($task_id_arr != null){
+                $show_parent_task->whereIn('con_tasks.id',$task_id_arr);
+            }
+
+            if($get_start_date != null && $get_end_date != null){
+                $show_parent_task->where(function ($query) use ($get_start_date, $get_end_date) {
+                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                });
+            }
+
+            if($status_task != null){
+                if($status_task == "3"){
+                    $show_parent_task->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                }
+                elseif($status_task == "4"){
+                    $show_parent_task->where('progress','>=','100');
+                }
+            }
+
+            if($task_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
+                $show_parent_task->orderBy('con_tasks.end_date','DESC');
+            }
+
+            $show_parent_task = $show_parent_task->get();
+            
             $returnHTML = view('project_task_con.main_task_list', compact('show_parent_task'))->render();
 
             return response()->json(
@@ -664,44 +604,39 @@ class ProjectTaskController extends Controller
     public function task_particular(Request $request)
     {
 
-        $projectId = Session::get('project_id');
+        $projectId  = Session::get('project_id');
         $getProject = Project::find($projectId);
-
-        if (Session::has('project_id')) {
-            $instanceId = Session::get('project_instance');
-        } else {
-            $instanceId = $getProject->instance_id;
-        }
-
-        if ($request['get_date'] == '') {
-            $get_date = date('Y-m-d');
-        } else {
-            $get_date = $request['get_date'];
-        }
+        $instanceId = Session::has('project_id') ?
+            Session::get('project_instance') : $getProject->instance_id;
+        $get_date   = $request['get_date'] == '' ?
+            date('Y-m-d') : $request['get_date'];
 
         if (isset($request['task_id'])) {
             $task_id = $request['task_id'];
             $get_con_task = Con_task::where('main_id', $task_id)->where('instance_id', $instanceId)->first();
-            $end_date = $get_con_task->end_date != null ? explode(' ', $get_con_task->end_date) : [];
 
             $get_popup_data_con = Con_task::Select('con_tasks.*', 'projects.project_name', 'projects.description')
                 ->join('projects', 'projects.id', 'con_tasks.project_id')
                 ->where('con_tasks.main_id', $task_id)
                 ->where('con_tasks.instance_id', $instanceId)
+                ->where('con_tasks.project_id',$projectId)
                 ->first();
 
             if (\Auth::user()->type != 'company') {
-                $get_task_progress = Task_progress::select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
+                $get_task_progress = Task_progress::
+                    select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
                     ->leftjoin('task_progress_file as file',
                         \DB::raw('FIND_IN_SET(file.id,task_progress.file_id)'), '>', \DB::raw("'0'"))
-                    ->where('task_progress.task_id', $task_id)->where('user_id', \Auth::user()->id)
+                    ->where('task_progress.task_id', $task_id)
+                    ->where('user_id', \Auth::user()->id)
                     ->where('task_progress.project_id', $get_popup_data_con->project_id)
                     ->where('task_progress.instance_id', $instanceId)
                     ->groupBy('task_progress.id')
                     ->get();
-
-            } else {
-                $get_task_progress = Task_progress::select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
+            }
+            else {
+                $get_task_progress = Task_progress::
+                    select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
                     ->leftjoin('task_progress_file as file',
                         \DB::raw('FIND_IN_SET(file.id,task_progress.file_id)'), '>', \DB::raw("'0'"))
                     ->where('task_progress.task_id', $task_id)
@@ -710,10 +645,6 @@ class ProjectTaskController extends Controller
                     ->groupBy('task_progress.id')
                     ->get();
             }
-
-            $total_pecentage = Task_progress::where('task_id', $task_id)
-                ->where('instance_id', $instanceId)
-                ->sum('percentage');
 
             if ($get_date <= date('Y-m-d')) {
                 $get_popup_data = Task_progress::where('task_id', $task_id)
@@ -751,33 +682,38 @@ class ProjectTaskController extends Controller
 
         $total_count_of_task = Task_progress::where('task_id', $task_id)
             ->where('instance_id', $instanceId)
+            ->groupBy('created_at')
             ->get()->count();
 
-        $remaining_working_days = Utility::remaining_duration_calculator($get_con_task->end_date, $get_con_task->project_id);
-        $remaining_working_days = $remaining_working_days - 1; // include the last day
+        $actualStartDate = Task_progress::where('task_id', $task_id)
+            ->where('instance_id', $instanceId)
+            ->orderBy('record_date','ASC')
+            ->first();
+
+        $actualEndDate = Task_progress::where('task_id', $task_id)
+            ->where('instance_id', $instanceId)
+            ->orderBy('record_date','DESC')
+            ->first();
+
+        $remaining_working_days = Utility::remaining_duration_calculator(
+            $get_con_task->end_date, $get_con_task->project_id);
+        $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days-1 : 0; // include the last day
         $completed_days = $get_con_task->duration - $remaining_working_days;
+
         if ($get_con_task->duration == 1) {
             $current_Planed_percentage = 100;
         } else {
             // percentage calculator
-            if ($get_con_task->duration > 0) {
-                $perday = 100 / $get_con_task->duration;
-            } else {
-                $perday = 0;
-            }
+            $perday = $get_con_task->duration > 0 ?
+                100 / $get_con_task->duration : 0;
 
             $current_Planed_percentage = round($completed_days * $perday);
         }
 
-        if ($current_Planed_percentage > 100) {
-            $current_Planed_percentage = 100;
-        }
-        if ($current_Planed_percentage < 0) {
-            $current_Planed_percentage = 0;
-        }
 
         return view('construction_project.task_particular_list',
-            compact('task_id', 'data', 'total_pecentage', 'current_Planed_percentage'));
+            compact('task_id', 'data', 'current_Planed_percentage','total_count_of_task',
+            'actualStartDate','actualEndDate'));
     }
 
     public function revsion_task_list(Request $request)
@@ -816,13 +752,36 @@ class ProjectTaskController extends Controller
             'con_data' => $get_con_task,
         ];
 
-        return view('construction_project.add_task_particular', compact('data', 'task_id'));
+        $get_all_dates = [];
+
+        if (\Auth::user()->type == 'company') {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->id)
+                ->where('instance_id', $instanceId)->get();
+        } else {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->creatorId())
+                ->where('instance_id', $instanceId)->get();
+        }
+
+        if(!empty($getHoliday)){
+            foreach ($getHoliday as $check_holiday) {
+                $get_all_dates[] = $check_holiday->date;
+            }
+        }
+
+        $get_all_dates = json_encode($get_all_dates);
+
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $projectId)
+            ->where('instance_id', $instanceId)
+            ->orderBy('id', 'DESC')->first();
+
+        return view('construction_project.add_task_particular', compact('data','task_id','nonWorkingDay'))
+            ->with('get_all_dates',$get_all_dates);
     }
 
     public function edit_particular_task(Request $request)
     {
 
-        $projectId = Session::get('project_id');
+        $projectId  = Session::get('project_id');
         $getProject = Project::find($projectId);
 
         if (Session::has('project_id')) {
@@ -865,7 +824,30 @@ class ProjectTaskController extends Controller
             ];
         }
 
-        return view('construction_project.edit_task_particular', compact('data', 'task_id'));
+        $get_all_dates = [];
+
+        if (\Auth::user()->type == 'company') {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->id)
+                ->where('instance_id', $instanceId)->get();
+        } else {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->creatorId())
+                ->where('instance_id', $instanceId)->get();
+        }
+
+        if(!empty($getHoliday)){
+            foreach ($getHoliday as $check_holiday) {
+                $get_all_dates[] = $check_holiday->date;
+            }
+        }
+
+        $get_all_dates = json_encode($get_all_dates);
+
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $projectId)
+            ->where('instance_id', $instanceId)
+            ->orderBy('id', 'DESC')->first();
+
+        return view('construction_project.edit_task_particular', compact('data', 'task_id','nonWorkingDay'))
+            ->with('get_all_dates',$get_all_dates);
     }
 
     public function edit_task_progress(Request $request)
@@ -1900,5 +1882,85 @@ class ProjectTaskController extends Controller
             return $e->getMessage();
 
         }
+    }
+
+    public function task_autocomplete(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = Con_task::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->where('type','task')
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array();
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData);
+    }
+
+    public function task_autocomplete_main(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = Con_task::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->where('type','project')
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array();
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData);
+    }
+
+    public function user_autocomplete(request $request){
+        $searchValue = $request['selectsearch'];
+        $projectId   = Session::get('project_id');
+
+        if($request->filled('selectsearch')){
+
+            $user_data = User::search($searchValue)
+                ->query(function ($query) use($projectId) {
+                    $query->join('project_users as project','users.id','=','project.user_id')
+                        ->select(['users.id', 'users.name'])
+                        ->where('project.project_id',$projectId)
+                        ->orderBy('project.id', 'DESC');
+                })
+                ->get();
+        }
+
+        $userData = array();
+        if(count($user_data) > 0){
+            foreach($user_data as $user){
+                $setUser = [
+                    'id' => $user->id,
+                    'name' => $user->name
+                ];
+                $userData[] = $setUser;
+            }
+        }
+
+        echo json_encode($userData);
     }
 }

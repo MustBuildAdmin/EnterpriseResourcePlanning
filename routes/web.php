@@ -3003,10 +3003,26 @@ Route::get(
         'XSS',
     ]
 );
-Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth', 'XSS']);
-Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')->middleware(['auth', 'XSS']);
-Route::get('edit_assigned_to', 'ProjectTaskController@edit_assigned_to')->name('edit_assigned_to')->middleware(['auth', 'XSS']);
-Route::any('update_assigned_to/{task_main_id}', 'ProjectTaskController@update_assigned_to')->name('update_assigned_to')->middleware(['auth', 'XSS']);
+
+Route::get('task_autocomplete', 'ProjectTaskController@task_autocomplete')->name('task_autocomplete')
+->middleware(['auth','XSS',]);
+
+Route::get('task_autocomplete_main', 'ProjectTaskController@task_autocomplete_main')->name('task_autocomplete_main')
+->middleware(['auth','XSS',]);
+
+Route::get('user_autocomplete', 'ProjectTaskController@user_autocomplete')->name('user_autocomplete')
+->middleware(['auth','XSS',]);
+
+Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth','XSS',]);
+Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')
+->middleware(['auth','XSS',]);
+
+Route::get('edit_assigned_to', 'ProjectTaskController@edit_assigned_to')->name('edit_assigned_to')
+->middleware(['auth','XSS',]);
+
+Route::any('update_assigned_to/{task_main_id}', 'ProjectTaskController@update_assigned_to')->name('update_assigned_to')
+->middleware(['auth','XSS',]);
+
 // task progress update for construction part
 
 Route::any('con_taskupdate', 'ProjectController@taskupdate')->name('con_taskupdate');
@@ -3029,10 +3045,18 @@ Route::get(
     ]
 );
 
-Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')->middleware(['auth', 'XSS']);
-Route::any('add_particular_task/{task_id}/{get_date}', 'ProjectTaskController@add_particular_task')->name('add_particular_task')->middleware(['auth', 'XSS']);
-Route::any('edit_particular_task/{task_progress_id}/{task_id}', 'ProjectTaskController@edit_particular_task')->name('edit_particular_task')->middleware(['auth', 'XSS']);
-Route::get('edit_task_progress', 'ProjectTaskController@edit_task_progress')->name('edit_task_progress')->middleware(['auth', 'XSS']);
+Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')
+->middleware(['auth', 'XSS']);
+
+Route::any('add_particular_task/{task_id}/{get_date}', 'ProjectTaskController@add_particular_task')
+->name('add_particular_task')->middleware(['auth', 'XSS']);
+
+Route::any('edit_particular_task/{task_progress_id}/{task_id}',
+'ProjectTaskController@edit_particular_task')->name('edit_particular_task')->middleware(['auth', 'XSS']);
+
+Route::get('edit_task_progress', 'ProjectTaskController@edit_task_progress')
+->name('edit_task_progress')->middleware(['auth', 'XSS']);
+
 Route::get('task_file_download/{task_id}/{filename}', 'ProjectTaskController@task_file_download')
     ->name('task_file_download')->middleware(['auth', 'XSS']);
 
