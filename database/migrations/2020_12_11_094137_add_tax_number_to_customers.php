@@ -18,13 +18,11 @@ class AddTaxNumberToCustomers extends Migration
         });
 
         Schema::table(
-            'venders', function (Blueprint $table){
-            $table->string('tax_number')->nullable()->after('email');
-        }
+            'venders', function (Blueprint $table) {
+                $table->string('tax_number')->nullable()->after('email');
+            }
         );
     }
-
-
 
     /**
      * Reverse the migrations.

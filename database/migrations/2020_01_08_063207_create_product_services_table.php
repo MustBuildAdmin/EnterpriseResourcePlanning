@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateProductServicesTable extends Migration
 {
@@ -17,8 +17,8 @@ class CreateProductServicesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('sku');
-            $table->float('sale_price',20)->default('0.0');
-            $table->float('purchase_price',20)->default('0.0');
+            $table->float('sale_price', 20)->default('0.0');
+            $table->float('purchase_price', 20)->default('0.0');
             $table->integer('quantity')->default('0');
             $table->integer('tax_id')->default('0');
             $table->integer('category_id')->default('0');

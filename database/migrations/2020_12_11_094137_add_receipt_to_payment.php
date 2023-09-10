@@ -18,20 +18,18 @@ class AddReceiptToPayment extends Migration
         });
 
         Schema::table(
-            'revenues', function (Blueprint $table){
-            $table->string('add_receipt')->nullable()->after('reference');
-        });
+            'revenues', function (Blueprint $table) {
+                $table->string('add_receipt')->nullable()->after('reference');
+            });
         Schema::table(
-            'invoice_payments', function (Blueprint $table){
-            $table->string('add_receipt')->nullable()->after('reference');
-        });
+            'invoice_payments', function (Blueprint $table) {
+                $table->string('add_receipt')->nullable()->after('reference');
+            });
         Schema::table(
-            'bill_payments', function (Blueprint $table){
-            $table->string('add_receipt')->nullable()->after('reference');
-        });
+            'bill_payments', function (Blueprint $table) {
+                $table->string('add_receipt')->nullable()->after('reference');
+            });
     }
-
-
 
     /**
      * Reverse the migrations.

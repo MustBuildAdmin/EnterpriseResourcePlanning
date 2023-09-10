@@ -17,10 +17,7 @@ class AddImageToProductService extends Migration
             $table->string('pro_image')->nullable()->after('description');
         });
 
-
     }
-
-
 
     /**
      * Reverse the migrations.

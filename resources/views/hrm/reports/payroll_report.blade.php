@@ -39,7 +39,7 @@
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 year d-none">
                                         <div class="btn-box">
                                             {{ Form::label('year', __('Year'),['class'=>'form-label']) }}
-                                            <select class="form-control select" id="year" name="year" tabindex="-1" aria-hidden="true">
+                                            <select class="form-select" id="year" name="year" tabindex="-1" aria-hidden="true">
                                                 @for($filterYear['starting_year']; $filterYear['starting_year'] <= $filterYear['ending_year']; $filterYear['starting_year']++)
                                                     <option {{(isset($_GET['year']) && $_GET['year'] == $filterYear['starting_year'] ?'selected':'')}} {{(!isset($_GET['year']) && date('Y') == $filterYear['starting_year'] ?'selected':'')}} value="{{$filterYear['starting_year']}}">{{$filterYear['starting_year']}}</option>
                                                 @endfor
@@ -49,13 +49,13 @@
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                         <div class="btn-box">
                                             {{ Form::label('branch', __('Branch'),['class'=>'form-label']) }}
-                                            {{ Form::select('branch', $branch,isset($_GET['branch'])?$_GET['branch']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('branch', $branch,isset($_GET['branch'])?$_GET['branch']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
                                         <div class="btn-box">
                                             {{ Form::label('department', __('Department'),['class'=>'form-label'])}}
-                                            {{ Form::select('department', $department,isset($_GET['department'])?$_GET['department']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('department', $department,isset($_GET['department'])?$_GET['department']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
 

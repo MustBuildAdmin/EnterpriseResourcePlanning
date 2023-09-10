@@ -46,14 +46,14 @@
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 date">
                                         <div class="btn-box">
                                             {{ Form::label('f_account', __('From Account'),['class'=>'form-label'])}}
-                                            {{ Form::select('f_account',$account,isset($_GET['f_account'])?$_GET['f_account']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('f_account',$account,isset($_GET['f_account'])?$_GET['f_account']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
 
                                     <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12 account">
                                         <div class="btn-box">
                                             {{ Form::label('t_account', __('To Account'),['class'=>'form-label'])}}
-                                            {{ Form::select('t_account', $account,isset($_GET['t_account'])?$_GET['t_account']:'', array('class' => 'form-control select')) }}
+                                            {{ Form::select('t_account', $account,isset($_GET['t_account'])?$_GET['t_account']:'', array('class' => 'form-select')) }}
                                         </div>
                                     </div>
                                     <div class="col-auto">

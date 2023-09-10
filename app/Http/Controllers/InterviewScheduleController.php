@@ -10,29 +10,27 @@ use Illuminate\Http\Request;
 
 class InterviewScheduleController extends Controller
 {
-
     public function index()
     {
         $transdate = date('Y-m-d', time());
 
-        $schedules   = InterviewSchedule::where('created_by', \Auth::user()->creatorId())->get();
+        $schedules = InterviewSchedule::where('created_by', \Auth::user()->creatorId())->get();
         $arrSchedule = [];
 
-        foreach($schedules as $schedule)
-        {
-            $arr['id']     = $schedule['id'];
-            $arr['title']  = !empty($schedule->applications) ? !empty($schedule->applications->jobs) ? $schedule->applications->jobs->title : '' : '';
-            $arr['start']  = $schedule['date'];
+        foreach ($schedules as $schedule) {
+            $arr['id'] = $schedule['id'];
+            $arr['title'] = ! empty($schedule->applications) ? ! empty($schedule->applications->jobs) ? $schedule->applications->jobs->title : '' : '';
+            $arr['start'] = $schedule['date'];
             $arr['className'] = 'event-primary';
-            $arr['url']    = route('interview-schedule.show', $schedule['id']);
+            $arr['url'] = route('interview-schedule.show', $schedule['id']);
             $arrSchedule[] = $arr;
         }
         $arrSchedule = str_replace('"[', '[', str_replace(']"', ']', json_encode($arrSchedule)));
 
-        return view('interviewSchedule.index', compact('arrSchedule', 'schedules','transdate'));
+        return view('interviewSchedule.index', compact('arrSchedule', 'schedules', 'transdate'));
     }
 
-    public function create($candidate=0)
+    public function create($candidate = 0)
     {
         $employees = User::where('created_by', \Auth::user()->creatorId())->where('type', 'employee')->orWhere('id', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $employees->prepend('--', '');
@@ -40,52 +38,47 @@ class InterviewScheduleController extends Controller
         $candidates = JobApplication::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
         $candidates->prepend('--', '');
 
-        return view('interviewSchedule.create', compact('employees', 'candidates','candidate'));
+        return view('interviewSchedule.create', compact('employees', 'candidates', 'candidate'));
     }
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create interview schedule'))
-        {
+        if (\Auth::user()->can('create interview schedule')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'candidate' => 'required',
-                                   'employee' => 'required',
-                                   'date' => 'required',
-                                   'time' => 'required',
-                               ]
+                    'candidate' => 'required',
+                    'employee' => 'required',
+                    'date' => 'required',
+                    'time' => 'required',
+                ]
             );
 
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-
-            $schedule             = new InterviewSchedule();
-            $schedule->candidate  = $request->candidate;
-            $schedule->employee   = $request->employee;
-            $schedule->date       = $request->date;
-            $schedule->time       = $request->time;
-            $schedule->comment    = $request->comment;
+            $schedule = new InterviewSchedule();
+            $schedule->candidate = $request->candidate;
+            $schedule->employee = $request->employee;
+            $schedule->date = $request->date;
+            $schedule->time = $request->time;
+            $schedule->comment = $request->comment;
             $schedule->created_by = \Auth::user()->creatorId();
             $schedule->save();
 
             return redirect()->back()->with('success', __('Interview schedule successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function show(InterviewSchedule $interviewSchedule)
     {
-        $stages=JobStage::where('created_by',\Auth::user()->creatorId())->get();
+        $stages = JobStage::where('created_by', \Auth::user()->creatorId())->get();
 
-        return view('interviewSchedule.show', compact('interviewSchedule','stages'));
+        return view('interviewSchedule.show', compact('interviewSchedule', 'stages'));
     }
 
     public function edit(InterviewSchedule $interviewSchedule)
@@ -101,36 +94,31 @@ class InterviewScheduleController extends Controller
 
     public function update(Request $request, InterviewSchedule $interviewSchedule)
     {
-        if(\Auth::user()->can('edit interview schedule'))
-        {
+        if (\Auth::user()->can('edit interview schedule')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'candidate' => 'required',
-                                   'employee' => 'required',
-                                   'date' => 'required',
-                                   'time' => 'required',
-                               ]
+                    'candidate' => 'required',
+                    'employee' => 'required',
+                    'date' => 'required',
+                    'time' => 'required',
+                ]
             );
 
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-
             $interviewSchedule->candidate = $request->candidate;
-            $interviewSchedule->employee  = $request->employee;
-            $interviewSchedule->date      = $request->date;
-            $interviewSchedule->time      = $request->time;
-            $interviewSchedule->comment   = $request->comment;
+            $interviewSchedule->employee = $request->employee;
+            $interviewSchedule->date = $request->date;
+            $interviewSchedule->time = $request->time;
+            $interviewSchedule->comment = $request->comment;
             $interviewSchedule->save();
 
             return redirect()->back()->with('success', __('Interview schedule successfully updated.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }

@@ -11,7 +11,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 {{Form::label('is_required',__('Is Required*'),['class'=>'form-label'])}}
-                {{ Form::select('is_required', $is_required,null, array('class' => 'form-control select','required'=>'required')) }}
+                {{ Form::select('is_required', $is_required,null, array('class' => 'form-select','required'=>'required')) }}
             </div>
         </div>
        

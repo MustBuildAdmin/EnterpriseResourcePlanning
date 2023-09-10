@@ -28,10 +28,8 @@ class Payment extends Model
         return $this->hasOne('App\Models\Vender', 'id', 'vender_id');
     }
 
-
     public function bankAccount()
     {
         return $this->hasOne('App\Models\BankAccount', 'id', 'account_id');
     }
-
 }

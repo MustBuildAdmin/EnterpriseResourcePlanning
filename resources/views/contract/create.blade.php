@@ -8,12 +8,12 @@
         <div class="form-group col-md-6">
             {{ Form::label('client_name', __('Client'),['class'=>'form-label']) }}<span class="text-danger">*</span>
             {{--            {{ Form::select('client_name', $clients,null, array('class' => 'form-control','data-toggle="select"','required'=>'required')) }}--}}
-            {{ Form::select('client_name', $clients, null, ['class' => 'form-control select client_select', 'id' => 'client_select']) }}
+            {{ Form::select('client_name', $clients, null, ['class' => 'form-select client_select', 'id' => 'client_select']) }}
 
         </div>
         <div class="form-group col-md-6" >
             {{ Form::label('projects', __('Projects'),['class'=>'form-label'])}}<span class="text-danger">*</span>
-            <select class="form-control select project_select" id="project_id" name="project_id" required>
+            <select class="form-select project_select" id="project_id" name="project_id" required>
                 <option value="">{{__('Select Project')}}</option>
             </select>
         </div>

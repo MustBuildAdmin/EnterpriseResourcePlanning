@@ -18,8 +18,7 @@ class JobStage extends Model
         $application->where('created_at', '>=', $filter['start_date']);
         $application->where('created_at', '<=', $filter['end_date']);
 
-        if(!empty($filter['job']))
-        {
+        if (! empty($filter['job'])) {
             $application->where('job', $filter['job']);
         }
 

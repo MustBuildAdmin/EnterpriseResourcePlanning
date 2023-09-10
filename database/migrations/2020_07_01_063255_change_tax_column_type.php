@@ -14,19 +14,19 @@ class ChangeTaxColumnType extends Migration
     public function up()
     {
         Schema::table(
-            'proposal_products', function (Blueprint $table){
-            $table->string('tax', '50')->nullable()->change();
-        }
+            'proposal_products', function (Blueprint $table) {
+                $table->string('tax', '50')->nullable()->change();
+            }
         );
         Schema::table(
-            'invoice_products', function (Blueprint $table){
-            $table->string('tax', '50')->nullable()->change();
-        }
+            'invoice_products', function (Blueprint $table) {
+                $table->string('tax', '50')->nullable()->change();
+            }
         );
         Schema::table(
-            'bill_products', function (Blueprint $table){
-            $table->string('tax', '50')->nullable()->change();
-        }
+            'bill_products', function (Blueprint $table) {
+                $table->string('tax', '50')->nullable()->change();
+            }
         );
     }
 
@@ -38,19 +38,19 @@ class ChangeTaxColumnType extends Migration
     public function down()
     {
         Schema::table(
-            'proposal_products', function (Blueprint $table){
-            $table->dropColumn('tax');
-        }
+            'proposal_products', function (Blueprint $table) {
+                $table->dropColumn('tax');
+            }
         );
         Schema::table(
-            'invoice_products', function (Blueprint $table){
-            $table->dropColumn('tax');
-        }
+            'invoice_products', function (Blueprint $table) {
+                $table->dropColumn('tax');
+            }
         );
         Schema::table(
-            'bill_products', function (Blueprint $table){
-            $table->dropColumn('tax');
-        }
+            'bill_products', function (Blueprint $table) {
+                $table->dropColumn('tax');
+            }
         );
     }
 }

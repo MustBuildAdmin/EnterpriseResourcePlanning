@@ -14,20 +14,20 @@ class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create(
-            'transactions', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('user_id');
-            $table->string('user_type');
-            $table->integer('account');
-            $table->string('type')->nullable();
-            $table->float('amount')->default('0.00');
-            $table->text('description')->nullable();
-            $table->date('date');
-            $table->integer('created_by')->default('0');
-            $table->integer('payment_id')->default('0');
-            $table->string('category');
-            $table->timestamps();
-        }
+            'transactions', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('user_id');
+                $table->string('user_type');
+                $table->integer('account');
+                $table->string('type')->nullable();
+                $table->float('amount')->default('0.00');
+                $table->text('description')->nullable();
+                $table->date('date');
+                $table->integer('created_by')->default('0');
+                $table->integer('payment_id')->default('0');
+                $table->string('category');
+                $table->timestamps();
+            }
         );
     }
 

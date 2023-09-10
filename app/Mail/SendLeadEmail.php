@@ -17,10 +17,10 @@ class SendLeadEmail extends Mailable
      *
      * @return void
      */
-    public function __construct( $lArr)
+    public function __construct($lArr)
     {
 
-        $this->lArr  = $lArr;
+        $this->lArr = $lArr;
 
     }
 

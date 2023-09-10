@@ -48,7 +48,7 @@
                     <div class="col-sm-8 col-lg-5">
                         <div class="row justify-content-center mb-3">
                             <a class="navbar-brand" href="#">
-                                <img src="{{asset(Storage::url('uploads/logo/logo-dark.png'))}}" class="navbar-brand-img big-logo">
+                                <img src="{{asset(Storage::url('uploads/logo/logo-dark.png'))}}" class="navbar-brand-img big-logo" width="100" height="100">
                             </a>
                         </div>
                         <div class="card shadow zindex-100 mb-0">

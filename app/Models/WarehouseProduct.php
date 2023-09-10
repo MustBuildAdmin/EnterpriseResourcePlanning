@@ -13,14 +13,13 @@ class WarehouseProduct extends Model
         'created_by',
     ];
 
-
     public function product()
     {
         return $this->hasOne('App\Models\ProductService', 'id', 'product_id')->first();
     }
+
     public function warehouse()
     {
         return $this->hasOne('App\Models\warehouse', 'id', 'warehouse_id')->first();
     }
-
 }

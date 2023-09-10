@@ -24,7 +24,7 @@
                 <div class="input-group-btn">
           </form>
           {{ Form::open(array('route' => 'deals.change.pipeline','id'=>'change-pipeline','class'=>'btn btn-sm ')) }}
-          {{ Form::select('default_pipeline_id', $pipelines,$pipeline->id, array('class' => 'form-control select',
+          {{ Form::select('default_pipeline_id', $pipelines,$pipeline->id, array('class' => 'form-select',
           'id'=>'default_pipeline_id')) }}
           {{ Form::close() }}
           <a href="{{ route('leads.list') }}" data-size="lg" data-bs-toggle="tooltip" title="{{__('List View')}}"

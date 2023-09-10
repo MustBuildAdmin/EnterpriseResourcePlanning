@@ -73,7 +73,7 @@
 											<i class="fa fa-plus"></i>
 										</span>
 									</a>
-									<a href="{{ route('consultant.scott-search') }}" class="btn btn-primary" data-bs-toggle="tooltip" 
+									<a href="{{ route('consultant.scott-search') }}" class="btn btn-primary" data-bs-toggle="tooltip"
 									title="{{__('Invite Consultant')}}"
 									  id="invite" class="btn btn-primary">
 										<span class="btn-inner--icon">
@@ -127,7 +127,7 @@
 							<?php  $short=substr($user->name, 0, 1);?>
 								<?php  $short_lname=substr($user->lname, 0, 1);?>
 								 @if(!empty($user->avatar))
-								 	<img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar :
+								 	<img src="{{(!empty($user->avatar))? $profile.$user->avatar :
 								 	asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded" alt="">
 								  @else
 										
@@ -210,5 +210,21 @@ $(document).on('keypress', function (e) {
         if (e.which == 13) {
             swal.closeModal();
         }
+});
+
+
+$(document).on('change', '.document_setup', function(){
+	var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+	if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+		$(".show_document_file").hide();
+		$(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+		$('input[type="submit"]').prop('disabled',true);
+		return false;
+	} else{
+		$(".show_document_file").show();
+		$(".show_document_error").hide();
+		$('input[type="submit"]').prop('disabled',false);
+		return true;
+	}
 });
 </script>

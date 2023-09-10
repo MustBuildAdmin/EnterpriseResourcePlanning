@@ -14,5 +14,4 @@ class Asset extends Model
         'description',
         'created_by',
     ];
-
 }

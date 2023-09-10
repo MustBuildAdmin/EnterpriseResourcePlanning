@@ -7,7 +7,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('client_name', __('Client'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('client_name', $clients, null, ['class' => 'form-control select client_select', 'id' => 'client_select']) }}
+            {{ Form::select('client_name', $clients, null, ['class' => 'form-select client_select', 'id' => 'client_select']) }}
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('project', __('Project'), ['class' => 'form-label']) }}<span class="text-danger">*</span>

@@ -18,6 +18,17 @@
     line-height: 43px;
     margin: 1px;
 }
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 25px;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+  /* background: orange; */
+  text-transform:capitalize;
+}
 </style>
 <script src="{{ asset('WizardSteps/js/jquery.steps.js') }}"></script>
 <div class="page-wrapper">
@@ -70,11 +81,28 @@
                             <div class="card">
                                 <div class="card-header border-0 pb-0">
                                     <div class="d-flex align-items-center">
-                                        <img {{ $project->img_image }} class="img-fluid wid-30 me-2" alt="">
-                                        <h5 class="mb-0"><a class="text-dark"
-                                                href="{{ route('projects.show', $project) }}">{{ $project->project_name }}</a>
-                                        </h5>
+                                        <?php $color = sprintf("#%06x",random_int(0,16777215));?>
+                                    <div class="circle" style="background:<?php echo $color; ?>">
+                                    <?= substr($project->project_name,0,2) ?>
                                     </div>
+                                    <h5 class="mb-0">
+                                        @php
+                                            $project_instances=\App\Models\Instance::where('project_id',$project->id)
+                                            ->get();
+                                        @endphp
+                                        @if(count($project_instances)>1)
+                                            <a class="text-dark"  data-size="lg"
+                                            data-url="{{ route('projects.check_instance',$project->id) }}"
+                                            data-title="Choose Your Revision" data-ajax-popup="true"
+                                            data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                                        @else
+                                            <a class="text-dark"  data-size="lg"
+                                            href="{{ route('projects.instance_project',
+                                                    [$project_instances[0]['id'],$project->id]) }}"
+                                            data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                                        @endif
+                                    </h5>
+                                </div>
                                     <div class="card-header-right">
                                         <div class="btn-group card-option">
                                             <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
@@ -82,30 +110,39 @@
                                                 <i class="ti ti-dots-vertical"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-end">
-                                                @if($project->freeze_status!=1)
-                                                @can('edit project')
-                                                    <a href="#!" data-size="xl"
-                                                        data-url="{{ route('projects.edit', $project->id) }}"
-                                                        data-ajax-popup="true" class="dropdown-item"
-                                                        data-bs-original-title="{{ __('Edit User') }}">
-                                                        <i class="ti ti-pencil"></i>
-                                                        <span>{{ __('Edit') }}</span>
-                                                    </a>
-                                                @endcan
+                                                @php
+                                                    $getInstance = DB::table('instance')
+                                                        ->where('instance',$project->instance_id)
+                                                        ->where('project_id',$project->id)
+                                                        ->where('freeze_status',0)->first();
+                                                @endphp
+                                                @if($getInstance != null)
+                                                    @can('edit project')
+                                                        <a href="#!" data-size="xl"
+                                                            data-url="{{ route('projects.edit', $project->id) }}"
+                                                            data-ajax-popup="true" class="dropdown-item"
+                                                            data-bs-original-title="{{ __('Edit Project') }}">
+                                                            <i class="ti ti-pencil"></i>
+                                                            <span>{{ __('Edit') }}</span>
+                                                        </a>
+                                                    @endcan
                                              
+                                                   
+                                                @endif
                                                 @can('delete project')
-                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['projects.destroy', $project->id]]) !!}
-                                                    <a href="#!" class="dropdown-item bs-pass-para">
+                                                    {!! Form::open(['method' => 'DELETE',
+                                                        'route' => ['projects.destroy', $project->id]]) !!}
+                                                    <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
                                                         <i class="ti ti-archive"></i>
                                                         <span> {{ __('Delete') }}</span>
                                                     </a>
 
                                                     {!! Form::close() !!}
                                                 @endcan
-                                                @endif
                                                 @can('edit project')
                                                     <a href="#!" data-size="xl"
-                                                        data-url="{{ route('invite.project.member.view', $project->id) }}"
+                                                    data-url="{{ route('invite.project.member.view',
+                                                         $project->id) }}"
                                                         data-ajax-popup="true" class="dropdown-item"
                                                         data-bs-original-title="{{ __('Invite User') }}">
                                                         <i class="ti ti-send"></i>
@@ -133,20 +170,24 @@
                                                     $status_set = 'in_progress';
                                                 }
                                             @endphp
-                                            <span class="badge rounded-pill bg-{{ \App\Models\Project::$status_color[$status_set] }}">{{ __(\App\Models\Project::$project_status[$status_set]) }}</span>
+                                            <span class="badge rounded-pill bg-{{ \App\Models\Project::
+                                                $status_color[$status_set] }}">
+                                                {{ __(\App\Models\Project::$project_status[$status_set]) }}</span>
                                         </div>
 
                                     </div>
                                     <p class="text-muted text-sm mt-3">{{ $project->description }}</p>
                                     <small>{{ __('MEMBERS') }}</small>
                                     <div class="user-group" style='display: flex;'>
-                                        @if (isset($project->users) && !empty($project->users) && count($project->users) > 0)
+                                        @if (isset($project->users) && !empty($project->users)
+                                         && count($project->users) > 0)
                                             @foreach ($project->users as $key => $user)
                                             <?php  $short=substr($user->name, 0, 1);?>
                                                 @if ($key < 3)
                                                     @if ($user->avatar)
                                                         <a href="#" class="avatar rounded-circle avatar-sm">
-                                                            <img  src="{{ asset('/storage/uploads/avatar/' . $user->avatar) }}"
+                                                            <img  src="{{ asset('/storage/uploads/avatar/'
+                                                                 . $user->avatar) }}"
                                                                 alt="image" data-bs-toggle="tooltip"
                                                                 title="{{ $user->name }}" class="user-initial">
                                                         </a>
@@ -168,7 +209,8 @@
                                         <div class="row">
                                             <div class="col-6">
                                                 <h6
-                                                    class="mb-0 {{ strtotime($project->start_date) < time() ? 'text-danger' : '' }}">
+                                                    class="mb-0 {{ strtotime($project->start_date) < time()
+                                                         ? 'text-danger' : '' }}">
                                                     {{ Utility::getDateFormated($project->start_date) }}</h6>
                                                 <p class="text-muted text-sm mb-0">{{ __('Start Date') }}</p>
                                             </div>
@@ -186,20 +228,42 @@
                 @endforeach
             </div>
         @else
-            <div class="col-xl-12 col-lg-12 col-sm-12">
-                <div class="card">
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row g-0">
+                <div class="col d-flex flex-column">
                     <div class="card-body">
-                        <h6 class="text-center mb-0">{{ __('No Projects Found.') }}</h6>
+                    <div class="container-xl d-flex flex-column justify-content-center">
+                        <div class="empty">
+                        <div class="empty-img">
+                            <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}"
+                             height="128" alt="">
+                        </div>
+                        <p class="empty-title">{{ __('No Projects Found.') }}
+                        </p>
+                        </div>
+                    </div>
                     </div>
                 </div>
+                </div>
             </div>
+        </div>
         @endif
     </div>
 </div>
-
+<button id="myBtn" style="display:none;">Open Modal</button>
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+    </div>
+    <div id="myModalContent"></div>
+  </div>
+</div>
 @include('new_layouts.footer')
 
 <script>
+  
          $(document).ready(function () {
             $(document).on('click', '.invite_usr', function () {
                 var project_id = $('#project_id').val();

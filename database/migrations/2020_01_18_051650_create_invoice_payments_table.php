@@ -14,17 +14,17 @@ class CreateInvoicePaymentsTable extends Migration
     public function up()
     {
         Schema::create(
-            'invoice_payments', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('invoice_id');
-            $table->date('date');
-            $table->float('amount')->default('0.00');
-            $table->integer('account_id');
-            $table->integer('payment_method');
-            $table->string('reference')->nullable();
-            $table->text('description')->nullable();
-            $table->timestamps();
-        }
+            'invoice_payments', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('invoice_id');
+                $table->date('date');
+                $table->float('amount')->default('0.00');
+                $table->integer('account_id');
+                $table->integer('payment_method');
+                $table->string('reference')->nullable();
+                $table->text('description')->nullable();
+                $table->timestamps();
+            }
         );
     }
 

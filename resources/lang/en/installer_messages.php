@@ -1,9 +1,11 @@
-<?php return [
+<?php
+
+return [
     'title' => 'Installer',
     'next' => 'Next Step',
     'back' => 'Previous',
     'finish' => 'Install',
-    'forms' => ['errorTitle' => 'The Following errors occurred:',],
+    'forms' => ['errorTitle' => 'The Following errors occurred:'],
     'welcome' => [
         'templateTitle' => 'Welcome',
         'title' => 'Installer',
@@ -130,7 +132,7 @@
         'errors' => 'Unable to save the .env file, Please create it manually.',
     ],
     'install' => 'Install',
-    'installed' => ['success_log_message' => 'Installer successfully INSTALLED on',],
+    'installed' => ['success_log_message' => 'Installer successfully INSTALLED on'],
     'final' => [
         'title' => 'Installation Finished',
         'templateTitle' => 'Installation Finished',
@@ -157,6 +159,6 @@
             'finished' => 'Application\'s database has been successfully updated.',
             'exit' => 'Click here to exit',
         ],
-        'log' => ['success_message' => 'Installer successfully UPDATED on',],
+        'log' => ['success_message' => 'Installer successfully UPDATED on'],
     ],
 ];

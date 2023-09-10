@@ -6,10 +6,16 @@
 
 <style>
     .navbar-expand-lg {
-        top: 8em !important;
+        top: 4.8em !important;
     }
 </style>
-
+    <!-- Libs JS -->
+    <script src="{{ asset('assets/dist/js/demo-theme.min.js?1674944402') }}"></script>
+    <!-- Required Js -->
+    <script src="{{ asset('assets/dist/js/tabler.min.js?1674944402') }}" defer></script>
+    <script src="{{ asset('assets/dist/js/demo.min.js?1674944402') }}" defer></script>
+    <script src="{{ asset('assets/js/vendor-all.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
 <div class="page">
     <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
         <div class="container-fluid">
@@ -21,7 +27,7 @@
                 <ul class="navbar-nav pt-lg-3">
                     <li class="{{ Request::segment(1) == 'employee' ? 'active nav-item' : 'nav-item' }}">
                         <a href="{{ route('hrm_dashboard') }}" href="#" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -44,7 +50,7 @@
                             @endphp
                             <a href="{{ route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}"
                                 class="nav-link">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class=" d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -59,7 +65,7 @@
                                 <span class="nav-link-title"> {{ __('Employee') }} </span></a>
                         @else
                             <a href="{{ route('employee.index') }}" class="nav-link">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class=" d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -72,12 +78,96 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">{{ __('Employee Setup') }}</span></a>
+
+                    
                         @endif
 
                     </li>
 
+                    @can('manage leave')
+                    <li class="{{ Request::segment(1) == 'leave' ? 'active nav-item' : 'nav-item' }}">
 
-                    @if( Gate::check('manage job') || Gate::check('create job') || Gate::check('manage job application') || Gate::check('manage custom question') || Gate::check('show interview schedule') || Gate::check('show career'))
+                        <a href="{{route('leave.index')}}" class="nav-link">
+                            <span class=" d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">{{__('Manage Leave')}}</span></a>
+                    </li>
+                    @endcan
+
+
+                    @can('manage attendance')
+                    <li class="{{ Request::segment(1) == 'attendanceemployee' ? 'active nav-item' : 'nav-item' }}">
+                        <li class="active nav-item dropdown">
+                            <a class="{{
+                            Request::segment(1) == 'leave' ||
+                            Request::segment(1) == 'attendanceemployee'
+                        
+                                ? 'nav-link dropdown-toggle show'
+                                : 'nav-link dropdown-toggle' }}"
+                                href="#hradmin_settings" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                                aria-expanded="{{       Request::segment(1) == 'leave' ||
+                                Request::segment(1) == 'attendanceemployee'
+                                    ? 'true'
+                                    : 'false' }}">
+                               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                <path d="M12 10.5v1.5"></path>
+                                <path d="M12 16v1.5"></path>
+                                <path d="M15.031 12.25l-1.299 .75"></path>
+                                <path d="M10.268 15l-1.3 .75"></path>
+                                <path d="M15 15.803l-1.285 -.773"></path>
+                                <path d="M10.285 12.97l-1.285 -.773"></path>
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                             </svg>
+                                <span class="nav-link-title">
+                                    {{__('Attendance')}}
+                                </span>
+                            </a>
+                            <div class="{{      Request::segment(1) == 'leave' ||
+                            Request::segment(1) == 'attendanceemployee'
+                                ? 'dropdown-menu show'
+                                : 'dropdown-menu' }}"
+                                data-bs-popper="{{      Request::segment(1) == 'leave' ||
+                                Request::segment(1) == 'attendanceemployee'
+                                    ? 'static'
+                                    : '' }}">
+
+
+
+<div class="dropdown-menu-columns">
+    <div class="dropdown-menu-column">
+        @can('manage leave')
+        <a class="{{ (Request::route()->getName() == 'leave.index') ?'dropdown-item active' :'dropdown-item'}}"
+            href="{{route('leave.index')}}" >
+            {{__('Manage Leave')}}
+        </a>
+        @endcan
+        @can('manage attendance')
+        <a class="{{ (Request::route()->getName() == 'leave.index') ?'dropdown-item active' :'dropdown-item'}}"
+            href="{{route('leave.index')}}" >
+            {{__('Manage Leave')}}
+        </a>
+        @endcan
+    </div></div>
+                            </div>
+    
+                    </li>
+                    @endcan
+
+
+                    {{-- @if( Gate::check('manage job') || Gate::check('create job') || Gate::check('manage job application') || Gate::check('manage custom question') || Gate::check('show interview schedule') || Gate::check('show career'))
                     <li class="active nav-item dropdown">
                                         <a class="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career') ? 'nav-link dropdown-toggle show' : 'nav-link dropdown-toggle'}}   " href="#"\
                                         aria-expanded="{{ (Request::segment(1) == 'job' || Request::segment(1) == 'job-application' || Request::segment(1) == 'candidates-job-applications' || Request::segment(1) == 'job-onboard' || Request::segment(1) == 'custom-question' || Request::segment(1) == 'interview-schedule' || Request::segment(1) == 'career') ? 'true' : 'false' }}"
@@ -137,7 +227,7 @@
                         
                         </div>
                     </li>
-                    @endif
+                    @endif --}}
 
 
 
@@ -454,7 +544,7 @@
 
     <!-- Page Content  -->
     <div class="page-wrapper">
-
+      <div class ="container-fluild p-5">
 
 
         @isset($hrm_header)

@@ -63,7 +63,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('category_id', $category,null, array('class' => 'form-select','required'=>'required')) }}
 
             <div class=" text-xs">
                 {{__('Please add constant category. ')}}<a href="{{route('product-category.index')}}"><b>{{__('Add Category')}}</b></a>
@@ -71,7 +71,7 @@
         </div>
         <div class="form-group col-md-6">
             {{ Form::label('unit_id', __('Unit'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-            {{ Form::select('unit_id', $unit,null, array('class' => 'form-control select','required'=>'required')) }}
+            {{ Form::select('unit_id', $unit,null, array('class' => 'form-select','required'=>'required')) }}
         </div>
 
         <div class="form-group col-md-6">

@@ -11,13 +11,13 @@
             <div class="col-md-6">
                 <div class="form-group">
                     {{ Form::label('loan_option', __('Loan Options')) }}<span class="text-danger">*</span>
-                    {{ Form::select('loan_option',$loan_options,null, array('class' => 'form-control select','required'=>'required')) }}
+                    {{ Form::select('loan_option',$loan_options,null, array('class' => 'form-select','required'=>'required')) }}
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     {{ Form::label('type', __('Type'), ['class' => 'form-label']) }}<span style='color:red;'>*</span>
-                    {{ Form::select('type', $loans, null, ['class' => 'form-control select amount_type', 'required' => 'required']) }}
+                    {{ Form::select('type', $loans, null, ['class' => 'form-select amount_type', 'required' => 'required']) }}
                 </div>
             </div>
             <div class="col-md-6">

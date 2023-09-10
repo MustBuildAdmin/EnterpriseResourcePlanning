@@ -117,14 +117,14 @@
 
                 <div class="form-group col-md-4">
                     {{ Form::label('period', __('Budget Period'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                    {{ Form::select('period', $periods,null, array('class' => 'form-control select period','required'=>'required')) }}
+                    {{ Form::select('period', $periods,null, array('class' => 'form-select period','required'=>'required')) }}
 
                 </div>
 
                 <div class="form-group  col-md-4">
                     <div class="btn-box">
                         {{ Form::label('year', __('Year'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                        {{ Form::select('year',$yearList,isset($_GET['year'])?$_GET['year']:'', array('class' => 'form-control select')) }}
+                        {{ Form::select('year',$yearList,isset($_GET['year'])?$_GET['year']:'', array('class' => 'form-select')) }}
                     </div>
                 </div>
 

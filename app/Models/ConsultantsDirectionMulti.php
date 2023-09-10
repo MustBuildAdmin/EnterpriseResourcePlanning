@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class ConsultantsDirectionMulti extends Model
 {
     use HasFactory;
+
     protected $table = 'dr_consultants_direction_multi';
 }

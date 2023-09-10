@@ -46,12 +46,12 @@
      
        
         @if ($user->color_code!=null || $user->color_code!='')
-             @php $color_co =$user->color_code; @endphp
+             @php $colorcor =$user->color_code; @endphp
         @else
-             @php $color_co =$color_co; @endphp
+             @php $colorcor =$colorco; @endphp
         @endif
 
-            <input type="text" name="color_code" value="{{ $color_co }}">
+            <input type="hidden" name="color_code" value="{{ $colorcor }}">
 
             <div class="row">
                 <div class="col-md-6">
@@ -203,8 +203,10 @@
                         <div class="form-group">
                             {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                             <div class="form-icon-user">
-                                {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                                <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
+                                accept="image/*, .png, .jpeg, .jpg">
                             </div>
+                            <span class="show_document_error" style="color:red;"></span>
                         </div>
                     </div>
                 </div>
@@ -250,6 +252,10 @@
 </script>
 <script>
     $(document).ready(function() {
+
+        $(document).on('submit', 'form', function() {
+            $('#edit_user').attr('disabled', 'disabled');
+        });
 
         $(".chosen-select").chosen({
             placeholder_text:"{{ __('Reporting to') }}"

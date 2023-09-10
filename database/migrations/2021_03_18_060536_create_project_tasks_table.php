@@ -13,7 +13,7 @@ class CreateProjectTasksTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('project_tasks')){
+        if (! Schema::hasTable('project_tasks')) {
             Schema::create('project_tasks', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');

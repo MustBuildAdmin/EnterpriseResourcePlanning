@@ -14,20 +14,20 @@ class AddRatingInCompetencies extends Migration
     public function up()
     {
         Schema::table(
-            'indicators', function (Blueprint $table){
-            $table->string('rating')->nullable()->after('designation');
-        }
+            'indicators', function (Blueprint $table) {
+                $table->string('rating')->nullable()->after('designation');
+            }
         );
 
         Schema::table(
-            'appraisals', function (Blueprint $table){
-            $table->string('rating')->nullable()->after('employee');
-        }
+            'appraisals', function (Blueprint $table) {
+                $table->string('rating')->nullable()->after('employee');
+            }
         );
         Schema::table(
-            'goal_trackings', function (Blueprint $table){
-            $table->string('rating')->nullable()->after('subject');
-        }
+            'goal_trackings', function (Blueprint $table) {
+                $table->string('rating')->nullable()->after('subject');
+            }
         );
     }
 
@@ -39,19 +39,19 @@ class AddRatingInCompetencies extends Migration
     public function down()
     {
         Schema::table(
-            'indicators', function (Blueprint $table){
-            $table->dropColumn('rating');
-        }
+            'indicators', function (Blueprint $table) {
+                $table->dropColumn('rating');
+            }
         );
         Schema::table(
-            'appraisals', function (Blueprint $table){
-            $table->dropColumn('rating');
-        }
+            'appraisals', function (Blueprint $table) {
+                $table->dropColumn('rating');
+            }
         );
         Schema::table(
-            'goal_trackings', function (Blueprint $table){
-            $table->dropColumn('rating');
-        }
+            'goal_trackings', function (Blueprint $table) {
+                $table->dropColumn('rating');
+            }
         );
     }
 }

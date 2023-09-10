@@ -9,58 +9,48 @@ class AllowanceOptionController extends Controller
 {
     public function index()
     {
-        if(\Auth::user()->can('manage allowance option'))
-        {
+        if (\Auth::user()->can('manage allowance option')) {
             $allowanceoptions = AllowanceOption::where('created_by', '=', \Auth::user()->creatorId())->get();
 
             return view('hrm.system_setup.allowanceoption.allowanceoption', compact('allowanceoptions'));
             // return view('allowanceoption.index', compact('allowanceoptions'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function create()
     {
-        if(\Auth::user()->can('create allowance option'))
-        {
+        if (\Auth::user()->can('create allowance option')) {
             return view('hrm.system_setup.allowanceoption.allowanceoption_create');
             // return view('allowanceoption.create');
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create allowance option'))
-        {
+        if (\Auth::user()->can('create allowance option')) {
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20|unique:allowance_options',
-                               ]
+                    'name' => 'required|max:20|unique:allowance_options',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $allowanceoption             = new AllowanceOption();
-            $allowanceoption->name       = $request->name;
+            $allowanceoption = new AllowanceOption();
+            $allowanceoption->name = $request->name;
             $allowanceoption->created_by = \Auth::user()->creatorId();
             $allowanceoption->save();
 
             return redirect()->route('allowanceoption.index')->with('success', __('AllowanceOption  successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -72,40 +62,31 @@ class AllowanceOptionController extends Controller
 
     public function edit(AllowanceOption $allowanceoption)
     {
-        if(\Auth::user()->can('edit allowance option'))
-        {
-            if($allowanceoption->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('edit allowance option')) {
+            if ($allowanceoption->created_by == \Auth::user()->creatorId()) {
 
                 return view('hrm.system_setup.allowanceoption.allowanceoption_edit', compact('allowanceoption'));
                 // return view('allowanceoption.edit', compact('allowanceoption'));
-            }
-            else
-            {
+            } else {
                 return response()->json(['error' => __('Permission denied.')], 401);
             }
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission denied.')], 401);
         }
     }
 
     public function update(Request $request, AllowanceOption $allowanceoption)
     {
-        if(\Auth::user()->can('edit allowance option'))
-        {
-            if($allowanceoption->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('edit allowance option')) {
+            if ($allowanceoption->created_by == \Auth::user()->creatorId()) {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20|unique:allowance_options',
+                        'name' => 'required|max:20|unique:allowance_options',
 
-                                   ]
+                    ]
                 );
 
-                if($validator->fails())
-                {
+                if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
 
                     return redirect()->back()->with('error', $messages->first());
@@ -114,37 +95,26 @@ class AllowanceOptionController extends Controller
                 $allowanceoption->save();
 
                 return redirect()->route('allowanceoption.index')->with('success', __('AllowanceOption successfully updated.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function destroy(AllowanceOption $allowanceoption)
     {
-        if(\Auth::user()->can('delete allowance option'))
-        {
-            if($allowanceoption->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('delete allowance option')) {
+            if ($allowanceoption->created_by == \Auth::user()->creatorId()) {
                 $allowanceoption->delete();
 
                 return redirect()->route('allowanceoption.index')->with('success', __('AllowanceOption successfully deleted.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
-
 }

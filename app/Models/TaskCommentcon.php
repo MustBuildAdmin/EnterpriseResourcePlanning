@@ -18,7 +18,4 @@ class TaskCommentcon extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'created_by');
     }
-
-
-
 }

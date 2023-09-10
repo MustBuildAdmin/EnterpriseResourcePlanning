@@ -14,14 +14,14 @@ class CreateUserLeadsTable extends Migration
     public function up()
     {
         Schema::create(
-            'user_leads', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('lead_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
-            $table->timestamps();
-        }
+            'user_leads', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('lead_id');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
+                $table->timestamps();
+            }
         );
     }
 

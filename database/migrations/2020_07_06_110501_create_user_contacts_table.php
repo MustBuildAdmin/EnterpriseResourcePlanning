@@ -14,12 +14,12 @@ class CreateUserContactsTable extends Migration
     public function up()
     {
         Schema::create(
-            'user_contacts', function (Blueprint $table){
-            $table->id();
-            $table->integer('parent_id');
-            $table->integer('user_id');
-            $table->timestamps();
-        }
+            'user_contacts', function (Blueprint $table) {
+                $table->id();
+                $table->integer('parent_id');
+                $table->integer('user_id');
+                $table->timestamps();
+            }
         );
     }
 

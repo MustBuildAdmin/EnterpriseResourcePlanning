@@ -74,8 +74,10 @@
                         <div class="form-group">
                             {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                             <div class="form-icon-user">
-                                {{Form::file('avatar',null,array('class'=>'form-control'))}}
+                                <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
+                                accept="image/*, .png, .jpeg, .jpg">
                             </div>
+                            <span class="show_document_error" style="color:red;"></span>
                         </div>
                     </div>
                 </div>
@@ -377,7 +379,7 @@
             });
         });
 
-        $(document).on("change", '#billing_country', function () {
+    $(document).on("change", '#billing_country', function () {
     var name=$(this).val();
     var settings = {
             "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
@@ -416,6 +418,11 @@
     });
 
     $(document).ready(function() {
+
+
+    $(document).on('submit', 'form', function() {
+        $('#edit_client').attr('disabled', 'disabled');
+    });
 
     $(document).on("change", ".checkbox1", function () {
     var $this = $(this).parent().parent();
@@ -566,7 +573,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         input.value = numbers;
     }
 
-    $(function() { 
+    $(function() {
         var getcolor=$('#colortype').val()
        $('#color_code').val(getcolor);
      });

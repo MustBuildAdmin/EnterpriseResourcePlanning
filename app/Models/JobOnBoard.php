@@ -25,12 +25,14 @@ class JobOnBoard extends Model
         'cancel' => 'Cancel',
         'confirm' => 'Confirm',
     ];
+
     public static $job_type = [
         '' => 'Select Job Type',
         'full time' => 'Full Time',
         'part time' => 'Part Time',
 
     ];
+
     public static $salary_duration = [
         '' => 'Select Salary Duration',
         'monthly' => 'Monthly',

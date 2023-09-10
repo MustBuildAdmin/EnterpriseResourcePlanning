@@ -14,16 +14,17 @@ class CreatePosPaymentsTable extends Migration
     public function up()
     {
         Schema::create(
-            'pos_payments', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('pos_id');
-            $table->date('date')->nullable();
-            $table->string('amount')->default('0.00');
-            $table->integer('created_by')->default('0');
-            $table->timestamps();
-        }
+            'pos_payments', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('pos_id');
+                $table->date('date')->nullable();
+                $table->string('amount')->default('0.00');
+                $table->integer('created_by')->default('0');
+                $table->timestamps();
+            }
         );
     }
+
     /**
      * Reverse the migrations.
      *

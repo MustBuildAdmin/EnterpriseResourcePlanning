@@ -29,6 +29,7 @@ class Contract extends Model
             'decline' => 'Decline',
 
         ];
+
         return $status;
     }
 
@@ -41,12 +42,12 @@ class Contract extends Model
     {
         return $this->hasOne('App\Models\ContractType', 'id', 'type');
     }
+
     public static function getContractSummary($contracts)
     {
         $total = 0;
 
-        foreach($contracts as $contract)
-        {
+        foreach ($contracts as $contract) {
             $total += $contract->value;
         }
 
@@ -57,18 +58,22 @@ class Contract extends Model
     {
         return $this->hasOne('App\Models\Project', 'id', 'project_id');
     }
+
     public function files()
     {
-        return $this->hasMany('App\Models\Contract_attachment', 'contract_id' , 'id');
+        return $this->hasMany('App\Models\Contract_attachment', 'contract_id', 'id');
     }
+
     public function notes()
     {
-        return $this->hasMany('App\Models\ContractNotes', 'contract_id' , 'id');
+        return $this->hasMany('App\Models\ContractNotes', 'contract_id', 'id');
     }
+
     public function comment()
     {
         return $this->hasMany('App\Models\ContractComment', 'contract_id', 'id');
     }
+
     public function note()
     {
         return $this->hasMany('App\Models\ContractNotes', 'contract_id', 'id');
@@ -88,5 +93,4 @@ class Contract extends Model
     {
         return $this->belongsTo('App\Models\ContractNotes', 'id', 'contract_id');
     }
-
 }

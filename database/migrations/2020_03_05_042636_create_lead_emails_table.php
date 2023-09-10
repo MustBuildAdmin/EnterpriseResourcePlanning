@@ -14,15 +14,15 @@ class CreateLeadEmailsTable extends Migration
     public function up()
     {
         Schema::create(
-            'lead_emails', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('lead_id');
-            $table->string('to');
-            $table->string('subject');
-            $table->text('description')->nullable();
-            $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
-            $table->timestamps();
-        }
+            'lead_emails', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('lead_id');
+                $table->string('to');
+                $table->string('subject');
+                $table->text('description')->nullable();
+                $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
+                $table->timestamps();
+            }
         );
     }
 

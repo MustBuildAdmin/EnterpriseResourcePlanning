@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateGoalTrackingsTable extends Migration
 {
@@ -14,20 +14,20 @@ class CreateGoalTrackingsTable extends Migration
     public function up()
     {
         Schema::create(
-            'goal_trackings', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('branch');
-            $table->integer('goal_type');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('subject')->nullable();
-            $table->string('target_achievement')->nullable();
-            $table->text('description')->nullable();
-            $table->integer('status')->default(0);
-            $table->integer('progress')->default(0);
-            $table->integer('created_by')->default(0);
-            $table->timestamps();
-        }
+            'goal_trackings', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('branch');
+                $table->integer('goal_type');
+                $table->date('start_date');
+                $table->date('end_date');
+                $table->string('subject')->nullable();
+                $table->string('target_achievement')->nullable();
+                $table->text('description')->nullable();
+                $table->integer('status')->default(0);
+                $table->integer('progress')->default(0);
+                $table->integer('created_by')->default(0);
+                $table->timestamps();
+            }
         );
     }
 

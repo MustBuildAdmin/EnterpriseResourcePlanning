@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\Plan;
 use Illuminate\Database\Seeder;
 
@@ -26,7 +27,7 @@ class PlansTableSeeder extends Seeder
                 'hrm' => 1,
                 'account' => 1,
                 'project' => 1,
-                'image'=>'free_plan.png',
+                'image' => 'free_plan.png',
             ]
         );
     }
