@@ -1303,7 +1303,7 @@ class Utility extends Model
                         if(!empty($content->content))
                         {
                             $content->content = self::replaceVariable($content->content, $obj);
-
+                            
 
                             // send email
                             try
@@ -1437,7 +1437,7 @@ class Utility extends Model
 
 
     }
-
+   
     public static function sendEmailwithattahcments($to,$filename)
     {
         $data["email"] = $to;
@@ -1658,6 +1658,7 @@ class Utility extends Model
         $arrVariable = [
             '{app_name}',
             '{company_name}',
+            '{user_name}',
             '{app_url}',
             '{email}',
             '{password}',
@@ -1757,54 +1758,16 @@ class Utility extends Model
             '{contract_subject}',
             '{contract_start_date}',
             '{contract_end_date}',
-            '{set_password_url}'
-
-
-//            '{payment_name}',
-//            '{payment_dueamount}',
-//            '{payment_date}',
-//            '{estimation_id}',
-//            '{estimation_client}',
-//            '{estimation_category}',
-//            '{estimation_issue_date}',
-//            '{estimation_expiry_date}',
-//            '{estimation_status}',
-//            '{project_title}',
-//            '{project_category}',
-//            '{project_price}',
-//            '{project_client}',
-//            '{project_assign_user}',
-//            '{project_start_date}',
-//            '{project_due_date}',
-//            '{project_lead}',
-//            '{project}',
-//            '{task_title}',
-//            '{task_priority}',
-//            '{task_start_date}',
-//            '{task_due_date}',
-//            '{task_stage}',
-//            '{task_assign_user}',
-//            '{task_description}',
-//            '{invoice_id}',
-//            '{invoice_client}',
-//            '{invoice_issue_date}',
-//            '{invoice_due_date}',
-//            '{invoice_status}',
-//            '{invoice_total}',
-//            '{invoice_sub_total}',
-//            '{invoice_due_amount}',
-//            '{payment_total}',
-//            '{payment_date}',
-//            '{credit_note_date}',
-//            '{credit_amount}',
-//            '{credit_description}',
-//
-
+            '{set_password_url}',
+            '{inviteconsultantHeader}',
+            '{invite_link}',
+            '{invite_btn}'
 
         ];
         $arrValue    = [
             'app_name' => '-',
             'company_name' => '-',
+            'user_name'=>'-',
             'app_url' => '-',
             'email' => '-',
             'password' => '-',
@@ -1906,7 +1869,10 @@ class Utility extends Model
             'contract_subject' => '-',
             'contract_start_date' => '-',
             'contract_end_date' => '-',
-            'set_password_url'=>'-'
+            'set_password_url'=>'-',
+            'inviteconsultantHeader'=>'-',
+            'invite_link'=>'-',
+            'invite_btn'=>'-'
 
 
 
@@ -1917,20 +1883,21 @@ class Utility extends Model
         {
             $arrValue[$key] = $val;
         }
-
-//        dd($obj);
+       
         $settings = Utility::settings();
         $company_name = $settings['company_name'];
-
+        $colorcode =Utility::rndRGBColorCode();
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
+        $short_lname = substr($arrValue['company_name'], 0, 2);
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
+        $arrValue['inviteconsultantHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0"><tr><td class="w-50p"></td><td><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" class="avatar avatar-rounded" width="56" height="56" alt=""></td><td><table class="icon icon-md bg-none" cellspacing="0" cellpadding="0"><tr><td align="center"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png" class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td><div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'.$short_lname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
+        $arrValue['invite_link']=' <td class="content pt-0"> You can <a href="'.$obj['invite_link'].'">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'.env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td>';
+        $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto"><tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'" class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span></a></td></tr></table></td></tr></table></td></tr>';
 
-        // $arrValue['set_password_url']=  '<a class="btn bg-green border-green" href="' .$arrValue['set_password_url'] . '" target="_blank"><span class="btn-span">Set Password</span></a>';
         $arrValue['set_password_url']='<tr><td class="content text-center pt-0 pb-xl"><table cellspacing="0" cellpadding="0"><tbody><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-green rounded w-auto"><tbody><tr><td align="center" valign="top" class="lh-1"><a href="'.$arrValue['set_password_url'].'" class="btn bg-green border-green"><span class="btn-span">Set Password</span></a></td></tr></tbody></table></td></tr></tbody></table></td></tr>';
 
-//        dd($arrVariable);
-//        dd(str_replace($arrVariable, array_values($arrValue), $content));
+
 
         return str_replace($arrVariable, array_values($arrValue), $content);
     }

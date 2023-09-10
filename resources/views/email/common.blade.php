@@ -24,7 +24,15 @@
             font-weight: inherit !important;
             line-height: inherit !important;
         }
-
+        .user-initial {
+            width: 56px;
+            height: 56px;
+            color: #fff;
+            font-size: 25px;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+        }
         body {
             margin: 0;
             padding: 0;

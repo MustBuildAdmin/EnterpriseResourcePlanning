@@ -269,11 +269,12 @@ class ConsultantController extends Controller
                     if(isset($url)){
                         $request['avatar']=$url;
                     }
-                   
+                    
                     $user = User::create($request->all());
                     $user->assignRole($role_r);
                     $user->userDefaultDataRegister($user->id);
                     // Create Connection Consultant & Company
+                   
                     if($user && $user->type=='consultant'){
                         $requested_date = date('Y-m-d H:i:s');
                         $createConnection = Consultant_companies::create([
@@ -283,9 +284,14 @@ class ConsultantController extends Controller
                             'status'=>'requested'
                         ]);
                         $inviteUrl=url('').'/company-invitation-consultant/'.$createConnection->id;
-                        echo $inviteUrl;
+                        $userArr = [
+                            'invite_link' => $inviteUrl,
+                            'user_name' => \Auth::user()->name,
+                            'company_name' => \Auth::user()->company_name,
+                            'email' => \Auth::user()->email,
+                        ];
                         $resp=Utility::sendEmailTemplate('invite_consultant', [$user->id => $user->email], $userArr);
-                        print_r($resp);
+                     
 
                     }
                     if($request['type'] != 'client'){
