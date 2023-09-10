@@ -121,12 +121,12 @@
             <img src="./static/logo-small.svg" height="36" alt="">
         </a>
     </div>
-    <div class="text-secondary mb-3">Preparing application</div>
+    <div class="text-secondary mb-3">Loading</div>
     <div class="progress progress-sm">
         <div class="progress-bar progress-bar-indeterminate"></div>
     </div>
 </div>
-<div id="additional_elements" class="container-fluid my-5 d-none">
+<div id="additional_elements" class="container-fluid mt-1 d-none">
 
     <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
         <div class="container-fluid">
@@ -1141,5 +1141,8 @@
     }
     .gantt-show {
         display: block !important;
+    }
+    .loader_show {
+        height: 100%;
     }
 </style>
