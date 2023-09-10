@@ -102,6 +102,9 @@
             }
 </style> --}}
 
+<style>
+</style>
+
 
 @php
     $holidays = [];
@@ -130,11 +133,11 @@
 
     <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
-                aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#tool-menu"
+                aria-controls="tool-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 p-3 text-capitalize text-white bg-primary text-wrap" style="width: 10rem;">
                 {{$projectname}}
             </h1>
             <div class="navbar-nav flex-row order-md-last">
@@ -356,7 +359,7 @@
                             {!! Form::close() !!}
                         </li>
                         <li>
-                            <select class="form-control" id="zoomscale">
+                            <select class="form-control mt-3" id="zoomscale">
                                 <option value="">Select Timescale</option>
                                 <option value="day">day</option>
                                 <option value="week">week</option>
