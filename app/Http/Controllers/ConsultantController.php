@@ -384,6 +384,9 @@ class ConsultantController extends Controller
         NOC::defaultNocCertificateRegister($user->id);
 
         $setings = Utility::settings();
+        $role_r = Role::findByName('consultant');
+        $user->assignRole($role_r);
+        $psw        = $user->password;
 
         if ($setings['create_consultant'] == 1) {
             $user->password = $psw;
