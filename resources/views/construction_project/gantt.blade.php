@@ -102,9 +102,6 @@
             }
 </style> --}}
 
-<style>
-</style>
-
 
 @php
     $holidays = [];
@@ -379,7 +376,7 @@
                 @if ($project)
                     <input type='hidden' value='0' id='project_id'>
                     <div class="card-body" style='min-height:512px;overflow:auto;'>
-                        <div id="gantt_here" style='width:100%; height:491px; position: relative;'
+                        <div id="gantt_here" style='width:100%; height:700px; position: relative;'
                             onload="script();">
                         </div>
                     </div>
@@ -390,7 +387,7 @@
 
                         @if ($project)
                             <input type='hidden' value='0' id='project_id'>
-                            <div class="card-body" style='max-height:491px;overflow:auto;'>
+                            <div class="card-body" style='max-height:700px;overflow:auto;'>
                                 <div class="gantt_control">
 
                                 </div>
