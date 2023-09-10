@@ -28332,16 +28332,13 @@ i.ti.ti-pencil {
 }
 .navbar-nav li a {
     padding: 15px 9px !important;
-    font-size: 1em;
+    font-size: 0.9em;
     color: #000 !important;
     display: flex;
     justify-content: start;
     line-height: 33px;
 }
 
-.navbar-nav li a > span {
-    line-height: 0px !important;
-}
  ul li a.active {
     color: #ffffff;
     text-decoration: none;
