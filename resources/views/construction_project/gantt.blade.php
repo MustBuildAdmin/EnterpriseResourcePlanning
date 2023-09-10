@@ -126,7 +126,7 @@
         <div class="progress-bar progress-bar-indeterminate"></div>
     </div>
 </div>
-<div id="additional_elements" class="container-fluid my-5">
+<div id="additional_elements" class="container-fluid my-5 d-none">
 
     <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
         <div class="container-fluid">
@@ -690,19 +690,6 @@
                             align: "center",
                             resize: true
                         },
-
-                        // {
-                        // 	name: "place", label: "Place", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "location", label: "Location", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "material", label: "Material Qunatity", width: 110, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
                         {
                             name: "predecessors",
                             label: "Predecessors",
@@ -820,19 +807,6 @@
                             align: "center",
                             resize: true
                         },
-
-                        // {
-                        // 	name: "place", label: "Place", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "location", label: "Location", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "material", label: "Material Qunatity", width: 110, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
                         {
                             name: "predecessors",
                             label: "Predecessors",
@@ -1047,6 +1021,7 @@
                     function() {
                         gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
                         $('.loader_show').hide();
+                        $('#additional_elements').addClass("gantt-show");
                     }, 3000);
 
 
@@ -1163,5 +1138,8 @@
 <style>
     .loader_show_hide {
         display: none;
+    }
+    .gantt-show {
+        display: block !important;
     }
 </style>
