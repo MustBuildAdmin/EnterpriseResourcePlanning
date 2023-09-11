@@ -153,6 +153,7 @@
                                                 <p class="col-4">{{__('Award Name')}} : <span class="pull-right text-primary">{award_name}</span></p>
                                                 <p class="col-4">{{__('Award Email')}} : <span class="pull-right text-primary">{award_email}</span></p>
                                             </div>
+                                            
                                         @elseif($emailTemplate->slug=='customer_invoice_send')
                                             <div class="row">
                                                 <p class="col-4">{{__('App Name')}} : <span class="pull-end text-primary">{app_name}</span></p>
