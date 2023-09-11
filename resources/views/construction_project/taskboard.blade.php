@@ -504,6 +504,7 @@
             user_id_arr.push(obj.id);
         });
 
+
         alltask(start_date,end_date,user_id_arr,status_task,task_id_arr);
     }
 

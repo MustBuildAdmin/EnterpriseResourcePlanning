@@ -350,8 +350,8 @@ $(document).on("click", '.freeze_button', function () {
     var form = $(this).closest("form");
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger'
+            confirmButton: 'btn btn-primary',
+            cancelButton: 'btn '
         },
         buttonsStyling: false
     })
