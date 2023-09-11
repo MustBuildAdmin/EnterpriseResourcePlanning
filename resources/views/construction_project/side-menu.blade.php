@@ -62,19 +62,21 @@
                                 <div class="dropdown-menu-column">
                                     @can('view grant chart')
                                         <a href="{{ route('projects.gantt', $project_id) }}"
-                                            class="dropdown-item">{{ __('Gantt Chart') }}</a>
+                                            class="dropdown-item">{{ __('Gantt') }}</a>
                                     @endcan
 
-                                    <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="dropdown-item">{{ __('Task') }}</a>
-
-                                    <a href="{{ route('project_report.view_task_report', $project_id) }}"
-                                        class="dropdown-item">{{ __('Task Report') }}</a>
+                                    <a href="#" class="dropdown-item">{{ __('Micro Program') }}</a>
 
                                     @if(session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
-                                            class="dropdown-item">{{ __('Revision Task progress ') }}</a>
+                                            class="dropdown-item">{{ __('Revised Program') }}</a>
                                     @endif
+
+                                    <a href="{{ route('taskBoard.view', ['list']) }}"
+                                        class="dropdown-item">{{ __('Task Workdone') }}</a>
+
+                                    <a href="{{ route('project_report.view_task_report', $project_id) }}"
+                                        class="dropdown-item">{{ __('Task Reports') }}</a>
 
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
