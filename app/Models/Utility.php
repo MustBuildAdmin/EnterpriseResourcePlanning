@@ -1763,8 +1763,12 @@ class Utility extends Model
         $short_lname = substr($arrValue['company_name'], 0, 2);
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
         $arrValue['inviteconsultantHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0"><tr><td class="w-50p"></td><td><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png" class="avatar avatar-rounded" width="56" height="56" alt=""></td><td><table class="icon icon-md bg-none" cellspacing="0" cellpadding="0"><tr><td align="center"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png" class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td><div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'.$short_lname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
-        $arrValue['invite_link']=' <td class="content pt-0"> You can <a href="'.$obj['invite_link'].'">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'.env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td>';
-        $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto"><tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'" class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span></a></td></tr></table></td></tr></table></td></tr>';
+        
+        if(isset($obj['invite_link'])){
+            $arrValue['invite_link']=' <td class="content pt-0"> You can <a href="'.$obj['invite_link'].'">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'.env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td>';
+            $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto"><tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'" class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span></a></td></tr></table></td></tr></table></td></tr>';
+        }
+       
 
         $arrValue['set_password_url']='<tr><td class="content text-center pt-0 pb-xl"><table cellspacing="0" cellpadding="0"><tbody><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-green rounded w-auto"><tbody><tr><td align="center" valign="top" class="lh-1"><a href="'.$arrValue['set_password_url'].'" class="btn bg-green border-green"><span class="btn-span">Set Password</span></a></td></tr></tbody></table></td></tr></tbody></table></td></tr>';
 
