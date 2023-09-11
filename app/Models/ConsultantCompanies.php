@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 
 
-class Consultant_companies extends Authenticatable
+class ConsultantCompanies extends Authenticatable
 {
     use HasRoles;
     use Notifiable;

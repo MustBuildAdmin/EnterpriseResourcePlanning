@@ -12,7 +12,7 @@ use App\Models\NOC;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\Utility;
-use App\Models\Consultant_companies;
+use App\Models\ConsultantCompanies;
 use Carbon\Carbon;
 
 use Config;
@@ -179,7 +179,7 @@ class ConsultantController extends Controller
         JoiningLetter::defaultJoiningLetterRegister($user->id);
         NOC::defaultNocCertificateRegister($user->id);
         $requested_date = date('Y-m-d H:i:s');
-        $createConnection = Consultant_companies::create([
+        $createConnection = ConsultantCompanies::create([
             "company_id"=>\Auth::user()->creatorId(),
             'consultant_id'=>$user->id,
             'requested_date'=>$requested_date,
@@ -213,7 +213,7 @@ class ConsultantController extends Controller
     }
     public function createConnection(Request $request){
         // Need to check invitation link is valid or expired based on that need to redirect
-        $checkConnection=Consultant_companies::where(['id'=>$request->id])->first();
+        $checkConnection=ConsultantCompanies::where(['id'=>$request->id])->first();
         $companyDetails=User::where(['id'=>$checkConnection->company_id])->first();
         $requestedDate= Carbon::parse($checkConnection->requested_date)->format('Y-m-d');
         $expiryDate=  Carbon::parse($requestedDate)->addDays(7)->format('Y-m-d');
@@ -223,7 +223,7 @@ class ConsultantController extends Controller
             $msg='valid';
         }else{
             if($checkConnection->status=='requested'){
-                Consultant_companies::where(['id'=>$request->id])->update(['status'=>'expired']);
+                ConsultantCompanies::where(['id'=>$request->id])->update(['status'=>'expired']);
             }else{
                 $msg=$checkConnection->status;
             }
@@ -233,8 +233,8 @@ class ConsultantController extends Controller
 
     public function submitConnection(Request $request){
         $msg=$request->status;
-        Consultant_companies::where(['id'=>$request->id])->update(['status'=>$msg]);
-        $checkConnection=Consultant_companies::where(['id'=>$request->id])->first();
+        ConsultantCompanies::where(['id'=>$request->id])->update(['status'=>$msg]);
+        $checkConnection=ConsultantCompanies::where(['id'=>$request->id])->first();
         $companyDetails=User::where(['id'=>$checkConnection->company_id])->first();
         return view('consultants.invitation', compact('checkConnection','companyDetails','msg'));
     }
@@ -286,7 +286,7 @@ class ConsultantController extends Controller
         }
         $setings = Utility::settings();
         $requested_date = date('Y-m-d H:i:s');
-        $createConnection = Consultant_companies::create([
+        $createConnection = ConsultantCompanies::create([
             "company_id"=>\Auth::user()->creatorId(),
             'consultant_id'=>$user->id,
             'requested_date'=>$requested_date,
