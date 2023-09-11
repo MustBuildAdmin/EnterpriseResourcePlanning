@@ -14,20 +14,20 @@ class CreatePaymentsTable extends Migration
     public function up()
     {
         Schema::create(
-            'payments', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->date('date');
-            $table->float('amount',15,2)->default('0.00');
-            $table->integer('account_id');
-            $table->integer('vender_id');
-            $table->text('description')->nullable();
-            $table->integer('category_id');
-            $table->string('recurring')->nullable();
-            $table->integer('payment_method');
-            $table->string('reference')->nullable();
-            $table->integer('created_by')->default('0');
-            $table->timestamps();
-        }
+            'payments', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->date('date');
+                $table->float('amount', 15, 2)->default('0.00');
+                $table->integer('account_id');
+                $table->integer('vender_id');
+                $table->text('description')->nullable();
+                $table->integer('category_id');
+                $table->string('recurring')->nullable();
+                $table->integer('payment_method');
+                $table->string('reference')->nullable();
+                $table->integer('created_by')->default('0');
+                $table->timestamps();
+            }
         );
     }
 

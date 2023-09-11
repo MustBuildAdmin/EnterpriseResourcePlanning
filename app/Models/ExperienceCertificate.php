@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class ExperienceCertificate extends Model
 {
     protected $table = 'experience_certificates';
+
     protected $fillable = [
         'id',
         'lang',
         'content',
-        'created_by'
+        'created_by',
     ];
-
-
 
     public static function replaceVariable($content, $obj)
     {
@@ -26,10 +25,8 @@ class ExperienceCertificate extends Model
             '{designation}',
             '{payroll}',
 
-
-
         ];
-        $arrValue    = [
+        $arrValue = [
             'app_name' => '-',
             'date' => '-',
             'employee_name' => '-',
@@ -37,24 +34,21 @@ class ExperienceCertificate extends Model
             'designation' => '-',
             'payroll' => '-',
 
-
         ];
 
-        foreach($obj as $key => $val)
-        {
+        foreach ($obj as $key => $val) {
             $arrValue[$key] = $val;
         }
         $settings = Utility::settings();
 
         //   dd(env('APP_NAME'));
-        $arrValue['app_name']     = env('APP_NAME');
-
+        $arrValue['app_name'] = env('APP_NAME');
 
         return str_replace($arrVariable, array_values($arrValue), $content);
     }
+
     public static function defaultExpCertificat()
     {
-
 
         $defaultTemplate = [
 
@@ -93,7 +87,6 @@ class ExperienceCertificate extends Model
             <p>التوقيع</p>
 
             <p>{app_name}</p>',
-
 
             'da' => '<h3 style="text-align: center;">Erfaringsbrev</h3>
 
@@ -496,11 +489,9 @@ class ExperienceCertificate extends Model
 
             <p>{app_name}</p>',
 
-     ];
+        ];
 
-
-        foreach($defaultTemplate as $lang => $content)
-        {
+        foreach ($defaultTemplate as $lang => $content) {
             ExperienceCertificate::create(
                 [
                     'lang' => $lang,
@@ -512,9 +503,9 @@ class ExperienceCertificate extends Model
         }
 
     }
+
     public static function defaultExpCertificatRegister($user_id)
     {
-
 
         $defaultTemplate = [
 
@@ -553,7 +544,6 @@ class ExperienceCertificate extends Model
             <p>التوقيع</p>
 
             <p>{app_name}</p>',
-
 
             'da' => '<h3 style="text-align: center;">Erfaringsbrev</h3>
 
@@ -956,11 +946,9 @@ class ExperienceCertificate extends Model
 
             <p>{app_name}</p>',
 
-     ];
+        ];
 
-
-        foreach($defaultTemplate as $lang => $content)
-        {
+        foreach ($defaultTemplate as $lang => $content) {
             ExperienceCertificate::create(
                 [
                     'lang' => $lang,

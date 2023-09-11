@@ -14,9 +14,9 @@ class AddPaymentTypeInOrdersTable extends Migration
     public function up()
     {
         Schema::table(
-            'orders', function (Blueprint $table){
-            $table->string('payment_type')->default('Manually')->after('payment_status');
-        }
+            'orders', function (Blueprint $table) {
+                $table->string('payment_type')->default('Manually')->after('payment_status');
+            }
         );
     }
 
@@ -28,9 +28,9 @@ class AddPaymentTypeInOrdersTable extends Migration
     public function down()
     {
         Schema::table(
-            'orders', function (Blueprint $table){
-            $table->dropColumn('payment_type');
-        }
+            'orders', function (Blueprint $table) {
+                $table->dropColumn('payment_type');
+            }
         );
     }
 }

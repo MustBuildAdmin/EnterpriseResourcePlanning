@@ -18,14 +18,11 @@ class PlanRequestController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->type == 'super admin')
-        {
+        if (Auth::user()->type == 'super admin') {
             $plan_requests = PlanRequest::all();
 
             return view('plan_request.index', compact('plan_requests'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -35,26 +32,19 @@ class PlanRequestController extends Controller
     */
     public function requestView($plan_id)
     {
-        if(Auth::user()->type != 'super admin')
-        {
+        if (Auth::user()->type != 'super admin') {
             $planID = \Illuminate\Support\Facades\Crypt::decrypt($plan_id);
-            $plan   = Plan::find($planID);
+            $plan = Plan::find($planID);
 
-            if(!empty($plan))
-            {
+            if (! empty($plan)) {
                 return view('plan_request.show', compact('plan'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Something went wrong.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
-
 
     /*
      * @plan_id = Plan ID encoded
@@ -64,11 +54,9 @@ class PlanRequestController extends Controller
     {
         $objUser = Auth::user();
 
-        if($objUser->requested_plan == 0)
-        {
+        if ($objUser->requested_plan == 0) {
             $planID = \Illuminate\Support\Facades\Crypt::decrypt($plan_id);
-            if(!empty($planID))
-            {
+            if (! empty($planID)) {
                 PlanRequest::create(
                     [
                         'user_id' => $objUser->id,
@@ -78,19 +66,15 @@ class PlanRequestController extends Controller
                 );
 
                 // Update User Table
-                $data                 = User::find($objUser->id);
+                $data = User::find($objUser->id);
                 $data->requested_plan = $planID;
                 $data->update();
 
                 return redirect()->back()->with('success', __('Request Send Successfully.'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Something went wrong.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('You already send request to another plan.'));
         }
     }
@@ -101,34 +85,26 @@ class PlanRequestController extends Controller
     */
     public function acceptRequest($id, $response)
     {
-        if(Auth::user()->type == 'super admin')
-        {
+        if (Auth::user()->type == 'super admin') {
             $plan_request = PlanRequest::find($id);
-            if(!empty($plan_request))
-            {
+            if (! empty($plan_request)) {
                 $user = User::find($plan_request->user_id);
 
-                if($response == 1)
-                {
+                if ($response == 1) {
                     $user->requested_plan = 0;
-                    $user->plan           = $plan_request->plan_id;
+                    $user->plan = $plan_request->plan_id;
                     $user->save();
 
-                    $plan       = Plan::find($plan_request->plan_id);
+                    $plan = Plan::find($plan_request->plan_id);
                     $assignPlan = $user->assignPlan($plan_request->plan_id, $plan_request->duration);
 
                     $price = $plan->price;
 
-                    if($assignPlan['is_success'] == true && !empty($plan))
-                    {
-                        if(!empty($user->payment_subscription_id) && $user->payment_subscription_id != '')
-                        {
-                            try
-                            {
+                    if ($assignPlan['is_success'] == true && ! empty($plan)) {
+                        if (! empty($user->payment_subscription_id) && $user->payment_subscription_id != '') {
+                            try {
                                 $user->cancel_subscription($user->id);
-                            }
-                            catch(\Exception $exception)
-                            {
+                            } catch (\Exception $exception) {
                                 \Log::debug($exception->getMessage());
                             }
                         }
@@ -145,7 +121,7 @@ class PlanRequestController extends Controller
                                 'plan_name' => $plan->name,
                                 'plan_id' => $plan->id,
                                 'price' => $price,
-                                'price_currency' => !empty(env('CURRENCY_CODE')) ? env('CURRENCY_CODE') : 'usd',
+                                'price_currency' => ! empty(env('CURRENCY_CODE')) ? env('CURRENCY_CODE') : 'usd',
                                 'txn_id' => '',
                                 'payment_type' => __('Manually Upgrade By Super Admin'),
                                 'payment_status' => 'succeeded',
@@ -157,28 +133,20 @@ class PlanRequestController extends Controller
                         $plan_request->delete();
 
                         return redirect()->back()->with('success', __('Plan successfully upgraded.'));
-                    }
-                    else
-                    {
+                    } else {
                         return redirect()->back()->with('error', __('Plan fail to upgrade.'));
                     }
-                }
-                else
-                {
+                } else {
                     $user->update(['requested_plan' => '0']);
 
                     $plan_request->delete();
 
                     return redirect()->back()->with('success', __('Request Rejected Successfully.'));
                 }
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Something went wrong.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }

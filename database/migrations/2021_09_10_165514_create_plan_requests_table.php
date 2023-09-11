@@ -13,11 +13,11 @@ class CreatePlanRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table){
+        Schema::table('users', function (Blueprint $table) {
             $table->integer('requested_plan')->default(0)->after('plan_expire_date');
         });
 
-        Schema::create('plan_requests', function (Blueprint $table){
+        Schema::create('plan_requests', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->integer('plan_id');

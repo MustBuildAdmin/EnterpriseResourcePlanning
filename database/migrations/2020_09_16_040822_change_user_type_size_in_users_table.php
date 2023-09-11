@@ -14,9 +14,9 @@ class ChangeUserTypeSizeInUsersTable extends Migration
     public function up()
     {
         Schema::table(
-            'users', function (Blueprint $table){
-            $table->string('type', 100)->change();
-        }
+            'users', function (Blueprint $table) {
+                $table->string('type', 100)->change();
+            }
         );
     }
 
@@ -28,9 +28,9 @@ class ChangeUserTypeSizeInUsersTable extends Migration
     public function down()
     {
         Schema::table(
-            'users', function (Blueprint $table){
-            $table->dropColumn('type');
-        }
+            'users', function (Blueprint $table) {
+                $table->dropColumn('type');
+            }
         );
     }
 }

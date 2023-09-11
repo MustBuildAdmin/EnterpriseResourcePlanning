@@ -14,17 +14,17 @@ class CreateProjectInvoicesTable extends Migration
     public function up()
     {
         Schema::create(
-            'project_invoices', function (Blueprint $table){
-            $table->id();
-            $table->unsignedBigInteger('invoice_id');
-            $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('tax_id');
-            $table->date('due_date');
-            $table->integer('created_by');
-            $table->smallInteger('status')->default(1);
-            $table->timestamps();
-        }
+            'project_invoices', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('invoice_id');
+                $table->unsignedBigInteger('project_id');
+                $table->unsignedBigInteger('client_id');
+                $table->unsignedBigInteger('tax_id');
+                $table->date('due_date');
+                $table->integer('created_by');
+                $table->smallInteger('status')->default(1);
+                $table->timestamps();
+            }
         );
     }
 

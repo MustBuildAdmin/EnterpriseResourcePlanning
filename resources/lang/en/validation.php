@@ -1,4 +1,6 @@
-<?php return [
+<?php
+
+return [
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',
@@ -101,5 +103,5 @@
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
-    'custom' => ['attribute-name' => ['rule-name' => 'custom-message',],],
+    'custom' => ['attribute-name' => ['rule-name' => 'custom-message']],
 ];

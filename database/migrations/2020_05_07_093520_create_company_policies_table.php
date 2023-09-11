@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCompanyPoliciesTable extends Migration
 {
@@ -14,15 +14,15 @@ class CreateCompanyPoliciesTable extends Migration
     public function up()
     {
         Schema::create(
-            'company_policies', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->integer('branch');
-            $table->string('title');
-            $table->text('description');
-            $table->string('attachment')->nullable();
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'company_policies', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('branch');
+                $table->string('title');
+                $table->text('description');
+                $table->string('attachment')->nullable();
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

@@ -28,5 +28,4 @@ class Expense extends Model
     {
         return $this->hasOne('App\Models\Project', 'id', 'project_id');
     }
-
 }

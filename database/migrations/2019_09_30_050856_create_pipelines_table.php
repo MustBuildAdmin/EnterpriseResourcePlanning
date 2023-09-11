@@ -14,12 +14,12 @@ class CreatePipelinesTable extends Migration
     public function up()
     {
         Schema::create(
-            'pipelines', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'pipelines', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

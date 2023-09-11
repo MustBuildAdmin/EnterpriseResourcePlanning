@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Tax;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,9 +39,8 @@ class ProductService extends Model
     {
         $taxArr = explode(',', $taxes);
 
-        $taxes  = [];
-        foreach($taxArr as $tax)
-        {
+        $taxes = [];
+        foreach ($taxArr as $tax) {
             $taxes[] = Tax::find($tax);
         }
 
@@ -51,11 +49,10 @@ class ProductService extends Model
 
     public function taxRate($taxes)
     {
-        $taxArr  = explode(',', $taxes);
+        $taxArr = explode(',', $taxes);
         $taxRate = 0;
-        foreach($taxArr as $tax)
-        {
-            $tax     = Tax::find($tax);
+        foreach ($taxArr as $tax) {
+            $tax = Tax::find($tax);
             $taxRate += $tax->rate;
         }
 
@@ -67,10 +64,9 @@ class ProductService extends Model
         $taxArr = explode(',', $taxes);
 
         $taxes = [];
-        foreach($taxArr as $tax)
-        {
+        foreach ($taxArr as $tax) {
             $taxesData = Tax::find($tax);
-            $taxes[]   = !empty($taxesData) ? $taxesData->name : '';
+            $taxes[] = ! empty($taxesData) ? $taxesData->name : '';
         }
 
         return implode(',', $taxes);
@@ -78,7 +74,6 @@ class ProductService extends Model
 
     public static function getallproducts()
     {
-
 
         return ProductService::select('product_services.*', 'c.name as categoryname')
             ->leftjoin('product_service_categories as c', 'c.id', '=', 'product_services.category_id')
@@ -93,30 +88,25 @@ class ProductService extends Model
         $product_id = $this->id;
         $purchases = Purchase::where('created_by', $authuser->creatorId());
 
-
-        if ($authuser->isUser())
-        {
+        if ($authuser->isUser()) {
             $purchases = $purchases->where('warehouse_id', $authuser->warehouse_id);
         }
 
-        foreach($purchases->get() as $purchase)
-        {
+        foreach ($purchases->get() as $purchase) {
             $purchaseditem = PurchaseProduct::select('quantity')->where('purchase_id', $purchase->id)->where('product_id', $product_id)->first();
             $purchasedquantity += $purchaseditem != null ? $purchaseditem->quantity : 0;
-//            dd($purchasedquantity);
+            //            dd($purchasedquantity);
         }
 
         $poses = Pos::where('created_by', $authuser->creatorId());
-//        dd($poses);
+        //        dd($poses);
 
-        if ($authuser->isUser())
-        {
+        if ($authuser->isUser()) {
             $pos = $poses->where('warehouse_id', $authuser->warehouse_id);
-//            dd($pos);
+            //            dd($pos);
         }
 
-        foreach($poses->get() as $pos)
-        {
+        foreach ($poses->get() as $pos) {
             $positem = PosProduct::select('quantity')->where('pos_id', $pos->id)->where('product_id', $product_id)->first();
             $posquantity += $positem != null ? $positem->quantity : 0;
         }
@@ -129,16 +119,10 @@ class ProductService extends Model
     public static function tax_id($product_id)
     {
         $results = DB::select(
-            DB::raw("SELECT IFNULL( (SELECT tax_id from product_services where id = :id and created_by = :created_by limit 1),  '0') as tax_id"), [ 'id' => $product_id,  'created_by' => Auth::user()->creatorId(),]
+            DB::raw("SELECT IFNULL( (SELECT tax_id from product_services where id = :id and created_by = :created_by limit 1),  '0') as tax_id"), ['id' => $product_id,  'created_by' => Auth::user()->creatorId()]
         );
 
         return $results[0]->tax_id;
 
     }
-
-
-
-
-
-
 }

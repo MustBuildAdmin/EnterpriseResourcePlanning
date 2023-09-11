@@ -17,8 +17,9 @@ class OtherPayment extends Model
     {
         return $this->hasOne('App\Models\Employee', 'id', 'employee_id')->first();
     }
-    public static $otherPaymenttype=[
-        'fixed'=>'Fixed',
-        'percentage'=> 'Percentage',
+
+    public static $otherPaymenttype = [
+        'fixed' => 'Fixed',
+        'percentage' => 'Percentage',
     ];
 }

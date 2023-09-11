@@ -13,7 +13,7 @@ class CreateMilestonesTable extends Migration
      */
     public function up()
     {
-        if(!Schema::hasTable('milestones')){
+        if (! Schema::hasTable('milestones')) {
             Schema::create('milestones', function (Blueprint $table) {
                 $table->id();
                 $table->integer('project_id')->default(0);

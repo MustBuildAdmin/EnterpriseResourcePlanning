@@ -9,7 +9,6 @@ return [
     */
     'name' => env('CHATIFY_NAME', 'Messenger'),
 
-
     /*
    |--------------------------------------------------------------------------
    | Package path
@@ -32,14 +31,13 @@ return [
         'prefix' => env('CHATIFY_ROUTES_PREFIX', 'chats'),
         'middleware' => env(
             'CHATIFY_ROUTES_MIDDLEWARE', [
-                                           'web',
-                                           'auth',
-                                           'XSS',
-                                       ]
+                'web',
+                'auth',
+                'XSS',
+            ]
         ),
         'namespace' => env('CHATIFY_ROUTES_NAMESPACE', 'App\Http\Controllers\vendor\Chatify'),
     ],
-
 
     /*
     |-------------------------------------
@@ -50,7 +48,7 @@ return [
         'key' => env('PUSHER_APP_KEY'),
         'secret' => env('PUSHER_APP_SECRET'),
         'app_id' => env('PUSHER_APP_ID'),
-        'options' => (array)[
+        'options' => (array) [
             'cluster' => env('PUSHER_APP_CLUSTER'),
             'useTLS' => env('PUSHER_APP_USETLS'),
         ],
@@ -74,13 +72,13 @@ return [
     'attachments' => [
         'folder' => 'attachments',
         'download_route_name' => 'attachments.download',
-        'allowed_images' => (array)[
+        'allowed_images' => (array) [
             'png',
             'jpg',
             'jpeg',
             'gif',
         ],
-        'allowed_files' => (array)[
+        'allowed_files' => (array) [
             'zip',
             'rar',
             'txt',

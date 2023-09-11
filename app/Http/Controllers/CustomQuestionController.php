@@ -7,17 +7,13 @@ use Illuminate\Http\Request;
 
 class CustomQuestionController extends Controller
 {
-
     public function index()
     {
-        if(\Auth::user()->can('manage custom question'))
-        {
+        if (\Auth::user()->can('manage custom question')) {
             $questions = CustomQuestion::where('created_by', \Auth::user()->creatorId())->get();
 
             return view('customQuestion.index', compact('questions'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -31,30 +27,26 @@ class CustomQuestionController extends Controller
 
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create custom question'))
-        {
+        if (\Auth::user()->can('create custom question')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'question' => 'required',
-                               ]
+                    'question' => 'required',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $question              = new CustomQuestion();
-            $question->question    = $request->question;
+            $question = new CustomQuestion();
+            $question->question = $request->question;
             $question->is_required = $request->is_required;
-            $question->created_by  = \Auth::user()->creatorId();
+            $question->created_by = \Auth::user()->creatorId();
             $question->save();
 
             return redirect()->back()->with('success', __('Question successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
@@ -67,47 +59,41 @@ class CustomQuestionController extends Controller
     public function edit(CustomQuestion $customQuestion)
     {
         $is_required = CustomQuestion::$is_required;
-        return view('customQuestion.edit', compact('customQuestion','is_required'));
+
+        return view('customQuestion.edit', compact('customQuestion', 'is_required'));
     }
 
     public function update(Request $request, CustomQuestion $customQuestion)
     {
-        if(\Auth::user()->can('edit custom question'))
-        {
+        if (\Auth::user()->can('edit custom question')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'question' => 'required',
-                               ]
+                    'question' => 'required',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $customQuestion->question    = $request->question;
+            $customQuestion->question = $request->question;
             $customQuestion->is_required = $request->is_required;
             $customQuestion->save();
 
             return redirect()->back()->with('success', __('Question successfully updated.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
     public function destroy(CustomQuestion $customQuestion)
     {
-        if(\Auth::user()->can('delete custom question'))
-        {
+        if (\Auth::user()->can('delete custom question')) {
             $customQuestion->delete();
 
             return redirect()->back()->with('success', __('Question successfully deleted.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }

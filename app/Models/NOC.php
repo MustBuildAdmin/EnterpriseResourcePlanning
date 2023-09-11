@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class NOC extends Model
 {
     protected $table = 'noc_certificates';
+
     protected $fillable = [
         'id',
         'lang',
         'content',
         'created_by',
     ];
-
-
 
     public static function replaceVariable($content, $obj)
     {
@@ -23,33 +22,31 @@ class NOC extends Model
             '{employee_name}',
             '{designation}',
             '{app_name}',
-      
+
         ];
-        $arrValue    = [
+        $arrValue = [
             'date' => '-',
             'employee_name' => '-',
             'designation' => '-',
             'app_name' => '-',
         ];
 
-        foreach($obj as $key => $val)
-        {
+        foreach ($obj as $key => $val) {
             $arrValue[$key] = $val;
         }
         $settings = Utility::settings();
-       
+
         //   dd(env('APP_NAME'));
-        $arrValue['app_name']     = env('APP_NAME');
-       
-       
+        $arrValue['app_name'] = env('APP_NAME');
+
         return str_replace($arrVariable, array_values($arrValue), $content);
     }
+
     public static function defaultNocCertificate()
     {
-       
 
         $defaultTemplate = [
-              
+
             'ar' => '<h3 style="text-align: center;">شهادة عدم ممانعة</h3>
             
             
@@ -80,7 +77,6 @@ class NOC extends Model
             
             <p>{app_name}</p>',
 
-            
             'da' => '<h3 style="text-align: center;">Ingen indsigelsesattest</h3>
             
             
@@ -410,29 +406,27 @@ class NOC extends Model
             <p>Подпись</p>
             
             <p>{app_name}</p>',
-      
-       ];
 
-        
-        foreach($defaultTemplate as $lang => $content)
-        {
+        ];
+
+        foreach ($defaultTemplate as $lang => $content) {
             NOC::create(
                 [
                     'lang' => $lang,
                     'content' => $content,
                     'created_by' => 2,
-                
+
                 ]
             );
         }
-        
+
     }
+
     public static function defaultNocCertificateRegister($user_id)
     {
-       
 
         $defaultTemplate = [
-              
+
             'ar' => '<h3 style="text-align: center;">شهادة عدم ممانعة</h3>
             
             
@@ -463,7 +457,6 @@ class NOC extends Model
             
             <p>{app_name}</p>',
 
-            
             'da' => '<h3 style="text-align: center;">Ingen indsigelsesattest</h3>
             
             
@@ -793,21 +786,19 @@ class NOC extends Model
             <p>Подпись</p>
             
             <p>{app_name}</p>',
-      
-       ];
 
-        
-        foreach($defaultTemplate as $lang => $content)
-        {
+        ];
+
+        foreach ($defaultTemplate as $lang => $content) {
             NOC::create(
                 [
                     'lang' => $lang,
                     'content' => $content,
                     'created_by' => $user_id,
-                
+
                 ]
             );
         }
-        
+
     }
 }

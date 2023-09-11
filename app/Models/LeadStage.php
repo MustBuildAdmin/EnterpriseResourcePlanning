@@ -15,9 +15,9 @@ class LeadStage extends Model
 
     public function lead()
     {
-        if(\Auth::user()->type=='company'){
+        if (\Auth::user()->type == 'company') {
             return Lead::select('leads.*')->where('leads.created_by', '=', \Auth::user()->creatorId())->where('leads.stage_id', '=', $this->id)->orderBy('leads.order')->get();
-        }else{
+        } else {
             return Lead::select('leads.*')->join('user_leads', 'user_leads.lead_id', '=', 'leads.id')->where('user_leads.user_id', '=', \Auth::user()->id)->where('leads.stage_id', '=', $this->id)->orderBy('leads.order')->get();
 
         }

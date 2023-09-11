@@ -17,38 +17,36 @@ class Transaction extends Model
         'payment_id',
     ];
 
-
     public function bankAccount()
     {
         return $this->hasOne('App\Models\BankAccount', 'id', 'account')->first();
     }
 
-
     public static function addTransaction($request)
     {
 
-        $transaction              = new Transaction();
-        $transaction->account     = $request->account;
-        $transaction->user_id     = $request->user_id;
-        $transaction->user_type   = $request->user_type;
-        $transaction->type        = $request->type;
-        $transaction->amount      = $request->amount;
+        $transaction = new Transaction();
+        $transaction->account = $request->account;
+        $transaction->user_id = $request->user_id;
+        $transaction->user_type = $request->user_type;
+        $transaction->type = $request->type;
+        $transaction->amount = $request->amount;
         $transaction->description = $request->description;
-        $transaction->date        = $request->date;
-        $transaction->created_by  = $request->created_by;
-        $transaction->payment_id  = $request->payment_id;
-        $transaction->category    = $request->category;
+        $transaction->date = $request->date;
+        $transaction->created_by = $request->created_by;
+        $transaction->payment_id = $request->payment_id;
+        $transaction->category = $request->category;
         $transaction->save();
     }
 
     public static function editTransaction($request)
     {
-        $transaction              = Transaction::where('payment_id', $request->payment_id)->where('type', $request->type)->first();
-        $transaction->account     = $request->account;
-        $transaction->amount      = $request->amount;
+        $transaction = Transaction::where('payment_id', $request->payment_id)->where('type', $request->type)->first();
+        $transaction->account = $request->account;
+        $transaction->amount = $request->amount;
         $transaction->description = $request->description;
-        $transaction->date        = $request->date;
-        $transaction->category    = $request->category;
+        $transaction->date = $request->date;
+        $transaction->category = $request->category;
         $transaction->save();
     }
 

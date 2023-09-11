@@ -4,26 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Utility;
-use App\Models\Task_file_con;
-use App\Models\Task;
-use App\Models\TaskStage;
-use Carbon\Carbon;
-use App\Models\ProjectTask;
-use App\Models\Activity_logs_con;
-use App\Models\Expenses_con;
-use App\Models\Construction_project;
 use Illuminate\Support\Facades\Auth;
 
 class Construction_project extends Model
 {
     use HasFactory;
-    public static $project_status=[
+
+    public static $project_status = [
         'in_progress' => 'In Progress',
         'on_hold' => 'On Hold',
         'complete' => 'Complete',
-        'canceled' => 'Canceled'
+        'canceled' => 'Canceled',
     ];
 
     public static $status_color = [
@@ -47,6 +38,7 @@ class Construction_project extends Model
     {
         $usr = Auth::user();
         $activity = $this->hasMany('App\Models\Activity_logs_con', 'project_id', 'id')->orderBy('id', 'desc');
+
         return $activity;
     }
 
@@ -64,6 +56,7 @@ class Construction_project extends Model
     {
         return $this->hasMany('App\Models\Milestone_con', 'project_id', 'id');
     }
+
     public function timesheets()
     {
         return $this->hasMany('App\Models\Timesheet_con', 'project_id', 'id')->orderBy('id', 'desc');
@@ -72,11 +65,10 @@ class Construction_project extends Model
     public static function projectHrs($project_id, $task_id = '')
     {
         $project = Project::find($project_id);
-        $tasks   = ProjectTask::where('project_id', '=', $project_id)->get();
+        $tasks = ProjectTask::where('project_id', '=', $project_id)->get();
         $taskHrs = 0;
 
-        foreach($tasks as $task)
-        {
+        foreach ($tasks as $task) {
             $taskHrs += $task->estimated_hrs;
         }
 
@@ -89,12 +81,11 @@ class Construction_project extends Model
     {
 
         $percentage = 0;
-        $last_task      = TaskStage::orderBy('order', 'DESC')->where('created_by',\Auth::user()->creatorId())->first();
-        $total_task     = $this->tasks->count();
+        $last_task = TaskStage::orderBy('order', 'DESC')->where('created_by', \Auth::user()->creatorId())->first();
+        $total_task = $this->tasks->count();
         $completed_task = $this->tasks()->where('stage_id', '=', $last_task->id)->where('is_complete', '=', 1)->count();
-//dd($last_task,$total_task,$completed_task);
-        if($total_task > 0)
-        {
+        //dd($last_task,$total_task,$completed_task);
+        if ($total_task > 0) {
             $percentage = intval(($completed_task / $total_task) * 100);
         }
 
@@ -102,7 +93,7 @@ class Construction_project extends Model
 
         return [
             'color' => $color,
-            'percentage' => $percentage . '%',
+            'percentage' => $percentage.'%',
         ];
     }
 
@@ -110,7 +101,7 @@ class Construction_project extends Model
     {
         $usr = Auth::user();
         $tasks = $this->tasks->pluck('id');
+
         return Task_file_con::whereIn('task_id', $tasks)->get();
     }
-
 }

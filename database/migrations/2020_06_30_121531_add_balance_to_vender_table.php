@@ -14,9 +14,9 @@ class AddBalanceToVenderTable extends Migration
     public function up()
     {
         Schema::table(
-            'venders', function (Blueprint $table){
-            $table->float('balance')->default('0.00')->after('lang');
-        }
+            'venders', function (Blueprint $table) {
+                $table->float('balance')->default('0.00')->after('lang');
+            }
         );
     }
 
@@ -28,9 +28,9 @@ class AddBalanceToVenderTable extends Migration
     public function down()
     {
         Schema::table(
-            'venders', function (Blueprint $table){
-            $table->dropColumn('balance');
-        }
+            'venders', function (Blueprint $table) {
+                $table->dropColumn('balance');
+            }
         );
     }
 }

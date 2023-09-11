@@ -14,12 +14,12 @@ class CreateIpRestrictsTable extends Migration
     public function up()
     {
         Schema::create(
-            'ip_restricts', function (Blueprint $table){
-            $table->id();
-            $table->string('ip');
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'ip_restricts', function (Blueprint $table) {
+                $table->id();
+                $table->string('ip');
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

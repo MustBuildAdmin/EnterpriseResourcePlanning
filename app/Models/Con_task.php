@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Con_task extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     public static $priority = [
         'critical' => 'Critical',
@@ -35,14 +36,13 @@ class Con_task extends Model
 
     public function taskProgress()
     {
-        $project    = Project::find($this->project_id);
+        $project = Project::find($this->project_id);
         $percentage = 0;
 
-        $total_checklist     = $this->checklist->count();
+        $total_checklist = $this->checklist->count();
         $completed_checklist = $this->checklist()->where('status', '=', '1')->count();
 
-        if($total_checklist > 0)
-        {
+        if ($total_checklist > 0) {
             $percentage = intval(($completed_checklist / $total_checklist) * 100);
         }
 
@@ -50,12 +50,20 @@ class Con_task extends Model
 
         return [
             'color' => $color,
-            'percentage' => $percentage . '%',
+            'percentage' => $percentage.'%',
         ];
     }
 
     public function checklist()
     {
         return $this->hasMany('App\Models\TaskChecklist', 'task_id', 'id')->orderBy('id', 'DESC');
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'text' => $this->text
+        ];
     }
 }

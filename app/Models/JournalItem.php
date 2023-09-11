@@ -17,6 +17,4 @@ class JournalItem extends Model
     {
         return $this->hasOne('App\Models\ChartOfAccount', 'id', 'account');
     }
-
-
 }

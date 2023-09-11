@@ -37,26 +37,25 @@ class Support extends Model
     public static $status = [
         'Open' => 'Open',
         'Close' => 'Close',
-        'On Hold' =>  'On Hold',
+        'On Hold' => 'On Hold',
     ];
 
-    public static function status() {
-        $status['Open'] = __ ('Open');
-        $status['Close'] = __ ('Close');
-        $status['On Hold'] = __ ('On Hold');
+    public static function status()
+    {
+        $status['Open'] = __('Open');
+        $status['Close'] = __('Close');
+        $status['On Hold'] = __('On Hold');
+
         return $status;
     }
 
     public function replyUnread()
     {
 
-        if(\Auth::user()->type == 'employee')
-        {
-            return SupportReply:: where('support_id', $this->id)->where('is_read', 0)->where('user', '!=', \Auth::user()->id)->count('id');
-        }
-        else
-        {
-            return SupportReply:: where('support_id', $this->id)->where('is_read', 0)->count('id');
+        if (\Auth::user()->type == 'employee') {
+            return SupportReply::where('support_id', $this->id)->where('is_read', 0)->where('user', '!=', \Auth::user()->id)->count('id');
+        } else {
+            return SupportReply::where('support_id', $this->id)->where('is_read', 0)->count('id');
         }
     }
 }

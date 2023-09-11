@@ -31,15 +31,12 @@ class PipelineController extends Controller
      */
     public function index()
     {
-        if(\Auth::user()->can('manage pipeline'))
-        {
+        if (\Auth::user()->can('manage pipeline')) {
             $pipelines = Pipeline::where('created_by', '=', \Auth::user()->creatorId())->get();
 
             return view('crm.crm_system_setup.pipelines.index')->with('pipelines', $pipelines);
             // return view('pipelines.index')->with('pipelines', $pipelines);
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -51,12 +48,9 @@ class PipelineController extends Controller
      */
     public function create()
     {
-        if(\Auth::user()->can('create pipeline'))
-        {
+        if (\Auth::user()->can('create pipeline')) {
             return view('pipelines.create');
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission Denied.')], 401);
         }
     }
@@ -64,37 +58,32 @@ class PipelineController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        if(\Auth::user()->can('create pipeline'))
-        {
+        if (\Auth::user()->can('create pipeline')) {
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:20|unique:pipelines',
-                               ]
+                    'name' => 'required|max:20|unique:pipelines',
+                ]
             );
 
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->route('pipelines.index')->with('error', $messages->first());
             }
 
-            $pipeline             = new Pipeline();
-            $pipeline->name       = $request->name;
+            $pipeline = new Pipeline();
+            $pipeline->name = $request->name;
             $pipeline->created_by = \Auth::user()->creatorId();
             $pipeline->save();
 
             return redirect()->route('pipelines.index')->with('success', __('Pipeline successfully created!'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -102,8 +91,7 @@ class PipelineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Pipeline $pipeline
-     *
+     * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
     public function show(Pipeline $pipeline)
@@ -114,25 +102,18 @@ class PipelineController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Pipeline $pipeline
-     *
+     * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
     public function edit(Pipeline $pipeline)
     {
-        if(\Auth::user()->can('edit pipeline'))
-        {
-            if($pipeline->created_by == \Auth::user()->creatorId())
-            {
+        if (\Auth::user()->can('edit pipeline')) {
+            if ($pipeline->created_by == \Auth::user()->creatorId()) {
                 return view('pipelines.edit', compact('pipeline'));
-            }
-            else
-            {
+            } else {
                 return response()->json(['error' => __('Permission Denied.')], 401);
             }
-        }
-        else
-        {
+        } else {
             return response()->json(['error' => __('Permission Denied.')], 401);
         }
     }
@@ -140,27 +121,22 @@ class PipelineController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Pipeline $pipeline
-     *
+     * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Pipeline $pipeline)
     {
-        if(\Auth::user()->can('edit pipeline'))
-        {
+        if (\Auth::user()->can('edit pipeline')) {
 
-            if($pipeline->created_by == \Auth::user()->creatorId())
-            {
+            if ($pipeline->created_by == \Auth::user()->creatorId()) {
 
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:20|unique:pipelines',
-                                   ]
+                        'name' => 'required|max:20|unique:pipelines',
+                    ]
                 );
 
-                if($validator->fails())
-                {
+                if ($validator->fails()) {
                     $messages = $validator->getMessageBag();
 
                     return redirect()->route('pipelines.index')->with('error', $messages->first());
@@ -170,14 +146,10 @@ class PipelineController extends Controller
                 $pipeline->save();
 
                 return redirect()->route('pipelines.index')->with('success', __('Pipeline successfully updated!'));
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission Denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
@@ -185,23 +157,17 @@ class PipelineController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Pipeline $pipeline
-     *
+     * @param  \App\Pipeline  $pipeline
      * @return \Illuminate\Http\Response
      */
     public function destroy(Pipeline $pipeline)
     {
-        if(\Auth::user()->can('delete pipeline'))
-        {
-            if($pipeline->created_by == \Auth::user()->creatorId())
-            {
-                if(count($pipeline->stages) == 0)
-                {
-                    foreach($pipeline->stages as $stage)
-                    {
+        if (\Auth::user()->can('delete pipeline')) {
+            if ($pipeline->created_by == \Auth::user()->creatorId()) {
+                if (count($pipeline->stages) == 0) {
+                    foreach ($pipeline->stages as $stage) {
                         $deals = Deal::where('pipeline_id', '=', $pipeline->id)->where('stage_id', '=', $stage->id)->get();
-                        foreach($deals as $deal)
-                        {
+                        foreach ($deals as $deal) {
                             DealDiscussion::where('deal_id', '=', $deal->id)->delete();
                             DealFile::where('deal_id', '=', $deal->id)->delete();
                             ClientDeal::where('deal_id', '=', $deal->id)->delete();
@@ -218,19 +184,13 @@ class PipelineController extends Controller
                     $pipeline->delete();
 
                     return redirect()->route('pipelines.index')->with('success', __('Pipeline successfully deleted!'));
-                }
-                else
-                {
+                } else {
                     return redirect()->route('pipelines.index')->with('error', __('There are some Stages and Deals on Pipeline, please remove it first!'));
                 }
-            }
-            else
-            {
+            } else {
                 return redirect()->back()->with('error', __('Permission Denied.'));
             }
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }

@@ -10,14 +10,14 @@
 
 <style>
     .navbar-expand-lg {
-        top: 4em !important;
+        top: 4.8em !important;
     }
 </style>
 <div class="page">
     <!-- Sidebar  -->
     <aside id="sidebar" class="navbar navbar-vertical navbar-expand-lg">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
                 aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -25,7 +25,7 @@
                 <ul class="navbar-nav pt-lg-3">
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +43,7 @@
                     <li class=" nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -62,19 +62,21 @@
                                 <div class="dropdown-menu-column">
                                     @can('view grant chart')
                                         <a href="{{ route('projects.gantt', $project_id) }}"
-                                            class="dropdown-item">{{ __('Gantt Chart') }}</a>
+                                            class="dropdown-item">{{ __('Gantt') }}</a>
                                     @endcan
 
-                                    <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="dropdown-item">{{ __('Task') }}</a>
-
-                                    <a href="{{ route('project_report.view_task_report', $project_id) }}"
-                                        class="dropdown-item">{{ __('Task Report') }}</a>
+                                    <a href="#" class="dropdown-item">{{ __('Micro Program') }}</a>
 
                                     @if(session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
-                                            class="dropdown-item">{{ __('Revision Task progress ') }}</a>
+                                            class="dropdown-item">{{ __('Revised Program') }}</a>
                                     @endif
+
+                                    <a href="{{ route('taskBoard.view', ['list']) }}"
+                                        class="dropdown-item">{{ __('Task Workdone') }}</a>
+
+                                    <a href="{{ route('project_report.view_task_report', $project_id) }}"
+                                        class="dropdown-item">{{ __('Task Reports') }}</a>
 
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
@@ -138,7 +140,7 @@
                             Request::route()->getName() == 'procurement_material'
                                 ? 'true'
                                 : 'false' }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-address-book" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -206,7 +208,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-chart-area-line" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -245,7 +247,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"
@@ -263,7 +265,7 @@
 
                     <li class="nav-item">
                         <a href="{{ url('project_holiday') }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -283,7 +285,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"
@@ -302,7 +304,7 @@
                     @if(Session::get('current_revision_freeze')==1)
                         <li class="nav-item">
                             <a href="{{ url('revision') }}" class="nav-link">
-                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <span class=" d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -323,7 +325,7 @@
                     
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"

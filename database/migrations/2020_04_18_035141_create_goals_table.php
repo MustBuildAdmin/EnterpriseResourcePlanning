@@ -14,17 +14,17 @@ class CreateGoalsTable extends Migration
     public function up()
     {
         Schema::create(
-            'goals', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('type');
-            $table->string('from')->nullable();
-            $table->string('to')->nullable();
-            $table->float('amount')->default(0.00);
-            $table->integer('is_display')->default(1);
-            $table->integer('created_by')->default(0);
-            $table->timestamps();
-        }
+            'goals', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->string('type');
+                $table->string('from')->nullable();
+                $table->string('to')->nullable();
+                $table->float('amount')->default(0.00);
+                $table->integer('is_display')->default(1);
+                $table->integer('created_by')->default(0);
+                $table->timestamps();
+            }
         );
     }
 

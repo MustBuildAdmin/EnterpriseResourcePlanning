@@ -15,8 +15,8 @@ class InvoiceProduct extends Model
         'total',
     ];
 
-    public function product(){
+    public function product()
+    {
         return $this->hasOne('App\Models\ProductService', 'id', 'product_id')->first();
     }
-
 }

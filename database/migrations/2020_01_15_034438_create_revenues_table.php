@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateRevenuesTable extends Migration
 {
@@ -16,7 +16,7 @@ class CreateRevenuesTable extends Migration
         Schema::create('revenues', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date');
-            $table->float('amount',15,2)->default('0.00');
+            $table->float('amount', 15, 2)->default('0.00');
             $table->integer('account_id');
             $table->integer('customer_id');
             $table->integer('category_id');

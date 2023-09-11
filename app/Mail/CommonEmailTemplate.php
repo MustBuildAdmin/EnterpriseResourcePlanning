@@ -11,6 +11,7 @@ class CommonEmailTemplate extends Mailable
     use Queueable, SerializesModels;
 
     public $template;
+
     public $settings;
 
     /**

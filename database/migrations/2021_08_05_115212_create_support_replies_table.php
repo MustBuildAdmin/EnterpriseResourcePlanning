@@ -14,15 +14,15 @@ class CreateSupportRepliesTable extends Migration
     public function up()
     {
         Schema::create(
-            'support_replies', function (Blueprint $table){
-            $table->id();
-            $table->integer('support_id');
-            $table->integer('user')->default(0);
-            $table->text('description')->nullable();
-            $table->integer('created_by');
-            $table->integer('is_read')->default('0');
-            $table->timestamps();
-        }
+            'support_replies', function (Blueprint $table) {
+                $table->id();
+                $table->integer('support_id');
+                $table->integer('user')->default(0);
+                $table->text('description')->nullable();
+                $table->integer('created_by');
+                $table->integer('is_read')->default('0');
+                $table->timestamps();
+            }
         );
     }
 

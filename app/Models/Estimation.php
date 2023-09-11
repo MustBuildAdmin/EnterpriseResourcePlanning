@@ -43,8 +43,7 @@ class Estimation extends Model
     public function getSubTotal()
     {
         $subTotal = 0;
-        foreach($this->getProducts as $product)
-        {
+        foreach ($this->getProducts as $product) {
             $subTotal += $product->pivot->price * $product->pivot->quantity;
         }
 
@@ -53,12 +52,9 @@ class Estimation extends Model
 
     public function getTax()
     {
-        if($this->getSubTotal() > 0)
-        {
+        if ($this->getSubTotal() > 0) {
             $tax = (($this->getSubTotal() - $this->discount) * $this->tax->rate) / 100.00;
-        }
-        else
-        {
+        } else {
             $tax = 0;
         }
 
@@ -73,8 +69,7 @@ class Estimation extends Model
     public function getDue()
     {
         $due = 0;
-        foreach($this->payments as $payment)
-        {
+        foreach ($this->payments as $payment) {
             $due += $payment->amount;
         }
 
@@ -85,8 +80,7 @@ class Estimation extends Model
     {
         $total = 0;
 
-        foreach($estimates as $estimate)
-        {
+        foreach ($estimates as $estimate) {
             $total += $estimate->getTotal();
         }
 

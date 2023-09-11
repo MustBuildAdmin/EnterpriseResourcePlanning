@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use DB;
 use Illuminate\Database\Eloquent\Model;
 
 // Gantt
 class GanttPlan extends Model
 {
     protected $table = 'planning_temp';
+
     protected $fillable = [
         'task_id',
         'project_id',
@@ -21,6 +21,4 @@ class GanttPlan extends Model
         'parent',
         'is_active',
     ];
-
-
 }

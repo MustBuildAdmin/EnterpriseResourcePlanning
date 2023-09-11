@@ -14,18 +14,18 @@ class CreateEstimationsTable extends Migration
     public function up()
     {
         Schema::create(
-            'estimations', function (Blueprint $table){
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('estimation_id');
-            $table->unsignedBigInteger('client_id');
-            $table->string('status');
-            $table->date('issue_date');
-            $table->float('discount');
-            $table->unsignedBigInteger('tax_id');
-            $table->text('terms')->nullable();
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'estimations', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('estimation_id');
+                $table->unsignedBigInteger('client_id');
+                $table->string('status');
+                $table->date('issue_date');
+                $table->float('discount');
+                $table->unsignedBigInteger('tax_id');
+                $table->text('terms')->nullable();
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

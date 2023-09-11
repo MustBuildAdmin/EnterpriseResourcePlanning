@@ -14,25 +14,25 @@ class CreateJobsTable extends Migration
     public function up()
     {
         Schema::create(
-            'jobs', function (Blueprint $table){
-            $table->id();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->text('requirement')->nullable();
-            $table->integer('branch')->default(0);
-            $table->integer('category')->default(0);
-            $table->text('skill')->nullable();
-            $table->integer('position')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->string('status')->nullable();
-            $table->string('applicant')->nullable();
-            $table->string('visibility')->nullable();
-            $table->string('code')->nullable();
-            $table->string('custom_question')->nullable();
-            $table->integer('created_by');
-            $table->timestamps();
-        }
+            'jobs', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->text('requirement')->nullable();
+                $table->integer('branch')->default(0);
+                $table->integer('category')->default(0);
+                $table->text('skill')->nullable();
+                $table->integer('position')->nullable();
+                $table->date('start_date')->nullable();
+                $table->date('end_date')->nullable();
+                $table->string('status')->nullable();
+                $table->string('applicant')->nullable();
+                $table->string('visibility')->nullable();
+                $table->string('code')->nullable();
+                $table->string('custom_question')->nullable();
+                $table->integer('created_by');
+                $table->timestamps();
+            }
         );
     }
 

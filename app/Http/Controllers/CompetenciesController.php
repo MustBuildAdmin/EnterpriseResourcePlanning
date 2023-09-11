@@ -8,123 +8,104 @@ use Illuminate\Http\Request;
 
 class CompetenciesController extends Controller
 {
-
     public function index()
     {
-        if(\Auth::user()->can('Manage Competencies'))
-        {
+        if (\Auth::user()->can('Manage Competencies')) {
             $competencies = Competencies::where('created_by', \Auth::user()->creatorId())->get();
 
             return view('hrm.system_setup.competencies.competencies', compact('competencies'));
             // return view('competencies.index', compact('competencies'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function create()
     {
-        $performance     = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $performance = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+
         return view('hrm.system_setup.competencies.competencies_create', compact('performance'));
-            // return view('competencies.create', compact('performance'));
+        // return view('competencies.create', compact('performance'));
 
     }
 
-
     public function store(Request $request)
     {
-        if(\Auth::user()->can('Create Competencies'))
-        {
+        if (\Auth::user()->can('Create Competencies')) {
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|unique:competencies',
-                                   'type' => 'required',
-                               ]
+                    'name' => 'required|unique:competencies',
+                    'type' => 'required',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $competencies             = new Competencies();
-            $competencies->name       = $request->name;
-            $competencies->type       = $request->type;
+            $competencies = new Competencies();
+            $competencies->name = $request->name;
+            $competencies->type = $request->type;
             $competencies->created_by = \Auth::user()->creatorId();
             $competencies->save();
 
             return redirect()->route('competencies.index')->with('success', __('Competencies  successfully created.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
-
 
     public function show(Competencies $competencies)
     {
         //
     }
 
-
     public function edit($id)
     {
         $competencies = Competencies::find($id);
-        $performance     = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+        $performance = PerformanceType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+
         return view('hrm.system_setup.competencies.competencies_edit', compact('performance', 'competencies'));
         // return view('competencies.edit', compact('performance', 'competencies'));
 
     }
 
-
     public function update(Request $request, $id)
     {
-        if(\Auth::user()->can('Edit Competencies'))
-        {
+        if (\Auth::user()->can('Edit Competencies')) {
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|unique:competencies',
-                                   'type' => 'required',
-                               ]
+                    'name' => 'required|unique:competencies',
+                    'type' => 'required',
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
             }
-            $competencies       = Competencies::find($id);
+            $competencies = Competencies::find($id);
             $competencies->name = $request->name;
             $competencies->type = $request->type;
             $competencies->save();
 
             return redirect()->route('competencies.index')->with('success', __('Competencies  successfully updated.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
-
     public function destroy($id)
     {
-        if(\Auth::user()->can('Delete Competencies'))
-        {
+        if (\Auth::user()->can('Delete Competencies')) {
             $competencies = Competencies::find($id);
             $competencies->delete();
 
             return redirect()->route('competencies.index')->with('success', __('Competencies  successfully deleted.'));
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }

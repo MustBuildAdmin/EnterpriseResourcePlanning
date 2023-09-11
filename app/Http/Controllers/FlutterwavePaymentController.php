@@ -19,19 +19,18 @@ use Illuminate\Support\Facades\DB;
 class FlutterwavePaymentController extends Controller
 {
     public $secret_key;
-    public $public_key;
-    public $is_enabled;
-    protected $invoiceData;
 
+    public $public_key;
+
+    public $is_enabled;
+
+    protected $invoiceData;
 
     public function paymentConfig()
     {
-        if(\Auth::check())
-        {
+        if (\Auth::check()) {
             $payment_setting = Utility::getAdminPaymentSetting();
-        }
-        else
-        {
+        } else {
             $payment_setting = Utility::getCompanyPaymentSetting($this->invoiceData->created_by);
         }
 
@@ -42,48 +41,39 @@ class FlutterwavePaymentController extends Controller
         return $this;
     }
 
-
     public function planPayWithFlutterwave(Request $request)
     {
-        $planID    = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
-        $plan      = Plan::find($planID);
-        $authuser  = Auth::user();
+        $planID = \Illuminate\Support\Facades\Crypt::decrypt($request->plan_id);
+        $plan = Plan::find($planID);
+        $authuser = Auth::user();
         $coupon_id = '';
-        if($plan)
-        {
+        if ($plan) {
             $price = $plan->price;
-            if(isset($request->coupon) && !empty($request->coupon))
-            {
+            if (isset($request->coupon) && ! empty($request->coupon)) {
                 $request->coupon = trim($request->coupon);
-                $coupons         = Coupon::where('code', strtoupper($request->coupon))->where('is_active', '1')->first();
+                $coupons = Coupon::where('code', strtoupper($request->coupon))->where('is_active', '1')->first();
 
-                if(!empty($coupons))
-                {
-                    $usedCoupun             = $coupons->used_coupon();
-                    $discount_value         = ($price / 100) * $coupons->discount;
+                if (! empty($coupons)) {
+                    $usedCoupun = $coupons->used_coupon();
+                    $discount_value = ($price / 100) * $coupons->discount;
                     $plan->discounted_price = $price - $discount_value;
 
-                    if($usedCoupun >= $coupons->limit)
-                    {
+                    if ($usedCoupun >= $coupons->limit) {
                         return redirect()->back()->with('error', __('This coupon code has expired.'));
                     }
-                    $price     = $price - $discount_value;
+                    $price = $price - $discount_value;
                     $coupon_id = $coupons->id;
-                }
-                else
-                {
+                } else {
                     return redirect()->back()->with('error', __('This coupon code is invalid or has expired.'));
                 }
             }
-            if($price <= 0)
-            {
+            if ($price <= 0) {
                 $authuser->plan = $plan->id;
                 $authuser->save();
 
                 $assignPlan = $authuser->assignPlan($plan->id);
 
-                if($assignPlan['is_success'] == true && !empty($plan))
-                {
+                if ($assignPlan['is_success'] == true && ! empty($plan)) {
                     $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
                     Order::create(
                         [
@@ -96,7 +86,7 @@ class FlutterwavePaymentController extends Controller
                             'plan_name' => $plan->name,
                             'plan_id' => $plan->id,
                             'price' => $price == null ? 0 : $price,
-                            'price_currency' => !empty(env('CURRENCY')) ? env('CURRENCY') : 'usd',
+                            'price_currency' => ! empty(env('CURRENCY')) ? env('CURRENCY') : 'usd',
                             'txn_id' => '',
                             'payment_type' => __('Flutterwave'),
                             'payment_status' => 'succeeded',
@@ -104,27 +94,23 @@ class FlutterwavePaymentController extends Controller
                             'user_id' => $authuser->id,
                         ]
                     );
-                    $res['msg']  = __("Plan successfully upgraded.");
+                    $res['msg'] = __('Plan successfully upgraded.');
                     $res['flag'] = 2;
 
                     return $res;
-                }
-                else
-                {
+                } else {
                     return Utility::error_res(__('Plan fail to upgrade.'));
                 }
             }
 
-            $res_data['email']       = \Auth::user()->email;
+            $res_data['email'] = \Auth::user()->email;
             $res_data['total_price'] = $price;
-            $res_data['currency']    = env('CURRENCY');
-            $res_data['flag']        = 1;
-            $res_data['coupon']      = $coupon_id;
+            $res_data['currency'] = env('CURRENCY');
+            $res_data['flag'] = 1;
+            $res_data['coupon'] = $coupon_id;
 
             return $res_data;
-        }
-        else
-        {
+        } else {
             return Utility::error_res(__('Plan is deleted.'));
         }
 
@@ -133,91 +119,77 @@ class FlutterwavePaymentController extends Controller
     public function getPaymentStatus(Request $request, $pay_id, $plan)
     {
         $payment = $this->paymentConfig();
-        $planID  = \Illuminate\Support\Facades\Crypt::decrypt($plan);
-        $plan    = Plan::find($planID);
-        $result  = array();
+        $planID = \Illuminate\Support\Facades\Crypt::decrypt($plan);
+        $plan = Plan::find($planID);
+        $result = [];
 
         $user = Auth::user();
-        if($plan)
-        {
-            try
-            {
+        if ($plan) {
+            try {
                 $orderID = time();
-                $data    = array(
+                $data = [
                     'txref' => $pay_id,
                     'SECKEY' => $this->secret_key,
                     //secret key from pay button generated on rave dashboard
-                );
+                ];
                 // make request to endpoint using unirest.
-                $headers = array('Content-Type' => 'application/json');
-                $body    = \Unirest\Request\Body::json($data);
-                $url     = "https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/verify"; //please make sure to change this to production url when you go live
+                $headers = ['Content-Type' => 'application/json'];
+                $body = \Unirest\Request\Body::json($data);
+                $url = 'https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/verify'; //please make sure to change this to production url when you go live
 
                 // Make `POST` request and handle response with unirest
                 $response = \Unirest\Request::post($url, $headers, $body);
-                if(!empty($response))
-                {
+                if (! empty($response)) {
                     $response = json_decode($response->raw_body, true);
                 }
-                if(isset($response['status']) && $response['status'] == 'success')
-                {
+                if (isset($response['status']) && $response['status'] == 'success') {
                     $paydata = $response['data'];
 
-                    if($request->has('coupon_id') && $request->coupon_id != '')
-                    {
+                    if ($request->has('coupon_id') && $request->coupon_id != '') {
                         $coupons = Coupon::find($request->coupon_id);
-                        if(!empty($coupons))
-                        {
-                            $userCoupon         = new UserCoupon();
-                            $userCoupon->user   = $user->id;
+                        if (! empty($coupons)) {
+                            $userCoupon = new UserCoupon();
+                            $userCoupon->user = $user->id;
                             $userCoupon->coupon = $coupons->id;
-                            $userCoupon->order  = $orderID;
+                            $userCoupon->order = $orderID;
                             $userCoupon->save();
 
                             $usedCoupun = $coupons->used_coupon();
-                            if($coupons->limit <= $usedCoupun)
-                            {
+                            if ($coupons->limit <= $usedCoupun) {
                                 $coupons->is_active = 0;
                                 $coupons->save();
                             }
                         }
                     }
 
-                    $order                 = new Order();
-                    $order->order_id       = $orderID;
-                    $order->name           = $user->name;
-                    $order->card_number    = '';
+                    $order = new Order();
+                    $order->order_id = $orderID;
+                    $order->name = $user->name;
+                    $order->card_number = '';
                     $order->card_exp_month = '';
-                    $order->card_exp_year  = '';
-                    $order->plan_name      = $plan->name;
-                    $order->plan_id        = $plan->id;
-                    $order->price          = isset($paydata['amount']) ? $paydata['amount'] : 0;
+                    $order->card_exp_year = '';
+                    $order->plan_name = $plan->name;
+                    $order->plan_id = $plan->id;
+                    $order->price = isset($paydata['amount']) ? $paydata['amount'] : 0;
                     $order->price_currency = env('CURRENCY');
-                    $order->txn_id         = isset($paydata['txid']) ? $paydata['txid'] : $pay_id;
-                    $order->payment_type   = __('Flutterwave');
+                    $order->txn_id = isset($paydata['txid']) ? $paydata['txid'] : $pay_id;
+                    $order->payment_type = __('Flutterwave');
                     $order->payment_status = 'success';
-                    $order->receipt        = '';
-                    $order->user_id        = $user->id;
+                    $order->receipt = '';
+                    $order->user_id = $user->id;
                     $order->save();
 
                     $assignPlan = $user->assignPlan($plan->id);
 
-                    if($assignPlan['is_success'])
-                    {
+                    if ($assignPlan['is_success']) {
                         return redirect()->route('plans.index')->with('success', __('Plan activated Successfully!'));
-                    }
-                    else
-                    {
+                    } else {
                         return redirect()->route('plans.index')->with('error', __($assignPlan['error']));
                     }
-                }
-                else
-                {
+                } else {
                     return redirect()->route('plans.index')->with('error', __('Transaction has been failed! '));
                 }
-            }
-            catch(\Exception $e)
-            {
+            } catch (\Exception $e) {
                 return redirect()->route('plans.index')->with('error', __('Plan not found!'));
             }
         }
@@ -226,36 +198,29 @@ class FlutterwavePaymentController extends Controller
     public function customerPayWithFlutterwave(Request $request)
     {
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($request->invoice_id);
-        $invoice   = Invoice::find($invoiceID);
-        $user      = User::find($invoice->created_by);
-        if($invoice)
-        {
+        $invoice = Invoice::find($invoiceID);
+        $user = User::find($invoice->created_by);
+        if ($invoice) {
             $price = $request->amount;
-            if($price > 0)
-            {
-                $res_data['email']       =$user->email;
+            if ($price > 0) {
+                $res_data['email'] = $user->email;
                 $res_data['total_price'] = $price;
-                $res_data['currency']    = Utility::getValByName('site_currency');
-                $res_data['flag']        = 1;
+                $res_data['currency'] = Utility::getValByName('site_currency');
+                $res_data['flag'] = 1;
 
                 return $res_data;
 
-            }
-            else
-            {
-                $res['msg']  = __("Enter valid amount.");
+            } else {
+                $res['msg'] = __('Enter valid amount.');
                 $res['flag'] = 2;
 
                 return $res;
             }
 
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Invoice is deleted.'));
 
         }
-
 
     }
 
@@ -263,38 +228,34 @@ class FlutterwavePaymentController extends Controller
     {
 
         $invoiceID = \Illuminate\Support\Facades\Crypt::decrypt($invoice_id);
-        $invoice   = Invoice::find($invoiceID);
+        $invoice = Invoice::find($invoiceID);
         $this->invoiceData = $invoice;
 
-        $orderID   = strtoupper(str_replace('.', '', uniqid('', true)));
-        $settings  = DB::table('settings')->where('created_by', '=', $invoice->created_by)->get()->pluck('value', 'name');
+        $orderID = strtoupper(str_replace('.', '', uniqid('', true)));
+        $settings = DB::table('settings')->where('created_by', '=', $invoice->created_by)->get()->pluck('value', 'name');
 
-        $payment   = $this->paymentConfig();
-        $result    = array();
+        $payment = $this->paymentConfig();
+        $result = [];
 
-        if($invoice)
-        {
-            try
-            {
+        if ($invoice) {
+            try {
 
-                $data = array(
+                $data = [
                     'txref' => $pay_id,
                     'SECKEY' => $this->secret_key,
                     //secret key from pay button generated on rave dashboard
-                );
+                ];
                 // make request to endpoint using unirest.
-                $headers = array('Content-Type' => 'application/json');
-                $body    = \Unirest\Request\Body::json($data);
-                $url     = "https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/verify"; //please make sure to change this to production url when you go live
+                $headers = ['Content-Type' => 'application/json'];
+                $body = \Unirest\Request\Body::json($data);
+                $url = 'https://api.ravepay.co/flwv3-pug/getpaidx/api/v2/verify'; //please make sure to change this to production url when you go live
 
                 // Make `POST` request and handle response with unirest
                 $response = \Unirest\Request::post($url, $headers, $body);
-                if(!empty($response))
-                {
+                if (! empty($response)) {
                     $response = json_decode($response->raw_body, true);
                 }
-                if(isset($response['status']) && $response['status'] == 'success')
-                {
+                if (isset($response['status']) && $response['status'] == 'success') {
                     $paydata = $response['data'];
 
                     $payments = InvoicePayment::create(
@@ -307,63 +268,51 @@ class FlutterwavePaymentController extends Controller
                             'order_id' => $orderID,
                             'payment_type' => __('Flutterwave'),
                             'receipt' => '',
-                            'description' => __('Invoice') . ' ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
+                            'description' => __('Invoice').' '.Utility::invoiceNumberFormat($settings, $invoice->invoice_id),
                         ]
                     );
 
                     $invoice = Invoice::find($invoice->id);
 
-
-                    if($invoice->getDue() <= 0)
-                    {
+                    if ($invoice->getDue() <= 0) {
                         Invoice::change_status($invoice->id, 4);
-                    }
-                    else
-                    {
+                    } else {
                         Invoice::change_status($invoice->id, 3);
                     }
 
                     //Slack Notification
-                    $setting  = Utility::settings($invoice->created_by);
+                    $setting = Utility::settings($invoice->created_by);
 
                     $customer = Customer::find($invoice->customer_id);
-                    if(isset($setting['payment_notification']) && $setting['payment_notification'] == 1)
-                    {
-                        $msg = __("New payment of").' ' . $request->amount . __("created for").' '. $customer->name . __("by").' '. __('Flutterwave'). '.';
-                        Utility::send_slack_msg($msg,$invoice->created_by);
+                    if (isset($setting['payment_notification']) && $setting['payment_notification'] == 1) {
+                        $msg = __('New payment of').' '.$request->amount.__('created for').' '.$customer->name.__('by').' '.__('Flutterwave').'.';
+                        Utility::send_slack_msg($msg, $invoice->created_by);
                     }
 
                     //Telegram Notification
-                    $setting  = Utility::settings($invoice->created_by);
+                    $setting = Utility::settings($invoice->created_by);
 
                     $customer = Customer::find($invoice->customer_id);
-                    if(isset($setting['telegram_payment_notification']) && $setting['telegram_payment_notification'] == 1)
-                    {
-                        $msg = __("New payment of").' ' . $request->amount . __("created for").' '. $customer->name . __("by").' '. __('Flutterwave'). '.';
-                        Utility::send_telegram_msg($msg,$invoice->created_by);
+                    if (isset($setting['telegram_payment_notification']) && $setting['telegram_payment_notification'] == 1) {
+                        $msg = __('New payment of').' '.$request->amount.__('created for').' '.$customer->name.__('by').' '.__('Flutterwave').'.';
+                        Utility::send_telegram_msg($msg, $invoice->created_by);
                     }
 
                     //Twilio Notification
-                    $setting  = Utility::settings($invoice->created_by);
+                    $setting = Utility::settings($invoice->created_by);
 
                     $customer = Customer::find($invoice->customer_id);
-                    if(isset($setting['twilio_payment_notification']) && $setting['twilio_payment_notification'] ==1)
-                    {
-                        $msg = __("New payment of").' ' . $request->amount . __("created for").' ' . $customer->name . __("by").' '.  $payments['payment_type'] . '.';
-                        Utility::send_twilio_msg($customer->contact,$msg,$invoice->created_by);
+                    if (isset($setting['twilio_payment_notification']) && $setting['twilio_payment_notification'] == 1) {
+                        $msg = __('New payment of').' '.$request->amount.__('created for').' '.$customer->name.__('by').' '.$payments['payment_type'].'.';
+                        Utility::send_twilio_msg($customer->contact, $msg, $invoice->created_by);
                     }
-
 
                     return redirect()->route('invoice.link.copy', Crypt::encrypt($invoice->id))->with('success', __(' Payment successfully added.'));
 
-                }
-                else
-                {
+                } else {
                     return redirect()->route('invoice.link.copy', Crypt::encrypt($invoice->id))->with('error', __('Transaction has been failed! '));
                 }
-            }
-            catch(\Exception $e)
-            {
+            } catch (\Exception $e) {
                 return redirect()->route('invoice.link.copy', Crypt::encrypt($invoice->id))->with('error', __('Invoice not found!'));
             }
         }
