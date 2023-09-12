@@ -9,17 +9,22 @@ use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
 use App\Models\JoiningLetter;
 use App\Models\NOC;
-use App\Models\Plan;
 use App\Models\User;
+use App\Models\UserCompany;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Models\Utility;
 use App\Models\ConsultantCompanies;
 use Carbon\Carbon;
-
+use App\Models\Order;
+use App\Models\Consultant_companies;
+use App\Models\Plan;
 use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+
 
 class ConsultantController extends Controller
 {
@@ -515,4 +520,13 @@ class ConsultantController extends Controller
         ]);
 
     }
+
+    public function get_company_details(Request $request,$id){
+
+        $user=User::where('id',$id)->where('type','company')->first();
+        return view('consultants.view',compact('user'));
+
+    }
+
+
 }
