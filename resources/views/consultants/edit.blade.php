@@ -26,7 +26,8 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    {{Form::label('lastname',__('Last Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{Form::label('lastname',__('Last Name'),['class'=>'form-label']) }}
+                    <span style='color:red;'>*</span>
                     <input type="text" class="form-control" value="{{$user->lname}}"
                      id="lname" name="lname" placeholder="{{ __('Enter Last Name') }}" autocomplete="off" required>
                 </div>
@@ -125,7 +126,8 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <input class="form-control" name="phone" type="number" id="phone" maxlength="16"
                          placeholder="+91 111 111 1111" value='{{$user->phone}}' oninput="numeric(this)" required>
@@ -170,7 +172,9 @@
 
     <div class="modal-footer">
         <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="edit_consultant">{{__('Update')}}</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="edit_consultant">
+            {{__('Update')}}
+        </button>
     </div>
 
 {{Form::close()}}

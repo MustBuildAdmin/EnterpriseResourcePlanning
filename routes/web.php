@@ -4207,6 +4207,26 @@ Route::get('consultant-scott-search', 'ConsultantController@scott_search')
         ]
     );
 
+    Route::any('consultant-seach_result', 'ConsultantController@seach_result')
+    ->name('consultant.seach_result')->middleware(
+        [
+            'auth',
+            'XSS',
+            'revalidate',
+        ]
+    );
+
+    Route::any('invite_consultant', 'ConsultantController@invite_consultant')
+    ->name('consultant.invite_consultant')->middleware(
+        [
+            'auth',
+            'XSS',
+            'revalidate',
+        ]
+    );
+
+    
+
 Route::any('consultant-scott-result', 'ConsultantController@scott_result')
 ->name('consultant.scott-result')->middleware(
     [
@@ -4224,6 +4244,17 @@ Route::get('get_company_details/{id}', 'ConsultantController@get_company_details
         'revalidate',
     ]
 );
+
+Route::any('invitation_status', 'ConsultantController@store_invitation_status')
+->name('consultant.invitation_status')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+
 
 
 

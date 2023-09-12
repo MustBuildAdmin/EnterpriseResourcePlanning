@@ -50,7 +50,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    {{Form::label('email',__('Email Address'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                    {{Form::label('email',__('Email Address'),['class'=>'form-label'])}}
+                    <span style='color:red;'>*</span>
                     {{Form::text('email',null,array('class'=>'form-control','id'=>'email',
                     'placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
                     <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
@@ -122,7 +123,8 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                          <input type="text" name="phone" class="form-control" data-mask="(00) 0000-0000"
                           data-mask-visible="true" placeholder="(00) 0000-0000" id="phone"

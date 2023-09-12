@@ -29,23 +29,22 @@
   --tblr-avatar-size:6.2rem;
 }
 
-</style>
-<style>
-    html,
-    body {
-      height: 100%;
-      padding: 0px;
-      margin: 0px;
-      overflow: scroll;
-    }
-    .ts-dropdown{
-        z-index: 2000;
-    }
+html,
+body {
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+	overflow: scroll;
+}
+.ts-dropdown{
+	z-index: 2000;
+}
 
-    .user-card-dropdown::after{
-      display: none;
-    }
-  </style>
+.user-card-dropdown::after{
+	display: none;
+}
+</style>
+
 @php
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
 @endphp
@@ -142,45 +141,22 @@
 				</div>
 			 </div>
 			 <div class="modal-footer">
-				<button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Create a Member</button>
+				<button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{__('Create a Member')}}</button>
 			 </div>
 		  </div>
 	   </div>
 	</div>
-	<div class="modal modal-blur fade" id="invite-consultant" tabindex="-1" style="display: none;" aria-hidden="true">
-	   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-		  <div class="modal-content">
-			 <div class="modal-header">
-				<h5 class="modal-title">Invite a Consultant</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			 </div>
-			 <div class="modal-body">
-				<div class="mb-3">
-				   <div class="form-label" placeholder="">Search a Consultant</div>
-				   <select type="text" class="form-select" id="selectconsultant" placeholder="Enter the Consultant Name" value="" multiple>
-					<option value="">Select Status</option>
-					  <option value="AL" >Alabama</option>
-					  <option value="Ak" >Alabama</option>
-				   </select>
-				</div>
-			 </div>
-			 <div class="modal-footer">
-				<button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Invite Member</button>
-			 </div>
-		  </div>
-	   </div>
-	</div>
+	
 	<div class="modal modal-blur fade" id="info-consultant" tabindex="-1" style="display: none;" aria-hidden="true">
 	   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 		  <div class="modal-content">
 			 <div class="modal-header">
-				<h5 class="modal-title">Information about Creation of Consultant</h5>
+				<h5 class="modal-title">{{__('Information about Creation of Consultant')}}</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			 </div>
 			 <div class="modal-body">
-				<h3>Creation of Consultant</h3>
+				<h3>{{__('Creation of Consultant')}}</h3>
 				<p>As per  <b>Create of Consultant</b> ,we are creating them globally but the invite payment is done only for your companies access over the project which you provide to them with your knowledge and we are not sharing any kind of other information to them about the projects in secert or in public or in mediuim of transfer.</p>
 				<hr/>
 				<h3>Invite a existing Consultant</h3>
@@ -194,7 +170,7 @@
 	</div>
 	<div class="card mt-5 p-4">
 	   <div class="card-header">
-		  <h3>Consultants of the Organisation</h3>
+		  <h3>{{__('Consultants of the Organisation')}}</h3>
 		  <div class="card-actions w-50">
 			 <div class="row">
 				<div class="col-5">
@@ -217,18 +193,24 @@
 				   </div>
 				</div>
 				<div class="col-3">
-					<a href="#" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#invite-consultant">
-					Invite a Consultant
+					<a class="btn btn-primary" data-bs-toggle="modal"  data-size="lg"
+						data-url="{{ route('consultant.invite_consultant') }}"
+						data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Invite Consultant')}}"
+						data-bs-original-title="{{__('Invite Consultant')}}">
+					{{__('Invite a Consultant')}}
 					</a>
 				 </div>
 				 <div class="col-3">
-					<a  class="btn btn-primary w-100" data-bs-toggle="modal"  data-size="lg" data-url="{{ route('consultants.create') }}"
-					data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Consultant')}}">
-					Create a Consultant
+					<a  class="btn btn-primary w-100" data-bs-toggle="modal"
+					data-size="lg" data-url="{{ route('consultants.create') }}"
+					data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Consultant')}}"
+					data-bs-original-title="{{__('Create a Consultant')}}">
+					{{__('Create a Consultant')}}
 					</a>
 				 </div>
 				<div class="col-1 mt-1">
-				   <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information" data-bs-toggle="modal" data-bs-target="#info-consultant">
+				   <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information" data-bs-toggle="modal"
+				    data-bs-target="#info-consultant">
 					  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 						 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 						 <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z"></path>
@@ -241,13 +223,16 @@
 		  </div>
 	   </div>
 	   <div class="empty">
-		  <p class="empty-title">Invite Consultant</p>
+		  <p class="empty-title"> {{__('Invite a Consultant')}}</p>
 		  <p class="empty-subtitle text-secondary">
 			 No Consultant are available for the project,please click below to invite consultant
 		  </p>
 		  <div class="empty-action">
-			 <a href="./." class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#invite-consultant">
-			 Invite a Consultant
+			 <a class="btn btn-primary" data-bs-toggle="modal"  data-size="lg"
+			  data-url="{{ route('consultant.invite_consultant') }}"
+			  data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Invite Consultant')}}"
+			  data-bs-original-title="{{__('Invite Consultant')}}">
+			 {{__('Invite a Consultant')}}
 			 </a>
 		  </div>
 	   </div>
@@ -262,7 +247,8 @@
 					@php $color_co =Utility::rndRGBColorCode(); @endphp 
 			@endif
 				   <div class="dropdown">
-					  <a class="dropdown-toggle user-card-dropdown text-secondary" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <a class="dropdown-toggle user-card-dropdown text-secondary" href="#" data-bs-toggle="dropdown"
+					   aria-haspopup="true" aria-expanded="false">
 						 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 							<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 							<path d="M4 6l16 0"></path>
@@ -271,10 +257,13 @@
 						 </svg>
 					  </a>
 					  <div class="dropdown-menu dropdown-menu-end">
-						 <a class="dropdown-item active" href="#" data-size="lg" data-url="{{ route('consultants.edit.new',[$user->id,$color_co]) }}"
-							data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit Consultant')}}">{{__('Edit')}}</a>
+						 <a class="dropdown-item active" href="#" data-size="lg"
+						  data-url="{{ route('consultants.edit.new',[$user->id,$color_co]) }}"
+						  data-ajax-popup="true" class="dropdown-item"
+						  data-bs-original-title="{{__('Edit Consultant')}}">{{__('Edit')}}</a>
 						 <a data-url="{{route('consultants.reset',\Crypt::encrypt($user->id))}}"
-							data-ajax-popup="true" data-size="md" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}">{{__('Reset Password')}}</a>
+							data-ajax-popup="true" data-size="md" class="dropdown-item"
+							data-bs-original-title="{{__('Reset Password')}}">{{__('Reset Password')}}</a>
 						
 					  </div>
 				   </div>
@@ -349,38 +338,12 @@
  </div>
  </div>
 @include('new_layouts.footer')
-<script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
 
 <script>
-('.money').mask("#,##0.00", {reverse: true});
-document.addEventListener("DOMContentLoaded", function () {
-	var el;
-	
-	window.TomSelect && (new TomSelect(el = document.getElementById('selectconsultant'), {
-					copyClassesToDropdown: false,            plugins: ['remove_button'],
-		dropdownParent: 'body',
-		controlInput: '<input>',
-		render:{
-			item: function(data,escape) {
-				console.log("data",data);
-				if( data.customProperties ){
-					return '<div><span class="dropdown-item-indicator">'
-						+ data.customProperties + '</span>' + escape(data.text) + '</div>';
-				}
-				return '<div>' + escape(data.text) + '</div>';
-			},
-			option: function(data,escape){
-				console.log("escape",data);
-				if( data.customProperties ){
-					return '<div><span class="dropdown-item-indicator">'
-						+ data.customProperties + '</span>' + escape(data.text) + '</div>';
-				}
-				return '<div>' + escape(data.text) + '</div>';
-			},
-		},
-	}));
-});
+
+
 
 function copyToClipboard(element) {
   var $temp = $("<input>");
