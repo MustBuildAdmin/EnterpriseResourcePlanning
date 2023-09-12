@@ -266,7 +266,7 @@
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Summary Status</label>
                                                                         <select type="text"
-                                                                        class="form-selectmain_task_status"
+                                                                        class="form-select main_task_status"
                                                                         placeholder="Task Status"
                                                                         id="main_task-status" value="">
                                                                             <option value="">Select Status</option>
