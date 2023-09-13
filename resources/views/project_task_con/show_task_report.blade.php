@@ -46,7 +46,8 @@
                     ->count();
                 
                 $remaining_working_days = Utility::remaining_duration_calculator($task->end_date, $task->project_id);
-                $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days - 1 : 0; // include the last day
+                $remaining_working_days = $remaining_working_days != 0 ?
+                    $remaining_working_days - 1 : 0; // include the last day
                 
                 ############### Remaining days ##################
                 
@@ -80,7 +81,8 @@
                     @if (Session::get('current_revision_freeze') == 1 &&
                             Session::get('project_instance') != Session::get('latest_project_instance') &&
                             $checkLatestFreezeStatus == 1)
-                        <a href="{{ route('task_particular', ['task_id' => $task->main_id, 'get_date' => $get_end_date]) }}"
+                        <a href="{{ route('task_particular',
+                        ['task_id' => $task->main_id, 'get_date' => $get_end_date]) }}"
                             style="text-decoration: none;">
                             {{ $task->id }}
                         </a>
@@ -166,7 +168,9 @@
                                 @if ($user_db->avatar)
                                     <a href="#" class="avatar rounded-circle avatar-sm">
                                         <img data-original-title="{{ $user_db != null ? $user_db->name : '' }}"
-                                            @if ($user_db->avatar) src="{{ asset('/storage/uploads/avatar/' . $user_db->avatar) }}"
+                                            alt="rooms of the house."
+                                            @if ($user_db->avatar)
+                                            src="{{ asset('/storage/uploads/avatar/' . $user_db->avatar) }}"
                                         @else
                                             src="{{ asset('/storage/uploads/avatar/avatar.png') }}" @endif
                                             title="{{ $user_db != null ? $user_db->name : '' }}" class="hweb">

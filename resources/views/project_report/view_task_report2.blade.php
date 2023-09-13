@@ -32,7 +32,8 @@
                                                             </a>
                                                         </div>
                                                         <div class="col-12">
-                                                            <a href="{{ route('send_report_con') }}" class="btn btn-primary w-100">
+                                                            <a href="{{ route('send_report_con') }}"
+                                                            class="btn btn-primary w-100">
                                                                 Download as PDF
                                                             </a>
                                                         </div>
@@ -62,7 +63,7 @@
                                                                     Date</label>
                                                                 <div class="input-icon">
                                                                     <span
-                                                                        class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                                        class="input-icon-addon">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="icon" width="24" height="24"
                                                                             viewBox="0 0 24 24" stroke-width="2"
@@ -72,7 +73,9 @@
                                                                             <path stroke="none" d="M0 0h24v24H0z"
                                                                                 fill="none" />
                                                                             <path
-                                                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2
+                                                                                2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2
+                                                                                -2v-12z" />
                                                                             <path d="M16 3v4" />
                                                                             <path d="M8 3v4" />
                                                                             <path d="M4 11h16" />
@@ -90,7 +93,7 @@
                                                                     Date</label>
                                                                 <div class="input-icon">
                                                                     <span
-                                                                        class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                                        class="input-icon-addon">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             class="icon" width="24" height="24"
                                                                             viewBox="0 0 24 24" stroke-width="2"
@@ -100,7 +103,9 @@
                                                                             <path stroke="none" d="M0 0h24v24H0z"
                                                                                 fill="none" />
                                                                             <path
-                                                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0
+                                                                                1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0
+                                                                                1 -2 -2v-12z" />
                                                                             <path d="M16 3v4" />
                                                                             <path d="M8 3v4" />
                                                                             <path d="M4 11h16" />
