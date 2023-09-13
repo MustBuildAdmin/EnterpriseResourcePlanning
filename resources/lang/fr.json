@@ -2690,5 +2690,13 @@
   "Drawing References (if any)" : "Références de dessin (le cas échéant)",
   "S.No" : "S. Non",
   "Remarks/ Notes" : "Remarques/ Remarques",
-  "Construction Management System": "Système de gestion de la construction"
+  "Construction Management System": "Système de gestion de la construction",
+  "Consultants of the Organisation":"Consultants de l'Organisation",
+  "Invite a Consultant":"Inviter un consultant",
+  "No Consultant are available for the project,please click below to invite consultant":"Aucun consultant n'est disponible pour le projet, veuillez cliquer ci-dessous pour inviter un consultant",
+  "Create a Consultant":"Créer un consultant",
+  "Information about Creation of Consultant":"Informations sur la création de consultant",
+  "Creation of Consultant":"Création de consultant",
+  "Invite a existing Consultant":"Inviter un consultant existant",
+
 }
