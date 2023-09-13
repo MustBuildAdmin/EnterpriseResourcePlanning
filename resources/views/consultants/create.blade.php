@@ -170,7 +170,8 @@
 
 <div class="modal-footer">
     <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
-    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="create_consultant">{{__('Create')}}</button>
+    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+     id="create_consultant">{{__('Create')}}</button>
 </div>
 
 

@@ -190,7 +190,7 @@ class ConsultantController extends Controller
             'requested_date'=>$requested_date,
             'status'=>'requested'
         ]);
-        $inviteUrl=url('').'/company-invitation-consultant/'.$createConnection->id;
+        $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
         $userArr = [
             'invite_link' => $inviteUrl,
             'user_name' => \Auth::user()->name,
@@ -298,7 +298,7 @@ class ConsultantController extends Controller
             'requested_date'=>$requested_date,
             'status'=>'requested'
         ]);
-        $inviteUrl=url('').'/company-invitation-consultant/'.$createConnection->id;
+        $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
         $userArr = [
             'invite_link' => $inviteUrl,
             'user_name' => \Auth::user()->name,
@@ -634,7 +634,7 @@ class ConsultantController extends Controller
                     'requested_date'=>$requested_date,
                     'status'=>'requested'
                 ]);
-                $inviteUrl=url('').'/company-invitation-consultant/'.$createConnection->id;
+                $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
                 $userArr = [
                     'invite_link' => $inviteUrl,
                     'user_name' => \Auth::user()->name,

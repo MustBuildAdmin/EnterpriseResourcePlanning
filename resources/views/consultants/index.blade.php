@@ -122,7 +122,8 @@ body {
 					  <div class="col-sm-6 col-md-6">
 						 <div class="mb-3">
 							<label class="form-label">Mobile Number</label>
-							<input type="text" name="input-mask" class="form-control" data-mask="(00) 0000-0000" data-mask-visible="true" placeholder="(00) 0000-0000"autocomplete="off"/>
+							<input type="text" name="input-mask" class="form-control" data-mask="(00) 0000-0000" data-mask-visible="true"
+							 placeholder="(00) 0000-0000"autocomplete="off"/>
 						 </div>
 					  </div>
 					  <div class="col-sm-6 col-md-6">
@@ -157,13 +158,25 @@ body {
 			 </div>
 			 <div class="modal-body">
 				<h3>{{__('Creation of Consultant')}}</h3>
-				<p>As per  <b>Create of Consultant</b> ,we are creating them globally but the invite payment is done only for your companies access over the project which you provide to them with your knowledge and we are not sharing any kind of other information to them about the projects in secert or in public or in mediuim of transfer.</p>
+					<p>
+					{{__('As per <b>Create of Consultant</b> ,we are creating them
+				         globally but the invite payment is done only for your companies access over
+				         the project which you provide to them with your knowledge and we are not
+				         sharing any kind of other information to them about the projects in secert
+				         or in public or in mediuim of transfer.')}}
+					</p>
 				<hr/>
-				<h3>Invite a existing Consultant</h3>
-				<p>As per the <b>Inviting exiting Consultant</b> which is already in the platform gloabally invite payment done only for your companies access over the project which you provide to them with your knowledge and we are not sharing any kind of other information to them about the projects in secert or in public or in mediuim of transfer.</p>
+				<h3>{{__('Invite a existing Consultant')}}</h3>
+				<p>
+					{{__('As per the <b>Inviting exiting Consultant</b> which is already in the
+				          platform gloabally invite payment done only for your companies access over the
+				          project which you provide to them with your knowledge and we are not sharing
+				          any kind of other information to them about the projects in secert or in
+				          public or in mediuim of transfer.')}}
+				</p>
 			 </div>
 			 <div class="modal-footer">
-				<button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn" data-bs-dismiss="modal">{{__('Close')}}</button>
 			 </div>
 		  </div>
 	   </div>
@@ -184,7 +197,9 @@ body {
 								}}
 						 <div class="col-auto">
 							<button   type="submit"  class="btn btn-icon" aria-label="Button">
-							   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+							    viewBox="0 0 24 24" stroke-width="2"
+							    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 								  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 								  <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
 								  <path d="M21 21l-6 -6"></path>
@@ -215,9 +230,15 @@ body {
 				<div class="col-1 mt-1">
 				   <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information" data-bs-toggle="modal"
 				    data-bs-target="#info-consultant">
-					  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+					  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon"
+					   width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+					    fill="none" stroke-linecap="round" stroke-linejoin="round">
 						 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-						 <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z"></path>
+						 <path d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555
+						  -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225
+						   0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33
+						    2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
+						 </path>
 						 <path d="M12 8v4"></path>
 						 <path d="M12 16h.01"></path>
 					  </svg>
@@ -229,7 +250,7 @@ body {
 	   <div class="empty">
 		  <p class="empty-title"> {{__('Invite a Consultant')}}</p>
 		  <p class="empty-subtitle text-secondary">
-			 No Consultant are available for the project,please click below to invite consultant
+			{{__('No Consultant are available for the project,please click below to invite consultant')}}
 		  </p>
 		  <div class="empty-action">
 			 <a class="btn btn-primary" data-bs-toggle="modal"  data-size="lg"
@@ -253,7 +274,9 @@ body {
 				   <div class="dropdown">
 					  <a class="dropdown-toggle user-card-dropdown text-secondary" href="#" data-bs-toggle="dropdown"
 					   aria-haspopup="true" aria-expanded="false">
-						 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+						 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2"
+						  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+						   fill="none" stroke-linecap="round" stroke-linejoin="round">
 							<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 							<path d="M4 6l16 0"></path>
 							<path d="M4 12l16 0"></path>
