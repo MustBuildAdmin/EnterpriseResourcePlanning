@@ -206,7 +206,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#planning" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#quality" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -243,6 +243,44 @@
                             </div>
                         </div>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#contracts" data-bs-toggle="dropdown"
+                            data-bs-auto-close="false" role="button" aria-expanded="false">
+                            <span class=" d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-chart-area-line" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M4 19l4 -6l4 2l4 -5l4 4l0 5l-16 0"></path>
+                                    <path d="M4 12l3 -4l4 2l5 -6l4 4"></path>
+                                </svg></span>
+                            <span class="nav-link-title">{{ __('Contracts') }}</span></a>
+
+                        <div class="dropdown-menu">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    <ul class="navbar-nav pt-lg-3">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#tender"
+                                                data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                                                aria-expanded="false">{{__('Tender')}}</a>
+                                               <div class="dropdown-menu">
+                                                <div class="dropdown-menu-columns">
+                                                    <div class="dropdown-menu-column">
+                                                        <a    class="dropdown-item"
+                                                        href="{{route('contract.boq')}}">{{__('BOQ')}}<span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>  </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
 
 
                     <li class="nav-item">
