@@ -4898,6 +4898,9 @@ Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_detail
 
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report');
 Route::any('view_task_revision', 'ProjectTaskController@revsion_task_list')->name('project_report.revsion_task_list');
+Route::any('report_task_autocomplete', 'ProjectTaskController@report_task_autocomplete')
+->name('report_task_autocomplete');
+Route::any('show_task_report', 'ProjectTaskController@show_task_report')->name('show_task_report');
 
 Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con');
 Route::any('download_report', 'ProjectReportController@download_report')->name('download_report');
