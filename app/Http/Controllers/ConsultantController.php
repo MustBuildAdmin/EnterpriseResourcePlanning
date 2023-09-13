@@ -647,7 +647,7 @@ class ConsultantController extends Controller
             }
 
                 return redirect()->route('consultants.index')
-                             ->with('error', __('Consultant Invitation Sent Successfully.'));
+                             ->with('success', __('Consultant Invitation Sent Successfully.'));
    
     
         } catch (Exception $e) {

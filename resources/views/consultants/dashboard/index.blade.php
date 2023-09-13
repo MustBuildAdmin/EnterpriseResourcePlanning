@@ -77,7 +77,7 @@
 								
 									<a href="#!" data-size="lg" data-url="{{ route('consultant.get_company_details',[$user->id]) }}"
 										 data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('View Company details')}}">
-										 <i class="ti ti-pencil"></i>
+										 <i class="ti ti-eye"></i>
 										 <span>{{__('view')}}</span>
 										</a>
 									
