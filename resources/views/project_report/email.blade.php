@@ -209,7 +209,7 @@ background-color: #cfcfcf;
         <td>{{$value['duration']}}</td>
         <td>{{$value['percentage']}}</td>
         <td>{{$value['progress_updated_date']}}</td>
-        <td>{{$value['description']}}</td>
+        <td>{!! $value['description'] !!}</td>
         <td>{{$value['user']}}</td>
         <td>{{$value['email']}}</td>
       </tr>
