@@ -79,6 +79,10 @@ $remaing_percenatge=round(100-$current_percentage);
 {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"> --}}
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0"/>
 <style>
+body{
+  font-family: 'Times New Roman', Times, serif;
+}
+
 .bg-warning {
     background-color: #ffc107!important;
 }
@@ -176,7 +180,7 @@ background-color: #cfcfcf;
       </tr>
      @empty
       <tr>
-        <td colspan="10" style='text-align: center;'>No Record</td>
+        <td colspan="10" style='text-align: center;'>No Tasks are Avialable to see</td>
       </tr>
      @endforelse
 
@@ -199,7 +203,7 @@ background-color: #cfcfcf;
         <th scope="col" style="font-size: 14px;">Progress Updated Date</th>
         <th scope="col" style="font-size: 14px;">Description</th>
         <th scope="col" style="font-size: 14px;">User Name</th>
-        <th scope="col" style="font-size: 14px;">user Email</th>
+        <th scope="col" style="font-size: 14px;">User Email</th>
       </tr>
     </thead>
     <tbody>
@@ -217,7 +221,7 @@ background-color: #cfcfcf;
       </tr>
      @empty
       <tr>
-        <td colspan="10" style='text-align: center;'>No Record</td>
+        <td colspan="10" style='text-align: center;'>No Tasks are Avialable to see</td>
       </tr>
      @endforelse
 
