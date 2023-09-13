@@ -133,12 +133,14 @@ h5.sm {
 </div>
 
 <h3 style="
+  font-family: 'Times New Roman', Times, serif;
     text-align: center;
     padding: 2px 2px;
     ">{{$project->project_name}} - {{date('Y-m-d h:i A')}}</h3>
 
 
 <h3 style="
+  font-family: 'Times New Roman', Times, serif;
 text-align: center;
 padding: 2px 2px;
 background-color: #cfcfcf;
@@ -188,6 +190,7 @@ background-color: #cfcfcf;
   </table>
   <div class="page-break"></div>
   <h3 style="
+    font-family: 'Times New Roman', Times, serif;
 text-align: center;
 padding: 2px 2px;
 background-color: #cfcfcf;
