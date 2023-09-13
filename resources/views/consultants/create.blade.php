@@ -176,6 +176,8 @@
 
 
 {{Form::close()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
+ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC" crossorigin="anonymous"></script>
 <script>
 $(document).on("change", '#country', function () {
     var name=$(this).val();

@@ -159,7 +159,7 @@ body {
 			 <div class="modal-body">
 				<h3>{{__('Creation of Consultant')}}</h3>
 					<p>
-					{{__('As per <b>Create of Consultant</b> ,we are creating them
+					{{__('As per Create of Consultant ,we are creating them
 				         globally but the invite payment is done only for your companies access over
 				         the project which you provide to them with your knowledge and we are not
 				         sharing any kind of other information to them about the projects in secert
@@ -168,7 +168,7 @@ body {
 				<hr/>
 				<h3>{{__('Invite a existing Consultant')}}</h3>
 				<p>
-					{{__('As per the <b>Inviting exiting Consultant</b> which is already in the
+					{{__('As per the Inviting exiting Consultant which is already in the
 				          platform gloabally invite payment done only for your companies access over the
 				          project which you provide to them with your knowledge and we are not sharing
 				          any kind of other information to them about the projects in secert or in
@@ -266,10 +266,10 @@ body {
 		  <div class="col-md-6 col-lg-3">
 			 <div class="card">
 				<div class="ms-auto lh-1  p-4">
-					@if ($user->color_code!=null || $user->color_code!='') 
+					@if ($user->color_code!=null || $user->color_code!='')
 					@php $color_co=$user->color_code; @endphp
 			@else 
-					@php $color_co =Utility::rndRGBColorCode(); @endphp 
+					@php $color_co =Utility::rndRGBColorCode(); @endphp
 			@endif
 				   <div class="dropdown">
 					  <a class="dropdown-toggle user-card-dropdown text-secondary" href="#" data-bs-toggle="dropdown"
@@ -329,9 +329,13 @@ body {
 				   <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
 					class="card-btn" onclick="copyToClipboardphone(this)">
 					  <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-					  <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+					  <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
+					   viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+					    stroke-linecap="round" stroke-linejoin="round">
 						 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-						 <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
+						 <path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1
+						  -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
+						</path>
 					  </svg>
 					  Call
 				   </a>
@@ -344,7 +348,7 @@ body {
 			  <div class="empty">
 				<div class="empty-img">
 				  <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}"
-				  height="128" alt="">
+				    height="128" alt="">
 				</div>
 				<p class="empty-title">
 				  {{__('No Consultants Found')}}
@@ -366,7 +370,7 @@ body {
  </div>
 @include('new_layouts.footer')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+
 
 <script>
 

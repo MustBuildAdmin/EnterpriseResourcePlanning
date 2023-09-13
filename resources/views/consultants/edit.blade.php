@@ -129,8 +129,9 @@
                     {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <input class="form-control" name="phone" type="number" id="phone" maxlength="16"
-                         placeholder="+91 111 111 1111" value='{{$user->phone}}' oninput="numeric(this)" required>
+                         <input type="text" name="phone" class="form-control" data-mask="(00) 0000-0000"
+                          data-mask-visible="true" placeholder="(00) 0000-0000" id="phone"
+                          maxlength="16" autocomplete="off" oninput="numeric(this)"  value='{{$user->phone}}'/>
                         <span class="invalid-name edit_mobile_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
@@ -178,6 +179,8 @@
     </div>
 
 {{Form::close()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
+ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC" crossorigin="anonymous"></script>
 <script>
      $(document).on("change", '#country', function () {
         var name=$(this).val();

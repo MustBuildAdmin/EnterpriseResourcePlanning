@@ -183,7 +183,7 @@ class ConsultantController extends Controller
         ExperienceCertificate::defaultExpCertificatRegister($user->id);
         JoiningLetter::defaultJoiningLetterRegister($user->id);
         NOC::defaultNocCertificateRegister($user->id);
-        $requested_date = date('Y-m-d H:i:s');
+        $requested_date = Config::get('constants.TIMESTUMP');
         $createConnection = ConsultantCompanies::create([
             "company_id"=>\Auth::user()->creatorId(),
             'consultant_id'=>$user->id,
@@ -291,7 +291,7 @@ class ConsultantController extends Controller
 
         }
         $setings = Utility::settings();
-        $requested_date = date('Y-m-d H:i:s');
+        $requested_date = Config::get('constants.TIMESTUMP');
         $createConnection = ConsultantCompanies::create([
             "company_id"=>\Auth::user()->creatorId(),
             'consultant_id'=>$user->id,
@@ -627,7 +627,7 @@ class ConsultantController extends Controller
 
             foreach($consulantid as $cid){
     
-                $requested_date = date('Y-m-d H:i:s');
+                $requested_date = Config::get('constants.TIMESTUMP');
                 $createConnection = ConsultantCompanies::create([
                     "company_id"=>\Auth::user()->creatorId(),
                     'consultant_id'=>$cid,
