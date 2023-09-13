@@ -1,418 +1,311 @@
 @include('new_layouts.header')
+{{-- @extends('layouts.admin') --}}
+<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.css') }}">
 
-@php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
-@push('css-page')
+<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   
-    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
-    <style>
-  
-        .dataTables_wrapper .dataTables_paginate {
-            float: right;
-            text-align: right;
-            padding-top: 0.25em;
-        }
-        
-        .table-responsive .bg-primary {
-            background: #206bc4 !important;
-        }
-        
-        div.dt-buttons .dt-button {
-            background-color: #ffa21d;
-            color: #fff;
-            width: 29px;
-            height: 28px;
-            border-radius: 4px;
-            color: #fff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        div.dt-buttons .dt-button:hover {
-            background-color: #ffa21d;
-            color: #fff;
-            width: 29px;
-            height: 28px;
-            border-radius: 4px;
-            color: #fff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        h3, .h3 {
-            font-size: 1rem !important;
-        }
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
 
-        .table-responsive {
-            max-width: none !important;
-        }
-    </style>
-@include('construction_project.side-menu')
-
-
-<div class="row mainrow">
-   <div class="col-md-6">
-     <h2>Task Report</h2>
-   </div>
-   <div class="col-md-6">
-
-      <div class="float-end">
-            <div class="float-right ">
-              
-            </div>
-      </div>
-
-   </div>
-</div>
-
-<div class="page-wrapper dashboard">
-
-    @if(Auth::user()->type == 'company')
-    <div class="row">
-    <div class="col-sm-12">
-        <div class="mt-2 " >
+<div class="page-wrapper">
+    @include('construction_project.side-menu')
+    <div class="container-fluid" id="taskboard_view">
+        <div class="p-4">
             <div class="card">
-                <div class="card-body">
-                    {{ Form::open(['route' => ['project_report.view_task_report',$user_project_id], 'method' => 'GET', 'id' => 'project_report_submit']) }}
-                        <div class="row d-flex align-items-center">
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
-                            <div class="btn-box">
-                                {{ Form::label('project', __('Project'),['class'=>'form-label'])}}
-                                <select class="select form-select" name="project_list" id="project_list" >
-                                    {{-- <option value="" class="">{{ __('Select Project') }}</option> --}}
-                                    @foreach ($project_title as $title)
-                                        @if(Session::get('project_id')==$title->id)
-                                            <option value="{{ $title->id }}" {{Session::has('project_id') && Session::get('project_id')==$title->id?'selected':''}}>{{ $title->project_name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3> Task Reports</h3>
                         </div>
-                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
-                            <div class="btn-box">
-                                {{ Form::label('users', __('Users'),['class'=>'form-label'])}}
-                                <select class="select form-select" name="all_users" id="all_users">
-                                @forelse ($get_user_data as $user_data)
-                                    <option value="{{$user_data->id}}" {{isset($_GET['all_users']) && $_GET['all_users']==$user_data->id?'selected':''}}>{{$user_data->name}}</option>
-                                @empty
-                                @endforelse
-                                </select>
-                               
-                            </div>
-                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h4 class="card-title">Task Lists Information</h4>
+                                                <div class="card-actions">
+                                                    <div class="row">
+                                                        <div class="col-4" style="display: none;">
+                                                            <a href="#" class="btn btn-lime w-100">
+                                                                Download as Excel
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <a href="{{ route('send_report_con') }}"
+                                                            class="btn btn-primary w-100">
+                                                                Download as PDF
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-4" style="display: none;">
+                                                            <a href="#" class="btn btn-purple w-100">
+                                                                Email to Me
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                        {{-- <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12 mr-2 mb-0">
-                            <div class="btn-box">
-                                {{ Form::label('task', __('Task'),['class'=>'form-label'])}}
-                                <select class="select form-select" name="task_name" id="task_name">
-                                    @forelse ($get_all_user_data as $user)
-                                    <option value="{{$user->id}}" {{isset($_GET['task_name']) && $_GET['task_name']==$user->id?'selected':''}}>{{$user->name}}</option>
-                                @empty
-                                @endforelse
-                                </select>
-                            </div>
-                        </div>
-                      
-                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
-                            <div class="btn-box">
-                                {{ Form::label('priority', __('Priority'),['class'=>'form-label'])}}
-                                {{ Form::select('priority', ['' => 'Select Priority'] + $status, isset($_GET['priority']) ? $_GET['priority'] : '', ['class' => 'form-select']) }}
-                            </div>
-                        </div> --}}
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-2 border-end p-3">
+                                                        <form>
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Search By Task Name or
+                                                                        Id</label>
+                                                                    <input type="text" id="skill_input"
+                                                                        value="{{ request()->get('q') }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 mb-3">
+                                                                <label class="form-label required">Task Planned Start
+                                                                    Date</label>
+                                                                <div class="input-icon">
+                                                                    <span
+                                                                        class="input-icon-addon">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2"
+                                                                            stroke="currentColor" fill="none"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path
+                                                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2
+                                                                                2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2
+                                                                                -2v-12z" />
+                                                                            <path d="M16 3v4" />
+                                                                            <path d="M8 3v4" />
+                                                                            <path d="M4 11h16" />
+                                                                            <path d="M11 15h1" />
+                                                                            <path d="M12 15v3" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <input class="form-control start_date"
+                                                                        placeholder="Select a Start date"
+                                                                        id="start-date"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 mb-3">
+                                                                <label class="form-label required">Task Planned End
+                                                                    Date</label>
+                                                                <div class="input-icon">
+                                                                    <span
+                                                                        class="input-icon-addon">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            class="icon" width="24" height="24"
+                                                                            viewBox="0 0 24 24" stroke-width="2"
+                                                                            stroke="currentColor" fill="none"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <path stroke="none" d="M0 0h24v24H0z"
+                                                                                fill="none" />
+                                                                            <path
+                                                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0
+                                                                                1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0
+                                                                                1 -2 -2v-12z" />
+                                                                            <path d="M16 3v4" />
+                                                                            <path d="M8 3v4" />
+                                                                            <path d="M4 11h16" />
+                                                                            <path d="M11 15h1" />
+                                                                            <path d="M12 15v3" />
+                                                                        </svg>
+                                                                    </span>
+                                                                    <input class="form-control end_date"
+                                                                        placeholder="Select a End date" id="end-date"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Search Assignee</label>
+                                                                    <input type="text" id="user_select"
+                                                                        value="{{ request()->get('selectsearch') }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">Task Status</label>
+                                                                    <select type="text"
+                                                                        class="form-select task_status"
+                                                                        placeholder="Task Status"
+                                                                        id="task-status" value="">
+                                                                        <option value="">Select Status</option>
+                                                                        <option value="3">Pending</option>
+                                                                        <option value="4">Completed</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
 
-                        <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
-                            <div class="btn-box">
-                                {{ Form::label('start_date', __('Start Date'),['class'=>'form-label'])}}
-                                {{ Form::date('start_date', isset($_GET['start_date'])?$_GET['start_date']:'', array('class' => 'form-control month-btn')) }}
-                            </div>
-                        </div>
+                                                            <div class="col-12 mt-4">
+                                                                <div class="mb-3">
+                                                                    <button type="button"
+                                                                        class="btn btn-tabler w-100"
+                                                                        onclick="submit_button()">
+                                                                        Search
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
 
-                        <div class="col-xl-2 col-lg-3 col-md-6 col-sm-12 col-12 mr-2">
-                            <div class="btn-box">
-                                {{ Form::label('end_date', __('End Date'),['class'=>'form-label'])}}
-                                {{ Form::date('end_date', isset($_GET['end_date'])?$_GET['end_date']:'', array('class' => 'form-control month-btn')) }}
+                                                    <div class="col-md-10">
+                                                        <div class="table-responsive card p-4" id="all_task_append">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-auto float-end ms-2 mt-2 btnmaindiv">
-                            <a href="#" class="btn btn-primary"
-                            onclick="document.getElementById('project_report_submit').submit(); return false;"
-                            data-bs-toggle="tooltip"
-                               title="{{__('apply')}}">
-                                <span class="btn-inner--icon"><i class="fas fa-search"></i></span>
-                            </a>
-                            
-                            <a href="{{ route('project_report.index') }}" class="btn btn-info"
-                            data-bs-toggle="tooltip"
-                            data-original-title="{{ __('Reset') }}">
-                                <span class="btn-inner--icon"><i class="ti ti-trash-off"></i></span>
-                            </a>
-                            <a href="{{route('send_report_con')}}"
-                            class="btn btn-success" data-bs-toggle="tooltip" title="{{ __('Report Download') }}">
-                            <span class="btn-inner--icon">{{ __('Report Download') }}</span>
-                          </a>
-                            <a href="{{ url()->previous() }}"
-                              class="btn btn-danger" data-bs-toggle="tooltip" title="{{ __('Back') }}">
-                              <span class="btn-inner--icon"><i class="fa fa-arrow-left"></i></span>
-                            </a>
-                           
                         </div>
                     </div>
-                    {{ Form::close() }}
-                </div>
-                <div>
-              
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endif
-
-<div class="col-xl-12 mt-3">
-  <div class="card table-card">
-      <div class="">
-          <div class="table-responsive">
-              <table class="table" id="example2">
-                  <thead class="">
-                      <tr>
-                          <th>{{__('Task Name')}}</th>
-                          <th>{{__('Planned Start Date')}}</th>
-                          <th>{{__('Planned End Date')}}</th>
-                          {{-- <th>{{__('Actual End Date')}}</th>
-                          <th>{{__('Actual End Date')}}</th> --}}
-                          <th>{{__('Projects Members')}}</th>
-                          <th class="hide_user" style="display: none;">{{__('Projects Members')}}</th>
-                          <th>{{__('Progress')}}</th>
-                        
-                      </tr>
-                  </thead>
-                  <tbody>
-                  @if(isset($projects) && !empty($projects) && count($projects) > 0)
-                      @foreach ($projects as $key => $project)
-                          <tr>
-                              <td>
-                                  <div class="d-flex align-items-center">
-                                      <p class="mb-0"><a  class="name mb-0 h6 text-sm">{{ $project->text }}</a></p>
-                                  </div>
-                              </td>
-                              <td>{{ Utility::getDateFormated($project->start_date) }}</td>
-                              <td>{{ Utility::getDateFormated($project->end_date) }}</td>
-                              <td>
-                                  <div class="avatar-group">
-                                      @if($project->users()->count() > 0)
-                                          @if($users = $project->users())
-                                              @foreach($users as $key => $user)
-                                                  @if($key<3)
-                                                      <a href="#" class="avatar rounded-circle avatar-sm">
-                                                          <img data-original-title="{{(!empty($user)?$user->name:'')}}" @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif title="{{ $user->name }}" class="hweb">
-                                                      </a>
-                                                  @else
-                                                      @break
-                                                  @endif
-                                              @endforeach
-                                          @endif
-                                          @if(count($users) > 3)
-                                              <a href="#" class="avatar rounded-circle avatar-sm">
-                                                  <img  data-original-title="{{(!empty($user)?$user->name:'')}}" @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif class="hweb">
-                                              </a>
-                                          @endif
-                                      @else
-                                          {{ __('-') }}
-                                      @endif
-                                  </div>
-                              </td>
-                              <td class="hide_user" style="display: none;">
-                                @php
-                                  $split_user=array();
-                                @endphp
-                                @if($users = $project->users())
-                                    @foreach ($users as $value)
-                                        @php
-                                            $split_user[]=$value->name;
-                                        @endphp
-                                    @endforeach
-                                    {{ implode(",",$split_user)}}
-                                @endif
-                                  
-                              </td>
-                             
-                              <td class="">
-                                  <h6 class="mb-0 text-success">{{ round($project->progress) }}%</h6>
-                                  @php $color = Utility::getProgressColor(round($project->progress));@endphp
-                                  <div class="progress mb-0"><div class="progress-bar bg-{{ $color }}" style="width: {{ round($project->progress) }}%;"></div>
-                                  </div>
-                                  {{-- <span class="badge bg-{{\App\Models\ProjectTask::$priority_color[$project->priority]}} p-2 px-3 rounded status_badge">{{ __(\App\Models\ProjectTask::$priority[$project->priority]) }}</span> --}}
-                              </td>
-                          
-                          </tr>
-                      @endforeach
-                  @else
-                         
-                  @endif
-
-                  </tbody>
-              </table>
-          </div>
-      </div>
-  </div>
-</div>
 </div>
 
 @include('new_layouts.footer')
 
-<script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+<script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
+<script src="{{ asset('litepicker/litepicker.js') }}"></script>
+<script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 
 <script>
-  $(document).ready(function() {
-  
-  /*--------Project list---------------*/
-  // $('#project_list').on('change', function() {
-      var idCountry = this.value;
-  
-      $.ajax({
-          url: "{{ route('project_report.fetch_user_details2') }}",
-          type: 'POST',
-          data: {
-              country_id: idCountry,
-              "_token": "{{ csrf_token() }}",
-          },
-          dataType: 'json',
-          success: function(result) {
-  
-              // Handle success here
-              $('#all_users').html('<option value="">-- Select Users --</option>');
-  
-              if (result.length != 0) {
-                  $.each(result, function(key, value) {
-                      $("#all_users").append('<option value="' + value
-                          .id + '">' + value.name + '</option>');
-                      $("#user_id").val(value.id);
-                  });
-              } else {
-                  $("#all_users").append('<option value="0" disabled>No Data Found</option>');
-              }
-              $('#task_name').html('<option value="">-- Select Task --</option>');
-  
-          },
-          cache: false
-      }).fail(function(jqXHR, textStatus, error) {
-  
-      });
-  // });
-  
-  
-  
-  /*--------User list---------------*/
-  
-  $('#all_users').on('change', function() {
-      var idState = this.value;
-      var get_id = $("#project_list option:selected").val();
-  
-      $("#task_name").html('');
-      $.ajax({
-          url: "{{route('project_report.fetch_task_details')}}",
-          type: "POST",
-          data: {
-              state_id: idState,
-              get_id: get_id,
-              _token: '{{csrf_token()}}'
-          },
-          dataType: 'json',
-          success: function(res) {
-  
-              $('#task_name').html('<option value="">-- Select Task --</option>');
-              $.each(res, function(key, value) {
-                  $("#task_name").append('<option value="' + value
-                      .id + '">' + value.name + '</option>');
-              });
-          }
-      });
-  });
-  });
-  </script>
-  
-  <script>
-    $(document).ready(function() {
-        $('#example2').DataTable({
-            dom: 'Bfrtip',
-              searching: true,
-              info: true,
-              responsive:true,
-              paging: true,
-              info: true,
-              buttons: [
-                  {
-                      extend: 'excelHtml5',
-                      title: 'Task Report',
-                      titleAttr: 'Excel',
-                      text: '<i class="fa fa-file-excel-o"></i>',
-      
-                      exportOptions: {
-                          modifier: {
-                              order: 'index', // 'current', 'applied','index', 'original'
-                              page: 'all', // 'all', 'current'
-                              search: 'none' // 'none', 'applied', 'removed'
-                          },
-                          columns: [0, 1, 2, 4, 5]
-                      }
-                  },
-                  {
-                      extend: 'pdfHtml5',
-                      title: 'Task Report',
-                      titleAttr: 'PDF',
-                      pagesize: 'A4',
-                      text: '<i class="fa fa-file-pdf-o"></i>',
-                      customize: function(doc) {
-                        // doc.content[1].table.widths =Array(doc.content[1].table.body[0].length + 1).join('*').split(''); 
-                        doc.styles.tableBodyEven.alignment = 'center';
-                        doc.styles.tableBodyEven.noWrap = true;
-                        doc.styles.tableBodyOdd.alignment = 'center';
-                        doc.styles.tableBodyOdd.noWrap = true;
-                        doc.styles.tableHeader.fontSize = 12;  
-                        doc.defaultStyle.fontSize = 12;
-                        doc.defaultStyle.alignment = 'center';
-                        doc.styles.tableHeader.alignment = 'center';
-                        },
-      
-                      exportOptions: {
-                          modifier: {
-                              order: 'index', // 'current', 'applied','index', 'original'
-                              page: 'all', // 'all', 'current'
-                              search: 'none' // 'none', 'applied', 'removed'
-                          },
-                          columns: [0, 1, 2, 4, 5]
-                      }
-                  },
-                  {
-                      extend: 'print',
-                      title: 'Task Report',
-                      titleAttr: 'Print',
-                      text: '<i class="fa fa-print"></i>',
-      
-                      exportOptions: {
-                          modifier: {
-                              order: 'index', // 'current', 'applied','index', 'original'
-                              page: 'all', // 'all', 'current'
-                              search: 'none' // 'none', 'applied', 'removed'
-                          },
-                          columns: [0, 1, 2, 4, 5]
-                      }
-                  },
-                  'colvis'
-              ]
-         
+     $(document).ready(function() {
+        $("#skill_input").tokenInput("{{route('report_task_autocomplete')}}", {
+            propertyToSearch:"text",
+            tokenValue:"id",
+            tokenDelimiter:",",
+            hintText: "Search Task...",
+            noResultsText: "Task not found.",
+            searchingText: "Searching...",
+            deleteText:"&#215;",
+            minChars: 2,
+            tokenLimit: 4,
+            animateDropdown: false,
+            resultsLimit:10,
+            deleteText: "&times;",
+            preventDuplicates: true,
+            theme: "bootstrap"
+        });
+
+        $("#user_select").tokenInput("{{route('user_autocomplete')}}", {
+            propertyToSearch:"name",
+            tokenValue:"id",
+            tokenDelimiter:",",
+            hintText: "Search Users...",
+            noResultsText: "User not found.",
+            searchingText: "Searching...",
+            deleteText:"&#215;",
+            minChars: 2,
+            tokenLimit: 4,
+            animateDropdown: false,
+            resultsLimit:10,
+            deleteText: "&times;",
+            preventDuplicates: true,
+            theme: "bootstrap",
+            queryParam:"selectsearch",
         });
     });
-  </script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.Litepicker && (new Litepicker({
+            element: document.getElementById('start-date'),
+            elementEnd: document.getElementById('end-date'),
+            singleMode: false,
+            allowRepick: true,
+            buttonText: {
+                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+
+                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+            },
+        }));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var el;
+        window.TomSelect && (new TomSelect(el = document.getElementById('task-status'), {
+                        copyClassesToDropdown: false,            plugins: ['remove_button'],
+            dropdownParent: 'body',
+            controlInput: '<input>',
+            render:{
+                item: function(data,escape) {
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">'
+                            + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+                option: function(data,escape){
+                    if( data.customProperties ){
+                        return '<div><span class="dropdown-item-indicator">'
+                            + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                    }
+                    return '<div>' + escape(data.text) + '</div>';
+                },
+            },
+        }));
+    });
+
+    $(function () {
+        alltask();
+    });
+
+    function alltask(start_date,end_date,user_id,status_task,task_id_arr){
+        $("#all_task_append").html("");
+        $.ajax({
+            url : '{{route("show_task_report")}}',
+            type : 'GET',
+            data : {
+                'start_date'  : start_date,
+                'end_date'    : end_date,
+                'user_id'     : user_id,
+                'status_task' : status_task,
+                'task_id_arr' : task_id_arr
+            },
+            cache:true,
+            success : function(data) {
+                if(data['success'] == true){
+                    $("#all_task_append").html(data['all_task']);
+                }
+            },
+            error : function(request,error)
+            {
+                alert("Request: "+JSON.stringify(request));
+            }
+        });
+    }
+
+    function submit_button(){
+        start_date  = $(".start_date").val();
+        end_date    = $(".end_date").val();
+        status_task = $(".task_status").val();
+        task_id     = $('input#skill_input').tokenInput('get');
+        user_id     = $('input#user_select').tokenInput('get');
+
+        var task_id_arr = [];
+        $.each(task_id, function(i, obj){
+            task_id_arr.push(obj.id);
+        });
+
+        var user_id_arr = [];
+        $.each(user_id, function(i, obj){
+            user_id_arr.push(obj.id);
+        });
+
+        alltask(start_date,end_date,user_id_arr,status_task,task_id_arr);
+    }
+
+</script>
