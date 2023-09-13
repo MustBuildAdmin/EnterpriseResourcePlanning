@@ -79,6 +79,10 @@ $remaing_percenatge=round(100-$current_percentage);
 {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"> --}}
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0"/>
 <style>
+body{
+  font-family: 'Times New Roman', Times, serif;
+}
+
 .bg-warning {
     background-color: #ffc107!important;
 }
@@ -125,14 +129,18 @@ h5.sm {
 </style>
 </head>
 <body>
+<div class="">
+</div>
 
 <h3 style="
+  font-family: 'Times New Roman', Times, serif;
     text-align: center;
     padding: 2px 2px;
     ">{{$project->project_name}} - {{date('Y-m-d h:i A')}}</h3>
 
 
 <h3 style="
+  font-family: 'Times New Roman', Times, serif;
 text-align: center;
 padding: 2px 2px;
 background-color: #cfcfcf;
@@ -140,17 +148,17 @@ background-color: #cfcfcf;
 <table class="table">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">Title</th>
-        <th scope="col">Planned Start Date</th>
-        <th scope="col">Planned Finish</th>
-        <th scope="col">Duration</th>
-        <th scope="col">Planned % as of today</th>
-        <th scope="col">Planned Value</th>
-        <th scope="col">Actual Start Date</th>
-        <th scope="col">Actual Finish</th>
-        <th scope="col">Actual Duration</th>
-        <th scope="col">Actual % as of Today</th>
-        <th scope="col">Earned Value</th>
+        <th scope="col" style="font-size: 14px;">Title</th>
+        <th scope="col" style="font-size: 14px;">Planned Start Date</th>
+        <th scope="col" style="font-size: 14px;">Planned Finish</th>
+        <th scope="col" style="font-size: 14px;">Duration</th>
+        <th scope="col" style="font-size: 14px;">Planned % as of today</th>
+        <th scope="col" style="font-size: 14px;">Planned Value</th>
+        <th scope="col" style="font-size: 14px;">Actual Start Date</th>
+        <th scope="col" style="font-size: 14px;">Actual Finish</th>
+        <th scope="col" style="font-size: 14px;">Actual Duration</th>
+        <th scope="col" style="font-size: 14px;">Actual % as of Today</th>
+        <th scope="col" style="font-size: 14px;">Earned Value</th>
       </tr>
     </thead>
     <tbody>
@@ -174,7 +182,7 @@ background-color: #cfcfcf;
       </tr>
      @empty
       <tr>
-        <td colspan="10" style='text-align: center;'>No Record</td>
+        <td colspan="10" style='text-align: center;'>No Tasks are Avialable to see</td>
       </tr>
      @endforelse
 
@@ -182,6 +190,7 @@ background-color: #cfcfcf;
   </table>
   <div class="page-break"></div>
   <h3 style="
+    font-family: 'Times New Roman', Times, serif;
 text-align: center;
 padding: 2px 2px;
 background-color: #cfcfcf;
@@ -189,15 +198,15 @@ background-color: #cfcfcf;
 <table class="table">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">Title</th>
-        <th scope="col">Planned Start Date</th>
-        <th scope="col">Planned Finish</th>
-        <th scope="col">Duration</th>
-        <th scope="col">Percentage</th>
-        <th scope="col">Progress Updated Date</th>
-        <th scope="col">Description</th>
-        <th scope="col">User Name</th>
-        <th scope="col">user Email</th>
+        <th scope="col" style="font-size: 14px;">Title</th>
+        <th scope="col" style="font-size: 14px;">Planned Start Date</th>
+        <th scope="col" style="font-size: 14px;">Planned Finish</th>
+        <th scope="col" style="font-size: 14px;">Duration</th>
+        <th scope="col" style="font-size: 14px;">Percentage</th>
+        <th scope="col" style="font-size: 14px;">Progress Updated Date</th>
+        <th scope="col" style="font-size: 14px;">Description</th>
+        <th scope="col" style="font-size: 14px;">User Name</th>
+        <th scope="col" style="font-size: 14px;">User Email</th>
       </tr>
     </thead>
     <tbody>
@@ -215,7 +224,7 @@ background-color: #cfcfcf;
       </tr>
      @empty
       <tr>
-        <td colspan="10" style='text-align: center;'>No Record</td>
+        <td colspan="10" style='text-align: center;'>No Tasks are Avialable to see</td>
       </tr>
      @endforelse
 
