@@ -188,7 +188,7 @@
                     {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 'placeholder'=>'Zipcode'))}}
                 </div>
-            </div>
+            </div> 
 
             <div class="col-md-12">
                 <div class="form-group shipping_address">
