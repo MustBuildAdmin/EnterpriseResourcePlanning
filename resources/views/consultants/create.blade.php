@@ -19,7 +19,7 @@
                     {{Form::label('name',__('First Name'),['class'=>'form-label']) }}
                     <span style='color:red;'>*</span>
                     {{Form::text('name',null,array('class'=>'form-control','maxlength' => 35,
-                     'placeholder'=>__('Enter User Name'),'required'=>'required'))}}
+                     'placeholder'=>__('Enter First Name'),'required'=>'required'))}}
                     @error('name')
                     <small class="invalid-name" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -31,7 +31,7 @@
                 <div class="form-group">
                     {{Form::label('lname',__('Last Name'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                     {{Form::text('lname',null,array('class'=>'form-control','id'=>'lname',
-                    'placeholder'=>__('Enter User Last Name'),'autocomplete'=>'off','required'=>'required'))}}
+                    'placeholder'=>__('Enter Last Name'),'autocomplete'=>'off','required'=>'required'))}}
                 </div>
             </div>
         </div>
@@ -50,7 +50,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                    {{Form::label('email',__('Email Address'),['class'=>'form-label'])}}
+                    <span style='color:red;'>*</span>
                     {{Form::text('email',null,array('class'=>'form-control','id'=>'email',
                     'placeholder'=>__('Enter User Email'),'autocomplete'=>'off','required'=>'required'))}}
                     <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
@@ -83,7 +84,7 @@
                     <div class="form-icon-user">
                         <select class="form-control country" name="country" id="country"
                          placeholder="Select Country" required>
-                            <option value="">{{ __('Select Country ...') }}</option>
+                            <option value="">{{ __('Select Country') }}</option>
                             @foreach($country as $key => $value)
                                 <option value="{{$value->iso2}}">{{$value->name}}</option>
                             @endforeach
@@ -97,7 +98,7 @@
                     {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <select class="form-control" name="state" id='state' placeholder="Select State" required>
-                            <option value="">{{ __('Select State ...') }}</option>
+                            <option value="">{{ __('Select State') }}</option>
                         </select>
                     </div>
                 </div>
@@ -113,10 +114,21 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('zip',__('Postal Code'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <input class="form-control" name="phone" type="number" id="phone"
-                         maxlength="16" placeholder="+91 111 111 1111"  required>
+                        {{Form::text('zip',null,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
+                    <div class="form-icon-user">
+                         <input type="text" name="phone" class="form-control" data-mask="(00) 0000-0000"
+                          data-mask-visible="true" placeholder="(00) 0000-0000" id="phone"
+                          maxlength="16" autocomplete="off" oninput="numeric(this)"/>
                         <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
@@ -126,19 +138,10 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    <div class="form-icon-user">
-                        {{Form::text('zip',null,array('class'=>'form-control','id'=>'zip','required'=>'required'))}}
-                    </div>
-                </div>
-            </div>
-            <div class="form-group col-md-6">
-                <div class="form-group">
                     {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
                         <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
                          accept="image/*, .png, .jpeg, .jpg">
-                    
                     </div>
                     <span class="show_document_error" style="color:red;"></span>
                 </div>
@@ -150,6 +153,7 @@
                     <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         {{Form::textarea('address',null,array('class'=>'form-control',
+                        'placeholder'=>'Here can be your Address',
                         'rows'=>3,'required'=>'required'))}}
                     </div>
                 </div>
@@ -165,13 +169,16 @@
     </div>
 
 <div class="modal-footer">
-    <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary"  id="create_consultant">
+    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
+    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+     id="create_consultant">{{__('Create a Member')}}</button>
 </div>
 
-{{Form::close()}}
-<script>
 
+{{Form::close()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
+ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC" crossorigin="anonymous"></script>
+<script>
 $(document).on("change", '#country', function () {
     var name=$(this).val();
     var settings = {
@@ -193,6 +200,7 @@ $(document).on("change", '#country', function () {
 </script>
 
 <script>
+
     $(document).ready(function() {
 
         $(document).on('submit', 'form', function() {
@@ -287,6 +295,12 @@ $(document).on("change", '#country', function () {
     function process(input){
         let value = input.value;
         let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
+
+    function numeric(input){
+        let value = input.value;
+        let numbers = value.replace(/[^0-9]/g, "");
         input.value = numbers;
     }
 
