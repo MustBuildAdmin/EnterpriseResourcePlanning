@@ -2713,5 +2713,11 @@
   "Edit Consultant": "編集コンサルタント",
   "View Company": "会社を見る",
   "View Company details": "会社詳細を見る",
-  "Diary": "日記"
+  "Diary": "日記",
+  "Consultant created Successfully! Please Check Your Mail Inbox.":"コンサルタントが正常に作成しました!メールの受信箱を確認してください。",
+  "Consultant successfully updated.":"コンサルタントは正常に更新されました。",
+  "Consultant permission denied.":"コンサルタントの許可が拒否されました。",
+  "Consultant successfully deleted.":"コンサルタントは正常に削除されました。",
+  "Consultants Password successfully updated.":"コンサルタントのパスワードが正常に更新されました。",
+  "Consultant Invitation Sent Successfully.":"コンサルタントへの招待状が正常に送信されました。"
 }

@@ -2719,5 +2719,11 @@
   "ARCHITECT AND ENGNEERS DIRECTIONS (AD & ED) SUMMARY for the project of" : "عن مشروع ملخص اتجاهات المهندسين المعماريين (إعلان / ه)",
   "Initiator Action & Reply" : "عمل البادئ والرد",
   "RAF/RAM" : "سلاح الجو الملكي / ذاكرة الوصول العشوائي",
-  "Construction Management System":"نظام إدارة البناء"
+  "Construction Management System":"نظام إدارة البناء",
+  "Consultant created Successfully! Please Check Your Mail Inbox.":"تم إنشاء المستشار بنجاح! يرجى التحقق من صندوق البريد الوارد الخاص بك.",
+  "Consultant successfully updated.":"تم تحديث المستشار بنجاح.",
+  "Consultant permission denied.":"تم رفض إذن المستشار.",
+  "Consultant successfully deleted.":"تم حذف المستشار بنجاح.",
+  "Consultants Password successfully updated.":"تم تحديث كلمة مرور الاستشاريين بنجاح.",
+  "Consultant Invitation Sent Successfully.":"تم إرسال دعوة الاستشاري بنجاح."
  }

@@ -2712,5 +2712,11 @@
   "Drawing References (if any)" : "tegningsreferencer (hvis nogen)",
   "S.No" : "S.nr",
   "Remarks/ Notes" : "Bemærkninger/Noter",
-  "Construction Management System":"Byggeledelses system"
+  "Construction Management System":"Byggeledelses system",
+  "Consultant created Successfully! Please Check Your Mail Inbox.":"Konsulent oprettet med succes! Tjek venligst din mailindbakke.",
+  "Consultant successfully updated.":"Konsulenten er opdateret.",
+  "Consultant permission denied.":"Konsulenttilladelse nægtet.",
+  "Consultant successfully deleted.":"Konsulenten blev slettet.",
+  "Consultants Password successfully updated.":"Adgangskode for konsulenter blev opdateret.",
+  "Consultant Invitation Sent Successfully.":"Konsulentinvitation sendt."
 }

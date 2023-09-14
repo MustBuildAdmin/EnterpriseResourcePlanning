@@ -2548,5 +2548,11 @@
   "Edit Consultant": "Редактировать консультант",
   "View Company": "Посмотреть компанию",
   "View Company details": "Посмотреть информацию о компании",
-  "Diary": "Дневник"
+  "Diary": "Дневник",
+  "Consultant created Successfully! Please Check Your Mail Inbox.":"Консультант создан Успешно! Пожалуйста, проверьте свой почтовый ящик.",
+  "Consultant successfully updated.":"Консультант успешно обновлен.",
+  "Consultant permission denied.":"В разрешении консультанта отказано.",
+  "Consultant successfully deleted.":"Консультант успешно удален.",
+  "Consultants Password successfully updated.":"Пароль консультантов успешно обновлен.",
+  "Consultant Invitation Sent Successfully.":"Приглашение консультанта успешно отправлено."
 }

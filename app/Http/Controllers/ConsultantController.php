@@ -445,7 +445,7 @@ class ConsultantController extends Controller
                         $deleteuser = User::where(['id' => $user->id])->delete();
                         if ($deleteuser) {
                             return redirect()->route('consultants.index')
-                                ->with('success', __('Consultant successfully deleted .'));
+                                ->with('success', __('Consultant successfully deleted.'));
                         } else {
                             return redirect()->back()->with('error', __('Something is wrong.'));
                         }

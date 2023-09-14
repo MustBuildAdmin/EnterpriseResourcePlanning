@@ -2712,5 +2712,11 @@
   "Edit Consultant": "Edytuj konsultanta",
   "View Company": "Zobacz firmę",
   "View Company details": "Zobacz dane firmy",
-  "Diary": "Dziennik"
+  "Diary": "Dziennik",
+  "Consultant created Successfully! Please Check Your Mail Inbox.":"Konsultant został utworzony pomyślnie! Proszę sprawdzić swoją skrzynkę odbiorczą.",
+  "Consultant successfully updated.":"Konsultant został pomyślnie zaktualizowany.",
+  "Consultant permission denied.":"Odmowa zgody konsultanta.",
+  "Consultant successfully deleted.":"Konsultant został pomyślnie usunięty",
+  "Consultants Password successfully updated.":"Hasło konsultantów zostało pomyślnie zaktualizowane",
+  "Consultant Invitation Sent Successfully.":"Zaproszenie konsultanta zostało wysłane pomyślnie."
 }

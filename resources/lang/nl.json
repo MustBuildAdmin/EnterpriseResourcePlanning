@@ -2713,5 +2713,11 @@
   "Edit Consultant": "Adviseur bewerken",
   "View Company": "Bedrijf bekijken",
   "View Company details": "Bekijk bedrijfsgegevens",
-  "Diary": "Dagboek"
+  "Diary": "Dagboek",
+  "Consultant created Successfully! Please Check Your Mail Inbox.":"Consultant succesvol aangemaakt! Controleer uw postvak IN.",
+  "Consultant successfully updated.":"Consultant succesvol bijgewerkt.",
+  "Consultant permission denied.":"Toestemming adviseur geweigerd.",
+  "Consultant successfully deleted.":"Adviseur succesvol verwijderd",
+  "Consultants Password successfully updated.":"Consultantswachtwoord succesvol bijgewerkt.",
+  "Consultant Invitation Sent Successfully.":"Uitnodiging voor consultant succesvol verzonden."
 }

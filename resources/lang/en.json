@@ -2701,5 +2701,11 @@
     "Zoom Meeting": "Zoom Meeting",
     "Zoom Meeting successfully created.": "Zoom Meeting successfully created.",
     "Zoom-Meeting Setting": "Zoom-Meeting Setting",
-    "Construction Management System":"Construction Management System"
+    "Construction Management System":"Construction Management System",
+    "Consultant created Successfully! Please Check Your Mail Inbox.":"Consultant created Successfully! Please Check Your Mail Inbox.",
+    "Consultant successfully updated.":"Consultant successfully updated.",
+    "Consultant permission denied.":"Consultant permission denied.",
+    "Consultant successfully deleted.":"Consultant successfully deleted.",
+    "Consultants Password successfully updated.":"Consultants Password successfully updated.",
+    "Consultant Invitation Sent Successfully.":"Consultant Invitation Sent Successfully."
 }

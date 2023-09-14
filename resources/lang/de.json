@@ -2712,5 +2712,11 @@
   "Drawing References (if any)" : "Zeichnungsreferenzen (falls vorhanden)",
   "S.No" : "S.Nr",
   "Remarks/ Notes" : "Bemerkungen/Anmerkungen",
-  "Construction Management System": "Baumanagement system"
+  "Construction Management System": "Baumanagement system",
+  "Consultant created Successfully! Please Check Your Mail Inbox.":"Berater erfolgreich erstellt! Bitte überprüfen Sie Ihren Posteingang.",
+  "Consultant successfully updated.":"Berater erfolgreich aktualisiert.",
+  "Consultant permission denied.":"Beratererlaubnis verweigert.",
+  "Consultant successfully deleted.":"Berater erfolgreich gelöscht.",
+  "Consultants Password successfully updated.":"Berater-Passwort erfolgreich aktualisiert.",
+  "Consultant Invitation Sent Successfully.":"Beratereinladung erfolgreich gesendet."
 }
