@@ -27,6 +27,8 @@ class VenderExport implements FromCollection, WithHeadings
             //            $data[$k]["catalog"]          = !empty($vendor->catalog) ? asset(\Storage::url('uploads/product')) . '/' . $vendor->catalog : '-';
         }
 
+        $data[$k]['vender_id'] = \Auth::user()->venderNumberFormat($vendor->vender_id);
+        $data[$k]['balance'] = \Auth::user()->priceFormat($vendor->balance);
         return $data;
     }
 

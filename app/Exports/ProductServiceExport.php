@@ -23,7 +23,9 @@ class ProductServiceExport implements FromCollection, WithHeadings
             //            $data[$k]["stock_status"]   = ProductService::$stockStatus[$item->stock_status];
             //            $data[$k]["image"]          = asset(\Storage::url('uploads/product')) . '/' . $item->image;
         }
-
+        $data->leftjoin('product_service_categories', 'product_services.category_id', '=', 'product_service_categories.id');
+        $data->leftjoin('product_service_units', 'product_services.unit_id', '=', 'product_service_units.id');
+        $data = $data->get();
         return $data;
     }
 

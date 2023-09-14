@@ -81,6 +81,16 @@ class BillController extends Controller
     {
         //        dd($request->all());
         if (\Auth::user()->can('create bill')) {
+
+
+            $bill_number = \Auth::user()->billNumberFormat($this->billNumber());
+            $venders = Vender::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $venders->prepend('Select Vender', '');
+
+            $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
+            $product_services->prepend('--', '');
+            //gst calucluation
+            $settings = Utility::settings(\Auth::user()->creatorId());
             $validator = \Validator::make(
                 $request->all(), [
                     'vender_id' => 'required',
