@@ -252,7 +252,6 @@ class Vender extends Authenticatable
     {
         return [
             'name' => $this->name,
-            'lname' => $this->lname,
             'email' => $this->email,
             'contact' => $this->contact,
             'id' => $this->id,

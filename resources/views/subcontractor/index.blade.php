@@ -131,7 +131,7 @@
                         </a>
                     </div>
                     <div class="col-3">
-                        <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="lg"
+                        <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
                             data-url="{{ route('subContractor.create') }}" data-ajax-popup="true"
                             data-bs-toggle="tooltip" title="{{ __('Create New Sub Contractor') }}"
                             data-bs-original-title="{{ __('Create a Sub Contractor') }}">
