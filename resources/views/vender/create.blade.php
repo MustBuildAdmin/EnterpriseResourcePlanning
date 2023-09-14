@@ -21,9 +21,9 @@
             <div class="form-group">
                 {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    {{Form::number('contact',null,array('id'=>'phone','class'=>'form-control','max' => '10',
+                    {{Form::text('contact',null,array('id'=>'phone','class'=>'form-control',
                     'Placeholder'=>'(00) 0000-0000','required'=>'required','maxlength' => 16,
-                    'oninput'=>"numeric(this)"))}}
+                    'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
                 </div>
             </div>
         </div>
@@ -32,14 +32,17 @@
             <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::text('email',null,array('id'=>'email','class'=>'form-control','required'=>'required', 'placeholder'=>'Email'))}}
+                <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
+                    <span class="text-danger">{{__('Email Already Exist!')}}</span>
+                </span>
             </div>
         </div>
 
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group tax_number">
                 {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                {{Form::number('tax_number',null,array('class'=>'form-control','maxlength'=>'20','required'=>'required', 'placeholder'=>'Tax number'))}}
-
+                {{Form::number('tax_number',null,array('class'=>'form-control','maxlength'=>'20','required'=>'required',
+                'placeholder'=>'Tax number'))}}
             </div>
         </div>
         @if(!$customFields->isEmpty())
@@ -97,9 +100,9 @@
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group billing_phone">
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{Form::number('billing_phone',null,array('id'=>'phone','class'=>'form-control','max' => 10,
+                {{Form::text('billing_phone',null,array('id'=>'phone','class'=>'form-control',
                 'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
-                'oninput'=>"numeric(this)"))}}
+                'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
@@ -174,9 +177,9 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group shipping_phone">
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    {{Form::number('shipping_phone',null,array('id'=>'phone','class'=>'form-control','max' => 10,
-                    'Placeholder'=>'(00) 0000-0000','maxlength' => 16'required'=>'required',
-                    'oninput'=>"numeric(this)"))}}
+                    {{Form::text('shipping_phone',null,array('id'=>'phone','class'=>'form-control',
+                    'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
+                    'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
                 </div>
             </div>
 
@@ -184,7 +187,6 @@
                 <div class="form-group shipping_zip">
                     {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 'placeholder'=>'Zipcode'))}}
-
                 </div>
             </div>
 
@@ -196,13 +198,16 @@
             </div>
         </div>
     @endif
-
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
     <input type="submit" value="{{__('Create')}}" class="btn btn-primary" id="create_subcontractor">
 </div>
 {{Form::close()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
+    integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC" crossorigin="anonymous">
+</script>
+
 <script>
     $(document).on("change", '#billing_country', function () {
         var name=$(this).val();
