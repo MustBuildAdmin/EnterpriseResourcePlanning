@@ -17,7 +17,6 @@ use App\Models\Utility;
 use App\Models\ConsultantCompanies;
 use Carbon\Carbon;
 use App\Models\Order;
-use App\Models\Consultant_companies;
 use App\Models\Plan;
 use Config;
 use Illuminate\Http\Request;
@@ -401,7 +400,7 @@ class ConsultantController extends Controller
         CustomField::saveData($user, $request->customField);
 
         return redirect()->route('consultants.index')->with(
-            'success', 'User successfully updated.'
+            'success', __('Consultant successfully updated.')
         );
     }
 
@@ -421,7 +420,7 @@ class ConsultantController extends Controller
         CustomField::saveData($user, $request->customField);
 
         return redirect()->route('consultants.index')->with(
-            'success', 'User successfully updated.'
+            'success', __('Consultant successfully updated.')
         );
 
     }
@@ -504,7 +503,7 @@ class ConsultantController extends Controller
             ])->save();
     
             return redirect()->route('consultants.index')->with(
-                'success', 'Consultants Password successfully updated.'
+                'success', __('Consultants Password successfully updated.')
             );
 
           
