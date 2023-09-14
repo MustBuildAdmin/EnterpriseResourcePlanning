@@ -2719,5 +2719,11 @@
   "Consultant permission denied.":"Permiso de consultor denegado",
   "Consultant successfully deleted.":"Consultor eliminado exitosamente",
   "Consultants Password successfully updated.":"Contraseña de Consultores actualizada exitosamente",
-  "Consultant Invitation Sent Successfully.":"Invitación de consultor enviada exitosamente."
+  "Consultant Invitation Sent Successfully.":"Invitación de consultor enviada exitosamente.",
+  "Call":"Llamar",
+  "No Consultants Found":"No se encontraron consultores",
+  "Email copying to clipboard was successful!":"¡La copia del correo electrónico al portapapeles fue exitosa!",
+  "Mobile copying to clipboard was successful!":"¡La copia móvil al portapapeles fue exitosa!",
+  "Update a Member":"Actualizar un miembro",
+  "Create a Member":"Crear un miembro"
 }

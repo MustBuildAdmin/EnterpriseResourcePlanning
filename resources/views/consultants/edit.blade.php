@@ -79,7 +79,7 @@
                     <div class="form-icon-user">
                         <select class="form-control country" name="country" id="country"
                          placeholder="Select Country" required>
-                            <option value="">{{ __('Select Country ...') }}</option>
+                            <option value="">{{ __('Select Country') }}</option>
                             @foreach($countrylist as $key => $value)
                                 <option value="{{$value->iso2}}"
                                     @if($user->country==$value->iso2) selected @endif>
@@ -95,7 +95,7 @@
                     {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <select class="form-control state" name="state" id='state' placeholder="Select State" required>
-                            <option value="">{{ __('Select State ...') }}</option>
+                            <option value="">{{ __('Select State') }}</option>
                                 @foreach($statelist as $key => $value)
                                     <option value="{{$value->iso2}}"
                                         @if($user->state==$value->iso2) selected @endif>
@@ -174,7 +174,7 @@
     <div class="modal-footer">
         <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
         <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="edit_consultant">
-            {{__('Update')}}
+            {{__('Update a Member')}}
         </button>
     </div>
 

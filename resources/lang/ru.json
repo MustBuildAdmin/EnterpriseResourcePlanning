@@ -2554,5 +2554,11 @@
   "Consultant permission denied.":"В разрешении консультанта отказано.",
   "Consultant successfully deleted.":"Консультант успешно удален.",
   "Consultants Password successfully updated.":"Пароль консультантов успешно обновлен.",
-  "Consultant Invitation Sent Successfully.":"Приглашение консультанта успешно отправлено."
+  "Consultant Invitation Sent Successfully.":"Приглашение консультанта успешно отправлено.",
+  "Call":"Вызов",
+  "No Consultants Found":"Консультанты не найдены",
+  "Email copying to clipboard was successful!":"Копирование электронной почты в буфер обмена прошло успешно!",
+  "Mobile copying to clipboard was successful!":"Мобильное копирование в буфер обмена выполнено успешно!",
+  "Update a Member":"Обновить участника",
+  "Create a Member":"Создать участника"
 }

@@ -2718,5 +2718,11 @@
   "Consultant permission denied.":"Konsulenttilladelse nægtet.",
   "Consultant successfully deleted.":"Konsulenten blev slettet.",
   "Consultants Password successfully updated.":"Adgangskode for konsulenter blev opdateret.",
-  "Consultant Invitation Sent Successfully.":"Konsulentinvitation sendt."
+  "Consultant Invitation Sent Successfully.":"Konsulentinvitation sendt.",
+  "Call":"Opkald",
+  "No Consultants Found":"Ingen konsulenter fundet",
+  "Email copying to clipboard was successful!":"Kopiering af e-mail til udklipsholder lykkedes!",
+  "Mobile copying to clipboard was successful!":"Mobilkopiering til udklipsholder var vellykket!",
+  "Update a Member":"Opdater et medlem",
+  "Create a Member":"Opret et medlem"
 }

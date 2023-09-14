@@ -2725,5 +2725,11 @@
   "Consultant permission denied.":"تم رفض إذن المستشار.",
   "Consultant successfully deleted.":"تم حذف المستشار بنجاح.",
   "Consultants Password successfully updated.":"تم تحديث كلمة مرور الاستشاريين بنجاح.",
-  "Consultant Invitation Sent Successfully.":"تم إرسال دعوة الاستشاري بنجاح."
+  "Consultant Invitation Sent Successfully.":"تم إرسال دعوة الاستشاري بنجاح.",
+  "Call":"يتصل",
+  "No Consultants Found":"لم يتم العثور على استشاريين",
+  "Email copying to clipboard was successful!":"تم نسخ البريد الإلكتروني إلى الحافظة بنجاح!",
+  "Mobile copying to clipboard was successful!":"تم النسخ على الهاتف المحمول إلى الحافظة بنجاح!",
+  "Update a Member":"تحديث عضو",
+  "Create a Member":"إنشاء عضو"
  }

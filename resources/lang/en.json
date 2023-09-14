@@ -2707,5 +2707,11 @@
     "Consultant permission denied.":"Consultant permission denied.",
     "Consultant successfully deleted.":"Consultant successfully deleted.",
     "Consultants Password successfully updated.":"Consultants Password successfully updated.",
-    "Consultant Invitation Sent Successfully.":"Consultant Invitation Sent Successfully."
+    "Consultant Invitation Sent Successfully.":"Consultant Invitation Sent Successfully.",
+    "Call":"Call",
+    "No Consultants Found":"No Consultants Found",
+    "Email copying to clipboard was successful!":"Email copying to clipboard was successful!",
+    "Mobile copying to clipboard was successful!":"Mobile copying to clipboard was successful!",
+    "Update a Member":"Update a Member",
+    "Create a Member":"Create a Member"
 }

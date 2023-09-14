@@ -2719,5 +2719,11 @@
   "Consultant permission denied.":"コンサルタントの許可が拒否されました。",
   "Consultant successfully deleted.":"コンサルタントは正常に削除されました。",
   "Consultants Password successfully updated.":"コンサルタントのパスワードが正常に更新されました。",
-  "Consultant Invitation Sent Successfully.":"コンサルタントへの招待状が正常に送信されました。"
+  "Consultant Invitation Sent Successfully.":"コンサルタントへの招待状が正常に送信されました。",
+  "Call":"電話",
+  "No Consultants Found":"コンサルタントが見つかりませんでした",
+  "Email copying to clipboard was successful!":"電子メールのクリップボードへのコピーが成功しました。",
+  "Mobile copying to clipboard was successful!":"モバイルのクリップボードへのコピーが成功しました。",
+  "Update a Member":"メンバーを更新する",
+  "Create a Member":"メンバーを作成する"
 }

@@ -2719,5 +2719,11 @@
   "Consultant permission denied.":"Toestemming adviseur geweigerd.",
   "Consultant successfully deleted.":"Adviseur succesvol verwijderd",
   "Consultants Password successfully updated.":"Consultantswachtwoord succesvol bijgewerkt.",
-  "Consultant Invitation Sent Successfully.":"Uitnodiging voor consultant succesvol verzonden."
+  "Consultant Invitation Sent Successfully.":"Uitnodiging voor consultant succesvol verzonden.",
+  "Call":"Telefoongesprek",
+  "No Consultants Found":"Geen adviseurs gevonden",
+  "Email copying to clipboard was successful!":"Het kopiëren van e-mail naar het klembord was succesvol!",
+  "Mobile copying to clipboard was successful!":"Mobiel kopiëren naar het klembord was succesvol!",
+  "Update a Member":"Update een lid",
+  "Create a Member":"Maak een lid aan"
 }

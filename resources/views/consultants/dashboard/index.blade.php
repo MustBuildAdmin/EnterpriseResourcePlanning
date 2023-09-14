@@ -197,7 +197,7 @@
             $temp.val(copy_email).select();
             document.execCommand("copy");
             $temp.remove();
-            toastr.info("Copying to clipboard was successful!");
+            toastr.info("Email copying to clipboard was successful!");
         }
 
         function copyToClipboardphone(element) {
@@ -207,7 +207,7 @@
             $temp.val(copy_phone).select();
             document.execCommand("copy");
             $temp.remove();
-            toastr.success("Copying to clipboard was successful!");
+            toastr.success("Mobile copying to clipboard was successful!");
         }
 
         $(document).on('keypress', function(e) {

@@ -2718,5 +2718,11 @@
   "Consultant permission denied.":"Beratererlaubnis verweigert.",
   "Consultant successfully deleted.":"Berater erfolgreich gelöscht.",
   "Consultants Password successfully updated.":"Berater-Passwort erfolgreich aktualisiert.",
-  "Consultant Invitation Sent Successfully.":"Beratereinladung erfolgreich gesendet."
+  "Consultant Invitation Sent Successfully.":"Beratereinladung erfolgreich gesendet.",
+  "Call":"Anruf",
+  "No Consultants Found":"Keine Berater gefunden",
+  "Email copying to clipboard was successful!":"Das Kopieren der E-Mail in die Zwischenablage war erfolgreich!",
+  "Mobile copying to clipboard was successful!":"Das mobile Kopieren in die Zwischenablage war erfolgreich!",
+  "Update a Member":"Aktualisieren Sie ein Mitglied",
+  "Create a Member":"Erstellen Sie ein Mitglied"
 }
