@@ -228,12 +228,12 @@ class SubContractorController extends Controller
         }
     }
 
-    public function check_duplicate_mobile(Request $request)
+    public function check_duplicate_mobile_subcontractor(Request $request)
     {
         try {
-            $formname = $request->formname;
+            $formname  = $request->formname;
             $checkname = $request->getname;
-            $getid = $request->getid;
+            $getid     = $request->getid;
 
             if ($formname == 'Venders') {
                 $getcheckval = $getid == null ?

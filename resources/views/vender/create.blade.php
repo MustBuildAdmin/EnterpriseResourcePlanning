@@ -24,6 +24,10 @@
                     {{Form::text('contact',null,array('id'=>'phone','class'=>'form-control',
                     'Placeholder'=>'(00) 0000-0000','required'=>'required','maxlength' => 16,
                     'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
+
+                    <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
+                        <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                    </span>
                 </div>
             </div>
         </div>
@@ -100,7 +104,7 @@
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group billing_phone">
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{Form::text('billing_phone',null,array('id'=>'phone','class'=>'form-control',
+                {{Form::text('billing_phone',null,array('class'=>'form-control',
                 'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
                 'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
             </div>
@@ -177,7 +181,7 @@
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group shipping_phone">
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    {{Form::text('shipping_phone',null,array('id'=>'phone','class'=>'form-control',
+                    {{Form::text('shipping_phone',null,array('class'=>'form-control',
                     'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
                     'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
                 </div>
@@ -252,10 +256,6 @@
             $('#create_subcontractor').attr('disabled', 'disabled');
         });
 
-        $(".chosen-select").chosen({
-            placeholder_text:"{{ __('Reporting to') }}"
-        });
-
         $(document).on("paste", '#zip', function (event) {
             if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
                 event.preventDefault();
@@ -294,7 +294,7 @@
 
         $(document).on("keyup", '#phone', function () {
             $.ajax({
-                url : '{{ route("check_duplicate_mobile") }}',
+                url : '{{ route("check_duplicate_mobile_subcontractor") }}',
                 type : 'GET',
                 data : { 'getname' : $("#phone").val(),'formname' : "Venders" },
                 success : function(data) {
@@ -313,7 +313,6 @@
                 }
             });
         });
-
     });
 
     $('#subcontractorCreate').validate({
