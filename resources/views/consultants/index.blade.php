@@ -266,6 +266,7 @@ body {
 		  <div class="col-md-6 col-lg-3">
 			 <div class="card">
 				<div class="ms-auto p-3">
+
 					@if ($user->color_code!=null || $user->color_code!='')
 						@php $color_co=$user->color_code; @endphp
 					@else
