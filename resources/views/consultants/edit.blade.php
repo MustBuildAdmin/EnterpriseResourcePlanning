@@ -14,9 +14,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group ">
-                    {{Form::label('name',__('Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{Form::label('name',__('First Name'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
                     {{Form::text('name',null,array('class'=>'form-control font-style',
-                    'maxlength' => 35,'placeholder'=>__('Enter User Name')))}}
+                    'maxlength' => 35,'placeholder'=>__('Enter First Name')))}}
                     @error('name')
                     <small class="invalid-name" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
@@ -26,9 +26,10 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    {{Form::label('lastname',__('LastName'),['class'=>'form-label']) }}<span style='color:red;'>*</span>
+                    {{Form::label('lastname',__('Last Name'),['class'=>'form-label']) }}
+                    <span style='color:red;'>*</span>
                     <input type="text" class="form-control" value="{{$user->lname}}"
-                     id="lname" name="lname" placeholder="{{ __('Enter User Last Name') }}" autocomplete="off" required>
+                     id="lname" name="lname" placeholder="{{ __('Enter Last Name') }}" autocomplete="off" required>
                 </div>
             </div>
            
@@ -44,7 +45,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                        {{Form::label('email',__('Email Address'),['class'=>'form-label'])}}
+                        <span style='color:red;'>*</span>
                         {{Form::email('email',null,array('class'=>'form-control','id'=>'email',
                         'placeholder'=>__('Enter User Email')))}}
                         <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
@@ -69,6 +71,7 @@
                         @enderror
                 </div>
             </div>
+
             <div class="form-group col-md-6">
                 <div class="form-group">
                     {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
@@ -76,7 +79,7 @@
                     <div class="form-icon-user">
                         <select class="form-control country" name="country" id="country"
                          placeholder="Select Country" required>
-                            <option value="">{{ __('Select Country ...') }}</option>
+                            <option value="">{{ __('Select Country') }}</option>
                             @foreach($countrylist as $key => $value)
                                 <option value="{{$value->iso2}}"
                                     @if($user->country==$value->iso2) selected @endif>
@@ -92,7 +95,7 @@
                     {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <select class="form-control state" name="state" id='state' placeholder="Select State" required>
-                            <option value="">{{ __('Select State ...') }}</option>
+                            <option value="">{{ __('Select State') }}</option>
                                 @foreach($statelist as $key => $value)
                                     <option value="{{$value->iso2}}"
                                         @if($user->state==$value->iso2) selected @endif>
@@ -114,22 +117,24 @@
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('zip',__('Postal Code'),array('class'=>'form-label','id'=>'zip')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <input class="form-control" name="phone" type="number" id="phone" maxlength="16"
-                         placeholder="+91 111 111 1111" value='{{$user->phone}}' required>
-                        <span class="invalid-name edit_mobile_duplicate_error" role="alert" style="display: none;">
-                            <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
-                        </span>
+                        {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
                     </div>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <div class="form-group">
-                    {{Form::label('zip',__('Zip Code'),array('class'=>'form-label','id'=>'zip')) }}
+                    {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        {{Form::text('zip',null,array('class'=>'form-control','required'=>'required'))}}
+                         <input type="text" name="phone" class="form-control" data-mask="(00) 0000-0000"
+                          data-mask-visible="true" placeholder="(00) 0000-0000" id="phone"
+                          maxlength="16" autocomplete="off" oninput="numeric(this)"  value='{{$user->phone}}'/>
+                        <span class="invalid-name edit_mobile_duplicate_error" role="alert" style="display: none;">
+                            <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -148,7 +153,8 @@
                 <div class="form-group">
                     {{Form::label('address',__('Address'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3))}}
+                        {{Form::textarea('address',null,array('class'=>'form-control','rows'=>3,
+                        'placeholder'=>'Here can be your Address'))}}
                     </div>
                 </div>
             </div>
@@ -164,12 +170,17 @@
         </div>
     </div>
 
+
     <div class="modal-footer">
-        <input type="button" value="{{__('Cancel')}}" class="btn  btn-light"data-bs-dismiss="modal">
-        <input type="submit" value="{{__('Update')}}" class="btn  btn-primary" id="edit_consultant">
+        <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
+        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="edit_consultant">
+            {{__('Update a Member')}}
+        </button>
     </div>
 
 {{Form::close()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
+ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC" crossorigin="anonymous"></script>
 <script>
      $(document).on("change", '#country', function () {
         var name=$(this).val();
@@ -283,6 +294,12 @@
     function process(input){
         let value = input.value;
         let numbers = value.replace(/[^a-zA-Z]/g, "");
+        input.value = numbers;
+    }
+
+    function numeric(input){
+        let value = input.value;
+        let numbers = value.replace(/[^0-9]/g, "");
         input.value = numbers;
     }
    
