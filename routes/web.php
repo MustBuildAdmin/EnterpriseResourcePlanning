@@ -4254,7 +4254,13 @@ Route::any('invitation_status', 'ConsultantController@store_invitation_status')
     ]
 );
 
-
+Route::resource('subContractor', 'SubContractorController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 
 

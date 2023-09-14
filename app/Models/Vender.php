@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Laravel\Scout\Searchable;
 
 class Vender extends Authenticatable
 {
     use HasRoles;
     use Notifiable;
+    use Searchable;
 
     protected $guard_name = 'web';
 
@@ -244,5 +246,16 @@ class Vender extends Authenticatable
         $bills = Bill::where('vender_id', $vendorId)->count();
 
         return $bills;
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->name,
+            'lname' => $this->lname,
+            'email' => $this->email,
+            'contact' => $this->contact,
+            'id' => $this->id,
+        ];
     }
 }

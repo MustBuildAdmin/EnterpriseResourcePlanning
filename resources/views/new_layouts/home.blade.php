@@ -409,7 +409,7 @@
                   @if((\Auth::user()->type != 'super admin'))
                      @if( Gate::check('manage sub contractor'))
                         <div class="col-md-6 col-xl-2">
-                           <a class="card card-link" href="{{ route('systemsettings') }}" disabled>
+                           <a class="card card-link" href="{{ route('subContractor.index') }}" disabled>
                               <div class="card-body">
                                  <div class="row">
                                     <div class="col-auto">
