@@ -4262,6 +4262,15 @@ Route::resource('subContractor', 'SubContractorController')->middleware(
     ]
 );
 
+Route::any('subContractorStore', 'SubContractorController@subContractorStore')
+->name('subContractorStore')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::any('invite_subContractor', 'SubContractorController@invite_subContractor')
 ->name('subContractor.invite_subContractor')->middleware(
     [

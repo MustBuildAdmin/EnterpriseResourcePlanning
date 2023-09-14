@@ -256,4 +256,91 @@ class SubContractorController extends Controller
 
         }
     }
+
+    public function upload($request)
+    {
+        if (isset($request->avatar)) {
+            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+
+            $dir = Config::get('constants.USER_IMG');
+            $imagepath = $dir.$fileNameToStore;
+            if (\File::exists($imagepath)) {
+                \File::delete($imagepath);
+            }
+
+            Utility::upload_file($request, 'avatar', $fileNameToStore, $dir, []);
+
+            return $fileNameToStore;
+        }
+    }
+
+    public function subContractorStore(Request $request){
+        if (\Auth::user()->can('create sub contractor')) {
+            $objVendor    = \Auth::user();
+            $creator      = User::find($objVendor->creatorId());
+            $total_vendor = $objVendor->countVenders();
+            $plan         = Plan::find($creator->plan);
+            $fileNames    = $this->upload($request);
+            $user         = new User();
+
+            $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+            // if ($total_vendor < $plan->max_venders || $plan->max_venders == -1) {
+                $vender                   = new Vender();
+                $vender->vender_id        = $this->venderNumber();
+                $vender->name             = $request->name;
+                $vender->contact          = $request->contact;
+                $vender->email            = $request->email;
+                $user->password           = Hash::make($request->password);
+                $vender->tax_number       = $request->tax_number;
+                $vender->created_by       = \Auth::user()->creatorId();
+                $vender->billing_name     = $request->billing_name;
+                $vender->billing_country  = $request->billing_country;
+                $vender->billing_state    = $request->billing_state;
+                $vender->billing_city     = $request->billing_city;
+                $vender->billing_phone    = $request->billing_phone;
+                $vender->billing_zip      = $request->billing_zip;
+                $vender->billing_address  = $request->billing_address;
+                $vender->shipping_name    = $request->shipping_name;
+                $vender->shipping_country = $request->shipping_country;
+                $vender->shipping_state   = $request->shipping_state;
+                $vender->shipping_city    = $request->shipping_city;
+                $vender->shipping_phone   = $request->shipping_phone;
+                $vender->shipping_zip     = $request->shipping_zip;
+                $vender->shipping_address = $request->shipping_address;
+                $vender->color_code       = $request->color_code;
+                if (isset($fileNames)) {
+                    $vender->avatar = $fileNames;
+                }
+                $vender->lang = ! empty($default_language) ? $default_language->value : '';
+                $vender->save();
+
+                CustomField::saveData($vender, $request->customField);
+            // }
+            // else {
+            //     return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
+            // }
+
+            $role_r = Role::where('name', '=', 'vender')->firstOrFail();
+            $vender->assignRole($role_r); //Assigning role to user
+            $user->userDefaultDataRegister($vender->id);
+
+            return redirect()->route('subContractor.index')->with('success', __('Vendor successfully created.'));
+        }
+        else {
+            return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
+    public function venderNumber()
+    {
+        $latest = Vender::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
+        if (! $latest) {
+            return 1;
+        }
+
+        return $latest->vender_id + 1;
+    }
 }

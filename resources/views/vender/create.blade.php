@@ -1,4 +1,4 @@
-{{Form::open(array('url'=>'vender','method'=>'post','id'=>'subcontractorCreate'))}}
+{{Form::open(array('url'=>"subContractorStore",'method'=>'post','id'=>'subcontractorCreate'))}}
 <style>
     .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address, .billing_city, .shipping_city, 
     .billing_address {
@@ -12,6 +12,14 @@
     <h3 class="sub-title">{{__('Basic Info')}}</h3>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
+            @php
+                $rndColor = Utility::rndRGBColorCode(); #function call
+                $password = Utility::randomPassword(); #function call
+            @endphp
+            
+            <input type="hidden" name="color_code" value="{{ $rndColor }}">
+            <input type="hidden" name="password" value="{{ $password }}">
+
             <div class="form-group">
                 {{Form::label('name',__('Name'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                 {{Form::text('name',null,array('class'=>'form-control','required'=>'required', 'placeholder'=>'Name'))}}
@@ -313,13 +321,6 @@
                 }
             });
         });
-    });
-
-    $('#subcontractorCreate').validate({
-        rules: {
-            reportto: "required",
-        },
-        ignore: ':hidden:not("#choices-multiple1")'
     });
 
     function process(input){
