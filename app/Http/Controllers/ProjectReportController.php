@@ -19,6 +19,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Session;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ProjectReportController extends Controller
 {
@@ -407,6 +410,286 @@ class ProjectReportController extends Controller
         }
     }
 
+    public function download_excel_report(Request $request)
+    {
+
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'super admin') {
+            $project      = Project::where('id', Session::get('project_id'))->first();
+            $project_task = Con_task::where('project_id', Session::get('project_id'))
+                ->where('instance_id', Session::get('project_instance'))
+                ->whereIn('main_id', function ($query) {
+                    $query->select('task_id')
+                        ->from('task_progress')
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
+                })->get();
+            $actual_current_progress = Con_task::where('project_id', Session::get('project_id'))
+                ->where('instance_id', Session::get('project_instance'))
+                ->orderBy('id', 'ASC')
+                ->pluck('progress')->first();
+            $actual_current_progress   = round($actual_current_progress);
+            $actual_remaining_progress = 100 - $actual_current_progress;
+            $actual_remaining_progress = round($actual_remaining_progress);
+            // current progress amount
+            $taskdata = [];
+            foreach ($project_task as $key => $value) {
+                $planned_start = date('d-m-Y', strtotime($value->start_date));
+                $planned_end = date('d-m-Y', strtotime($value->end_date));
+
+                $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                    ->where('instance_id', Session::get('project_instance'))
+                    ->where('task_id', $value->main_id)->max('created_at');
+                $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                    ->where('instance_id', Session::get('project_instance'))
+                    ->where('task_id', $value->main_id)->min('created_at');
+                $flag = 0;
+                if ($actual_start) {
+                    $flag = 1;
+                    $actual_start = date('d-m-Y', strtotime($actual_start));
+                } else {
+                    $actual_start = 'Task Not Started';
+                }
+
+                if ($actual_end) {
+                    $actual_end = date('d-m-Y', strtotime($actual_end));
+                } else {
+                    $actual_end = 'Task Not Finish';
+                }
+
+                if ($actual_end < $planned_end) {
+                    $actual_end = 'Task Not Finish';
+                }
+                //finding planned percentage
+                //############## days finding ####################################################
+                $date1 = date_create($value->start_date);
+                $date2 = date_create($value->end_date);
+                $cur = date('Y-m-d');
+
+                // $diff=date_diff($date1,$date2);
+                // $no_working_days=$diff->format("%a");
+                $no_working_days = $value->duration; // include the last day
+                //############## END ##############################
+
+                //############## Remaining days ###################
+
+                $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
+                $remaining_working_days = $remaining_working_days - 1; // include the last day
+
+                // $diff=date_diff($date1,$date2);
+                // $remaining_working_days=$diff->format("%a");
+                // $remaining_working_days=$remaining_working_days-1;// include the last day
+                //############## Remaining days ##################
+
+                $completed_days = $no_working_days - $remaining_working_days;
+
+                // percentage calculator
+                if ($no_working_days > 0) {
+                    $perday = 100 / $no_working_days;
+                } else {
+                    $perday = 0;
+                }
+
+                $current_percentage = round($completed_days * $perday);
+                if ($current_percentage > 100) {
+                    $current_percentage = 100;
+                }
+
+                $remaing_percenatge = round(100 - $current_percentage);
+
+                //####################################___END____#######################################
+                //  // actual duration finding
+                $taskdata[] = [
+                    'title' => $value->text,
+                    'planed_start' => $planned_start,
+                    'planed_end' => $planned_end,
+                    'duration' => $value->duration.' Days',
+                    'percentage_as_today' => round($current_percentage),
+                    'actual_start' => $actual_start,
+                    'actual_end' => $actual_end,
+                    'actual_duration' => $value->duration.' Days',
+                    'remain_duration' => $value->duration.' Days',
+                    'actual_percent' => round($value->progress),
+                ];
+            }
+            $taskdata2 = [];
+            $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                ->where('instance_id', Session::get('project_instance'))
+                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
+            $instance_id = Session::get('project_instance');
+
+            foreach ($today_task_update as $key => $value) {
+                $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
+                $user = User::find($value->user_id);
+                if ($user) {
+                    $user_name = $user->name;
+                    $user_email = $user->email;
+                } else {
+                    $user_name = '';
+                    $user_email = '';
+                }
+
+                $taskdata2[] = [
+                    'title' => $main_task->text,
+                    'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
+                    'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
+                    'duration' => $main_task->duration.' Days',
+                    'percentage' => $value->percentage.'%',
+                    'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
+                    'description' => $value->description,
+                    'user' => $user_name,
+                    'email' => $user_email,
+
+                ];
+            }
+            $to = [];
+            $to_array = explode(',', $project->report_to);
+            foreach ($to_array as $key => $value) {
+                $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
+            }
+
+            if (! $to) {
+                return redirect()->back()->with('error', __('Not Assign a Report person'));
+            }
+
+            $spreadsheet = new Spreadsheet();
+            $sheet=$spreadsheet;
+            $spreadsheet->getProperties()->setCreator('PhpOffice')
+                        ->setLastModifiedBy('PhpOffice')
+                        ->setTitle('Schedule')
+                        ->setSubject('Office 2007 XLSX Test Document')
+                        ->setDescription('PhpOffice')
+                        ->setKeywords('PhpOffice')
+                        ->setCategory('PhpOffice');
+    
+                        $styleArray = array(            // font color
+                            'font'  => array(
+                                'bold'  => true,
+                                'color' => array('rgb' => 'ffffff')                                
+                            ));
+                            $styleArray2 = [
+                                'borders' => [
+                                    'allBorders' => [
+                                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                        'color' => ['argb' => '000000'],
+                                    ],
+                                ],
+                            ];
+            // Rename worksheet
+            $sheet->getActiveSheet()->setTitle('Main Task List'); 
+            $sheet->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+            $sheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+            $sheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+            $sheet->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+            $sheet->getActiveSheet()->getColumnDimension('E')->setWidth(50);
+            $sheet->getActiveSheet()->getColumnDimension('F')->setWidth(50);
+            $sheet->getActiveSheet()->getColumnDimension('G')->setWidth(50);
+            $sheet->getActiveSheet()->getColumnDimension('H')->setWidth(50);
+            $sheet->getActiveSheet()->getColumnDimension('I')->setWidth(50);
+            $sheet->getActiveSheet()->getColumnDimension('J')->setWidth(50);
+            $sheet->getActiveSheet()->getColumnDimension('K')->setWidth(50);
+            $sheet->getActiveSheet()->setCellValue('A1','Title');
+            $sheet->getActiveSheet()->setCellValue('B1','Planned Start Date');
+            $sheet->getActiveSheet()->setCellValue('C1','Planned Finish');
+            $sheet->getActiveSheet()->setCellValue('D1','Duration');
+            $sheet->getActiveSheet()->setCellValue('E1','Planned % as of today');
+            $sheet->getActiveSheet()->setCellValue('F1','Planned Value');
+            $sheet->getActiveSheet()->setCellValue('G1','Actual Start Date');
+            $sheet->getActiveSheet()->setCellValue('H1','Actual Finish');
+            $sheet->getActiveSheet()->setCellValue('I1','Actual Duration');
+            $sheet->getActiveSheet()->setCellValue('J1','Actual % as of Today');
+            $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
+            $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0f609b'); // cell color
+            $sheet->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray); 
+            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center'); 
+            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setVertical('center'); 
+            
+            if(count($taskdata)>0){
+                foreach ($taskdata as $key => $value) {
+                    $row=2;
+                    $sheet->getActiveSheet()->setCellValue('A'.$row,$value['title']);
+                    $sheet->getActiveSheet()->setCellValue('B'.$row,$value['planed_start']);
+                    $sheet->getActiveSheet()->setCellValue('C'.$row,$value['planed_end']);
+                    $sheet->getActiveSheet()->setCellValue('D'.$row,$value['duration']);
+                    $sheet->getActiveSheet()->setCellValue('E'.$row,$value['percentage_as_today']);
+                    $sheet->getActiveSheet()->setCellValue('F'.$row,'');
+                    $sheet->getActiveSheet()->setCellValue('G'.$row,$value['actual_start']);
+                    $sheet->getActiveSheet()->setCellValue('H'.$row,$value['actual_end']);
+                    $sheet->getActiveSheet()->setCellValue('I'.$row,$value['actual_duration']);
+                    $sheet->getActiveSheet()->setCellValue('J'.$row,$value['actual_percent']);
+                    $sheet->getActiveSheet()->setCellValue('K'.$row,'');
+                    $row++;
+                    if($value['percentage_as_today'] != $value['actual_percent']){
+                        $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffbfbd'); // cell color
+                    }
+                }
+            }else{
+                $sheet->getActiveSheet()->mergeCells('A2:K2');
+                $sheet->getActiveSheet()->setCellValue('A2','NO Record Found');
+                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setHorizontal('center'); 
+                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setVertical('center'); 
+            }
+
+            $worksheet2 = $spreadsheet->createSheet();
+            $worksheet2->setTitle('Today Updated Task List'); 
+            $worksheet2->getColumnDimension('A')->setWidth(30);
+            $worksheet2->getColumnDimension('B')->setWidth(30);
+            $worksheet2->getColumnDimension('C')->setWidth(30);
+            $worksheet2->getColumnDimension('D')->setWidth(30);
+            $worksheet2->getColumnDimension('E')->setWidth(50);
+            $worksheet2->getColumnDimension('F')->setWidth(50);
+            $worksheet2->getColumnDimension('G')->setWidth(50);
+            $worksheet2->getColumnDimension('H')->setWidth(50);
+            $worksheet2->getColumnDimension('I')->setWidth(50);
+            $worksheet2->getColumnDimension('J')->setWidth(50);
+            $worksheet2->getColumnDimension('K')->setWidth(50);
+            $worksheet2->setCellValue('A1','Title');
+            $worksheet2->setCellValue('B1','Planned Start Date');
+            $worksheet2->setCellValue('C1','Planned Finish');
+            $worksheet2->setCellValue('D1','Duration');
+            $worksheet2->setCellValue('E1','Percentage');
+            $worksheet2->setCellValue('F1','Progress Updated Date');
+            $worksheet2->setCellValue('G1','Description');
+            $worksheet2->setCellValue('H1','User Name');
+            $worksheet2->setCellValue('I1','User Email');
+            $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0f609b'); // cell color
+            $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray); 
+            $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center'); 
+            $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center'); 
+
+            if(count($taskdata2)>0){
+                foreach ($taskdata2 as $key => $value) {
+                    $row=2;
+                    $worksheet2->setCellValue('A'.$row,$value['title']);
+                    $worksheet2->setCellValue('B'.$row,$value['planed_start']);
+                    $worksheet2->setCellValue('C'.$row,$value['planed_end']);
+                    $worksheet2->setCellValue('D'.$row,$value['duration']);
+                    $worksheet2->setCellValue('E'.$row,$value['percentage']);
+                    $worksheet2->setCellValue('F'.$row,$value['progress_updated_date']);
+                    $worksheet2->setCellValue('G'.$row,$value['description']);
+                    $worksheet2->setCellValue('H'.$row,$value['user']);
+                    $worksheet2->setCellValue('I'.$row,$value['email']);
+                    $row++;
+
+                }
+            }else{
+                $worksheet2->mergeCells('A2:I2');
+                $worksheet2->setCellValue('A2','NO Record Found');
+                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setHorizontal('center'); 
+                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setVertical('center'); 
+            }
+
+            $download_directory = './Report_list.xlsx';
+            $writer = IOFactory::createWriter($sheet, 'Xlsx');
+			$writer->save($download_directory);
+			$content = file_get_contents($download_directory);
+			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'.date('Y-m-d H:i:s').'.xlsx';
+			header("Content-Disposition: attachment; filename=".$filename);
+			unlink($download_directory);
+            // Session::flash('success2', 'The registration list downloaded successfully.'); 
+            exit($content);
+             
+        }
+    }
     // cron email
     public function cronmail(Request $request)
     {
