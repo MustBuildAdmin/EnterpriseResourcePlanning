@@ -265,8 +265,7 @@ body {
 		@forelse($users as $user)
 		  <div class="col-md-6 col-lg-3">
 			 <div class="card">
-				<div class="ms-auto p-3">
-
+				<div class="ms-auto lh-1  p-4">
 					@if ($user->color_code!=null || $user->color_code!='')
 						@php $color_co=$user->color_code; @endphp
 					@else
@@ -302,9 +301,9 @@ body {
 					@if(!empty($user->avatar))
 					<img src="{{(!empty($user->avatar))? $profile.$user->avatar :
 						asset(Storage::url(" uploads/avatar/avatar.png "))}}" class="avatar avatar-xl mb-3 rounded"
-						alt="consultant's_profile" title="consultant's profile">
+						alt="">
 						@else
-					<div class="avatar avatar-xl mb-3 rounded" style='background-color:{{$color_co}}'>
+					<div class="avatar avatar-xl mb-3 user-initial" style='background-color:{{$color_co}}'>
 					  {{strtoupper($short)}}{{strtoupper($short_lname)}}
 					</div>
 				   	@endif
