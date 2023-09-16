@@ -4897,6 +4897,8 @@ Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_detail
 );
 
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report');
+Route::any('download_excel_report', 'ProjectReportController@download_excel_report')->name('download_excel_report');
+
 Route::any('view_task_revision', 'ProjectTaskController@revsion_task_list')->name('project_report.revsion_task_list');
 Route::any('report_task_autocomplete', 'ProjectTaskController@report_task_autocomplete')
 ->name('report_task_autocomplete');

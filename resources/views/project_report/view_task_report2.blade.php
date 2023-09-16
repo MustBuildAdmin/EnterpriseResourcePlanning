@@ -26,12 +26,12 @@
                                                 <h4 class="card-title">Task Lists Information</h4>
                                                 <div class="card-actions">
                                                     <div class="row">
-                                                        <div class="col-4" style="display: none;">
-                                                            <a href="#" class="btn btn-lime w-100">
+                                                        <div class="col-6">
+                                                            <a href="{{ route('download_excel_report') }}" class="btn btn-lime w-100">
                                                                 Download as Excel
                                                             </a>
                                                         </div>
-                                                        <div class="col-12">
+                                                        <div class="col-6">
                                                             <a href="{{ route('send_report_con') }}"
                                                             class="btn btn-primary w-100">
                                                                 Download as PDF
