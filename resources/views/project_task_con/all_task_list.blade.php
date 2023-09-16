@@ -68,6 +68,9 @@ aria-describedby="Sub Task">
 
                 $checkLatestFreeze = DB::table('instance')
                     ->where('instance',Session::get('latest_project_instance'))->first();
+
+                $checkInstanceCount = DB::table('instance')
+                    ->where('project_id',Session::get('project_id'))->count();
                 if($checkLatestFreeze != null){
                     $checkLatestFreezeStatus = $checkLatestFreeze->freeze_status == 0 ?
                         0 : 1;
@@ -82,6 +85,12 @@ aria-describedby="Sub Task">
                     @if(Session::get('current_revision_freeze') == 1 &&
                         Session::get('project_instance') != Session::get('latest_project_instance') &&
                         $checkLatestFreezeStatus == 1)
+                        <a href="{{route('task_particular',['task_id' => $task->main_id,
+                            'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                            {{ $task->id }}
+                        </a>
+                    @elseif($checkLatestFreezeStatus >= 1 &&
+                        Session::get('project_instance') == Session::get('latest_project_instance'))
                         <a href="{{route('task_particular',['task_id' => $task->main_id,
                             'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             {{ $task->id }}
