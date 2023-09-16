@@ -847,7 +847,6 @@ class ProjectController extends Controller
                     $current_Planed_percentage = round($completed_days * $perday);
                 }
 
-                $current_Planed_percentage = round($completed_days * $perday);
                 if ($current_Planed_percentage > 100) {
                     $current_Planed_percentage = 100;
                 }
