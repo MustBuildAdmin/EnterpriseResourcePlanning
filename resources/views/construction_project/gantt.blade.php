@@ -121,20 +121,20 @@
             <img src="./static/logo-small.svg" height="36" alt="">
         </a>
     </div>
-    <div class="text-secondary mb-3">Preparing application</div>
+    <div class="text-secondary mb-3">Loading</div>
     <div class="progress progress-sm">
         <div class="progress-bar progress-bar-indeterminate"></div>
     </div>
 </div>
-<div id="additional_elements" class="container-fluid my-5">
+<div id="additional_elements" class="container-fluid mt-1 d-none">
 
     <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
-                aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#tool-menu"
+                aria-controls="tool-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 p-3 text-capitalize text-white bg-primary text-wrap" style="width: 10rem;">
                 {{$projectname}}
             </h1>
             <div class="navbar-nav flex-row order-md-last">
@@ -356,7 +356,7 @@
                             {!! Form::close() !!}
                         </li>
                         <li>
-                            <select class="form-control" id="zoomscale">
+                            <select class="form-control mt-3" id="zoomscale">
                                 <option value="">Select Timescale</option>
                                 <option value="day">day</option>
                                 <option value="week">week</option>
@@ -376,7 +376,7 @@
                 @if ($project)
                     <input type='hidden' value='0' id='project_id'>
                     <div class="card-body" style='min-height:512px;overflow:auto;'>
-                        <div id="gantt_here" style='width:100%; height:491px; position: relative;'
+                        <div id="gantt_here" style='width:100%; height:700px; position: relative;'
                             onload="script();">
                         </div>
                     </div>
@@ -387,7 +387,7 @@
 
                         @if ($project)
                             <input type='hidden' value='0' id='project_id'>
-                            <div class="card-body" style='max-height:491px;overflow:auto;'>
+                            <div class="card-body" style='max-height:700px;overflow:auto;'>
                                 <div class="gantt_control">
 
                                 </div>
@@ -690,19 +690,6 @@
                             align: "center",
                             resize: true
                         },
-
-                        // {
-                        // 	name: "place", label: "Place", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "location", label: "Location", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "material", label: "Material Qunatity", width: 110, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
                         {
                             name: "predecessors",
                             label: "Predecessors",
@@ -820,19 +807,6 @@
                             align: "center",
                             resize: true
                         },
-
-                        // {
-                        // 	name: "place", label: "Place", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "location", label: "Location", width: 80, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
-                        // {
-                        // 	name: "material", label: "Material Qunatity", width: 110, align: "center",
-                        // 	editor: editors.end_date, resize: true
-                        // },
                         {
                             name: "predecessors",
                             label: "Predecessors",
@@ -1047,6 +1021,7 @@
                     function() {
                         gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
                         $('.loader_show').hide();
+                        $('#additional_elements').addClass("gantt-show");
                     }, 3000);
 
 
@@ -1163,5 +1138,11 @@
 <style>
     .loader_show_hide {
         display: none;
+    }
+    .gantt-show {
+        display: block !important;
+    }
+    .loader_show {
+        height: 100%;
     }
 </style>

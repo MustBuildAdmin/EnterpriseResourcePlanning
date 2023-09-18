@@ -9,17 +9,21 @@ use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
 use App\Models\JoiningLetter;
 use App\Models\NOC;
-use App\Models\Plan;
 use App\Models\User;
+use App\Models\UserCompany;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Models\Utility;
 use App\Models\ConsultantCompanies;
 use Carbon\Carbon;
-
+use App\Models\Order;
+use App\Models\Plan;
 use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Exception;
 
 class ConsultantController extends Controller
 {
@@ -178,14 +182,14 @@ class ConsultantController extends Controller
         ExperienceCertificate::defaultExpCertificatRegister($user->id);
         JoiningLetter::defaultJoiningLetterRegister($user->id);
         NOC::defaultNocCertificateRegister($user->id);
-        $requested_date = date('Y-m-d H:i:s');
+        $requested_date = Config::get('constants.TIMESTUMP');
         $createConnection = ConsultantCompanies::create([
             "company_id"=>\Auth::user()->creatorId(),
             'consultant_id'=>$user->id,
             'requested_date'=>$requested_date,
             'status'=>'requested'
         ]);
-        $inviteUrl=url('').'/company-invitation-consultant/'.$createConnection->id;
+        $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
         $userArr = [
             'invite_link' => $inviteUrl,
             'user_name' => \Auth::user()->name,
@@ -280,19 +284,20 @@ class ConsultantController extends Controller
                     'color_code' => $request->color_code,
                 ]
             );
-
+            $roler = Role::findByName('consultant');
+            $user->assignRole($roler);
             $user->userDefaultDataRegister($user->id);
 
         }
         $setings = Utility::settings();
-        $requested_date = date('Y-m-d H:i:s');
+        $requested_date = Config::get('constants.TIMESTUMP');
         $createConnection = ConsultantCompanies::create([
             "company_id"=>\Auth::user()->creatorId(),
             'consultant_id'=>$user->id,
             'requested_date'=>$requested_date,
             'status'=>'requested'
         ]);
-        $inviteUrl=url('').'/company-invitation-consultant/'.$createConnection->id;
+        $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
         $userArr = [
             'invite_link' => $inviteUrl,
             'user_name' => \Auth::user()->name,
@@ -395,7 +400,7 @@ class ConsultantController extends Controller
         CustomField::saveData($user, $request->customField);
 
         return redirect()->route('consultants.index')->with(
-            'success', 'User successfully updated.'
+            'success', __('Consultant successfully updated.')
         );
     }
 
@@ -415,7 +420,7 @@ class ConsultantController extends Controller
         CustomField::saveData($user, $request->customField);
 
         return redirect()->route('consultants.index')->with(
-            'success', 'User successfully updated.'
+            'success', __('Consultant successfully updated.')
         );
 
     }
@@ -440,7 +445,7 @@ class ConsultantController extends Controller
                         $deleteuser = User::where(['id' => $user->id])->delete();
                         if ($deleteuser) {
                             return redirect()->route('consultants.index')
-                                ->with('success', __('Consultant successfully deleted .'));
+                                ->with('success', __('Consultant successfully deleted.'));
                         } else {
                             return redirect()->back()->with('error', __('Something is wrong.'));
                         }
@@ -460,36 +465,53 @@ class ConsultantController extends Controller
 
     public function userPassword($id)
     {
-        $eId = \Crypt::decrypt($id);
-        $user = User::find($eId);
+        try {
 
-        return view('consultants.reset', compact('user'));
+            $eId = \Crypt::decrypt($id);
+            $user = User::find($eId);
+    
+            return view('consultants.reset', compact('user'));
+          
+        } catch (Exception $e) {
+          
+            return $e->getMessage();
+          
+        }
+       
 
     }
 
     public function userPasswordReset(Request $request, $id)
     {
+        try {
 
-        $validator = \Validator::make(
-            $request->all(), [
-                'password' => 'required|confirmed|same:password_confirmation',
-            ]
-        );
+            $validator = \Validator::make(
+                $request->all(), [
+                    'password' => 'required|confirmed|same:password_confirmation',
+                ]
+            );
+    
+            if ($validator->fails()) {
+                $messages = $validator->getMessageBag();
+    
+                return redirect()->back()->with('error', $messages->first());
+            }
+    
+            $user = User::where('id', $id)->first();
+            $user->forceFill([
+                'password' => Hash::make($request->password),
+            ])->save();
+    
+            return redirect()->route('consultants.index')->with(
+                'success', __('Consultants Password successfully updated.')
+            );
 
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-
-            return redirect()->back()->with('error', $messages->first());
+          
+        } catch (Exception $e) {
+          
+            return $e->getMessage();
+          
         }
-
-        $user = User::where('id', $id)->first();
-        $user->forceFill([
-            'password' => Hash::make($request->password),
-        ])->save();
-
-        return redirect()->route('consultants.index')->with(
-            'success', 'Consultants Password successfully updated.'
-        );
 
     }
 
@@ -515,4 +537,127 @@ class ConsultantController extends Controller
         ]);
 
     }
+
+    public function get_company_details(Request $request,$id){
+
+        try {
+
+
+            $user=User::where('id',$id)->where('type','company')->first();
+
+            return view('consultants.view',compact('user'));
+          
+          
+        } catch (Exception $e) {
+          
+            return $e->getMessage();
+          
+        }
+        
+      
+
+    }
+
+    public function seach_result(Request $request){
+
+        try {
+
+            $searchValue = $request['q'];
+
+            if($request->filled('q')){
+                $userlist = User::search($searchValue)
+                                ->where('type','consultant')
+                                ->orderBy('name','ASC')
+                                ->get();
+                
+            }
+
+            $userData = array();
+            if(count($userlist) > 0){
+                foreach($userlist as $task){
+                    $setUser = [
+                        'id' => $task->id,
+                        'name' => $task->name,
+
+                    ];
+                    $userData[] = $setUser;
+                }
+            }
+
+            echo json_encode($userData);
+          
+    
+        } catch (Exception $e) {
+          
+              return $e->getMessage();
+          
+        }
+
+       
+    }
+
+    public function invite_consultant(Request $request){
+
+        try {
+
+
+              return view('consultants.invite');
+          
+          
+        } catch (Exception $e) {
+          
+            
+          
+              return $e->getMessage();
+          
+        }
+        
+       
+
+    }
+
+
+    public function store_invitation_status(Request $request){
+       
+        try {
+
+  
+            $consulantid = explode(',', $request->consulant_id);
+
+            foreach($consulantid as $cid){
+    
+                $requested_date = Config::get('constants.TIMESTUMP');
+                $createConnection = ConsultantCompanies::create([
+                    "company_id"=>\Auth::user()->creatorId(),
+                    'consultant_id'=>$cid,
+                    'requested_date'=>$requested_date,
+                    'status'=>'requested'
+                ]);
+                $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
+                $userArr = [
+                    'invite_link' => $inviteUrl,
+                    'user_name' => \Auth::user()->name,
+                    'company_name' => \Auth::user()->company_name,
+                    'email' => \Auth::user()->email,
+                ];
+    
+                Utility::sendEmailTemplate('invite_consultant', [$cid => \Auth::user()->email], $userArr);
+            
+            }
+
+                return redirect()->route('consultants.index')
+                             ->with('success', __('Consultant Invitation Sent Successfully.'));
+   
+    
+        } catch (Exception $e) {
+          
+               return $e->getMessage();
+          
+        }
+
+       
+
+    }
+
+
 }

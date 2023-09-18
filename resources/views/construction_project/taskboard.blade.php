@@ -266,7 +266,7 @@
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Summary Status</label>
                                                                         <select type="text"
-                                                                        class="form-selectmain_task_status"
+                                                                        class="form-select main_task_status"
                                                                         placeholder="Task Status"
                                                                         id="main_task-status" value="">
                                                                             <option value="">Select Status</option>
@@ -504,7 +504,8 @@
             user_id_arr.push(obj.id);
         });
 
-        alltask(start_date,end_date,user_id_arr,status_task);
+
+        alltask(start_date,end_date,user_id_arr,status_task,task_id_arr);
     }
 
     function maintask(start_date,end_date,status_task,task_id_arr){
