@@ -3980,6 +3980,28 @@ Route::get(
     ]
 );
 Route::get(
+    '/project/{id}/activities', [
+        'as' => 'project.activities',
+        'uses' => 'ProjectController@projectActivities',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    '/project/{id}/teammembers', [
+        'as' => 'project.teammembers',
+        'uses' => 'ProjectController@projectTeamMembers',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
     '/project/{id}/timesheet/create', [
         'as' => 'timesheet.create',
         'uses' => 'TimesheetController@timesheetCreate',

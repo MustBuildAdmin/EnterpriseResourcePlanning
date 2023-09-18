@@ -100,6 +100,7 @@ class Utility extends Model
             'employee_warning' => '1',
             'warning_send' => '1',
             'create_contract' => '1',
+            'create_sub_contract' => '1',
             'employee_termination' => '1',
             'termination_send' => '1',
             'leave_status' => '1',
@@ -242,6 +243,7 @@ class Utility extends Model
             'employee_warning' => '1',
             'warning_send' => '1',
             'create_contract' => '1',
+            'create_sub_contract'=>'1',
             'employee_termination' => '1',
             'termination_send' => '1',
             'leave_status' => '1',
@@ -332,6 +334,7 @@ class Utility extends Model
         'vender_bill_send' => 'Vendor Bill Send',
         'warning_send' => 'Warning Send',
         'create_contract' => 'Create Contract',
+        'create_sub_contract'=>'Create Sub Contract',
     ];
 
     public static function languages()
