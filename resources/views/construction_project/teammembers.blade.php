@@ -57,7 +57,8 @@
                 url: '{{ route('project.user') }}',
                 data: {project_id: project_id},
                 beforeSend: function () {
-                    $('#project_users').html('<tr><th colspan="2" class="h6 text-center pt-5">{{__('Loading...')}}</th></tr>');
+                    $('#project_users')
+                    .html('<tr><th colspan="2" class="h6 text-center pt-5">{{__('Loading...')}}</th></tr>');
                 },
                 success: function (data) {
                     mainEle.html(data.html);

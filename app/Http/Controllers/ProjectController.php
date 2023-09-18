@@ -656,44 +656,38 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function projectActivities(Request $request, $project_id){
-        if (\Auth::user()->can('view project')) {
            
-            $project=Project::where(['id'=>$project_id])->first();
-            $usr = Auth::user();
-            if (\Auth::user()->type == 'client') {
-                $user_projects = Project::where('client_id', \Auth::user()->id)->pluck('id', 'id')->toArray();
-            } else {
-                $user_projects = $usr->projects->pluck('id')->toArray();
-            }
-            if (in_array($project->id, $user_projects)) {
+        $project=Project::where(['id'=>$project_id])->first();
+        $usr = Auth::user();
+        if (\Auth::user()->type == 'client') {
+            $user_projects = Project::where('client_id', \Auth::user()->id)->pluck('id', 'id')->toArray();
+        } else {
+            $user_projects = $usr->projects->pluck('id')->toArray();
+        }
+        if (in_array($project->id, $user_projects)) {
 
-                return view('construction_project.activities', compact('project'));
-            } else {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
+            return view('construction_project.activities', compact('project'));
         } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
+       
     }
     public function projectTeamMembers(Request $request, $project_id){
-        if (\Auth::user()->can('view project')) {
            
-            $project=Project::where(['id'=>$project_id])->first();
-            $usr = Auth::user();
-            if (\Auth::user()->type == 'client') {
-                $user_projects = Project::where('client_id', \Auth::user()->id)->pluck('id', 'id')->toArray();
-            } else {
-                $user_projects = $usr->projects->pluck('id')->toArray();
-            }
-            if (in_array($project->id, $user_projects)) {
+        $project=Project::where(['id'=>$project_id])->first();
+        $usr = Auth::user();
+        if (\Auth::user()->type == 'client') {
+            $user_projects = Project::where('client_id', \Auth::user()->id)->pluck('id', 'id')->toArray();
+        } else {
+            $user_projects = $usr->projects->pluck('id')->toArray();
+        }
+        if (in_array($project->id, $user_projects)) {
 
-                return view('construction_project.teammembers', compact('project'));
-            } else {
-                return redirect()->back()->with('error', __('Permission Denied.'));
-            }
+            return view('construction_project.teammembers', compact('project'));
         } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
+       
     }
     public function show(Project $project)
     {
