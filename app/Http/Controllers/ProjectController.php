@@ -1,7 +1,5 @@
-    <?php
-
+<?php
     namespace App\Http\Controllers;
-
     use App\Jobs\Projecttypetask;
     use App\Models\ActivityLog;
     use App\Models\Bug;
