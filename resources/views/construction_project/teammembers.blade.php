@@ -43,8 +43,6 @@
 @include('new_layouts.footer')
 
     <script>
-     
-
         $(document).ready(function () {
             loadProjectUser();
         });
