@@ -43,7 +43,8 @@
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
                 {{Form::label('email',__('Email'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                {{Form::text('email',null,array('id'=>'email','class'=>'form-control','required'=>'required', 'placeholder'=>'Email'))}}
+                {{Form::text('email',null,array('id'=>'email','class'=>'form-control','required'=>'required',
+                'placeholder'=>'Email'))}}
                 <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
                     <span class="text-danger">{{__('Email Already Exist!')}}</span>
                 </span>
@@ -100,10 +101,11 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group billing_city">
-                {{Form::label('billing_city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                {{Form::label('billing_city',__('City'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required', 'placeholder'=>'City',
-                    'oninput'=>'process(this)'))}}
+                    {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required', 
+                    'placeholder'=>'City','oninput'=>'process(this)'))}}
                 </div>
 
             </div>
@@ -111,7 +113,8 @@
 
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group billing_phone">
-                {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
                 {{Form::text('billing_phone',null,array('class'=>'form-control',
                 'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
                 'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
@@ -119,8 +122,10 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group billing_zip">
-                {{Form::label('billing_zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{Form::text('billing_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 'placeholder'=>'Zipcode'))}}
+                {{Form::label('billing_zip',__('Zip Code'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
+                {{Form::text('billing_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 
+                'placeholder'=>'Zipcode'))}}
 
             </div>
         </div>
@@ -176,11 +181,12 @@
 
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group shipping_city">
-                    {{Form::label('shipping_city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('shipping_city',__('City'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <div class="form-icon-user">
-                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required', 'placeholder'=>'City',
-                            'oninput'=>'process(this)'))}}
+                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required', 
+                            'placeholder'=>'City','oninput'=>'process(this)'))}}
                         </div>
                     </div>
                 </div>
@@ -197,8 +203,10 @@
 
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group shipping_zip">
-                    {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 'placeholder'=>'Zipcode'))}}
+                    {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
+                    {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 
+                    'placeholder'=>'Zipcode'))}}
                 </div>
             </div> 
 

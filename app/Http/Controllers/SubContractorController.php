@@ -49,7 +49,7 @@ class SubContractorController extends Controller
                 $users = Vender::where([
                     ['name', '!=', null],
                     [function ($query) use ($request) {
-                        if (($s = $request->search)) {
+                        if ($s = $request->search) {
                             $user = \Auth::user();
                             $query->orWhere('name', 'LIKE', '%'.$s.'%')
                                 ->get();
@@ -103,7 +103,7 @@ class SubContractorController extends Controller
             $users = User::where([
                 ['name', '!=', null],
                 [function ($query) use ($request) {
-                    if (($s = $request->search)) {
+                    if ($s = $request->search) {
                         $user = \Auth::user();
                         $query->orWhere('name', 'LIKE', '%'.$s.'%')
                             ->get();
