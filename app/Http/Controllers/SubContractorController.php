@@ -35,7 +35,7 @@ class SubContractorController extends Controller
                 $users = Vender::where([
                     ['name', '!=', null],
                     [function ($query) use ($request) {
-                        if (($s = $request->search)) {
+                        if ($s = $request->search) {
                             $query->orWhere('name', 'LIKE', '%'.$s.'%')
                                 ->get();
                         }

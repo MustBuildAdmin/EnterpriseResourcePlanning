@@ -124,9 +124,8 @@
             <div class="form-group billing_zip">
                 {{Form::label('billing_zip',__('Zip Code'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
-                {{Form::text('billing_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 
+                {{Form::text('billing_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required',
                 'placeholder'=>'Zipcode'))}}
-
             </div>
         </div>
         <div class="col-md-12">
@@ -185,7 +184,7 @@
                     <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <div class="form-icon-user">
-                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required', 
+                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required',
                             'placeholder'=>'City','oninput'=>'process(this)'))}}
                         </div>
                     </div>
@@ -194,7 +193,8 @@
 
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group shipping_phone">
-                    {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     {{Form::text('shipping_phone',null,array('class'=>'form-control',
                     'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
                     'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
@@ -205,10 +205,10 @@
                 <div class="form-group shipping_zip">
                     {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
-                    {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required', 
+                    {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required',
                     'placeholder'=>'Zipcode'))}}
                 </div>
-            </div> 
+            </div>
 
             <div class="col-md-12">
                 <div class="form-group shipping_address">
