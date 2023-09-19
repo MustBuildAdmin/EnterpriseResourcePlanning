@@ -720,7 +720,7 @@ namespace App\Http\Controllers;
                         ->count();
 
                     return view(
-                        "construction_project.dashboard",
+                        "construction_project.construction_dashboard",
                         compact(
                             "project",
                             "ongoing_task",
