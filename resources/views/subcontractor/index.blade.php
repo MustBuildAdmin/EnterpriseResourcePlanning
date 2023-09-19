@@ -158,20 +158,7 @@
                 </div>
             </div>
         </div>
-        <div class="empty">
-            <p class="empty-title"> {{ __('Invite a Sub Contractor') }}</p>
-            <p class="empty-subtitle text-secondary">
-                {{ __('No Sub Contractor are available for the project,please click below to invite Sub Contractor') }}
-            </p>
-            <div class="empty-action">
-                <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
-                    data-url="{{ route('subContractor.invite_subContractor') }}" data-ajax-popup="true"
-                    data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
-                    data-bs-original-title="{{ __('Invite Sub Contractor') }}">
-                    {{ __('Invite a Sub Contractor') }}
-                </a>
-            </div>
-        </div>
+      
         <div class="row row-cards">
             @forelse($users as $user)
                 <div class="col-md-6 col-lg-3">
@@ -264,19 +251,20 @@
                     </div>
                 </div>
             @empty
-                <div class="page-body">
-                    <div class="container-xl d-flex flex-column justify-content-center">
-                        <div class="empty">
-                            <div class="empty-img">
-                                <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}"
-                                    height="128" alt="">
-                            </div>
-                            <p class="empty-title">
-                                {{ __('No Sub Contractor Found') }}
-                            </p>
-                        </div>
-                    </div>
+            <div class="empty">
+                <p class="empty-title"> {{ __('Invite a Sub Contractor') }}</p>
+                <p class="empty-subtitle text-secondary">
+                    {{ __('No Sub Contractor are available for the project,please click below to invite Sub Contractor') }}
+                </p>
+                <div class="empty-action">
+                    <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
+                        data-url="{{ route('subContractor.invite_subContractor') }}" data-ajax-popup="true"
+                        data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
+                        data-bs-original-title="{{ __('Invite Sub Contractor') }}">
+                        {{ __('Invite a Sub Contractor') }}
+                    </a>
                 </div>
+            </div>
             @endforelse
             <div class="d-flex mt-4">
                 <ul class="pagination ms-auto">
@@ -301,9 +289,9 @@
         $temp.val(copy_email).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.info("Copying to clipboard was successful!");
+        toastr.info("{{ __('Email copying to clipboard was successfull!')}}");
     }
-
+   
     function copyToClipboardphone(element) {
         var $temp = $("<input>");
         $("body").append($temp);
@@ -311,7 +299,7 @@
         $temp.val(copy_phone).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.success("Copying to clipboard was successful!");
+        toastr.success("{{ __('Mobile copying to clipboard was successfull!')}}");
     }
 
     $(document).on('keypress',

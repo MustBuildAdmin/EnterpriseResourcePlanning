@@ -247,20 +247,7 @@ body {
 			 </div>
 		  </div>
 	   </div>
-	   <div class="empty">
-		  <p class="empty-title"> {{__('Invite a Consultant')}}</p>
-		  <p class="empty-subtitle text-secondary">
-			{{__('No Consultant are available for the project,please click below to invite consultant')}}
-		  </p>
-		  <div class="empty-action">
-			 <a class="btn btn-primary" data-bs-toggle="modal"  data-size="lg"
-			  data-url="{{ route('consultant.invite_consultant') }}"
-			  data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Invite Consultant')}}"
-			  data-bs-original-title="{{__('Invite Consultant')}}">
-			 {{__('Invite a Consultant')}}
-			 </a>
-		  </div>
-	   </div>
+	  
 	   <div class="row row-cards">
 		@forelse($users as $user)
 		  <div class="col-md-6 col-lg-3">
@@ -345,19 +332,20 @@ body {
 			 </div>
 		  </div>
 		  @empty
-		  <div class="page-body">
-			<div class="container-xl d-flex flex-column justify-content-center">
-			  <div class="empty">
-				<div class="empty-img">
-				  <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}"
-				    height="128" alt="">
-				</div>
-				<p class="empty-title">
-				  {{__('No Consultants Found')}}
-				</p>
-			  </div>
+		  <div class="empty">
+			<p class="empty-title"> {{__('Invite a Consultant')}}</p>
+			<p class="empty-subtitle text-secondary">
+			  {{__('No Consultant are available for the project,please click below to invite consultant')}}
+			</p>
+			<div class="empty-action">
+			   <a class="btn btn-primary" data-bs-toggle="modal"  data-size="lg"
+				data-url="{{ route('consultant.invite_consultant') }}"
+				data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Invite Consultant')}}"
+				data-bs-original-title="{{__('Invite Consultant')}}">
+			   {{__('Invite a Consultant')}}
+			   </a>
 			</div>
-		  </div>
+		 </div>
 		  @endforelse
 		  <div class="d-flex mt-4">
 			<ul class="pagination ms-auto">
@@ -385,7 +373,7 @@ function copyToClipboard(element) {
   $temp.val(copy_email).select();
   document.execCommand("copy");
   $temp.remove();
-  toastr.info("Copying to clipboard was successful!");
+  toastr.info("{{ __('Email copying to clipboard was successfull!')}}");
 }
 function copyToClipboardphone(element) {
   var $temp = $("<input>");
@@ -394,7 +382,7 @@ function copyToClipboardphone(element) {
   $temp.val(copy_phone).select();
   document.execCommand("copy");
   $temp.remove();
-  toastr.success("Copying to clipboard was successful!");
+  toastr.info("{{ __('Mobile copying to clipboard was successfull!')}}");
 }
 
 $(document).on('keypress',
