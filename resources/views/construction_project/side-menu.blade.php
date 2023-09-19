@@ -327,8 +327,6 @@
                             </span>
                             <span class="nav-link-title"> {{ __('Holidays') }} </span></a>
                     </li>
-
-
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
