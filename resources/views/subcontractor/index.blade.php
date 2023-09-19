@@ -213,7 +213,8 @@
                         @php $short_lname=substr($user->lname, 0, 1); @endphp
                         <div class="card-body p-4 text-center">
                             @if (!empty($user->avatar))
-                                <img src="{{ !empty($user->avatar) ? $profile . $user->avatar : asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
+                                <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
+                                asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
                                     class="avatar avatar-xl mb-3 rounded" alt="">
                             @else
                                 <div class="avatar avatar-xl mb-3 user-initial"

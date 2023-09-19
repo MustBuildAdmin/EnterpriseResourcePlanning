@@ -104,7 +104,7 @@
                 {{Form::label('billing_city',__('City'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required', 
+                    {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required',
                     'placeholder'=>'City','oninput'=>'process(this)'))}}
                 </div>
 

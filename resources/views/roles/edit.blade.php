@@ -33,10 +33,17 @@
                     <a class="nav-link" id="pills-account-tab" data-bs-toggle="pill" href="#account" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Account')}}</a>
                 </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-consultant-tab" data-bs-toggle="pill" href="#consultant1" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Consultant')}}</a>
+                    <a class="nav-link" id="pills-consultant-tab" data-bs-toggle="pill" href="#consultant1" role="tab"
+                     aria-controls="pills-contact" aria-selected="false">
+                     {{__('Consultant')}}
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-sub_contractor-tab" data-bs-toggle="pill" href="#subContractor" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Sub Contractor')}}</a>
+                    <a class="nav-link" id="pills-sub_contractor-tab" data-bs-toggle="pill"
+                     href="#subContractor" role="tab" aria-controls="pills-contact"
+                      aria-selected="false">
+                      {{__('Sub Contractor')}}
+                    </a>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
