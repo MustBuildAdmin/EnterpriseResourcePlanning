@@ -146,8 +146,8 @@ namespace App\Http\Controllers;
                     if (\File::exists($imagepath)) {
                         \File::delete($imagepath);
                     }
-                    $url = "";
-                    $path = Utility::upload_file(
+                   
+                    Utility::upload_file(
                         $request,
                         "project_image",
                         $fileNameToStore1,
