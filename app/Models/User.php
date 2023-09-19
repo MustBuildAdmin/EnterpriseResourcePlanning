@@ -2711,18 +2711,19 @@ class User extends Authenticatable
 
     public function userDefaultDataRegister($user_id)
     {
+        if(UserEmailTemplate::where('user_id',$user_id)->where('is_active',1)->doesntExist()){
+            // Make Entry In User_Email_Template
+            $allEmail = EmailTemplate::all();
 
-        // Make Entry In User_Email_Template
-        $allEmail = EmailTemplate::all();
-
-        foreach ($allEmail as $email) {
-            UserEmailTemplate::create(
-                [
-                    'template_id' => $email->id,
-                    'user_id' => $user_id,
-                    'is_active' => 1,
-                ]
-            );
+            foreach ($allEmail as $email) {
+                UserEmailTemplate::create(
+                    [
+                        'template_id' => $email->id,
+                        'user_id' => $user_id,
+                        'is_active' => 1,
+                    ]
+                );
+            }
         }
     }
 

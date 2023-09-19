@@ -4276,8 +4276,77 @@ Route::any('invitation_status', 'ConsultantController@store_invitation_status')
     ]
 );
 
+Route::resource('subContractor', 'SubContractorController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
+Route::any('subContractorStore', 'SubContractorController@subContractorStore')
+->name('subContractorStore')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
+Route::any('invite_subContractor', 'SubContractorController@invite_subContractor')
+->name('subContractor.invite_subContractor')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('subContractor/edit/{id}/{color_code}', 'SubContractorController@edit')->name('subContractor.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subContractor-reset-password/{id}', 'SubContractorController@userPassword')->name('subContractor.reset');
+
+Route::any('subContractor-seach_result', 'SubContractorController@seach_result')
+->name('subContractor.seach_result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subContractor_invitation_status', 'SubContractorController@store_invitation_status')
+->name('subContractor.subContractor_invitation_status')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('check_duplicate_email_subcontractor', 'SubContractorController@check_duplicate_email_subcontractor')
+->name('check_duplicate_email_subcontractor')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('check_duplicate_mobile_subcontractor', 'SubContractorController@check_duplicate_mobile_subcontractor')
+->name('check_duplicate_mobile_subcontractor')
+->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 
 Route::resource('plans', 'PlanController')->middleware(
