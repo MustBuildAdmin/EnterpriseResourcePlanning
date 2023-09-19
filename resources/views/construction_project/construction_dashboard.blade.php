@@ -123,7 +123,7 @@
                   <div>Planned Percentage</div>
                   <div class="ms-auto">
                     <span class="text-blue d-inline-flex align-items-center lh-1">
-                    {{ round($current_Planed_percentage) }}% 
+                    {{ round($current_Planed_percentage) }}%
                     </span>
                   </div>
                 </div>
