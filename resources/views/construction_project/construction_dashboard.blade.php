@@ -128,7 +128,7 @@
                   </div>
                 </div>
                 <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage) }}%" 
+                  <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage) }}%"
                   role="progressbar" aria-valuenow="{{ round($current_Planed_percentage) }}"
                     aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
                     <span class="visually-hidden">75% Complete</span>
@@ -507,8 +507,8 @@
         labels: [
           '2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25',
            '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01',
-            '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', 
-            '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', 
+            '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07',
+            '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13',
             '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19'
         ],
         colors: [tabler.getColor("primary")],
