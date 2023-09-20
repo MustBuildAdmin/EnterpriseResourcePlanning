@@ -2710,8 +2710,8 @@
     "Consultant Invitation Sent Successfully.":"Consultant Invitation Sent Successfully.",
     "Call":"Call",
     "No Consultants Found":"No Consultants Found",
-    "Email copying to clipboard was successfull!":"Email copying to clipboard was successful!",
-    "Mobile copying to clipboard was successfull!":"Mobile copying to clipboard was successful!",
+    "Email Address Copied Successfully!":"Email Address Copied Successfully!",
+    "Mobile Number Copied Successfully!":"Mobile Number Copied Successfully!",
     "Update a Member":"Update a Member",
     "Create a Member":"Create a Member",
     "Invite Sub Contractor":"Invite Sub Contractor",
@@ -2722,5 +2722,6 @@
     "Creation of Sub Contractor":"Creation of Sub Contractor",
     "Information about Creation of Sub Contractor":"Information about Creation of Sub Contractor",
     "Invite a existing Sub Contractor":"Invite a existing Sub Contractor",
-    "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"No Sub Contractor are available for the project,please click below to invite Sub Contractor"
+    "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"No Sub Contractor are available for the project,please click below to invite Sub Contractor",
+    "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Sub Contractor created Successfully! Please Check Your Mail Inbox."
 }

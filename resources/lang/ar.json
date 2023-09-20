@@ -2728,8 +2728,8 @@
   "Consultant Invitation Sent Successfully.":"تم إرسال دعوة الاستشاري بنجاح.",
   "Call":"يتصل",
   "No Consultants Found":"لم يتم العثور على استشاريين",
-  "Email copying to clipboard was successfull!":"تم نسخ البريد الإلكتروني إلى الحافظة بنجاح!",
-  "Mobile copying to clipboard was successfull!":"تم النسخ على الهاتف المحمول إلى الحافظة بنجاح!",
+  "Email Address Copied Successfully!":"تم نسخ عنوان البريد الإلكتروني بنجاح",
+  "Mobile Number Copied Successfully!":"تم نسخ رقم الجوال بنجاح!",
   "Update a Member":"تحديث عضو",
   "Create a Member":"إنشاء عضو",
   "Invite Sub Contractor":"دعوة المقاول من الباطن",
@@ -2740,5 +2740,6 @@
   "Creation of Sub Contractor":"إنشاء المقاول من الباطن",
   "Information about Creation of Sub Contractor":"معلومات حول إنشاء المقاول من الباطن",
   "Invite a existing Sub Contractor":"قم بدعوة المقاول من الباطن الحالي",
-  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"لا يوجد مقاول من الباطن متاح للمشروع، يرجى النقر أدناه لدعوة المقاول من الباطن"
+  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"لا يوجد مقاول من الباطن متاح للمشروع، يرجى النقر أدناه لدعوة المقاول من الباطن",
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"تم إنشاء المقاول من الباطن بنجاح! يرجى التحقق من صندوق البريد الوارد الخاص بك."
  }

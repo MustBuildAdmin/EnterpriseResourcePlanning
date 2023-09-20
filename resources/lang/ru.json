@@ -2557,8 +2557,8 @@
   "Consultant Invitation Sent Successfully.":"Приглашение консультанта успешно отправлено.",
   "Call":"Вызов",
   "No Consultants Found":"Консультанты не найдены",
-  "Email copying to clipboard was successfull!":"Копирование электронной почты в буфер обмена прошло успешно!",
-  "Mobile copying to clipboard was successfull!":"Мобильное копирование в буфер обмена выполнено успешно!",
+  "Email Address Copied Successfully!":"Адрес электронной почты успешно скопирован!",
+  "Mobile Number Copied Successfully!":"Номер мобильного телефона успешно скопирован!",
   "Update a Member":"Обновить участника",
   "Create a Member":"Создать участника",
   "Invite Sub Contractor":"Пригласить субподрядчика",
@@ -2569,5 +2569,6 @@
   "Creation of Sub Contractor":"Создание субподрядчика",
   "Information about Creation of Sub Contractor":"Информация о создании субподрядчика",
   "Invite a existing Sub Contractor":"Пригласить существующего субподрядчика",
-  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Для проекта нет субподрядчика. Нажмите ниже, чтобы пригласить субподрядчика."
+  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Для проекта нет субподрядчика. Нажмите ниже, чтобы пригласить субподрядчика.",
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Субподрядчик успешно создан! Пожалуйста, проверьте свой почтовый ящик."
 }

@@ -2721,8 +2721,8 @@
   "Consultant Invitation Sent Successfully.":"Invitation de consultant envoyée avec succès.",
   "Call":"Appel",
   "No Consultants Found":"Aucun consultant trouvé",
-  "Email copying to clipboard was successfull!":"La copie de l'e-mail dans le presse-papiers a réussi !",
-  "Mobile copying to clipboard was successfull!":"La copie mobile dans le presse-papiers a réussi !",
+  "Email Address Copied Successfully!":"Adresse e-mail copiée avec succès !",
+  "Mobile Number Copied Successfully!":"Numéro de mobile copié avec succès !",
   "Update a Member":"Mettre à jour un membre",
   "Create a Member":"Créer un membre",
   "Invite Sub Contractor":"Inviter un sous-traitant",
@@ -2733,5 +2733,6 @@
   "Creation of Sub Contractor":"Création de sous-traitant",
   "Information about Creation of Sub Contractor":"Informations sur la création de sous-traitant",
   "Invite a existing Sub Contractor":"Inviter un sous-traitant existant",
-  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Aucun sous-traitant n'est disponible pour le projet, veuillez cliquer ci-dessous pour inviter le sous-traitant"
+  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Aucun sous-traitant n'est disponible pour le projet, veuillez cliquer ci-dessous pour inviter le sous-traitant",
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Sous-traitant créé avec succès ! Veuillez vérifier votre boîte de réception"
 }

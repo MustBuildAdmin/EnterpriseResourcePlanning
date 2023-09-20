@@ -2722,8 +2722,8 @@
   "Consultant Invitation Sent Successfully.":"コンサルタントへの招待状が正常に送信されました。",
   "Call":"電話",
   "No Consultants Found":"コンサルタントが見つかりませんでした",
-  "Email copying to clipboard was successfull!":"電子メールのクリップボードへのコピーが成功しました。",
-  "Mobile copying to clipboard was successfull!":"モバイルのクリップボードへのコピーが成功しました。",
+  "Email Address Copied Successfully!":"メールアドレスが正常にコピーされました。",
+  "Mobile Number Copied Successfully!":"携帯電話番号が正常にコピーされました。",
   "Update a Member":"メンバーを更新する",
   "Create a Member":"メンバーを作成する",
   "Invite Sub Contractor":"下請け業者を招待する",
@@ -2734,5 +2734,6 @@
   "Creation of Sub Contractor":"下請け会社の設立",
   "Information about Creation of Sub Contractor":"下請け会社の設立に関する情報",
   "Invite a existing Sub Contractor":"既存の下請け業者を招待する",
-  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"プロジェクトに利用できる下請け業者がいません。下請け業者を招待するには、下をクリックしてください"
+  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"プロジェクトに利用できる下請け業者がいません。下請け業者を招待するには、下をクリックしてください",
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"下請け業者が正常に作成されました。メールの受信箱を確認してください。"
 }
