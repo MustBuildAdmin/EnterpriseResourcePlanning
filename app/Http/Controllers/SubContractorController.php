@@ -334,6 +334,10 @@ class SubContractorController extends Controller
         }
     }
 
+    public function subContractorDashboard(Request $request){
+        return view('subcontractor.dashboard');
+    }
+
     public function venderNumber()
     {
         $latest = Vender::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();

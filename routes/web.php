@@ -4326,6 +4326,15 @@ Route::any('check_duplicate_mobile_subcontractor', 'SubContractorController@chec
     ]
 );
 
+Route::any('subContractorDashboard', 'SubContractorController@subContractorDashboard')
+->name('subContractorDashboard')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 
 Route::resource('plans', 'PlanController')->middleware(
     [
