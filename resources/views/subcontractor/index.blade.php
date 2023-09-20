@@ -256,7 +256,7 @@
                 <div class="empty">
                     <p class="empty-title"> {{ __('Invite a Sub Contractor') }}</p>
                     <p class="empty-subtitle text-secondary">
-                        {{ __('No Sub Contractor are available for the project,please click below to invite Sub Contractor') }}
+                    {{ __(Config::get('constants.NOSUB')) }}
                     </p>
                     <div class="empty-action">
                         <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"

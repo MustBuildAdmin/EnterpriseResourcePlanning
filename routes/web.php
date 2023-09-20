@@ -60,7 +60,8 @@ Route::get('/company-invitation-consultant/{id}','ConsultantController@createCon
 Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@submitConnection')->middleware('guest');
 
 Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
-Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')->middleware('guest');
+Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
+->middleware('guest');
 
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
@@ -4308,7 +4309,8 @@ Route::any('subContractorStore', 'SubContractorController@subContractorStore')
     ]
 );
 
-Route::any('update_subContractor/{id}', 'SubContractorController@update_subContractor')->name('subContractor.update_subContractor')
+Route::any('update_subContractor/{id}', 'SubContractorController@update_subContractor')
+->name('subContractor.update_subContractor')
 ->middleware(
     [
         'auth',

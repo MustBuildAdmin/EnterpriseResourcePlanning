@@ -93,7 +93,7 @@
                                     </div>
                                 @endif
                                 @php
-									$name = strlen($user->name) > 20 ? substr($user->name, 0, 19) . '...' : $user->name; 
+									$name = strlen($user->name) > 20 ? substr($user->name, 0, 19) . '...' : $user->name;
 								@endphp
                                 <h3 class="m-0 mb-1">
                                     <a href="#">{{ $name }}</a>

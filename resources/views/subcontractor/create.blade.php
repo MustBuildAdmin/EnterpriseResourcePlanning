@@ -197,7 +197,7 @@
                                 @endforeach
                         </select>
                     </div>
-                </div>  
+                </div>
             </div>
 
             <div class="col-lg-4 col-md-4 col-sm-6">
