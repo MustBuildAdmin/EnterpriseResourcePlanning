@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Exports\task_reportExport;
 use App\Jobs\Reportemail;
 use App\Models\Con_task;

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Activity;
 use App\Models\ActivityLog;
 use App\Models\Email;
