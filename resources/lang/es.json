@@ -2722,8 +2722,17 @@
   "Consultant Invitation Sent Successfully.":"Invitación de consultor enviada exitosamente.",
   "Call":"Llamar",
   "No Consultants Found":"No se encontraron consultores",
-  "Email copying to clipboard was successful!":"¡La copia del correo electrónico al portapapeles fue exitosa!",
-  "Mobile copying to clipboard was successful!":"¡La copia móvil al portapapeles fue exitosa!",
+  "Email copying to clipboard was successfull!":"¡La copia del correo electrónico al portapapeles fue exitosa!",
+  "Mobile copying to clipboard was successfull!":"¡La copia móvil al portapapeles fue exitosa!",
   "Update a Member":"Actualizar un miembro",
-  "Create a Member":"Crear un miembro"
+  "Create a Member":"Crear un miembro",
+  "Invite Sub Contractor":"Invitar al subcontratista",
+  "Search a Sub Contractor":"Buscar un subcontratista",
+  "Sub Contractor of the Organisation":"Subcontratista de la Organización",
+  "Invite a Sub Contractor":"Invitar a un subcontratista",
+  "Create a Sub Contractor":"Crear un subcontratista",
+  "Creation of Sub Contractor":"Creación de Subcontratista",
+  "Information about Creation of Sub Contractor":"Información sobre Creación de Subcontratista",
+  "Invite a existing Sub Contractor":"Invitar a un subcontratista existente",
+  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"No hay ningún subcontratista disponible para el proyecto; haga clic a continuación para invitar al subcontratista"
 }

@@ -2721,8 +2721,17 @@
   "Consultant Invitation Sent Successfully.":"Konsulentinvitation sendt.",
   "Call":"Opkald",
   "No Consultants Found":"Ingen konsulenter fundet",
-  "Email copying to clipboard was successful!":"Kopiering af e-mail til udklipsholder lykkedes!",
-  "Mobile copying to clipboard was successful!":"Mobilkopiering til udklipsholder var vellykket!",
+  "Email copying to clipboard was successfull!":"Kopiering af e-mail til udklipsholder lykkedes!",
+  "Mobile copying to clipboard was successfull!":"Mobilkopiering til udklipsholder var vellykket!",
   "Update a Member":"Opdater et medlem",
-  "Create a Member":"Opret et medlem"
+  "Create a Member":"Opret et medlem",
+  "Invite Sub Contractor":"Inviter underleverandør",
+  "Search a Sub Contractor":"Søg efter en underleverandør",
+  "Sub Contractor of the Organisation":"Organisationens underleverandør",
+  "Invite a Sub Contractor":"Inviter en underleverandør",
+  "Create a Sub Contractor":"Opret en underleverandør",
+  "Creation of Sub Contractor":"Oprettelse af underleverandør",
+  "Information about Creation of Sub Contractor":"Information om oprettelse af underleverandør",
+  "Invite a existing Sub Contractor":"Inviter en eksisterende underleverandør",
+  "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Ingen underleverandør er tilgængelig for projektet, klik venligst nedenfor for at invitere underleverandør"
 }

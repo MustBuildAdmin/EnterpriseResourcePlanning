@@ -367,9 +367,26 @@ class ConsultantController extends Controller
 
     }
 
+    public function validationUpdateConsultant($request,$id){
+        $validation = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+        ];
+
+        $validator = \Validator::make($request->all(), $validation);
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
+
+            return redirect()->back()->with('error', $messages->first());
+        }
+        else{
+            return true;
+        }
+    }
+
     public function update(Request $request, $id)
     {
-
+        $this->validationUpdateConsultant($request,$id);
         $user = User::findOrFail($id);
         $fileNames = $this->upload($request);
 
@@ -379,7 +396,6 @@ class ConsultantController extends Controller
             'email' => $request->email,
             'type' => 'consultant',
             'gender' => $request->gender,
-            'password' => Hash::make($request->password),
             'lang' => Utility::getValByName('default_language'),
             'country' => $request->country,
             'state' => $request->state,
@@ -407,6 +423,7 @@ class ConsultantController extends Controller
     public function update_consultant(Request $request, $id)
     {
 
+        $this->validationUpdateConsultant($request,$id);
         $user = User::findOrFail($id);
         $fileNames = $this->upload($request);
 

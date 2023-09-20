@@ -1,4 +1,10 @@
-{{Form::open(array('url'=>"subContractorStore",'method'=>'post','id'=>'subcontractorCreate'))}}
+@if(\Auth::user()->type == 'super admin')
+    @php $url='subContractorStore' @endphp
+@else
+    @php $url='save_subContractor' @endphp
+@endif
+{{Form::open(array('url'=>"subContractorStore",'method'=>'post','id'=>'subcontractorCreate',
+'enctype'=>"multipart/form-data"))}}
 <style>
     .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address, .billing_city, .shipping_city, 
     .billing_address {
@@ -27,6 +33,16 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
+                {{Form::label('lnamelabel',__('Last Name'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                <div class="form-icon-user">
+                    {{Form::text('lname',null,array('class'=>'form-control','required'=>'required',
+                    'placeholder'=>'Last Name'))}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="form-group">
                 {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{Form::text('contact',null,array('id'=>'phone','class'=>'form-control',
@@ -52,10 +68,21 @@
         </div>
 
         <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group tax_number">
+            <div class="form-group">
                 {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 {{Form::number('tax_number',null,array('class'=>'form-control','maxlength'=>'20','required'=>'required',
                 'placeholder'=>'Tax number'))}}
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            <div class="form-group">
+                {{Form::label('avatar',__('Profile Image'),array('class'=>'form-label')) }}
+                <div class="form-icon-user">
+                    <input type="file" class="form-control document_setup" id="avatar"  name="avatar"
+                     accept="image/*, .png, .jpeg, .jpg">
+                </div>
+                <span class="show_document_error" style="color:red;"></span>
             </div>
         </div>
         @if(!$customFields->isEmpty())
@@ -288,9 +315,9 @@
     $(document).ready(function(){
         $(document).on("keyup", '#email', function () {
             $.ajax({
-                url : '{{ route("check_duplicate_email_subcontractor") }}',
+                url : '{{ route("check_duplicate_email") }}',
                 type : 'GET',
-                data : { 'getname' : $("#email").val(),'formname' : "Venders" },
+                data : { 'getname' : $("#email").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#create_subcontractor").prop('disabled',false);
@@ -310,9 +337,9 @@
 
         $(document).on("keyup", '#phone', function () {
             $.ajax({
-                url : '{{ route("check_duplicate_mobile_subcontractor") }}',
+                url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
-                data : { 'getname' : $("#phone").val(),'formname' : "Venders" },
+                data : { 'getname' : $("#phone").val(),'formname' : "Users" },
                 success : function(data) {
                     if(data == 1){
                         $("#create_subcontractor").prop('disabled',false);
