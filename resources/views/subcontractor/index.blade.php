@@ -56,110 +56,7 @@
     $profile = \App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 <div class="container-fluid ">
-    <div class="modal modal-blur fade" id="create-subcontractor" tabindex="-1" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create a Sub Contractor</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <div class="row row-cards">
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">First Name</label>
-                                    <input type="text" class="form-control" placeholder="Company" value="Chet">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" placeholder="Last Name" value="Faker">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Email address</label>
-                                    <input type="email" class="form-control" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Gender</label>
-                                    <select class="form-control form-select">
-                                        <option value="">Male</option>
-                                        <option value="">Female</option>
-                                        <option value="">Others</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Country</label>
-                                    <select class="form-control form-select">
-                                        <option value="">Male</option>
-                                        <option value="">Female</option>
-                                        <option value="">Others</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">City</label>
-                                    <select class="form-control form-select">
-                                        <option value="">Male</option>
-                                        <option value="">Female</option>
-                                        <option value="">Others</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">City</label>
-                                    <input type="text" class="form-control" placeholder="City" value="Melbourne">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Postal Code</label>
-                                    <input type="test" class="form-control" placeholder="ZIP Code">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Mobile Number</label>
-                                    <input type="text" name="input-mask" class="form-control"
-                                        data-mask="(00) 0000-0000" data-mask-visible="true"
-                                        placeholder="(00) 0000-0000"autocomplete="off" />
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Profile Picture</label>
-                                    <input type="file" />
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="mb-3 mb-0">
-                                    <label class="form-label">Address</label>
-                                    <textarea rows="5" class="form-control" placeholder="Here can be your Address" value="Mike"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Close') }}</button>
-                    <button type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">{{ __('Create a Member') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal modal-blur fade" id="info-subcontractor" tabindex="-1" style="display: none;"
-        aria-hidden="true">
+    <div class="modal modal-blur fade" id="info-subcontractor" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -170,19 +67,19 @@
                     <h3>{{ __('Creation of Sub Contractor') }}</h3>
                     <p>
                         {{ __('As per Create of Sub Contractor ,we are creating them
-                                globally but the invite payment is done only for your companies access over
-                                the project which you provide to them with your knowledge and we are not
-                                sharing any kind of other information to them about the projects in secert
-                                or in public or in mediuim of transfer.') }}
+                            globally but the invite payment is done only for your companies access over
+                            the project which you provide to them with your knowledge and we are not
+                            sharing any kind of other information to them about the projects in secert
+                            or in public or in mediuim of transfer.') }}
                     </p>
                     <hr />
                     <h3>{{ __('Invite a existing Sub Contractor') }}</h3>
                     <p>
                         {{ __('As per the Inviting exiting Sub Contractor which is already in the
-                                platform gloabally invite payment done only for your companies access over the
-                                project which you provide to them with your knowledge and we are not sharing
-                                any kind of other information to them about the projects in secert or in
-                                public or in mediuim of transfer.') }}
+                            platform gloabally invite payment done only for your companies access over the
+                            project which you provide to them with your knowledge and we are not sharing
+                            any kind of other information to them about the projects in secert or in
+                            public or in mediuim of transfer.') }}
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -199,7 +96,7 @@
                     <div class="col-5">
                         <div class="mb-3">
                             <div class="row g-2">
-                                <form action="{{ route('subcontractor.index') }}" method="GET">
+                                <form action="{{ route('subContractor.index') }}" method="GET">
                                     <div class="input-group">
                                         {{ Form::text('search', isset($_GET['search']) ? $_GET['search'] : '', [
                                             'class' => 'form-control d-inline-block w-9 me-3 mt-auto',
@@ -232,7 +129,7 @@
                         </a>
                     </div>
                     <div class="col-3">
-                        <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="lg"
+                        <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
                             data-url="{{ route('subContractor.create') }}" data-ajax-popup="true"
                             data-bs-toggle="tooltip" title="{{ __('Create New Sub Contractor') }}"
                             data-bs-original-title="{{ __('Create a Sub Contractor') }}">
@@ -243,8 +140,8 @@
                         <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information"
                             data-bs-toggle="modal" data-bs-target="#info-subcontractor">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path
                                     d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555
@@ -274,10 +171,10 @@
                             <div class="dropdown">
                                 <a class="dropdown-toggle user-card-dropdown text-secondary" href="#"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-menu-2" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M4 6l16 0"></path>
                                         <path d="M4 12l16 0"></path>
@@ -285,7 +182,7 @@
                                     </svg>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item active" href="#" data-size="lg"
+                                    <a class="dropdown-item active" href="#" data-size="xl"
                                         data-url="{{ route('subContractor.edit.new', [$user->id, $color_co]) }}"
                                         data-ajax-popup="true" class="dropdown-item"
                                         data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}</a>
@@ -409,18 +306,18 @@
         });
 
     $(document).on('change', '.document_setup',
-        function() {
-            var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
-            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                $(".show_document_file").hide();
-                $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
-                $('input[type="submit"]').prop('disabled', true);
-                return false;
-            } else {
-                $(".show_document_file").show();
-                $(".show_document_error").hide();
-                $('input[type="submit"]').prop('disabled', false);
-                return true;
-            }
-        });
+    function() {
+        var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            $(".show_document_file").hide();
+            $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+            $('input[type="submit"]').prop('disabled', true);
+            return false;
+        } else {
+            $(".show_document_file").show();
+            $(".show_document_error").hide();
+            $('input[type="submit"]').prop('disabled', false);
+            return true;
+        }
+    });
 </script>

@@ -13,6 +13,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\Utility;
 use Carbon\Carbon;
+use App\Models\SubContractorCompanies;
 use Config;
 use Exception;
 use Illuminate\Http\Request;
@@ -60,20 +61,189 @@ class SubContractorController extends Controller
 
     public function create(Request $request)
     {
-        $customFields = CustomField::where('created_by', '=', \Auth::user()
-                ->creatorId())
-            ->where('module', '=', 'user')
-            ->get();
-        $user = \Auth::user();
-        $gender = ['male' => 'Male', 'female' => 'Female', 'other' => 'Other'];
-        
         if (\Auth::user()->can('create sub contractor')) {
+            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())
+                ->where('module', '=', 'subcontractor')->get();
             $country = Utility::getcountry();
 
-            return view('subContractor.create', compact('gender', 'customFields',
-                'country'));
+            return view('subContractor.create', compact('customFields','country'));
         } else {
             return redirect()->back();
+        }
+    }
+
+    public function subContractorStore(Request $request){
+        $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+        $fileNames       = $this->upload($request);
+        $psw             = $request->password;
+
+        $user                     = new User();
+        $user['name']             = $request->name;
+        $user['lname']            = $request->lname;
+        $user['email']            = $request->email;
+        $user['password']         = Hash::make($request->password);
+        $user['type']             = 'sub_contractor';
+        $user['default_pipeline'] = 1;
+        $user['plan']             = 1;
+        $user['lang']             = ! empty($defaultlanguage) ? $defaultlanguage->value : '';
+        $user['created_by']       = \Auth::user()->creatorId();
+        $user['phone']            = $request->contact;
+        $user['tax_number']       = $request->tax_number;
+        $user['color_code']       = $request->color_code;
+        $user['billing_name']     = $request->billing_name;
+        $user['billing_country']  = $request->billing_country;
+        $user['billing_state']    = $request->billing_state;
+        $user['billing_city']     = $request->billing_city;
+        $user['billing_phone']    = $request->billing_phone;
+        $user['billing_zip']      = $request->billing_zip;
+        $user['billing_address']  = $request->billing_address;
+        $user['shipping_name']    = $request->shipping_name;
+        $user['shipping_country'] = $request->shipping_country;
+        $user['shipping_state']   = $request->shipping_state;
+        $user['shipping_city']    = $request->shipping_city;
+        $user['shipping_phone']   = $request->shipping_phone;
+        $user['shipping_zip']     = $request->shipping_zip;
+        $user['shipping_address'] = $request->shipping_address;
+        $user['color_code']       = $request->color_code;
+
+        if (isset($fileNames)) {
+            $user['avatar'] = $fileNames;
+        }
+
+        $user->save();
+        $role_r = Role::findByName('sub_contractor');
+        $user->assignRole($role_r);
+        $user->userDefaultDataRegister($user->id);
+        $user->userWarehouseRegister($user->id);
+        Utility::chartOfAccountTypeData($user->id);
+        Utility::chartOfAccountData1($user->id);
+        Utility::pipeline_lead_deal_Stage($user->id);
+        Utility::project_task_stages($user->id);
+        Utility::labels($user->id);
+        Utility::sources($user->id);
+        Utility::jobStage($user->id);
+        GenerateOfferLetter::defaultOfferLetterRegister($user->id);
+        ExperienceCertificate::defaultExpCertificatRegister($user->id);
+        JoiningLetter::defaultJoiningLetterRegister($user->id);
+        NOC::defaultNocCertificateRegister($user->id);
+        $requested_date = Config::get('constants.TIMESTUMP');
+        $createConnection = SubContractorCompanies::create([
+            "company_id"=>\Auth::user()->creatorId(),
+            'sub_contractor_id'=>$user->id,
+            'requested_date'=>$requested_date,
+            'status'=>'requested'
+        ]);
+        $inviteUrl=url('').Config::get('constants.INVITATION_URL_subcontractor').$createConnection->id;
+        $userArr = [
+            'invite_link' => $inviteUrl,
+            'user_name' => \Auth::user()->name,
+            'company_name' => \Auth::user()->company_name,
+            'email' => \Auth::user()->email,
+        ];
+        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
+           
+
+        $setings = Utility::settings();
+
+        if ($setings['create_sub_contractor'] == 1) {
+            $user->password = $psw;
+            $user->type = $role_r->name;
+
+            $userArr = [
+                'email' => $user->email,
+                'password' => $user->password,
+            ];
+            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+
+        }
+
+        return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+    }
+
+    public function normal_store(Request $request)
+    {
+        $fileNames = $this->upload($request);
+        $objUser   = \Auth::user()->creatorId();
+        $objUser   = User::find($objUser);
+        $user      = User::find(\Auth::user()->created_by);
+        $totaluser = $objUser->countUsers();
+        $plan      = Plan::find($objUser->plan);
+        if ($totaluser < $plan->max_users || $plan->max_users == -1) {
+
+            $psw = $request->password;
+
+            if ($fileNames != null) {
+                $avatar = $fileNames;
+            } else {
+                $avatar = null;
+            }
+
+            $user = User::create(
+                [
+                    'name'             => $request->name,
+                    'lname'            => $request->lname,
+                    'email'            => $request->email,
+                    'password'         => Hash::make($request->password),
+                    'type'             => 'sub_contractor',
+                    'lang'             => Utility::getValByName('default_language'),
+                    'created_by'       => \Auth::user()->creatorId(),
+                    'phone'            => $request->contact,
+                    'avatar'           => $avatar,
+                    'color_code'       => $request->color_code,
+                    'tax_number'       => $request->tax_number,
+                    'billing_name'     => $request->billing_name,
+                    'billing_country'  => $request->billing_country,
+                    'billing_state'    => $request->billing_state,
+                    'billing_city'     => $request->billing_city,
+                    'billing_phone'    => $request->billing_phone,
+                    'billing_zip'      => $request->billing_zip,
+                    'billing_address'  => $request->billing_address,
+                    'shipping_name'    => $request->shipping_name,
+                    'shipping_country' => $request->shipping_country,
+                    'shipping_state'   => $request->shipping_state,
+                    'shipping_city'    => $request->shipping_city,
+                    'shipping_phone'   => $request->shipping_phone,
+                    'shipping_zip'     => $request->shipping_zip,
+                    'shipping_address' => $request->shipping_address,
+                ]
+            );
+            $roler = Role::findByName('sub_contractor');
+            $user->assignRole($roler);
+            $user->userDefaultDataRegister($user->id);
+        }
+
+        $setings = Utility::settings();
+        $requested_date = Config::get('constants.TIMESTUMP');
+        $createConnection = SubContractorCompanies::create([
+            "company_id" => \Auth::user()->creatorId(),
+            'sub_contractor_id' => $user->id,
+            'requested_date' => $requested_date,
+            'status' => 'requested',
+        ]);
+        $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createConnection->id;
+        $userArr = [
+            'invite_link' => $inviteUrl,
+            'user_name' => \Auth::user()->name,
+            'company_name' => \Auth::user()->company_name,
+            'email' => \Auth::user()->email,
+        ];
+        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
+
+        if ($setings['create_sub_contractor'] == 1) {
+            $user->password = $psw;
+            $user->type = 'sub_contractor';
+
+            $userArr = [
+                'email' => $user->email,
+                'password' => $user->password,
+            ];
+
+            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+
+            return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+        }
+        else {
+            return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
         }
     }
 
@@ -204,134 +374,59 @@ class SubContractorController extends Controller
         return view('subcontractor.invitation', compact('checkConnection', 'companyDetails', 'msg'));
     }
 
-    public function normal_store(Request $request)
-    {
-        $fileNames = $this->upload($request);
-        $objUser = \Auth::user()->creatorId();
-        $objUser = User::find($objUser);
-        $user = User::find(\Auth::user()->created_by);
-        $totaluser = $objUser->countUsers();
-        $plan = Plan::find($objUser->plan);
-        if ($totaluser < $plan->max_users || $plan->max_users == -1) {
-
-            $psw = $request->password;
-
-            if ($fileNames != null) {
-                $avatar = $fileNames;
-            } else {
-                $avatar = null;
-            }
-
-            $user = User::create(
-                [
-                    'name' => $request->name,
-                    'lname' => $request->lname,
-                    'email' => $request->email,
-                    'type' => 'sub_contractor',
-                    'gender' => $request->gender,
-                    'password' => Hash::make($request->password),
-                    'lang' => Utility::getValByName('default_language'),
-                    'created_by' => \Auth::user()->creatorId(),
-                    'country' => $request->country,
-                    'state' => $request->state,
-                    'city' => $request->city,
-                    'phone' => $request->phone,
-                    'zip' => $request->zip,
-                    'avatar' => $avatar,
-                    'address' => $request->address,
-                    'color_code' => $request->color_code,
-                ]
-            );
-            $roler = Role::findByName('sub_contractor');
-            $user->assignRole($roler);
-            $user->userDefaultDataRegister($user->id);
-        }
-
-        $setings = Utility::settings();
-        $requested_date = Config::get('constants.TIMESTUMP');
-        $createConnection = SubContractorCompanies::create([
-            "company_id" => \Auth::user()->creatorId(),
-            'sub_contractor_id' => $user->id,
-            'requested_date' => $requested_date,
-            'status' => 'requested',
-        ]);
-        $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createConnection->id;
-        $userArr = [
-            'invite_link' => $inviteUrl,
-            'user_name' => \Auth::user()->name,
-            'company_name' => \Auth::user()->company_name,
-            'email' => \Auth::user()->email,
-        ];
-        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
-
-        if ($setings['create_sub_contractor'] == 1) {
-            $user->password = $psw;
-            $user->type = 'sub_contractor';
-
-            $userArr = [
-                'email' => $user->email,
-                'password' => $user->password,
-            ];
-
-            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
-
-            return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
-        } else {
-            return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
-        }
-    }
-
     public function edit(Request $request, $id, $color_co)
     {
-        $user = \Auth::user();
-        $gender = ['male' => 'Male', 'female' => 'Female', 'other' => 'Other'];
-       
         if (\Auth::user()->can('edit sub contractor')) {
-            $user = User::findOrFail($id);
-
+            $vender = User::find($id);
+            $vender->customField = CustomField::getData($vender, 'vendor');
             $countrylist = Utility::getcountry();
-            $statelist = Utility::getstate($user->country);
-            $user->customField = CustomField::getData($user, 'user');
-            $customFields = CustomField::where('created_by', '=', \Auth::user()
-                ->creatorId())
-                ->where('module', '=', 'user')
-                ->get();
+            $statelist = Utility::getstate($vender->billing_country);
+            $sellerstatelist = Utility::getstate($vender->shipping_country);
+            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())
+                ->where('module', '=', 'vendor')->get();
 
-            return view('subcontractor.edit', compact('user', 'gender', 'customFields',
-                'countrylist', 'statelist', 'color_co'));
+            return view('subcontractor.edit', compact('vender','customFields',
+                'countrylist', 'statelist', 'color_co','sellerstatelist'));
         } else {
             return redirect()->back();
         }
-
     }
 
     public function update(Request $request, $id)
     {
 
+        $this->validationUpdateSubContractor($request,$id);
         $user = User::findOrFail($id);
         $fileNames = $this->upload($request);
 
         $post = [
-            'name' => $request->name,
-            'lname' => $request->lname,
-            'email' => $request->email,
-            'type' => 'sub_contractor',
-            'gender' => $request->gender,
-            'password' => Hash::make($request->password),
-            'lang' => Utility::getValByName('default_language'),
-            'country' => $request->country,
-            'state' => $request->state,
-            'city' => $request->city,
-            'phone' => $request->phone,
-            'zip' => $request->zip,
-            'address' => $request->address,
-            'color_code' => $request->color_code,
-            'created_by' => \Auth::user()->creatorId(),
+            'name'             => $request->name,
+            'lname'            => $request->lname,
+            'email'            => $request->email,
+            'type'             => 'sub_contractor',
+            'lang'             => Utility::getValByName('default_language'),
+            'created_by'       => \Auth::user()->creatorId(),
+            'phone'            => $request->contact,
+            'color_code'       => $request->color_code,
+            'tax_number'       => $request->tax_number,
+            'billing_name'     => $request->billing_name,
+            'billing_country'  => $request->billing_country,
+            'billing_state'    => $request->billing_state,
+            'billing_city'     => $request->billing_city,
+            'billing_phone'    => $request->billing_phone,
+            'billing_zip'      => $request->billing_zip,
+            'billing_address'  => $request->billing_address,
+            'shipping_name'    => $request->shipping_name,
+            'shipping_country' => $request->shipping_country,
+            'shipping_state'   => $request->shipping_state,
+            'shipping_city'    => $request->shipping_city,
+            'shipping_phone'   => $request->shipping_phone,
+            'shipping_zip'     => $request->shipping_zip,
+            'shipping_address' => $request->shipping_address,
         ];
 
         if (!empty($fileNames)) {
             $post['avatar'] = $fileNames;
-
         }
         $user->update($post);
 
@@ -342,25 +437,66 @@ class SubContractorController extends Controller
         );
     }
 
+    public function validationUpdateSubContractor($request,$id){
+        $validation = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+        ];
+
+        $validator = \Validator::make($request->all(), $validation);
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
+
+            return redirect()->back()->with('error', $messages->first());
+        }
+        else{
+            return true;
+        }
+    }
+
     public function update_subContractor(Request $request, $id)
     {
 
+        $this->validationUpdateSubContractor($request,$id);
         $user = User::findOrFail($id);
         $fileNames = $this->upload($request);
 
-        $input = $request->all();
-        $input['type'] = 'sub_contractor';
-        if (isset($fileNames)) {
-            $input['avatar'] = $fileNames;
+        $post = [
+            'name'             => $request->name,
+            'lname'            => $request->lname,
+            'email'            => $request->email,
+            'type'             => 'sub_contractor',
+            'lang'             => Utility::getValByName('default_language'),
+            'created_by'       => \Auth::user()->creatorId(),
+            'phone'            => $request->contact,
+            'color_code'       => $request->color_code,
+            'tax_number'       => $request->tax_number,
+            'billing_name'     => $request->billing_name,
+            'billing_country'  => $request->billing_country,
+            'billing_state'    => $request->billing_state,
+            'billing_city'     => $request->billing_city,
+            'billing_phone'    => $request->billing_phone,
+            'billing_zip'      => $request->billing_zip,
+            'billing_address'  => $request->billing_address,
+            'shipping_name'    => $request->shipping_name,
+            'shipping_country' => $request->shipping_country,
+            'shipping_state'   => $request->shipping_state,
+            'shipping_city'    => $request->shipping_city,
+            'shipping_phone'   => $request->shipping_phone,
+            'shipping_zip'     => $request->shipping_zip,
+            'shipping_address' => $request->shipping_address,
+        ];
+        if (!empty($fileNames)) {
+            $post['avatar'] = $fileNames;
         }
-        $user->fill($input)->save();
+        $user->update($post);
+
         Utility::employeeDetailsUpdate($user->id, \Auth::user()->creatorId());
         CustomField::saveData($user, $request->customField);
 
         return redirect()->route('subContractor.index')->with(
             'success', __('Sub Contractor successfully updated.')
         );
-
     }
 
     public function destroy($id)

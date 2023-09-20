@@ -4299,6 +4299,15 @@ Route::post('save_subContractor', 'SubContractorController@normal_store')
     ]
 );
 
+Route::any('subContractorStore', 'SubContractorController@subContractorStore')
+->name('subContractorStore')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::any('update_subContractor/{id}', 'SubContractorController@update_subContractor')->name('subContractor.update_subContractor')
 ->middleware(
     [
@@ -4310,15 +4319,6 @@ Route::any('update_subContractor/{id}', 'SubContractorController@update_subContr
 
 Route::get('get_company_details/{id}', 'SubContractorController@get_company_details')
 ->name('subContractor.get_company_details')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
-
-Route::any('subContractorStore', 'SubContractorController@subContractorStore')
-->name('subContractorStore')->middleware(
     [
         'auth',
         'XSS',
