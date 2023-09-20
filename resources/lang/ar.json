@@ -2732,6 +2732,7 @@
   "Mobile Number Copied Successfully!":"تم نسخ رقم الجوال بنجاح!",
   "Update a Member":"تحديث عضو",
   "Create a Member":"إنشاء عضو",
+  "Sub Contractor":"مقاول فرعي",
   "Invite Sub Contractor":"دعوة المقاول من الباطن",
   "Search a Sub Contractor":"ابحث عن مقاول من الباطن",
   "Sub Contractor of the Organisation":"المقاول من الباطن للمنظمة",
@@ -2741,5 +2742,7 @@
   "Information about Creation of Sub Contractor":"معلومات حول إنشاء المقاول من الباطن",
   "Invite a existing Sub Contractor":"قم بدعوة المقاول من الباطن الحالي",
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"لا يوجد مقاول من الباطن متاح للمشروع، يرجى النقر أدناه لدعوة المقاول من الباطن",
-  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"تم إنشاء المقاول من الباطن بنجاح! يرجى التحقق من صندوق البريد الوارد الخاص بك."
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"تم إنشاء المقاول من الباطن بنجاح! يرجى التحقق من صندوق البريد الوارد الخاص بك.",
+  "No Sub Contractor Found":"لم يتم العثور على مقاول من الباطن",
+  "Sub Contractor successfully deleted.":"تم حذف المقاول من الباطن بنجاح."
  }

@@ -2713,6 +2713,7 @@
     "Email Address Copied Successfully!":"Email Address Copied Successfully!",
     "Mobile Number Copied Successfully!":"Mobile Number Copied Successfully!",
     "Update a Member":"Update a Member",
+    "Sub Contractor":"Sub Contractor",
     "Create a Member":"Create a Member",
     "Invite Sub Contractor":"Invite Sub Contractor",
     "Search a Sub Contractor":"Search a Sub Contractor",
@@ -2723,5 +2724,7 @@
     "Information about Creation of Sub Contractor":"Information about Creation of Sub Contractor",
     "Invite a existing Sub Contractor":"Invite a existing Sub Contractor",
     "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"No Sub Contractor are available for the project,please click below to invite Sub Contractor",
-    "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Sub Contractor created Successfully! Please Check Your Mail Inbox."
+    "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Sub Contractor created Successfully! Please Check Your Mail Inbox.",
+    "No Sub Contractor Found":"No Sub Contractor Found",
+    "Sub Contractor successfully deleted.":"Sub Contractor successfully deleted."
 }

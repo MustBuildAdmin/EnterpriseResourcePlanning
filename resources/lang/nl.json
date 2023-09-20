@@ -2725,6 +2725,7 @@
   "Email Address Copied Successfully!":"E-mailadres succesvol gekopieerd!",
   "Mobile Number Copied Successfully!":"Mobiel nummer succesvol gekopieerd!",
   "Update a Member":"Update een lid",
+  "Sub Contractor":"Onderaannemer",
   "Create a Member":"Maak een lid aan",
   "Invite Sub Contractor":"Onderaannemer uitnodigen",
   "Search a Sub Contractor":"Zoek een Onderaannemer",
@@ -2735,5 +2736,7 @@
   "Information about Creation of Sub Contractor":"Informatie over het aanmaken van een onderaannemer",
   "Invite a existing Sub Contractor":"Nodig een bestaande Onderaannemer uit",
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Er is geen Onderaannemer beschikbaar voor het project. Klik hieronder om een Onderaannemer uit te nodigen",
-  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Onderaannemer succesvol aangemaakt! Controleer uw postvak IN."
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Onderaannemer succesvol aangemaakt! Controleer uw postvak IN.",
+  "No Sub Contractor Found":"Geen onderaannemer gevonden",
+  "Sub Contractor successfully deleted.":"Onderaannemer succesvol verwijderd."
 }

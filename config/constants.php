@@ -23,5 +23,6 @@ return [
     'subcontractor_MAIL' => 'Sub Contractor created Successfully! Please Check Your Mail Inbox.',
     'INVITATION_URL_subcontractor' =>'/company-invitation-subcontractor/',
     'EMAILTXT'=>'Email Address Copied Successfully!',
-    'MOBILETXT'=>'Mobile Number Copied Successfully!'
+    'MOBILETXT'=>'Mobile Number Copied Successfully!',
+    'SOME'=>'Something is wrong.'
 ];

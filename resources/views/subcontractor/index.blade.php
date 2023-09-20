@@ -188,7 +188,9 @@
                                         data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}</a>
                                     <a data-url="{{ route('subContractor.reset', \Crypt::encrypt($user->id)) }}"
                                         data-ajax-popup="true" data-size="md" class="dropdown-item"
-                                        data-bs-original-title="{{ __('Reset Password') }}">{{ __('Reset Password') }}</a>
+                                        data-bs-original-title="{{ __('Reset Password') }}">
+                                        {{ __('Reset Password') }}
+                                    </a>
 
                                 </div>
                             </div>
@@ -197,7 +199,8 @@
                         @php $short_lname=substr($user->lname, 0, 1); @endphp
                         <div class="card-body p-4 text-center">
                             @if (!empty($user->avatar))
-                                <img src="{{ !empty($user->avatar) ? $profile . $user->avatar : asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
+                                <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
+                                asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
                                     class="avatar avatar-xl mb-3 rounded" alt="">
                             @else
                                 <div class="avatar avatar-xl mb-3 user-initial"
@@ -205,8 +208,10 @@
                                     {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
                                 </div>
                             @endif
-                            @php $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name; @endphp
-                            @php $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname; @endphp
+                            @php
+                                $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;
+                                $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname;
+                            @endphp
                             <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
                             {{-- <div class="text-secondary">UI Designer</div> --}}
                             <div class="mt-3">
@@ -223,7 +228,8 @@
                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path
-                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
+                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2
+                                         2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
                                     </path>
                                     <path d="M3 7l9 6l9 -6"></path>
                                 </svg>

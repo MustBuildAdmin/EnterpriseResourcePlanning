@@ -2641,4 +2641,3 @@
         });
     });
 </script>
-sub_contractor_checkall

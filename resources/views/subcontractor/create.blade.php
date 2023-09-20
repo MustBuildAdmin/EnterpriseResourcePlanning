@@ -6,8 +6,8 @@
 {{Form::open(array('url'=>"subContractorStore",'method'=>'post','id'=>'subcontractorCreate',
 'enctype'=>"multipart/form-data"))}}
 <style>
-    .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address, .billing_city, .shipping_city, 
-    .billing_address {
+    .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address,
+     .billing_city, .shipping_city,.billing_address {
         margin-top : 15px;
     }
     .billing_address_title, .shipping_address_title {
@@ -33,7 +33,8 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
-                {{Form::label('lnamelabel',__('Last Name'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                {{Form::label('lnamelabel',__('Last Name'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{Form::text('lname',null,array('class'=>'form-control','required'=>'required',
                     'placeholder'=>'Last Name'))}}
@@ -97,13 +98,16 @@
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
-                {{Form::label('billing_name',__('Name'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{Form::text('billing_name',null,array('class'=>'form-control','required'=>'required', 'placeholder'=>'Name'))}}
+                {{Form::label('billing_name',__('Name'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
+                {{Form::text('billing_name',null,array('class'=>'form-control','required'=>'required',
+                'placeholder'=>'Name'))}}
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
-                {{Form::label('billing_country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                {{Form::label('billing_country',__('Country'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
                 <select class="form-control country" name="billing_country" id='billing_country'
                             placeholder="Select Country" required>
                         <option value="">{{ __('Select Country ...') }}</option>
@@ -116,7 +120,8 @@
         
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
-                {{Form::label('billing_state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                {{Form::label('billing_state',__('State'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     <select class="form-control country" name="billing_state" id='billing_state'
                             placeholder="Select State" required>
@@ -157,28 +162,32 @@
         </div>
         <div class="col-md-12">
             <div class="form-group billing_address">
-                {{Form::label('billing_address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                {{Form::textarea('billing_address',null,array('class'=>'form-control','rows'=>3,'required'=>'required', 'placeholder'=>'Address'))}}
+                {{Form::label('billing_address',__('Address'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
+                {{Form::textarea('billing_address',null,array('class'=>'form-control','rows'=>3,
+                'required'=>'required', 'placeholder'=>'Address'))}}
             </div>
         </div>
     </div>
 
     @if(App\Models\Utility::getValByName('shipping_display')=='on')
         <div class="col-md-12 text-end">
-            {{-- <input type="button" id="billing_data" value="{{__('Shipping Same As Billing')}}" class="btn btn-primary"> --}}
         </div>
         <h3 class="sub-title shipping_address_title">{{__('Shipping Address')}}</h3>
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group">
-                    {{Form::label('shipping_name',__('Name'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    {{Form::text('shipping_name',null,array('class'=>'form-control','required'=>'required', 'placeholder'=>'Name'))}}
+                    {{Form::label('shipping_name',__('Name'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
+                    {{Form::text('shipping_name',null,array('class'=>'form-control','required'=>'required',
+                    'placeholder'=>'Name'))}}
                 </div>
             </div>
 
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group">
-                    {{Form::label('shipping_country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('shipping_country',__('Country'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <select class="form-control country" name="shipping_country" id='shipping_country'
                                 placeholder="Select Country" required>
@@ -193,7 +202,8 @@
 
             <div class="col-lg-4 col-md-4 col-sm-6">
                 <div class="form-group">
-                    {{Form::label('shipping_state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                    {{Form::label('shipping_state',__('State'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <div class="form-icon-user">
                             <select class="form-control " name="shipping_state" id='shipping_state'
@@ -239,8 +249,10 @@
 
             <div class="col-md-12">
                 <div class="form-group shipping_address">
-                    {{Form::label('shipping_address',__('Address'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                    {{Form::textarea('shipping_address',null,array('class'=>'form-control','rows'=>3,'required'=>'required', 'placeholder'=>'Address'))}}
+                    {{Form::label('shipping_address',__('Address'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
+                    {{Form::textarea('shipping_address',null,array('class'=>'form-control','rows'=>3,
+                    'required'=>'required', 'placeholder'=>'Address'))}}
                 </div>
             </div>
         </div>
