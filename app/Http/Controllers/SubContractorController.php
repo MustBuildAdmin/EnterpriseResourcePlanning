@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Company_type;
 use App\Models\CustomField;
 use App\Models\Employee;
@@ -10,20 +9,17 @@ use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
 use App\Models\JoiningLetter;
 use App\Models\NOC;
+use App\Models\Plan;
 use App\Models\User;
-use App\Models\UserCompany;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use App\Models\Utility;
 use Carbon\Carbon;
-use App\Models\Order;
-use App\Models\Plan;
 use Config;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-use Exception;
-use App\Models\Vender;
 
 class SubContractorController extends Controller
 {
@@ -32,36 +28,30 @@ class SubContractorController extends Controller
         $user = \Auth::user();
         if (\Auth::user()->can('manage sub contractor')) {
             if (\Auth::user()->type == 'super admin') {
-                $users = Vender::where([
+                $users = User::where([
                     ['name', '!=', null],
                     [function ($query) use ($request) {
-                        if ($s = $request->search) {
-                            $query->orWhere('name', 'LIKE', '%'.$s.'%')
+                        if (($s = $request->search)) {
+                            $query->orWhere('name', 'LIKE', '%' . $s . '%')
                                 ->get();
                         }
                     }],
-                ])->where('created_by', '=', $user->creatorId())->paginate(8);
-
-                $usercount = Vender::where('created_by', '=', $user->creatorId())
-                    ->get()->count();
+                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
             }
             else {
-                $users = Vender::where([
+                $users = User::where([
                     ['name', '!=', null],
                     [function ($query) use ($request) {
-                        if ($s = $request->search) {
+                        if (($s = $request->search)) {
                             $user = \Auth::user();
-                            $query->orWhere('name', 'LIKE', '%'.$s.'%')
+                            $query->orWhere('name', 'LIKE', '%' . $s . '%')
                                 ->get();
                         }
                     }],
-                ])->where('created_by', '=', $user->creatorId())->paginate(8);
-
-                $usercount = Vender::where('created_by', '=', $user->creatorId())
-                    ->get()->count();
+                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
             }
 
-            return view('subcontractor.index')->with('users', $users)->with('usercount', $usercount);
+            return view('subContractor.index')->with('users', $users);
         }
         else {
             return redirect()->back();
@@ -70,27 +60,233 @@ class SubContractorController extends Controller
 
     public function create(Request $request)
     {
+        $customFields = CustomField::where('created_by', '=', \Auth::user()
+                ->creatorId())
+            ->where('module', '=', 'user')
+            ->get();
+        $user = \Auth::user();
+        $gender = ['male' => 'Male', 'female' => 'Female', 'other' => 'Other'];
+        
         if (\Auth::user()->can('create sub contractor')) {
-            $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())
-                ->where('module', '=', 'vendor')->get();
             $country = Utility::getcountry();
 
-            return view('vender.create', compact('customFields', 'country'));
-        }
-        else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return view('subContractor.create', compact('gender', 'customFields',
+                'country'));
+        } else {
+            return redirect()->back();
         }
     }
 
-    public function edit(Request $request){
+    public function upload($request)
+    {
+        if (isset($request->avatar)) {
+
+            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('avatar')->getClientOriginalExtension();
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+
+            $dir = Config::get('constants.USER_IMG');
+            $imagepath = $dir . $fileNameToStore;
+            if (\File::exists($imagepath)) {
+                \File::delete($imagepath);
+            }
+
+            Utility::upload_file($request, 'avatar', $fileNameToStore, $dir, []);
+
+            return $fileNameToStore;
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
+        $fileNames = $this->upload($request);
+        $user = new User();
+        $user['name'] = $request->name;
+        $user['lname'] = $request->lname;
+        $user['email'] = $request->email;
+        $user['gender'] = $request->gender;
+        $psw = $request->password;
+        $user['password'] = Hash::make($request->password);
+        $user['type'] = 'sub_contractor';
+        $user['default_pipeline'] = 1;
+        $user['plan'] = 1;
+        $user['lang'] = !empty($defaultlanguage) ? $defaultlanguage->value : '';
+        $user['created_by'] = \Auth::user()->creatorId();
+        $user['country'] = $request->country;
+        $user['state'] = $request->state;
+        $user['city'] = $request->city;
+        $user['phone'] = $request->phone;
+        $user['zip'] = $request->zip;
+        $user['address'] = $request->address;
+        $user['company_type'] = $request->company_type;
+        $user['color_code'] = $request->color_code;
+        $user['company_name'] = $request->company_name;
+        if (isset($fileNames)) {
+            $user['avatar'] = $fileNames;
+        }
+        $user->save();
+        $role_r = Role::findByName('sub_contractor');
+        $user->assignRole($role_r);
+        $user->userDefaultDataRegister($user->id);
+        $user->userWarehouseRegister($user->id);
+        Utility::chartOfAccountTypeData($user->id);
+        Utility::chartOfAccountData1($user->id);
+        Utility::pipeline_lead_deal_Stage($user->id);
+        Utility::project_task_stages($user->id);
+        Utility::labels($user->id);
+        Utility::sources($user->id);
+        Utility::jobStage($user->id);
+        GenerateOfferLetter::defaultOfferLetterRegister($user->id);
+        ExperienceCertificate::defaultExpCertificatRegister($user->id);
+        JoiningLetter::defaultJoiningLetterRegister($user->id);
+        NOC::defaultNocCertificateRegister($user->id);
+        $requested_date = Config::get('constants.TIMESTUMP');
+        $createConnection = SubContractorCompanies::create([
+            "company_id" => \Auth::user()->creatorId(),
+            'sub_contractor_id' => $user->id,
+            'requested_date' => $requested_date,
+            'status' => 'requested',
+        ]);
+        $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createConnection->id;
+        $userArr = [
+            'invite_link' => $inviteUrl,
+            'user_name' => \Auth::user()->name,
+            'company_name' => \Auth::user()->company_name,
+            'email' => \Auth::user()->email,
+        ];
+        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
+
+        $setings = Utility::settings();
+
+        if ($setings['create_sub_contractor'] == 1) {
+            $user->password = $psw;
+            $user->type = $role_r->name;
+
+            $userArr = [
+                'email' => $user->email,
+                'password' => $user->password,
+            ];
+            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+        }
+
+        return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+    }
+
+    public function createConnection(Request $request)
+    {
+        // Need to check invitation link is valid or expired based on that need to redirect
+        $checkConnection = SubContractorCompanies::where(['id' => $request->id])->first();
+        $companyDetails = User::where(['id' => $checkConnection->company_id])->first();
+        $requestedDate = Carbon::parse($checkConnection->requested_date)->format('Y-m-d');
+        $expiryDate = Carbon::parse($requestedDate)->addDays(7)->format('Y-m-d');
+        $checkValidity = Carbon::now()->between($requestedDate, $expiryDate);
+        $msg = 'expired';
+        if ($checkValidity && $checkConnection->status == 'requested') {
+            $msg = 'valid';
+        } else {
+            if ($checkConnection->status == 'requested') {
+                SubContractorCompanies::where(['id' => $request->id])->update(['status' => 'expired']);
+            } else {
+                $msg = $checkConnection->status;
+            }
+        }
+        return view('subcontractor.invitation', compact('checkConnection', 'companyDetails', 'msg'));
+    }
+
+    public function submitConnection(Request $request)
+    {
+        $msg = $request->status;
+        SubContractorCompanies::where(['id' => $request->id])->update(['status' => $msg]);
+        $checkConnection = SubContractorCompanies::where(['id' => $request->id])->first();
+        $companyDetails = User::where(['id' => $checkConnection->company_id])->first();
+        return view('subcontractor.invitation', compact('checkConnection', 'companyDetails', 'msg'));
+    }
+
+    public function normal_store(Request $request)
+    {
+        $fileNames = $this->upload($request);
+        $objUser = \Auth::user()->creatorId();
+        $objUser = User::find($objUser);
+        $user = User::find(\Auth::user()->created_by);
+        $totaluser = $objUser->countUsers();
+        $plan = Plan::find($objUser->plan);
+        if ($totaluser < $plan->max_users || $plan->max_users == -1) {
+
+            $psw = $request->password;
+
+            if ($fileNames != null) {
+                $avatar = $fileNames;
+            } else {
+                $avatar = null;
+            }
+
+            $user = User::create(
+                [
+                    'name' => $request->name,
+                    'lname' => $request->lname,
+                    'email' => $request->email,
+                    'type' => 'sub_contractor',
+                    'gender' => $request->gender,
+                    'password' => Hash::make($request->password),
+                    'lang' => Utility::getValByName('default_language'),
+                    'created_by' => \Auth::user()->creatorId(),
+                    'country' => $request->country,
+                    'state' => $request->state,
+                    'city' => $request->city,
+                    'phone' => $request->phone,
+                    'zip' => $request->zip,
+                    'avatar' => $avatar,
+                    'address' => $request->address,
+                    'color_code' => $request->color_code,
+                ]
+            );
+            $roler = Role::findByName('sub_contractor');
+            $user->assignRole($roler);
+            $user->userDefaultDataRegister($user->id);
+        }
+
+        $setings = Utility::settings();
+        $requested_date = Config::get('constants.TIMESTUMP');
+        $createConnection = SubContractorCompanies::create([
+            "company_id" => \Auth::user()->creatorId(),
+            'sub_contractor_id' => $user->id,
+            'requested_date' => $requested_date,
+            'status' => 'requested',
+        ]);
+        $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createConnection->id;
+        $userArr = [
+            'invite_link' => $inviteUrl,
+            'user_name' => \Auth::user()->name,
+            'company_name' => \Auth::user()->company_name,
+            'email' => \Auth::user()->email,
+        ];
+        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
+
+        if ($setings['create_sub_contractor'] == 1) {
+            $user->password = $psw;
+            $user->type = 'sub_contractor';
+
+            $userArr = [
+                'email' => $user->email,
+                'password' => $user->password,
+            ];
+
+            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+
+            return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+        } else {
+            return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
+        }
+    }
+
+    public function edit(Request $request, $id, $color_co)
+    {
         $user = \Auth::user();
-        $roles = Role::where('created_by', '=', $user->creatorId())
-            ->where('name', '!=', 'client')
-            ->get()
-            ->pluck('name', 'id');
         $gender = ['male' => 'Male', 'female' => 'Female', 'other' => 'Other'];
-        $company_type = Company_type::get()->pluck('name', 'id');
-        if (\Auth::user()->can('edit contractor')) {
+       
+        if (\Auth::user()->can('edit sub contractor')) {
             $user = User::findOrFail($id);
 
             $countrylist = Utility::getcountry();
@@ -100,64 +296,212 @@ class SubContractorController extends Controller
                 ->creatorId())
                 ->where('module', '=', 'user')
                 ->get();
-            $users = User::where([
-                ['name', '!=', null],
-                [function ($query) use ($request) {
-                    if ($s = $request->search) {
-                        $user = \Auth::user();
-                        $query->orWhere('name', 'LIKE', '%'.$s.'%')
-                            ->get();
-                    }
-                }],
-            ])->where('created_by', '=', $user->creatorId())
-                ->where('id', '!=', $id)
-                ->orwhere('id', '=', $user->creatorId())
-                ->get()
-                ->pluck('name', 'id');
 
-            return view('subcontractor.edit', compact('user', 'gender', 'roles', 'customFields',
-                'countrylist', 'statelist', 'company_type', 'users', 'color_co'));
+            return view('subcontractor.edit', compact('user', 'gender', 'customFields',
+                'countrylist', 'statelist', 'color_co'));
+        } else {
+            return redirect()->back();
+        }
+
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $user = User::findOrFail($id);
+        $fileNames = $this->upload($request);
+
+        $post = [
+            'name' => $request->name,
+            'lname' => $request->lname,
+            'email' => $request->email,
+            'type' => 'sub_contractor',
+            'gender' => $request->gender,
+            'password' => Hash::make($request->password),
+            'lang' => Utility::getValByName('default_language'),
+            'country' => $request->country,
+            'state' => $request->state,
+            'city' => $request->city,
+            'phone' => $request->phone,
+            'zip' => $request->zip,
+            'address' => $request->address,
+            'color_code' => $request->color_code,
+            'created_by' => \Auth::user()->creatorId(),
+        ];
+
+        if (!empty($fileNames)) {
+            $post['avatar'] = $fileNames;
+
+        }
+        $user->update($post);
+
+        CustomField::saveData($user, $request->customField);
+
+        return redirect()->route('subContractor.index')->with(
+            'success', __('Consultant successfully updated.')
+        );
+    }
+
+    public function update_subContractor(Request $request, $id)
+    {
+
+        $user = User::findOrFail($id);
+        $fileNames = $this->upload($request);
+
+        $input = $request->all();
+        $input['type'] = 'sub_contractor';
+        if (isset($fileNames)) {
+            $input['avatar'] = $fileNames;
+        }
+        $user->fill($input)->save();
+        Utility::employeeDetailsUpdate($user->id, \Auth::user()->creatorId());
+        CustomField::saveData($user, $request->customField);
+
+        return redirect()->route('subContractor.index')->with(
+            'success', __('Sub Contractor successfully updated.')
+        );
+
+    }
+
+    public function destroy($id)
+    {
+
+        if (\Auth::user()->can('delete sub contractor')) {
+            $user = User::find($id);
+            if ($user) {
+                if (\Auth::user()->type == 'super admin') {
+                    if ($user->is_deleted == 0) {
+                        $user->is_deleted = 1;
+                    } else {
+                        $user->is_deleted = 0;
+                    }
+                    $user->save();
+                }
+                if (\Auth::user()->type == 'sub_contractor') {
+                    $employee = Employee::where(['user_id' => $user->id])->delete();
+                    if ($employee) {
+                        $deleteuser = User::where(['id' => $user->id])->delete();
+                        if ($deleteuser) {
+                            return redirect()->route('subContractor.index')
+                                ->with('success', __('Sub Contractor successfully deleted.'));
+                        } else {
+                            return redirect()->back()->with('error', __('Something is wrong.'));
+                        }
+                    } else {
+                        return redirect()->back()->with('error', __('Something is wrong.'));
+                    }
+                }
+
+                return redirect()->route('subContractor.index')->with('error', __('Sub Contractor permission denied.'));
+            } else {
+                return redirect()->back()->with('error', __('Something is wrong.'));
+            }
         } else {
             return redirect()->back();
         }
     }
 
-    public function invite_subContractor(Request $request){
-        try {
-            return view('subcontractor.invite');
-        }
-        catch (Exception $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public function userPassword(Request $request){
+    public function userPassword($id)
+    {
         try {
             $eId = \Crypt::decrypt($id);
             $user = User::find($eId);
-            return view('subcontractor.reset', compact('user'));
+            return view('subContractor.reset', compact('user'));
+
         }
         catch (Exception $e) {
             return $e->getMessage();
         }
     }
 
-    public function seach_result(Request $request){
+    public function userPasswordReset(Request $request, $id)
+    {
         try {
+
+            $validator = \Validator::make(
+                $request->all(), [
+                    'password' => 'required|confirmed|same:password_confirmation',
+                ]
+            );
+
+            if ($validator->fails()) {
+                $messages = $validator->getMessageBag();
+
+                return redirect()->back()->with('error', $messages->first());
+            }
+
+            $user = User::where('id', $id)->first();
+            $user->forceFill([
+                'password' => Hash::make($request->password),
+            ])->save();
+
+            return redirect()->route('subContractor.index')->with(
+                'success', __('Sub Contractor Password successfully updated.')
+            );
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+
+    }
+
+    public function scott_search(Request $request)
+    {
+        return view('subcontractor.scott-search');
+    }
+
+    public function scott_result(Request $request)
+    {
+        if ($request->filled('search')) {
+            $users = User::search($request->search)->where('type', 'sub_contractor')->get();
+        } else {
+            $users = [];
+        }
+
+        $returnHTML = view('subcontractor.result', compact('users'))->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $returnHTML,
+        ]);
+
+    }
+
+    public function get_company_details(Request $request, $id)
+    {
+        try {
+            $user = User::where('id', $id)->where('type', 'company')->first();
+            return view('subcontractor.view', compact('user'));
+        }
+        catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    public function seach_result(Request $request)
+    {
+        try {
+
             $searchValue = $request['q'];
 
-            if($request->filled('q')){
-                $userlist = Vender::search($searchValue)
-                                ->orderBy('name','ASC')
-                                ->get();
+            if ($request->filled('q')) {
+                $userlist = User::search($searchValue)
+                    ->where('type', 'sub_contractor')
+                    ->orderBy('name', 'ASC')
+                    ->get();
+
             }
 
             $userData = array();
-            if(count($userlist) > 0){
-                foreach($userlist as $task){
+            if (count($userlist) > 0) {
+                foreach ($userlist as $task) {
                     $setUser = [
                         'id' => $task->id,
                         'name' => $task->name,
+
                     ];
                     $userData[] = $setUser;
                 }
@@ -169,182 +513,49 @@ class SubContractorController extends Controller
         }
     }
 
-    public function store_invitation_status(request $request){
+    public function invite_sub_contractor(Request $request)
+    {
         try {
-            $consulantid = explode(',', $request->consulant_id);
-
-            foreach($consulantid as $cid){
-                $requested_date = Config::get('constants.TIMESTUMP');
-                $createConnection = ConsultantCompanies::create([
-                    "company_id"=>\Auth::user()->creatorId(),
-                    'subcontractor_id'=>$cid,
-                    'requested_date'=>$requested_date,
-                    'status'=>'requested'
-                ]);
-
-                $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
-                $userArr = [
-                    'invite_link' => $inviteUrl,
-                    'user_name' => \Auth::user()->name,
-                    'company_name' => \Auth::user()->company_name,
-                    'email' => \Auth::user()->email,
-                ];
-    
-                Utility::sendEmailTemplate('invite_subcontractor', [$cid => \Auth::user()->email], $userArr);
-            }
-
-            return redirect()->route('subContractor.index')
-                ->with('success', __('Sub Contractor Invitation Sent Successfully.'));
+            return view('subcontractor.invite');
         }
         catch (Exception $e) {
             return $e->getMessage();
         }
     }
 
-    public function check_duplicate_email_subcontractor(Request $request){
+    public function store_invitation_status(Request $request)
+    {
+
         try {
-            $formname  = $request->formname;
-            $checkname = $request->getname;
-            $getid     = $request->getid;
+            $subcontractortid = explode(',', $request->subcontractor_id);
 
-            if ($formname == 'Venders') {
-                $getcheckval = $getid == null ?
-                    Vender::where('email', $checkname)->first() :
-                    Vender::where('email', $checkname)->where('id', '!=', $getid)->first();
-            }
-            else {
-                $getcheckval = 'Not Empty';
+            foreach ($subcontractortid as $cid) {
+
+                $requested_date = Config::get('constants.TIMESTUMP');
+                $createConnection = SubContractorCompanies::create([
+                    "company_id" => \Auth::user()->creatorId(),
+                    'sub_contractor_id' => $cid,
+                    'requested_date' => $requested_date,
+                    'status' => 'requested',
+                ]);
+                $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createConnection->id;
+                $userArr = [
+                    'invite_link' => $inviteUrl,
+                    'user_name' => \Auth::user()->name,
+                    'company_name' => \Auth::user()->company_name,
+                    'email' => \Auth::user()->email,
+                ];
+
+                Utility::sendEmailTemplate('invite_sub_contractor', [$cid => \Auth::user()->email], $userArr);
+
             }
 
-            if ($getcheckval == null) {
-                return 1; //Success
-            } else {
-                return 0; //Error
-            }
-        } catch (Exception $e) {
+            return redirect()->route('subContractor.index')
+                ->with('success', __('Sub Contractor Invitation Sent Successfully.'));
 
+        }
+        catch (Exception $e) {
             return $e->getMessage();
-
         }
-    }
-
-    public function check_duplicate_mobile_subcontractor(Request $request)
-    {
-        try {
-            $formname  = $request->formname;
-            $checkname = $request->getname;
-            $getid     = $request->getid;
-
-            if ($formname == 'Venders') {
-                $getcheckval = $getid == null ?
-                    Vender::where('contact', $checkname)->first() :
-                    Vender::where('contact', $checkname)->where('id', '!=', $getid)->first();
-            }
-            else {
-                $getcheckval = 'Not Empty';
-            }
-
-            if ($getcheckval == null) {
-                return 1; //Success
-            } else {
-                return 0; //Error
-            }
-
-        } catch (Exception $e) {
-
-            return $e->getMessage();
-
-        }
-    }
-
-    public function upload($request)
-    {
-        if (isset($request->avatar)) {
-            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('avatar')->getClientOriginalExtension();
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
-            $dir = Config::get('constants.USER_IMG');
-            $imagepath = $dir.$fileNameToStore;
-            if (\File::exists($imagepath)) {
-                \File::delete($imagepath);
-            }
-
-            Utility::upload_file($request, 'avatar', $fileNameToStore, $dir, []);
-
-            return $fileNameToStore;
-        }
-    }
-
-    public function subContractorStore(Request $request){
-        if (\Auth::user()->can('create sub contractor')) {
-            $objVendor    = \Auth::user();
-            $creator      = User::find($objVendor->creatorId());
-            $total_vendor = $objVendor->countVenders();
-            $plan         = Plan::find($creator->plan);
-            $fileNames    = $this->upload($request);
-            $user         = new User();
-
-            $default_language = DB::table('settings')->select('value')->where('name', 'default_language')->first();
-            // if ($total_vendor < $plan->max_venders || $plan->max_venders == -1) {
-                $vender                   = new Vender();
-                $vender->vender_id        = $this->venderNumber();
-                $vender->name             = $request->name;
-                $vender->contact          = $request->contact;
-                $vender->email            = $request->email;
-                $user->password           = Hash::make($request->password);
-                $vender->tax_number       = $request->tax_number;
-                $vender->created_by       = \Auth::user()->creatorId();
-                $vender->billing_name     = $request->billing_name;
-                $vender->billing_country  = $request->billing_country;
-                $vender->billing_state    = $request->billing_state;
-                $vender->billing_city     = $request->billing_city;
-                $vender->billing_phone    = $request->billing_phone;
-                $vender->billing_zip      = $request->billing_zip;
-                $vender->billing_address  = $request->billing_address;
-                $vender->shipping_name    = $request->shipping_name;
-                $vender->shipping_country = $request->shipping_country;
-                $vender->shipping_state   = $request->shipping_state;
-                $vender->shipping_city    = $request->shipping_city;
-                $vender->shipping_phone   = $request->shipping_phone;
-                $vender->shipping_zip     = $request->shipping_zip;
-                $vender->shipping_address = $request->shipping_address;
-                $vender->color_code       = $request->color_code;
-                if (isset($fileNames)) {
-                    $vender->avatar = $fileNames;
-                }
-                $vender->lang = ! empty($default_language) ? $default_language->value : '';
-                $vender->save();
-
-                CustomField::saveData($vender, $request->customField);
-            // }
-            // else {
-            //     return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));
-            // }
-
-            $role_r = Role::where('name', '=', 'vender')->firstOrFail();
-            $vender->assignRole($role_r); //Assigning role to user
-            $user->userDefaultDataRegister($vender->id);
-
-            return redirect()->route('subContractor.index')->with('success', __('Vendor successfully created.'));
-        }
-        else {
-            return redirect()->back()->with('error', __('Permission denied.'));
-        }
-    }
-
-    public function subContractorDashboard(Request $request){
-        return view('subcontractor.dashboard');
-    }
-
-    public function venderNumber()
-    {
-        $latest = Vender::where('created_by', '=', \Auth::user()->creatorId())->latest()->first();
-        if (! $latest) {
-            return 1;
-        }
-
-        return $latest->vender_id + 1;
     }
 }

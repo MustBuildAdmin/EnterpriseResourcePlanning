@@ -3,27 +3,31 @@
         width: 100% !important;
     }
 </style>
+
 @if (\Auth::user()->type == 'super admin')
-    @php $url='subContractor.update' @endphp
+    @php $url='subContractor' @endphp
 @else
-    @php $url='subContractor.update_subContractor' @endphp
+    @php $url='save_subContractor' @endphp
 @endif
-{{ Form::model($user, [
-    'route' => [$url, $user->id],
-    'method' => 'PUT',
-    'id' => 'edit_user',
+{{ Form::open([
+    'url' => $url,
+    'method' => 'post',
+    'id' => 'users_form',
     'autocomplete' => 'off',
     'enctype' => 'multipart/form-data',
 ]) }}
+
 <div class="modal-body">
     <div class="row">
         <div class="col-md-6">
-            <div class="form-group ">
-                {{ Form::label('name', __('First Name'), ['class' => 'form-label']) }}<span style='color:red;'>*</span>
+            <div class="form-group">
+                {{ Form::label('name', __('First Name'), ['class' => 'form-label']) }}
+                <span style='color:red;'>*</span>
                 {{ Form::text('name', null, [
-                    'class' => 'form-control font-style',
+                    'class' => 'form-control',
                     'maxlength' => 35,
                     'placeholder' => __('Enter First Name'),
+                    'required' => 'required',
                 ]) }}
                 @error('name')
                     <small class="invalid-name" role="alert">
@@ -34,54 +38,60 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('lastname', __('Last Name'), ['class' => 'form-label']) }}
-                <span style='color:red;'>*</span>
-                <input type="text" class="form-control" value="{{ $user->lname }}" id="lname" name="lname"
-                    placeholder="{{ __('Enter Last Name') }}" autocomplete="off" required>
+                {{ Form::label('lname', __('Last Name'), ['class' => 'form-label']) }}<span style='color:red;'>*</span>
+                {{ Form::text('lname', null, [
+                    'class' => 'form-control',
+                    'id' => 'lname',
+                    'placeholder' => __('Enter Last Name'),
+                    'autocomplete' => 'off',
+                    'required' => 'required',
+                ]) }}
             </div>
         </div>
+    </div>
 
-        @if ($user->color_code != null || $user->color_code != '')
-            @php $colorcor =$user->color_code; @endphp
-        @else
-            @php $colorcor =$colorco; @endphp
-        @endif
-        <input type="hidden" name="color_code" value="{{ $colorcor }}">
+    @php
+        $rndColor = Utility::rndRGBColorCode(); #function call
+        $password = Utility::randomPassword(); #function call
+    @endphp
+    <input type="hidden" name="color_code" value="{{ $rndColor }}">
+    <input type="hidden" name="password" value="{{ $password }}">
 
-        <input type="hidden" name="password" value="{{ $user->password }}">
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    {{ Form::label('email', __('Email Address'), ['class' => 'form-label']) }}
-                    <span style='color:red;'>*</span>
-                    {{ Form::email('email', null, [
-                        'class' => 'form-control',
-                        'id' => 'email',
-                        'placeholder' => __('Enter User Email'),
-                    ]) }}
-                    <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
-                        <span class="text-danger">{{ __('Email Already Exist!') }}</span>
-                    </span>
-                    @error('email')
-                        <small class="invalid-email" role="alert">
-                            <strong class="text-danger">{{ $message }}</strong>
-                        </small>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="form-group col-md-6">
-                {{ Form::label('gender', __('Gender'), ['class' => 'form-label']) }}
-                {!! Form::select('gender', $gender, $user->gender, ['class' => 'form-control', 'required' => 'required']) !!}
-                @error('role')
-                    <small class="invalid-role" role="alert">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ Form::label('email', __('Email Address'), ['class' => 'form-label']) }}
+                <span style='color:red;'>*</span>
+                {{ Form::text('email', null, [
+                    'class' => 'form-control',
+                    'id' => 'email',
+                    'placeholder' => __('Enter User Email'),
+                    'autocomplete' => 'off',
+                    'required' => 'required',
+                ]) }}
+                <span class="invalid-name email_duplicate_error" role="alert" style="display: none;">
+                    <span class="text-danger">{{ __('Email Already Exist!') }}</span>
+                </span>
+                @error('email')
+                    <small class="invalid-email" role="alert">
                         <strong class="text-danger">{{ $message }}</strong>
                     </small>
                 @enderror
+
             </div>
         </div>
+        <div class="form-group col-md-6">
+            {{ Form::label('gender', __('Gender'), ['class' => 'form-label']) }}
+            {!! Form::select('gender', $gender, 'null', ['class' => 'form-control', 'required' => 'required']) !!}
+            @error('role')
+                <small class="invalid-role" role="alert">
+                    <strong class="text-danger">{{ $message }}</strong>
+                </small>
+            @enderror
+        </div>
+    </div>
 
+    <div class="row">
         <div class="form-group col-md-6">
             <div class="form-group">
                 {{ Form::label('country', __('Country'), ['class' => 'form-label']) }}
@@ -90,12 +100,11 @@
                     <select class="form-control country" name="country" id="country" placeholder="Select Country"
                         required>
                         <option value="">{{ __('Select Country') }}</option>
-                        @foreach ($countrylist as $key => $value)
-                            <option value="{{ $value->iso2 }}" @if ($user->country == $value->iso2) selected @endif>
-                                {{ $value->name }}
-                            </option>
+                        @foreach ($country as $key => $value)
+                            <option value="{{ $value->iso2 }}">{{ $value->name }}</option>
                         @endforeach
                     </select>
+                    {{-- {{Form::text('country',null,array('class'=>'form-control'))}} --}}
                 </div>
             </div>
         </div>
@@ -103,14 +112,8 @@
             <div class="form-group">
                 {{ Form::label('state', __('State'), ['class' => 'form-label']) }}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <select class="form-control state" name="state" id='state' placeholder="Select State"
-                        required>
+                    <select class="form-control" name="state" id='state' placeholder="Select State" required>
                         <option value="">{{ __('Select State') }}</option>
-                        @foreach ($statelist as $key => $value)
-                            <option value="{{ $value->iso2 }}" @if ($user->state == $value->iso2) selected @endif>
-                                {{ $value->name }}
-                            </option>
-                        @endforeach
                     </select>
                 </div>
             </div>
@@ -129,10 +132,10 @@
         </div>
         <div class="form-group col-md-6">
             <div class="form-group">
-                {{ Form::label('zip', __('Postal Code'), ['class' => 'form-label', 'id' => 'zip']) }}
+                {{ Form::label('zip', __('Postal Code'), ['class' => 'form-label']) }}
                 <span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    {{ Form::text('zip', null, ['class' => 'form-control', 'required' => 'required']) }}
+                    {{ Form::text('zip', null, ['class' => 'form-control', 'id' => 'zip', 'required' => 'required']) }}
                 </div>
             </div>
         </div>
@@ -143,8 +146,8 @@
                 <div class="form-icon-user">
                     <input type="text" name="phone" class="form-control" data-mask="(00) 0000-0000"
                         data-mask-visible="true" placeholder="(00) 0000-0000" id="phone" maxlength="16"
-                        autocomplete="off" oninput="numeric(this)" value='{{ $user->phone }}' />
-                    <span class="invalid-name edit_mobile_duplicate_error" role="alert" style="display: none;">
+                        autocomplete="off" oninput="numeric(this)" />
+                    <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                         <span class="text-danger">{{ __('Mobile Number Already Exist!') }}</span>
                     </span>
                 </div>
@@ -159,39 +162,38 @@
                 </div>
                 <span class="show_document_error" style="color:red;"></span>
             </div>
-        </div>
 
+        </div>
         <div class="col-md-12">
             <div class="form-group">
                 {{ Form::label('address', __('Address'), ['class' => 'form-label']) }}
+                <span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{ Form::textarea('address', null, [
                         'class' => 'form-control',
-                        'rows' => 3,
                         'placeholder' => 'Here can be your Address',
+                        'rows' => 3,
+                        'required' => 'required',
                     ]) }}
                 </div>
             </div>
         </div>
-
-
-        @if (!$customFields->isEmpty())
-            <div class="col-md-6">
-                <div class="tab-pane fade show" id="tab-2" role="tabpanel">
-                    @include('customFields.formBuilder')
-                </div>
-            </div>
-        @endif
     </div>
+    @if (!$customFields->isEmpty())
+        <div class="col-md-6">
+            <div class="tab-pane fade show" id="tab-2" role="tabpanel">
+                @include('customFields.formBuilder')
+            </div>
+        </div>
+    @endif
 </div>
-
 
 <div class="modal-footer">
     <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Close') }}</button>
-    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="edit_subcontractor">
-        {{ __('Update a Member') }}
-    </button>
+    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+        id="create_subcontractor">{{ __('Create a Member') }}</button>
 </div>
+
 
 {{ Form::close() }}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
@@ -217,17 +219,18 @@
             });
         });
     });
+</script>
 
+<script>
     $(document).ready(function() {
 
         $(document).on('submit', 'form', function() {
-            $('#edit_subcontractor').attr('disabled', 'disabled');
+            $('#create_subcontractor').attr('disabled', 'disabled');
         });
 
         $(".chosen-select").chosen({
             placeholder_text: "{{ __('Reporting to') }}"
         });
-
 
         $(document).on("paste", '#zip', function(event) {
             if (event.originalEvent.clipboardData.getData('Text').match(/[^\d]/)) {
@@ -241,24 +244,24 @@
             }
         });
 
+    });
 
+    $(document).ready(function() {
         $(document).on("keyup", '#email', function() {
             $.ajax({
                 url: '{{ route('check_duplicate_email') }}',
                 type: 'GET',
                 data: {
-                    'getid': "{{ $user->id }}",
                     'getname': $("#email").val(),
                     'formname': "Users"
                 },
                 success: function(data) {
                     if (data == 1) {
-                        $("input#edit_subcontractor").prop('disabled', false);
-                        $("span.invalid-name.email_duplicate_error").css('display', 'none');
+                        $("#create_subcontractor").prop('disabled', false);
+                        $(".email_duplicate_error").css('display', 'none');
                     } else {
-                        $("input#edit_subcontractor").prop('disabled', true);
-                        $("span.invalid-name.email_duplicate_error").css('display',
-                        'block');
+                        $("#create_subcontractor").prop('disabled', true);
+                        $(".email_duplicate_error").css('display', 'block');
                     }
                 },
                 error: function(request, error) {
@@ -266,23 +269,21 @@
                 }
             });
         });
-
         $(document).on("keyup", '#phone', function() {
             $.ajax({
                 url: '{{ route('check_duplicate_mobile') }}',
                 type: 'GET',
                 data: {
-                    'get_id': "{{ $user->id }}",
                     'getname': $("#phone").val(),
                     'formname': "Users"
                 },
                 success: function(data) {
                     if (data == 1) {
-                        $("#edit_subcontractor").prop('disabled', false);
-                        $(".edit_mobile_duplicate_error").css('display', 'none');
+                        $("#create_subcontractor").prop('disabled', false);
+                        $(".mobile_duplicate_error").css('display', 'none');
                     } else {
-                        $("#edit_subcontractor").prop('disabled', true);
-                        $(".edit_mobile_duplicate_error").css('display', 'block');
+                        $("#create_subcontractor").prop('disabled', true);
+                        $(".mobile_duplicate_error").css('display', 'block');
                     }
                 },
                 error: function(request, error) {
@@ -291,9 +292,10 @@
             });
         });
 
+
     });
 
-    $('#edit_user').validate({
+    $('#users_form').validate({
         rules: {
             reportto: "required",
         },
@@ -302,7 +304,7 @@
 
     $('.get_reportto').on('change', function() {
         get_val = $(this).val();
-        console.log("get_val", get_val);
+
 
         if (get_val != "") {
             $("#reportto-error").hide();
@@ -324,6 +326,7 @@
         input.value = numbers;
     }
 </script>
+
 <style>
     div#reporting_toerr {
         display: flex;
