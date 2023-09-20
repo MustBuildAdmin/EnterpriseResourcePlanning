@@ -2,7 +2,7 @@
 
 <div class="page-wrapper">
 @include('construction_project.side-menu')
-<?php 
+<?php
 $delay=round($current_Planed_percentage-$actual_percentage);
 if($delay<0){
   $delay=0;
@@ -932,7 +932,7 @@ if($delay>100){
         fill: {
           opacity: 1,
         },
-        series: [{{round($current_Planed_percentage)}}, 
+        series: [{{round($current_Planed_percentage)}},
         {{round($actual_percentage)}}, {{$delay}}, {{round(100-$actual_percentage)}}],
         labels: ["Planned Progress", "Actual Progress", "Delay in progress", "Actual Remaining Progress"],
         tooltip: {
