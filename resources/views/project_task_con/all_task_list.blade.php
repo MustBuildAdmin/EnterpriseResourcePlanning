@@ -82,9 +82,22 @@ aria-describedby="Sub Task">
             @endphp
             <tr>
                 <td style="width:5%; font-size: 15px;">
+                
+                @if(Session::get('current_revision_freeze') == 1 &&
+                    Session::get('project_instance') != Session::get('latest_project_instance') &&
+                    $checkLatestFreezeStatus == 1)
+                        <a style="text-decoration: none;">
+                            <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
+                        </a>
+                    @else
+                        <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                            <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
+                        </a>
+                @endif
+{{--                 
                     @if(Session::get('current_revision_freeze') == 1 &&
                         Session::get('project_instance') != Session::get('latest_project_instance') &&
-                        $checkLatestFreezeStatus == 1)
+                        $   == 1)
                         <a href="{{route('task_particular',['task_id' => $task->main_id,
                             'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             {{ $task->id }}
@@ -94,10 +107,9 @@ aria-describedby="Sub Task">
                         <a href="{{route('task_particular',['task_id' => $task->main_id,
                             'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             {{ $task->id }}
-                        </a>
-                    @else
-                        <a style="text-decoration: none;">{{ $task->id }}</a>
-                    @endif
+                        </a> --}}
+                        {{-- <a style="text-decoration: none;">{{ $task->id }}</a>
+                    @endif --}}
                 </td>
 
                 <td style="width:30%; font-size: 15px;">
