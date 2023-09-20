@@ -104,7 +104,6 @@ class SubContractorController extends Controller
         $user['shipping_phone']   = $request->shipping_phone;
         $user['shipping_zip']     = $request->shipping_zip;
         $user['shipping_address'] = $request->shipping_address;
-        $user['color_code']       = $request->color_code;
 
         if (isset($fileNames)) {
             $user['avatar'] = $fileNames;
