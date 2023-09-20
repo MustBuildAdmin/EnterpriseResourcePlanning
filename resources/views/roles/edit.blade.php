@@ -33,10 +33,17 @@
                     <a class="nav-link" id="pills-account-tab" data-bs-toggle="pill" href="#account" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Account')}}</a>
                 </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-consultant-tab" data-bs-toggle="pill" href="#consultant1" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Consultant')}}</a>
+                    <a class="nav-link" id="pills-consultant-tab" data-bs-toggle="pill" href="#consultant1" role="tab"
+                     aria-controls="pills-contact" aria-selected="false">
+                     {{__('Consultant')}}
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-sub_contractor-tab" data-bs-toggle="pill" href="#subContractor" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Sub Contractor')}}</a>
+                    <a class="nav-link" id="pills-sub_contractor-tab" data-bs-toggle="pill"
+                     href="#subContractor" role="tab" aria-controls="pills-contact"
+                      aria-selected="false">
+                      {{__('Sub Contractor')}}
+                    </a>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -1247,11 +1254,13 @@
                         <div class="form-group">
                             @if(!empty($permissions))
                                 <h6 class="my-3">{{__('Assign Sub Contractor related Permission to Roles')}}</h6>
-                                <table class="table table-striped mb-0" id="">
+                                <table class="table table-striped mb-0" id="" aria-describedby="edit sub contractor">
                                     <thead>
                                     <tr>
                                         <th>
-                                            <input type="checkbox" class="form-check-input align-middle custom_align_middle" name="sub_contractor_checkall"  id="sub_contractor_checkall" >
+                                            <input type="checkbox" class="form-check-input
+                                             align-middle custom_align_middle"
+                                              name="sub_contractor_checkall" id="sub_contractor_checkall" >
                                         </th>
                                         <th>{{__('Module')}} </th>
                                         <th>{{__('Permissions')}} </th>
@@ -1261,15 +1270,32 @@
 
                                     @foreach($modules as $module)
                                         <tr>
-                                            <td><input type="checkbox" class="form-check-input align-middle ischeck sub_contractor_checkall"  data-id="{{str_replace(' ', '', $module)}}" id="{{str_replace(' ', '', $module)}}"></td>
-                                            <td><label class="ischeck sub_contractor_checkall" data-id="{{str_replace(' ', '', $module)}}" for="{{str_replace(' ', '', $module)}}">{{ ucfirst($module) }}</label></td>
+                                            <td>
+                                                <input type="checkbox" class="form-check-input align-middle
+                                                 ischeck sub_contractor_checkall"
+                                                  data-id="{{str_replace(' ', '', $module)}}"
+                                                  id="{{str_replace(' ', '', $module)}}">
+                                            </td>
+                                            <td>
+                                                <label class="ischeck sub_contractor_checkall"
+                                                 data-id="{{str_replace(' ', '', $module)}}"
+                                                  for="{{str_replace(' ', '', $module)}}">
+                                                  {{ ucfirst($module) }}
+                                                </label>
+                                            </td>
                                             <td>
                                                 <div class="row ">
                                                     @if(in_array('view '.$module,(array) $permissions))
                                                         @if($key = array_search('view '.$module,$permissions))
                                                             <div class="col-md-3 custom-control custom-checkbox">
-                                                                {{Form::checkbox('permissions[]',$key,$role->permission, ['class'=>'form-check-input sub_contractor_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                {{Form::label('permission'.$key,'View',['class'=>'custom-control-label'])}}<br>
+                                                                {{Form::checkbox('permissions[]',
+                                                                $key,$role->permission,['class'=>'form-check-input
+                                                                 sub_contractor_checkall isscheck_'
+                                                                 .str_replace(' ', '', $module),
+                                                                'id' =>'permission'.$key])}}
+                                                                {{Form::label('permission'.$key,'View',
+                                                                ['class'=>'custom-control-label'])}}
+                                                                <br>
                                                             </div>
                                                         @endif
                                                     @endif
@@ -1277,8 +1303,13 @@
                                                     @if(in_array('add '.$module,(array) $permissions))
                                                         @if($key = array_search('add '.$module,$permissions))
                                                             <div class="col-md-3 custom-control custom-checkbox">
-                                                                {{Form::checkbox('permissions[]',$key,$role->permission, ['class'=>'form-check-input sub_contractor_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                {{Form::label('permission'.$key,'Add',['class'=>'custom-control-label'])}}<br>
+                                                                {{Form::checkbox('permissions[]',$key,$role->permission,
+                                                                ['class'=>'form-check-input
+                                                                 sub_contractor_checkall isscheck_'
+                                                                 .str_replace(' ', '', $module),
+                                                                 'id' =>'permission'.$key])}}
+                                                                {{Form::label('permission'.$key,'Add',
+                                                                ['class'=>'custom-control-label'])}}<br>
                                                             </div>
                                                         @endif
                                                     @endif
@@ -1286,40 +1317,69 @@
                                                     @if(in_array('manage '.$module,(array) $permissions))
                                                         @if($key = array_search('manage '.$module,$permissions))
                                                             <div class="col-md-3 custom-control custom-checkbox">
-                                                                {{Form::checkbox('permissions[]',$key,$role->permission, ['class'=>'form-check-input sub_contractor_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                {{Form::label('permission'.$key,'Manage',['class'=>'custom-control-label'])}}<br>
+                                                                {{Form::checkbox('permissions[]',$key,$role->permission,
+                                                                ['class'=>'form-check-input
+                                                                 sub_contractor_checkall isscheck_'
+                                                                 .str_replace(' ', '', $module),
+                                                                 'id' =>'permission'.$key])}}
+                                                                {{Form::label('permission'.$key,
+                                                                'Manage',['class'=>'custom-control-label'])}}
+                                                                <br>
                                                             </div>
                                                         @endif
                                                     @endif
                                                     @if(in_array('create '.$module,(array) $permissions))
                                                         @if($key = array_search('create '.$module,$permissions))
                                                             <div class="col-md-3 custom-control custom-checkbox">
-                                                                {{Form::checkbox('permissions[]',$key,$role->permission, ['class'=>'form-check-input sub_contractor_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                {{Form::label('permission'.$key,'Create',['class'=>'custom-control-label'])}}<br>
+                                                                {{Form::checkbox('permissions[]',$key,$role->permission,
+                                                                 ['class'=>'form-check-input
+                                                                  sub_contractor_checkall isscheck_'
+                                                                  .str_replace(' ', '', $module),
+                                                                  'id' =>'permission'.$key])}}
+                                                                {{Form::label('permission'.$key,'Create',
+                                                                ['class'=>'custom-control-label'])}}
+                                                                <br>
                                                             </div>
                                                         @endif
                                                     @endif
                                                     @if(in_array('edit '.$module,(array) $permissions))
                                                         @if($key = array_search('edit '.$module,$permissions))
                                                             <div class="col-md-3 custom-control custom-checkbox">
-                                                                {{Form::checkbox('permissions[]',$key,$role->permission, ['class'=>'form-check-input sub_contractor_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                {{Form::label('permission'.$key,'Edit',['class'=>'custom-control-label'])}}<br>
+                                                                {{Form::checkbox('permissions[]',$key,$role->permission,
+                                                                ['class'=>'form-check-input
+                                                                 sub_contractor_checkall isscheck_'
+                                                                .str_replace(' ', '', $module),
+                                                                'id' =>'permission'.$key])}}
+                                                                {{Form::label('permission'.$key,'Edit',
+                                                                ['class'=>'custom-control-label'])}}
+                                                                <br>
                                                             </div>
                                                         @endif
                                                     @endif
                                                     @if(in_array('delete '.$module,(array) $permissions))
                                                         @if($key = array_search('delete '.$module,$permissions))
                                                             <div class="col-md-3 custom-control custom-checkbox">
-                                                                {{Form::checkbox('permissions[]',$key,$role->permission, ['class'=>'form-check-input sub_contractor_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                {{Form::label('permission'.$key,'Delete',['class'=>'custom-control-label'])}}<br>
+                                                                {{Form::checkbox('permissions[]',$key,$role->permission,
+                                                                ['class'=>'form-check-input
+                                                                 sub_contractor_checkall isscheck_'
+                                                                 .str_replace(' ', '', $module),
+                                                                 'id' =>'permission'.$key])}}
+                                                                {{Form::label('permission'.$key,
+                                                                'Delete',['class'=>'custom-control-label'])}}
+                                                                <br>
                                                             </div>
                                                         @endif
                                                     @endif
                                                     @if(in_array('show '.$module,(array) $permissions))
                                                         @if($key = array_search('show '.$module,$permissions))
                                                             <div class="col-md-3 custom-control custom-checkbox">
-                                                                {{Form::checkbox('permissions[]',$key,$role->permission, ['class'=>'form-check-input sub_contractor_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                {{Form::label('permission'.$key,'Show',['class'=>'custom-control-label'])}}<br>
+                                                                {{Form::checkbox('permissions[]',$key,$role->permission,
+                                                                ['class'=>'form-check-input sub_contractor_checkall
+                                                                 isscheck_'.str_replace(' ', '', $module),
+                                                                 'id' =>'permission'.$key])}}
+                                                                {{Form::label('permission'.$key,'Show',
+                                                                ['class'=>'custom-control-label'])}}
+                                                                <br>
                                                             </div>
                                                         @endif
                                                     @endif

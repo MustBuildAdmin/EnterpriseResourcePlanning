@@ -56,8 +56,7 @@
     $profile = \App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 <div class="container-fluid ">
-    <div class="modal modal-blur fade" id="info-subContractor" tabindex="-1" style="display: none;"
-        aria-hidden="true">
+    <div class="modal modal-blur fade" id="info-subContractor" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -68,19 +67,19 @@
                     <h3>{{ __('Creation of Sub Contractor') }}</h3>
                     <p>
                         {{ __('As per Create of Sub Contractor ,we are creating them
-                        				         globally but the invite payment is done only for your companies access over
-                        				         the project which you provide to them with your knowledge and we are not
-                        				         sharing any kind of other information to them about the projects in secert
-                        				         or in public or in mediuim of transfer.') }}
+                        globally but the invite payment is done only for your companies access over
+                        the project which you provide to them with your knowledge and we are not
+                        sharing any kind of other information to them about the projects in secert
+                        or in public or in mediuim of transfer.') }}
                     </p>
                     <hr />
                     <h3>{{ __('Invite a existing Sub Contractor') }}</h3>
                     <p>
                         {{ __('As per the Inviting exiting Sub Contractor which is already in the
-                        				          platform gloabally invite payment done only for your companies access over the
-                        				          project which you provide to them with your knowledge and we are not sharing
-                        				          any kind of other information to them about the projects in secert or in
-                        				          public or in mediuim of transfer.') }}
+                        platform gloabally invite payment done only for your companies access over the
+                        project which you provide to them with your knowledge and we are not sharing
+                        any kind of other information to them about the projects in secert or in
+                        public or in mediuim of transfer.') }}
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -142,8 +141,8 @@
                         <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information"
                             data-bs-toggle="modal" data-bs-target="#info-subContractor">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path
                                     d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555
@@ -159,20 +158,7 @@
                 </div>
             </div>
         </div>
-        <div class="empty">
-            <p class="empty-title"> {{ __('Invite a Sub Contractor') }}</p>
-            <p class="empty-subtitle text-secondary">
-                {{ __('No Sub Contractor are available for the project,please click below to invite Sub Contractor') }}
-            </p>
-            <div class="empty-action">
-                <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
-                    data-url="{{ route('subContractor.invite_subContractor') }}" data-ajax-popup="true"
-                    data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
-                    data-bs-original-title="{{ __('Invite Sub Contractor') }}">
-                    {{ __('Invite a Sub Contractor') }}
-                </a>
-            </div>
-        </div>
+      
         <div class="row row-cards">
             @forelse($users as $user)
                 <div class="col-md-6 col-lg-3">
@@ -203,7 +189,9 @@
                                         data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}</a>
                                     <a data-url="{{ route('subContractor.reset', \Crypt::encrypt($user->id)) }}"
                                         data-ajax-popup="true" data-size="md" class="dropdown-item"
-                                        data-bs-original-title="{{ __('Reset Password') }}">{{ __('Reset Password') }}</a>
+                                        data-bs-original-title="{{ __('Reset Password') }}">
+                                        {{ __('Reset Password') }}
+                                    </a>
 
                                 </div>
                             </div>
@@ -212,7 +200,8 @@
                         @php $short_lname=substr($user->lname, 0, 1); @endphp
                         <div class="card-body p-4 text-center">
                             @if (!empty($user->avatar))
-                                <img src="{{ !empty($user->avatar) ? $profile . $user->avatar : asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
+                                <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
+                                asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
                                     class="avatar avatar-xl mb-3 rounded" alt="">
                             @else
                                 <div class="avatar avatar-xl mb-3 user-initial"
@@ -220,8 +209,10 @@
                                     {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
                                 </div>
                             @endif
-                            @php $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name; @endphp
-                            @php $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname; @endphp
+                            @php
+                                $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name; 
+                                $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname;
+                            @endphp
                             <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
                             <div class="mt-3">
                                 <span class="badge bg-purple-lt">{{ $user->type }}</span>
@@ -236,7 +227,8 @@
                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path
-                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
+                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2
+                                         2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
                                     </path>
                                     <path d="M3 7l9 6l9 -6"></path>
                                 </svg>
@@ -259,19 +251,20 @@
                     </div>
                 </div>
             @empty
-                <div class="page-body">
-                    <div class="container-xl d-flex flex-column justify-content-center">
-                        <div class="empty">
-                            <div class="empty-img">
-                                <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}"
-                                    height="128" alt="">
-                            </div>
-                            <p class="empty-title">
-                                {{ __('No Sub Contractor Found') }}
-                            </p>
-                        </div>
-                    </div>
+            <div class="empty">
+                <p class="empty-title"> {{ __('Invite a Sub Contractor') }}</p>
+                <p class="empty-subtitle text-secondary">
+                    {{ __('No Sub Contractor are available for the project,please click below to invite Sub Contractor') }}
+                </p>
+                <div class="empty-action">
+                    <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
+                        data-url="{{ route('subContractor.invite_subContractor') }}" data-ajax-popup="true"
+                        data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
+                        data-bs-original-title="{{ __('Invite Sub Contractor') }}">
+                        {{ __('Invite a Sub Contractor') }}
+                    </a>
                 </div>
+            </div>
             @endforelse
             <div class="d-flex mt-4">
                 <ul class="pagination ms-auto">
@@ -296,9 +289,9 @@
         $temp.val(copy_email).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.info("Copying to clipboard was successful!");
+        toastr.info("{{ __('Email copying to clipboard was successfull!')}}");
     }
-
+   
     function copyToClipboardphone(element) {
         var $temp = $("<input>");
         $("body").append($temp);
@@ -306,29 +299,29 @@
         $temp.val(copy_phone).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.success("Copying to clipboard was successful!");
+        toastr.success("{{ __('Mobile copying to clipboard was successfull!')}}");
     }
 
     $(document).on('keypress',
-    function(e) {
-        if (e.which == 13) {
-            swal.closeModal();
-        }
-    });
+        function(e) {
+            if (e.which == 13) {
+                swal.closeModal();
+            }
+        });
 
     $(document).on('change', '.document_setup',
-    function() {
-        var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
-        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-            $(".show_document_file").hide();
-            $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
-            $('input[type="submit"]').prop('disabled', true);
-            return false;
-        } else {
-            $(".show_document_file").show();
-            $(".show_document_error").hide();
-            $('input[type="submit"]').prop('disabled', false);
-            return true;
-        }
-    });
+        function() {
+            var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(".show_document_file").hide();
+                $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+                $('input[type="submit"]').prop('disabled', true);
+                return false;
+            } else {
+                $(".show_document_file").show();
+                $(".show_document_error").hide();
+                $('input[type="submit"]').prop('disabled', false);
+                return true;
+            }
+        });
 </script>
