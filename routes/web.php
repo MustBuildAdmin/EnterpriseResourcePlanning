@@ -4385,7 +4385,7 @@ Route::any('subContractor_invitation_status', 'SubContractorController@store_inv
     ]
 );
 
-Route::any('subContractorDashboard', 'SubContractorController@subContractorDashboard')
+Route::any('subContractorDashboard', 'DashboardController@subContractorDashboard')
 ->name('subContractorDashboard')->middleware(
     [
         'auth',

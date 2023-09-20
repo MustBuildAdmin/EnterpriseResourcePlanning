@@ -694,10 +694,4 @@ class SubContractorController extends Controller
             return $e->getMessage();
         }
     }
-
-    public function subContractorDashboard(){
-
-
-        return view('subContractor.dashboard');
-    }
 }

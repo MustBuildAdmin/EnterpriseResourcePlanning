@@ -118,7 +118,10 @@ class AuthenticatedSessionController extends Controller
 
             } elseif ($user->type == 'consultant') {
                 return redirect('consultant_index');
-            } else {
+            } elseif ($user->type == 'sub_contractor') {
+                return redirect('subContractorDashboard');
+            }
+            else {
                 return redirect('users');
             }
         } else {
@@ -133,7 +136,11 @@ class AuthenticatedSessionController extends Controller
 
             } elseif ($user->type == 'consultant') {
                 return redirect()->intended(RouteServiceProvider::CONSHOME);
-            } else {
+            }
+            elseif ($user->type == 'sub_contractor') {
+                return redirect()->intended(RouteServiceProvider::SUBCONTRACTORHOME);
+            }
+            else {
 
                 return redirect()->intended(RouteServiceProvider::EMPHOME);
             }
