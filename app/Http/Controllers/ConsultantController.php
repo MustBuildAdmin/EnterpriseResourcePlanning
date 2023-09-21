@@ -31,36 +31,19 @@ class ConsultantController extends Controller
     {
         $user = \Auth::user();
         if (\Auth::user()->can('manage consultant')) {
-            if (\Auth::user()->type == 'super admin') {
-                $users = User::where([
-                    ['name', '!=', null],
-                    [function ($query) use ($request) {
-                        if (($s = $request->search)) {
-                            $query->orWhere('name', 'LIKE', '%'.$s.'%')
-                                ->get();
-                        }
-                    }],
-                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $usercount = User::where('created_by', '=', $user->creatorId())
-                    ->where('type', '=', 'consultant')
-                    ->get()
-                    ->count();
-            } else {
-                $users = User::where([
-                    ['name', '!=', null],
-                    [function ($query) use ($request) {
-                        if (($s = $request->search)) {
-                            $user = \Auth::user();
-                            $query->orWhere('name', 'LIKE', '%'.$s.'%')
-                                ->get();
-                        }
-                    }],
-                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $usercount = User::where('created_by', '=', $user->creatorId())
-                    ->where('type', '=', 'consultant')
-                    ->get()
-                    ->count();
-            }
+            $users = User::where([
+                ['name', '!=', null],
+                [function ($query) use ($request) {
+                    if (($s = $request->search)) {
+                        $query->orWhere('name', 'LIKE', '%'.$s.'%')
+                            ->get();
+                    }
+                }],
+            ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
+            $usercount = User::where('created_by', '=', $user->creatorId())
+                ->where('type', '=', 'consultant')
+                ->get()
+                ->count();
 
             return view('consultants.index')->with('users', $users)->with('usercount', $usercount);
         } else {
