@@ -44,7 +44,6 @@ class SubContractorController extends Controller
                     ['name', '!=', null],
                     [function ($query) use ($request) {
                         if ($s = $request->search) {
-                            $user = \Auth::user();
                             $query->orWhere('name', 'LIKE', '%' . $s . '%')
                                 ->get();
                         }
@@ -239,7 +238,8 @@ class SubContractorController extends Controller
 
             Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
 
-            return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+            return redirect()->route('subContractor.index')
+                             ->with('success', Config::get('constants.subcontractor_MAIL'));
         }
         else {
             return redirect()->back()->with('error', __('Your user limit is over, Please upgrade plan.'));

@@ -84,7 +84,8 @@
                                 @php $short = substr($user->name, 0, 1); @endphp
                                 @php $short_lname = substr($user->lname, 0, 1); @endphp
                                 @if (!empty($user->avatar))
-                                    <img src="{{ !empty($user->avatar) ? $profile . $user->avatar : asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
+                                    <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
+                                    asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
                                         class="avatar avatar-xl mb-3 rounded" alt="" />
                                 @else
                                     @if ($user->color_code != null || $user->color_code != '')
@@ -117,7 +118,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2
-2h-14a2 2 0 0 1 -2 -2z" />
+                                                  2h-14a2 2 0 0 1 -2 -2z" />
                                             <path d="M3 7l9 6l9 -6" />
                                         </svg>
                                         {{ __('Email') }}
@@ -133,7 +134,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2
-2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
+                                                 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
                                         </svg>
                                         {{ __('Mobile') }}
                                     </a>
