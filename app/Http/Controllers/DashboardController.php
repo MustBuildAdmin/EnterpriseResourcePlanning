@@ -263,7 +263,8 @@ class DashboardController extends Controller
 
                 $user = Auth::user();
 
-                if ($user->type != 'client' && $user->type != 'company' && $user->type != 'consultant' && $user->type != 'sub_contractor') {
+                if ($user->type != 'client' && $user->type != 'company' &&
+                    $user->type != 'consultant' && $user->type != 'sub_contractor') {
                     $emp = Employee::where('user_id', '=', $user->id)->first();
 
                     $announcements = Announcement::orderBy('announcements.id', 'desc')->take(5)->leftjoin('announcement_employees', 'announcements.id', '=', 'announcement_employees.announcement_id')->where('announcement_employees.employee_id', '=', $emp->id)->orWhere(function ($q) {
@@ -604,7 +605,7 @@ class DashboardController extends Controller
             }elseif (Auth::user()->type == 'sub_contractor') {
 
                 return redirect()->route('subContractorDashboard');
-            } 
+            }
             else {
                 if (\Auth::user()->can('show account dashboard')) {
                     $data['latestIncome'] = Revenue::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();

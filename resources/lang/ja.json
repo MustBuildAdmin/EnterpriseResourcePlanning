@@ -2725,6 +2725,7 @@
   "Email Address Copied Successfully!":"メールアドレスが正常にコピーされました。",
   "Mobile Number Copied Successfully!":"携帯電話番号が正常にコピーされました。",
   "Update a Member":"メンバーを更新する",
+  "Sub Contractor":"下請け業者",
   "Create a Member":"メンバーを作成する",
   "Invite Sub Contractor":"下請け業者を招待する",
   "Search a Sub Contractor":"下請け業者を探す",
@@ -2735,5 +2736,7 @@
   "Information about Creation of Sub Contractor":"下請け会社の設立に関する情報",
   "Invite a existing Sub Contractor":"既存の下請け業者を招待する",
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"プロジェクトに利用できる下請け業者がいません。下請け業者を招待するには、下をクリックしてください",
-  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"下請け業者が正常に作成されました。メールの受信箱を確認してください。"
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"下請け業者が正常に作成されました。メールの受信箱を確認してください。",
+  "No Sub Contractor Found":"下請け業者が見つかりません",
+  "Sub Contractor successfully deleted.":"下請け業者は正常に削除されました."
 }

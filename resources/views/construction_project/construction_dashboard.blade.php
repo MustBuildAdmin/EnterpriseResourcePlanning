@@ -15,13 +15,7 @@
               Dashboard
             </h2>
           </div>
-          <div class="col-2">
-            <select type="text" class="form-select" id="select-states" value="">
-              <option value="AL">Overall</option>
-              <option value="AK">Base</option>
-              <option value="AK">Revision-1</option>
-            </select>
-          </div>
+    
 
         </div>
       </div>
@@ -143,7 +137,7 @@
                 <div class="d-flex align-items-center">
                   <div class="subheader">Completed Task</div>
                   <div class="ms-auto lh-1">
-                    <div class="dropdown">
+                    {{-- <div class="dropdown">
                       <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">Last 7 days</a>
                       <div class="dropdown-menu dropdown-menu-end">
@@ -151,11 +145,11 @@
                         <a class="dropdown-item" href="#">Last 30 days</a>
                         <a class="dropdown-item" href="#">Last 3 months</a>
                       </div>
-                    </div>
+                    </div> --}}
                   </div>
                 </div>
                 <div class="h1 mb-3">
-                  <div class="h1 mb-0 me-2">400 Tasks</div>
+                  <div class="h1 mb-0 me-2">{{$completed_task}} Tasks</div>
                 </div>
                 <div class="d-flex mb-2">
                   <div>Actual Percentage</div>

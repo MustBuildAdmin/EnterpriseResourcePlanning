@@ -32,7 +32,7 @@ class SubContractorController extends Controller
                 $users = User::where([
                     ['name', '!=', null],
                     [function ($query) use ($request) {
-                        if (($s = $request->search)) {
+                        if ($s = $request->search) {
                             $query->orWhere('name', 'LIKE', '%' . $s . '%')
                                 ->get();
                         }
@@ -43,7 +43,7 @@ class SubContractorController extends Controller
                 $users = User::where([
                     ['name', '!=', null],
                     [function ($query) use ($request) {
-                        if (($s = $request->search)) {
+                        if ($s = $request->search) {
                             $user = \Auth::user();
                             $query->orWhere('name', 'LIKE', '%' . $s . '%')
                                 ->get();
@@ -520,16 +520,16 @@ class SubContractorController extends Controller
                             return redirect()->route('subContractor.index')
                                 ->with('success', __('Sub Contractor successfully deleted.'));
                         } else {
-                            return redirect()->back()->with('error', __('Something is wrong.'));
+                            return redirect()->back()->with('error', __(Config::get('constants.SOME')));
                         }
                     } else {
-                        return redirect()->back()->with('error', __('Something is wrong.'));
+                        return redirect()->back()->with('error', __(Config::get('constants.SOME')));
                     }
                 }
 
                 return redirect()->route('subContractor.index')->with('error', __('Sub Contractor permission denied.'));
             } else {
-                return redirect()->back()->with('error', __('Something is wrong.'));
+                return redirect()->back()->with('error', __(Config::get('constants.SOME')));
             }
         } else {
             return redirect()->back();
@@ -582,27 +582,6 @@ class SubContractorController extends Controller
 
     }
 
-    public function scott_search(Request $request)
-    {
-        return view('subcontractor.scott-search');
-    }
-
-    public function scott_result(Request $request)
-    {
-        if ($request->filled('search')) {
-            $users = User::search($request->search)->where('type', 'sub_contractor')->get();
-        } else {
-            $users = [];
-        }
-
-        $returnHTML = view('subcontractor.result', compact('users'))->render();
-
-        return response()->json([
-            'success' => true,
-            'html' => $returnHTML,
-        ]);
-
-    }
 
     public function get_company_details(Request $request, $id)
     {

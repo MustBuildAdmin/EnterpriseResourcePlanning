@@ -2725,6 +2725,7 @@
   "Email Address Copied Successfully!":"Indirizzo email copiato con successo!",
   "Mobile Number Copied Successfully!":"Numero di cellulare copiato con successo!!",
   "Update a Member":"Aggiorna un membro",
+  "Sub Contractor":"Subappaltatore",
   "Create a Member":"Crea un membro",
   "Invite Sub Contractor":"Invita subappaltatore",
   "Search a Sub Contractor":"Cerca un subappaltatore",
@@ -2735,5 +2736,7 @@
   "Information about Creation of Sub Contractor":"Informazioni sulla creazione di un subappaltatore",
   "Invite a existing Sub Contractor":"Invita un subappaltatore esistente",
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Nessun subappaltatore disponibile per il progetto, fare clic di seguito per invitare il subappaltatore",
-  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Subappaltatore creato con successo! Controlla la tua casella di posta."
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Subappaltatore creato con successo! Controlla la tua casella di posta.",
+  "No Sub Contractor Found":"Nessun subappaltatore trovato",
+  "Sub Contractor successfully deleted.":"Subappaltatore eliminato con successo."
 }

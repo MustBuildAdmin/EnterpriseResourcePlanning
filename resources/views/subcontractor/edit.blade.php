@@ -30,7 +30,8 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
-                {{Form::label('lnamelabel',__('Last Name'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                {{Form::label('lnamelabel',__('Last Name'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{Form::text('lname',null,array('class'=>'form-control','required'=>'required',
                     'placeholder'=>'Last Name'))}}
@@ -93,7 +94,8 @@
                         placeholder="Select Country">
                         <option value="">{{ __('Select Country ...') }}</option>
                         @foreach ($countrylist as $key => $value)
-                            <option value="{{ $value->iso2 }}" @if ($vender->billing_country == $value->iso2) selected @endif>
+                            <option value="{{ $value->iso2 }}"
+                                @if ($vender->billing_country == $value->iso2) selected @endif>
                                 {{ $value->name }}</option>
                         @endforeach
                     </select>
@@ -108,7 +110,8 @@
                         placeholder="Select State">
                         <option value="">{{ __('Select State ...') }}</option>
                         @foreach ($statelist as $key => $value)
-                            <option value="{{ $value->iso2 }}" @if ($vender->billing_state == $value->iso2) selected @endif>
+                            <option value="{{ $value->iso2 }}"
+                                @if ($vender->billing_state == $value->iso2) selected @endif>
                                 {{ $value->name }}</option>
                         @endforeach
                     </select>
@@ -138,11 +141,11 @@
             <div class="form-group">
                 {{ Form::label('billing_zip', __('Zip Code'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
-                    {{ Form::text('billing_zip', null, ['class' => 'form-control', 'placeholder' => __('Enter User Email')]) }}
+                    {{ Form::text('billing_zip', null, ['class' => 'form-control',
+                    'placeholder' => __('Enter User Email')]) }}
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
             <div class="form-group">
                 {{ Form::label('billing_address', __('Address'), ['class' => 'form-label']) }}
                 <div class="input-group">
@@ -154,7 +157,6 @@
 
     @if (App\Models\Utility::getValByName('shipping_display') == 'on')
         <div class="col-md-12 text-end">
-            {{-- <input type="button" id="billing_data" value="{{__('Shipping Same As Billing')}}" class="btn btn-primary"> --}}
         </div>
         <h6 class="sub-title">{{ __('Shipping Address') }}</h6>
         <div class="row">
@@ -175,7 +177,8 @@
                             <option value="">{{ __('Select Country ...') }}</option>
                             @foreach ($countrylist as $key => $value)
                                 <option value="{{ $value->iso2 }}"
-                                    @isset($vender->shipping_country)@if ($vender->shipping_country == $value->iso2) selected @endif @endisset>
+                                    @isset($vender->shipping_country)
+                                    @if ($vender->shipping_country == $value->iso2) selected @endif @endisset>
                                     {{ $value->name }}</option>
                             @endforeach
                         </select>
@@ -190,7 +193,8 @@
                             placeholder="Select Country">
                             <option value="">{{ __('Select State ...') }}</option>
                             @foreach ($sellerstatelist as $key => $value)
-                                <option value="{{ $value->iso2 }}" @if ($vender->shipping_state == $value->iso2) selected @endif>
+                                <option value="{{ $value->iso2 }}"
+                                     @if ($vender->shipping_state == $value->iso2) selected @endif>
                                     {{ $value->name }}</option>
                             @endforeach
                         </select>
@@ -219,7 +223,8 @@
                 <div class="form-group">
                     {{ Form::label('shipping_zip', __('Zip Code'), ['class' => 'form-label']) }}
                     <div class="form-icon-user">
-                        {{ Form::text('shipping_zip', null, ['class' => 'form-control', 'placeholder' => __('Enter User Email')]) }}
+                        {{ Form::text('shipping_zip', null, ['class' => 'form-control',
+                        'placeholder' => __('Enter User Email')]) }}
                     </div>
                 </div>
             </div>

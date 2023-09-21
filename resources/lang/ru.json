@@ -2560,6 +2560,7 @@
   "Email Address Copied Successfully!":"Адрес электронной почты успешно скопирован!",
   "Mobile Number Copied Successfully!":"Номер мобильного телефона успешно скопирован!",
   "Update a Member":"Обновить участника",
+  "Sub Contractor":"Субподрядчик",
   "Create a Member":"Создать участника",
   "Invite Sub Contractor":"Пригласить субподрядчика",
   "Search a Sub Contractor":"Поиск субподрядчика",
@@ -2570,5 +2571,7 @@
   "Information about Creation of Sub Contractor":"Информация о создании субподрядчика",
   "Invite a existing Sub Contractor":"Пригласить существующего субподрядчика",
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Для проекта нет субподрядчика. Нажмите ниже, чтобы пригласить субподрядчика.",
-  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Субподрядчик успешно создан! Пожалуйста, проверьте свой почтовый ящик."
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Субподрядчик успешно создан! Пожалуйста, проверьте свой почтовый ящик.",
+  "No Sub Contractor Found":"Субподрядчик не найден",
+  "Sub Contractor successfully deleted.":"Субподрядчик успешно удален."
 }

@@ -2725,6 +2725,7 @@
   "Mobile Number Copied Successfully!":"Handynummer erfolgreich kopiert!",
   "Update a Member":"Aktualisieren Sie ein Mitglied",
   "Create a Member":"Erstellen Sie ein Mitglied",
+  "Sub Contractor":"Subunternehmer",
   "Invite Sub Contractor":"Subunternehmer einladen",
   "Search a Sub Contractor":"Suchen Sie einen Subunternehmer",
   "Sub Contractor of the Organisation":"Subunternehmer der Organisation",
@@ -2734,5 +2735,7 @@
   "Information about Creation of Sub Contractor":"Informationen zur Erstellung eines Subunternehmers",
   "Invite a existing Sub Contractor":"Laden Sie einen bestehenden Subunternehmer ein",
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Für das Projekt steht kein Subunternehmer zur Verfügung. Bitte klicken Sie unten, um den Subunternehmer einzuladen",
-  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Subunternehmer erfolgreich erstellt! Bitte überprüfen Sie Ihren Posteingang."
+  "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Subunternehmer erfolgreich erstellt! Bitte überprüfen Sie Ihren Posteingang.",
+  "No Sub Contractor Found":"Kein Subunternehmer gefunden",
+  "Sub Contractor successfully deleted.":"Subunternehmer erfolgreich gelöscht."
 }
