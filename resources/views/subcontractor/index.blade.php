@@ -67,19 +67,19 @@
                     <h3>{{ __('Creation of Sub Contractor') }}</h3>
                     <p>
                         {{ __('As per Create of Sub Contractor ,we are creating them
-                            globally but the invite payment is done only for your companies access over
-                            the project which you provide to them with your knowledge and we are not
-                            sharing any kind of other information to them about the projects in secert
-                            or in public or in mediuim of transfer.') }}
+                        globally but the invite payment is done only for your companies access over
+                        the project which you provide to them with your knowledge and we are not
+                        sharing any kind of other information to them about the projects in secert
+                        or in public or in mediuim of transfer.') }}
                     </p>
                     <hr />
                     <h3>{{ __('Invite a existing Sub Contractor') }}</h3>
                     <p>
                         {{ __('As per the Inviting exiting Sub Contractor which is already in the
-                            platform gloabally invite payment done only for your companies access over the
-                            project which you provide to them with your knowledge and we are not sharing
-                            any kind of other information to them about the projects in secert or in
-                            public or in mediuim of transfer.') }}
+                        platform gloabally invite payment done only for your companies access over the
+                        project which you provide to them with your knowledge and we are not sharing
+                        any kind of other information to them about the projects in secert or in
+                        public or in mediuim of transfer.') }}
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -145,9 +145,9 @@
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path
                                     d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555
-						  -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225
-						   0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33
-						    2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
+-1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225
+0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33
+2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
                                 </path>
                                 <path d="M12 8v4"></path>
                                 <path d="M12 16h.01"></path>
@@ -238,7 +238,7 @@
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path
                                         d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1
-						  -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
+-2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
                                     </path>
                                 </svg>
                                 {{ __('Call') }}
@@ -306,18 +306,18 @@
         });
 
     $(document).on('change', '.document_setup',
-    function() {
-        var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
-        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-            $(".show_document_file").hide();
-            $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
-            $('input[type="submit"]').prop('disabled', true);
-            return false;
-        } else {
-            $(".show_document_file").show();
-            $(".show_document_error").hide();
-            $('input[type="submit"]').prop('disabled', false);
-            return true;
-        }
-    });
+        function() {
+            var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(".show_document_file").hide();
+                $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+                $('input[type="submit"]').prop('disabled', true);
+                return false;
+            } else {
+                $(".show_document_file").show();
+                $(".show_document_error").hide();
+                $('input[type="submit"]').prop('disabled', false);
+                return true;
+            }
+        });
 </script>

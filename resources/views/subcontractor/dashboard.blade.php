@@ -6,28 +6,34 @@
         height: 35px !important;
         width: 12% !important;
     }
+
     #invite {
         height: 35px !important;
         width: 12% !important;
     }
+
     #reset {
 
         width: 12% !important;
     }
+
     #search_button {
         height: 35px !important;
         width: 12% !important;
     }
+
     .dropdown-toggle::after {
         display: none;
         position: absolute;
         top: 50%;
         right: 20px;
     }
+
     .avatar.avatar-xl.mb-3.user-initial {
         border-radius: 50%;
         color: #FFF;
     }
+
     .avatar-xl {
         --tblr-avatar-size: 6.2rem;
     }
@@ -75,11 +81,10 @@
                                 </div>
                             </div>
                             <div class="card-body p-4 text-center">
-								 @php $short = substr($user->name, 0, 1); @endphp
-                                 @php $short_lname = substr($user->lname, 0, 1); @endphp
-								@if (!empty($user->avatar))
-                                    <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
-									asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
+                                @php $short = substr($user->name, 0, 1); @endphp
+                                @php $short_lname = substr($user->lname, 0, 1); @endphp
+                                @if (!empty($user->avatar))
+                                    <img src="{{ !empty($user->avatar) ? $profile . $user->avatar : asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
                                         class="avatar avatar-xl mb-3 rounded" alt="" />
                                 @else
                                     @if ($user->color_code != null || $user->color_code != '')
@@ -93,8 +98,8 @@
                                     </div>
                                 @endif
                                 @php
-									$name = strlen($user->name) > 20 ? substr($user->name, 0, 19) . '...' : $user->name; 
-								@endphp
+                                    $name = strlen($user->name) > 20 ? substr($user->name, 0, 19) . '...' : $user->name;
+                                @endphp
                                 <h3 class="m-0 mb-1">
                                     <a href="#">{{ $name }}</a>
                                 </h3>
@@ -112,7 +117,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2
-												 2h-14a2 2 0 0 1 -2 -2z"/>
+2h-14a2 2 0 0 1 -2 -2z" />
                                             <path d="M3 7l9 6l9 -6" />
                                         </svg>
                                         {{ __('Email') }}
@@ -128,7 +133,7 @@
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                             <path
                                                 d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2
-												 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/>
+2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" />
                                         </svg>
                                         {{ __('Mobile') }}
                                     </a>
