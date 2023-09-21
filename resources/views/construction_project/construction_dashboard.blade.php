@@ -2,6 +2,15 @@
 
 <div class="page-wrapper">
 @include('construction_project.side-menu')
+<?php
+$delay=round($current_Planed_percentage-$actual_percentage);
+if($delay<0){
+  $delay=0;
+}
+if($delay>100){
+  $delay=100;
+}
+?>
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
@@ -36,7 +45,15 @@
                 {{ Utility::getDateFormated($project->start_date) }} - <b>Due to:</b>
                  {{ Utility::getDateFormated($project->end_date) }}</p>
                 <p class="mb-3">
-                  <span class="badge bg-red-lt">Current Status</span>
+                @if($project->status == 'in_progress')
+                  <span class="badge bg-info p-2 px-3 rounded"> {{ __('In Progress')}}</span>
+                @elseif($project->status == 'on_hold')
+                  <span class="badge  bg-warning p-2 px-3 rounded">{{ __('On Hold')}}</span>
+                @elseif($project->status == 'Canceled')
+                  <span class="badge  bg-red p-2 px-3 rounded"> {{ __('Canceled')}}</span>
+                @else
+                    <span class="badge bg-success p-2 px-3 rounded">{{ __('Finished')}}</span>
+                @endif
                 </p>
                 <div>
                   <div class="avatar-list avatar-list-stacked">
@@ -915,8 +932,9 @@
         fill: {
           opacity: 1,
         },
-        series: [44, 55, 12, 2],
-        labels: ["Pending", "Completed", "In-Progress", "UpComming"],
+        series: [{{round($current_Planed_percentage)}},
+        {{round($actual_percentage)}}, {{$delay}}, {{round(100-$actual_percentage)}}],
+        labels: ["Planned Progress", "Actual Progress", "Delay in progress", "Actual Remaining Progress"],
         tooltip: {
           theme: 'dark'
         },
