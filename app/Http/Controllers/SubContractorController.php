@@ -523,13 +523,13 @@ class SubContractorController extends Controller
                             return redirect()->back()->with('error', __(Config::get('constants.SOME')));
                         }
                     } else {
-                        return redirect()->back()->with('error', __(Config::get('constants.SOME'));
+                        return redirect()->back()->with('error', __(Config::get('constants.SOME')));
                     }
                 }
 
                 return redirect()->route('subContractor.index')->with('error', __('Sub Contractor permission denied.'));
             } else {
-                return redirect()->back()->with('error', __(Config::get('constants.SOME'));
+                return redirect()->back()->with('error', __(Config::get('constants.SOME')));
             }
         } else {
             return redirect()->back();
