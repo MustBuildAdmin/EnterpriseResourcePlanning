@@ -27,31 +27,31 @@ class SubContractorController extends Controller
     public function index(Request $request)
     {
         $user = \Auth::user();
-        if (\Auth::user()->can('manage sub contractor')) {
-            if (\Auth::user()->type == 'super admin') {
-                $users = User::where([
-                    ['name', '!=', null],
-                    [function ($query) use ($request) {
-                        if ($s = $request->search) {
-                            $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                                ->get();
-                        }
-                    }],
-                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
-            }
-            else {
-                $users = User::where([
-                    ['name', '!=', null],
-                    [function ($query) use ($request) {
-                        if ($s = $request->search) {
-                            $user = \Auth::user();
-                            $query->orWhere('name', 'LIKE', '%' . $s . '%')
-                                ->get();
-                        }
-                    }],
-                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
-            }
+        if (\Auth::user()->can('manage sub contractor') && \Auth::user()->type == 'super admin') {
+            $users = User::where([
+                ['name', '!=', null],
+                [function ($query) use ($request) {
+                    if ($s = $request->search) {
+                        $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                            ->get();
+                    }
+                }],
+            ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
 
+            return view('subContractor.index')->with('users', $users);
+        }
+        elseif(\Auth::user()->can('manage sub contractor')){
+            $users = User::where([
+                ['name', '!=', null],
+                [function ($query) use ($request) {
+                    if ($s = $request->search) {
+                        $user = \Auth::user();
+                        $query->orWhere('name', 'LIKE', '%' . $s . '%')
+                            ->get();
+                    }
+                }],
+            ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
+            
             return view('subContractor.index')->with('users', $users);
         }
         else {
