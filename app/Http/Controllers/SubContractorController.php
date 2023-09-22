@@ -485,43 +485,7 @@ class SubContractorController extends Controller
         );
     }
 
-    public function destroy($id)
-    {
-
-        if (\Auth::user()->can('delete sub contractor')) {
-            $user = User::find($id);
-            if ($user) {
-                if (\Auth::user()->type == 'super admin') {
-                    if ($user->is_deleted == 0) {
-                        $user->is_deleted = 1;
-                    } else {
-                        $user->is_deleted = 0;
-                    }
-                    $user->save();
-                }
-                if (\Auth::user()->type == 'sub_contractor') {
-                    $employee = Employee::where(['user_id' => $user->id])->delete();
-                    if ($employee) {
-                        $deleteuser = User::where(['id' => $user->id])->delete();
-                        if ($deleteuser) {
-                            return redirect()->route('subContractor.index')
-                                ->with('success', __('Sub Contractor successfully deleted.'));
-                        } else {
-                            return redirect()->back()->with('error', __(Config::get('constants.SOME')));
-                        }
-                    } else {
-                        return redirect()->back()->with('error', __(Config::get('constants.SOME')));
-                    }
-                }
-
-                return redirect()->route('subContractor.index')->with('error', __('Sub Contractor permission denied.'));
-            } else {
-                return redirect()->back()->with('error', __(Config::get('constants.SOME')));
-            }
-        } else {
-            return redirect()->back();
-        }
-    }
+   
 
     public function userPassword($id)
     {

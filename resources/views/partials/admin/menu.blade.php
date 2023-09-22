@@ -1045,10 +1045,14 @@
                             </a>
                         </li>
                     @endcan
+
                     @can('manage consultant')
-                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'consultants.index' || Request::route()->getName() == 'consultants.create' || Request::route()->getName() == 'consultants.edit') ? ' active' : '' }}">
+                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'consultants.index' ||
+                          Request::route()->getName() == 'consultants.create' ||
+                          Request::route()->getName() == 'consultants.edit') ? ' active' : '' }}">
                             <a href="{{ route('consultants.index') }}" class="dash-link">
-                                <span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{__('Consultant')}}</span>
+                                <span class="dash-micon"><i class="ti ti-users"></i></span>
+                                <span class="dash-mtext">{{__('Consultant')}}</span>
                             </a>
                         </li>
                     @endcan
@@ -1058,7 +1062,8 @@
                         Request::route()->getName() == 'subContractor.create' ||
                         Request::route()->getName() == 'subContractor.edit') ? ' active' : '' }}">
                             <a href="{{ route('subContractor.index') }}" class="dash-link">
-                                <span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{__('Consultant')}}</span>
+                                <span class="dash-micon"><i class="ti ti-users"></i></span>
+                                <span class="dash-mtext">{{__('Sub Contractor')}}</span>
                             </a>
                         </li>
                     @endcan
