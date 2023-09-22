@@ -150,7 +150,7 @@ class SubContractorController extends Controller
         $fileNames = $this->upload($request);
         $objUser   = \Auth::user()->creatorId();
         $objUser   = User::find($objUser);
-        $user      = User::find(\Auth::user()->created_by);
+        $usersubcon      = User::find(\Auth::user()->created_by);
         $totaluser = $objUser->countUsers();
         $plan      = Plan::find($objUser->plan);
         if ($totaluser < $plan->max_users || $plan->max_users == -1) {
@@ -163,7 +163,7 @@ class SubContractorController extends Controller
                 $avatar = null;
             }
 
-            $user = User::create(
+            $usersubcon = User::create(
                 [
                     'name'             => $request->name,
                     'lname'            => $request->lname,
@@ -193,37 +193,37 @@ class SubContractorController extends Controller
                 ]
             );
             $roler = Role::findByName('sub_contractor');
-            $user->assignRole($roler);
-            $user->userDefaultDataRegister($user->id);
+            $usersubcon->assignRole($roler);
+            $usersubcon->userDefaultDataRegister($usersubcon->id);
         }
 
         $setings = Utility::settings();
-        $requested_date = Config::get('constants.TIMESTUMP');
+        $requesteddate = Config::get('constants.TIMESTUMP');
         $createConnection = SubContractorCompanies::create([
             "company_id" => \Auth::user()->creatorId(),
-            'sub_contractor_id' => $user->id,
-            'requested_date' => $requested_date,
+            'sub_contractor_id' => $usersubcon->id,
+            'requested_date' => $requesteddate,
             'status' => 'requested',
         ]);
         $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createConnection->id;
-        $userArr = [
+        $userarr = [
             'invite_link' => $inviteUrl,
             'user_name' => \Auth::user()->name,
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
+        Utility::sendEmailTemplate('invite_sub_contractor', [$usersubcon->id => $usersubcon->email], $userarr);
 
         if ($setings['create_sub_contractor'] == 1) {
-            $user->password = $psw;
-            $user->type = 'sub_contractor';
+            $usersubcon->password = $psw;
+            $usersubcon->type = 'sub_contractor';
 
-            $userArr = [
-                'email' => $user->email,
-                'password' => $user->password,
+            $userarray = [
+                'email' => $usersubcon->email,
+                'password' => $usersubcon->password,
             ];
 
-            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+            Utility::sendEmailTemplate('create_sub_contractor', [$usersubcon->id => $usersubcon->email], $userarray);
 
             return redirect()->route('subContractor.index')
                              ->with('success', Config::get('constants.subcontractor_MAIL'));
@@ -516,8 +516,8 @@ class SubContractorController extends Controller
                 return redirect()->back()->with('error', $messages->first());
             }
 
-            $user = User::where('id', $id)->first();
-            $user->forceFill([
+            $usercon = User::where('id', $id)->first();
+            $usercon->forceFill([
                 'password' => Hash::make($request->password),
             ])->save();
 
@@ -596,22 +596,22 @@ class SubContractorController extends Controller
 
             foreach ($subcontractortid as $cid) {
 
-                $requested_date = Config::get('constants.TIMESTUMP');
-                $createConnection = SubContractorCompanies::create([
+                $requesteddate = Config::get('constants.TIMESTUMP');
+                $createconnection = SubContractorCompanies::create([
                     "company_id" => \Auth::user()->creatorId(),
                     'sub_contractor_id' => $cid,
-                    'requested_date' => $requested_date,
+                    'requested_date' => $requesteddate,
                     'status' => 'requested',
                 ]);
-                $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createConnection->id;
-                $userArr = [
+                $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createconnection->id;
+                $userarr = [
                     'invite_link' => $inviteUrl,
                     'user_name' => \Auth::user()->name,
                     'company_name' => \Auth::user()->company_name,
                     'email' => \Auth::user()->email,
                 ];
 
-                Utility::sendEmailTemplate('invite_sub_contractor', [$cid => \Auth::user()->email], $userArr);
+                Utility::sendEmailTemplate('invite_sub_contractor', [$cid => \Auth::user()->email], $userarr);
 
             }
 
