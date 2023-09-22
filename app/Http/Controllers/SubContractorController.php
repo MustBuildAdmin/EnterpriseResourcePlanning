@@ -63,58 +63,58 @@ class SubContractorController extends Controller
         $fileNames       = $this->upload($request);
         $psw             = $request->password;
 
-        $user                     = new User();
-        $user['name']             = $request->name;
-        $user['lname']            = $request->lname;
-        $user['email']            = $request->email;
-        $user['password']         = Hash::make($request->password);
-        $user['type']             = 'sub_contractor';
-        $user['default_pipeline'] = 1;
-        $user['plan']             = 1;
-        $user['lang']             = ! empty($defaultlanguage) ? $defaultlanguage->value : '';
-        $user['created_by']       = \Auth::user()->creatorId();
-        $user['phone']            = $request->contact;
-        $user['tax_number']       = $request->tax_number;
-        $user['color_code']       = $request->color_code;
-        $user['billing_name']     = $request->billing_name;
-        $user['billing_country']  = $request->billing_country;
-        $user['billing_state']    = $request->billing_state;
-        $user['billing_city']     = $request->billing_city;
-        $user['billing_phone']    = $request->billing_phone;
-        $user['billing_zip']      = $request->billing_zip;
-        $user['billing_address']  = $request->billing_address;
-        $user['shipping_name']    = $request->shipping_name;
-        $user['shipping_country'] = $request->shipping_country;
-        $user['shipping_state']   = $request->shipping_state;
-        $user['shipping_city']    = $request->shipping_city;
-        $user['shipping_phone']   = $request->shipping_phone;
-        $user['shipping_zip']     = $request->shipping_zip;
-        $user['shipping_address'] = $request->shipping_address;
+        $subconsult                     = new User();
+        $subconsult['name']             = $request->name;
+        $subconsult['lname']            = $request->lname;
+        $subconsult['email']            = $request->email;
+        $subconsult['password']         = Hash::make($request->password);
+        $subconsult['type']             = 'sub_contractor';
+        $subconsult['default_pipeline'] = 1;
+        $subconsult['plan']             = 1;
+        $subconsult['lang']             = ! empty($defaultlanguage) ? $defaultlanguage->value : '';
+        $subconsult['created_by']       = \Auth::user()->creatorId();
+        $subconsult['phone']            = $request->contact;
+        $subconsult['tax_number']       = $request->tax_number;
+        $subconsult['color_code']       = $request->color_code;
+        $subconsult['billing_name']     = $request->billing_name;
+        $subconsult['billing_country']  = $request->billing_country;
+        $subconsult['billing_state']    = $request->billing_state;
+        $subconsult['billing_city']     = $request->billing_city;
+        $subconsult['billing_phone']    = $request->billing_phone;
+        $subconsult['billing_zip']      = $request->billing_zip;
+        $subconsult['billing_address']  = $request->billing_address;
+        $subconsult['shipping_name']    = $request->shipping_name;
+        $subconsult['shipping_country'] = $request->shipping_country;
+        $subconsult['shipping_state']   = $request->shipping_state;
+        $subconsult['shipping_city']    = $request->shipping_city;
+        $subconsult['shipping_phone']   = $request->shipping_phone;
+        $subconsult['shipping_zip']     = $request->shipping_zip;
+        $subconsult['shipping_address'] = $request->shipping_address;
 
         if (isset($fileNames)) {
-            $user['avatar'] = $fileNames;
+            $subconsult['avatar'] = $fileNames;
         }
 
-        $user->save();
+        $subconsult->save();
         $role_r = Role::findByName('sub_contractor');
-        $user->assignRole($role_r);
-        $user->userDefaultDataRegister($user->id);
-        $user->userWarehouseRegister($user->id);
-        Utility::chartOfAccountTypeData($user->id);
-        Utility::chartOfAccountData1($user->id);
-        Utility::pipeline_lead_deal_Stage($user->id);
-        Utility::project_task_stages($user->id);
-        Utility::labels($user->id);
-        Utility::sources($user->id);
-        Utility::jobStage($user->id);
-        GenerateOfferLetter::defaultOfferLetterRegister($user->id);
-        ExperienceCertificate::defaultExpCertificatRegister($user->id);
-        JoiningLetter::defaultJoiningLetterRegister($user->id);
-        NOC::defaultNocCertificateRegister($user->id);
+        $subconsult->assignRole($role_r);
+        $subconsult->userDefaultDataRegister($subconsult->id);
+        $subconsult->userWarehouseRegister($subconsult->id);
+        Utility::chartOfAccountTypeData($subconsult->id);
+        Utility::chartOfAccountData1($subconsult->id);
+        Utility::pipeline_lead_deal_Stage($subconsult->id);
+        Utility::project_task_stages($subconsult->id);
+        Utility::labels($subconsult->id);
+        Utility::sources($subconsult->id);
+        Utility::jobStage($subconsult->id);
+        GenerateOfferLetter::defaultOfferLetterRegister($subconsult->id);
+        ExperienceCertificate::defaultExpCertificatRegister($subconsult->id);
+        JoiningLetter::defaultJoiningLetterRegister($subconsult->id);
+        NOC::defaultNocCertificateRegister($subconsult->id);
         $requested_date = Config::get('constants.TIMESTUMP');
         $createConnection = SubContractorCompanies::create([
             "company_id"=>\Auth::user()->creatorId(),
-            'sub_contractor_id'=>$user->id,
+            'sub_contractor_id'=>$subconsult->id,
             'requested_date'=>$requested_date,
             'status'=>'requested'
         ]);
@@ -125,20 +125,20 @@ class SubContractorController extends Controller
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
+        Utility::sendEmailTemplate('invite_sub_contractor', [$subconsult->id => $subconsult->email], $userArr);
            
 
         $setings = Utility::settings();
 
         if ($setings['create_sub_contractor'] == 1) {
-            $user->password = $psw;
-            $user->type = $role_r->name;
+            $subconsult->password = $psw;
+            $subconsult->type = $role_r->name;
 
             $userArr = [
-                'email' => $user->email,
-                'password' => $user->password,
+                'email' => $subconsult->email,
+                'password' => $subconsult->password,
             ];
-            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+            Utility::sendEmailTemplate('create_sub_contractor', [$subconsult->id => $subconsult->email], $userArr);
 
         }
 
