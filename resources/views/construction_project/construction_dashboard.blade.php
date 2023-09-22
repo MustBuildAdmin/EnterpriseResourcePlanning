@@ -176,14 +176,15 @@ if($delay>100){
                   <div>Actual Percentage</div>
                   <div class="ms-auto">
                     <span class="text-blue d-inline-flex align-items-center lh-1">
-                      70% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
+                    {{round($actual_percentage)}}% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
                     </span>
                   </div>
                 </div>
                 <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75"
+                  <div class="progress-bar bg-primary" style="width: {{round($actual_percentage)}}%" 
+                  role="progressbar" aria-valuenow="{{round($actual_percentage)}}"
                     aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-                    <span class="visually-hidden">75% Complete</span>
+                    <span class="visually-hidden">{{round($actual_percentage)}}% Complete</span>
                   </div>
                 </div>
               </div>
@@ -212,7 +213,7 @@ if($delay>100){
                       </div>
                       <div class="col">
                         <div class="font-weight-medium">
-                          Completed Sub-Task Today
+                          Completed Sub-Task
                         </div>
                         <div class="text-muted">
                         {{  $completed_task }} Tasks
@@ -242,7 +243,7 @@ if($delay>100){
                       </div>
                       <div class="col">
                         <div class="font-weight-medium">
-                          Ongoing Sub-Task Today
+                          Ongoing Sub-Task
                         </div>
                         <div class="text-muted">
                         {{ $ongoing_task }} Tasks
@@ -274,7 +275,7 @@ if($delay>100){
                       </div>
                       <div class="col">
                         <div class="font-weight-medium">
-                          Remaining Sub-Task Today
+                          Remaining Sub-Task
                         </div>
                         <div class="text-muted">
                         {{ $total_sub- $completed_task-$ongoing_task }} Tasks
@@ -301,10 +302,10 @@ if($delay>100){
                       </div>
                       <div class="col">
                         <div class="font-weight-medium">
-                          Pending Sub-Task Today
+                          Pending Sub-Task
                         </div>
                         <div class="text-muted">
-                          21 Tasks
+                          {{$delay}} Tasks
                         </div>
                       </div>
                     </div>
@@ -938,7 +939,7 @@ if($delay>100){
         },
         series: [{{$delay}}, {{round($current_Planed_percentage)}},
         {{round($actual_percentage)}}, {{round(100-$actual_percentage)}}],
-        labels: [ "Pending","In-Progress", "Completed", "Upcoming"],
+        labels: [ "Dealy in Progress","Planned Progress", "Actual Progress", "Actual Remaining Progress"],
         tooltip: {
           theme: 'dark'
         },
