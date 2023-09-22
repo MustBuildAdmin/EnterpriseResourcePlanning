@@ -794,9 +794,18 @@
                                         <a class="dash-link" href="{{ route('users.index') }}">{{__('User')}}</a>
                                     </li>
                                 @endcan
-                                @can('manage user')
+                                @can('manage consultant')
                                     <li class="dash-item {{ (Request::route()->getName() == 'consultants.index' || Request::route()->getName() == 'consultants.create' || Request::route()->getName() == 'consultants.edit') ? ' active' : '' }}">
                                         <a class="dash-link" href="{{ route('consultants.index') }}">{{__('Consultant')}}</a>
+                                    </li>
+                                @endcan
+                                @can('manage sub contractor')
+                                    <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'subContractor.index' ||
+                                    Request::route()->getName() == 'subContractor.create' ||
+                                    Request::route()->getName() == 'subContractor.edit') ? ' active' : '' }}">
+                                        <a href="{{ route('subContractor.index') }}" class="dash-link">
+                                            <span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{__('Consultant')}}</span>
+                                        </a>
                                     </li>
                                 @endcan
                                 @can('manage role')
@@ -1036,9 +1045,19 @@
                             </a>
                         </li>
                     @endcan
-                    @can('manage user')
+                    @can('manage consultant')
                         <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'consultants.index' || Request::route()->getName() == 'consultants.create' || Request::route()->getName() == 'consultants.edit') ? ' active' : '' }}">
                             <a href="{{ route('consultants.index') }}" class="dash-link">
+                                <span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{__('Consultant')}}</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    @can('manage sub contractor')
+                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'subContractor.index' ||
+                        Request::route()->getName() == 'subContractor.create' ||
+                        Request::route()->getName() == 'subContractor.edit') ? ' active' : '' }}">
+                            <a href="{{ route('subContractor.index') }}" class="dash-link">
                                 <span class="dash-micon"><i class="ti ti-users"></i></span><span class="dash-mtext">{{__('Consultant')}}</span>
                             </a>
                         </li>

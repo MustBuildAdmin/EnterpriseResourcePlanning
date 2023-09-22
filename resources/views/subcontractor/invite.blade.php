@@ -3,7 +3,7 @@
 <div class="modal-body">
     <div class="row">
         <div class="form-group">
-            {{ Form::label('seach_subcontractor', __('Search a Consultant')) }}
+            {{ Form::label('seach_subcontractor', __('Search a Sub Contractor')) }}
             <input type="text" id="skill_input" name="subcontractor_id" value="{{ request()->get('q') }}">
         </div>
     </div>
@@ -20,7 +20,7 @@
             propertyToSearch: "name",
             tokenValue: "id",
             tokenDelimiter: ",",
-            hintText: "Search Consultant...",
+            hintText: "Search Sub Contractor...",
             noResultsText: "Task not found.",
             searchingText: "Searching...",
             deleteText: "&#215;",

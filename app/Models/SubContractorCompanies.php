@@ -13,7 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 
-class SubContractorCompanies extends Model
+class SubContractorCompanies extends Authenticatable
 {
     use HasRoles;
     use Notifiable;
