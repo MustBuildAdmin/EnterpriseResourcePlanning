@@ -21,7 +21,7 @@
             tokenValue: "id",
             tokenDelimiter: ",",
             hintText: "Search Sub Contractor...",
-            noResultsText: "Task not found.",
+            noResultsText: "Sub Contractor not found.",
             searchingText: "Searching...",
             deleteText: "&#215;",
             minChars: 2,
