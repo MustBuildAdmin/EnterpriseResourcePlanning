@@ -258,50 +258,50 @@ class SubContractorController extends Controller
     {
         $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
         $fileNames = $this->upload($request);
-        $user = new User();
-        $user['name'] = $request->name;
-        $user['lname'] = $request->lname;
-        $user['email'] = $request->email;
-        $user['gender'] = $request->gender;
+        $subcon = new User();
+        $subcon['name'] = $request->name;
+        $subcon['lname'] = $request->lname;
+        $subcon['email'] = $request->email;
+        $subcon['gender'] = $request->gender;
         $psw = $request->password;
-        $user['password'] = Hash::make($request->password);
-        $user['type'] = 'sub_contractor';
-        $user['default_pipeline'] = 1;
-        $user['plan'] = 1;
-        $user['lang'] = !empty($defaultlanguage) ? $defaultlanguage->value : '';
-        $user['created_by'] = \Auth::user()->creatorId();
-        $user['country'] = $request->country;
-        $user['state'] = $request->state;
-        $user['city'] = $request->city;
-        $user['phone'] = $request->phone;
-        $user['zip'] = $request->zip;
-        $user['address'] = $request->address;
-        $user['company_type'] = $request->company_type;
-        $user['color_code'] = $request->color_code;
-        $user['company_name'] = $request->company_name;
+        $subcon['password'] = Hash::make($request->password);
+        $subcon['type'] = 'sub_contractor';
+        $subcon['default_pipeline'] = 1;
+        $subcon['plan'] = 1;
+        $subcon['lang'] = !empty($defaultlanguage) ? $defaultlanguage->value : '';
+        $subcon['created_by'] = \Auth::user()->creatorId();
+        $subcon['country'] = $request->country;
+        $subcon['state'] = $request->state;
+        $subcon['city'] = $request->city;
+        $subcon['phone'] = $request->phone;
+        $subcon['zip'] = $request->zip;
+        $subcon['address'] = $request->address;
+        $subcon['company_type'] = $request->company_type;
+        $subcon['color_code'] = $request->color_code;
+        $subcon['company_name'] = $request->company_name;
         if (isset($fileNames)) {
-            $user['avatar'] = $fileNames;
+            $subcon['avatar'] = $fileNames;
         }
-        $user->save();
+        $subcon->save();
         $role_r = Role::findByName('sub_contractor');
-        $user->assignRole($role_r);
-        $user->userDefaultDataRegister($user->id);
-        $user->userWarehouseRegister($user->id);
-        Utility::chartOfAccountTypeData($user->id);
-        Utility::chartOfAccountData1($user->id);
-        Utility::pipeline_lead_deal_Stage($user->id);
-        Utility::project_task_stages($user->id);
-        Utility::labels($user->id);
-        Utility::sources($user->id);
-        Utility::jobStage($user->id);
-        GenerateOfferLetter::defaultOfferLetterRegister($user->id);
-        ExperienceCertificate::defaultExpCertificatRegister($user->id);
-        JoiningLetter::defaultJoiningLetterRegister($user->id);
-        NOC::defaultNocCertificateRegister($user->id);
+        $subcon->assignRole($role_r);
+        $subcon->userDefaultDataRegister($subcon->id);
+        $subcon->userWarehouseRegister($subcon->id);
+        Utility::chartOfAccountTypeData($subcon->id);
+        Utility::chartOfAccountData1($subcon->id);
+        Utility::pipeline_lead_deal_Stage($subcon->id);
+        Utility::project_task_stages($subcon->id);
+        Utility::labels($subcon->id);
+        Utility::sources($subcon->id);
+        Utility::jobStage($subcon->id);
+        GenerateOfferLetter::defaultOfferLetterRegister($subcon->id);
+        ExperienceCertificate::defaultExpCertificatRegister($subcon->id);
+        JoiningLetter::defaultJoiningLetterRegister($subcon->id);
+        NOC::defaultNocCertificateRegister($subcon->id);
         $requested_date = Config::get('constants.TIMESTUMP');
         $createConnection = SubContractorCompanies::create([
             "company_id" => \Auth::user()->creatorId(),
-            'sub_contractor_id' => $user->id,
+            'sub_contractor_id' => $subcon->id,
             'requested_date' => $requested_date,
             'status' => 'requested',
         ]);
@@ -312,19 +312,19 @@ class SubContractorController extends Controller
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('invite_sub_contractor', [$user->id => $user->email], $userArr);
+        Utility::sendEmailTemplate('invite_sub_contractor', [$subcon->id => $subcon->email], $userArr);
 
         $setings = Utility::settings();
 
         if ($setings['create_sub_contractor'] == 1) {
-            $user->password = $psw;
-            $user->type = $role_r->name;
+            $subcon->password = $psw;
+            $subcon->type = $role_r->name;
 
             $userArr = [
-                'email' => $user->email,
-                'password' => $user->password,
+                'email' => $subcon->email,
+                'password' => $subcon->password,
             ];
-            Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+            Utility::sendEmailTemplate('create_sub_contractor', [$subcon->id => $subcon->email], $userArr);
         }
 
         return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
