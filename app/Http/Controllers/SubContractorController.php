@@ -237,20 +237,20 @@ class SubContractorController extends Controller
     {
         if (isset($request->avatar)) {
 
-            $filenameWithExt = $request->file('avatar')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $filenameWithExtension = $request->file('avatar')->getClientOriginalName();
+            $fileName = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
             $extension = $request->file('avatar')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            $filenamestore = $fileName . '_' . time() . '.' . $extension;
 
-            $dir = Config::get('constants.USER_IMG');
-            $imagepath = $dir . $fileNameToStore;
+            $directory = Config::get('constants.USER_IMG');
+            $imagepath = $directory.$filenamestore;
             if (\File::exists($imagepath)) {
                 \File::delete($imagepath);
             }
 
-            Utility::upload_file($request, 'avatar', $fileNameToStore, $dir, []);
+            Utility::upload_file($request, 'avatar', $filenamestore, $directory, []);
 
-            return $fileNameToStore;
+            return $filenamestore;
         }
     }
 
