@@ -1058,8 +1058,8 @@
                     @endcan
 
                     @can('manage sub contractor')
-                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'subContractor.index' ||
-                        Request::route()->getName() == 'subContractor.create' ||
+                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() ==
+                        'subContractor.index' ||Request::route()->getName() == 'subContractor.create' ||
                         Request::route()->getName() == 'subContractor.edit') ? ' active' : '' }}">
                             <a href="{{ route('subContractor.index') }}" class="dash-link">
                                 <span class="dash-micon"><i class="ti ti-users"></i></span>
