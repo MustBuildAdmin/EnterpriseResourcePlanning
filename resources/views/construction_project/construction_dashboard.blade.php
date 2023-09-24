@@ -305,7 +305,7 @@ if($delay>100){
                           Pending Sub-Task
                         </div>
                         <div class="text-muted">
-                          {{$delay}} Tasks
+                          {{$notfinished}} Tasks
                         </div>
                       </div>
                     </div>
