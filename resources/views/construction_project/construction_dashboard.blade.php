@@ -181,7 +181,7 @@ if($delay>100){
                   </div>
                 </div>
                 <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: {{round($actual_percentage)}}%" 
+                  <div class="progress-bar bg-primary" style="width: {{round($actual_percentage)}}%"
                   role="progressbar" aria-valuenow="{{round($actual_percentage)}}"
                     aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
                     <span class="visually-hidden">{{round($actual_percentage)}}% Complete</span>
