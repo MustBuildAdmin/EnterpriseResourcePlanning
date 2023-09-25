@@ -71,7 +71,7 @@
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
                 {{Form::label('tax_number',__('Tax Number'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
-                {{Form::number('tax_number',null,array('class'=>'form-control','maxlength'=>'20','required'=>'required',
+                {{Form::text('tax_number',null,array('class'=>'form-control','maxlength'=>'20','required'=>'required',
                 'placeholder'=>'Tax number'))}}
             </div>
         </div>
