@@ -16,10 +16,9 @@ $profile = asset(Storage::url('uploads/avatar/'));
   <div class="col-md-6">
       <h2>{{__('Manage Vendor')}}</h2>
   </div>
-  <div class="col-md-6 float-end floatrght">
-      
+    {{-- <div class="col-md-6 float-end floatrght">
         <a class="floatrght btn btn-sm btn-primary gapbtn" href="#"  data-url="{{ route('vender.file.import') }}" data-ajax-popup="true" data-bs-toggle="tooltip"
-           title="{{ __('Import') }}">
+        title="{{ __('Import') }}">
             <i class="ti ti-file-import"></i>
         </a>
 
@@ -31,7 +30,7 @@ $profile = asset(Storage::url('uploads/avatar/'));
                 <i class="ti ti-plus"></i>
             </a>
         @endcan
-  </div>
+    </div> --}}
 </div>
 
 
@@ -66,7 +65,7 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                     <th>{{ __('Email') }}</th>
                                     <th>{{ __('Balance') }}</th>
                                     <th>{{ __('Last Login At') }}</th>
-                                    <th>{{ __('Action') }}</th>
+                                    {{-- <th>{{ __('Action') }}</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -74,22 +73,22 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                     <tr class="cust_tr" id="vend_detail">
                                         <td class="Id">
                                             @can('show vender')
-                                                <a href="{{ route('vender.show', \Crypt::encrypt($Vender['id'])) }}" class="btn btn-outline-primary">
-                                                    {{ AUth::user()->venderNumberFormat($Vender['vender_id']) }}
+                                                <a href="{{ route('vender.show', \Crypt::encrypt($Vender->id)) }}" class="btn btn-outline-primary">
+                                                    {{ AUth::user()->venderNumberFormat($Vender->id) }}
                                                 </a>
                                             @else
-                                                <a href="#" class="btn btn-outline-primary"> {{ AUth::user()->venderNumberFormat($Vender['vender_id']) }}
+                                                <a href="#" class="btn btn-outline-primary"> {{ AUth::user()->venderNumberFormat($Vender->id) }}
                                                 </a>
                                             @endcan
                                         </td>
-                                        <td>{{ $Vender['name'] }}</td>
-                                        <td>{{ $Vender['contact'] }}</td>
-                                        <td>{{ $Vender['email'] }}</td>
-                                        <td>{{ \Auth::user()->priceFormat($Vender['balance']) }}</td>
+                                        <td>{{ $Vender->name }}</td>
+                                        <td>{{ $Vender->phone }}</td>
+                                        <td>{{ $Vender->email }}</td>
+                                        <td>{{ \Auth::user()->priceFormat($Vender->balance) }}</td>
                                         <td>
                                             {{ !empty($Vender->last_login_at) ? $Vender->last_login_at : '-' }}
                                         </td>
-                                        <td>
+                                        {{-- <td>
                                             <span>
                                                 @if ($Vender['is_active'] == 0)
                                                     <i class="fa fa-lock" title="Inactive"></i>
@@ -129,7 +128,7 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                                     @endcan
                                                 @endif
                                             </span>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>

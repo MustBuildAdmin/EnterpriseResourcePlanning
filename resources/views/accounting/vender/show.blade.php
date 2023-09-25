@@ -83,8 +83,8 @@
                     <h5 class="card-title">{{__('Company Info')}}</h5>
                     <div class="row">
                         @php
-                            $totalBillSum=$vendor->vendorTotalBillSum($vendor['id']);
-                            $totalBill=$vendor->vendorTotalBill($vendor['id']);
+                            $totalBillSum=$venders->vendorTotalBillSum($vendor['id']);
+                            $totalBill=$venders->vendorTotalBill($vendor['id']);
                             $averageSale=($totalBillSum!=0)?$totalBillSum/$totalBill:0;
                         @endphp
                         <div class="col-md-3 col-sm-6">
@@ -114,7 +114,7 @@
                         <div class="col-md-3 col-sm-6">
                             <div class="p-4">
                                 <p class="card-text mb-0">{{__('Overdue')}}</p>
-                                <h6 class="report-text mb-3">{{\Auth::user()->priceFormat($vendor->vendorOverdue($vendor->id))}}</h6>
+                                <h6 class="report-text mb-3">{{\Auth::user()->priceFormat($venders->vendorOverdue($vendor->id))}}</h6>
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                             </thead>
 
                             <tbody>
-                            @foreach ($vendor->vendorBill($vendor->id) as $bill)
+                            @foreach ($venders->vendorBill($vendor->id) as $bill)
                                 <tr class="font-style">
                                     <td class="Id">
                                         @if(\Auth::guard('vender')->check())
