@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
+    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{Lang::locale()}}</button>
     <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">{{__('Invite Member')}}</button>
  </div>
 {{Form::close()}}
@@ -21,9 +21,9 @@
         propertyToSearch:"name",
         tokenValue:"id",
         tokenDelimiter:",",
-        hintText: "Search Consultant...",
-        noResultsText: "Task not found.",
-        searchingText: "Searching...",
+        hintText: "{{ __('Search Consultant...')}}",
+        noResultsText: "{{ __('Consultant not found.')}}",
+        searchingText: "{{ __('Searching...')}}",
         deleteText:"&#215;",
         minChars: 2,
         tokenLimit: 4,
