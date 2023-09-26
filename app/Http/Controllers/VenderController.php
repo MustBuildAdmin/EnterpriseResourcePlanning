@@ -147,7 +147,8 @@ class VenderController extends Controller
         $shipcountry = Utility::getcountry_details($vendor->shipping_country);
         $shipstate = Utility::getstate_details($vendor->shipping_country, $vendor->shipping_state);
 
-        return view('accounting.vender.show', compact('vendor', 'country', 'state', 'shipcountry', 'shipstate','venders'));
+        return view('accounting.vender.show', compact('vendor', 'country', 'state',
+                    'shipcountry', 'shipstate','venders'));
         // return view('vender.show', compact('vendor','country','state','shipcountry','shipstate'));
     }
 

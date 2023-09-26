@@ -60,108 +60,6 @@
     $profile = \App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 <div class="container-fluid ">
-    <div class="modal modal-blur fade" id="create-consultant" tabindex="-1" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create a Consultant</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <div class="row row-cards">
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">First Name</label>
-                                    <input type="text" class="form-control" placeholder="Company" value="Chet">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" placeholder="Last Name" value="Faker">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Email address</label>
-                                    <input type="email" class="form-control" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Gender</label>
-                                    <select class="form-control form-select">
-                                        <option value="">Male</option>
-                                        <option value="">Female</option>
-                                        <option value="">Others</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Country</label>
-                                    <select class="form-control form-select">
-                                        <option value="">Male</option>
-                                        <option value="">Female</option>
-                                        <option value="">Others</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">City</label>
-                                    <select class="form-control form-select">
-                                        <option value="">Male</option>
-                                        <option value="">Female</option>
-                                        <option value="">Others</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">City</label>
-                                    <input type="text" class="form-control" placeholder="City" value="Melbourne">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Postal Code</label>
-                                    <input type="test" class="form-control" placeholder="ZIP Code">
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Mobile Number</label>
-                                    <input type="text" name="input-mask" class="form-control"
-                                        data-mask="(00) 0000-0000" data-mask-visible="true"
-                                        placeholder="(00) 0000-0000"autocomplete="off" />
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Profile Picture</label>
-                                    <input type="file" />
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="mb-3 mb-0">
-                                    <label class="form-label">Address</label>
-                                    <textarea rows="5" class="form-control" placeholder="Here can be your Address" value="Mike"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Close') }}</button>
-                    <button type="button" class="btn btn-primary"
-                        data-bs-dismiss="modal">{{ __('Create a Member') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal modal-blur fade" id="info-consultant" tabindex="-1" style="display: none;"
         aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -281,7 +179,7 @@
                     @switch(Lang::locale())
                     @case('ar')
                         <!--arabic-->
-                        {{ __('وفقًا لدعوة الاستشاري الموجود بالفعل في النظام 
+                        {{ __('وفقًا لدعوة الاستشاري الموجود بالفعل في النظام
                         الأساسي، قم بدعوة الدفع فقط لوصول شركاتك إلى المشروع الذي تقدمه لهم بمعرفتك ولا نشاركه
                         م أي نوع من المعلومات الأخرى حول المشاريع سرًا أو في الأماكن العامة أو في وسائل النقل.') }}
                     @break
@@ -314,7 +212,7 @@
 
                     @case('es')
                         <!--Danish-->
-                        {{ __("Según el Consultor saliente de invitación que ya está en la plataforma, 
+                        {{ __("Según el Consultor saliente de invitación que ya está en la plataforma,
                         el pago se realiza globalmente solo para que sus empresas accedan al proyecto que
                         usted les proporciona con su conocimiento y no les compartimos ningún otro tipo de
                         información sobre los proyectos en secreto o en público o en medio de transferencia.") }}
@@ -504,8 +402,12 @@
                                 </div>
                             </div>
                         </div>
-                        @php $short=substr($user->name, 0, 1); @endphp
-                        @php $short_lname=substr($user->lname, 0, 1); @endphp
+                        @php
+                            $short=substr($user->name, 0, 1);
+                        @endphp
+                        @php
+                            $short_lname=substr($user->lname, 0, 1);
+                        @endphp
                         <div class="card-body p-4 text-center">
                             @if (!empty($user->avatar))
                                 <img src="{{ !empty($user->avatar) ? $profile . $user->avatar : asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
@@ -516,8 +418,12 @@
                                     {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
                                 </div>
                             @endif
-                            @php $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name; @endphp
-                            @php $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname; @endphp
+                            @php
+                                $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;
+                            @endphp
+                            @php
+                                $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname;
+                            @endphp
                             <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
                             {{-- <div class="text-secondary">UI Designer</div> --}}
                             <div class="mt-3">
@@ -534,7 +440,8 @@
                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path
-                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
+                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2
+                                         2h-14a2 2 0 0 1 -2 -2v-10z">
                                     </path>
                                     <path d="M3 7l9 6l9 -6"></path>
                                 </svg>

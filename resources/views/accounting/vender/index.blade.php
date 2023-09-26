@@ -73,11 +73,13 @@ $profile = asset(Storage::url('uploads/avatar/'));
                                     <tr class="cust_tr" id="vend_detail">
                                         <td class="Id">
                                             @can('show vender')
-                                                <a href="{{ route('vender.show', \Crypt::encrypt($Vender->id)) }}" class="btn btn-outline-primary">
+                                                <a href="{{ route('vender.show', \Crypt::encrypt($Vender->id)) }}"
+                                                   class="btn btn-outline-primary">
                                                     {{ AUth::user()->venderNumberFormat($Vender->id) }}
                                                 </a>
                                             @else
-                                                <a href="#" class="btn btn-outline-primary"> {{ AUth::user()->venderNumberFormat($Vender->id) }}
+                                                <a href="#" class="btn btn-outline-primary">
+                                                    {{ AUth::user()->venderNumberFormat($Vender->id) }}
                                                 </a>
                                             @endcan
                                         </td>

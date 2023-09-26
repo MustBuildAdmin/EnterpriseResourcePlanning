@@ -114,7 +114,9 @@
                         <div class="col-md-3 col-sm-6">
                             <div class="p-4">
                                 <p class="card-text mb-0">{{__('Overdue')}}</p>
-                                <h6 class="report-text mb-3">{{\Auth::user()->priceFormat($venders->vendorOverdue($vendor->id))}}</h6>
+                                <h6 class="report-text mb-3">
+                                    {{\Auth::user()->priceFormat($venders->vendorOverdue($vendor->id))}}
+                                </h6>
                             </div>
                         </div>
                     </div>

@@ -1199,8 +1199,14 @@
                                                         @if(in_array('manage '.$module,(array) $permissions))
                                                             @if($key = array_search('manage '.$module,$permissions))
                                                                 <div class="col-md-3 custom-control custom-checkbox">
-                                                                    {{Form::checkbox('permissions[]',$key,false, ['class'=>'form-check-input isscheck consultant_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                    {{Form::label('permission'.$key,'View',['class'=>'custom-control-label'])}}<br>
+                                                                    {{Form::checkbox('permissions[]',$key,false,
+                                                                    ['class'=>'form-check-input isscheck
+                                                                     consultant_checkall isscheck_'
+                                                                     .str_replace(' ', '', $module),
+                                                                     'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'View',
+                                                                    ['class'=>'custom-control-label'])}}
+                                                                    <br>
                                                                 </div>
                                                             @endif
                                                         @endif
@@ -1223,8 +1229,14 @@
                                                         @if(in_array('invite '.$module,(array) $permissions))
                                                             @if($key = array_search('invite '.$module,$permissions))
                                                                 <div class="col-md-3 custom-control custom-checkbox">
-                                                                    {{Form::checkbox('permissions[]',$key,false, ['class'=>'form-check-input isscheck consultant_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
-                                                                    {{Form::label('permission'.$key,'Invite',['class'=>'custom-control-label'])}}<br>
+                                                                    {{Form::checkbox('permissions[]',$key,false,
+                                                                    ['class'=>'form-check-input isscheck
+                                                                    consultant_checkall isscheck_'
+                                                                    .str_replace(' ', '', $module),
+                                                                    'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'Invite',
+                                                                    ['class'=>'custom-control-label'])}}
+                                                                    <br>
                                                                 </div>
                                                             @endif
                                                         @endif

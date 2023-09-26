@@ -442,43 +442,7 @@ class ConsultantController extends Controller
 
     }
 
-    public function destroy($id)
-    {
-
-        if (\Auth::user()->can('delete consultant')) {
-            $user = User::find($id);
-            if ($user) {
-                if (\Auth::user()->type == 'super admin') {
-                    if ($user->is_deleted == 0) {
-                        $user->is_deleted = 1;
-                    } else {
-                        $user->is_deleted = 0;
-                    }
-                    $user->save();
-                }
-                if (\Auth::user()->type == 'consultant') {
-                    $employee = Employee::where(['user_id' => $user->id])->delete();
-                    if ($employee) {
-                        $deleteuser = User::where(['id' => $user->id])->delete();
-                        if ($deleteuser) {
-                            return redirect()->route('consultants.index')
-                                ->with('success', __('Consultant successfully deleted.'));
-                        } else {
-                            return redirect()->back()->with('error', __('Something is wrong.'));
-                        }
-                    } else {
-                        return redirect()->back()->with('error', __('Something is wrong.'));
-                    }
-                }
-
-                return redirect()->route('consultants.index')->with('error', __('Consultant permission denied.'));
-            } else {
-                return redirect()->back()->with('error', __('Something is wrong.'));
-            }
-        } else {
-            return redirect()->back();
-        }
-    }
+    
 
     public function userPassword($id)
     {
@@ -532,28 +496,7 @@ class ConsultantController extends Controller
 
     }
 
-    public function scott_search(Request $request)
-    {
 
-        return view('consultants.scott-search');
-    }
-
-    public function scott_result(Request $request)
-    {
-        if ($request->filled('search')) {
-            $users = User::search($request->search)->where('type', 'consultant')->get();
-        } else {
-            $users = [];
-        }
-
-        $returnHTML = view('consultants.result', compact('users'))->render();
-
-        return response()->json([
-            'success' => true,
-            'html' => $returnHTML,
-        ]);
-
-    }
 
     public function get_company_details(Request $request,$id){
 
