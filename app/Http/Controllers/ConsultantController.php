@@ -52,6 +52,22 @@ class ConsultantController extends Controller
 
     }
 
+    public function validationCreateConsultant($request,$id){
+        $validation = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+        ];
+
+        $validator = \Validator::make($request->all(), $validation);
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
+            return redirect()->back()->with('error', $messages->first());
+        }
+        else{
+            return true;
+        }
+    }
+
     public function create(Request $request)
     {
 
@@ -122,7 +138,7 @@ class ConsultantController extends Controller
 
     public function store(Request $request)
     {
-
+        $this->validationCreateConsultant($request,$id);
         $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
         $fileNames = $this->upload($request);
         $user = new User();
@@ -198,6 +214,7 @@ class ConsultantController extends Controller
 
         return redirect()->route('consultants.index')->with('success', Config::get('constants.CONSULTANT_MAIL'));
     }
+    
     public function createConnection(Request $request){
         // Need to check invitation link is valid or expired based on that need to redirect
         $checkConnection=ConsultantCompanies::where(['id'=>$request->id])->first();
@@ -229,7 +246,7 @@ class ConsultantController extends Controller
     public function normal_store(Request $request)
     {
        
-
+        $this->validationCreateConsultant($request,$id);
         $fileNames = $this->upload($request);
 
         $objUser = \Auth::user()->creatorId();

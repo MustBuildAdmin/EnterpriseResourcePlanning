@@ -100,7 +100,8 @@
             <div class="form-group">
                 {{Form::label('billing_name',__('Name'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
-                {{Form::text('billing_name',null,array('class'=>'form-control','required'=>'required',
+                {{Form::text('billing_name',null,array('id'=>'billings_name',
+                'class'=>'form-control','required'=>'required',
                 'placeholder'=>'Name'))}}
             </div>
         </div>
@@ -137,6 +138,7 @@
                 <span style='color:red;'>*</span>
                 <div class="form-icon-user">
                     {{Form::text('billing_city',null,array('class'=>'form-control','required'=>'required',
+                    'id'=>'billing_city',
                     'placeholder'=>'City','oninput'=>'process(this)'))}}
                 </div>
 
@@ -149,6 +151,7 @@
                 <span style='color:red;'>*</span>
                 {{Form::text('billing_phone',null,array('class'=>'form-control',
                 'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
+                'id'=>'billing_phone',
                 'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
             </div>
         </div>
@@ -156,7 +159,8 @@
             <div class="form-group billing_zip">
                 {{Form::label('billing_zip',__('Zip Code'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
-                {{Form::text('billing_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required',
+                {{Form::text('billing_zip',null,array('id'=> 'zip','class'=>'form-control billings_zip',
+                'required'=>'required',
                 'placeholder'=>'Zipcode'))}}
             </div>
         </div>
@@ -165,9 +169,19 @@
                 {{Form::label('billing_address',__('Address'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
                 {{Form::textarea('billing_address',null,array('class'=>'form-control','rows'=>3,
+                'id'=>'billing_address',
                 'required'=>'required', 'placeholder'=>'Address'))}}
             </div>
         </div>
+    </div>
+
+    <div class="custom-control custom-checkbox mt-n1">
+        <input type="checkbox" name="copy_status" class="custom-control-input checkbox1" id="checkbox1" value="1">
+        <label class="custom-control-label" for="checkbox1">
+            <h6 class="sub-title">
+                <strong>Do you copy a billing address<strong>
+            </h6>
+        </label>
     </div>
 
     @if(App\Models\Utility::getValByName('shipping_display')=='on')
@@ -179,7 +193,8 @@
                 <div class="form-group">
                     {{Form::label('shipping_name',__('Name'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
-                    {{Form::text('shipping_name',null,array('class'=>'form-control','required'=>'required',
+                    {{Form::text('shipping_name',null,array('id'=>'shipping_name',
+                    'class'=>'form-control','required'=>'required',
                     'placeholder'=>'Name'))}}
                 </div>
             </div>
@@ -221,7 +236,8 @@
                     <span style='color:red;'>*</span>
                     <div class="form-icon-user">
                         <div class="form-icon-user">
-                            {{Form::text('shipping_city',null,array('class'=>'form-control','required'=>'required',
+                            {{Form::text('shipping_city',null,array('id'=>'shipping_city',
+                            'class'=>'form-control','required'=>'required',
                             'placeholder'=>'City','oninput'=>'process(this)'))}}
                         </div>
                     </div>
@@ -233,6 +249,7 @@
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
                     {{Form::text('shipping_phone',null,array('class'=>'form-control',
+                    'id'=>'shipping_phone',
                     'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
                     'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
                 </div>
@@ -242,7 +259,8 @@
                 <div class="form-group shipping_zip">
                     {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
-                    {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control','required'=>'required',
+                    {{Form::text('shipping_zip',null,array('id'=> 'zip','class'=>'form-control shippings_zip',
+                    'required'=>'required',
                     'placeholder'=>'Zipcode'))}}
                 </div>
             </div>
@@ -252,6 +270,7 @@
                     {{Form::label('shipping_address',__('Address'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
                     {{Form::textarea('shipping_address',null,array('class'=>'form-control','rows'=>3,
+                    'id'=>'shipping_address',
                     'required'=>'required', 'placeholder'=>'Address'))}}
                 </div>
             </div>
@@ -368,6 +387,61 @@
                 }
             });
         });
+    });
+
+    $(document).on("change", ".checkbox1", function () {
+        var $this = $(this).parent().parent();
+
+        if (this.checked) {
+            $this.find('#shipping_name').val($this.find('#billings_name').val());
+            $this.find('#shipping_city').val($this.find('#billing_city').val());
+            $this.find('#shipping_phone').val($this.find('#billing_phone').val());
+            $this.find('.shippings_zip').val($this.find('.billings_zip').val());
+            $this.find('#shipping_address').val($this.find('#billing_address').val());
+            $this.find('#shipping_country').val($this.find('#billing_country').val());
+
+            $this.find('#shipping_name').prop('disabled',true);
+            $this.find('#shipping_city').prop('disabled',true);
+            $this.find('#shipping_phone').prop('disabled',true);
+            $this.find('.shippings_zip').prop('disabled',true);
+            $this.find('#shipping_address').prop('disabled',true);
+            $this.find('#shipping_country').prop('disabled',true);
+            $this.find('#shipping_state').prop('disabled',true);
+
+            var name=$this.find('#shipping_country').val();
+            var settings = {
+                "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
+                "method": "GET",
+                "headers": {
+                    "X-CSCAPI-KEY": '{{ env('Locationapi_key') }}'
+                },
+            };
+    
+            $.ajax(settings).done(function (response) {
+                $('#shipping_state').empty();
+                $('#shipping_state').append('<option value="">{{__('Select State ...')}}</option>');
+                $.each(response, function (key, value) {
+                    $('#shipping_state').append('<option value="' + value.iso2 + '">' + value.name + '</option>');
+                });
+            });
+            setTimeout(function(){   $this.find('#shipping_state').val($this.find('#billing_state').val()); }, 1700);
+        }
+        else {
+            $this.find('#shipping_name').val("");
+            $this.find('#shipping_city').val("");
+            $this.find('#shipping_phone').val("");
+            $this.find('.shippings_zip').val("");
+            $this.find('#shipping_address').val("");
+            $this.find('#shipping_country').val("");
+            setTimeout(function() {$this.find('#shipping_state').val(""); }, 100);
+            $this.find('#shipping_name').prop('disabled',false);
+            $this.find('#shipping_city').prop('disabled',false);
+            $this.find('#shipping_phone').prop('disabled',false);
+            $this.find('.shippings_zip').prop('disabled',false);
+            $this.find('#shipping_address').prop('disabled',false);
+            $this.find('#shipping_country').prop('disabled',false);
+            $this.find('#shipping_state').prop('disabled',false);
+        }
     });
 
     function process(input){

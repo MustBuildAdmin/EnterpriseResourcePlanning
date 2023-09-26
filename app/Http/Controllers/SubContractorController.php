@@ -147,6 +147,7 @@ class SubContractorController extends Controller
 
     public function normal_store(Request $request)
     {
+        $this->validationCreateSubContractor($request,$id);
         $fileNames = $this->upload($request);
         $objUser   = \Auth::user()->creatorId();
         $objUser   = User::find($objUser);
@@ -256,6 +257,7 @@ class SubContractorController extends Controller
 
     public function store(Request $request)
     {
+        $this->validationCreateSubContractor($request,$id);
         $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
         $fileNames = $this->upload($request);
         $subcon = new User();
@@ -421,6 +423,22 @@ class SubContractorController extends Controller
         return redirect()->route('subContractor.index')->with(
             'success', __('Consultant successfully updated.')
         );
+    }
+
+    public function validationCreateSubContractor($request,$id){
+        $validation = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+        ];
+
+        $validator = \Validator::make($request->all(), $validation);
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
+            return redirect()->back()->with('error', $messages->first());
+        }
+        else{
+            return true;
+        }
     }
 
     public function validationUpdateSubContractor($request,$id){
