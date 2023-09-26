@@ -31,6 +31,10 @@
         color: #FFF;
     }
 
+    #text{
+        text-transform: capitalize;
+    }
+
     .avatar-xl {
         --tblr-avatar-size: 6.2rem;
     }
@@ -171,24 +175,19 @@
                     @switch(Lang::locale())
                         @case('ar')
                             <!--arabic-->
-                            {{ __('وفقًا لـ "إنشاء المستشارين"، فإننا نقوم بإنشائها
-                            	   على مستوى العالم ولكن يتم دفع الدعوة فقط لوصول شركاتك إلى المشروع الذي تقدمه لهم بمعرفتك
-                            						ولا نشاركهم أي نوع من المعلومات الأخرى حول المشاريع سرًا أو في الأماكن العامة أو في وسائل النقل.') }}
+                            {{ __('وفقًا لـ "إنشاء المستشارين"، فإننا نقوم بإنشائها على مستوى العالم ولكن يتم دفع
+                            الدعوة فقط لوصول شركاتك إلى المشروع الذي تقدمه لهم بمعرفتك ولا نشاركهم أي نوع من المعلومات
+                             الأخرى حول المشاريع سرًا أو في الأماكن العامة أو في وسائل النقل.') }}
                         @break
 
                         @case('da')
                             <!--Danish-->
-                            {{ __("I henhold til Create of Consultant opretter vi dem globalt, men invitationsbetalingen sker
-                            					kun for dine virksomheders adgang til projektet, som du giver dem med din viden, og vi deler ikke
-                            					nogen form for anden information til dem om projekterne i secert eller offentligt eller ved overførsel.") }}
+                            {{ __("I henhold til Create of Consultant opretter vi dem globalt, men invitationsbetalingen sker kun for dine virksomheders adgang til projektet, som du giver dem med din viden, og vi deler ikke nogen form for anden information til dem om projekterne i secert eller offentligt eller ved overførsel.") }}
                         @break
 
                         @case('de')
                             <!--German-->
-                            {{ __("Gemäß Create of Consultant erstellen wir sie global, aber die Einladungszahlung erfolgt nur für den
-                            						 Zugriff Ihres Unternehmens auf das Projekt, das Sie ihm mit Ihrem Wissen gewähren, und wir geben ihnen keine
-                            						anderen Informationen über die Projekte im Geheimen weiter oder in der Öffentlichkeit oder im Medium der
-                            						Übertragung.") }}
+                            {{ __("Gemäß Create of Consultant erstellen wir sie global, aber die Einladungszahlung erfolgt nur für den Zugriff Ihres Unternehmens auf das Projekt, das Sie ihm mit Ihrem Wissen gewähren, und wir geben ihnen keine anderen Informationen über die Projekte im Geheimen weiter oder in der Öffentlichkeit oder im Medium der Übertragung.") }}
                         @break
 
                         @case('en')
@@ -202,62 +201,42 @@
 
                         @case('es')
                             <!--Danish-->
-                            {{ __("Según Create of Consultant, los estamos creando globalmente, pero el pago de la invitación
-                            					 se realiza solo para que sus empresas accedan al proyecto que usted les proporciona con su conocimiento
-                            					  y no les compartimos ningún otro tipo de información sobre los proyectos en secreto. o en público
-                            					   o en medio de transferencia.") }}
+                            {{ __("Según Create of Consultant, los estamos creando globalmente, pero el pago de la invitación se realiza solo para que sus empresas accedan al proyecto que usted les proporciona con su conocimiento y no les compartimos ningún otro tipo de información sobre los proyectos en secreto. o en público o en medio de transferencia.") }}
                         @break
 
                         @case('fr')
                             <!--French-->
-                            {{ __("Conformément à Create of Consultant, nous les créons globalement, mais le paiement de
-                            						l'invitation est effectué uniquement pour l'accès de votre entreprise au projet que
-                            						vous leur fournissez avec vos connaissances et nous ne leur partageons aucune autre
-                            						information sur les projets en secret. ou en public ou en milieu de transfert.") }}
+                            {{ __("Conformément à Create of Consultant, nous les créons globalement, mais le paiement de l'invitation est effectué uniquement pour l'accès de votre entreprise au projet que vous leur fournissez avec vos connaissances et nous ne leur partageons aucune autre information sur les projets en secret. ou en public ou en milieu de transfert.") }}
                         @break
 
                         @case('it')
                             <!--French-->
-                            {{ __("Secondo Create of Consultant, li stiamo creando a livello globale ma il pagamento dell'invito
-                            					 viene effettuato solo per consentire alle tue aziende di accedere al progetto che fornisci loro
-                            					  con le tue conoscenze e non condividiamo con loro alcun tipo di altra informazione sui progetti
-                            					   in segreto o in pubblico o nel mezzo di trasferimento.") }}
+                            {{ __("Secondo Create of Consultant, li stiamo creando a livello globale ma il pagamento dell'invito viene effettuato solo per consentire alle tue aziende di accedere al progetto che fornisci loro con le tue conoscenze e non condividiamo con loro alcun tipo di altra informazione sui progetti in segreto o in pubblico o nel mezzo di trasferimento.") }}
                         @break
 
                         @case('ja')
                             <!--japanese-->
-                            {{ __("Create of Consultant に従って、私たちはグローバルにそれらを作成していますが、
-                            						招待の支払いは、あなたが知識を持って提供したプロジェクトに対する貴社のアクセスに対してのみ行われ、
-                            						プロジェクトに関するその他の情報を秘密裏に共有することはありません。または公共の場で、または転送の媒体で。") }}
+                            {{ __("Create of Consultant に従って、私たちはグローバルにそれらを作成していますが、招待の支払いは、あなたが知識を持って提供したプロジェクトに対する貴社のアクセスに対してのみ行われ、プロジェクトに関するその他の情報を秘密裏に共有することはありません。または公共の場で、または転送の媒体で。") }}
                         @break
 
                         @case('nl')
                             <!--dutch-->
-                            {{ __("Volgens Create of Consultant maken we ze wereldwijd, maar de uitnodigingsbetaling wordt alleen gedaan voor
-                            					 de toegang van uw bedrijf tot het project dat u hen met uw kennis verstrekt en we delen geen enkele
-                            					  andere informatie met hen over de projecten in secert of in het openbaar of tijdens de overdracht.") }}
+                            {{ __("Volgens Create of Consultant maken we ze wereldwijd, maar de uitnodigingsbetaling wordt alleen gedaan voor de toegang van uw bedrijf tot het project dat u hen met uw kennis verstrekt en we delen geen enkele andere informatie met hen over de projecten in secert of in het openbaar of tijdens de overdracht.") }}
                         @break
 
                         @case('pl')
                             <!--polish-->
-                            {{ __("Zgodnie z Create of Consultant tworzymy je globalnie, ale płatność za zaproszenie jest dokonywana tylko
-                            				 za dostęp Twoich firm do projektu, który im przekazujesz za swoją wiedzą i nie udostępniamy im żadnych innych
-                            				  informacji na temat projektów w tajemnicy lub w miejscu publicznym lub w trakcie przenoszenia.") }}
+                            {{ __("Zgodnie z Create of Consultant tworzymy je globalnie, ale płatność za zaproszenie jest dokonywana tylko za dostęp Twoich firm do projektu, który im przekazujesz za swoją wiedzą i nie udostępniamy im żadnych innych informacji na temat projektów w tajemnicy lub w miejscu publicznym lub w trakcie przenoszenia.") }}
                         @break
 
                         @case('pt')
                             <!--polish-->
-                            {{ __("De acordo com a Criação do Consultor, estamos criando-os globalmente, mas o pagamento do convite é
-                            				 feito apenas para o acesso de suas empresas ao projeto que você fornece a elas com seu conhecimento e não
-                            				  estamos compartilhando nenhum tipo de outra informação sobre os projetos em segredo. ou em público ou em
-                            				   meio de transferência.") }}
+                            {{ __("De acordo com a Criação do Consultor, estamos criando-os globalmente, mas o pagamento do convite é feito apenas para o acesso de suas empresas ao projeto que você fornece a elas com seu conhecimento e não estamos compartilhando nenhum tipo de outra informação sobre os projetos em segredo. ou em público ou em meio de transferência.") }}
                         @break
 
                         @case('ru')
                             <!--polish-->
-                            {{ __("Согласно Create of Consultant, мы создаем их по всему миру, но оплата за приглашение производится только
-                            			 для доступа ваших компаний к проекту, который вы им предоставляете со своими знаниями, и мы не передаем им никакой
-                            			  другой информации о проектах в секрете. или публично, или в процессе передачи.") }}
+                            {{ __("Согласно Create of Consultant, мы создаем их по всему миру, но оплата за приглашение производится только для доступа ваших компаний к проекту, который вы им предоставляете со своими знаниями, и мы не передаем им никакой другой информации о проектах в секрете. или публично, или в процессе передачи.") }}
                         @break
 
                         @default
@@ -270,13 +249,106 @@
 
                     <hr />
                     <h3>{{ __('Invite a existing Consultant') }}</h3>
-                    <p>
-                        {{ __('As per the Inviting exiting Consultant which is already in the
-                        				          platform gloabally invite payment done only for your companies access over the
-                        				          project which you provide to them with your knowledge and we are not sharing
-                        				          any kind of other information to them about the projects in secert or in
-                        				          public or in mediuim of transfer.') }}
-                    </p>
+                    @switch(Lang::locale())
+                    @case('ar')
+                        <!--arabic-->
+                        {{ __('وفقًا لـ "إنشاء المستشارين"، فإننا نقوم بإنشائها
+                               على مستوى العالم ولكن يتم دفع الدعوة فقط لوصول شركاتك إلى المشروع الذي تقدمه لهم بمعرفتك
+                                                ولا نشاركهم أي نوع من المعلومات الأخرى حول المشاريع سرًا أو في الأماكن العامة أو في وسائل النقل.') }}
+                    @break
+
+                    @case('da')
+                        <!--Danish-->
+                        {{ __("I henhold til Create of Consultant opretter vi dem globalt, men invitationsbetalingen sker
+                                            kun for dine virksomheders adgang til projektet, som du giver dem med din viden, og vi deler ikke
+                                            nogen form for anden information til dem om projekterne i secert eller offentligt eller ved overførsel.") }}
+                    @break
+
+                    @case('de')
+                        <!--German-->
+                        {{ __("Gemäß Create of Consultant erstellen wir sie global, aber die Einladungszahlung erfolgt nur für den
+                                                 Zugriff Ihres Unternehmens auf das Projekt, das Sie ihm mit Ihrem Wissen gewähren, und wir geben ihnen keine
+                                                anderen Informationen über die Projekte im Geheimen weiter oder in der Öffentlichkeit oder im Medium der
+                                                Übertragung.") }}
+                    @break
+
+                    @case('en')
+                        <!--English-->
+                        {{ __("As per the Inviting exiting Consultant which is already in the
+                        platform gloabally invite payment done only for your companies access over the
+                        project which you provide to them with your knowledge and we are not sharing
+                        any kind of other information to them about the projects in secert or in
+                        public or in mediuim of transfer.") }}
+                    @break
+
+                    @case('es')
+                        <!--Danish-->
+                        {{ __("Según Create of Consultant, los estamos creando globalmente, pero el pago de la invitación
+                                             se realiza solo para que sus empresas accedan al proyecto que usted les proporciona con su conocimiento
+                                              y no les compartimos ningún otro tipo de información sobre los proyectos en secreto. o en público
+                                               o en medio de transferencia.") }}
+                    @break
+
+                    @case('fr')
+                        <!--French-->
+                        {{ __("Conformément à Create of Consultant, nous les créons globalement, mais le paiement de
+                                                l'invitation est effectué uniquement pour l'accès de votre entreprise au projet que
+                                                vous leur fournissez avec vos connaissances et nous ne leur partageons aucune autre
+                                                information sur les projets en secret. ou en public ou en milieu de transfert.") }}
+                    @break
+
+                    @case('it')
+                        <!--French-->
+                        {{ __("Secondo Create of Consultant, li stiamo creando a livello globale ma il pagamento dell'invito
+                                             viene effettuato solo per consentire alle tue aziende di accedere al progetto che fornisci loro
+                                              con le tue conoscenze e non condividiamo con loro alcun tipo di altra informazione sui progetti
+                                               in segreto o in pubblico o nel mezzo di trasferimento.") }}
+                    @break
+
+                    @case('ja')
+                        <!--japanese-->
+                        {{ __("Create of Consultant に従って、私たちはグローバルにそれらを作成していますが、
+                                                招待の支払いは、あなたが知識を持って提供したプロジェクトに対する貴社のアクセスに対してのみ行われ、
+                                                プロジェクトに関するその他の情報を秘密裏に共有することはありません。または公共の場で、または転送の媒体で。") }}
+                    @break
+
+                    @case('nl')
+                        <!--dutch-->
+                        {{ __("Volgens Create of Consultant maken we ze wereldwijd, maar de uitnodigingsbetaling wordt alleen gedaan voor
+                                             de toegang van uw bedrijf tot het project dat u hen met uw kennis verstrekt en we delen geen enkele
+                                              andere informatie met hen over de projecten in secert of in het openbaar of tijdens de overdracht.") }}
+                    @break
+
+                    @case('pl')
+                        <!--polish-->
+                        {{ __("Zgodnie z Create of Consultant tworzymy je globalnie, ale płatność za zaproszenie jest dokonywana tylko
+                                         za dostęp Twoich firm do projektu, który im przekazujesz za swoją wiedzą i nie udostępniamy im żadnych innych
+                                          informacji na temat projektów w tajemnicy lub w miejscu publicznym lub w trakcie przenoszenia.") }}
+                    @break
+
+                    @case('pt')
+                        <!--polish-->
+                        {{ __("De acordo com a Criação do Consultor, estamos criando-os globalmente, mas o pagamento do convite é
+                                         feito apenas para o acesso de suas empresas ao projeto que você fornece a elas com seu conhecimento e não
+                                          estamos compartilhando nenhum tipo de outra informação sobre os projetos em segredo. ou em público ou em
+                                           meio de transferência.") }}
+                    @break
+
+                    @case('ru')
+                        <!--polish-->
+                        {{ __("Согласно Create of Consultant, мы создаем их по всему миру, но оплата за приглашение производится только
+                                     для доступа ваших компаний к проекту, который вы им предоставляете со своими знаниями, и мы не передаем им никакой
+                                      другой информации о проектах в секрете. или публично, или в процессе передачи.") }}
+                    @break
+
+                    @default
+                        {{ __("As per the Inviting exiting Consultant which is already in the
+                        platform gloabally invite payment done only for your companies access over the
+                        project which you provide to them with your knowledge and we are not sharing
+                        any kind of other information to them about the projects in secert or in
+                        public or in mediuim of transfer.") }}
+                @endswitch
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn" data-bs-dismiss="modal">{{ __('Close') }}</button>
@@ -316,6 +388,7 @@
                             </div>
                         </div>
                     </div>
+                    @can('invite consultant')
                     <div class="col-3">
                         <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
                             data-url="{{ route('consultant.invite_consultant') }}" data-ajax-popup="true"
@@ -324,6 +397,8 @@
                             {{ __('Invite a Consultant') }}
                         </a>
                     </div>
+                    @endcan
+                    @can('create consultant')
                     <div class="col-3">
                         <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="lg"
                             data-url="{{ route('consultants.create') }}" data-ajax-popup="true"
@@ -332,6 +407,7 @@
                             {{ __('Create a Consultant') }}
                         </a>
                     </div>
+                    @endcan
                     <div class="col-1 mt-1">
                         <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information"
                             data-bs-toggle="modal" data-bs-target="#info-consultant">
@@ -378,13 +454,17 @@
                                     </svg>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
+                                    @can('edit consultant')
                                     <a class="dropdown-item active" href="#" data-size="lg"
                                         data-url="{{ route('consultants.edit.new', [$user->id, $color_co]) }}"
                                         data-ajax-popup="true" class="dropdown-item"
-                                        data-bs-original-title="{{ __('Edit Consultant') }}">{{ __('Edit') }}</a>
+                                        data-bs-original-title="{{ __('Edit Consultant') }}">{{ __('Edit') }}
+                                    </a>
+                                    @endcan
                                     <a data-url="{{ route('consultants.reset', \Crypt::encrypt($user->id)) }}"
                                         data-ajax-popup="true" data-size="md" class="dropdown-item"
-                                        data-bs-original-title="{{ __('Reset Password') }}">{{ __('Reset Password') }}</a>
+                                        data-bs-original-title="{{ __('Reset Password') }}">{{ __('Reset Password') }}
+                                    </a>
 
                                 </div>
                             </div>
@@ -406,7 +486,7 @@
                             <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
                             {{-- <div class="text-secondary">UI Designer</div> --}}
                             <div class="mt-3">
-                                <span class="badge bg-purple-lt">{{ $user->type }}</span>
+                                <span class="badge bg-purple-lt" id="text">{{ $user->type }}</span>
                             </div>
                         </div>
                         <div class="d-flex">
@@ -481,7 +561,7 @@
         $temp.val(copy_email).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.info("{{ __('Email copying to clipboard was successfull!') }}");
+        toastr.info("{{ __('Email Address Copied Successfully!') }}");
     }
 
     function copyToClipboardphone(element) {
@@ -491,7 +571,7 @@
         $temp.val(copy_phone).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.info("{{ __('Mobile copying to clipboard was successfull!') }}");
+        toastr.info("{{ __('Mobile Number Copied Successfully!') }}");
     }
 
     $(document).on('keypress',

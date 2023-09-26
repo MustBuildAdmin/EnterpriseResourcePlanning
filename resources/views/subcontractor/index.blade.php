@@ -103,6 +103,7 @@
                             </div>
                         </div>
                     </div>
+                    @can('invite sub contractor')
                     <div class="col-sm-4">
                         <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
                             data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
@@ -111,6 +112,8 @@
                             {{ __('Invite a Sub Contractor') }}
                         </a>
                     </div>
+                    @endcan
+                    @can('create sub contractor')
                     <div class="col-sm-4">
                         <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
                             data-url="{{ route('subContractor.create') }}" data-ajax-popup="true"
@@ -119,6 +122,7 @@
                             {{ __('Create a Sub Contractor') }}
                         </a>
                     </div>
+                    @endcan
                     <div class="col-sm-1">
                         <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information"
                             data-bs-toggle="modal" data-bs-target="#info-subcontractor">
@@ -165,10 +169,13 @@
                                     </svg>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
+                                    @can('edit sub contractor')
                                     <a class="dropdown-item active" href="#" data-size="xl"
                                         data-url="{{ route('subContractor.edit.new', [$user->id, $color_co]) }}"
                                         data-ajax-popup="true" class="dropdown-item"
-                                        data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}</a>
+                                        data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}
+                                    </a>
+                                    @endcan
                                     <a data-url="{{ route('subContractor.reset', \Crypt::encrypt($user->id)) }}"
                                         data-ajax-popup="true" data-size="md" class="dropdown-item"
                                         data-bs-original-title="{{ __('Reset Password') }}">
@@ -198,7 +205,9 @@
                             <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
                             {{-- <div class="text-secondary">UI Designer</div> --}}
                             <div class="mt-3">
-                                <span class="badge bg-purple-lt">{{ $user->type }}</span>
+                                <span class="badge bg-purple-lt">
+                                    {{str_replace($user->type,"Sub Contractor",$user->type)}}
+                                </span>
                             </div>
                         </div>
                         <div class="d-flex">
@@ -274,7 +283,7 @@
         $temp.val(copy_email).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.info("{{ __('Email copying to clipboard was successfull!') }}");
+        toastr.info("{{ __('Email Address Copied Successfully!') }}");
     }
 
     function copyToClipboardphone(element) {
@@ -284,7 +293,7 @@
         $temp.val(copy_phone).select();
         document.execCommand("copy");
         $temp.remove();
-        toastr.info("{{ __('Mobile copying to clipboard was successfull!') }}");
+        toastr.info("{{ __('Mobile Number Copied Successfully!') }}");
     }
 
     $(document).on('keypress',
