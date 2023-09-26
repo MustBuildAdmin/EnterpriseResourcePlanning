@@ -272,201 +272,196 @@
     </div>
     <div class="card mt-5 p-4">
         <div class="card-header">
-            <h3>{{ __('Sub Contractor of the Organisation') }}</h3>
-            <div class="card-actions w-35">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="mb-1">
-                            <div class="row g-2">
-                                <form action="{{ route('subContractor.index') }}" method="GET">
-                                    <div class="input-group">
-                                        {{ Form::text('search', isset($_GET['search']) ? $_GET['search'] : '', [
-                                            'class' => 'form-control d-inline-block mt-auto',
-                                            'id' => 'search',
-                                            'placeholder' => __('Search by Name'),
-                                        ]) }}
-                                        <div class="col-md-3">
-                                            <button type="submit" class="btn btn-icon" aria-label="Button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                                                    <path d="M21 21l-6 -6"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+           <h3>{{ __('Sub Contractor of the Organisation') }}</h3>
+           <div class="card-actions w-35">
+              <div class="d-flex justify-content-evenly bg-light">
+                 <div class="p-2 col-example">
+                    <form action="{{ route('subContractor.index') }}" method="GET">
+                        <div class="input-group">
+                           {{ Form::text('search', isset($_GET['search']) ? $_GET['search'] : '', [
+                           'class' => 'form-control d-inline-block mt-auto',
+                           'id' => 'search',
+                           'placeholder' => __('Search by Name'),
+                           ]) }}
+                           <div class="col-md-3">
+                              <button type="submit" class="btn btn-icon" aria-label="Button">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                                    <path d="M21 21l-6 -6"></path>
+                                 </svg>
+                              </button>
+                           </div>
                         </div>
-                    </div>
+                     </form>
+                 </div>
+                 <div class="p-2 col-example">
                     @can('invite sub contractor')
-                    <div class="col-sm-4">
                         <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
-                            data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
-                            data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
-                            data-bs-original-title="{{ __('Invite Sub Contractor') }}">
-                            {{ __('Invite a Sub Contractor') }}
-                        </a>
-                    </div>
+                        data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
+                        data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
+                        data-bs-original-title="{{ __('Invite Sub Contractor') }}">
+                        {{ __('Invite a Sub Contractor') }}
+                    </a>
                     @endcan
+                 </div>
+                 <div class="p-2 col-example">
                     @can('create sub contractor')
-                    <div class="col-sm-4">
                         <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
-                            data-url="{{ route('subContractor.create') }}" data-ajax-popup="true"
-                            data-bs-toggle="tooltip" title="{{ __('Create New Sub Contractor') }}"
-                            data-bs-original-title="{{ __('Create a Sub Contractor') }}">
-                            {{ __('Create a Sub Contractor') }}
+                        data-url="{{ route('subContractor.create') }}" data-ajax-popup="true"
+                        data-bs-toggle="tooltip" title="{{ __('Create New Sub Contractor') }}"
+                        data-bs-original-title="{{ __('Create a Sub Contractor') }}">
+                        {{ __('Create a Sub Contractor') }}
                         </a>
-                    </div>
                     @endcan
-                    <div class="col-sm-1">
-                        <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information"
-                            data-bs-toggle="modal" data-bs-target="#info-subcontractor">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path
-                                    d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555
-                                    -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225
-                                    0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33
-                                    2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
-                                </path>
-                                <path d="M12 8v4"></path>
-                                <path d="M12 16h.01"></path>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                 </div>
+                 <div class="p-2 col-example">
+                    <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information"
+                       data-bs-toggle="modal" data-bs-target="#info-subcontractor">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon"
+                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                          fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path
+                             d="M19.875 6.27c.7 .398 1.13 1.143 1.125 1.948v7.284c0 .809 -.443 1.555
+                             -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225
+                             0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33
+                             2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
+                          </path>
+                          <path d="M12 8v4"></path>
+                          <path d="M12 16h.01"></path>
+                       </svg>
+                    </a>
+                 </div>
+              </div>
+           </div>
         </div>
-
         <div class="row row-cards">
-            @forelse($users as $user)
-                <div class="col-md-6 col-lg-3">
-                    <div class="card">
-                        <div class="ms-auto lh-1 p-4">
-                            @if ($user->color_code != null || $user->color_code != '')
-                                @php $color_co=$user->color_code; @endphp
-                            @else
-                                @php $color_co =Utility::rndRGBColorCode(); @endphp
-                            @endif
-                            <div class="dropdown">
-                                <a class="dropdown-toggle user-card-dropdown text-secondary" href="#"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M4 6l16 0"></path>
-                                        <path d="M4 12l16 0"></path>
-                                        <path d="M4 18l16 0"></path>
-                                    </svg>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    @can('edit sub contractor')
-                                    <a class="dropdown-item active" href="#" data-size="xl"
-                                        data-url="{{ route('subContractor.edit.new', [$user->id, $color_co]) }}"
-                                        data-ajax-popup="true" class="dropdown-item"
-                                        data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}
-                                    </a>
-                                    @endcan
-                                    <a data-url="{{ route('subContractor.reset', \Crypt::encrypt($user->id)) }}"
-                                        data-ajax-popup="true" data-size="md" class="dropdown-item"
-                                        data-bs-original-title="{{ __('Reset Password') }}">
-                                        {{ __('Reset Password') }}
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                        @php $short=substr($user->name, 0, 1); @endphp
-                        @php $short_lname=substr($user->lname, 0, 1); @endphp
-                        <div class="card-body p-4 text-center">
-                            @if (!empty($user->avatar))
-                                <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
-                                asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
-                                    class="avatar avatar-xl mb-3 rounded" alt="">
-                            @else
-                                <div class="avatar avatar-xl mb-3 user-initial"
-                                    style='background-color:{{ $color_co }}'>
-                                    {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
-                                </div>
-                            @endif
-                            @php
-                                $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;
-                                $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname;
-                            @endphp
-                            <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
-                            {{-- <div class="text-secondary">UI Designer</div> --}}
-                            <div class="mt-3">
-                                <span class="badge bg-purple-lt">
-                                    {{str_replace($user->type,"Sub Contractor",$user->type)}}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}"
-                                title="{{ $user->email }}" href="#" class="card-btn"
-                                onclick="copyToClipboard(this)">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24"
-                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path
-                                        d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2
-                                         2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
-                                    </path>
-                                    <path d="M3 7l9 6l9 -6"></path>
-                                </svg>
-                                {{ __('Email') }}
-                            </a>
-                            <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}"
-                                title="{{ $user->phone }}" class="card-btn" onclick="copyToClipboardphone(this)">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24"
-                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path
-                                        d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1
-                                        -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
-                                    </path>
-                                </svg>
-                                {{ __('Call') }}
-                            </a>
-                        </div>
+           @forelse($users as $user)
+           <div class="col-md-6 col-lg-3">
+              <div class="card">
+                 <div class="ms-auto lh-1 p-4">
+                    @if ($user->color_code != null || $user->color_code != '')
+                    @php $color_co=$user->color_code; @endphp
+                    @else
+                    @php $color_co =Utility::rndRGBColorCode(); @endphp
+                    @endif
+                    <div class="dropdown">
+                       <a class="dropdown-toggle user-card-dropdown text-secondary" href="#"
+                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2"
+                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                             stroke="currentColor" fill="none" stroke-linecap="round"
+                             stroke-linejoin="round">
+                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                             <path d="M4 6l16 0"></path>
+                             <path d="M4 12l16 0"></path>
+                             <path d="M4 18l16 0"></path>
+                          </svg>
+                       </a>
+                       <div class="dropdown-menu dropdown-menu-end">
+                          @can('edit sub contractor')
+                          <a class="dropdown-item active" href="#" data-size="xl"
+                             data-url="{{ route('subContractor.edit.new', [$user->id, $color_co]) }}"
+                             data-ajax-popup="true" class="dropdown-item"
+                             data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}
+                          </a>
+                          @endcan
+                          <a data-url="{{ route('subContractor.reset', \Crypt::encrypt($user->id)) }}"
+                             data-ajax-popup="true" data-size="md" class="dropdown-item"
+                             data-bs-original-title="{{ __('Reset Password') }}">
+                          {{ __('Reset Password') }}
+                          </a>
+                       </div>
                     </div>
-                </div>
-            @empty
-                <div class="empty">
-                    <p class="empty-title"> {{ __('Invite a Sub Contractor') }}</p>
-                    <p class="empty-subtitle text-secondary">
-                    {{ __(Config::get('constants.NOSUB')) }}
-                    </p>
-                    <div class="empty-action">
-                        <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
-                            data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
-                            data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
-                            data-bs-original-title="{{ __('Invite Sub Contractor') }}">
-                            {{ __('Invite a Sub Contractor') }}
-                        </a>
+                 </div>
+                 @php $short=substr($user->name, 0, 1); @endphp
+                 @php $short_lname=substr($user->lname, 0, 1); @endphp
+                 <div class="card-body p-4 text-center">
+                    @if (!empty($user->avatar))
+                    <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
+                       asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
+                       class="avatar avatar-xl mb-3 rounded" alt="">
+                    @else
+                    <div class="avatar avatar-xl mb-3 user-initial"
+                       style='background-color:{{ $color_co }}'>
+                       {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
                     </div>
-                </div>
-            @endforelse
-            <div class="d-flex mt-4">
-                <ul class="pagination ms-auto">
-                    {!! $users->links() !!}
-                </ul>
-            </div>
-
+                    @endif
+                    @php
+                    $name=strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;
+                    $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname;
+                    @endphp
+                    <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
+                    {{-- 
+                    <div class="text-secondary">UI Designer</div>
+                    --}}
+                    <div class="mt-3">
+                       <span class="badge bg-purple-lt">
+                       {{str_replace($user->type,"Sub Contractor",$user->type)}}
+                       </span>
+                    </div>
+                 </div>
+                 <div class="d-flex">
+                    <a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}"
+                       title="{{ $user->email }}" href="#" class="card-btn"
+                       onclick="copyToClipboard(this)">
+                       <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24"
+                          height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                          fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path
+                             d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2
+                             2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z">
+                          </path>
+                          <path d="M3 7l9 6l9 -6"></path>
+                       </svg>
+                       {{ __('Email') }}
+                    </a>
+                    <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}"
+                       title="{{ $user->phone }}" class="card-btn" onclick="copyToClipboardphone(this)">
+                       <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24"
+                          height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                          fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                          <path
+                             d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1
+                             -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2">
+                          </path>
+                       </svg>
+                       {{ __('Call') }}
+                    </a>
+                 </div>
+              </div>
+           </div>
+           @empty
+           <div class="empty">
+              <p class="empty-title"> {{ __('Invite a Sub Contractor') }}</p>
+              <p class="empty-subtitle text-secondary">
+                 {{ __(Config::get('constants.NOSUB')) }}
+              </p>
+              <div class="empty-action">
+                 <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
+                    data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
+                    data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
+                    data-bs-original-title="{{ __('Invite Sub Contractor') }}">
+                 {{ __('Invite a Sub Contractor') }}
+                 </a>
+              </div>
+           </div>
+           @endforelse
+           <div class="d-flex mt-4">
+              <ul class="pagination ms-auto">
+                 {!! $users->links() !!}
+              </ul>
+           </div>
         </div>
-    </div>
+     </div>
 </div>
 </div>
 </div>
