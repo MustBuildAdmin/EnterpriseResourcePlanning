@@ -396,7 +396,7 @@
                     $lname=strlen($user->lname) > 20 ? substr($user->lname,0,19)."..." : $user->lname;
                     @endphp
                     <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
-                    {{-- 
+                    {{--
                     <div class="text-secondary">UI Designer</div>
                     --}}
                     <div class="mt-3">
