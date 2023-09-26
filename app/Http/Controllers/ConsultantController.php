@@ -52,7 +52,7 @@ class ConsultantController extends Controller
 
     }
 
-    public function validationCreateConsultant($request,$id){
+    public function validationCreateConsultant($request){
         $validation = [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -138,7 +138,7 @@ class ConsultantController extends Controller
 
     public function store(Request $request)
     {
-        $this->validationCreateConsultant($request,$id);
+        $this->validationCreateConsultant($request);
         $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
         $fileNames = $this->upload($request);
         $user = new User();
@@ -246,7 +246,7 @@ class ConsultantController extends Controller
     public function normal_store(Request $request)
     {
        
-        $this->validationCreateConsultant($request,$id);
+        $this->validationCreateConsultant($request);
         $fileNames = $this->upload($request);
 
         $objUser = \Auth::user()->creatorId();
