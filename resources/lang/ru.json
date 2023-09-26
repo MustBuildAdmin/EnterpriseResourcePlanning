@@ -2573,5 +2573,9 @@
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Для проекта нет субподрядчика. Нажмите ниже, чтобы пригласить субподрядчика.",
   "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Субподрядчик успешно создан! Пожалуйста, проверьте свой почтовый ящик.",
   "No Sub Contractor Found":"Субподрядчик не найден",
-  "Sub Contractor successfully deleted.":"Субподрядчик успешно удален."
+  "Sub Contractor successfully deleted.":"Субподрядчик успешно удален.",
+  "Search Sub Contractor...":"Поиск субподрядчика...",
+  "Sub Contractor not found.":"Субподрядчик не найден.",
+  "Searching...":"Идет поиск...",
+  "Consultant not found":"Консультант не найден"
 }

@@ -2738,5 +2738,9 @@
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Er is geen Onderaannemer beschikbaar voor het project. Klik hieronder om een Onderaannemer uit te nodigen",
   "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Onderaannemer succesvol aangemaakt! Controleer uw postvak IN.",
   "No Sub Contractor Found":"Geen onderaannemer gevonden",
-  "Sub Contractor successfully deleted.":"Onderaannemer succesvol verwijderd."
+  "Sub Contractor successfully deleted.":"Onderaannemer succesvol verwijderd.",
+  "Search Sub Contractor...":"Zoek onderaannemer...",
+  "Sub Contractor not found.":"Onderaannemer niet gevonden.",
+  "Searching...":"Zoeken...",
+  "Consultant not found":"Adviseur niet gevonden"
 }

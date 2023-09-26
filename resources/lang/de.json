@@ -2737,5 +2737,9 @@
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Für das Projekt steht kein Subunternehmer zur Verfügung. Bitte klicken Sie unten, um den Subunternehmer einzuladen",
   "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Subunternehmer erfolgreich erstellt! Bitte überprüfen Sie Ihren Posteingang.",
   "No Sub Contractor Found":"Kein Subunternehmer gefunden",
-  "Sub Contractor successfully deleted.":"Subunternehmer erfolgreich gelöscht."
+  "Sub Contractor successfully deleted.":"Subunternehmer erfolgreich gelöscht.",
+  "Search Sub Contractor...":"Subunternehmer suchen...",
+  "Sub Contractor not found.":"Subunternehmer nicht gefunden.",
+  "Searching...":"Suche...",
+  "Consultant not found":"Berater nicht gefunden"
 }

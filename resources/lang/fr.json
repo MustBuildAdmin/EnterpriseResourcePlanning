@@ -2737,5 +2737,9 @@
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Aucun sous-traitant n'est disponible pour le projet, veuillez cliquer ci-dessous pour inviter le sous-traitant",
   "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Sous-traitant créé avec succès ! Veuillez vérifier votre boîte de réception",
   "No Sub Contractor Found":"Aucun sous-traitant trouvé",
-  "Sub Contractor successfully deleted.":"Le sous-traitant a été supprimé avec succès."
+  "Sub Contractor successfully deleted.":"Le sous-traitant a été supprimé avec succès.",
+  "Search Sub Contractor...":"Rechercher un sous-traitant...",
+  "Sub Contractor not found.":"Sous-traitant introuvable.",
+  "Searching...":"Recherche...",
+  "Consultant not found":"Consultant introuvable"
 }

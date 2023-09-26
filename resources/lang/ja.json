@@ -2738,5 +2738,9 @@
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"プロジェクトに利用できる下請け業者がいません。下請け業者を招待するには、下をクリックしてください",
   "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"下請け業者が正常に作成されました。メールの受信箱を確認してください。",
   "No Sub Contractor Found":"下請け業者が見つかりません",
-  "Sub Contractor successfully deleted.":"下請け業者は正常に削除されました."
+  "Sub Contractor successfully deleted.":"下請け業者は正常に削除されました.",
+  "Search Sub Contractor...":"下請け業者を探す...",
+  "Sub Contractor not found.":"下請け業者が見つかりません。",
+  "Searching...":"検索中...",
+  "Consultant not found":"コンサルタントが見つかりません"
 }

@@ -2738,5 +2738,9 @@
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"Nessun subappaltatore disponibile per il progetto, fare clic di seguito per invitare il subappaltatore",
   "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"Subappaltatore creato con successo! Controlla la tua casella di posta.",
   "No Sub Contractor Found":"Nessun subappaltatore trovato",
-  "Sub Contractor successfully deleted.":"Subappaltatore eliminato con successo."
+  "Sub Contractor successfully deleted.":"Subappaltatore eliminato con successo.",
+  "Search Sub Contractor...":"Cerca subappaltatore...",
+  "Sub Contractor not found.":"Subappaltatore non trovato.",
+  "Searching...":"Ricerca...",
+  "Consultant not found":"Consulente non trovato"
 }

@@ -2744,5 +2744,9 @@
   "No Sub Contractor are available for the project,please click below to invite Sub Contractor":"لا يوجد مقاول من الباطن متاح للمشروع، يرجى النقر أدناه لدعوة المقاول من الباطن",
   "Sub Contractor created Successfully! Please Check Your Mail Inbox.":"تم إنشاء المقاول من الباطن بنجاح! يرجى التحقق من صندوق البريد الوارد الخاص بك.",
   "No Sub Contractor Found":"لم يتم العثور على مقاول من الباطن",
-  "Sub Contractor successfully deleted.":"تم حذف المقاول من الباطن بنجاح."
+  "Sub Contractor successfully deleted.":"تم حذف المقاول من الباطن بنجاح.",
+  "Search Sub Contractor...":"بحث عن المقاول من الباطن...",
+  "Sub Contractor not found.":"لم يتم العثور على المقاول من الباطن",
+  "Searching...":"يبحث...",
+  "Consultant not found":"لم يتم العثور على مستشار"
  }
