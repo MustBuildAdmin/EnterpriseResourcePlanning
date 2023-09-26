@@ -182,69 +182,98 @@
 
                         @case('da')
                             <!--Danish-->
-                            {{ __("I henhold til Create of Consultant opretter vi dem globalt, men invitationsbetalingen sker kun for dine virksomheders adgang til projektet, som du giver dem med din viden, og vi deler ikke nogen form for anden information til dem om projekterne i secert eller offentligt eller ved overførsel.") }}
+                            {{ __("I henhold til Create of Consultant opretter vi dem globalt, men invitationsbetalingen
+                            sker kun for dine virksomheders adgang til projektet, som du giver dem med din viden, og vi
+                            deler ikke nogen form for anden information til dem om projekterne i secert eller
+                            offentligt eller ved overførsel.") }}
                         @break
 
                         @case('de')
                             <!--German-->
-                            {{ __("Gemäß Create of Consultant erstellen wir sie global, aber die Einladungszahlung erfolgt nur für den Zugriff Ihres Unternehmens auf das Projekt, das Sie ihm mit Ihrem Wissen gewähren, und wir geben ihnen keine anderen Informationen über die Projekte im Geheimen weiter oder in der Öffentlichkeit oder im Medium der Übertragung.") }}
+                            {{ __("Gemäß Create of Consultant erstellen wir sie global, aber die Einladungszahlung
+                            erfolgt nur für den Zugriff Ihres Unternehmens auf das Projekt, das Sie ihm mit Ihrem
+                            Wissen gewähren, und wir geben ihnen keine anderen Informationen über die Projekte im
+                            Geheimen weiter oder in der Öffentlichkeit oder im Medium der Übertragung.") }}
                         @break
 
                         @case('en')
                             <!--English-->
                             {{ __("As per Create of Consultant ,we are creating them
-                            						globally but the invite payment is done only for your companies access over
-                            						the project which you provide to them with your knowledge and we are not
-                            						sharing any kind of other information to them about the projects in secert
-                            						or in public or in mediuim of transfer.") }}
+                            globally but the invite payment is done only for your companies access over
+                            the project which you provide to them with your knowledge and we are not
+                            sharing any kind of other information to them about the projects in secert
+                            or in public or in mediuim of transfer.") }}
                         @break
 
                         @case('es')
                             <!--Danish-->
-                            {{ __("Según Create of Consultant, los estamos creando globalmente, pero el pago de la invitación se realiza solo para que sus empresas accedan al proyecto que usted les proporciona con su conocimiento y no les compartimos ningún otro tipo de información sobre los proyectos en secreto. o en público o en medio de transferencia.") }}
+                            {{ __("Según Create of Consultant, los estamos creando globalmente, pero el pago de la
+                            invitación se realiza solo para que sus empresas accedan al proyecto que usted les
+                            proporciona con su conocimiento y no les compartimos ningún otro tipo de información
+                            sobre los proyectos en secreto. o en público o en medio de transferencia.") }}
                         @break
 
                         @case('fr')
                             <!--French-->
-                            {{ __("Conformément à Create of Consultant, nous les créons globalement, mais le paiement de l'invitation est effectué uniquement pour l'accès de votre entreprise au projet que vous leur fournissez avec vos connaissances et nous ne leur partageons aucune autre information sur les projets en secret. ou en public ou en milieu de transfert.") }}
+                            {{ __("Conformément à Create of Consultant, nous les créons globalement, mais le paiement de
+                            l'invitation est effectué uniquement pour l'accès de votre entreprise au projet
+                            que vous leur fournissez avec vos connaissances et nous ne leur partageons aucune autre
+                            information sur les projets en secret. ou en public ou en milieu de transfert.") }}
                         @break
 
                         @case('it')
                             <!--French-->
-                            {{ __("Secondo Create of Consultant, li stiamo creando a livello globale ma il pagamento dell'invito viene effettuato solo per consentire alle tue aziende di accedere al progetto che fornisci loro con le tue conoscenze e non condividiamo con loro alcun tipo di altra informazione sui progetti in segreto o in pubblico o nel mezzo di trasferimento.") }}
+                            {{ __("Secondo Create of Consultant, li stiamo creando a livello globale ma il pagamento
+                            dell'invito viene effettuato solo per consentire alle tue aziende di accedere al progetto
+                            che fornisci loro con le tue conoscenze e non condividiamo con loro alcun tipo di altra
+                            informazione sui progetti in segreto o in pubblico o nel mezzo di trasferimento.") }}
                         @break
 
                         @case('ja')
                             <!--japanese-->
-                            {{ __("Create of Consultant に従って、私たちはグローバルにそれらを作成していますが、招待の支払いは、あなたが知識を持って提供したプロジェクトに対する貴社のアクセスに対してのみ行われ、プロジェクトに関するその他の情報を秘密裏に共有することはありません。または公共の場で、または転送の媒体で。") }}
+                            {{ __("Create of Consultant に従って、私たちはグローバルにそれらを作成していますが、招待の支払いは、
+                            あなたが知識を持って提供したプロジェクトに対する貴社のアクセスに対してのみ行われ、プロジェクトに関する
+                            その他の情報を秘密裏に共有することはありません。または公共の場で、または転送の媒体で。") }}
                         @break
 
                         @case('nl')
                             <!--dutch-->
-                            {{ __("Volgens Create of Consultant maken we ze wereldwijd, maar de uitnodigingsbetaling wordt alleen gedaan voor de toegang van uw bedrijf tot het project dat u hen met uw kennis verstrekt en we delen geen enkele andere informatie met hen over de projecten in secert of in het openbaar of tijdens de overdracht.") }}
+                            {{ __("Volgens Create of Consultant maken we ze wereldwijd, maar de uitnodigingsbetaling
+                            wordt alleen gedaan voor de toegang van uw bedrijf tot het project dat u hen met uw kennis
+                            verstrekt en we delen geen enkele andere informatie met hen over de projecten in secert
+                            of in het openbaar of tijdens de overdracht.") }}
                         @break
 
                         @case('pl')
                             <!--polish-->
-                            {{ __("Zgodnie z Create of Consultant tworzymy je globalnie, ale płatność za zaproszenie jest dokonywana tylko za dostęp Twoich firm do projektu, który im przekazujesz za swoją wiedzą i nie udostępniamy im żadnych innych informacji na temat projektów w tajemnicy lub w miejscu publicznym lub w trakcie przenoszenia.") }}
+                            {{ __("Zgodnie z Create of Consultant tworzymy je globalnie, ale płatność za zaproszenie
+                            jest dokonywana tylko za dostęp Twoich firm do projektu, który im przekazujesz za swoją
+                            wiedzą i nie udostępniamy im żadnych innych informacji na temat projektów w tajemnicy lub
+                            w miejscu publicznym lub w trakcie przenoszenia.") }}
                         @break
 
                         @case('pt')
                             <!--polish-->
-                            {{ __("De acordo com a Criação do Consultor, estamos criando-os globalmente, mas o pagamento do convite é feito apenas para o acesso de suas empresas ao projeto que você fornece a elas com seu conhecimento e não estamos compartilhando nenhum tipo de outra informação sobre os projetos em segredo. ou em público ou em meio de transferência.") }}
+                            {{ __("De acordo com a Criação do Consultor, estamos criando-os globalmente, mas o pagamento
+                            do convite é feito apenas para o acesso de suas empresas ao projeto que você fornece a elas
+                            com seu conhecimento e não estamos compartilhando nenhum tipo de outra informação sobre os
+                            projetos em segredo. ou em público ou em meio de transferência.") }}
                         @break
 
                         @case('ru')
                             <!--polish-->
-                            {{ __("Согласно Create of Consultant, мы создаем их по всему миру, но оплата за приглашение производится только для доступа ваших компаний к проекту, который вы им предоставляете со своими знаниями, и мы не передаем им никакой другой информации о проектах в секрете. или публично, или в процессе передачи.") }}
+                            {{ __("Согласно Create of Consultant, мы создаем их по всему миру, но оплата за приглашение
+                            производится только для доступа ваших компаний к проекту, который вы им предоставляете со
+                            своими знаниями, и мы не передаем им никакой другой информации о проектах в секрете.
+                            или публично, или в процессе передачи.") }}
                         @break
 
                         @default
                             {{ __("As per Create of Consultant ,we are creating them
-                            						globally but the invite payment is done only for your companies access over
-                            						the project which you provide to them with your knowledge and we are not
-                            						sharing any kind of other information to them about the projects in secert
-                            						or in public or in mediuim of transfer.") }}
+                            globally but the invite payment is done only for your companies access over
+                            the project which you provide to them with your knowledge and we are not
+                            sharing any kind of other information to them about the projects in secert
+                            or in public or in mediuim of transfer.") }}
                     @endswitch
 
                     <hr />
@@ -252,24 +281,26 @@
                     @switch(Lang::locale())
                     @case('ar')
                         <!--arabic-->
-                        {{ __('وفقًا لـ "إنشاء المستشارين"، فإننا نقوم بإنشائها
-                               على مستوى العالم ولكن يتم دفع الدعوة فقط لوصول شركاتك إلى المشروع الذي تقدمه لهم بمعرفتك
-                                                ولا نشاركهم أي نوع من المعلومات الأخرى حول المشاريع سرًا أو في الأماكن العامة أو في وسائل النقل.') }}
+                        {{ __('وفقًا لدعوة الاستشاري الموجود بالفعل في النظام 
+                        الأساسي، قم بدعوة الدفع فقط لوصول شركاتك إلى المشروع الذي تقدمه لهم بمعرفتك ولا نشاركه
+                        م أي نوع من المعلومات الأخرى حول المشاريع سرًا أو في الأماكن العامة أو في وسائل النقل.') }}
                     @break
 
                     @case('da')
                         <!--Danish-->
-                        {{ __("I henhold til Create of Consultant opretter vi dem globalt, men invitationsbetalingen sker
-                                            kun for dine virksomheders adgang til projektet, som du giver dem med din viden, og vi deler ikke
-                                            nogen form for anden information til dem om projekterne i secert eller offentligt eller ved overførsel.") }}
+                        {{ __("I henhold til den Inviting Exiting Consultant, som allerede er på
+                        platformen, inviterer vi globalt kun betaling udført for dine virksomheders adgang
+                        til projektet, som du giver dem med din viden, og vi deler ikke nogen form for anden
+                        information til dem om projekterne i sikring eller offentligt eller ved overførsel.") }}
                     @break
 
                     @case('de')
                         <!--German-->
-                        {{ __("Gemäß Create of Consultant erstellen wir sie global, aber die Einladungszahlung erfolgt nur für den
-                                                 Zugriff Ihres Unternehmens auf das Projekt, das Sie ihm mit Ihrem Wissen gewähren, und wir geben ihnen keine
-                                                anderen Informationen über die Projekte im Geheimen weiter oder in der Öffentlichkeit oder im Medium der
-                                                Übertragung.") }}
+                        {{ __("Gemäß dem einladenden ausscheidenden Berater, der sich bereits auf der Plattform
+                        befindet, erfolgt die Einladungszahlung weltweit nur für den Zugriff Ihres Unternehmens
+                        auf das Projekt, das Sie ihm mit Ihrem Wissen zur Verfügung stellen, und wir geben ihnen
+                        keine anderen Informationen über die Projekte in geheimer oder geheimer Form weiter in
+                        der Öffentlichkeit oder im Rahmen der Übertragung.") }}
                     @break
 
                     @case('en')
@@ -283,62 +314,66 @@
 
                     @case('es')
                         <!--Danish-->
-                        {{ __("Según Create of Consultant, los estamos creando globalmente, pero el pago de la invitación
-                                             se realiza solo para que sus empresas accedan al proyecto que usted les proporciona con su conocimiento
-                                              y no les compartimos ningún otro tipo de información sobre los proyectos en secreto. o en público
-                                               o en medio de transferencia.") }}
+                        {{ __("Según el Consultor saliente de invitación que ya está en la plataforma, 
+                        el pago se realiza globalmente solo para que sus empresas accedan al proyecto que
+                        usted les proporciona con su conocimiento y no les compartimos ningún otro tipo de
+                        información sobre los proyectos en secreto o en público o en medio de transferencia.") }}
                     @break
 
                     @case('fr')
                         <!--French-->
-                        {{ __("Conformément à Create of Consultant, nous les créons globalement, mais le paiement de
-                                                l'invitation est effectué uniquement pour l'accès de votre entreprise au projet que
-                                                vous leur fournissez avec vos connaissances et nous ne leur partageons aucune autre
-                                                information sur les projets en secret. ou en public ou en milieu de transfert.") }}
+                        {{ __("Conformément au consultant sortant invitant qui est déjà sur la plate-forme, invitez
+                        globalement le paiement effectué uniquement pour l'accès de votre entreprise au projet que vous
+                        leur fournissez avec vos connaissances et nous ne leur partageons aucune autre information
+                        sur les projets en secret ou en public ou en milieu de transfert.") }}
                     @break
 
                     @case('it')
                         <!--French-->
-                        {{ __("Secondo Create of Consultant, li stiamo creando a livello globale ma il pagamento dell'invito
-                                             viene effettuato solo per consentire alle tue aziende di accedere al progetto che fornisci loro
-                                              con le tue conoscenze e non condividiamo con loro alcun tipo di altra informazione sui progetti
-                                               in segreto o in pubblico o nel mezzo di trasferimento.") }}
+                        {{ __("Come per il consulente uscente che è già nella piattaforma, invita il pagamento a livello
+                         globale solo per l'accesso delle tue aziende al progetto che fornisci loro con le tue
+                        conoscenze e non condividiamo con loro alcun tipo di altra informazione sui progetti
+                        in segreto o in pubblico o in mezzo di trasferimento.") }}
                     @break
 
                     @case('ja')
                         <!--japanese-->
-                        {{ __("Create of Consultant に従って、私たちはグローバルにそれらを作成していますが、
-                                                招待の支払いは、あなたが知識を持って提供したプロジェクトに対する貴社のアクセスに対してのみ行われ、
-                                                プロジェクトに関するその他の情報を秘密裏に共有することはありません。または公共の場で、または転送の媒体で。") }}
+                        {{ __("すでにプラットフォームに存在する退社コンサルタントの招待によると、
+                        支払いは貴社が知識を持って提供したプロジェクトへのアクセスに対してのみ行われ、
+                        当社はプロジェクトに関するその他の情報を秘密裏に共有することはありません。公共の場または転送媒体で。") }}
                     @break
 
                     @case('nl')
                         <!--dutch-->
-                        {{ __("Volgens Create of Consultant maken we ze wereldwijd, maar de uitnodigingsbetaling wordt alleen gedaan voor
-                                             de toegang van uw bedrijf tot het project dat u hen met uw kennis verstrekt en we delen geen enkele
-                                              andere informatie met hen over de projecten in secert of in het openbaar of tijdens de overdracht.") }}
+                        {{ __("Volgens de uitnodigende bestaande consultant die zich al op het platform bevindt,
+                        nodigt u globaal de betaling uit die alleen voor uw bedrijven wordt gedaan, toegang tot
+                        het project dat u hen met uw kennis verstrekt en we delen geen enkele andere informatie
+                        met hen over de projecten in secert of in het openbaar of tijdens overdracht.") }}
                     @break
 
                     @case('pl')
                         <!--polish-->
-                        {{ __("Zgodnie z Create of Consultant tworzymy je globalnie, ale płatność za zaproszenie jest dokonywana tylko
-                                         za dostęp Twoich firm do projektu, który im przekazujesz za swoją wiedzą i nie udostępniamy im żadnych innych
-                                          informacji na temat projektów w tajemnicy lub w miejscu publicznym lub w trakcie przenoszenia.") }}
+                        {{ __("Zgodnie z Zapraszaniem wychodzącego konsultanta, który jest już na platformie globalnej,
+                        zaproś płatność dokonaną tylko za dostęp Twoich firm do projektu, który im udostępniasz
+                        za swoją wiedzą i nie udostępniamy im żadnych innych informacji na temat projektów w
+                        tajemnicy lub publicznie lub w trakcie transferu.") }}
                     @break
 
                     @case('pt')
                         <!--polish-->
-                        {{ __("De acordo com a Criação do Consultor, estamos criando-os globalmente, mas o pagamento do convite é
-                                         feito apenas para o acesso de suas empresas ao projeto que você fornece a elas com seu conhecimento e não
-                                          estamos compartilhando nenhum tipo de outra informação sobre os projetos em segredo. ou em público ou em
-                                           meio de transferência.") }}
+                        {{ __("De acordo com o Consultor Convidativo existente que já está na plataforma globalmente,
+                        convide o pagamento feito apenas para o acesso de suas empresas ao projeto que você fornece
+                        a elas com seu conhecimento e não estamos compartilhando qualquer outro tipo de informação
+                        sobre os projetos em segredo ou em público ou em meio de transferência.") }}
                     @break
 
                     @case('ru')
                         <!--polish-->
-                        {{ __("Согласно Create of Consultant, мы создаем их по всему миру, но оплата за приглашение производится только
-                                     для доступа ваших компаний к проекту, который вы им предоставляете со своими знаниями, и мы не передаем им никакой
-                                      другой информации о проектах в секрете. или публично, или в процессе передачи.") }}
+                        {{ __("В соответствии с Приглашающим выходящим консультантом, который уже присутствует
+                        на платформе по всему миру, мы приглашаем оплату только за доступ ваших компаний
+                        к проекту, который вы предоставляете им со своими знаниями, и мы не передаем им
+                        какую-либо другую информацию о проектах в секрете или публично или в процессе
+                        передачи.") }}
                     @break
 
                     @default
