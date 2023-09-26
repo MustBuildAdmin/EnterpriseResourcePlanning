@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{Lang::locale()}}</button>
+    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
     <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">{{__('Invite Member')}}</button>
  </div>
 {{Form::close()}}

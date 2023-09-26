@@ -1,23 +1,6 @@
 @include('new_layouts.header')
 <style>
-    #create {
-        height: 35px !important;
-        width: 12% !important;
-    }
-
-    #invite {
-        height: 35px !important;
-        width: 12% !important;
-    }
-
-    #reset {
-        width: 12% !important;
-    }
-
-    #search_button {
-        height: 35px !important;
-        width: 12% !important;
-    }
+   
 
     .dropdown-toggle::after {
         display: none;
@@ -91,19 +74,19 @@
     <div class="card mt-5 p-4">
         <div class="card-header">
             <h3>{{ __('Sub Contractor of the Organisation') }}</h3>
-            <div class="card-actions w-50">
+            <div class="card-actions w-35">
                 <div class="row">
-                    <div class="col-5">
-                        <div class="mb-3">
+                    <div class="col-4">
+                        <div class="mb-1">
                             <div class="row g-2">
                                 <form action="{{ route('subContractor.index') }}" method="GET">
                                     <div class="input-group">
                                         {{ Form::text('search', isset($_GET['search']) ? $_GET['search'] : '', [
-                                            'class' => 'form-control d-inline-block w-9 me-3 mt-auto',
+                                            'class' => 'form-control d-inline-block mt-auto',
                                             'id' => 'search',
                                             'placeholder' => __('Search by Name'),
                                         ]) }}
-                                        <div class="col-auto">
+                                        <div class="col-md-3">
                                             <button type="submit" class="btn btn-icon" aria-label="Button">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -120,7 +103,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div class="col-sm-4">
                         <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
                             data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
                             data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
@@ -128,7 +111,7 @@
                             {{ __('Invite a Sub Contractor') }}
                         </a>
                     </div>
-                    <div class="col-3">
+                    <div class="col-sm-4">
                         <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
                             data-url="{{ route('subContractor.create') }}" data-ajax-popup="true"
                             data-bs-toggle="tooltip" title="{{ __('Create New Sub Contractor') }}"
@@ -136,7 +119,7 @@
                             {{ __('Create a Sub Contractor') }}
                         </a>
                     </div>
-                    <div class="col-1 mt-1">
+                    <div class="col-sm-1">
                         <a href="#" class="badge bg-yellow text-yellow-fg" title="click to know information"
                             data-bs-toggle="modal" data-bs-target="#info-subcontractor">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-hexagon"
@@ -162,7 +145,7 @@
             @forelse($users as $user)
                 <div class="col-md-6 col-lg-3">
                     <div class="card">
-                        <div class="ms-auto lh-1  p-4">
+                        <div class="ms-auto lh-1 p-4">
                             @if ($user->color_code != null || $user->color_code != '')
                                 @php $color_co=$user->color_code; @endphp
                             @else
