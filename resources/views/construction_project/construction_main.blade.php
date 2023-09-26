@@ -29,6 +29,11 @@
   /* background: orange; */
   text-transform:capitalize;
 }
+.avatarimg{
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
 </style>
 <script src="{{ asset('WizardSteps/js/jquery.steps.js') }}"></script>
 <div class="page-wrapper">
@@ -77,14 +82,24 @@
 
                 <div class="row">
                     @foreach ($projects as $key => $project)
+                   
                         <div class="col-md-3 col-xxl-3 divstyle">
                             <div class="card">
                                 <div class="card-header border-0 pb-0">
                                     <div class="d-flex align-items-center">
-                                        <?php $color = sprintf("#%06x",random_int(0,16777215));?>
-                                    <div class="circle" style="background:<?php echo $color; ?>">
-                                    <?= substr($project->project_name,0,2) ?>
-                                    </div>
+                                        <?php $color = sprintf("#%06x",random_int(0,16777215));
+                                        $project_image=$project->project_image;
+                                        ?>
+                                        @if($project_image!=0 && $project_image!='')
+                                            <img id="image"  src="{{asset(Storage::url($project->project_image))}}"
+                                             class="avatar avatar-xl avatarimg" alt="">
+                                        @else
+                                            <div class="circle" style="background:<?php echo $color; ?>">
+                                                <?= substr($project->project_name,0,2) ?>
+                                            </div>
+                                        @endif
+
+                                   
                                     <h5 class="mb-0">
                                         @php
                                             $project_instances=\App\Models\Instance::where('project_id',$project->id)
