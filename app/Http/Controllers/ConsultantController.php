@@ -31,42 +31,41 @@ class ConsultantController extends Controller
     {
         $user = \Auth::user();
         if (\Auth::user()->can('manage consultant')) {
-            if (\Auth::user()->type == 'super admin') {
-                $users = User::where([
-                    ['name', '!=', null],
-                    [function ($query) use ($request) {
-                        if (($s = $request->search)) {
-                            $query->orWhere('name', 'LIKE', '%'.$s.'%')
-                                ->get();
-                        }
-                    }],
-                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $usercount = User::where('created_by', '=', $user->creatorId())
-                    ->where('type', '=', 'consultant')
-                    ->get()
-                    ->count();
-            } else {
-                $users = User::where([
-                    ['name', '!=', null],
-                    [function ($query) use ($request) {
-                        if (($s = $request->search)) {
-                            $user = \Auth::user();
-                            $query->orWhere('name', 'LIKE', '%'.$s.'%')
-                                ->get();
-                        }
-                    }],
-                ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
-                $usercount = User::where('created_by', '=', $user->creatorId())
-                    ->where('type', '=', 'consultant')
-                    ->get()
-                    ->count();
-            }
+            $users = User::where([
+                ['name', '!=', null],
+                [function ($query) use ($request) {
+                    if (($s = $request->search)) {
+                        $query->orWhere('name', 'LIKE', '%'.$s.'%')
+                            ->get();
+                    }
+                }],
+            ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->paginate(8);
+            $usercount = User::where('created_by', '=', $user->creatorId())
+                ->where('type', '=', 'consultant')
+                ->get()
+                ->count();
 
             return view('consultants.index')->with('users', $users)->with('usercount', $usercount);
         } else {
             return redirect()->back();
         }
 
+    }
+
+    public function validationCreateConsultant($request){
+        $validation = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+        ];
+
+        $validator = \Validator::make($request->all(), $validation);
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
+            return redirect()->back()->with('error', $messages->first());
+        }
+        else{
+            return true;
+        }
     }
 
     public function create(Request $request)
@@ -139,7 +138,7 @@ class ConsultantController extends Controller
 
     public function store(Request $request)
     {
-
+        $this->validationCreateConsultant($request);
         $defaultlanguage = DB::table('settings')->select('value')->where('name', 'default_language')->first();
         $fileNames = $this->upload($request);
         $user = new User();
@@ -215,6 +214,7 @@ class ConsultantController extends Controller
 
         return redirect()->route('consultants.index')->with('success', Config::get('constants.CONSULTANT_MAIL'));
     }
+    
     public function createConnection(Request $request){
         // Need to check invitation link is valid or expired based on that need to redirect
         $checkConnection=ConsultantCompanies::where(['id'=>$request->id])->first();
@@ -246,7 +246,7 @@ class ConsultantController extends Controller
     public function normal_store(Request $request)
     {
        
-
+        $this->validationCreateConsultant($request);
         $fileNames = $this->upload($request);
 
         $objUser = \Auth::user()->creatorId();
@@ -367,9 +367,26 @@ class ConsultantController extends Controller
 
     }
 
+    public function validationUpdateConsultant($request,$id){
+        $validation = [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+        ];
+
+        $validator = \Validator::make($request->all(), $validation);
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
+
+            return redirect()->back()->with('error', $messages->first());
+        }
+        else{
+            return true;
+        }
+    }
+
     public function update(Request $request, $id)
     {
-
+        $this->validationUpdateConsultant($request,$id);
         $user = User::findOrFail($id);
         $fileNames = $this->upload($request);
 
@@ -379,7 +396,6 @@ class ConsultantController extends Controller
             'email' => $request->email,
             'type' => 'consultant',
             'gender' => $request->gender,
-            'password' => Hash::make($request->password),
             'lang' => Utility::getValByName('default_language'),
             'country' => $request->country,
             'state' => $request->state,
@@ -407,6 +423,7 @@ class ConsultantController extends Controller
     public function update_consultant(Request $request, $id)
     {
 
+        $this->validationUpdateConsultant($request,$id);
         $user = User::findOrFail($id);
         $fileNames = $this->upload($request);
 
@@ -425,43 +442,7 @@ class ConsultantController extends Controller
 
     }
 
-    public function destroy($id)
-    {
-
-        if (\Auth::user()->can('delete consultant')) {
-            $user = User::find($id);
-            if ($user) {
-                if (\Auth::user()->type == 'super admin') {
-                    if ($user->is_deleted == 0) {
-                        $user->is_deleted = 1;
-                    } else {
-                        $user->is_deleted = 0;
-                    }
-                    $user->save();
-                }
-                if (\Auth::user()->type == 'consultant') {
-                    $employee = Employee::where(['user_id' => $user->id])->delete();
-                    if ($employee) {
-                        $deleteuser = User::where(['id' => $user->id])->delete();
-                        if ($deleteuser) {
-                            return redirect()->route('consultants.index')
-                                ->with('success', __('Consultant successfully deleted.'));
-                        } else {
-                            return redirect()->back()->with('error', __('Something is wrong.'));
-                        }
-                    } else {
-                        return redirect()->back()->with('error', __('Something is wrong.'));
-                    }
-                }
-
-                return redirect()->route('consultants.index')->with('error', __('Consultant permission denied.'));
-            } else {
-                return redirect()->back()->with('error', __('Something is wrong.'));
-            }
-        } else {
-            return redirect()->back();
-        }
-    }
+    
 
     public function userPassword($id)
     {
@@ -515,28 +496,7 @@ class ConsultantController extends Controller
 
     }
 
-    public function scott_search(Request $request)
-    {
 
-        return view('consultants.scott-search');
-    }
-
-    public function scott_result(Request $request)
-    {
-        if ($request->filled('search')) {
-            $users = User::search($request->search)->where('type', 'consultant')->get();
-        } else {
-            $users = [];
-        }
-
-        $returnHTML = view('consultants.result', compact('users'))->render();
-
-        return response()->json([
-            'success' => true,
-            'html' => $returnHTML,
-        ]);
-
-    }
 
     public function get_company_details(Request $request,$id){
 
