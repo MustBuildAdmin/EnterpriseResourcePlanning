@@ -28,7 +28,7 @@ if($delay>100){
               Dashboard
             </h2>
           </div>
-    
+
 
         </div>
       </div>
@@ -211,14 +211,19 @@ if($delay>100){
                           </svg>
                         </span>
                       </div>
-                      <div class="col">
-                        <div class="font-weight-medium">
-                          Completed Sub-Task
+
+                        <div class="col">
+                          <a @if( Session::get('current_revision_freeze')==1)
+                          href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
+                          <div class="font-weight-medium">
+                            Completed Sub-Task Today
+                          </div>
+                          </a>
+                          <div class="text-muted">
+                          {{  $completed_task }} Tasks
+                          </div>
                         </div>
-                        <div class="text-muted">
-                        {{  $completed_task }} Tasks
-                        </div>
-                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -242,12 +247,15 @@ if($delay>100){
                         </span>
                       </div>
                       <div class="col">
-                        <div class="font-weight-medium">
-                          Ongoing Sub-Task
-                        </div>
-                        <div class="text-muted">
-                        {{ $ongoing_task }} Tasks
-                        </div>
+                        <a @if( Session::get('current_revision_freeze')==1)
+                        href='{{ route('taskBoard.view', ['list','status'=>'ongoing']) }}' @endif>
+                          <div class="font-weight-medium">
+                            Ongoing Sub-Task Today
+                          </div>
+                          <div class="text-muted">
+                          {{ $ongoing_task }} Tasks
+                          </div>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -274,12 +282,15 @@ if($delay>100){
                         </span>
                       </div>
                       <div class="col">
-                        <div class="font-weight-medium">
-                          Remaining Sub-Task
-                        </div>
-                        <div class="text-muted">
-                        {{ $total_sub- $completed_task-$ongoing_task }} Tasks
-                        </div>
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'remaning']) }}' @endif>
+                          <div class="font-weight-medium">
+                            Remaining Sub-Task Today
+                          </div>
+                          <div class="text-muted">
+                          {{ $total_sub- $completed_task-$ongoing_task }} Tasks
+                          </div>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -301,12 +312,15 @@ if($delay>100){
                         </span>
                       </div>
                       <div class="col">
-                        <div class="font-weight-medium">
-                          Pending Sub-Task
-                        </div>
-                        <div class="text-muted">
-                          {{$notfinished}} Tasks
-                        </div>
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'pending']) }}' @endif>
+                          <div class="font-weight-medium">
+                            Pending Sub-Task Today
+                          </div>
+                          <div class="text-muted">
+                            {{ $notfinished }} Tasks
+                          </div>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -939,7 +953,10 @@ if($delay>100){
         },
         series: [{{$delay}}, {{round($current_Planed_percentage)}},
         {{round($actual_percentage)}}, {{round(100-$actual_percentage)}}],
-        labels: [ "Dealy in Progress","Planned Progress", "Actual Progress", "Actual Remaining Progress"],
+        labels: [
+        {{$delay}}+'% Dealy in Progress', {{round($current_Planed_percentage)}}+'% Planned Progress',
+        {{round($actual_percentage)}}+'% Actual Progress',
+        {{round(100-$actual_percentage)}}+'% Actual Remaining Progress'],
         tooltip: {
           theme: 'dark'
         },
@@ -947,7 +964,7 @@ if($delay>100){
           strokeDashArray: 4,
         },
         colors: [  tabler.getColor("danger"), tabler.getColor("primary", 0.6),tabler.getColor("green", 0.8),
-        tabler.getColor("orange -300")],
+        tabler.getColor("orange")],
         legend: {
           show: true,
           position: 'bottom',
