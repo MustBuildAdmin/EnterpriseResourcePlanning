@@ -155,6 +155,20 @@ class DashboardController extends Controller
         return view('consultants.dashboard.index',compact('users'));
     }
 
+    public function subContractorDashboard(){
+
+        $users = DB::table('users as t1')
+                    ->select('t1.name','t1.lname','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
+                    ->join('sub_contractor_companies as t2', function ($join) {
+                        $join->on('t2.company_id', '=', 't1.id');
+                        $join->where('t2.status','active');
+                     })
+                    ->where('t1.type','company')
+                    ->paginate(4);
+
+        return view('subContractor.dashboard',compact('users'));
+    }
+
     public function project_dashboard_index()
     {
         $user = Auth::user();
@@ -249,7 +263,8 @@ class DashboardController extends Controller
 
                 $user = Auth::user();
 
-                if ($user->type != 'client' && $user->type != 'company') {
+                if ($user->type != 'client' && $user->type != 'company' &&
+                    $user->type != 'consultant' && $user->type != 'sub_contractor') {
                     $emp = Employee::where('user_id', '=', $user->id)->first();
 
                     $announcements = Announcement::orderBy('announcements.id', 'desc')->take(5)->leftjoin('announcement_employees', 'announcements.id', '=', 'announcement_employees.announcement_id')->where('announcement_employees.employee_id', '=', $emp->id)->orWhere(function ($q) {
@@ -298,7 +313,12 @@ class DashboardController extends Controller
                     $chartData = $this->getOrderChart(['duration' => 'week']);
 
                     return view('dashboard.super_admin', compact('user', 'chartData'));
-                } else {
+                }elseif($user->type == 'sub_contractor'){
+                    return redirect()->route('subContractorDashboard');
+                }elseif($user->type == 'consultant'){
+                    return redirect()->route('consultant_index');
+                }
+                else {
                     $events = Event::where('created_by', '=', \Auth::user()->creatorId())->get();
                     $arrEvents = [];
 
@@ -582,7 +602,11 @@ class DashboardController extends Controller
             } elseif (Auth::user()->type == 'consultant') {
 
                 return redirect()->route('consultant_index');
-            } else {
+            }elseif (Auth::user()->type == 'sub_contractor') {
+
+                return redirect()->route('subContractorDashboard');
+            }
+            else {
                 if (\Auth::user()->can('show account dashboard')) {
                     $data['latestIncome'] = Revenue::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();
                     $data['latestExpense'] = Payment::where('created_by', '=', \Auth::user()->creatorId())->orderBy('id', 'desc')->limit(5)->get();

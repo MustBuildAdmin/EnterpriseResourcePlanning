@@ -305,7 +305,22 @@ $(document).on("change", '#country', function () {
     }
 
 
-   
+    $(document).on('change', '.document_setup',
+        function() {
+            var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(".show_document_file").hide();
+                $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+                $('#create_consultant').prop('disabled', true);
+                return false;
+            } else {
+                $(".show_document_file").show();
+                $(".show_document_error").hide();
+                $('#create_consultant').prop('disabled', false);
+             
+                return true;
+            }
+        });
 </script>
 
 <style>

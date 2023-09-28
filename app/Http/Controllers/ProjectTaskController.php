@@ -136,6 +136,7 @@ class ProjectTaskController extends Controller
     {
         if (Session::has('project_id')) {
             $project_id = Session::get('project_id');
+            Session::put('task_filter',$request->status);
 
             $user_id = $request->users;
             $start_date = $request->start_date;
@@ -235,13 +236,40 @@ class ProjectTaskController extends Controller
             if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
                 $get_end_date == null && $status_task == null){
 
-                $tasks->where(function($query) {
-                    $query->whereRaw('"'.date('Y-m-d').'"
-                        between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
-                        ->orwhere('progress', '<', '100')
+                if(Session::get('task_filter')=='comp'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '=', '100');
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+
+                }elseif(Session::get('task_filter')=='ongoing'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '>', '0')->where('progress', '!=', '100')
+                        ->whereDate('con_tasks.end_date', '>', date('Y-m-d'));
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }elseif(Session::get('task_filter')=='remaning'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '!=', '100');
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }elseif(Session::get('task_filter')=='pending'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '<', '100')
                         ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-                })
-                    ->orderBy('con_tasks.end_date', 'DESC');
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }else{
+                    $tasks->where(function($query) {
+                        $query->whereRaw('"'.date('Y-m-d').'"
+                            between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                            ->orwhere('progress', '<', '100')
+                            ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }
+
+               
             }
 
             $tasks = $tasks->get();
