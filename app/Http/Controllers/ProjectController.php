@@ -740,6 +740,7 @@ class ProjectController extends Controller
                     ->where("type", "task")
                     ->where("progress", "<", 100)
                     ->where("progress", ">", 0)
+                    ->whereDate('end_date', '>', date('Y-m-d'))
                     ->count();
 
                 return view(
