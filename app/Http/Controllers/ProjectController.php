@@ -104,58 +104,434 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        if (\Auth::user()->can("create project")) {
-            $validator = \Validator::make($request->all(), [
-                "project_name" => "required",
-                // 'project_image' => 'required',
-                // 'non_working_days'=>'required'
-                // 'status'=>'required'
-            ]);
-            if ($validator->fails()) {
-                return redirect()
-                    ->back()
-                    ->with(
-                        "error",
-                        Utility::errorFormat($validator->getMessageBag())
-                    );
+
+        if(\Auth::user()->can('create project'))
+        {
+            $validator = \Validator::make(
+                $request->all(), [
+                                'project_name' => 'required',
+                                // 'project_image' => 'required',
+                                // 'non_working_days'=>'required'
+                                // 'status'=>'required'
+                            ]
+            );
+            if($validator->fails())
+            {
+                return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
             $project = new Project();
             $project->project_name = $request->project_name;
-            $project->start_date = date(
-                "Y-m-d H:i:s",
-                strtotime($request->start_date)
-            );
-            $project->end_date = date(
-                "Y-m-d H:i:s",
-                strtotime($request->end_date)
-            );
-            if ($request->hasFile("project_image")) {
-                $filenameWithExt1 = $request
-                    ->file("project_image")
-                    ->getClientOriginalName();
-                $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
-                $extension1 = $request
-                    ->file("project_image")
-                    ->getClientOriginalExtension();
-                $fileNameToStore1 =
-                    $filename1 . "_" . time() . "." . $extension1;
+            $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
+            $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
+            if($request->hasFile('project_image'))
+            {
+                $filenameWithExt1 = $request->file("project_image")->getClientOriginalName();
+                $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                $extension1       = $request->file("project_image")->getClientOriginalExtension();
+                $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
 
-                $dir = Config::get("constants.Projects_image");
+                $dir = Config::get('constants.Projects_image');
 
                 $imagepath = $dir . $filenameWithExt1;
                 if (\File::exists($imagepath)) {
                     \File::delete($imagepath);
                 }
+                $url = "";
+                $path = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
 
-                Utility::upload_file(
-                    $request,
-                    "project_image",
-                    $fileNameToStore1,
-                    $dir,
-                    []
-                );
+                if ($path["flag"] == 1) {
+                    $url = $path["url"];
+                }
+
+                $project->project_image = $url;
             }
-            // type project or task
+
+            $setHolidays = $request->holidays == "on" ? 1 : 0;
+            $project->holidays = $setHolidays;
+
+            if(isset($request->non_working_days)){
+                $project->non_working_days=implode(',',$request->non_working_days);
+            }
+
+            $project->client_id = $request->client;
+            $project->budget = !empty($request->budget) ? $request->budget : 0;
+            $project->description = $request->description;
+            $project->status = $request->status;
+            $project->report_to = implode(',',$request->reportto);
+            $project->report_time = $request->report_time;
+            $project->tags = $request->tag;
+            $project->estimated_days = $request->estimated_days;
+
+            $project->created_by = \Auth::user()->creatorId();
+            // instance creation------------------------
+            $var=rand('100000','555555').date('dmyhisa').$request->client_id.$request->project_name;
+            $instance_id=Hash::make($var);
+            $project->instance_id=$instance_id;
+            $project->country = $request->country;
+            $project->state = $request->state;
+            $project->city = $request->city;
+            $project->zipcode = $request->zip;
+            $project->latitude = $request->latitude;
+            $project->longitude = $request->longitude;
+            $project->status = "in_progress";
+            ///---------end-----------------
+            $project->save();
+
+            if(isset($request->non_working_days)){
+                $nonWorkingDaysInsert = array(
+                    'project_id'       => $project->id,
+                    'non_working_days' => implode(',',$request->non_working_days),
+                    'instance_id'      => $instance_id,
+                    'created_by'       => \Auth::user()->creatorId()
+                );
+                DB::table('non_working_days')->insert($nonWorkingDaysInsert);
+            }
+
+            $insert_data=array(
+                'instance'=>$instance_id,
+                'start_date'=>date("Y-m-d H:i:s", strtotime($request->start_date)),
+                'end_date'=>date("Y-m-d H:i:s", strtotime($request->end_date)),
+                'percentage'=>'0',
+                'achive'=>0,
+                'project_id'=>$project->id,
+            );
+            Instance::insert($insert_data);
+            if($setHolidays==0){
+                $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
+                foreach ($holidays_list as $key => $value) {
+                    $insert=array(
+                        'project_id'=>$project->id,
+                        'date'=>$value->date,
+                        'description'=>$value->occasion,
+                        'created_by'=>\Auth::user()->creatorId(),
+                        'instance_id'=>$instance_id
+                    );
+                    Project_holiday::insert($insert);
+                }
+
+                $holiday_date = $request->holiday_date;
+
+                foreach($holiday_date as $holi_key => $holi_value){
+                    $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())
+                    ->where('date',$holi_value)->first();
+                    if($holidays_list == null){
+                        $holiday_insert=array(
+                            'project_id'=>$project->id,
+                            'date'=>$holi_value,
+                            'description'=>$request->holiday_description[$holi_key],
+                            'created_by'=>\Auth::user()->creatorId(),
+                            'instance_id'=>$instance_id
+                        );
+
+                        Project_holiday::insert($holiday_insert);
+                    }
+                    else{
+                        if($holidays_list->date != $holi_value){
+                            $holiday_insert=array(
+                                'project_id'=>$project->id,
+                                'date'=>$holi_value,
+                                'description'=>$request->holiday_description[$holi_key],
+                                'created_by'=>\Auth::user()->creatorId(),
+                                'instance_id'=>$instance_id
+                            );
+
+                            Project_holiday::insert($holiday_insert);
+                        }
+                    }
+                }
+            }
+            if(isset($request->file)){
+               if($request->file_status=='MP'){
+                $path='projectfiles/';
+                $filename =$_FILES["file"]["name"];
+                $name = $project->id.'.'.pathinfo($filename, PATHINFO_EXTENSION);
+                $pathname='projectfiles/'.$name;
+                $link=env('APP_URL').'/'.$path.$name;
+                if (file_exists(public_path($pathname))){
+                    unlink(public_path($pathname));
+                }
+
+                $request->file->move(public_path($path), $name);
+
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                  CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                  CURLOPT_RETURNTRANSFER => true,
+                  CURLOPT_ENCODING => '',
+                  CURLOPT_MAXREDIRS => 10,
+                  CURLOPT_TIMEOUT => 0,
+                  CURLOPT_FOLLOWLOCATION => true,
+                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                  CURLOPT_CUSTOMREQUEST => 'POST',
+                  CURLOPT_SSL_VERIFYPEER => false,
+                  CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
+                ));
+
+                $responseBody = curl_exec($curl);
+                curl_close($curl);
+                if (file_exists(public_path($pathname))){
+                    unlink(public_path($pathname));
+                }
+
+                $responseBody = json_decode($responseBody, true);
+
+                if(isset($responseBody['data']['data'])){
+
+                    foreach($responseBody['data']['data'] as $key=>$value){
+                        $task= new Con_task();
+                        $task->project_id=$project->id;
+                        $task->instance_id=$instance_id;
+                        if(isset($value['text'])){
+                            $task->text=$value['text'];
+                        }
+                        if(isset($value['id'])){
+                            $task->id=$value['id'];
+                        }
+                        if(isset($value['start_date'])){
+                            $task->start_date=$value['start_date'];
+                        }
+                        if(isset($value['duration'])){
+                            $task->duration=$value['duration']+1;
+                        }
+                        if(isset($value['progress'])){
+                            $task->progress=$value['progress'];
+                        }
+                        if(isset($value['parent'])){
+                            $task->parent=$value['parent'];
+                            $task->predecessors=$value['parent'];
+                        }
+
+
+                        if(isset($value['$raw'])){
+                            $raw=$value['$raw'];
+                            if(isset($raw['Finish'])){
+                                $task->end_date=$raw['Finish'];
+                            }
+                            $task->custom=json_encode($value['$raw']);
+                        }
+
+                        $task->save();
+                    }
+
+                    foreach($responseBody['data']['links'] as $key=>$value){
+                        $link= new Link();
+                        $link->project_id=$project->id;
+                        $link->instance_id=$instance_id;
+                        $link->id=$value['id'];
+                        $old_predis=Con_task::where(['id'=>$value['target'],
+                        'project_id'=>$project->id,
+                        'instance_id'=>$instance_id])
+                        ->pluck('predecessors')->first();
+                        if($old_predis!=''){
+                            $predis=$old_predis.','.$value['source'];
+                            if($value['lag']!=0){
+                                if (str_contains($value['lag'], '-')) {
+                                    $predis=$predis.$value['lag'].' days';
+                                } else {
+                                    $predis=$predis.' +'.$value['lag'].' days';
+                                }
+                            }
+                        }else{
+                            $predis=$value['source'];
+                            if($value['lag']!=0){
+                                if (str_contains($value['lag'], '-')) {
+                                    $predis=$predis.$value['lag'].' days';
+                                } else {
+                                    $predis=$predis.' +'.$value['lag'].' days';
+                                }
+                            }
+                        }
+                        Con_task::where(['id'=>$value['target'],'project_id'=>$project->id,'instance_id'=>$instance_id])
+                        ->update(['predecessors'=>$predis]);
+                        if(isset($value['type'])){
+                            $link->type=$value['type'];
+                        }
+                        if(isset($value['source'])){
+
+                            $link->source=$value['source'];
+                        }
+                        if(isset($value['lag'])){
+                            $link->lag=$value['lag'];
+                        }
+                        if(isset($value['target'])){
+                            $link->target=$value['target'];
+                        }
+                        $link->save();
+                    }
+                }
+
+               }else{
+                    /// primaverra
+                    $path='projectfiles/';
+                    $filename =$_FILES["file"]["name"];
+                    $name = $project->id.'.'.pathinfo($filename, PATHINFO_EXTENSION);
+                    $pathname='projectfiles/'.$name;
+                    $link=env('APP_URL').'/'.$path.$name;
+                    if (file_exists(public_path($pathname))){
+                        unlink(public_path($pathname));
+                    }
+
+                    $request->file->move(public_path($path), $name);
+
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                      CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                      CURLOPT_RETURNTRANSFER => true,
+                      CURLOPT_ENCODING => '',
+                      CURLOPT_MAXREDIRS => 10,
+                      CURLOPT_TIMEOUT => 0,
+                      CURLOPT_FOLLOWLOCATION => true,
+                      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                      CURLOPT_CUSTOMREQUEST => 'POST',
+                      CURLOPT_SSL_VERIFYPEER => false,
+                      CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
+                    ));
+
+                    $responseBody = curl_exec($curl);
+                    curl_close($curl);
+                    if (file_exists(public_path($pathname))){
+                        unlink(public_path($pathname));
+                    }
+                    $responseBody = json_decode($responseBody, true);
+                    if(isset($responseBody['data']['data'])){
+
+                        foreach($responseBody['data']['data'] as $key=>$value){
+                            $task= new Con_task();
+                            $task->project_id=$project->id;
+                            $task->instance_id=$instance_id;
+                            if(isset($value['text'])){
+                                $task->text=$value['text'];
+                            }
+                            if(isset($value['id'])){
+                                $task->id=$value['id'];
+                            }
+                            if(isset($value['start_date'])){
+                                $task->start_date=$value['start_date'];
+                            }
+                            if(isset($value['duration'])){
+                                $task->duration=$value['duration'];
+                            }
+                            if(isset($value['progress'])){
+                                $task->progress=$value['progress'];
+                            }
+                            if(isset($value['parent'])){
+                                $task->parent=$value['parent'];
+                                $task->predecessors=$value['parent'];
+                            }
+
+
+                            if(isset($value['$raw'])){
+                                $raw=$value['$raw'];
+                                if(isset($raw['Finish'])){
+                                    $task->end_date=$raw['Finish'];
+                                }
+                                $task->custom=json_encode($value['$raw']);
+                            }
+
+                            $task->save();
+
+                        }
+
+                        foreach($responseBody['data']['links'] as $key=>$value){
+                            $link= new Link();
+                            $link->project_id=$project->id;
+                            $link->instance_id=$instance_id;
+                            $old_predis=Con_task::where(['id'=>$value['target'],'project_id'=>$project->id,
+                            'instance_id'=>$instance_id])->pluck('predecessors')->first();
+                            if($old_predis!=''){
+                                $predis=$old_predis.','.$value['source'];
+                                if($value['lag']!=0){
+                                    if (str_contains($value['lag'], '-')) {
+                                        $predis=$predis.$value['lag'].' days';
+                                    } else {
+                                        $predis=$predis.' +'.$value['lag'].' days';
+                                    }
+
+                                }
+
+                            }else{
+                                $predis=$value['source'];
+                                if($value['lag']!=0){
+                                    if (str_contains($value['lag'], '-')) {
+                                        $predis=$predis.$value['lag'].' days';
+                                    } else {
+                                        $predis=$predis.' +'.$value['lag'].' days';
+                                    }
+                                }
+                            }
+                            Con_task::where(['id'=>$value['target'],
+                            'project_id'=>$project->id,
+                            'instance_id'=>$instance_id])
+                            ->update(['predecessors'=>$predis]);
+                            $link->id=$value['id'];
+                            if(isset($value['type'])){
+                                $link->type=$value['type'];
+                            }
+                            if(isset($value['lag'])){
+                                $link->type=$value['lag'];
+                            }
+                            if(isset($value['source'])){
+
+                                $link->source=$value['source'];
+                            }
+                            if(isset($value['target'])){
+                                $link->target=$value['target'];
+                            }
+                            $link->save();
+                        }
+                    }
+               }
+
+            }
+
+            if(\Auth::user()->type=='company'){
+
+                ProjectUser::create(
+                    [
+                        'project_id' => $project->id,
+                        'user_id' => Auth::user()->id,
+                    ]
+                );
+
+                if($request->reportto){
+                    foreach($request->reportto as $key => $value) {
+                        ProjectUser::create(
+                            [
+                                'project_id' => $project->id,
+                                'user_id' => $value,
+                            ]
+                        );
+                    }
+                }
+
+            }else{
+                ProjectUser::create(
+                    [
+                        'project_id' => $project->id,
+                        'user_id' => Auth::user()->creatorId(),
+                    ]
+                );
+
+                ProjectUser::create(
+                    [
+                        'project_id' => $project->id,
+                        'user_id' => Auth::user()->id,
+                    ]
+                );
+
+                if($request->reportto){
+                    foreach($request->reportto as $key => $value) {
+                        ProjectUser::create(
+                            [
+                                'project_id' => $project->id,
+                                'user_id' => $value,
+                            ]
+                        );
+                    }
+                }
+
+            }
+             // type project or task
             Projecttypetask::dispatch($project->id);
             // $project_task=Con_task::where('project_id',$project->id)->get();
             // foreach ($project_task as $key => $value) {
@@ -168,52 +544,30 @@ class ProjectController extends Controller
             //     }
             // }
             //Slack Notification
-            $setting = Utility::settings(\Auth::user()->creatorId());
-            if (
-                isset($setting["project_notification"]) &&
-                $setting["project_notification"] == 1
-            ) {
-                $msg =
-                    $request->project_name .
-                    " " .
-                    __(" created by") .
-                    " " .
-                    \Auth::user()->name .
-                    ".";
+            $setting  = Utility::settings(\Auth::user()->creatorId());
+            if(isset($setting['project_notification']) && $setting['project_notification'] ==1){
+                $msg = $request->project_name.' '.__(" created by").' ' .\Auth::user()->name.'.';
                 Utility::send_slack_msg($msg);
             }
 
             //Telegram Notification
-            $setting = Utility::settings(\Auth::user()->creatorId());
-            if (
-                isset($setting["telegram_project_notification"]) &&
-                $setting["telegram_project_notification"] == 1
-            ) {
-                $msg =
-                    __("New") .
-                    " " .
-                    $request->project_name .
-                    " " .
-                    __("project");
-                $msg =
-                    $msg .
-                    " " .
-                    __(" created by") .
-                    " " .
-                    \Auth::user()->name .
-                    ".";
+            $setting  = Utility::settings(\Auth::user()->creatorId());
+            if(isset($setting['telegram_project_notification']) && $setting['telegram_project_notification'] ==1){
+                $msg = __("New").' '.$request->project_name.' '.__("project");
+                $msg=$msg.' '.__(" created by").' ' .\Auth::user()->name.'.';
                 Utility::send_telegram_msg($msg);
             }
 
-            return redirect()
-                ->route("construction_main")
-                ->with("success", __("Project Add Successfully"));
-        } else {
-            return redirect()
-                ->back()
-                ->with("error", __("Permission Denied."));
+            return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
+
+
+        }
+        else
+        {
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
+
 
     public function boq_file(Request $request)
     {

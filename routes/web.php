@@ -59,6 +59,10 @@ Route::any('diary_data', 'DiaryController@diary_display_table')->name('diary_dat
 Route::get('/company-invitation-consultant/{id}','ConsultantController@createConnection')->middleware('guest');
 Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@submitConnection')->middleware('guest');
 
+Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
+Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
+->middleware('guest');
+
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
         'auth',
@@ -4220,14 +4224,7 @@ Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
     ->name('consultants.password.update');
 
-Route::get('consultant-scott-search', 'ConsultantController@scott_search')
-    ->name('consultant.scott-search')->middleware(
-        [
-            'auth',
-            'XSS',
-            'revalidate',
-        ]
-    );
+    
 
     Route::any('consultant-seach_result', 'ConsultantController@seach_result')
     ->name('consultant.seach_result')->middleware(
@@ -4249,14 +4246,7 @@ Route::get('consultant-scott-search', 'ConsultantController@scott_search')
 
     
 
-Route::any('consultant-scott-result', 'ConsultantController@scott_result')
-->name('consultant.scott-result')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
+
 
 Route::get('get_company_details/{id}', 'ConsultantController@get_company_details')
 ->name('consultant.get_company_details')->middleware(
@@ -4276,8 +4266,121 @@ Route::any('invitation_status', 'ConsultantController@store_invitation_status')
     ]
 );
 
+/* Sub Contractor Start */
 
+Route::resource('subContractor', 'SubContractorController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
+Route::post('save_subContractor', 'SubContractorController@normal_store')
+->name('save_subContractor')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subContractorStore', 'SubContractorController@subContractorStore')
+->name('subContractorStore')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('update_subContractor/{id}', 'SubContractorController@update_subContractor')
+->name('subContractor.update_subContractor')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('get_company_details/{id}', 'SubContractorController@get_company_details')
+->name('subContractor.get_company_details')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::post('subcontractor-reset-password/{id}', 'SubContractorController@userPasswordReset')
+    ->name('subContractor.password.update');
+
+Route::any('invite_sub_contractor', 'SubContractorController@invite_sub_contractor')
+->name('subContractor.invite_sub_contractor')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('subContractor-scott-search', 'SubContractorController@scott_search')
+->name('subContractor.scott-search')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subContractor-scott-result', 'SubContractorController@scott_result')
+->name('subContractor.scott-result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('subContractor/edit/{id}/{color_code}', 'SubContractorController@edit')->name('subContractor.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subContractor-reset-password/{id}', 'SubContractorController@userPassword')->name('subContractor.reset');
+
+Route::any('subContractor-seach_result', 'SubContractorController@seach_result')
+->name('subContractor.seach_result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subContractor_invitation_status', 'SubContractorController@store_invitation_status')
+->name('subContractor.subContractor_invitation_status')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subContractorDashboard', 'DashboardController@subContractorDashboard')
+->name('subContractorDashboard')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 
 Route::resource('plans', 'PlanController')->middleware(

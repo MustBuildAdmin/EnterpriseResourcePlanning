@@ -302,6 +302,22 @@
         let numbers = value.replace(/[^0-9]/g, "");
         input.value = numbers;
     }
+
+    $(document).on('change', '.document_setup',
+        function() {
+            var fileExtension = ['jpeg', 'jpg', 'png', 'pdf', 'gif'];
+            if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                $(".show_document_file").hide();
+                $(".show_document_error").html("Upload only pdf, jpeg, jpg, png");
+                $('#edit_consultant').prop('disabled', true);
+                return false;
+            } else {
+                $(".show_document_file").show();
+                $(".show_document_error").hide();
+                $('#edit_consultant').prop('disabled', false);
+                return true;
+            }
+        });
    
 </script>
 <style>

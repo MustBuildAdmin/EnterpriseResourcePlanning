@@ -64,16 +64,11 @@
                                         <a href="{{ route('projects.gantt', $project_id) }}"
                                             class="dropdown-item">{{ __('Gantt') }}</a>
                                     @endcan
-
-                                    <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="dropdown-item">{{ __('Task') }}</a>
-
-                                    <a href="{{ route('project_report.view_task_report', $project_id) }}"
-                                        class="dropdown-item">{{ __('Task Report') }}</a>
-                                        @if(Session::get('current_revision_freeze')==1)
-                                            <a href="{{ url('revision') }}"
-                                            class="dropdown-item">{{ __('Revision') }}</a>
-                                        @endif
+                                    
+                                    @if(Session::get('current_revision_freeze')==1)
+                                        <a href="{{ url('revision') }}"
+                                        class="dropdown-item">{{ __('Revision') }}</a>
+                                    @endif
 
                                     @if(session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
@@ -328,26 +323,6 @@
                             <span class="nav-link-title"> {{ __('Holidays') }} </span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
-                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
-                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
-                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                </svg>
-                            </span>
-                            <span class="nav-link-title"> {{ __('History') }} </span></a>
-                    </li>
-
-                   
-                    
-                    <li class="nav-item">
                         <a href="{{ route('project.activities', $project_id) }}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
@@ -362,7 +337,7 @@
                                     <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
                                 </svg>
                             </span>
-                            <span class="nav-link-title"> {{ __('Project Activities') }} </span></a>
+                            <span class="nav-link-title"> {{ __('History') }} </span></a>
                     </li>
 
 

@@ -161,6 +161,7 @@ class Utility extends Model
             'proposal_logo' => '',
             'invoice_logo' => '',
             'contract_prefix' => '#CON',
+            'create_sub_contractor' => 1
 
         ];
 

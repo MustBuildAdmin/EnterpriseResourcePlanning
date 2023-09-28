@@ -1,7 +1,20 @@
 @include('new_layouts.header')
-
+<style>
+.projectlifetimezone{
+  display : none !important;
+}
+</style>
 <div class="page-wrapper">
 @include('construction_project.side-menu')
+<?php
+$delay=round($current_Planed_percentage-$actual_percentage);
+if($delay<0){
+  $delay=0;
+}
+if($delay>100){
+  $delay=100;
+}
+?>
     <!-- Page header -->
     <div class="page-header d-print-none">
       <div class="container-xl">
@@ -15,7 +28,7 @@
               Dashboard
             </h2>
           </div>
-    
+
 
         </div>
       </div>
@@ -36,7 +49,15 @@
                 {{ Utility::getDateFormated($project->start_date) }} - <b>Due to:</b>
                  {{ Utility::getDateFormated($project->end_date) }}</p>
                 <p class="mb-3">
-                  <span class="badge bg-red-lt">Current Status</span>
+                @if($project->status == 'in_progress')
+                  <span class="badge bg-info p-2 px-3 rounded"> {{ __('In Progress')}}</span>
+                @elseif($project->status == 'on_hold')
+                  <span class="badge  bg-warning p-2 px-3 rounded">{{ __('On Hold')}}</span>
+                @elseif($project->status == 'Canceled')
+                  <span class="badge  bg-red p-2 px-3 rounded"> {{ __('Canceled')}}</span>
+                @else
+                    <span class="badge bg-success p-2 px-3 rounded">{{ __('Finished')}}</span>
+                @endif
                 </p>
                 <div>
                   <div class="avatar-list avatar-list-stacked">
@@ -67,7 +88,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-xl-4">
+          <div class="col-lg-6 col-xl-4 projectlifetimezone" >
             <div class="card">
               <div class="card-header">
                 <h3>Project Life Time Zone</h3>
@@ -155,14 +176,15 @@
                   <div>Actual Percentage</div>
                   <div class="ms-auto">
                     <span class="text-blue d-inline-flex align-items-center lh-1">
-                      70% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
+                    {{round($actual_percentage)}}% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
                     </span>
                   </div>
                 </div>
                 <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75"
+                  <div class="progress-bar bg-primary" style="width: {{round($actual_percentage)}}%"
+                  role="progressbar" aria-valuenow="{{round($actual_percentage)}}"
                     aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-                    <span class="visually-hidden">75% Complete</span>
+                    <span class="visually-hidden">{{round($actual_percentage)}}% Complete</span>
                   </div>
                 </div>
               </div>
@@ -189,7 +211,7 @@
                           </svg>
                         </span>
                       </div>
-                      
+
                         <div class="col">
                           <a @if( Session::get('current_revision_freeze')==1) href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
                           <div class="font-weight-medium">
@@ -200,7 +222,7 @@
                           {{  $completed_task }} Tasks
                           </div>
                         </div>
-                     
+
                     </div>
                   </div>
                 </div>

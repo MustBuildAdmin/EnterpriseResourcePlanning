@@ -31,7 +31,16 @@ class VenderController extends Controller
     public function index()
     {
         if (\Auth::user()->can('manage vender')) {
-            $venders = Vender::where('created_by', \Auth::user()->creatorId())->get();
+
+            $venders = DB::table('users as t1')
+                    ->select('t1.*')
+                    ->join('sub_contractor_companies as t2', function ($join) {
+                        $join->on('t2.sub_contractor_id', '=', 't1.id');
+                        $join->where('t2.status','active');
+                     })
+                    ->where('created_by', \Auth::user()->creatorId())
+                    ->where('t1.type','sub_contractor')
+                    ->get();
 
             return view('accounting.vender.index', compact('venders'));
             // return view('vender.index', compact('venders'));
@@ -131,13 +140,15 @@ class VenderController extends Controller
     public function show($ids)
     {
         $id = \Crypt::decrypt($ids);
-        $vendor = Vender::find($id);
+        $vendor = User::find($id);
+        $venders = new Vender;
         $country = Utility::getcountry_details($vendor->billing_country);
         $state = Utility::getstate_details($vendor->billing_country, $vendor->billing_state);
         $shipcountry = Utility::getcountry_details($vendor->shipping_country);
         $shipstate = Utility::getstate_details($vendor->shipping_country, $vendor->shipping_state);
 
-        return view('accounting.vender.show', compact('vendor', 'country', 'state', 'shipcountry', 'shipstate'));
+        return view('accounting.vender.show', compact('vendor', 'country', 'state',
+                    'shipcountry', 'shipstate','venders'));
         // return view('vender.show', compact('vendor','country','state','shipcountry','shipstate'));
     }
 
