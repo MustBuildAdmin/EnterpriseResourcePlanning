@@ -939,7 +939,10 @@ if($delay>100){
         },
         series: [{{$delay}}, {{round($current_Planed_percentage)}},
         {{round($actual_percentage)}}, {{round(100-$actual_percentage)}}],
-        labels: [ "Dealy in Progress","Planned Progress", "Actual Progress", "Actual Remaining Progress"],
+        labels: [
+        {{$delay}}+'% Dealy in Progress', {{round($current_Planed_percentage)}}+'% Planned Progress',
+        {{round($actual_percentage)}}+'% Actual Progress',
+        {{round(100-$actual_percentage)}}+'% Actual Remaining Progress'],
         tooltip: {
           theme: 'dark'
         },
@@ -947,7 +950,7 @@ if($delay>100){
           strokeDashArray: 4,
         },
         colors: [  tabler.getColor("danger"), tabler.getColor("primary", 0.6),tabler.getColor("green", 0.8),
-        tabler.getColor("orange -300")],
+        tabler.getColor("orange")],
         legend: {
           show: true,
           position: 'bottom',
