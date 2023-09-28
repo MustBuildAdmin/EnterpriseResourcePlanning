@@ -58,6 +58,7 @@ class PlanController extends Controller
                 }
                 $request->validate($validation);
                 $post = $request->all();
+              
                 if (isset($request->enable_project)) {
                     $post['project'] = 1;
                 }
@@ -69,6 +70,15 @@ class PlanController extends Controller
                 }
                 if (isset($request->enable_account)) {
                     $post['account'] = 1;
+                }
+                if(isset($request->enable_planning)){
+                    $post['project_planning'] = 1;
+                }
+                if(isset($request->enable_diary)){
+                    $post['project_diary'] = 1;
+                }
+                if(isset($request->enable_assits)){
+                    $post['project_assits'] = 1;
                 }
                 if ($request->hasFile('image')) {
                     $filenameWithExt = $request->file('image')->getClientOriginalName();
@@ -149,6 +159,24 @@ class PlanController extends Controller
                         $post['account'] = 1;
                     } else {
                         $post['account'] = 0;
+                    }
+
+                    if (array_key_exists('enable_planning', $post)) {
+                        $post['project_planning'] = 1;
+                    } else {
+                        $post['project_planning'] = 0;
+                    }
+
+                    if (array_key_exists('enable_diary', $post)) {
+                        $post['project_diary'] = 1;
+                    } else {
+                        $post['project_diary'] = 0;
+                    }
+
+                    if (array_key_exists('enable_assits', $post)) {
+                        $post['project_assits'] = 1;
+                    } else {
+                        $post['project_assits'] = 0;
                     }
 
                     if ($request->hasFile('image')) {

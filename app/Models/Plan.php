@@ -21,6 +21,9 @@ class Plan extends Model
         'hrm',
         'account',
         'project',
+        'project_planning',
+        'project_diary',
+        'project_assits'
     ];
 
     public static $arrDuration = [

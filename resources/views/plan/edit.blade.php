@@ -64,6 +64,25 @@
                 <label class="custom-control-label form-label" for="enable_account">{{__('Account')}}</label>
             </div>
         </div>
+
+        <div class="form-group col-md-3">
+            <div class="form-check form-switch ">
+                <input type="checkbox" class="form-check-input" name="enable_planning" id="enable_planning" {{ $plan['project_planning'] == 1 ? 'checked="checked"' : '' }}>
+                <label class="custom-control-label form-label" for="enable_planning">{{__('Project Planning')}}</label>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <div class="form-check form-switch ">
+                <input type="checkbox" class="form-check-input" name="enable_diary" id="enable_diary" {{ $plan['project_diary'] == 1 ? 'checked="checked"' : '' }}>
+                <label class="custom-control-label form-label" for="enable_diary">{{__('Project Diary')}}</label>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <div class="form-check form-switch ">
+                <input type="checkbox" class="form-check-input" name="enable_assits" id="enable_assits" {{ $plan['project_assits'] == 1 ? 'checked="checked"' : '' }}> 
+                <label class="custom-control-label form-label" for="enable_assits">{{__('Constracts Assist')}}</label>
+            </div>
+        </div>
         
     </div>
     </div>

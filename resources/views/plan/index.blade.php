@@ -65,6 +65,9 @@
                                     <li class="white-sapce-nowrap"><span class="theme-avtar"><i class="text-primary ti ti-circle-plus"></i></span>{{($plan->crm==1)?__('Enable'):__('Disable')}} {{__('CRM')}}</li>
                                     <li class="white-sapce-nowrap"><span class="theme-avtar"><i class="text-primary ti ti-circle-plus"></i></span>{{($plan->hrm==1)?__('Enable'):__('Disable')}} {{__('HRM')}}</li>
                                     <li class="white-sapce-nowrap"><span class="theme-avtar"><i class="text-primary ti ti-circle-plus"></i></span>{{($plan->project==1)?__('Enable'):__('Disable')}} {{__('Project')}}</li>
+                                    <li class="white-sapce-nowrap"><span class="theme-avtar"><i class="text-primary ti ti-circle-plus"></i></span>{{($plan->project_planning==1)?__('Enable'):__('Disable')}} {{__('Project Planning')}}</li>
+                                    <li class="white-sapce-nowrap"><span class="theme-avtar"><i class="text-primary ti ti-circle-plus"></i></span>{{($plan->project_diary==1)?__('Enable'):__('Disable')}} {{__('Project Diary')}}</li>
+                                    <li class="white-sapce-nowrap"><span class="theme-avtar"><i class="text-primary ti ti-circle-plus"></i></span>{{($plan->project_assits==1)?__('Enable'):__('Disable')}} {{__('Constracts Assist')}}</li>
                                 </ul>
                             </div>
                         </div>
