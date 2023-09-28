@@ -213,7 +213,8 @@ if($delay>100){
                       </div>
 
                         <div class="col">
-                          <a @if( Session::get('current_revision_freeze')==1) href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
+                          <a @if( Session::get('current_revision_freeze')==1)
+                          href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
                           <div class="font-weight-medium">
                             Completed Sub-Task Today
                           </div>
@@ -246,7 +247,8 @@ if($delay>100){
                         </span>
                       </div>
                       <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1) href='{{ route('taskBoard.view', ['list','status'=>'ongoing']) }}' @endif>
+                        <a @if( Session::get('current_revision_freeze')==1)
+                        href='{{ route('taskBoard.view', ['list','status'=>'ongoing']) }}' @endif>
                           <div class="font-weight-medium">
                             Ongoing Sub-Task Today
                           </div>
@@ -280,7 +282,8 @@ if($delay>100){
                         </span>
                       </div>
                       <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1) href='{{ route('taskBoard.view', ['list','status'=>'remaning']) }}' @endif>
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'remaning']) }}' @endif>
                           <div class="font-weight-medium">
                             Remaining Sub-Task Today
                           </div>
@@ -309,7 +312,8 @@ if($delay>100){
                         </span>
                       </div>
                       <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1) href='{{ route('taskBoard.view', ['list','status'=>'pending']) }}' @endif>
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'pending']) }}' @endif>
                           <div class="font-weight-medium">
                             Pending Sub-Task Today
                           </div>
@@ -947,16 +951,20 @@ if($delay>100){
         fill: {
           opacity: 1,
         },
-        series: [44, 55, 12, 2],
-        labels: ["Pending", "Completed", "In-Progress", "UpComming"],
+        series: [{{$delay}}, {{round($current_Planed_percentage)}},
+        {{round($actual_percentage)}}, {{round(100-$actual_percentage)}}],
+        labels: [
+        {{$delay}}+'% Dealy in Progress', {{round($current_Planed_percentage)}}+'% Planned Progress',
+        {{round($actual_percentage)}}+'% Actual Progress',
+        {{round(100-$actual_percentage)}}+'% Actual Remaining Progress'],
         tooltip: {
           theme: 'dark'
         },
         grid: {
           strokeDashArray: 4,
         },
-        colors: [tabler.getColor("danger"), tabler.getColor("green", 0.8),
-         tabler.getColor("primary", 0.6), tabler.getColor("orange -300")],
+        colors: [  tabler.getColor("danger"), tabler.getColor("primary", 0.6),tabler.getColor("green", 0.8),
+        tabler.getColor("orange")],
         legend: {
           show: true,
           position: 'bottom',
