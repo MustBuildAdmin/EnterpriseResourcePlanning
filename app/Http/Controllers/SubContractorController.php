@@ -38,7 +38,7 @@ class SubContractorController extends Controller
                 }],
             ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
 
-            return view('subContractor.index')->with('users', $users);
+            return view('subcontractor.index')->with('users', $users);
         }
         else {
             return redirect()->back();
