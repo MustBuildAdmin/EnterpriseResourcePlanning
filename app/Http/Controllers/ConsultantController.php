@@ -195,7 +195,7 @@ class ConsultantController extends Controller
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('invite_consultant', [$user->id => $user->email], $userArr);
+        Utility::sendEmailTemplate('Invite Consultant', [$user->id => $user->email], $userArr);
            
 
         $setings = Utility::settings();
@@ -208,7 +208,7 @@ class ConsultantController extends Controller
                 'email' => $user->email,
                 'password' => $user->password,
             ];
-            Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+            Utility::sendEmailTemplate('Create Consultant', [$user->id => $user->email], $userArr);
 
         }
 
@@ -304,7 +304,7 @@ class ConsultantController extends Controller
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('invite_consultant', [$user->id => $user->email], $userArr);
+        Utility::sendEmailTemplate('Invite Consultant', [$user->id => $user->email], $userArr);
         
 
 
@@ -317,7 +317,7 @@ class ConsultantController extends Controller
                 'password' => $user->password,
             ];
 
-            Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+            Utility::sendEmailTemplate('Create Consultant', [$user->id => $user->email], $userArr);
 
             return redirect()->route('consultants.index')->with('success', Config::get('constants.CONSULTANT_MAIL'));
         } else {
