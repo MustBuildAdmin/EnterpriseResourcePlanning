@@ -25,5 +25,9 @@ return [
     'EMAILTXT'=>'Email Address Copied Successfully!',
     'MOBILETXT'=>'Mobile Number Copied Successfully!',
     'SOME'=>'Something is wrong.',
-    'NOSUB'=>'No Sub Contractor are available for the project,please click below to invite Sub Contractor'
+    'NOSUB'=>'No Sub Contractor are available for the project,please click below to invite Sub Contractor',
+    'IN_CONSULTANT'=>'Invite Consultant',
+    'CR_CONSULTANT'=>'Create Consultant',
+    'SR_CONSULTANT'=>'Create Sub Contractor',
+    'INSR'=>'Invite Sub Contractor'
 ];
