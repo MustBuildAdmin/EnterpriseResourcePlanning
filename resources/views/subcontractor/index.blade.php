@@ -276,7 +276,7 @@
            <div class="card-actions w-35">
               <div class="d-flex justify-content-evenly bg-light">
                  <div class="p-2 col-example">
-                    <form action="{{ route('subContractor.index') }}" method="GET">
+                    <form action="{{ route('subcontractor.index') }}" method="GET">
                         <div class="input-group">
                            {{ Form::text('search', isset($_GET['search']) ? $_GET['search'] : '', [
                            'class' => 'form-control d-inline-block mt-auto',
@@ -301,7 +301,7 @@
                  <div class="p-2 col-example">
                     @can('invite sub contractor')
                         <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
-                        data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
+                        data-url="{{ route('subcontractor.invite_sub_contractor') }}" data-ajax-popup="true"
                         data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
                         data-bs-original-title="{{ __('Invite Sub Contractor') }}">
                         {{ __('Invite a Sub Contractor') }}
@@ -311,7 +311,7 @@
                  <div class="p-2 col-example">
                     @can('create sub contractor')
                         <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
-                        data-url="{{ route('subContractor.create') }}" data-ajax-popup="true"
+                        data-url="{{ route('subcontractor.create') }}" data-ajax-popup="true"
                         data-bs-toggle="tooltip" title="{{ __('Create New Sub Contractor') }}"
                         data-bs-original-title="{{ __('Create a Sub Contractor') }}">
                         {{ __('Create a Sub Contractor') }}
@@ -365,12 +365,12 @@
                        <div class="dropdown-menu dropdown-menu-end">
                           @can('edit sub contractor')
                           <a class="dropdown-item active" href="#" data-size="xl"
-                             data-url="{{ route('subContractor.edit.new', [$user->id, $color_co]) }}"
+                             data-url="{{ route('subcontractor.edit.new', [$user->id, $color_co]) }}"
                              data-ajax-popup="true" class="dropdown-item"
                              data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}
                           </a>
                           @endcan
-                          <a data-url="{{ route('subContractor.reset', \Crypt::encrypt($user->id)) }}"
+                          <a data-url="{{ route('subcontractor.reset', \Crypt::encrypt($user->id)) }}"
                              data-ajax-popup="true" data-size="md" class="dropdown-item"
                              data-bs-original-title="{{ __('Reset Password') }}">
                           {{ __('Reset Password') }}
@@ -447,7 +447,7 @@
               </p>
               <div class="empty-action">
                  <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
-                    data-url="{{ route('subContractor.invite_sub_contractor') }}" data-ajax-popup="true"
+                    data-url="{{ route('subcontractor.invite_sub_contractor') }}" data-ajax-popup="true"
                     data-bs-toggle="tooltip" title="{{ __('Invite Sub Contractor') }}"
                     data-bs-original-title="{{ __('Invite Sub Contractor') }}">
                  {{ __('Invite a Sub Contractor') }}

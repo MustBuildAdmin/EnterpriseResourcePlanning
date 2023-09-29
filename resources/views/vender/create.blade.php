@@ -1,4 +1,4 @@
-{{Form::open(array('url'=>"subContractorStore",'method'=>'post','id'=>'subcontractorCreate'))}}
+{{Form::open(array('url'=>"subcontractorstore",'method'=>'post','id'=>'subcontractorCreate'))}}
 <style>
     .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address, .billing_city, .shipping_city, 
     .billing_address {

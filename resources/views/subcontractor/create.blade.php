@@ -1,9 +1,9 @@
 @if(\Auth::user()->type == 'super admin')
-    @php $url='subContractorStore' @endphp
+    @php $url='subcontractorstore' @endphp
 @else
-    @php $url='save_subContractor' @endphp
+    @php $url='save_subcontractor' @endphp
 @endif
-{{Form::open(array('url'=>"subContractorStore",'method'=>'post','id'=>'subcontractorCreate',
+{{Form::open(array('url'=>$url,'method'=>'post','id'=>'subcontractorCreate',
 'enctype'=>"multipart/form-data"))}}
 <style>
     .tax_number, .billing_phone, .billing_zip, .shipping_zip, .shipping_phone, .shipping_address,

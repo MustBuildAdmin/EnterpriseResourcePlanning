@@ -58,7 +58,7 @@
         <div class="col-md-6">
             <div class="col-auto ms-auto d-print-none float-end">
                 <div class="input-group-btn">
-                    <a id="invite" href="{{ route('subContractor.index') }}" class="btn btn-danger"
+                    <a id="invite" href="{{ route('subcontractor.index') }}" class="btn btn-danger"
                         data-bs-toggle="tooltip" title="{{ __('Back') }}">
                         <span class="btn-inner--icon"> <i class="fa fa-arrow-left"></i> </span>
                     </a>
@@ -110,7 +110,7 @@
             $.ajax({
 
                 type: "POST",
-                url: "{{ route('subContractor.scott-result') }}",
+                url: "{{ route('subcontractor.scott-result') }}",
                 data: {
                     _token: tempcsrf,
                     search: search,
