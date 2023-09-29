@@ -150,7 +150,8 @@ class RegisteredUserController extends Controller
                     'password' => $user->password,
                 ];
 
-                Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+                Utility::sendEmailTemplate(Config::get('constants.CR_CONSULTANT'),
+                [$user->id => $user->email], $userArr);
                 event(new Registered($user));
 
                 return redirect()->route('login')->with('success',__(Config::get('constants.CONSULTANT_MAIL')));
@@ -165,7 +166,7 @@ class RegisteredUserController extends Controller
                         'password' => $user->password,
                     ];
     
-                    Utility::sendEmailTemplate('create_sub_contractor', [$user->id => $user->email], $userArr);
+                    Utility::sendEmailTemplate(Config::get('constants.SR_CONSULTANT'), [$user->id => $user->email], $userArr);
                     event(new Registered($user));
     
                     return redirect()->route('login')->with('success',__(Config::get('constants.subcontractor_MAIL')));
