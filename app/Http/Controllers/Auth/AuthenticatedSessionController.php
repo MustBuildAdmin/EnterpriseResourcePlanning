@@ -119,7 +119,7 @@ class AuthenticatedSessionController extends Controller
             } elseif ($user->type == 'consultant') {
                 return redirect('consultant_index');
             } elseif ($user->type == 'sub_contractor') {
-                return redirect('subContractorDashboard');
+                return redirect('subcontractordashboard');
             }
             else {
                 return redirect('users');

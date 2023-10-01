@@ -1,7 +1,7 @@
 @if(\Auth::user()->type == 'super admin')
-    @php $url='subContractor.update' @endphp
+    @php $url='subcontractor.update' @endphp
 @else
-    @php $url='subContractor.update_subContractor' @endphp
+    @php $url='subcontractor.update_subcontractor' @endphp
 @endif
 {{ Form::model($vender, array('route' => array($url, $vender->id) , 'method' => 'PUT',
 'enctype'=>"multipart/form-data")) }}

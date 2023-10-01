@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}" />
-{{ Form::open(['url' => 'subContractor_invitation_status', 'method' => 'POST']) }}
+{{ Form::open(['url' => 'subcontractor_invitation_status', 'method' => 'POST']) }}
 <div class="modal-body">
     <div class="row">
         <div class="form-group">
@@ -16,7 +16,7 @@
 <script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $("#skill_input").tokenInput("{{ route('subContractor.seach_result') }}", {
+        $("#skill_input").tokenInput("{{ route('subcontractor.seach_result') }}", {
             propertyToSearch: "name",
             tokenValue: "id",
             tokenDelimiter: ",",
