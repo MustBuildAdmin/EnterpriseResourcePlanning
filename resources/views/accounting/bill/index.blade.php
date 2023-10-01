@@ -1,9 +1,10 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/flatpickr.min.css') }}">
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <div class="row">
   <div class="col-md-6">
-     <h2>Bill</h2>
+     <h2>{{__('Bill')}}</h2>
   </div>
   <div class="col-md-6 float-end floatrght">
 
@@ -100,7 +101,7 @@
                         <table class="table datatable bill">
                             <thead>
                             <tr>
-                                <th> {{__('Bill')}}</th>
+                                <th>{{__('Bill')}}</th>
                                 @if(!\Auth::guard('vender')->check())
                                     <th> {{__('Vendor')}}</th>
                                 @endif
@@ -208,4 +209,5 @@
         </div>
     </div>
     <script src="{{ asset('assets/js/plugins/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 @include('new_layouts.footer')

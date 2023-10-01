@@ -1,7 +1,6 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
-
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <div class="row">
   <div class="col-md-6">
      <h2>{{__('Manage Bank Account')}}</h2> 
@@ -13,11 +12,8 @@
             </a>
 
         @endcan
-
   </div>
 </div>
-
-
 <div class="row">
         <div class="col-12">
             <div class="card">
@@ -33,12 +29,9 @@
                                 <th> {{__('Current Balance')}}</th>
                                 <th> {{__('Contact Number')}}</th>
                                 <th> {{__('Bank Branch')}}</th>
-
-                                    <th width="10%"> {{__('Action')}}</th>
-
+                                <th width="10%"> {{__('Action')}}</th>
                             </tr>
                             </thead>
-
                             <tbody>
                             @foreach ($accounts as $account)
                                 <tr class="font-style">
@@ -75,7 +68,6 @@
                                                 @endif
                                       </div>
                                   </td>
-
                                     @endif
                                 </tr>
                             @endforeach
@@ -86,6 +78,5 @@
             </div>
         </div>
     </div>
-
-
 @include('new_layouts.footer')
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
