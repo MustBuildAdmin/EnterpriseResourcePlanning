@@ -7,7 +7,10 @@
 <div class="page">
 <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
+       aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation"> 
+       <span class="navbar-toggler-icon"></span> 
+      </button>
       <div class="collapse navbar-collapse" id="sidebar-menu">
          <ul class="navbar-nav pt-lg-3">
             <li class="nav-item dropdown {{ (Request::segment(1) == 'productservice')?'active':''}}">
@@ -33,8 +36,12 @@
                    <div class="dropdown-menu-columns">
                       <div class="dropdown-menu-column">
                         
-                        <a  class="dropdown-item" href="{{ route('productservice.index') }}">{{__('Product & Services')}}</a>
-                         <a  class="dropdown-item" href="{{ route('productstock.index') }}" >{{__('Product Stock')}}</a>
+                        <a  class="dropdown-item" href="{{ route('productservice.index') }}">
+                           {{__('Product & Services')}}
+                        </a>
+                         <a  class="dropdown-item" href="{{ route('productstock.index') }}" >
+                           {{__('Product Stock')}}
+                        </a>
                       </div>
                    </div>
                 </div>
@@ -61,7 +68,7 @@
             @endif
             @if(Gate::check('manage proposal'))
             <li class="{{ (Request::segment(1) == 'proposal')?'active':''}}">
-               <a href="" class="nav-link">
+               <a href="{{ route('proposal.index') }}" class="nav-link">
                   <span class=" d-md-none d-lg-inline-block">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"

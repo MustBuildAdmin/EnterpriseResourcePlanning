@@ -1,7 +1,5 @@
+
 @include('new_layouts.header')
-<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
-
-
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <style>
 .ms-2 {
@@ -22,9 +20,9 @@
         </div>
         <div class="col-md-6 float-end">
            @can('create leave')
-              <a href="#" class="btn btn-sm btn-primary mb-3 floatrght" data-size="lg" data-url="{{ route('leave.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Leave')}}" >
-                  <i class="ti ti-plus"></i>
-              </a>
+           <a href="#" data-size="lg" data-url="{{route ('productservice.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" class="gapbtn floatrght btn btn-sm btn-primary" aria-label="Create New Product" data-bs-original-title="Create New Product">
+            <i class="ti ti-plus"></i>
+        </a>
            @endcan
               <!-- <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('productservice.file.import') }}" data-ajax-popup="true" data-title="{{__('Import product CSV file')}}" class="floatrght gapbtn btn btn-sm btn-primary">
             <i class="ti ti-file-import"></i>
@@ -140,5 +138,5 @@
     </div>
     </div>
     </div>
-    <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 @include('new_layouts.footer')
