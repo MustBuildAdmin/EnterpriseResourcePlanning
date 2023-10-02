@@ -20,7 +20,9 @@
         </div>
         <div class="col-md-6 float-end">
            @can('create leave')
-           <a href="#" data-size="lg" data-url="{{route ('productservice.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" class="gapbtn floatrght btn btn-sm btn-primary" aria-label="Create New Product" data-bs-original-title="Create New Product">
+           <a href="#" data-size="lg" data-url="{{route ('productservice.create') }}" data-ajax-popup="true"
+              data-bs-toggle="tooltip" class="gapbtn floatrght btn btn-sm btn-primary"
+              aria-label="{{__('Create New Product')}}" data-bs-original-title="{{__('Create New Product')}}">
             <i class="ti ti-plus"></i>
         </a>
            @endcan
