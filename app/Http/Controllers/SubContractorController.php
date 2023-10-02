@@ -38,7 +38,7 @@ class SubContractorController extends Controller
                 }],
             ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
 
-            return view('subContractor.index')->with('users', $users);
+            return view('subcontractor.index')->with('users', $users);
         }
         else {
             return redirect()->back();
@@ -52,7 +52,7 @@ class SubContractorController extends Controller
                 ->where('module', '=', 'subcontractor')->get();
             $country = Utility::getcountry();
 
-            return view('subContractor.create', compact('customFields','country'));
+            return view('subcontractor.create', compact('customFields','country'));
         } else {
             return redirect()->back();
         }
@@ -143,7 +143,7 @@ class SubContractorController extends Controller
 
         }
 
-        return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+        return redirect()->route('subcontractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
     }
 
     public function normal_store(Request $request)
@@ -228,7 +228,7 @@ class SubContractorController extends Controller
             Utility::sendEmailTemplate(Config::get('constants.SR_CONSULTANT'),
                     [$usersubcon->id => $usersubcon->email], $userarray);
 
-            return redirect()->route('subContractor.index')
+            return redirect()->route('subcontractor.index')
                              ->with('success', Config::get('constants.subcontractor_MAIL'));
         }
         else {
@@ -332,7 +332,7 @@ class SubContractorController extends Controller
                     [$subcon->id => $subcon->email], $userArr);
         }
 
-        return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+        return redirect()->route('subcontractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
     }
 
     public function createConnection(Request $request)
@@ -423,7 +423,7 @@ class SubContractorController extends Controller
 
         CustomField::saveData($user, $request->customField);
 
-        return redirect()->route('subContractor.index')->with(
+        return redirect()->route('subcontractor.index')->with(
             'success', __('Consultant successfully updated.')
         );
     }
@@ -501,7 +501,7 @@ class SubContractorController extends Controller
         Utility::employeeDetailsUpdate($user->id, \Auth::user()->creatorId());
         CustomField::saveData($user, $request->customField);
 
-        return redirect()->route('subContractor.index')->with(
+        return redirect()->route('subcontractor.index')->with(
             'success', __('Sub Contractor successfully updated.')
         );
     }
@@ -513,7 +513,7 @@ class SubContractorController extends Controller
         try {
             $eId = \Crypt::decrypt($id);
             $user = User::find($eId);
-            return view('subContractor.reset', compact('user'));
+            return view('subcontractor.reset', compact('user'));
 
         }
         catch (Exception $e) {
@@ -542,7 +542,7 @@ class SubContractorController extends Controller
                 'password' => Hash::make($request->password),
             ])->save();
 
-            return redirect()->route('subContractor.index')->with(
+            return redirect()->route('subcontractor.index')->with(
                 'success', __('Sub Contractor Password successfully updated.')
             );
 
@@ -636,7 +636,7 @@ class SubContractorController extends Controller
 
             }
 
-            return redirect()->route('subContractor.index')
+            return redirect()->route('subcontractor.index')
                 ->with('success', __('Sub Contractor Invitation Sent Successfully.'));
 
         }

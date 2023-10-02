@@ -1,4 +1,4 @@
-{{ Form::model($user, ['route' => ['subContractor.password.update', $user->id], 'method' => 'post']) }}
+{{ Form::model($user, ['route' => ['subcontractor.password.update', $user->id], 'method' => 'post']) }}
 <div class="modal-body">
     <div class="row">
         <div class="form-group">

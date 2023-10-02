@@ -155,7 +155,7 @@ class DashboardController extends Controller
         return view('consultants.dashboard.index',compact('users'));
     }
 
-    public function subContractorDashboard(){
+    public function subcontractorDashboard(){
 
         $users = DB::table('users as t1')
                     ->select('t1.name','t1.lname','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
@@ -166,7 +166,7 @@ class DashboardController extends Controller
                     ->where('t1.type','company')
                     ->paginate(4);
 
-        return view('subContractor.dashboard',compact('users'));
+        return view('subcontractor.dashboard',compact('users'));
     }
 
     public function project_dashboard_index()
@@ -314,7 +314,7 @@ class DashboardController extends Controller
 
                     return view('dashboard.super_admin', compact('user', 'chartData'));
                 }elseif($user->type == 'sub_contractor'){
-                    return redirect()->route('subContractorDashboard');
+                    return redirect()->route('subcontractorDashboard');
                 }elseif($user->type == 'consultant'){
                     return redirect()->route('consultant_index');
                 }
@@ -604,7 +604,7 @@ class DashboardController extends Controller
                 return redirect()->route('consultant_index');
             }elseif (Auth::user()->type == 'sub_contractor') {
 
-                return redirect()->route('subContractorDashboard');
+                return redirect()->route('subcontractordashboard');
             }
             else {
                 if (\Auth::user()->can('show account dashboard')) {
