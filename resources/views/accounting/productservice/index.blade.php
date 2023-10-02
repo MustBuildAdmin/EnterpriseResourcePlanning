@@ -1,6 +1,5 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
 <style>
 .ms-2 {
     background: #fff  !important;
@@ -19,7 +18,7 @@
         <div class="col-md-6 float-end">
            @can('create leave')
            <a href="#" data-size="lg" data-url="{{route ('productservice.create') }}" data-ajax-popup="true"
-              data-bs-toggle="tooltip" class="gapbtn floatrght btn btn-sm btn-primary" 
+              data-bs-toggle="tooltip" class="gapbtn floatrght btn btn-sm btn-primary"
               aria-label="{{__('Create New Product')}}"
               data-bs-original-title="{{__('Create New Product')}}">
             <i class="ti ti-plus"></i>
