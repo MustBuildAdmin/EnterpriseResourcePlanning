@@ -119,6 +119,8 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
+
+            $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = new Project();
             $project->project_name = $request->project_name;
             $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
@@ -173,6 +175,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
+            $project->micro_program = $microProgram;
             $project->status = "in_progress";
             ///---------end-----------------
             $project->save();
@@ -1247,6 +1250,7 @@ class ProjectController extends Controller
                     );
             }
 
+            $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
             $project->project_name = $request->project_name;
             $project->start_date = date(
@@ -1313,6 +1317,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
+            $project->micro_program = $microProgram;
             $project->save();
             if (Session::has("project_instance")) {
                 $instanceId = Session::get("project_instance");

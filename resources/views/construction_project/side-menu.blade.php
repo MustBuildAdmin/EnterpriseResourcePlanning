@@ -4,7 +4,9 @@
     } else {
         $project_id = 0;
     }
-
+    
+    $microGet = App\Models\Project::where('id',$project_id)->first();
+    $checMicroProgram = $microGet != null ? $microGet->micro_program : 0;
     $setting = Utility::settings(\Auth::user()->creatorId());
 @endphp
 
@@ -64,6 +66,11 @@
                                         <a href="{{ route('projects.gantt', $project_id) }}"
                                             class="dropdown-item">{{ __('Gantt') }}</a>
                                     @endcan
+
+                                    @if($checMicroProgram == 1)
+                                        <a href="#"
+                                            class="dropdown-item">{{ __('Micro Program') }}</a>
+                                    @endif
                                     
                                     @if(Session::get('current_revision_freeze')==1)
                                         <a href="{{ url('revision') }}"
