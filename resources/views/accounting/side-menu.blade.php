@@ -16,8 +16,8 @@
 <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
    <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
-         aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation"> 
-      <span class="navbar-toggler-icon"></span> 
+         aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="sidebar-menu">
          <ul class="navbar-nav pt-lg-3">
@@ -193,7 +193,7 @@
             <li>
                <a class="{{ (Request::route()->getName() == 'bill.index'
                   || Request::route()->getName() == 'payment.index'
-                  || Request::route()->getName() == 'debit.note') 
+                  || Request::route()->getName() == 'debit.note')
                   ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
                   href="#planning" data-bs-toggle="dropdown"
                   data-bs-auto-close="false" role="button" aria-expanded="false">
