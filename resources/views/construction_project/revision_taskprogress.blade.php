@@ -18,6 +18,9 @@
     display: grid;
 }
 </style>
+@php
+    $profile=\App\Models\Utility::get_file('uploads/avatar/');
+@endphp
     <div class="page-wrapper">
         @include('construction_project.side-menu')
         <div class="container-fluid">
@@ -37,7 +40,6 @@
                                                     <h4 class="card-title">
                                                         {{__('Revision Task Progress Information')}}
                                                     </h4>
-                                                   
                                                 </div>
     
                                                 <div class="table-responsive">
@@ -69,19 +71,21 @@
                                                                         <span class='avatar avatar-sm'>
                                                                             <img alt='avatar'
                                                                              class="img-fluid rounded-circle"
-                                                                             data-original-title="{{ $user_db != null ? $user_db->name : "" }}"
+                                                                             data-original-title="{{ $user_db!=null ?
+                                                                             $user_db->name:""}}"
                                                                             @if($user_db->avatar)
-                                                                                @php 
-                                                                                $profile=\App\Models\Utility::get_file('uploads/avatar/'); @endphp
                                                                                 src="{{$profile.$user_db->avatar}}"
                                                                             @else
-                                                                                src="{{asset('/storage/uploads/avatar/avatar.png')}}"
+                                                                                src="{{asset(Config::get('constants.URL'))}}"
                                                                             @endif
-                                                                        title="{{ $user_db != null ? $user_db->name : "" }}" class="hweb">
+                                                                        title="{{$user_db != null ?$user_db->name :""}}"
+                                                                        class="hweb">
                                                                         </span>
                                                                     @else
                                                                         <?php  $short=substr($user_db->name, 0, 1);?>
-                                                                        <span class="user-initial">{{strtoupper($short)}}</span>
+                                                                        <span class="user-initial">
+                                                                            {{strtoupper($short)}}
+                                                                        </span>
                                                                     @endif
                                                                 </div>
                                                             </td>

@@ -53,7 +53,7 @@
                             || Request::route()->getName() == 'project_report.revsion_task_list'
                             || Request::route()->getName() == 'taskBoard.view'
                             || Request::route()->getName() == 'project_report.view_task_report')
-                            ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}" 
+                            ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
                             href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
