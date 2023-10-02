@@ -21,11 +21,11 @@
             <h2>{{__('Manage Vendor')}}</h2>
         </div>
         <div class="col-md-6 float-end">
-           @can('create leave')
-              <a href="#" class="btn btn-sm btn-primary mb-3 floatrght" data-size="lg" data-url="{{ route('vender.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create Leave')}}" >
-                  <i class="ti ti-plus"></i>
-              </a>
-           @endcan
+        {{-- @can('create vender')
+            <a class="floatrght btn btn-sm btn-primary gapbtn" href="#" data-size="lg" data-url="{{ route('vender.create') }}" data-ajax-popup="true" data-title="{{__('Create New Vendor')}}" data-bs-toggle="tooltip" title="{{ __('Create') }}">
+                <i class="ti ti-plus"></i>
+            </a>
+        @endcan --}}
         </div>
     </div>
 
