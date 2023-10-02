@@ -174,5 +174,5 @@
             </div>
         </div>
     </div>
-<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 @include('new_layouts.footer')
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>

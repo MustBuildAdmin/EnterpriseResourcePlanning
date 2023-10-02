@@ -1,6 +1,6 @@
-
 @include('new_layouts.header')
-<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
+@include('accounting.side-menu')
+
 <style>
 .ms-2 {
     background: #fff  !important;
@@ -10,10 +10,8 @@
     color: #000 !important;
     font-size: 18px;
 }
-
 </style>
-
-@include('accounting.side-menu')
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
     <div class="row">
         <div class="col-md-6">
            <h2>{{__('Manage Product & Services')}}</h2>
@@ -21,8 +19,9 @@
         <div class="col-md-6 float-end">
            @can('create leave')
            <a href="#" data-size="lg" data-url="{{route ('productservice.create') }}" data-ajax-popup="true"
-              data-bs-toggle="tooltip" class="gapbtn floatrght btn btn-sm btn-primary"
-              aria-label="{{__('Create New Product')}}" data-bs-original-title="{{__('Create New Product')}}">
+              data-bs-toggle="tooltip" class="gapbtn floatrght btn btn-sm btn-primary" 
+              aria-label="{{__('Create New Product')}}"
+              data-bs-original-title="{{__('Create New Product')}}">
             <i class="ti ti-plus"></i>
         </a>
            @endcan
@@ -138,7 +137,7 @@
             </tbody>
         </table>
     </div>
-    </div>
-    </div>
-<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
+</div>
+</div>
 @include('new_layouts.footer')
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>

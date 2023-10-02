@@ -1,21 +1,17 @@
 @include('new_layouts.header')
-<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
-
-
-<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
-<style>
-.ms-2 {
-    background: #fff  !important;
-}
-
-.ti.ti-caret-right.text-white {
-    color: #000 !important;
-    font-size: 18px;
-}
-
-</style>
-
 @include('accounting.side-menu')
+<style>
+    .ms-2 {
+        background: #fff  !important;
+    }
+    
+    .ti.ti-caret-right.text-white {
+        color: #000 !important;
+        font-size: 18px;
+    }
+    
+</style>
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
     <div class="row">
         <div class="col-md-6">
             <h2>{{__('Manage Vendor')}}</h2>
@@ -112,5 +108,5 @@
     </div>
     </div>
     </div>
-    <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 @include('new_layouts.footer')
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>

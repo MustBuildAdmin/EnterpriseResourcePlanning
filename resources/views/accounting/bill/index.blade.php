@@ -208,6 +208,7 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('assets/js/plugins/flatpickr.min.js') }}"></script>
-    <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/flatpickr.min.js') }}"></script>
 @include('new_layouts.footer')
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
+
