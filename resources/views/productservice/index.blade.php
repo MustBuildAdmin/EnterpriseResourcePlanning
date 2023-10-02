@@ -20,7 +20,8 @@
             <i class="ti ti-file-export"></i>
         </a>
 
-        <a href="#" data-size="lg" data-url="{{ route('productservice.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Product')}}" class="btn btn-sm btn-primary">
+        <a href="#" data-size="lg" data-url="{{ route('productservice.create') }}" data-ajax-popup="true"
+           data-bs-toggle="tooltip" title="{{__('Create New Product')}}" class="btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
         </a>
 

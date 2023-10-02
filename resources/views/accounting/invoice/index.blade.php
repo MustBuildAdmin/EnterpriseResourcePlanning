@@ -1,6 +1,6 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 @section('content')
     <div class="row">
         <div class="col-sm-12">
@@ -236,7 +236,7 @@
 
 <div class="row">
   <div class="col-md-6">
-     <h2>Invoice</h2>
+     <h2>{{__('Invoice')}}</h2>
   </div>
   <div class="col-md-6 float-end ">
 
@@ -468,9 +468,5 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 @include('new_layouts.footer')
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
