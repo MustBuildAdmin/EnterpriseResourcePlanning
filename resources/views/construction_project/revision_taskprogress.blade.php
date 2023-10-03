@@ -76,7 +76,9 @@
                                                                             @if($user_db->avatar)
                                                                                 src="{{$profile.$user_db->avatar}}"
                                                                             @else
-                                                                                src="{{asset(Config::get('constants.URL'))}}"
+                                                                                src="{{
+                                                                                    asset(Config::get('constants.URL'))
+                                                                                    }}"
                                                                             @endif
                                                                         title="{{$user_db != null ?$user_db->name :""}}"
                                                                         class="hweb">
