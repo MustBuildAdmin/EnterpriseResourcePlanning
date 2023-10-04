@@ -27,13 +27,13 @@
                                                 <div class="card-actions">
                                                     <div class="row">
                                                         <div class="col-6">
-                                                            <a href="{{ route('download_excel_report') }}" class="btn btn-lime w-100">
+                                                            <a href="{{ route('download_excel_report') }}" class="btn btn-lime w-100 downloadbtn disabled">
                                                                 Download as Excel
                                                             </a>
                                                         </div>
                                                         <div class="col-6">
                                                             <a href="{{ route('send_report_con') }}"
-                                                            class="btn btn-primary w-100">
+                                                            class="btn btn-primary w-100 downloadbtn disabled">
                                                                 Download as PDF
                                                             </a>
                                                         </div>
@@ -279,6 +279,9 @@
             success : function(data) {
                 if(data['success'] == true){
                     $("#all_task_append").html(data['all_task']);
+                    if(parseInt(data['tasks'])>0){
+                        $('.downloadbtn').removeClass("disabled")
+                    }
                 }
             },
             error : function(request,error)

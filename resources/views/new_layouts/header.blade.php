@@ -295,7 +295,7 @@
                             aria-label="Open user menu">
 
                             <span class="avatar avatar-sm"
-                                style="background: 'url({{ !empty(\Auth::user()->avatar) ? $profile . \Auth::user()->avatar : asset(Storage::url('uploads/avatar/avatar.png')) }}')"></span>
+                                style="background-image: url('{{ !empty(\Auth::user()->avatar) ? $profile . \Auth::user()->avatar : asset(Storage::url('uploads/avatar/avatar.png')) }}')"></span>
                             <div class="d-none d-xl-block ps-2">
                                 <div>{{ \Auth::user()->name }}</div>
                                 <div class="mt-1 small text-secondary">Role</div>
