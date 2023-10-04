@@ -7,11 +7,74 @@ use Carbon\Carbon;
 use Session;
 use App\Models\Con_task;
 use App\Models\Instance;
+use App\Models\MicroProgramScheduleModal;
 use Auth;
 
 class MicroPorgramController extends Controller
 {
     public function microprogram(Request $request){
+        if (Session::has('project_id')) {
+            $project_id  = Session::get('project_id');
+            $instance_id = Session::get('project_instance');
+            $freezeCheck = Instance::where('project_id', $project_id)
+                ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
+            if($freezeCheck == 1){
+                $MicroProgramScheduleModal = MicroProgramScheduleModal::where('project_id',$project_id)
+                    ->where('instance_id',$instance_id)
+                    ->where('status',1)
+                    ->get();
+                    
+                    return view('microprogram.index')
+                        ->with('MicroProgramScheduleModal',$MicroProgramScheduleModal);
+            }
+            else{
+                return redirect()->back()->with('error', __('Project Not Freezed.'));
+            }
+        }
+        else {
+            return redirect()->route('construction_main')->with('error', __('Session Expired'));
+        }
+    }
+
+    public function microprogram_create(Request $request){
+        return view('microprogram.create');
+    }
+
+    public function schedule_store(Request $request){
+        $project_id    = Session::get('project_id');
+        $instance_id   = Session::get('project_instance');
+        $now           = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate   = $now->endOfWeek()->format('Y-m-d');
+        $checkChedule = MicroProgramScheduleModal::where('project_id',$project_id)
+            ->where('instance_id',$instance_id)
+            ->where('status',1)
+            ->where(function ($query) use ($weekStartDate, $weekEndDate) {
+                $query->whereDate('insert_date', '>=', $weekStartDate);
+                $query->whereDate('insert_date', '<=', $weekEndDate);
+            })->first();
+            
+        if($checkChedule == null){
+            $schedule = new MicroProgramScheduleModal;
+
+            $schedule->schedule_name       = $request->schedule_name;
+            $schedule->project_id          = $project_id;
+            $schedule->instance_id         = $instance_id;
+            $schedule->schedule_duration   = $request->schedule_duration;
+            $schedule->schedule_start_date = $request->schedule_start_date;
+            $schedule->schedule_end_date   = $request->schedule_end_date;
+            $schedule->schedule_goals      = $request->schedule_goals;
+            $schedule->insert_date         = date('Y-m-d');
+            $schedule->save();
+
+            return redirect()->back()->with('error', __('Schedule Created'));
+        }
+        else{
+            return redirect()->back()->with('error', __('This Week Schedule already Created!'));
+        }
+    }
+
+    public function scheduleSwap(Request $request){
         if (Session::has('project_id')) {
             $now           = Carbon::now();
             $weekStartDate = $now->startOfWeek()->format('Y-m-d');
@@ -53,10 +116,6 @@ class MicroPorgramController extends Controller
         }
         else {
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
-        } 
-    }
-
-    public function microprogram_create(Request $request){
-        return view('microprogram.create');
+        }
     }
 }
