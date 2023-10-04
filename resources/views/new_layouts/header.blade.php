@@ -21,7 +21,8 @@
 
 <head>
     <title>
-        {{ Utility::getValByName('title_text') ? Utility::getValByName('title_text') : config('app.name', 'Must BuildApp') }}
+        {{ Utility::getValByName('title_text') ? Utility::getValByName('title_text')
+             : config('app.name', 'Must BuildApp') }}
         - @yield('page-title')</title>
     {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> --}}
@@ -37,7 +38,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="url" content="{{ url('') . '/' . config('chatify.path') }}" data-user="{{ Auth::user()->id }}">
     <link rel="icon"
-        href="{{ $logo . '/' . (isset($company_favicon) && !empty($company_favicon) ? $company_favicon : 'favicon.png') }}"
+        href="{{ $logo . '/' . (isset($company_favicon) && !empty($company_favicon)
+             ? $company_favicon : 'favicon.png') }}"
         type="image" sizes="16x16">
     <!-- font css -->
     <link href="{{ asset('assets/dist/css/tabler.min.css?1674944402') }}" rel="stylesheet" />
@@ -113,11 +115,13 @@
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
                     <a href=".">
                         @if ($mode_setting['cust_darklayout'] && $mode_setting['cust_darklayout'] == 'on')
-                            <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos) ? $company_logos : 'logo-dark.png') }}"
+                            <img src="{{ $logo . '/' . (isset($company_logos) && !empty($company_logos)
+                                 ? $company_logos : 'logo-dark.png') }}"
                                 alt="{{ config('app.name', 'Must BuildApp-SaaS') }}" width="110" height="32"
                                 alt="Must BuildApp" class="navbar-brand-image">
                         @else
-                            <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo) ? $company_logo : 'logo-dark.png') }}"
+                            <img src="{{ $logo . '/' . (isset($company_logo) && !empty($company_logo)
+                                 ? $company_logo : 'logo-dark.png') }}"
                                 alt="{{ config('app.name', 'Must BuildApp-SaaS') }}" width="110" height="32"
                                 alt="Must BuildApp" class="navbar-brand-image">
                         @endif
@@ -148,7 +152,8 @@
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
                                 <path
-                                    d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7">
+                                    d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7
+                                     .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7">
                                 </path>
                             </svg>
                         </a>
@@ -161,7 +166,8 @@
                                     stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path
-                                        d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
+                                        d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2
+                                         3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
                                     </path>
                                     <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
                                 </svg>
@@ -195,7 +201,8 @@
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                             </path>
                                                             <path
-                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9
+                                                                 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
                                                             </path>
                                                         </svg>
                                                     </a>
@@ -222,7 +229,8 @@
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                             </path>
                                                             <path
-                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086
+                                                                 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
                                                             </path>
                                                         </svg>
                                                     </a>
@@ -249,7 +257,8 @@
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                             </path>
                                                             <path
-                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086
+                                                                 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
                                                             </path>
                                                         </svg>
                                                     </a>
@@ -278,7 +287,8 @@
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none">
                                                             </path>
                                                             <path
-                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9
+                                                                 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
                                                             </path>
                                                         </svg>
                                                     </a>
@@ -295,7 +305,9 @@
                             aria-label="Open user menu">
 
                             <span class="avatar avatar-sm"
-                                style="background-image: url('{{ !empty(\Auth::user()->avatar) ? $profile . \Auth::user()->avatar : asset(Storage::url('uploads/avatar/avatar.png')) }}')"></span>
+                                style="background-image: url('{{ !empty(\Auth::user()->avatar) ?
+                                 $profile . \Auth::user()->avatar : 
+                                    asset(Storage::url('uploads/avatar/avatar.png')) }}')"></span>
                             <div class="d-none d-xl-block ps-2">
                                 <div>{{ \Auth::user()->name }}</div>
                                 <div class="mt-1 small text-secondary">Role</div>
@@ -330,7 +342,8 @@
                             <h></h>
                             @if (\Auth::user()->type == 'super admin')
                                 <a class="dropdown-item text-primary"
-                                    href="{{ route('manage.language', [isset($lang) ? $lang : 'en']) }}">{{ __('Manage Language ') }}</a>
+                                    href="{{ route('manage.language', [isset($lang) ? $lang : 'en']) }}">
+                                    {{ __('Manage Language ') }}</a>
                             @endif
                         </div>
                     </div>

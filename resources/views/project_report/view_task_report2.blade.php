@@ -27,7 +27,8 @@
                                                 <div class="card-actions">
                                                     <div class="row">
                                                         <div class="col-6">
-                                                            <a href="{{ route('download_excel_report') }}" class="btn btn-lime w-100 downloadbtn disabled">
+                                                            <a href="{{ route('download_excel_report') }}" 
+                                                            class="btn btn-lime w-100 downloadbtn disabled">
                                                                 Download as Excel
                                                             </a>
                                                         </div>
