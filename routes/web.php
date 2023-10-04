@@ -5043,6 +5043,13 @@ Route::any('schedule_store', 'MicroPorgramController@schedule_store')->name('sch
     ]
 );
 
+Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show')->name('schedule_task_show')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report');
 Route::any('download_excel_report', 'ProjectReportController@download_excel_report')->name('download_excel_report');
 

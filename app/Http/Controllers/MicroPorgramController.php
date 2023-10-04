@@ -74,9 +74,10 @@ class MicroPorgramController extends Controller
         }
     }
 
-    public function scheduleSwap(Request $request){
+    public function schedule_task_show(Request $request){
         if (Session::has('project_id')) {
             $now           = Carbon::now();
+            $secheduleId   = $request->id;
             $weekStartDate = $now->startOfWeek()->format('Y-m-d');
             $weekEndDate   = $now->endOfWeek()->format('Y-m-d');
             $project_id    = Session::get('project_id');
@@ -85,7 +86,11 @@ class MicroPorgramController extends Controller
             $freezeCheck = Instance::where('project_id', $project_id)
                 ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
             if($freezeCheck == 1){
-
+                $scheduleGet = MicroProgramScheduleModal::where('project_id',$project_id)
+                    ->where('id',$secheduleId)
+                    ->where('instance_id',$instance_id)
+                    ->where('status',1)
+                    ->first();
                 $weekSchedule = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
                     'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
                     'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
@@ -106,9 +111,10 @@ class MicroPorgramController extends Controller
 
                     $weekSchedule = $weekSchedule->orderBy('con_tasks.start_date','ASC')->get();
 
-                    return view('microprogram.index')->with('weekSchedule',$weekSchedule)
+                    return view('microprogram.schedule_task_show')->with('weekSchedule',$weekSchedule)
                         ->with('weekStartDate',$weekStartDate)
-                        ->with('weekEndDate',$weekEndDate);
+                        ->with('weekEndDate',$weekEndDate)
+                        ->with('scheduleGet',$scheduleGet);
             }
             else{
                 return redirect()->back()->with('error', __('Project Not Freezed.'));
