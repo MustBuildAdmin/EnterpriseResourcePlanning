@@ -55,4 +55,8 @@ class MicroPorgramController extends Controller
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
         } 
     }
+
+    public function microprogram_create(Request $request){
+        return view('microprogram.create');
+    }
 }

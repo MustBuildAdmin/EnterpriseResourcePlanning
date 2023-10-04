@@ -17,9 +17,11 @@
                         <div class="card-header">
                             <h1 class="mb-0">Micro Planning</h1>
                             <div class="card-actions">
-                                <a href="#" class="btn btn-primary w-100" data-bs-toggle="modal"
-                                    data-bs-target="#modal-large">
-                                    Create a New Schedule
+                                <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
+                                    data-url="{{ route('microprogram_create') }}" data-ajax-popup="true"
+                                    data-bs-toggle="tooltip" title="{{ __('Create New Sub Contractor') }}"
+                                    data-bs-original-title="{{ __('Create a New Schedule') }}">
+                                    {{ __('Create a New Schedule') }}
                                 </a>
                             </div>
                         </div>
@@ -49,9 +51,10 @@
                                                     </div>
                                                     <div class="col-6  p-4">
                                                         <span><b>Schedule Start Date:</b>
-                                                            {{ Utility::site_date_format($weekStartDate,\Auth::user()->id) }} - <b>
-                                                            Schedule End Date:</b>
-                                                            {{ Utility::site_date_format($weekEndDate,\Auth::user()->id) }}
+                                                            {{ Utility::site_date_format($weekStartDate, \Auth::user()->id) }}
+                                                            - <b>
+                                                                Schedule End Date:</b>
+                                                            {{ Utility::site_date_format($weekEndDate, \Auth::user()->id) }}
                                                         </span>
                                                     </div>
                                                     <div class="col-6 p-3">
@@ -67,60 +70,68 @@
                                                                 <div class="row">
                                                                     <div
                                                                         class="col-md-1 py-3  border-end bg-primary text-white">
-                                                                        <div class="datagrid-title text-white">Task Id</div>
-                                                                        <div class="datagrid-content">{{$schedule->id}}</div>
+                                                                        <div class="datagrid-title text-white">Task Id
+                                                                        </div>
+                                                                        <div class="datagrid-content">
+                                                                            {{ $schedule->id }}</div>
                                                                     </div>
                                                                     <div class="col-md-5 p-3">
                                                                         <div class="datagrid-title ">Task Name</div>
-                                                                        <div class="datagrid-content">{{$schedule->text}}</div>
+                                                                        <div class="datagrid-content">
+                                                                            {{ $schedule->text }}</div>
                                                                     </div>
                                                                     <div class="col-md-2 p-3">
                                                                         <div class="datagrid-title">Start Date</div>
                                                                         <div class="datagrid-content">
-                                                                            {{ Utility::site_date_format($schedule->start_date,\Auth::user()->id) }}
+                                                                            {{ Utility::site_date_format($schedule->start_date, \Auth::user()->id) }}
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-2 p-3">
                                                                         <div class="datagrid-title">End date</div>
                                                                         <div class="datagrid-content">
-                                                                            {{ Utility::site_date_format($schedule->end_date,\Auth::user()->id) }}
+                                                                            {{ Utility::site_date_format($schedule->end_date, \Auth::user()->id) }}
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-2 p-3">
                                                                         <div class="datagrid-title">Assignees</div>
                                                                         @php
-                                                                            if($schedule->users != ""){
+                                                                            if ($schedule->users != '') {
                                                                                 $users_data = json_decode($schedule->users);
-                                                                            }
-                                                                            else{
-                                                                                $users_data = array();
+                                                                            } else {
+                                                                                $users_data = [];
                                                                             }
                                                                         @endphp
                                                                         <div class="datagrid-content">
-                                                                            <div class="avatar-list avatar-list-stacked">
+                                                                            <div
+                                                                                class="avatar-list avatar-list-stacked">
                                                                                 @forelse ($users_data as $key => $get_user)
                                                                                     @php
-                                                                                        $user_db = DB::table('users')->where('id',$get_user)->first();
+                                                                                        $user_db = DB::table('users')
+                                                                                            ->where('id', $get_user)
+                                                                                            ->first();
                                                                                     @endphp
-                                                                                    @if($key<3)
-                                                                                        @if($user_db->avatar)
-                                                                                            <a href="#" class="avatar rounded-circle avatar-sm">
-                                                                                                @if($user_db->avatar)
-                                                                                                    <span class="avatar avatar-xs rounded"
-                                                                                                    style="background-image:
-                                                                                                    url({{asset('/storage/uploads/avatar/'.$user_db->avatar)}})">
+                                                                                    @if ($key < 3)
+                                                                                        @if ($user_db->avatar)
+                                                                                            <a href="#"
+                                                                                                class="avatar rounded-circle avatar-sm">
+                                                                                                @if ($user_db->avatar)
+                                                                                                    <span
+                                                                                                        class="avatar avatar-xs rounded"
+                                                                                                        style="background-image:
+                                                                                                    url({{ asset('/storage/uploads/avatar/' . $user_db->avatar) }})">
                                                                                                     </span>
                                                                                                 @else
-                                                                                                    <span class="avatar avatar-xs rounded"
-                                                                                                    style="background-image:
-                                                                                                    url({{asset('/storage/uploads/avatar/avatar.png')}})">
+                                                                                                    <span
+                                                                                                        class="avatar avatar-xs rounded"
+                                                                                                        style="background-image:
+                                                                                                    url({{ asset('/storage/uploads/avatar/avatar.png') }})">
                                                                                                     </span>
                                                                                                 @endif
                                                                                             </a>
                                                                                         @else
-                                                                                            <?php  $short=substr($user_db->name, 0, 1);?>
+                                                                                            <?php $short = substr($user_db->name, 0, 1); ?>
                                                                                             <span
-                                                                                            class="avatar avatar-xs rounded">{{strtoupper($short)}}</span>
+                                                                                                class="avatar avatar-xs rounded">{{ strtoupper($short) }}</span>
                                                                                         @endif
                                                                                     @endif
                                                                                 @empty
@@ -129,13 +140,14 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    
+
                                                                 </div>
                                                             </div>
                                                         @empty
                                                             <div
                                                                 class="col-md-4 py-3  border-end bg-primary text-white">
-                                                                <div class="datagrid-title text-white">No Schedule Found</div>
+                                                                <div class="datagrid-title text-white">No Schedule Found
+                                                                </div>
                                                             </div>
                                                         @endforelse
                                                     </div>
@@ -148,7 +160,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
