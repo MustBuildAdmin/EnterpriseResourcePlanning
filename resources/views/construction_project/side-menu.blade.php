@@ -68,7 +68,7 @@
                                     @endcan
 
                                     @if($checMicroProgram == 1)
-                                        <a href="#"
+                                        <a href="{{ route('microprogram') }}"
                                             class="dropdown-item">{{ __('Micro Program') }}</a>
                                     @endif
                                     

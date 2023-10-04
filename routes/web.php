@@ -5021,6 +5021,14 @@ Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_detail
     ]
 );
 
+/* Micro Program Start */
+Route::any('microprogram', 'MicroPorgramController@microprogram')->name('microprogram')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report');
 Route::any('download_excel_report', 'ProjectReportController@download_excel_report')->name('download_excel_report');
 
