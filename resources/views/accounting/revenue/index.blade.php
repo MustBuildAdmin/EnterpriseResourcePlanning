@@ -1,6 +1,7 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
 <link rel="stylesheet" href="{{ asset('assets/css/plugins/flatpickr.min.css') }}">
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <div class="row">
   <div class="col-md-6">
      <h2>{{__('Revenue')}}</h2>
@@ -180,3 +181,4 @@
     </div>
 @include('new_layouts.footer')
 <script src="{{ asset('assets/js/plugins/flatpickr.min.js') }}"></script>
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>

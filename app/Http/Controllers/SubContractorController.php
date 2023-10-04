@@ -38,7 +38,7 @@ class SubContractorController extends Controller
                 }],
             ])->where('created_by', '=', $user->creatorId())->where('type', '=', 'sub_contractor')->paginate(8);
 
-            return view('subContractor.index')->with('users', $users);
+            return view('subcontractor.index')->with('users', $users);
         }
         else {
             return redirect()->back();
@@ -52,7 +52,7 @@ class SubContractorController extends Controller
                 ->where('module', '=', 'subcontractor')->get();
             $country = Utility::getcountry();
 
-            return view('subContractor.create', compact('customFields','country'));
+            return view('subcontractor.create', compact('customFields','country'));
         } else {
             return redirect()->back();
         }
@@ -125,7 +125,7 @@ class SubContractorController extends Controller
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('Invite Sub Contractor', [$subconsult->id => $subconsult->email], $userArr);
+        Utility::sendEmailTemplate(Config::get('constants.INSR'), [$subconsult->id => $subconsult->email], $userArr);
            
 
         $setings = Utility::settings();
@@ -138,11 +138,12 @@ class SubContractorController extends Controller
                 'email' => $subconsult->email,
                 'password' => $subconsult->password,
             ];
-            Utility::sendEmailTemplate('Create Sub Contractor', [$subconsult->id => $subconsult->email], $userArr);
+            Utility::sendEmailTemplate(Config::get('constants.SR_CONSULTANT'),
+                    [$subconsult->id => $subconsult->email], $userArr);
 
         }
 
-        return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+        return redirect()->route('subcontractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
     }
 
     public function normal_store(Request $request)
@@ -213,7 +214,7 @@ class SubContractorController extends Controller
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('Invite Sub Contractor', [$usersubcon->id => $usersubcon->email], $userarr);
+        Utility::sendEmailTemplate(Config::get('constants.INSR'), [$usersubcon->id => $usersubcon->email], $userarr);
 
         if ($setings['create_sub_contractor'] == 1) {
             $usersubcon->password = $psw;
@@ -224,9 +225,10 @@ class SubContractorController extends Controller
                 'password' => $usersubcon->password,
             ];
 
-            Utility::sendEmailTemplate('Create Sub Contractor', [$usersubcon->id => $usersubcon->email], $userarray);
+            Utility::sendEmailTemplate(Config::get('constants.SR_CONSULTANT'),
+                    [$usersubcon->id => $usersubcon->email], $userarray);
 
-            return redirect()->route('subContractor.index')
+            return redirect()->route('subcontractor.index')
                              ->with('success', Config::get('constants.subcontractor_MAIL'));
         }
         else {
@@ -314,7 +316,7 @@ class SubContractorController extends Controller
             'company_name' => \Auth::user()->company_name,
             'email' => \Auth::user()->email,
         ];
-        Utility::sendEmailTemplate('invite_sub_contractor', [$subcon->id => $subcon->email], $userArr);
+        Utility::sendEmailTemplate(Config::get('constants.INSR'), [$subcon->id => $subcon->email], $userArr);
 
         $setings = Utility::settings();
 
@@ -326,10 +328,11 @@ class SubContractorController extends Controller
                 'email' => $subcon->email,
                 'password' => $subcon->password,
             ];
-            Utility::sendEmailTemplate('create_sub_contractor', [$subcon->id => $subcon->email], $userArr);
+            Utility::sendEmailTemplate(Config::get('constants.SR_CONSULTANT'),
+                    [$subcon->id => $subcon->email], $userArr);
         }
 
-        return redirect()->route('subContractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
+        return redirect()->route('subcontractor.index')->with('success', Config::get('constants.subcontractor_MAIL'));
     }
 
     public function createConnection(Request $request)
@@ -420,7 +423,7 @@ class SubContractorController extends Controller
 
         CustomField::saveData($user, $request->customField);
 
-        return redirect()->route('subContractor.index')->with(
+        return redirect()->route('subcontractor.index')->with(
             'success', __('Consultant successfully updated.')
         );
     }
@@ -498,7 +501,7 @@ class SubContractorController extends Controller
         Utility::employeeDetailsUpdate($user->id, \Auth::user()->creatorId());
         CustomField::saveData($user, $request->customField);
 
-        return redirect()->route('subContractor.index')->with(
+        return redirect()->route('subcontractor.index')->with(
             'success', __('Sub Contractor successfully updated.')
         );
     }
@@ -510,7 +513,7 @@ class SubContractorController extends Controller
         try {
             $eId = \Crypt::decrypt($id);
             $user = User::find($eId);
-            return view('subContractor.reset', compact('user'));
+            return view('subcontractor.reset', compact('user'));
 
         }
         catch (Exception $e) {
@@ -539,7 +542,7 @@ class SubContractorController extends Controller
                 'password' => Hash::make($request->password),
             ])->save();
 
-            return redirect()->route('subContractor.index')->with(
+            return redirect()->route('subcontractor.index')->with(
                 'success', __('Sub Contractor Password successfully updated.')
             );
 
@@ -629,11 +632,11 @@ class SubContractorController extends Controller
                     'email' => \Auth::user()->email,
                 ];
 
-                Utility::sendEmailTemplate('invite_sub_contractor', [$cid => \Auth::user()->email], $userarr);
+                Utility::sendEmailTemplate('Invite Sub Contractor', [$cid => \Auth::user()->email], $userarr);
 
             }
 
-            return redirect()->route('subContractor.index')
+            return redirect()->route('subcontractor.index')
                 ->with('success', __('Sub Contractor Invitation Sent Successfully.'));
 
         }

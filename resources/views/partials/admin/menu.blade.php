@@ -801,9 +801,9 @@
                                 @endcan
                                 @can('manage sub contractor')
                                     <li class="dash-item dash-hasmenu {{ (Request::route()->getName() ==
-                                     'subContractor.index' || Request::route()->getName() == 'subContractor.create' ||
-                                    Request::route()->getName() == 'subContractor.edit') ? ' active' : '' }}">
-                                        <a href="{{ route('subContractor.index') }}" class="dash-link">
+                                     'subcontractor.index' || Request::route()->getName() == 'subcontractor.create' ||
+                                    Request::route()->getName() == 'subcontractor.edit') ? ' active' : '' }}">
+                                        <a href="{{ route('subcontractor.index') }}" class="dash-link">
                                             <span class="dash-micon"><i class="ti ti-users"></i></span>
                                             <span class="dash-mtext">{{__('Sub Contractor')}}</span>
                                         </a>
@@ -1059,10 +1059,10 @@
                     @endcan
 
                     @can('manage sub contractor')
-                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'subContractor.index' ||
-                          Request::route()->getName() == 'subContractor.create' ||
-                          Request::route()->getName() == 'subContractor.edit') ? ' active' : '' }}">
-                            <a href="{{ route('subContractor.index') }}" class="dash-link">
+                        <li class="dash-item dash-hasmenu {{ (Request::route()->getName() == 'subcontractor.index' ||
+                          Request::route()->getName() == 'subcontractor.create' ||
+                          Request::route()->getName() == 'subcontractor.edit') ? ' active' : '' }}">
+                            <a href="{{ route('subcontractor.index') }}" class="dash-link">
                                 <span class="dash-micon"><i class="ti ti-users"></i></span>
                                 <span class="dash-mtext">{{__('Sub Contractor')}}</span>
                             </a>

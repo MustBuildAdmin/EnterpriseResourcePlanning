@@ -4268,7 +4268,7 @@ Route::any('invitation_status', 'ConsultantController@store_invitation_status')
 
 /* Sub Contractor Start */
 
-Route::resource('subContractor', 'SubContractorController')->middleware(
+Route::resource('subcontractor', 'SubContractorController')->middleware(
     [
         'auth',
         'XSS',
@@ -4276,8 +4276,8 @@ Route::resource('subContractor', 'SubContractorController')->middleware(
     ]
 );
 
-Route::post('save_subContractor', 'SubContractorController@normal_store')
-->name('save_subContractor')
+Route::post('save_subcontractor', 'SubContractorController@normal_store')
+->name('save_subcontractor')
 ->middleware(
     [
         'auth',
@@ -4286,8 +4286,8 @@ Route::post('save_subContractor', 'SubContractorController@normal_store')
     ]
 );
 
-Route::any('subContractorStore', 'SubContractorController@subContractorStore')
-->name('subContractorStore')->middleware(
+Route::any('subcontractorstore', 'SubContractorController@subContractorStore')
+->name('subcontractorstore')->middleware(
     [
         'auth',
         'XSS',
@@ -4295,8 +4295,8 @@ Route::any('subContractorStore', 'SubContractorController@subContractorStore')
     ]
 );
 
-Route::any('update_subContractor/{id}', 'SubContractorController@update_subContractor')
-->name('subContractor.update_subContractor')
+Route::any('update_subcontractor/{id}', 'SubContractorController@update_subContractor')
+->name('subcontractor.update_subcontractor')
 ->middleware(
     [
         'auth',
@@ -4306,7 +4306,7 @@ Route::any('update_subContractor/{id}', 'SubContractorController@update_subContr
 );
 
 Route::get('get_company_details/{id}', 'SubContractorController@get_company_details')
-->name('subContractor.get_company_details')->middleware(
+->name('subcontractor.get_company_details')->middleware(
     [
         'auth',
         'XSS',
@@ -4315,10 +4315,10 @@ Route::get('get_company_details/{id}', 'SubContractorController@get_company_deta
 );
 
 Route::post('subcontractor-reset-password/{id}', 'SubContractorController@userPasswordReset')
-    ->name('subContractor.password.update');
+    ->name('subcontractor.password.update');
 
 Route::any('invite_sub_contractor', 'SubContractorController@invite_sub_contractor')
-->name('subContractor.invite_sub_contractor')->middleware(
+->name('subcontractor.invite_sub_contractor')->middleware(
     [
         'auth',
         'XSS',
@@ -4326,8 +4326,8 @@ Route::any('invite_sub_contractor', 'SubContractorController@invite_sub_contract
     ]
 );
 
-Route::get('subContractor-scott-search', 'SubContractorController@scott_search')
-->name('subContractor.scott-search')->middleware(
+Route::get('subcontractor-scott-search', 'SubContractorController@scott_search')
+->name('subcontractor.scott-search')->middleware(
     [
         'auth',
         'XSS',
@@ -4335,8 +4335,8 @@ Route::get('subContractor-scott-search', 'SubContractorController@scott_search')
     ]
 );
 
-Route::any('subContractor-scott-result', 'SubContractorController@scott_result')
-->name('subContractor.scott-result')->middleware(
+Route::any('subcontractor-scott-result', 'SubContractorController@scott_result')
+->name('subcontractor.scott-result')->middleware(
     [
         'auth',
         'XSS',
@@ -4344,7 +4344,7 @@ Route::any('subContractor-scott-result', 'SubContractorController@scott_result')
     ]
 );
 
-Route::get('subContractor/edit/{id}/{color_code}', 'SubContractorController@edit')->name('subContractor.edit.new')
+Route::get('subcontractor/edit/{id}/{color_code}', 'SubContractorController@edit')->name('subcontractor.edit.new')
 ->middleware(
     [
         'auth',
@@ -4353,10 +4353,10 @@ Route::get('subContractor/edit/{id}/{color_code}', 'SubContractorController@edit
     ]
 );
 
-Route::any('subContractor-reset-password/{id}', 'SubContractorController@userPassword')->name('subContractor.reset');
+Route::any('subcontractor-reset-password/{id}', 'SubContractorController@userPassword')->name('subcontractor.reset');
 
-Route::any('subContractor-seach_result', 'SubContractorController@seach_result')
-->name('subContractor.seach_result')->middleware(
+Route::any('subcontractor-seach_result', 'SubContractorController@seach_result')
+->name('subcontractor.seach_result')->middleware(
     [
         'auth',
         'XSS',
@@ -4364,8 +4364,8 @@ Route::any('subContractor-seach_result', 'SubContractorController@seach_result')
     ]
 );
 
-Route::any('subContractor_invitation_status', 'SubContractorController@store_invitation_status')
-->name('subContractor.subContractor_invitation_status')->middleware(
+Route::any('subcontractor_invitation_status', 'SubContractorController@store_invitation_status')
+->name('subcontractor.subcontractor_invitation_status')->middleware(
     [
         'auth',
         'XSS',
@@ -4373,8 +4373,8 @@ Route::any('subContractor_invitation_status', 'SubContractorController@store_inv
     ]
 );
 
-Route::any('subContractorDashboard', 'DashboardController@subContractorDashboard')
-->name('subContractorDashboard')->middleware(
+Route::any('subcontractordashboard', 'DashboardController@subContractorDashboard')
+->name('subcontractordashboard')->middleware(
     [
         'auth',
         'XSS',
