@@ -34,6 +34,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Session;
+use Dhtmlx\Gantt\Gantt;
 
 class ProjectController extends Controller
 {
@@ -2931,4 +2932,33 @@ class ProjectController extends Controller
 
         return $result;
     }
+
+    public function calculateCriticalPath(Request $request)
+    {
+        // Get the DHTMLX Gantt data.
+        $ganttData = $request->input('ganttData');
+        dd($ganttData);
+
+        // Calculate the Early Start (ES) and Early Finish (EF) for each task.
+        $gantt = new Gantt($ganttData);
+        $gantt->calculateEarlyStartAndFinish();
+
+        // Calculate the Late Start (LS) and Late Finish (LF) for each task.
+        $gantt->calculateLateStartAndFinish();
+
+        // Calculate the Float or Slack for each task.
+        $gantt->calculateFloatAndSlack();
+
+        // Identify the tasks that have no float or slack.
+        $criticalPathTasks = [];
+        foreach ($gantt->getTasks() as $task) {
+            if ($task->getFloat() === 0) {
+                $criticalPathTasks[] = $task;
+            }
+        }
+
+        // Return the Critical Path tasks.
+        return response()->json($criticalPathTasks, 200);
+    }
+
 }

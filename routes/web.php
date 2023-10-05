@@ -3039,6 +3039,12 @@ Route::any('con_taskupdate', 'ProjectController@taskupdate')->name('con_taskupda
 // ]
 //     );
 // end
+Route::any('calculate_critical_path', 'projectcontroller@calculateCriticalPath')->name('projects.calculate_critical_path')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::get(
     'taskboard-view', [
         'as' => 'project.taskboard.view',

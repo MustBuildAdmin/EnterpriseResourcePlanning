@@ -581,6 +581,8 @@
                     keyboard_navigation: true,
                     auto_scheduling: true
                 });
+                gantt.config.highlight_critical_path = true;
+
                 gantt.ext.fullscreen.getFullscreenElement = function() {
                     return document.getElementById("additional_elements");
                 }
@@ -1133,6 +1135,30 @@
                                 break;
                         }
                     };
+
+                 
+   
+    var form = $(this).closest("form").attr('id');
+    var url = "{{route('projects.calculate_critical_path')}}";
+    var data = new FormData();
+    $.ajax({
+        url: url,
+        method: 'GET',
+        enctype: 'multipart/form-data',
+        data: data,
+        cache: false,
+        processData: false,
+        contentType : false,
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+    });
+
+                    
+    
                 });
 </script>
 <style>
