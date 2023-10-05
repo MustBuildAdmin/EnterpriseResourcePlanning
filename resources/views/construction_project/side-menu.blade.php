@@ -14,6 +14,12 @@
     .navbar-expand-lg {
         top: 4.8em !important;
     }
+    .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu
+    .dropdown-item.active, .navbar-vertical.navbar-expand-lg
+    .navbar-collapse .dropdown-menu .dropdown-item:active {
+    background: var(--tblr-navbar-active-bg) !important;
+    color:black !important;
+}
 </style>
 <div class="page">
     <!-- Sidebar  -->
@@ -26,7 +32,8 @@
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav pt-lg-3">
                     <li class="nav-item">
-                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
+                        <a href="{{ route('projects.show', $project_id) }}"
+                           class="{{ (Request::route()->getName() == 'projects.show') ?'nav-link active' :'nav-link'}}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -43,7 +50,13 @@
                     </li>
 
                     <li class=" nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#planning" data-bs-toggle="dropdown"
+                        <a class="{{ (Request::route()->getName() == 'projects.gantt'
+                            || Request::route()->getName() == 'revision'
+                            || Request::route()->getName() == 'project_report.revsion_task_list'
+                            || Request::route()->getName() == 'taskBoard.view'
+                            || Request::route()->getName() == 'project_report.view_task_report')
+                            ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
+                            href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
@@ -64,7 +77,8 @@
                                 <div class="dropdown-menu-column">
                                     @can('view grant chart')
                                         <a href="{{ route('projects.gantt', $project_id) }}"
-                                            class="dropdown-item">{{ __('Gantt') }}</a>
+                                        class="{{ (Request::route()->getName() == 'projects.gantt')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
                                     @endcan
 
                                     @if($checMicroProgram == 1)
@@ -74,19 +88,23 @@
                                     
                                     @if(Session::get('current_revision_freeze')==1)
                                         <a href="{{ url('revision') }}"
-                                        class="dropdown-item">{{ __('Revision') }}</a>
+                                        class="{{ (Request::route()->getName() == 'revision')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revision') }}</a>
                                     @endif
 
                                     @if(session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
-                                            class="dropdown-item">{{ __('Revised Program') }}</a>
+                                        class="{{ (Request::route()->getName() == 'project_report.revsion_task_list')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
                                     @endif
 
                                     <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="dropdown-item">{{ __('Task Workdone') }}</a>
+                                        class="{{ (Request::route()->getName() == 'taskBoard.view')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Workdone') }}</a>
 
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
-                                        class="dropdown-item">{{ __('Task Reports') }}</a>
+                                        class="{{ (Request::route()->getName() == 'project_report.view_task_report')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Reports') }}</a>
 
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')

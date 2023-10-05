@@ -29,5 +29,6 @@ return [
     'IN_CONSULTANT'=>'Invite Consultant',
     'CR_CONSULTANT'=>'Create Consultant',
     'SR_CONSULTANT'=>'Create Sub Contractor',
-    'INSR'=>'Invite Sub Contractor'
+    'INSR'=>'Invite Sub Contractor',
+    'URL'=>'/storage/uploads/avatar/avatar.png'
 ];
