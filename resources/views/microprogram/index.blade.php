@@ -61,67 +61,9 @@
 
 @include('new_layouts.footer')
 <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('litepicker/litepicker.js') }}"></script>
-
 <script>
     new DataTable('#schedule_table', {
         pagingType: 'full_numbers',
         aaSorting: []
-    });
-
-    document.addEventListener("DOMContentLoaded", function() {
-        window.Litepicker && (new Litepicker({
-            element: document.getElementById('schedule-start-date'),
-            elementEnd: document.getElementById('schedule-end-date'),
-            singleMode: false,
-            allowRepick: true,
-            buttonText: {
-                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-
-                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
-            },
-        }));
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        window.Litepicker && (new Litepicker({
-            element: document.getElementById('start-date'),
-            elementEnd: document.getElementById('end-date'),
-            singleMode: false,
-            allowRepick: true,
-            buttonText: {
-                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-
-                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
-            },
-        }));
-    });
-    document.querySelectorAll(".sortable").forEach(node => {
-        new Sortable(node, {
-            group: 'scoreboard',
-            direction: 'vertical',
-            animation: 250,
-            scroll: true,
-            bubbleScroll: true,
-            onMove: function(evt, originalEvent) {
-                if (
-                    evt.dragged.classList.contains("group") &&
-                    evt.to.classList.contains("group__goals")
-                ) {
-                    return false;
-                }
-            }
-        });
     });
 </script>

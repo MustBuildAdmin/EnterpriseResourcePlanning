@@ -32,7 +32,7 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_start_date" class="form-control" placeholder="Select a End date" id="schedule-start-date" />
+            <input name="schedule_start_date" class="form-control" placeholder="Select a End date" id="schedule_start_date" />
         </div>
     </div>
     <div class="mb-3">
@@ -51,7 +51,7 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_end_date" class="form-control" placeholder="Select a End date" id="schedule-end-date" />
+            <input name="schedule_end_date" class="form-control" placeholder="Select a End date" id="schedule_end_date" />
         </div>
     </div>
 
@@ -67,10 +67,10 @@
 {{ Form::close() }}
 <script src="{{ asset('litepicker/litepicker.js') }}"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        window.Litepicker && (new Litepicker({
-            element: document.getElementById('schedule-start-date'),
-            elementEnd: document.getElementById('schedule-end-date'),
+    $(function () {
+        const picker = new Litepicker({ 
+            element: document.getElementById('schedule_start_date'),
+            elementEnd: document.getElementById('schedule_end_date'),
             singleMode: false,
             allowRepick: true,
             buttonText: {
@@ -84,25 +84,6 @@
                 stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
                 fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
             },
-        }));
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        window.Litepicker && (new Litepicker({
-            element: document.getElementById('schedule-start-date'),
-            elementEnd: document.getElementById('schedule-end-date'),
-            singleMode: false,
-            allowRepick: true,
-            buttonText: {
-                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-
-                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
-            },
-        }));
+        });
     });
 </script>
