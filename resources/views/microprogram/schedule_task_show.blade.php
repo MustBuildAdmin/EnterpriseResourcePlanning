@@ -11,9 +11,9 @@
                     <div class="card-header">
                         <h1 class="mb-0">{{ __('Micro Planning') }}</h1>
                         <div class="card-actions">
-                            <a href="#" class="btn btn-primary pull-right">
+                            <button class="btn btn-primary pull-right" onclick="scheduleStart()">
                                 Start the Schedule
-                            </a>
+                            </button>
                         </div>
                     </div>
                     
@@ -53,10 +53,92 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="group__goals sortable_microschedule">
-                                                    {{-- <div class="col-md-4 py-3  border-end">
-                                                        <div class="datagrid-title">No Schedule Found
+                                                    @forelse ($microSchedule as $key_sort => $microschedule)
+                                                        @php $key_sort++; @endphp
+                                                        <div class="card" data-task_id="{{ $microschedule->main_id }}" data-sortnumber="{{$key_sort}}">
+                                                            <div class="row">
+                                                                <div
+                                                                    class="col-md-1 py-3  border-end bg-primary text-white">
+                                                                    <div class="datagrid-title text-white">Micro Id
+                                                                    </div>
+                                                                    <div class="datagrid-content">
+                                                                        {{ $microschedule->id }}</div>
+                                                                </div>
+                                                                <div class="col-md-5 p-3">
+                                                                    <div class="datagrid-title ">Task Name</div>
+                                                                    <div class="datagrid-content">
+                                                                        {{ $microschedule->text }}</div>
+                                                                </div>
+                                                                <div class="col-md-2 p-3">
+                                                                    <div class="datagrid-title">Start Date</div>
+                                                                    <div class="datagrid-content">
+                                                                        {{ Utility::site_date_format($microschedule->start_date, \Auth::user()->id) }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2 p-3">
+                                                                    <div class="datagrid-title">End date</div>
+                                                                    <div class="datagrid-content">
+                                                                        {{ Utility::site_date_format($microschedule->end_date, \Auth::user()->id) }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2 p-3">
+                                                                    <div class="datagrid-title">Assignees</div>
+                                                                    @php
+                                                                        if ($microschedule->users != '') {
+                                                                            $users_data_micro = json_decode($microschedule->users);
+                                                                        } else {
+                                                                            $users_data_micro = [];
+                                                                        }
+                                                                    @endphp
+                                                                    <div class="datagrid-content">
+                                                                        <div
+                                                                            class="avatar-list avatar-list-stacked">
+                                                                            @forelse ($users_data_micro as $key => $get_user)
+                                                                                @php
+                                                                                    $user_db = DB::table('users')
+                                                                                        ->where('id', $get_user)
+                                                                                        ->first();
+                                                                                @endphp
+                                                                                @if ($key < 3)
+                                                                                    @if ($user_db->avatar)
+                                                                                        <a href="#"
+                                                                                            class="avatar rounded-circle avatar-sm">
+                                                                                            @if ($user_db->avatar)
+                                                                                                <span
+                                                                                                    class="avatar avatar-xs rounded"
+                                                                                                    style="background-image:
+                                                                                                url({{ asset('/storage/uploads/avatar/' . $user_db->avatar) }})">
+                                                                                                </span>
+                                                                                            @else
+                                                                                                <span
+                                                                                                    class="avatar avatar-xs rounded"
+                                                                                                    style="background-image:
+                                                                                                url({{ asset('/storage/uploads/avatar/avatar.png') }})">
+                                                                                                </span>
+                                                                                            @endif
+                                                                                        </a>
+                                                                                    @else
+                                                                                        <?php $short = substr($user_db->name, 0, 1); ?>
+                                                                                        <span
+                                                                                            class="avatar avatar-xs rounded">{{ strtoupper($short) }}</span>
+                                                                                    @endif
+                                                                                @endif
+                                                                            @empty
+                                                                                {{ __('Not Assigned') }}
+                                                                            @endforelse
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                    
+                                                            </div>
                                                         </div>
-                                                    </div> --}}
+                                                    @empty
+                                                        <div
+                                                            class="col-md-4 py-3  border-end bg-primary text-white">
+                                                            <div class="datagrid-title text-white">No Schedule Found
+                                                            </div>
+                                                        </div>
+                                                    @endforelse
                                                 </div>
                                             </div>
                                         </div>
@@ -92,8 +174,9 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="pt-3 group__goals sortable_task">
-                                                @forelse ($weekSchedule as $schedule)
-                                                    <div class="card" data-task_id="{{ $schedule->id }}">
+                                                @forelse ($weekSchedule as $key_sort => $schedule)
+                                                    @php $key_sort++; @endphp
+                                                    <div class="card" data-task_id="{{ $schedule->main_id }}" data-sortnumber="{{$key_sort}}">
                                                         <div class="row">
                                                             <div
                                                                 class="col-md-1 py-3  border-end bg-primary text-white">
@@ -257,13 +340,69 @@
                 }
 
             },
-            setData: function (/** DataTransfer */dataTransfer, /** HTMLElement*/dragEl) {
-                console.log("setData");
-                dataTransfer.setData('Text', dragEl.textContent);
+            onAdd: function (/**Event*/evt) {
+                
             },
-            onUpdate: function (/**Event*/evt) {
-                console.log("onUpdate");
-            },
+            onSort: function (/**Event*/evt) {
+                console.log("ll");
+                $(".sortable_microschedule .card").each(function(index) {
+                    index++;
+                    $(this).attr('data-sortnumber',index);
+                });
+            }
         });
     });
+
+    function scheduleStart(){
+        
+        schedule_id   = $("#schedule_id").val();
+        schedulearray = getData();
+        console.log("schedulearray",schedulearray);
+
+        $.ajax({
+            url : '{{route("mainschedule_store")}}',
+            type : 'POST',
+            data : {
+                'schedulearray' : schedulearray,
+                'schedule_id' : schedule_id,
+                '_token' : '{{ csrf_token() }}',
+            },
+            success : function(data_check) {
+                if(data_check == 1){
+                    toastr.success("Micro Planning Scheduled");
+                }
+                else if(data_check == 2){
+                    toastr.warning("OOPS! Your schedule is start runing, So can't be modify!");
+                }
+                else if(data_check == 0){
+                    toastr.warning("Please Drag and Drop the Task List into the Micro Planning");
+                }
+                else{
+                    toastr.error("Somenthing went wrong!");
+                }
+            },
+            error : function(request,error)
+            {
+                alert("Request: "+JSON.stringify(request));
+            }
+        });
+    }
+
+    function getData(){
+        schedulearray = [];
+        innerarray    = [];
+
+        $(".sortable_microschedule .card").each(function(index) {
+            order_number = $(this).data('sortnumber');
+            task_id      = $(this).data('task_id');
+
+            console.log("order_number",order_number);
+            console.log("task_id",task_id);
+
+            innerarray = {'sort_number':order_number,'task_id':task_id};
+            schedulearray.push(innerarray);
+        });
+
+        return schedulearray;
+    }
 </script>
