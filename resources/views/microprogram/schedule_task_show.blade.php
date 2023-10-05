@@ -1,7 +1,4 @@
 @include('new_layouts.header')
-{{-- @extends('layouts.admin') --}}
-<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
-
 <div class="page-wrapper">
     @include('construction_project.side-menu')
     <div class="container-fluid" id="taskboard_view">
@@ -354,7 +351,6 @@
     });
 
     function scheduleStart(){
-        
         schedule_id   = $("#schedule_id").val();
         schedulearray = getData();
         console.log("schedulearray",schedulearray);
@@ -391,7 +387,7 @@
     function getData(){
         schedulearray = [];
         innerarray    = [];
-
+       
         $(".sortable_microschedule .card").each(function(index) {
             order_number = $(this).data('sortnumber');
             task_id      = $(this).data('task_id');
