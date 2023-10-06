@@ -59,6 +59,10 @@ Route::any('diary_data', 'DiaryController@diary_display_table')->name('diary_dat
 Route::get('/company-invitation-consultant/{id}','ConsultantController@createConnection')->middleware('guest');
 Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@submitConnection')->middleware('guest');
 
+Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
+Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
+->middleware('guest');
+
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
         'auth',
@@ -3980,6 +3984,28 @@ Route::get(
     ]
 );
 Route::get(
+    '/project/{id}/activities', [
+        'as' => 'project.activities',
+        'uses' => 'ProjectController@projectActivities',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    '/project/{id}/teammembers', [
+        'as' => 'project.teammembers',
+        'uses' => 'ProjectController@projectTeamMembers',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
     '/project/{id}/timesheet/create', [
         'as' => 'timesheet.create',
         'uses' => 'TimesheetController@timesheetCreate',
@@ -4198,14 +4224,7 @@ Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
     ->name('consultants.password.update');
 
-Route::get('consultant-scott-search', 'ConsultantController@scott_search')
-    ->name('consultant.scott-search')->middleware(
-        [
-            'auth',
-            'XSS',
-            'revalidate',
-        ]
-    );
+    
 
     Route::any('consultant-seach_result', 'ConsultantController@seach_result')
     ->name('consultant.seach_result')->middleware(
@@ -4227,14 +4246,7 @@ Route::get('consultant-scott-search', 'ConsultantController@scott_search')
 
     
 
-Route::any('consultant-scott-result', 'ConsultantController@scott_result')
-->name('consultant.scott-result')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
+
 
 Route::get('get_company_details/{id}', 'ConsultantController@get_company_details')
 ->name('consultant.get_company_details')->middleware(
@@ -4254,8 +4266,121 @@ Route::any('invitation_status', 'ConsultantController@store_invitation_status')
     ]
 );
 
+/* Sub Contractor Start */
 
+Route::resource('subcontractor', 'SubContractorController')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
+Route::post('save_subcontractor', 'SubContractorController@normal_store')
+->name('save_subcontractor')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subcontractorstore', 'SubContractorController@subContractorStore')
+->name('subcontractorstore')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('update_subcontractor/{id}', 'SubContractorController@update_subContractor')
+->name('subcontractor.update_subcontractor')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('get_company_details/{id}', 'SubContractorController@get_company_details')
+->name('subcontractor.get_company_details')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::post('subcontractor-reset-password/{id}', 'SubContractorController@userPasswordReset')
+    ->name('subcontractor.password.update');
+
+Route::any('invite_sub_contractor', 'SubContractorController@invite_sub_contractor')
+->name('subcontractor.invite_sub_contractor')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('subcontractor-scott-search', 'SubContractorController@scott_search')
+->name('subcontractor.scott-search')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subcontractor-scott-result', 'SubContractorController@scott_result')
+->name('subcontractor.scott-result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::get('subcontractor/edit/{id}/{color_code}', 'SubContractorController@edit')->name('subcontractor.edit.new')
+->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subcontractor-reset-password/{id}', 'SubContractorController@userPassword')->name('subcontractor.reset');
+
+Route::any('subcontractor-seach_result', 'SubContractorController@seach_result')
+->name('subcontractor.seach_result')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subcontractor_invitation_status', 'SubContractorController@store_invitation_status')
+->name('subcontractor.subcontractor_invitation_status')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('subcontractordashboard', 'DashboardController@subContractorDashboard')
+->name('subcontractordashboard')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
 
 Route::resource('plans', 'PlanController')->middleware(
@@ -4890,6 +5015,42 @@ Route::post('api/fetch_user_details', 'ProjectReportController@fetch_user_detail
 );
 
 Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_details')->name('project_report.fetch_task_details')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+/* Micro Program Start */
+Route::any('microprogram', 'MicroPorgramController@microprogram')->name('microprogram')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')->name('microprogram_create')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('schedule_store', 'MicroPorgramController@schedule_store')->name('schedule_store')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show')->name('schedule_task_show')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('mainschedule_store', 'MicroPorgramController@mainschedule_store')->name('mainschedule_store')->middleware(
     [
         'auth',
         'XSS',

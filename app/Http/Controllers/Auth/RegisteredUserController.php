@@ -131,14 +131,17 @@ class RegisteredUserController extends Controller
             ExperienceCertificate::defaultExpCertificatRegister($user->id);
             JoiningLetter::defaultJoiningLetterRegister($user->id);
             NOC::defaultNocCertificateRegister($user->id);
-
-            if ($request->type == 'company') {
-                $resp = Utility::sendEmailTemplateHTML('create_user_set_password',
+            switch($request->type) {
+                case 'company':
+     
+                    $resp = Utility::sendEmailTemplateHTML('create_user_set_password',
                     [$user->id => $user->email], $userArr);
                 event(new Registered($user));
 
                 return redirect()->route('login')->with('success_register', __($userArr['set_password_url']));
-            } else {
+     
+                case 'consultant':
+                     
                 $user->password = $request->password;
                 $user->type = 'consultant';
 
@@ -147,12 +150,32 @@ class RegisteredUserController extends Controller
                     'password' => $user->password,
                 ];
 
-                Utility::sendEmailTemplate('create_consultant', [$user->id => $user->email], $userArr);
+                Utility::sendEmailTemplate(Config::get('constants.CR_CONSULTANT'),
+                [$user->id => $user->email], $userArr);
                 event(new Registered($user));
 
-                return redirect()->route('login')->with('success', Config::get('constants.CONSULTANT_MAIL'));
-
+                return redirect()->route('login')->with('success',__(Config::get('constants.CONSULTANT_MAIL')));
+               
+                case 'sub_contractor':
+                     
+                    $user->password = $request->password;
+                    $user->type = 'sub_contractor';
+    
+                    $userArr = [
+                        'email' => $user->email,
+                        'password' => $user->password,
+                    ];
+    
+                    Utility::sendEmailTemplate(Config::get('constants.SR_CONSULTANT'), [$user->id => $user->email], $userArr);
+                    event(new Registered($user));
+    
+                    return redirect()->route('login')->with('success',__(Config::get('constants.subcontractor_MAIL')));
+     
+                default:
+                   
             }
+
+            
 
             // return \Redirect::to('login');
         }

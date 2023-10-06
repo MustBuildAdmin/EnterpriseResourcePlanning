@@ -152,6 +152,7 @@
               <option value=''>{{ __('Select Type') }}</option>
               <option value="company">{{ __('Company') }}</option>
               <option value="consultant">{{ __('Consultant') }}</option>
+              <option value="sub_contractor">{{ __('Sub Contractor') }}</option>
             </select>
           </div> @if (env('RECAPTCHA_MODULE') == 'on')
           <div class="mb-3">

@@ -4,7 +4,9 @@
     } else {
         $project_id = 0;
     }
-
+    
+    $microGet = App\Models\Project::where('id',$project_id)->first();
+    $checMicroProgram = $microGet != null ? $microGet->micro_program : 0;
     $setting = Utility::settings(\Auth::user()->creatorId());
 @endphp
 
@@ -12,6 +14,12 @@
     .navbar-expand-lg {
         top: 4.8em !important;
     }
+    .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu
+    .dropdown-item.active, .navbar-vertical.navbar-expand-lg
+    .navbar-collapse .dropdown-menu .dropdown-item:active {
+    background: var(--tblr-navbar-active-bg) !important;
+    color:black !important;
+}
 </style>
 <div class="page">
     <!-- Sidebar  -->
@@ -24,7 +32,8 @@
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav pt-lg-3">
                     <li class="nav-item">
-                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
+                        <a href="{{ route('projects.show', $project_id) }}"
+                           class="{{ (Request::route()->getName() == 'projects.show') ?'nav-link active' :'nav-link'}}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -41,7 +50,13 @@
                     </li>
 
                     <li class=" nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#planning" data-bs-toggle="dropdown"
+                        <a class="{{ (Request::route()->getName() == 'projects.gantt'
+                            || Request::route()->getName() == 'revision'
+                            || Request::route()->getName() == 'project_report.revsion_task_list'
+                            || Request::route()->getName() == 'taskBoard.view'
+                            || Request::route()->getName() == 'project_report.view_task_report')
+                            ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
+                            href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="false" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
@@ -62,21 +77,34 @@
                                 <div class="dropdown-menu-column">
                                     @can('view grant chart')
                                         <a href="{{ route('projects.gantt', $project_id) }}"
-                                            class="dropdown-item">{{ __('Gantt') }}</a>
+                                        class="{{ (Request::route()->getName() == 'projects.gantt')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
                                     @endcan
 
-                                    <a href="#" class="dropdown-item">{{ __('Micro Program') }}</a>
+                                    @if($checMicroProgram == 1)
+                                        <a href="{{ route('microprogram') }}"
+                                            class="dropdown-item">{{ __('Micro Program') }}</a>
+                                    @endif
+                                    
+                                    @if(Session::get('current_revision_freeze')==1)
+                                        <a href="{{ url('revision') }}"
+                                        class="{{ (Request::route()->getName() == 'revision')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revision') }}</a>
+                                    @endif
 
                                     @if(session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
-                                            class="dropdown-item">{{ __('Revised Program') }}</a>
+                                        class="{{ (Request::route()->getName() == 'project_report.revsion_task_list')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
                                     @endif
 
                                     <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="dropdown-item">{{ __('Task Workdone') }}</a>
+                                        class="{{ (Request::route()->getName() == 'taskBoard.view')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Workdone') }}</a>
 
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
-                                        class="dropdown-item">{{ __('Task Reports') }}</a>
+                                        class="{{ (Request::route()->getName() == 'project_report.view_task_report')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Reports') }}</a>
 
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
@@ -284,7 +312,7 @@
 
 
                     <li class="nav-item">
-                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
+                        <a href="{{ route('project.teammembers', $project_id) }}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -319,10 +347,8 @@
                             </span>
                             <span class="nav-link-title"> {{ __('Holidays') }} </span></a>
                     </li>
-
-
                     <li class="nav-item">
-                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
+                        <a href="{{ route('project.activities', $project_id) }}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -337,46 +363,6 @@
                                 </svg>
                             </span>
                             <span class="nav-link-title"> {{ __('History') }} </span></a>
-                    </li>
-
-                    @if(Session::get('current_revision_freeze')==1)
-                        <li class="nav-item">
-                            <a href="{{ url('revision') }}" class="nav-link">
-                                <span class=" d-md-none d-lg-inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M11.5 21h-5.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6">
-                                        </path>
-                                        <path d="M16 3v4"></path>
-                                        <path d="M8 3v4"></path>
-                                        <path d="M4 11h16"></path>
-                                        <path d="M15 19l2 2l4 -4"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-link-title"> {{ __('Revision') }} </span>
-                            </a>
-                        </li>
-                    @endif
-                    
-                    <li class="nav-item">
-                        <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
-                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
-                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
-                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                </svg>
-                            </span>
-                            <span class="nav-link-title"> {{ __('Project Activities') }} </span></a>
                     </li>
 
 

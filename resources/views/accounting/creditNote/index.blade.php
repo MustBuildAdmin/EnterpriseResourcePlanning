@@ -1,11 +1,9 @@
 @include('new_layouts.header')
 @include('accounting.side-menu')
-
-
-
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <div class="row">
   <div class="col-md-6">
-     <h2>Credit Notes</h2>
+     <h2>{{__('Credit Notes')}}</h2>
   </div>
   <div class="col-md-6 float-end">
 
@@ -33,7 +31,7 @@
                                 <th> {{__('Date')}}</th>
                                 <th> {{__('Amount')}}</th>
                                 <th> {{__('Description')}}</th>
-                                <th width="10%"> {{__('Action')}}</th>
+                                <th width="10%">{{__('Action')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -77,7 +75,5 @@
             </div>
       </div>
 </div>
-
-
-
 @include('new_layouts.footer')
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>

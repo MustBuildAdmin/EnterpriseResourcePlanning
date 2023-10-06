@@ -23,6 +23,8 @@ class RouteServiceProvider extends ServiceProvider
 
     public const CONSHOME = 'consultant_index';
 
+    public const SUBCONTRACTORHOME = 'subcontractordashboard';
+
     /**
      * The controller namespace for the application.
      *
