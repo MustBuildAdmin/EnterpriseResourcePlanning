@@ -37,7 +37,7 @@ if($delay>100){
     <div class="page-body">
       <div class="container-xl">
         <div class="row row-deck row-cards">
-          <div class="col-4">
+          <div class="col-lg-6 col-xl-4">
             <div class="card">
               <div class="card-body p-4 py-5 text-center">
                 @php
