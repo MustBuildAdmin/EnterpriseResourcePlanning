@@ -2042,7 +2042,7 @@ class ProjectController extends Controller
 
             return redirect()
                 ->back()
-                ->with("success", __("Freezed Status successfully changed."));
+                ->with("success", __("Baseline Status successfully changed."));
         } catch (Exception $e) {
             return $e->getMessage();
         }

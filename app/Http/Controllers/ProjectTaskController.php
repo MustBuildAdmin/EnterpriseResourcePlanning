@@ -2097,6 +2097,7 @@ class ProjectTaskController extends Controller
 
             return response()->json(
                 [
+                    'tasks'=>count($tasks),
                     'success' => true,
                     'all_task' => $returnHTML,
                 ]
