@@ -5021,6 +5021,42 @@ Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_detail
     ]
 );
 
+/* Micro Program Start */
+Route::any('microprogram', 'MicroPorgramController@microprogram')->name('microprogram')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')->name('microprogram_create')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('schedule_store', 'MicroPorgramController@schedule_store')->name('schedule_store')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show')->name('schedule_task_show')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('mainschedule_store', 'MicroPorgramController@mainschedule_store')->name('mainschedule_store')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report');
 Route::any('download_excel_report', 'ProjectReportController@download_excel_report')->name('download_excel_report');
 
