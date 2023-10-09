@@ -75,15 +75,22 @@
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
+                                    @if($checMicroProgram == 1)
+                                    <a href="{{ route('microprogram.gantt', $project_id) }}"
+                                    class="{{ (Request::route()->getName() == 'microprogram.gantt')
+                                    ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
+                                    @else
                                     @can('view grant chart')
-                                        <a href="{{ route('projects.gantt', $project_id) }}"
-                                        class="{{ (Request::route()->getName() == 'projects.gantt')
-                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
+                                    <a href="{{ route('projects.gantt', $project_id) }}"
+                                    class="{{ (Request::route()->getName() == 'projects.gantt')
+                                    ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
                                     @endcan
+                                    @endif
 
                                     @if($checMicroProgram == 1)
                                         <a href="{{ route('microprogram') }}"
-                                            class="dropdown-item">{{ __('Micro Program') }}</a>
+                                        class="{{ (Request::route()->getName() == 'microprogram')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Program') }}</a>
                                     @endif
                                     
                                     @if(Session::get('current_revision_freeze')==1)
