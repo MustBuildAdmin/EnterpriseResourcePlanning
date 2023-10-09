@@ -24,17 +24,30 @@
                             <table class="table table-vcenter card-table" id="schedule_table" aria-describedby="Sub Task">
                                 <thead>
                                     <tr>
+                                        <th scope="col">{{ __('Schedule ID') }}</th>
                                         <th scope="col">{{ __('Schedule Name') }}</th>
                                         <th scope="col">{{ __('Schedule Duration') }}</th>
                                         <th scope="col">{{ __('Schedule Start Date') }}</th>
                                         <th scope="col">{{ __('Schedule End Date') }}</th>
+                                        <th scope="col">{{ __('Schedule Status') }}</th>
                                         <th scope="col">{{ __('Schedule Goals') }}</th>
+                                        <th scope="col">{{ __('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list">
                                     @foreach ($MicroProgramScheduleModal as $microSchedule)
                                         <tr>
-                                            <td> <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">{{$microSchedule->schedule_name}}</a></td>
+                                            <td>
+                                                {{$microSchedule->id}}
+                                            </td>
+                                            <td>
+                                                @if($microSchedule->active_status == 1)
+                                                    <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">
+                                                    {{$microSchedule->schedule_name}}</a>
+                                                @else
+                                                    <a>{{$microSchedule->schedule_name}}</a>
+                                                @endif
+                                            </td>
                                             <td>{{$microSchedule->schedule_duration}}</td>
                                             <td>
                                                 {{ Utility::site_date_format($microSchedule->schedule_start_date,
@@ -44,7 +57,20 @@
                                                 {{ Utility::site_date_format($microSchedule->schedule_end_date,
                                                 \Auth::user()->id) }}
                                             </td>
+                                            <td>
+                                                @if($microSchedule->active_status == 1)
+                                                    <span class="badge bg-success me-1"></span> Active
+                                                @else
+                                                    <span class="badge bg-warning me-1"></span> In-schedule
+                                                @endif
+                                            </td>
                                             <td>{{$microSchedule->schedule_goals}}</td>
+                                            <td>
+                                                <input type="radio" class="schedule_change" id="schedule_change"
+                                                value="{{$microSchedule->id}}"
+                                                name="schedule_change"
+                                                @if($microSchedule->active_status == 1) checked @endif>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -52,8 +78,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -65,5 +89,33 @@
     new DataTable('#schedule_table', {
         pagingType: 'full_numbers',
         aaSorting: []
+    });
+
+    $('.schedule_change').change(function() {
+        schedule_data = this.value;
+
+        $.ajax({
+            url : '{{route("cheange_schedule_status")}}',
+            type : 'POST',
+            data : {
+                'schedule_data' : schedule_data,
+                '_token' : '{{ csrf_token() }}',
+            },
+            success : function(data_check) {
+                if(data_check == 1){
+                    toastr.success("Schedule Status Changed");
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }
+                else{
+                    toastr.error("Somenthing went wrong!");
+                }
+            },
+            error : function(request,error)
+            {
+                alert("Request: "+JSON.stringify(request));
+            }
+        });
     });
 </script>

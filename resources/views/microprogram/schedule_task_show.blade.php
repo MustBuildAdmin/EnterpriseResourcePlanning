@@ -6,7 +6,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="mb-0">{{ __('Micro Planning') }}</h1>
+                        <h1 class="mb-0">{{ __('Lookahead Schedule') }}</h1>
                         <div class="card-actions">
                             <button class="btn btn-primary pull-right" onclick="scheduleStart()">
                                 Start the Schedule
@@ -130,11 +130,7 @@
                                                             </div>
                                                         </div>
                                                     @empty
-                                                        <div
-                                                            class="col-md-4 py-3  border-end bg-primary text-white">
-                                                            <div class="datagrid-title text-white">No Schedule Found
-                                                            </div>
-                                                        </div>
+                                                        
                                                     @endforelse
                                                 </div>
                                             </div>

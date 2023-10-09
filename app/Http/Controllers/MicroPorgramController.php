@@ -9,6 +9,7 @@ use App\Models\Con_task;
 use App\Models\Instance;
 use App\Models\MicroProgramScheduleModal;
 use App\Models\MicroTask;
+use Carbon\CarbonPeriod;
 use Auth;
 use DB;
 
@@ -39,41 +40,63 @@ class MicroPorgramController extends Controller
     }
 
     public function microprogram_create(Request $request){
-        return view('microprogram.create');
+        $all_dates = "";
+        $project_id  = Session::get('project_id');
+        $instance_id = Session::get('project_instance');
+
+        $exist_shedule_date = MicroProgramScheduleModal::where('project_id',$project_id)
+            ->where('instance_id',$instance_id)
+            ->where('status',1)->get();
+
+        if(!empty($exist_shedule_date)){
+            foreach ($exist_shedule_date as $checkSchedule) {
+                $startDate = Carbon::createFromFormat('Y-m-d', $checkSchedule->schedule_start_date);
+                $endDate   = Carbon::createFromFormat('Y-m-d', $checkSchedule->schedule_end_date);
+                $all_dates = array();
+                while ($startDate->lte($endDate)){
+                    $all_dates[] = $startDate->toDateString();
+                    $startDate->addDay();
+                }
+            }
+
+            $all_dates = json_encode($all_dates);
+        }
+    
+        return view('microprogram.create')->with('all_dates',$all_dates);
+    }
+
+    public function cheange_schedule_status(Request $request){
+        $schedule_data = $request->schedule_data;
+        $project_id    = Session::get('project_id');
+        $instance_id   = Session::get('project_instance');
+
+        MicroProgramScheduleModal::where('project_id',$project_id)
+            ->where('instance_id',$instance_id)
+            ->update(['active_status'=>0]);
+
+        MicroProgramScheduleModal::where('project_id',$project_id)
+            ->where('instance_id',$instance_id)
+            ->where('id',$schedule_data)
+            ->update(['active_status'=>1]);
+
+        return 1;
     }
 
     public function schedule_store(Request $request){
         $project_id    = Session::get('project_id');
         $instance_id   = Session::get('project_instance');
-        $now           = Carbon::now();
-        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
-        $weekEndDate   = $now->endOfWeek()->format('Y-m-d');
-        $checkChedule = MicroProgramScheduleModal::where('project_id',$project_id)
-            ->where('instance_id',$instance_id)
-            ->where('status',1)
-            ->where(function ($query) use ($weekStartDate, $weekEndDate) {
-                $query->whereDate('insert_date', '>=', $weekStartDate);
-                $query->whereDate('insert_date', '<=', $weekEndDate);
-            })->first();
-            
-        if($checkChedule == null){
-            $schedule = new MicroProgramScheduleModal;
-
-            $schedule->schedule_name       = $request->schedule_name;
-            $schedule->project_id          = $project_id;
-            $schedule->instance_id         = $instance_id;
-            $schedule->schedule_duration   = $request->schedule_duration;
-            $schedule->schedule_start_date = $request->schedule_start_date;
-            $schedule->schedule_end_date   = $request->schedule_end_date;
-            $schedule->schedule_goals      = $request->schedule_goals;
-            $schedule->insert_date         = date('Y-m-d');
-            $schedule->save();
-
-            return redirect()->back()->with('error', __('Schedule Created'));
-        }
-        else{
-            return redirect()->back()->with('error', __('This Week Schedule already Created!'));
-        }
+    
+        $schedule                      = new MicroProgramScheduleModal;
+        $schedule->schedule_name       = $request->schedule_name;
+        $schedule->project_id          = $project_id;
+        $schedule->instance_id         = $instance_id;
+        $schedule->schedule_duration   = $request->schedule_duration;
+        $schedule->schedule_start_date = $request->schedule_start_date;
+        $schedule->schedule_end_date   = $request->schedule_end_date;
+        $schedule->schedule_goals      = $request->schedule_goals;
+        $schedule->insert_date         = date('Y-m-d');
+        $schedule->save();
+        
     }
 
     public function schedule_task_show(Request $request){

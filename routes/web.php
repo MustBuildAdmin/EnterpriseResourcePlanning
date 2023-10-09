@@ -5036,6 +5036,13 @@ Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')-
     ]
 );
 
+Route::any('cheange_schedule_status', 'MicroPorgramController@cheange_schedule_status')->name('cheange_schedule_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('schedule_store', 'MicroPorgramController@schedule_store')->name('schedule_store')->middleware(
     [
         'auth',
