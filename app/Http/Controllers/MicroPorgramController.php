@@ -9,6 +9,8 @@ use App\Models\Con_task;
 use App\Models\Instance;
 use App\Models\MicroProgramScheduleModal;
 use App\Models\MicroTask;
+use App\Models\ProjectTask;
+use App\Models\Utility;
 use Carbon\CarbonPeriod;
 use Auth;
 use DB;
@@ -165,6 +167,254 @@ class MicroPorgramController extends Controller
         }
         else {
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
+        }
+    }
+
+    public function micro_taskboard(Request $request){
+        if (Session::has('project_id')) {
+            $project_id  = Session::get('project_id');
+            $instance_id = Session::get('project_instance');
+            $freezeCheck = Instance::where('project_id', $project_id)
+                ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
+            if($freezeCheck == 1){
+                // Session::put('task_filter',$request->status);
+                $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
+                return view('microprogram.micro_taskboard',
+                    compact('tasks', 'project_id',));
+                
+                
+            }
+            else {
+                return redirect()->back()->with('error', __('Project Not Freezed.'));
+            }
+        } else {
+            return redirect()->route('construction_main')->with('error', __('Session Expired'));
+        }
+    }
+
+    public function micro_task_autocomplete(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = MicroTask::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->where('type','task')
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array();
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData);
+    }
+
+    public function micro_task_autocomplete_main(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = MicroTask::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->where('type','project')
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array();
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData);
+    }
+
+    public function micro_get_all_task(Request $request){
+        $project_id     = Session::get('project_id');
+        $instance_id    = Session::get('project_instance');
+        $get_start_date = $request->start_date;
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
+        $task_id_arr    = $request->task_id_arr;
+        $user_id_arr    = $request->user_id;
+
+        // 3 > Pending Task
+        // 4 > Completed Task
+
+        $setting = Utility::settings(\Auth::user()->creatorId());
+        if ($setting['company_type'] == 2) {
+
+            $tasks = MicroTask::select('micro_tasks.text', 'micro_tasks.users', 'micro_tasks.duration',
+                'micro_tasks.progress', 'micro_tasks.start_date', 'micro_tasks.end_date', 'micro_tasks.task_id as id',
+                'micro_tasks.instance_id', 'micro_tasks.id as main_id', 'pros.project_name',
+                'pros.id as project_id', 'pros.instance_id as pro_instance_id')
+                ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
+                ->whereNotNull('pros.instance_id')
+                ->where('micro_tasks.project_id', $project_id)
+                ->where('micro_tasks.instance_id', $instance_id)
+                ->where('micro_tasks.type', 'task');
+
+            if (\Auth::user()->type != 'company') {
+                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            }
+
+            if($task_id_arr != null){
+                $tasks->whereIn('micro_tasks.task_id',$task_id_arr);
+            }
+
+            if($get_start_date != null && $get_end_date != null){
+                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
+                    $query->whereDate('micro_tasks.start_date', '>=', $get_start_date);
+                    $query->whereDate('micro_tasks.end_date', '<', $get_end_date);
+                });
+            }
+
+            if($user_id_arr != null){
+                $tasks->where(function ($query) use ($user_id_arr) {
+                    foreach($user_id_arr as $get_user_id){
+                        if($get_user_id != ""){
+                            $query->orwhereJsonContains('micro_tasks.users', $get_user_id);
+                        }
+                    }
+                });
+            }
+
+            if($status_task != null){
+                if($status_task == "3"){
+                    $tasks->where('progress','<','100')
+                        ->whereDate('micro_tasks.end_date', '<', date('Y-m-d'));
+                }
+                elseif($status_task == "4"){
+                    $tasks->where('progress','>=','100');
+                }
+            }
+
+            if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
+
+                if(Session::get('task_filter')=='comp'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '=', '100');
+                    })
+                        ->orderBy('micro_tasks.end_date', 'DESC');
+
+                }elseif(Session::get('task_filter')=='ongoing'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '>', '0')->where('progress', '!=', '100')
+                        ->whereDate('micro_tasks.end_date', '>', date('Y-m-d'));
+                    })
+                        ->orderBy('micro_tasks.end_date', 'DESC');
+                }elseif(Session::get('task_filter')=='remaning'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '!=', '100');
+                    })
+                        ->orderBy('micro_tasks.end_date', 'DESC');
+                }elseif(Session::get('task_filter')=='pending'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '<', '100')
+                        ->whereDate('micro_tasks.end_date', '<', date('Y-m-d'));
+                    })
+                        ->orderBy('micro_tasks.end_date', 'DESC');
+                }else{
+                    $tasks->where(function($query) {
+                        $query->whereRaw('"'.date('Y-m-d').'"
+                            between date(`micro_tasks`.`start_date`) and date(`micro_tasks`.`end_date`)')
+                            ->orwhere('micro_tasks.progress', '<', '100')
+                            ->whereDate('micro_tasks.end_date', '<', date('Y-m-d'));
+                    })
+                        ->orderBy('micro_tasks.end_date', 'DESC');
+                }
+            }
+
+            $tasks = $tasks->get();
+
+            $returnHTML = view('microprogram.micro_all_task_list', compact('tasks', 'get_end_date'))->render();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'all_task' => $returnHTML,
+                ]
+            );
+        }
+    }
+
+    public function micro_main_task_list(Request $request){
+        $project_id     = Session::get('project_id');
+        $get_start_date = $request->start_date;
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
+        $task_id_arr    = $request->task_id_arr;
+        $instance_id    = Session::get('project_instance');
+
+        // 3 > Pending Task
+        // 4 > Completed Task
+
+        $setting  = Utility::settings(\Auth::user()->creatorId());
+        if($setting['company_type']==2){
+
+            $show_parent_task = MicroTask::select('micro_tasks.text','micro_tasks.users','micro_tasks.duration',
+                'micro_tasks.progress','micro_tasks.start_date','micro_tasks.end_date','micro_tasks.id as task_id',
+                'micro_tasks.instance_id','micro_tasks.id as main_id','pros.project_name',
+                'pros.id as project_id','pros.instance_id as pro_instance_id')
+                ->join('projects as pros','pros.id','micro_tasks.project_id')
+                ->where('micro_tasks.project_id', $project_id)
+                ->where('micro_tasks.instance_id', $instance_id)
+                ->where('micro_tasks.type','project');
+
+            if(\Auth::user()->type != 'company'){
+                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
+            }
+
+            if($task_id_arr != null){
+                $show_parent_task->whereIn('micro_tasks.id',$task_id_arr);
+            }
+
+            if($get_start_date != null && $get_end_date != null){
+                $show_parent_task->where(function ($query) use ($get_start_date, $get_end_date) {
+                    $query->whereDate('micro_tasks.start_date', '>=', $get_start_date);
+                    $query->whereDate('micro_tasks.end_date', '<', $get_end_date);
+                });
+            }
+
+            if($status_task != null){
+                if($status_task == "3"){
+                    $show_parent_task->where('progress','<','100')
+                        ->whereDate('micro_tasks.end_date', '<', date('Y-m-d'));
+                }
+                elseif($status_task == "4"){
+                    $show_parent_task->where('progress','>=','100');
+                }
+            }
+
+            if($task_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
+                $show_parent_task->orderBy('micro_tasks.end_date','DESC');
+            }
+
+            $show_parent_task = $show_parent_task->get();
+            
+            $returnHTML = view('microprogram.micro_main_task_list', compact('show_parent_task'))->render();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'main_task' => $returnHTML,
+                ]
+            );
         }
     }
 

@@ -97,10 +97,15 @@
                                         class="{{ (Request::route()->getName() == 'project_report.revsion_task_list')
                                         ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
                                     @endif
-
-                                    <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="{{ (Request::route()->getName() == 'taskBoard.view')
-                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Workdone') }}</a>
+                                    @if($checMicroProgram == 1)
+                                        <a href="{{ route('micro_taskboard') }}"
+                                            class="{{ (Request::route()->getName() == 'micro_taskboard.view')
+                                            ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Workdone') }}</a>
+                                    @else
+                                        <a href="{{ route('taskBoard.view', ['list']) }}"
+                                            class="{{ (Request::route()->getName() == 'taskBoard.view')
+                                            ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Workdone') }}</a>
+                                    @endif
 
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="{{ (Request::route()->getName() == 'project_report.view_task_report')

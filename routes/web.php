@@ -5029,6 +5029,24 @@ Route::any('microprogram', 'MicroPorgramController@microprogram')->name('micropr
     ]
 );
 
+Route::any('micro_taskboard', 'MicroPorgramController@micro_taskboard')->name('micro_taskboard')
+->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::get('micro_get_all_task', 'MicroPorgramController@micro_get_all_task')->name('micro_get_all_task')->middleware(['auth','XSS',]);
+Route::get('micro_main_task_list', 'MicroPorgramController@micro_main_task_list')->name('micro_main_task_list')
+->middleware(['auth','XSS',]);
+
+Route::get('micro_task_autocomplete', 'MicroPorgramController@micro_task_autocomplete')->name('micro_task_autocomplete')
+->middleware(['auth','XSS',]);
+
+Route::get('micro_task_autocomplete_main', 'MicroPorgramController@micro_task_autocomplete_main')->name('micro_task_autocomplete_main')
+->middleware(['auth','XSS',]);
+
 Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')->name('microprogram_create')->middleware(
     [
         'auth',
