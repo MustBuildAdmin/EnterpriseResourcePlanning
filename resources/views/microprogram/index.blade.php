@@ -70,6 +70,12 @@
                                                 value="{{$microSchedule->id}}"
                                                 name="schedule_change"
                                                 @if($microSchedule->active_status == 1) checked @endif>
+
+                                                @if($microSchedule->active_status == 1)
+                                                    Active
+                                                @else
+                                                    In-schedule
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
