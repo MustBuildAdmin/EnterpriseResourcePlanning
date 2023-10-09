@@ -305,7 +305,7 @@
 
 
                     <li class="nav-item">
-                        <a href="{{ route('project.teammembers', $project_id) }}" class="nav-link">
+                        <a href="{{ route('project.teammembers', $project_id) }}" class="{{ (Request::route()->getName() == 'project.teammembers')?'nav-link active':'nav-link'}}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -323,7 +323,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('project_holiday') }}" class="nav-link">
+                        <a href="{{ url('project_holiday') }}" class="{{ (Request::segment(1) == 'project_holiday')?'nav-link active':'nav-link'}}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
@@ -341,7 +341,7 @@
                             <span class="nav-link-title"> {{ __('Holidays') }} </span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('project.activities', $project_id) }}" class="nav-link">
+                        <a href="{{ route('project.activities', $project_id) }}" class="{{ (Request::route()->getName() == 'project.activities')?'nav-link active':'nav-link'}}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
