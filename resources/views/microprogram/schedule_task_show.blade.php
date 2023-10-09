@@ -6,7 +6,11 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="mb-0">{{ __('Lookahead Schedule') }}</h1>
+                        <h1 class="mb-0">{{ __('Lookahead Schedule') }} - 
+                            @if($scheduleGet->active_status == 1)
+                                <span style="color: rgb(47, 179, 68)">Active</span>
+                            @endif
+                        </h1>
                         <div class="card-actions">
                             <button class="btn btn-primary pull-right" onclick="scheduleStart()">
                                 Start the Schedule

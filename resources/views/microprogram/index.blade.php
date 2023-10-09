@@ -95,7 +95,7 @@
         schedule_data = this.value;
 
         $.ajax({
-            url : '{{route("cheange_schedule_status")}}',
+            url : '{{route("change_schedule_status")}}',
             type : 'POST',
             data : {
                 'schedule_data' : schedule_data,

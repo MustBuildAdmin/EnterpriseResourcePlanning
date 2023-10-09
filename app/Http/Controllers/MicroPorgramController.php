@@ -67,7 +67,7 @@ class MicroPorgramController extends Controller
         return view('microprogram.create')->with('all_dates',$all_dates);
     }
 
-    public function cheange_schedule_status(Request $request){
+    public function change_schedule_status(Request $request){
         $schedule_data = $request->schedule_data;
         $project_id    = Session::get('project_id');
         $instance_id   = Session::get('project_instance');
