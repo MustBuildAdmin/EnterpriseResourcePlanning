@@ -1110,19 +1110,16 @@
                                 break;
                                 case "update":
                                 return gantt.ajax.put(
-                                    "http://localhost/tracer/public/microtask/"+id"?_token={{ csrf_token() }}",
+                                    "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
                                     
                                     );
                                 break;
                                 case "delete":
                                 return gantt.ajax.del(
-                                    "http://localhost/tracer/public/microtask/"+id"?_token={{ csrf_token() }}",
+                                    "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
                                 );
                                 break;
                         }
-                        
-                        });
-                     
                         dp.setTransactionMode({
                             
                             mode: "REST",
@@ -1142,6 +1139,28 @@
                                 //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
                             }
                         });
+                        
+                        });
+                     
+                        // dp.setTransactionMode({
+                            
+                        //     mode: "REST",
+                        //     payload: {
+                        //         "_token": $('#csrf-token')[0].content,
+                        //     }
+                        // });
+                        // dp.init(gantt);
+                        // dp.attachEvent("onBeforeUpdate", function(id, state, data) {
+                        //     gantt.config.readonly = true;
+                        //     return true;
+                        // });
+                        // dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
+                        //     gantt.config.readonly = false;
+                        //     if (action == "inserted") {
+                        //         gantt.showLightbox(tid);
+                        //         //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+                        //     }
+                        // });
 
                       
                         //var dp = new gantt.dataProcessor("/erp/public/");
