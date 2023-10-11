@@ -1096,7 +1096,7 @@
                         // }
                     })
                     if (frezee_status_actual != 1) {
-                        var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
+                        var dp = new gantt.dataProcessor("http://localhost/tracer/public/");
                         //var dp = new gantt.dataProcessor("/erp/public/");
                         dp.init(gantt);
                         dp.setTransactionMode({

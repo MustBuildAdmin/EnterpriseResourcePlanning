@@ -127,7 +127,7 @@
     </div>
 </div>
 <div id="additional_elements" class="container-fluid mt-1 d-none">
-
+    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#tool-menu"
@@ -448,10 +448,10 @@
 
                 // check freeze status
 
-                var tempcsrf = '{!! csrf_token() !!}';
+                // var tempcsrf = '{!! csrf_token() !!}';
                 $.post("{{ route('projects.get_micro_freeze_status') }}", {
-                        _token: tempcsrf,
-                        project_id: {{ $project->id }}
+                    "_token": $('#token').val(),
+                        "project_id": {{ $project->id }}
                     },
                     function(resp, textStatus, jqXHR) {
 
@@ -475,9 +475,9 @@
                 // check freeze status
 
                 // check gantt task count
-                var tempcsrf1 = '{!! csrf_token() !!}';
+             
                 $.post("{{ route('projects.get_micro_gantt_task_count') }}", {
-                        _token: tempcsrf1,
+                    "_token": $('#token').val(),
                         project_id: {{ $project->id }}
                     },
                     function(resp, textStatus, jqXHR) {
@@ -1096,15 +1096,41 @@
                         // }
                     })
                     if (frezee_status_actual != 1) {
-                        var dp = new gantt.dataProcessor("http://localhost/tracer/public/");
-                        //var dp = new gantt.dataProcessor("/erp/public/");
-                        dp.init(gantt);
+                        var dp = new gantt.dataProcessor();
+                       
+                      
+                        dp.dataProcessor = gantt.createDataProcessor(function(entity, action, data, id) { 
+                          
+                          switch(action) {
+                            
+                                case "create":
+                                return gantt.ajax.post(
+                                    "http://localhost/tracer/public/microtask" + "?_token={{ csrf_token() }}",
+                                );
+                                break;
+                                case "update":
+                                return gantt.ajax.put(
+                                    "http://localhost/tracer/public/microtask/"+id"?_token={{ csrf_token() }}",
+                                    
+                                    );
+                                break;
+                                case "delete":
+                                return gantt.ajax.del(
+                                    "http://localhost/tracer/public/microtask/"+id"?_token={{ csrf_token() }}",
+                                );
+                                break;
+                        }
+                        
+                        });
+                     
                         dp.setTransactionMode({
+                            
                             mode: "REST",
                             payload: {
-                                "_token": tempcsrf,
+                                "_token": $('#csrf-token')[0].content,
                             }
                         });
+                        dp.init(gantt);
                         dp.attachEvent("onBeforeUpdate", function(id, state, data) {
                             gantt.config.readonly = true;
                             return true;
@@ -1116,6 +1142,11 @@
                                 //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
                             }
                         });
+
+                      
+                        //var dp = new gantt.dataProcessor("/erp/public/");
+                        
+                        
                     }
 
 

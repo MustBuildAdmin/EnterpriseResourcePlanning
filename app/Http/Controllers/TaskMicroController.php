@@ -17,14 +17,14 @@ class TaskMicroController extends Controller
 
      
         $maxid = MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->max('id');
+            'instance_id' => Session::get('project_instance')])->max('task_id');
         if ($maxid == null) {
             $maxid = 0;
         }
         $task = new MicroTask();
 
         $task->text = $request->text;
-        $task->id = $maxid + 1;
+        $task->task_id = $maxid + 1;
         $rowid = $maxid + 1;
         $task->project_id = Session::get('project_id');
         $task->instance_id = Session::get('project_instance');
@@ -106,8 +106,9 @@ class TaskMicroController extends Controller
 
     public function update($id, Request $request)
     {
-        dd("Fff");
+  
         $task = MicroTask::find($id);
+    
         $task->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')]);
         $task->text = $request->text;
         $task->start_date = date('Y-m-d', strtotime($request->start_date));
@@ -124,7 +125,7 @@ class TaskMicroController extends Controller
             $task->users = $implodeusers;
         }
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->id])->get();
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
             ->where('id', $request->parent)->update(['type' => 'project']);

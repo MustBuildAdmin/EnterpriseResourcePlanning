@@ -3546,6 +3546,15 @@ Route::resource('link', 'LinkController')->middleware(
     ]
 );
 
+Route::resource('microlink', 'MicroLinkController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
 Route::get(
     'projects/{id}/gantt_data', [
         'as' => 'projects.gantt_data',
