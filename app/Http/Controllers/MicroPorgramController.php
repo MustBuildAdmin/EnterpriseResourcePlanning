@@ -10,10 +10,12 @@ use App\Models\Instance;
 use App\Models\MicroProgramScheduleModal;
 use App\Models\MicroTask;
 use App\Models\ProjectTask;
+use App\Models\Project;
 use App\Models\Utility;
 use Carbon\CarbonPeriod;
 use Auth;
 use DB;
+use Illuminate\Support\Str;
 
 class MicroPorgramController extends Controller
 {
@@ -87,8 +89,13 @@ class MicroPorgramController extends Controller
     public function schedule_store(Request $request){
         $project_id    = Session::get('project_id');
         $instance_id   = Session::get('project_instance');
+
+        $project = Project::select('id','project_name')->where('id',$project_id)->first();
+        $projectName = str_split($project->project_name, 3);
+        $uuid = $projectName['0'].'-'.substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 5);
     
         $schedule                      = new MicroProgramScheduleModal;
+        $schedule->uid                 = $uuid;
         $schedule->schedule_name       = $request->schedule_name;
         $schedule->project_id          = $project_id;
         $schedule->instance_id         = $instance_id;
@@ -98,7 +105,8 @@ class MicroPorgramController extends Controller
         $schedule->schedule_goals      = $request->schedule_goals;
         $schedule->insert_date         = date('Y-m-d');
         $schedule->save();
-        
+
+        return redirect()->back()->with('success', __('Schedule Created.'));
     }
 
     public function schedule_task_show(Request $request){
@@ -135,6 +143,7 @@ class MicroPorgramController extends Controller
 
                     $microSchedule = $microSchedule->orderBy('micro_tasks.schedule_order','ASC')->get();
 
+                // DB::connection()->enableQueryLog();
                 $weekSchedule = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
                     'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
                     'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
@@ -145,7 +154,7 @@ class MicroPorgramController extends Controller
                     ->where('con_tasks.instance_id', $instance_id)
                     ->where('con_tasks.type','task')
                     ->where(function ($query) use ($weekStartDate, $weekEndDate) {
-                        $query->whereDate('con_tasks.start_date', '>=', $weekStartDate);
+                        $query->whereDate('con_tasks.end_date', '>=', $weekStartDate);
                         $query->whereDate('con_tasks.end_date', '<=', $weekEndDate);
                     });
 
@@ -154,6 +163,7 @@ class MicroPorgramController extends Controller
                     }
 
                     $weekSchedule = $weekSchedule->orderBy('con_tasks.start_date','ASC')->get();
+                    // $queries = \DB::getQueryLog();
 
                     return view('microprogram.schedule_task_show')->with('weekSchedule',$weekSchedule)
                         ->with('weekStartDate',$weekStartDate)
@@ -335,7 +345,7 @@ class MicroPorgramController extends Controller
                             ->orwhere('micro_tasks.progress', '<', '100')
                             ->whereDate('micro_tasks.end_date', '<', date('Y-m-d'));
                     })
-                        ->orderBy('micro_tasks.end_date', 'DESC');
+                        ->orderBy('micro_tasks.end_date', 'ASC');
                 }
             }
 
@@ -367,8 +377,8 @@ class MicroPorgramController extends Controller
         if($setting['company_type']==2){
 
             $show_parent_task = MicroTask::select('micro_tasks.text','micro_tasks.users','micro_tasks.duration',
-                'micro_tasks.progress','micro_tasks.start_date','micro_tasks.end_date','micro_tasks.id as task_id',
-                'micro_tasks.instance_id','micro_tasks.id as main_id','pros.project_name',
+                'micro_tasks.progress','micro_tasks.start_date','micro_tasks.end_date','micro_tasks.id as main_id',
+                'micro_tasks.instance_id','micro_tasks.task_id as id','pros.project_name',
                 'pros.id as project_id','pros.instance_id as pro_instance_id')
                 ->join('projects as pros','pros.id','micro_tasks.project_id')
                 ->where('micro_tasks.project_id', $project_id)
@@ -402,7 +412,7 @@ class MicroPorgramController extends Controller
 
             if($task_id_arr == null && $get_start_date == null &&
                 $get_end_date == null && $status_task == null){
-                $show_parent_task->orderBy('micro_tasks.end_date','DESC');
+                $show_parent_task->orderBy('micro_tasks.end_date','ASC');
             }
 
             $show_parent_task = $show_parent_task->get();

@@ -53,7 +53,7 @@ aria-describedby="Main Task">
         @endphp
         <tr>
             <td style="width:5%; font-size: 15px;">
-                <a style="text-decoration: none;">{{ $show_parent->id }}</a>
+                <a style="text-decoration: none;">{{ $show_parent->main_id }}</a>
             </td>
 
             <td style="width:30%; font-size: 15px;">

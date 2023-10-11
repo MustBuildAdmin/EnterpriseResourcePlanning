@@ -35,18 +35,18 @@
                                     </tr>
                                 </thead>
                                 <tbody class="list">
-                                    @foreach ($MicroProgramScheduleModal as $microSchedule)
+                                    @forelse ($MicroProgramScheduleModal as $microSchedule)
                                         <tr>
-                                            <td>
-                                                {{$microSchedule->id}}
-                                            </td>
                                             <td>
                                                 @if($microSchedule->active_status == 1)
                                                     <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">
-                                                    {{$microSchedule->schedule_name}}</a>
+                                                    {{$microSchedule->uid}}</a>
                                                 @else
-                                                    <a>{{$microSchedule->schedule_name}}</a>
+                                                    <a>{{$microSchedule->uid}}</a>
                                                 @endif
+                                            </td>
+                                            <td>
+                                                {{$microSchedule->schedule_name}}</a>
                                             </td>
                                             <td>{{$microSchedule->schedule_duration}}</td>
                                             <td>
@@ -78,7 +78,9 @@
                                                 @endif
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                    
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
