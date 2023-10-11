@@ -5047,6 +5047,21 @@ Route::get('micro_task_autocomplete', 'MicroPorgramController@micro_task_autocom
 Route::get('micro_task_autocomplete_main', 'MicroPorgramController@micro_task_autocomplete_main')->name('micro_task_autocomplete_main')
 ->middleware(['auth','XSS',]);
 
+Route::any('micro_task_particular', 'MicroPorgramController@micro_task_particular')->name('micro_task_particular')
+->middleware(['auth', 'XSS']);
+
+Route::any('micro_add_particular_task/{task_id}/{get_date}', 'MicroPorgramController@micro_add_particular_task')
+->name('micro_add_particular_task')->middleware(['auth', 'XSS']);
+
+Route::any('miro_edit_particular_task/{task_progress_id}/{task_id}','MicroPorgramController@miro_edit_particular_task')
+->name('miro_edit_particular_task')->middleware(['auth', 'XSS']);
+
+Route::any('micro_con_taskupdate', 'MicroPorgramController@micro_con_taskupdate')->name('micro_con_taskupdate')
+->middleware(['auth', 'XSS']);
+
+Route::get('micro_task_file_download/{task_id}/{filename}', 'MicroPorgramController@micro_task_file_download')
+    ->name('micro_task_file_download')->middleware(['auth', 'XSS']);
+
 Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')->name('microprogram_create')->middleware(
     [
         'auth',

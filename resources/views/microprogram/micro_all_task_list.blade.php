@@ -90,7 +90,7 @@ aria-describedby="Sub Task">
                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
                         </a>
                     @else
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                        <a href="{{route('micro_task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
                         </a>
                 @endif

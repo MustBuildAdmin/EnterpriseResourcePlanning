@@ -12,6 +12,9 @@ use App\Models\MicroTask;
 use App\Models\ProjectTask;
 use App\Models\Project;
 use App\Models\Utility;
+use App\Models\Micro_Task_progress;
+use App\Models\Project_holiday;
+use App\Models\NonWorkingDaysModal;
 use Carbon\CarbonPeriod;
 use Auth;
 use DB;
@@ -428,6 +431,587 @@ class MicroPorgramController extends Controller
         }
     }
 
+    public function micro_task_particular(Request $request){
+        
+        $projectId  = Session::get('project_id');
+        $getProject = Project::find($projectId);
+        $instanceId = Session::has('project_id') ?
+            Session::get('project_instance') : $getProject->instance_id;
+        $get_date   = $request['get_date'] == '' ?
+            date('Y-m-d') : $request['get_date'];
+
+        if (isset($request['task_id'])) {
+            $task_id = $request['task_id'];
+            $get_con_task = MicroTask::where('id', $task_id)->where('instance_id', $instanceId)->first();
+
+            $get_popup_data_con = MicroTask::Select('micro_tasks.*', 'projects.project_name', 'projects.description')
+                ->join('projects', 'projects.id', 'micro_tasks.project_id')
+                ->where('micro_tasks.id', $task_id)
+                ->where('micro_tasks.instance_id', $instanceId)
+                ->where('micro_tasks.project_id',$projectId)
+                ->first();
+
+            if (\Auth::user()->type != 'company') {
+                $get_task_progress = Micro_Task_progress::
+                    select('micro_task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
+                    ->leftjoin('micro_task_progress_file as file',
+                        \DB::raw('FIND_IN_SET(file.id,micro_task_progress.file_id)'), '>', \DB::raw("'0'"))
+                    ->where('micro_task_progress.task_id', $task_id)
+                    ->where('user_id', \Auth::user()->id)
+                    ->where('micro_task_progress.project_id', $get_popup_data_con->project_id)
+                    ->where('micro_task_progress.instance_id', $instanceId)
+                    ->groupBy('micro_task_progress.id')
+                    ->get();
+            }
+            else {
+                $get_task_progress = Micro_Task_progress::
+                    select('micro_task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
+                    ->leftjoin('micro_task_progress_file as file',
+                        \DB::raw('FIND_IN_SET(file.id,micro_task_progress.file_id)'), '>', \DB::raw("'0'"))
+                    ->where('micro_task_progress.task_id', $task_id)
+                    ->where('micro_task_progress.project_id', $get_popup_data_con->project_id)
+                    ->where('micro_task_progress.instance_id', $instanceId)
+                    ->groupBy('micro_task_progress.id')
+                    ->get();
+            }
+
+            if ($get_date <= date('Y-m-d')) {
+                $get_popup_data = Micro_Task_progress::where('task_id', $task_id)
+                    ->whereDate('created_at', $get_date)
+                    ->where('instance_id', $instanceId)
+                    ->select('percentage', 'description')->first();
+
+                if ($get_popup_data != null) {
+                    $data = [
+                        'percentage' => $get_popup_data->percentage,
+                        'desc' => $get_popup_data->description,
+                        'get_date' => $get_date,
+                        'con_data' => $get_popup_data_con,
+                        'get_task_progress' => $get_task_progress,
+                    ];
+                } else {
+                    $data = [
+                        'percentage' => '',
+                        'desc' => '',
+                        'get_date' => $get_date,
+                        'con_data' => $get_popup_data_con,
+                        'get_task_progress' => $get_task_progress,
+                    ];
+                }
+            } else {
+                $data = [
+                    'percentage' => '',
+                    'desc' => '',
+                    'get_date' => $get_date,
+                    'con_data' => $get_popup_data_con,
+                    'get_task_progress' => $get_task_progress,
+                ];
+            }
+        }
+
+        $total_count_of_task = Micro_Task_progress::where('task_id', $task_id)
+            ->where('instance_id', $instanceId)
+            ->groupBy('created_at')
+            ->get()->count();
+
+        $actualStartDate = Micro_Task_progress::where('task_id', $task_id)
+            ->where('instance_id', $instanceId)
+            ->orderBy('record_date','ASC')
+            ->first();
+
+        $actualEndDate = Micro_Task_progress::where('task_id', $task_id)
+            ->where('instance_id', $instanceId)
+            ->orderBy('record_date','DESC')
+            ->first();
+
+        $remaining_working_days = Utility::remaining_duration_calculator(
+            $get_con_task->end_date, $get_con_task->project_id);
+        $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days-1 : 0; // include the last day
+        $completed_days = $get_con_task->duration - $remaining_working_days;
+
+        if ($get_con_task->duration == 1) {
+            $current_Planed_percentage = 100;
+        } else {
+            // percentage calculator
+            $perday = $get_con_task->duration > 0 ?
+                100 / $get_con_task->duration : 0;
+
+            $current_Planed_percentage = round($completed_days * $perday);
+        }
+
+
+        return view('microprogram.micro_task_particular_list',
+            compact('task_id', 'data', 'current_Planed_percentage','total_count_of_task',
+            'actualStartDate','actualEndDate'));
+    }
+
+    public function micro_add_particular_task(Request $request){
+        $projectId = Session::get('project_id');
+        $getProject = Project::find($projectId);
+
+        if (Session::has('project_id')) {
+            $instanceId = Session::get('project_instance');
+        } else {
+            $instanceId = $getProject->instance_id;
+        }
+
+        $task_id = $request->task_id;
+        $get_date = $request->get_date;
+        $get_con_task = MicroTask::where('id', $task_id)
+            ->where('instance_id', $instanceId)->first();
+
+        $data = [
+            'get_date' => $get_date,
+            'con_data' => $get_con_task,
+        ];
+
+        $get_all_dates = [];
+
+        if (\Auth::user()->type == 'company') {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->id)
+                ->where('instance_id', $instanceId)->get();
+        } else {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->creatorId())
+                ->where('instance_id', $instanceId)->get();
+        }
+
+        if(!empty($getHoliday)){
+            foreach ($getHoliday as $check_holiday) {
+                $get_all_dates[] = $check_holiday->date;
+            }
+        }
+
+        $get_all_dates = json_encode($get_all_dates);
+
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $projectId)
+            ->where('instance_id', $instanceId)
+            ->orderBy('id', 'DESC')->first();
+
+        return view('microprogram.micro_add_particular_task', compact('data','task_id','nonWorkingDay'))
+            ->with('get_all_dates',$get_all_dates);
+    }
+
+    public function miro_edit_particular_task(Request $request){
+        $projectId  = Session::get('project_id');
+        $getProject = Project::find($projectId);
+
+        if (Session::has('project_id')) {
+            $instanceId = Session::get('project_instance');
+        } else {
+            $instanceId = $getProject->instance_id;
+        }
+
+        $task_progress_id = $request->task_progress_id;
+        $task_id = $request->task_id;
+        $task = MicroTask::where('id', $task_id)->first();
+        $check_data = Micro_Task_progress::select('micro_task_progress.*',
+            \DB::raw('group_concat(file.filename) as filename, group_concat(file.id) as file_id'))
+            ->leftjoin('micro_task_progress_file as file',
+                \DB::raw('FIND_IN_SET(file.id,micro_task_progress.file_id)'), '>', \DB::raw("'0'"))
+            ->where('micro_task_progress.id', $task_progress_id)
+            ->where('micro_task_progress.task_id', $task_id)
+            ->where('micro_task_progress.project_id', $task->project_id)
+            ->where('micro_task_progress.instance_id', $instanceId)
+            ->groupBy('micro_task_progress.id')
+            ->first();
+
+        if ($check_data != null) {
+            $data = [
+                'get_date' => date('Y-m-d', strtotime($check_data->created_at)),
+                'percentage' => $check_data->percentage,
+                'description' => $check_data->description,
+                'filename' => $check_data->filename,
+                'file_id' => $check_data->file_id,
+                'con_data' => $task,
+            ];
+        } else {
+            $data = [
+                'get_date' => '',
+                'percentage' => '',
+                'description' => '',
+                'filename' => '',
+                'file_id' => '',
+                'con_data' => $task,
+            ];
+        }
+
+        $get_all_dates = [];
+
+        if (\Auth::user()->type == 'company') {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->id)
+                ->where('instance_id', $instanceId)->get();
+        } else {
+            $getHoliday = Project_holiday::where('created_by', \Auth::user()->creatorId())
+                ->where('instance_id', $instanceId)->get();
+        }
+
+        if(!empty($getHoliday)){
+            foreach ($getHoliday as $check_holiday) {
+                $get_all_dates[] = $check_holiday->date;
+            }
+        }
+
+        $get_all_dates = json_encode($get_all_dates);
+
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $projectId)
+            ->where('instance_id', $instanceId)
+            ->orderBy('id', 'DESC')->first();
+
+        return view('microprogram.micro_edit_task_particular', compact('data', 'task_id','nonWorkingDay'))
+            ->with('get_all_dates',$get_all_dates);
+    }
+
+    public function micro_con_taskupdate(Request $request){
+        $projectId = Session::get("project_id");
+        $getProject = Project::find($projectId);
+
+        if (Session::has("project_id")) {
+            $instanceId = Session::get("project_instance");
+        } else {
+            $instanceId = $getProject->instance_id;
+        }
+
+        $validator = \Validator::make($request->all(), [
+            "task_id" => "required",
+            "percentage" => "required",
+            "description" => "required",
+            "user_id" => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+            ->back()
+            ->with(
+                "error",
+                Utility::errorFormat($validator->getMessageBag())
+            );
+        }
+
+        $get_all_dates    = [];
+        $get_non_work_day = [];
+        $fileNameToStore1 = "";
+        $url              = "";
+        $task_id          = $request->task_id;
+
+        $task = MicroTask::where("id", $task_id)
+            ->where("instance_id", $instanceId)
+            ->first();
+        $nonWorkingDay = NonWorkingDaysModal::where(
+            "project_id",
+            $task->project_id
+        )
+        ->where("instance_id", $instanceId)
+        ->orderBy("id", "DESC")
+        ->first();
+        
+        if (
+            $nonWorkingDay != null &&
+            $nonWorkingDay->non_working_days != null
+        ) {
+            $split_non_working = explode(",", $nonWorkingDay->non_working_days);
+            foreach ($split_non_working as $non_working) {
+                if ($non_working == 0) {
+                    $get_non_work_day[] = "Sunday";
+                } elseif ($non_working == 1) {
+                    $get_non_work_day[] = "Monday";
+                } elseif ($non_working == 2) {
+                    $get_non_work_day[] = "Tuesday";
+                } elseif ($non_working == 3) {
+                    $get_non_work_day[] = "Wednesday";
+                } elseif ($non_working == 4) {
+                    $get_non_work_day[] = "Thursday";
+                } elseif ($non_working == 5) {
+                    $get_non_work_day[] = "Friday";
+                } elseif ($non_working == 6) {
+                    $get_non_work_day[] = "Saturday";
+                }
+            }
+        }
+
+        $getCurrentDay = date("l", strtotime($request->get_date));
+
+        if (\Auth::user()->type == "company") {
+            $getHoliday = Project_holiday::where(
+                "created_by",
+                \Auth::user()->id
+            )
+            ->where("instance_id", $instanceId)
+            ->get();
+        }
+        else {
+            $getHoliday = Project_holiday::where(
+                "created_by",
+                \Auth::user()->creatorId()
+            )
+            ->where("instance_id", $instanceId)
+            ->get();
+        }
+
+        foreach ($getHoliday as $check_holiday) {
+            $get_all_dates[] = $check_holiday->date;
+        }
+
+        $holiday_merge = $this->array_flatten($get_all_dates);
+        $date1         = date_create($task->start_date);
+        $date2         = date_create($task->end_date);
+        $diff          = date_diff($date1, $date2);
+        $file_id_array = [];
+
+        $no_working_days = $diff->format("%a");
+        $no_working_days = $task->duration;
+
+        $checkPercentage = Micro_Task_progress::where("task_id", $task_id)
+            ->where("project_id", $task->project_id)
+            ->where("instance_id", $instanceId)
+            ->whereDate("created_at", $request->get_date)
+            ->first();
+        $checkPercentageGet = isset($checkPercentage->percentage)
+            ? $checkPercentage->percentage
+            : 0;
+
+        if (in_array($request->get_date, $holiday_merge)) {
+            return redirect()
+                ->back()
+                ->with(
+                    "error",
+                    __(
+                        $request->get_date .
+                        " You have chosen a non-working day; if you want to update the progress, please select a working day."
+                    )
+                );
+        } elseif (in_array($getCurrentDay, $get_non_work_day)) {
+            return redirect()
+                ->back()
+                ->with("error", __("This day is a non-working day."));
+        } elseif ($checkPercentageGet > $request->percentage) {
+            return redirect()
+                ->back()
+                ->with(
+                    "error",
+                    __("This percentage is too low compare to old percentage.")
+                );
+        } else {
+            if ($request->attachment_file_name != null) {
+                foreach ($request->attachment_file_name as $file_req) {
+                    $filenameWithExt1 = $file_req->getClientOriginalName();
+                    $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                    $extension1 = $file_req->getClientOriginalExtension();
+                    $fileNameToStore1 =
+                        $filename1 . "_" . time() . "." . $extension1;
+                    $dir = "uploads/micro_task_particular_list";
+                    $image_path = $dir . $filenameWithExt1;
+
+                    if (\File::exists($image_path)) {
+                        \File::delete($image_path);
+                    }
+
+                    $path = Utility::multi_upload_file(
+                        $file_req,
+                        "file_req",
+                        $fileNameToStore1,
+                        $dir,
+                        []
+                    );
+
+                    if ($path["flag"] == 1) {
+                        $url = $path["url"];
+
+                        $file_insert = [
+                            "task_id" => $task_id,
+                            "project_id" => $task->project_id,
+                            "filename" => $fileNameToStore1,
+                            "file_path" => $url,
+                        ];
+                        $file_insert_id = DB::table(
+                            "micro_task_progress_file"
+                        )->insertGetId($file_insert);
+                        $file_id_array[] = $file_insert_id;
+                    } else {
+                        return redirect()
+                            ->back()
+                            ->with("error", __($path["msg"]));
+                    }
+                }
+                $implode_file_id =
+                    count($file_id_array) != 0
+                        ? implode(",", $file_id_array)
+                        : 0;
+
+                if ($request->existing_file_id != "") {
+                    $implode_file_id =
+                        $request->existing_file_id . "," . $implode_file_id;
+                }
+            } else {
+                $get_file_id = Micro_Task_progress::where("task_id", $task_id)
+                    ->where("project_id", $task->project_id)
+                    ->where("instance_id", $instanceId)
+                    ->whereDate("created_at", $request->get_date)
+                    ->first();
+                if ($get_file_id != null) {
+                    $implode_file_id = $get_file_id->file_id;
+                } else {
+                    $implode_file_id = 0;
+                }
+            }
+
+            $date_status =
+                strtotime($task->end_date) > time() ? "As Per Time" : "Overdue";
+
+            if (\Auth::user()->type == "company") {
+                $assign_to = $task->users != null ? $task->users : null;
+            } else {
+                $assign_to = \Auth::user()->id;
+            }
+
+            // insert details
+            $array = [
+                "task_id" => $task_id,
+                "assign_to" => $assign_to,
+                "percentage" => $request->percentage,
+                "description" => $request->description,
+                "user_id" => $request->user_id,
+                "project_id" => $task->project_id,
+                "instance_id" => $instanceId,
+                "date_status" => $date_status,
+                "file_id" => $implode_file_id,
+                "created_at" => $request->get_date, //Planned Date
+                "record_date" => date("Y-m-d H:m:s"), //Actual Date
+            ];
+            $revision_array = [
+                "task_id" => $task_id,
+                "task_name" => $task->text,
+                "user_id" => $request->user_id,
+                "project_id" => $task->project_id,
+                "instance_id" => $instanceId,
+            ];
+            $check_data = Micro_Task_progress::where("task_id", $task_id)
+                ->where("project_id", $task->project_id)
+                ->where("instance_id", $instanceId)
+                ->whereDate("created_at", $request->get_date)
+                ->first();
+            $record = DB::table("instance")
+                ->where("project_id", $task->project_id)
+                ->where("freeze_status", 0)
+                ->first();
+            if ($check_data == null) {
+                Micro_Task_progress::insert($array);
+
+                if ($record) {
+                    DB::table("revision_task_progress")->insert(
+                        $revision_array
+                    );
+                    Con_task::where("project_id", $task->project_id)
+                        ->where("instance_id", $record->instance)
+                        ->where("id", $task->id)
+                        ->update(["work_flag" => "1"]);
+                }
+
+                ActivityController::activity_store(
+                    Auth::user()->id,
+                    Session::get("project_id"),
+                    "Added Micro Progress",
+                    $task->text
+                );
+            } else {
+                Micro_Task_progress::where("task_id", $task_id)
+                    ->where("project_id", $task->project_id)
+                    ->where("instance_id", $instanceId)
+                    ->where("created_at", $request->get_date)
+                    ->update($array);
+                if ($record) {
+                    DB::table("revision_task_progress")
+                        ->where("project_id", $task->project_id)
+                        ->where("instance_id", $instanceId)
+                        ->where("created_at", $request->get_date)
+                        ->update($revision_array);
+
+                    MicroTask::where("project_id", $task->project_id)
+                        ->where("instance_id", $record->instance)
+                        ->where("task_id", $task->id)
+                        ->update(["work_flag" => "1"]);
+                }
+
+                ActivityController::activity_store(
+                    Auth::user()->id,
+                    Session::get("project_id"),
+                    "Updated Micro Progress",
+                    $task->text
+                );
+            }
+
+            $total_pecentage = Micro_Task_progress::where("task_id", $task_id)
+                ->where("instance_id", $instanceId)
+                ->sum("percentage");
+            $per_percentage = $total_pecentage / $no_working_days;
+            $per_percentage = round($per_percentage);
+            MicroTask::where("id", $task_id)
+                ->where("instance_id", $instanceId)
+                ->update(["progress" => $per_percentage]);
+            // update the  gantt
+
+            $alltask = MicroTask::where([
+                "project_id" => $task->project_id,
+                "instance_id" => $instanceId,
+            ])
+                ->where("type", "project")
+                ->get();
+            foreach ($alltask as $key => $value) {
+                $task_id = $value->main_id;
+                $total_percentage = MicroTask::where([
+                    "project_id" => $task->project_id,
+                    "instance_id" => $instanceId,
+                ])
+                    ->where("parent", $value->id)
+                    ->avg("progress");
+                $total_percentage = round($total_percentage);
+                if ($total_percentage != null) {
+                    MicroTask::where("id", $task_id)
+                        ->where([
+                            "project_id" => $task->project_id,
+                            "instance_id" => $instanceId,
+                        ])
+                        ->update(["progress" => $total_percentage]);
+                }
+            }
+            //##################################################
+
+            return redirect()
+                ->back()
+                ->with("success", __("Task successfully Updated."));
+        }
+    }
+
+    public function micro_task_file_download(Request $request){
+        $taskId = $request->task_id;
+        $filename = $request->filename;
+        $documentPath = \App\Models\Utility::get_file('uploads/micro_task_particular_list');
+
+        $ducumentUpload = DB::table('micro_task_progress_file')
+            ->where('task_id', $taskId)
+            ->Where('filename', 'like', '%'.$filename.'%')
+            ->where('status', 0)->first();
+
+        if ($ducumentUpload != null) {
+            $filePath = $documentPath.'/'.$ducumentUpload->filename;
+            $filename = $ducumentUpload->filename;
+
+            if (! Storage::disk('s3')->exists($filePath)) {
+                $headers = [
+                    'Content-Type' => 'your_content_type',
+                    'Content-Description' => 'File Transfer',
+                    'Content-Disposition' => "attachment; filename={$filename}",
+                    'filename' => $filename,
+                ];
+
+                return response($filePath, 200, $headers);
+            } else {
+                return redirect()->back()->with('error', __('File is not exist.'));
+            }
+        } else {
+            return redirect()->back()->with('error', __('File is not exist.'));
+        }
+    }
+
     public function mainschedule_store(Request $request){
         $schedulearray = $request->schedulearray;
         $schedule_id   = $request->schedule_id;
@@ -490,5 +1074,22 @@ class MicroPorgramController extends Controller
             echo 2;
         }
         
+    }
+
+    public function array_flatten($array)
+    {
+        if (!is_array($array)) {
+            return false;
+        }
+        $result = [];
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, $this->array_flatten($value));
+            } else {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
     }
 }
