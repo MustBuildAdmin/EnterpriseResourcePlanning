@@ -24,9 +24,12 @@ class MicroPorgramController extends Controller
 {
     public function microprogram(Request $request){
         if (Session::has('project_id')) {
-            $project_id  = Session::get('project_id');
-            $instance_id = Session::get('project_instance');
-            $freezeCheck = Instance::where('project_id', $project_id)
+            $project_id    = Session::get('project_id');
+            $instance_id   = Session::get('project_instance');
+            $now           = Carbon::now();
+            $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+            $weekEndDate   = $now->endOfWeek()->format('Y-m-d');
+            $freezeCheck   = Instance::where('project_id', $project_id)
                 ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
             if($freezeCheck == 1){
                 $MicroProgramScheduleModal = MicroProgramScheduleModal::where('project_id',$project_id)
@@ -35,7 +38,9 @@ class MicroPorgramController extends Controller
                     ->get();
                     
                     return view('microprogram.index')
-                        ->with('MicroProgramScheduleModal',$MicroProgramScheduleModal);
+                        ->with('MicroProgramScheduleModal',$MicroProgramScheduleModal)
+                        ->with('weekStartDate',$weekStartDate)
+                        ->with('weekEndDate',$weekEndDate);
             }
             else{
                 return redirect()->back()->with('error', __('Project Not Freezed.'));
@@ -136,6 +141,7 @@ class MicroPorgramController extends Controller
                     'pros.id as project_id', 'pros.instance_id as pro_instance_id')
                     ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                     ->whereNotNull('pros.instance_id')
+                    ->where('micro_tasks.type','task')
                     ->where('micro_tasks.project_id', $project_id)
                     ->where('micro_tasks.instance_id', $instance_id)
                     ->where('micro_tasks.schedule_id',$secheduleId);
@@ -591,7 +597,7 @@ class MicroPorgramController extends Controller
             ->with('get_all_dates',$get_all_dates);
     }
 
-    public function miro_edit_particular_task(Request $request){
+    public function micro_edit_particular_task(Request $request){
         $projectId  = Session::get('project_id');
         $getProject = Project::find($projectId);
 
@@ -900,9 +906,9 @@ class MicroPorgramController extends Controller
                     DB::table("revision_task_progress")->insert(
                         $revision_array
                     );
-                    Con_task::where("project_id", $task->project_id)
+                    MicroTask::where("project_id", $task->project_id)
                         ->where("instance_id", $record->instance)
-                        ->where("id", $task->id)
+                        ->where("task_id", $task->id)
                         ->update(["work_flag" => "1"]);
                 }
 
@@ -953,24 +959,26 @@ class MicroPorgramController extends Controller
                 "project_id" => $task->project_id,
                 "instance_id" => $instanceId,
             ])
-                ->where("type", "project")
-                ->get();
+            ->where("type", "project")
+            ->get();
+
             foreach ($alltask as $key => $value) {
-                $task_id = $value->main_id;
+                $task_id = $value->id;
                 $total_percentage = MicroTask::where([
                     "project_id" => $task->project_id,
                     "instance_id" => $instanceId,
                 ])
-                    ->where("parent", $value->id)
-                    ->avg("progress");
+                ->where("parent", $value->id)
+                ->avg("progress");
+
                 $total_percentage = round($total_percentage);
                 if ($total_percentage != null) {
                     MicroTask::where("id", $task_id)
-                        ->where([
-                            "project_id" => $task->project_id,
-                            "instance_id" => $instanceId,
-                        ])
-                        ->update(["progress" => $total_percentage]);
+                    ->where([
+                        "project_id" => $task->project_id,
+                        "instance_id" => $instanceId,
+                    ])
+                    ->update(["progress" => $total_percentage]);
                 }
             }
             //##################################################
@@ -1037,9 +1045,9 @@ class MicroPorgramController extends Controller
                             ->update(['schedule_order' => $sort_number]);
                     }
                     else{
-                        $conTask = Con_task::where('project_id',$project_id)
+                        $conTask = MicroTask::where('project_id',$project_id)
                             ->where('instance_id',$instance_id)
-                            ->where('main_id',$main_id)->first();
+                            ->where('id',$main_id)->first();
 
                         $store_array = array(
                             'task_id'        => $main_id,

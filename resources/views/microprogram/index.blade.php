@@ -31,14 +31,13 @@
                                         <th scope="col">{{ __('Schedule End Date') }}</th>
                                         <th scope="col">{{ __('Schedule Status') }}</th>
                                         <th scope="col">{{ __('Schedule Goals') }}</th>
-                                        <th scope="col">{{ __('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list">
                                     @forelse ($MicroProgramScheduleModal as $microSchedule)
                                         <tr>
                                             <td>
-                                                @if($microSchedule->active_status == 1)
+                                                @if($weekEndDate >= $microSchedule->schedule_end_date)
                                                     <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">
                                                     {{$microSchedule->uid}}</a>
                                                 @else
@@ -58,25 +57,13 @@
                                                 \Auth::user()->id) }}
                                             </td>
                                             <td>
-                                                @if($microSchedule->active_status == 1)
+                                                @if($weekEndDate >= $microSchedule->schedule_end_date)
                                                     <span class="badge bg-success me-1"></span> Active
                                                 @else
                                                     <span class="badge bg-warning me-1"></span> In-schedule
                                                 @endif
                                             </td>
                                             <td>{{$microSchedule->schedule_goals}}</td>
-                                            <td>
-                                                <input type="radio" class="schedule_change" id="schedule_change"
-                                                value="{{$microSchedule->id}}"
-                                                name="schedule_change"
-                                                @if($microSchedule->active_status == 1) checked @endif>
-
-                                                @if($microSchedule->active_status == 1)
-                                                    Active
-                                                @else
-                                                    In-schedule
-                                                @endif
-                                            </td>
                                         </tr>
                                     @empty
                                     

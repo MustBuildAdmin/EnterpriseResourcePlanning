@@ -5053,8 +5053,8 @@ Route::any('micro_task_particular', 'MicroPorgramController@micro_task_particula
 Route::any('micro_add_particular_task/{task_id}/{get_date}', 'MicroPorgramController@micro_add_particular_task')
 ->name('micro_add_particular_task')->middleware(['auth', 'XSS']);
 
-Route::any('miro_edit_particular_task/{task_progress_id}/{task_id}','MicroPorgramController@miro_edit_particular_task')
-->name('miro_edit_particular_task')->middleware(['auth', 'XSS']);
+Route::any('micro_edit_particular_task/{task_progress_id}/{task_id}','MicroPorgramController@micro_edit_particular_task')
+->name('micro_edit_particular_task')->middleware(['auth', 'XSS']);
 
 Route::any('micro_con_taskupdate', 'MicroPorgramController@micro_con_taskupdate')->name('micro_con_taskupdate')
 ->middleware(['auth', 'XSS']);

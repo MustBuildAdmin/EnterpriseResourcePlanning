@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h1 class="mb-0">{{ __('Lookahead Schedule') }} - 
-                            @if($scheduleGet->active_status == 1)
+                            @if($weekEndDate >= $scheduleGet->schedule_end_date)
                                 <span style="color: rgb(47, 179, 68)">Active</span>
                             @endif
                         </h1>
