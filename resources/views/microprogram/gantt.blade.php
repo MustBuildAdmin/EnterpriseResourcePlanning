@@ -1096,31 +1096,48 @@
                         // }
                     })
                     if (frezee_status_actual != 1) {
-                        var dp = new gantt.dataProcessor();
+                        // var dp = new gantt.dataProcessor();
                        
-                      
-                        dp.dataProcessor = gantt.createDataProcessor(function(entity, action, data, id) { 
-                          
-                          switch(action) {
-                            
-                                case "create":
-                                return gantt.ajax.post(
+                        var dp  = gantt.createDataProcessor({ 
+   task: {
+      create: function(data) {
+        return gantt.ajax.post(
                                     "http://localhost/tracer/public/microtask" + "?_token={{ csrf_token() }}",
                                 );
-                                break;
-                                case "update":
-                                return gantt.ajax.put(
+      },
+      update: function(data, id) {
+        return gantt.ajax.put(
                                     "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
                                     
                                     );
-                                break;
-                                case "delete":
-                                return gantt.ajax.del(
+      },
+      delete: function(id) {
+        return gantt.ajax.del(
                                     "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
                                 );
-                                break;
-                        }
-                        dp.setTransactionMode({
+      }
+   },
+   link: {
+    create: function(data) {
+        return gantt.ajax.post(
+                                    "http://localhost/tracer/public/microlink" + "?_token={{ csrf_token() }}",
+                                );
+      },
+      update: function(data, id) {
+        return gantt.ajax.put(
+                                    "http://localhost/tracer/public/microlink/"+id+"?_token={{ csrf_token() }}",
+                                    
+                                    );
+      },
+      delete: function(id) {
+        return gantt.ajax.del(
+                                    "http://localhost/tracer/public/microlink/"+id+"?_token={{ csrf_token() }}",
+                                );
+      }
+   }
+  
+});
+dp.setTransactionMode({
                             
                             mode: "REST",
                             payload: {
@@ -1139,8 +1156,48 @@
                                 //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
                             }
                         });
+                        // dp.dataProcessor = gantt.createDataProcessor(function(entity, action, data, id) { 
+                          
+                        //   switch(action) {
+                            
+                        //         case "create":
+                        //         return gantt.ajax.post(
+                        //             "http://localhost/tracer/public/microtask" + "?_token={{ csrf_token() }}",
+                        //         );
+                        //         break;
+                        //         case "update":
+                        //         return gantt.ajax.put(
+                        //             "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
+                                    
+                        //             );
+                        //         break;
+                        //         case "delete":
+                        //         return gantt.ajax.del(
+                        //             "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
+                        //         );
+                        //         break;
+                        // }
+                        // dp.setTransactionMode({
+                            
+                        //     mode: "REST",
+                        //     payload: {
+                        //         "_token": $('#csrf-token')[0].content,
+                        //     }
+                        // });
+                        // dp.init(gantt);
+                        // dp.attachEvent("onBeforeUpdate", function(id, state, data) {
+                        //     gantt.config.readonly = true;
+                        //     return true;
+                        // });
+                        // dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
+                        //     gantt.config.readonly = false;
+                        //     if (action == "inserted") {
+                        //         gantt.showLightbox(tid);
+                        //         //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+                        //     }
+                        // });
                         
-                        });
+                        // });
                      
                         // dp.setTransactionMode({
                             
