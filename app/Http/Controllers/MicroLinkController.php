@@ -31,7 +31,7 @@ class MicroLinkController extends Controller
             $link->save();
         }
 
-        MicroTask::where(['task_id' => $request->source, 'project_id' => Session::get('project_id')])
+        MicroTask::where(['id' => $request->source, 'project_id' => Session::get('project_id')])
             ->update(['predecessors' => $request->target]);
 
         ActivityController::activity_store(Auth::user()->id,
@@ -55,7 +55,7 @@ class MicroLinkController extends Controller
             $link->save();
         }
 
-        MicroTask::where(['task_id' => $request->source, 'project_id' => Session::get('project_id')])
+        MicroTask::where(['id' => $request->source, 'project_id' => Session::get('project_id')])
             ->update(['predecessors' => $request->target]);
 
         ActivityController::activity_store(Auth::user()->id,
@@ -78,7 +78,7 @@ class MicroLinkController extends Controller
         ActivityController::activity_store(Auth::user()->id,
             Session::get('project_id'), 'Deleted Predecessors', $id);
 
-            MicroTask::where(['task_id' => $link->source, 'project_id' => Session::get('project_id')])->update(['predecessors' => 0]);
+            MicroTask::where(['id' => $link->source, 'project_id' => Session::get('project_id')])->update(['predecessors' => 0]);
 
         return response()->json([
             'action' => 'deleted',
