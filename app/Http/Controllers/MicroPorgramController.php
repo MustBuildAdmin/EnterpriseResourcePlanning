@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Session;
-use App\Models\Con_task;
+use App\Models\MicroLink;
 use App\Models\Instance;
 use App\Models\MicroProgramScheduleModal;
 use App\Models\MicroTask;
@@ -19,7 +19,7 @@ use Carbon\CarbonPeriod;
 use Auth;
 use DB;
 use Illuminate\Support\Str;
-
+use Exception;
 class MicroPorgramController extends Controller
 {
     public function microprogram(Request $request){
@@ -1100,4 +1100,347 @@ class MicroPorgramController extends Controller
 
         return $result;
     }
+    public function gantt($projectID, $duration = "Week"){
+        try {
+            if (\Auth::user()->can("view grant chart")) {
+                $project = Project::find($projectID);
+                $tasks = [];
+                if (Session::has("project_instance")) {
+                    $instanceId = Session::get("project_instance");
+                } else {
+                    $instanceId = $project->instance_id;
+                }
+                $freezeCheck = Instance::where("project_id", $projectID)
+                    ->where("instance", $instanceId)
+                    ->first();
+    
+                $projectname = Project::where("id", Session::get("project_id"))
+                    ->pluck("project_name")
+                    ->first();
+    
+                if ($project) {
+                    $setting = Utility::settings(\Auth::user()->creatorId());
+                    if ($setting["company_type"] == 2) {
+                        $project_holidays = Project_holiday::select("date")
+                            ->where([
+                                "project_id" => $projectID,
+                                "instance_id" => $instanceId,
+                            ])
+                            ->get();
+    
+                        $nonWorkingDay = NonWorkingDaysModal::where(
+                            "project_id",
+                            $projectID
+                        )
+                            ->where("instance_id", $instanceId)
+                            ->pluck("non_working_days")
+                            ->first();
+    
+                        return view(
+                            "microprogram.gantt",
+                            compact(
+                                "project",
+                                "tasks",
+                                "duration",
+                                "project_holidays",
+                                "freezeCheck",
+                                "nonWorkingDay",
+                                "projectname"
+                            )
+                        );
+                    } else {
+                        $tasksobj = $project->tasks;
+                        foreach ($tasksobj as $task) {
+                            $tmp = [];
+                            $tmp["id"] = "task_" . $task->id;
+                            $tmp["name"] = $task->name;
+                            $tmp["start"] = $task->start_date;
+                            $tmp["end"] = $task->end_date;
+                            $tmp["type"] = $task->type;
+                            $tmp["custom_class"] = empty($task->priority_color)
+                                ? "#ecf0f1"
+                                : $task->priority_color;
+                            $tmp["progress"] = str_replace(
+                                "%",
+                                "",
+                                $task->taskProgress()["percentage"]
+                            );
+                            $tmp["extra"] = [
+                                "priority" => ucfirst(__($task->priority)),
+                                "comments" => count($task->comments),
+                                "duration" =>
+                                    Utility::getDateFormated($task->start_date) .
+                                    " - " .
+                                    Utility::getDateFormated($task->end_date),
+                            ];
+                            $tasks[] = $tmp;
+                        }
+                    }
+                }
+    
+                //return view('projects.gantt', compact('project', 'tasks', 'duration'));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+          
+          } catch (Exception $e) {
+          
+              return $e->getMessage();
+          
+          }
+    }
+
+    public function get_micro_freeze_status(Request $request)
+    {
+        try {
+            return Instance::where("project_id", $request->project_id)
+                ->where("instance", Session::get("project_instance"))
+                ->pluck("freeze_status")
+                ->first();
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function get_micro_gantt_task_count(Request $request)
+    {
+        $instanceId = Session::get("project_instance");
+        $task = MicroTask::where("project_id", $request->project_id)
+            ->where("instance_id", $instanceId)
+            ->get();
+
+        return count($task);
+    }
+
+    public function micro_freeze_status(Request $request)
+    {
+        try {
+            $instanceId = Session::get("project_instance");
+            $conTask = MicroTask::where([
+                "project_id" => $request->project_id,
+                "instance_id" => $instanceId,
+            ])
+                ->orderBy("id", "ASC")
+                ->first();
+            $data = [
+                "start_date" => $conTask->start_date,
+                "end_date" => $conTask->end_date,
+                "estimated_days" => $conTask->duration,
+            ];
+            $instanceData = [
+                "freeze_status" => 1,
+                "start_date" => $conTask->start_date,
+                "end_date" => $conTask->end_date,
+            ];
+
+            $getPreviousInstance = MicroTask::where(
+                "project_id",
+                $request->project_id
+            )
+                ->where("instance_id", "!=", $instanceId)
+                ->orderBy("id", "Desc")
+                ->first();
+
+            if ($getPreviousInstance != null) {
+                $setPreviousInstance = $getPreviousInstance->instance_id;
+                $getPreData = MicroTask::where(
+                    "project_id",
+                    $request->project_id
+                )
+                    ->where("instance_id", $setPreviousInstance)
+                    ->get();
+                foreach ($getPreData as $insertPre) {
+                    MicroTask::where([
+                        "project_id" => $request->project_id,
+                        "instance_id" => $instanceId,
+                        "id" => $insertPre->id,
+                    ])->update(["progress" => $insertPre->progress]);
+                }
+
+                DB::select(
+                    "INSERT INTO micro_task_progress(
+                            task_id,assign_to,percentage,date_status,description,user_id,project_id,instance_id,
+                            file_id,record_date,created_at,updated_at
+                        )
+                        SELECT task_id,assign_to,percentage,date_status,description,user_id,project_id,
+                        '" .
+                        $instanceId .
+                        "' as instance_id,file_id,record_date,created_at,updated_at
+                        FROM micro_task_progress WHERE project_id = " .
+                        $request->project_id .
+                        " AND
+                        instance_id='" .
+                        $setPreviousInstance .
+                        "'"
+                );
+
+                DB::select(
+                    "INSERT INTO micro_task_progress_file(
+                            task_id,project_id,instance_id,filename,file_path,status
+                        )
+                        SELECT task_id,project_id,'" .
+                        $instanceId .
+                        "' as instance_id,
+                        filename,file_path,status
+                        FROM micro_task_progress_file WHERE project_id = " .
+                        $request->project_id .
+                        " AND
+                        instance_id='" .
+                        $setPreviousInstance .
+                        "'"
+                );
+
+                $taskProgresskData = DB::table('micro_task_progress')->where(
+                    "project_id",
+                    $request->project_id
+                )
+                    ->where("instance_id", $instanceId)
+                    ->get();
+
+                $taskFileData = DB::table("micro_task_progress_file")
+                    ->where("project_id", $request->project_id)
+                    ->where("instance_id", $instanceId)
+                    ->get();
+
+                $taskProgressTaskId = [];
+                $taskFileDataId = [];
+
+                if (!empty($taskProgresskData)) {
+                    foreach ($taskProgresskData as $taskProgress) {
+                        if (
+                            !in_array(
+                                $taskProgress->task_id,
+                                $taskProgressTaskId
+                            )
+                        ) {
+                            $getCorrectData = MicroTask::select(
+                                "id",
+                                "text",
+                                "duration",
+                                "start_date",
+                                "end_date",
+                                "type"
+                            )
+                                ->where("main_id", $taskProgress->task_id)
+                                ->first();
+
+                            $getOrginalTask = MicroTask::where(
+                                "id",
+                                $getCorrectData->id
+                            )
+                                ->where("project_id", $request->project_id)
+                                ->where(
+                                    "start_date",
+                                    $getCorrectData->start_date
+                                )
+                                ->where("end_date", $getCorrectData->end_date)
+                                ->where("instance_id", $instanceId)
+                                ->first();
+
+                            if ($getOrginalTask != null) {
+                                DB::table('micro_task_progress')->where(
+                                    "project_id",
+                                    $request->project_id
+                                )
+                                    ->where("instance_id", $instanceId)
+                                    ->where("task_id", $taskProgress->task_id)
+                                    ->update([
+                                        "task_id" => $getOrginalTask->main_id,
+                                    ]);
+                            }
+                            $taskProgressTaskId[] = $taskProgress->task_id;
+                        }
+                    }
+                }
+
+                if (!empty($taskFileData)) {
+                    foreach ($taskFileData as $taskFileDataSet) {
+                        if (
+                            !in_array(
+                                $taskFileDataSet->task_id,
+                                $taskFileDataId
+                            )
+                        ) {
+                            $getCorrectData = MicroTask::select(
+                                "id",
+                                "text",
+                                "duration",
+                                "start_date",
+                                "end_date",
+                                "type"
+                            )
+                                ->where("main_id", $taskFileDataSet->task_id)
+                                ->first();
+
+                            $getOrginalTask = MicroTask::where(
+                                "id",
+                                $getCorrectData->id
+                            )
+                                ->where("project_id", $request->project_id)
+                                ->where(
+                                    "start_date",
+                                    $getCorrectData->start_date
+                                )
+                                ->where("end_date", $getCorrectData->end_date)
+                                ->where("instance_id", $instanceId)
+                                ->first();
+
+                            if ($getOrginalTask != null) {
+                                DB::table("micro_task_progress_file")
+                                    ->where("project_id", $request->project_id)
+                                    ->where("instance_id", $instanceId)
+                                    ->where(
+                                        "task_id",
+                                        $taskFileDataSet->task_id
+                                    )
+                                    ->update([
+                                        "task_id" => $getOrginalTask->main_id,
+                                    ]);
+                            }
+                            $taskFileDataId[] = $taskFileDataSet->task_id;
+                        }
+                    }
+                }
+            }
+
+            Project::where("id", $request->project_id)->update($data);
+            Instance::where("project_id", $request->project_id)
+                ->where("instance", $instanceId)
+                ->update($instanceData);
+            Session::put("current_revision_freeze", 1);
+
+            return redirect()
+                ->back()
+                ->with("success", __("Baseline Status successfully changed."));
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function micro_gantt_data($projectID, Request $request)
+    {
+        $project = Project::find($projectID);
+        if ($project) {
+            $instanceId = Session::get("project_instance");
+            $task = MicroTask::where("project_id", $projectID)
+                ->where("instance_id", $instanceId)
+                ->orderBy("id", "ASC")
+                ->get();
+
+            $link = MicroLink::where("project_id", $projectID)
+                ->where("instance_id", $instanceId)
+                ->orderBy("id", "ASC")
+                ->get();
+
+            return response()->json([
+                "data" => $task,
+                "links" => $link,
+            ]);
+        } else {
+            return "";
+        }
+    }
+
 }

@@ -75,15 +75,22 @@
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
+                                    @if($checMicroProgram == 1)
+                                    <a href="{{ route('microprogram.gantt', $project_id) }}"
+                                    class="{{ (Request::route()->getName() == 'microprogram.gantt')
+                                    ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
+                                    @else
                                     @can('view grant chart')
-                                        <a href="{{ route('projects.gantt', $project_id) }}"
-                                        class="{{ (Request::route()->getName() == 'projects.gantt')
-                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
+                                    <a href="{{ route('projects.gantt', $project_id) }}"
+                                    class="{{ (Request::route()->getName() == 'projects.gantt')
+                                    ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
                                     @endcan
+                                    @endif
 
                                     @if($checMicroProgram == 1)
                                         <a href="{{ route('microprogram') }}"
-                                            class="dropdown-item">{{ __('Micro Program') }}</a>
+                                        class="{{ (Request::route()->getName() == 'microprogram')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Program') }}</a>
                                     @endif
                                     
                                     @if(Session::get('current_revision_freeze')==1)
@@ -317,7 +324,7 @@
 
 
                     <li class="nav-item">
-                        <a href="{{ route('project.teammembers', $project_id) }}" class="nav-link">
+                        <a href="{{ route('project.teammembers', $project_id) }}" class="{{ (Request::route()->getName() == 'project.teammembers')?'nav-link active':'nav-link'}}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -335,7 +342,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('project_holiday') }}" class="nav-link">
+                        <a href="{{ url('project_holiday') }}" class="{{ (Request::segment(1) == 'project_holiday')?'nav-link active':'nav-link'}}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
@@ -353,7 +360,7 @@
                             <span class="nav-link-title"> {{ __('Holidays') }} </span></a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('project.activities', $project_id) }}" class="nav-link">
+                        <a href="{{ route('project.activities', $project_id) }}" class="{{ (Request::route()->getName() == 'project.activities')?'nav-link active':'nav-link'}}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
