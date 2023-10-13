@@ -15,6 +15,7 @@ use App\Models\Utility;
 use App\Models\Micro_Task_progress;
 use App\Models\Project_holiday;
 use App\Models\NonWorkingDaysModal;
+use App\Models\Con_task;
 use Carbon\CarbonPeriod;
 use Auth;
 use DB;
