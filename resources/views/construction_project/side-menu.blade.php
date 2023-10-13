@@ -87,11 +87,11 @@
                                     @endcan
                                     @endif
 
-                                    {{-- @if($checMicroProgram == 1) --}}
+                                    @if($checMicroProgram == 1)
                                         <a href="{{ route('microprogram') }}"
                                         class="{{ (Request::route()->getName() == 'microprogram')
                                         ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Program') }}</a>
-                                    {{-- @endif --}}
+                                    @endif
                                     
                                     @if(Session::get('current_revision_freeze')==1)
                                         <a href="{{ url('revision') }}"

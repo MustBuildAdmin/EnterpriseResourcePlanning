@@ -32,7 +32,7 @@ class MicroPorgramController extends Controller
             $weekEndDate   = $now->endOfWeek()->format('Y-m-d');
             $freezeCheck   = Instance::where('project_id', $project_id)
                 ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
-            if($freezeCheck == 1){
+            // if($freezeCheck == 1){
                 $MicroProgramScheduleModal = MicroProgramScheduleModal::where('project_id',$project_id)
                     ->where('instance_id',$instance_id)
                     ->where('status',1)
@@ -42,10 +42,10 @@ class MicroPorgramController extends Controller
                         ->with('MicroProgramScheduleModal',$MicroProgramScheduleModal)
                         ->with('weekStartDate',$weekStartDate)
                         ->with('weekEndDate',$weekEndDate);
-            }
-            else{
-                return redirect()->back()->with('error', __('Project Not Freezed.'));
-            }
+            // }
+            // else{
+            //     return redirect()->back()->with('error', __('Project Not Freezed.'));
+            // }
         }
         else {
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
@@ -196,17 +196,17 @@ class MicroPorgramController extends Controller
             $instance_id = Session::get('project_instance');
             $freezeCheck = Instance::where('project_id', $project_id)
                 ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
-            if($freezeCheck == 1){
+            // if($freezeCheck == 1){
                 // Session::put('task_filter',$request->status);
                 $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
                 return view('microprogram.micro_taskboard',
                     compact('tasks', 'project_id',));
                 
                 
-            }
-            else {
-                return redirect()->back()->with('error', __('Project Not Freezed.'));
-            }
+            // }
+            // else {
+            //     return redirect()->back()->with('error', __('Project Not Freezed.'));
+            // }
         } else {
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
         }
