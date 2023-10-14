@@ -1514,6 +1514,25 @@ class ProjectController extends Controller
         }
     }
 
+    public function criticaltask_update(Request $request)
+    {
+        if ($request->ajax()) {
+            $project=Project::find(Session::get("project_id"));
+            
+            if($project->critical_update==0){
+                $array=[
+                    "iscritical"=>1,
+                ];
+                if(is_array($request->critical_task)){
+                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->whereIn('id',$request->critical_task)->update($array);
+                }else{
+                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('id',$request->critical_task)->update($array);
+                }
+                Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
+            }
+        }
+    }
+    
     public function get_member(Request $request)
     {
         if ($request->ajax()) {
@@ -1763,6 +1782,8 @@ class ProjectController extends Controller
                         ->where("instance_id", $instanceId)
                         ->pluck("non_working_days")
                         ->first();
+                    // critical bulk update 
+                    $critical_update=Project::where("id", Session::get("project_id"))->pluck('critical_update')->first();
 
                     return view(
                         "construction_project.gantt",
@@ -1773,7 +1794,8 @@ class ProjectController extends Controller
                             "project_holidays",
                             "freezeCheck",
                             "nonWorkingDay",
-                            "projectname"
+                            "projectname",
+                            'critical_update'
                         )
                     );
                 } else {

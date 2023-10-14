@@ -922,12 +922,39 @@
                 };
 
                 // progress end
+                var workflag=0;
                 gantt.attachEvent("onBeforeAutoSchedule", function() {
-                    // gantt.message("Recalculating project schedule...");
+                    var check_cri=<?php  echo  $critical_update ?>;
+                    if(check_cri==0){
+                        var tasks = gantt.getTaskByTime();
+                        const  critical_task=new Array();
+                        if(workflag==0){
+                            for(var i=0;i < tasks.length; i++){ 
+                                let tt=gantt.isCriticalTask(gantt.getTask(tasks[i].id));
+                                if(tt){
+                                    critical_task.push(tasks[i].id);
+                                }
+                            };
+                            workflag=1;
+                            $.ajax({
+                                url: '{{ route('projects.criticaltask_update') }}',
+                                type: 'get',
+                                data: {
+                                    'critical_task': critical_task
+                                },
+                                success: function(data) {
+            
+                                }
+                            });
+
+                        }
+                    }
+                    
+                   
                     return true;
                 });
                 gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
-
+                   
                 });
 
 
@@ -1096,19 +1123,32 @@
                         // }
                     })
                     if (frezee_status_actual != 1) {
-                        var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
-                        //var dp = new gantt.dataProcessor("/erp/public/");
+                       // var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
+                        var dp = new gantt.dataProcessor("/erp/public/");
+                        var critical=0;
                         dp.init(gantt);
+                        
+                      
+                        dp.attachEvent("onBeforeUpdate", function(id, state, data) {
+                            gantt.config.readonly = true;
+                            let tt=gantt.isCriticalTask(gantt.getTask(id));
+                            
+                            if(tt){
+                                critical=1;
+                            }else{
+                                critical=0;
+                            }
+                            data.iscritical=critical;
+                            return true;
+                        });
+
                         dp.setTransactionMode({
                             mode: "REST",
                             payload: {
                                 "_token": tempcsrf,
                             }
                         });
-                        dp.attachEvent("onBeforeUpdate", function(id, state, data) {
-                            gantt.config.readonly = true;
-                            return true;
-                        });
+
                         dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
                             gantt.config.readonly = false;
                             if (action == "inserted") {

@@ -3499,6 +3499,18 @@ Route::get(
         'XSS',
     ]
 );
+Route::any(
+    'get_member', [
+        'as' => 'projects.criticaltask_update',
+        'uses' => 'ProjectController@criticaltask_update',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get(
     'projects/{id}/gantt/{duration?}', [
         'as' => 'projects.gantt',
