@@ -809,9 +809,9 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
             ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB($this->sheetbgColor); // cell color
-            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray); 
-            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center'); 
-            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center'); 
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray);
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center');
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center');
            
             if(count($taskdata)>0){
                 $row=2;
@@ -1167,15 +1167,10 @@ class ProjectReportController extends Controller
         foreach ($project as  $value3) {
             $holidays = DB::table('project_holidays')->where(['project_id' => $value3->id,
                 'instance_id' => $value3->instance_id])->where('date', Carbon::now()->format('Y-m-d'))->first();
-            if (! $holidays) {
-                if (! str_contains($value3->non_working_days, Carbon::now()->format('w'))) {
-                    if ($value3->freeze_status == 1) {
-                        Reportemail::dispatch($value3->id);
-                    }
+                if(!$holidays && !str_contains($value3->non_working_days, Carbon::now()->format('w'))
+                && $value3->freeze_status == 1) {
+                    Reportemail::dispatch($value3->id);
                 }
-
-            }
-
         }
     }
 
