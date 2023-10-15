@@ -28,6 +28,8 @@ class ProjectReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $taskNotStarted="Task Not Started";
+    public $notAssign="Not Assign a Report person";
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -168,7 +170,6 @@ class ProjectReportController extends Controller
             $logged_hour = 0;
 
             $tasks = ProjectTask::where('project_id', $id)->get();
-            $data = [];
             foreach ($tasks as $task) {
                 $timesheets_task = Timesheet::where('task_id', $task->id)->where('project_id', $id)->get();
 
@@ -225,7 +226,7 @@ class ProjectReportController extends Controller
                     }
                 );
             }
-            $data = $objProject->pluck('total', 'stage_id')->all();
+            $objProject->pluck('total', 'stage_id')->all();
             $arrTask['label'][] = __($label);
 
             return $arrTask;
@@ -235,9 +236,7 @@ class ProjectReportController extends Controller
     public function export($id)
     {
         $name = 'task_report_'.date('Y-m-d i:h:s');
-        $data = Excel::download(new task_reportExport($id), $name.'.xlsx');
-
-        return $data;
+        return Excel::download(new task_reportExport($id), $name.'.xlsx');
     }
 
     public function send_report_con(Request $request)
@@ -277,7 +276,7 @@ class ProjectReportController extends Controller
                     $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
-                    $actual_start = 'Task Not Started';
+                    $actual_start = $this->taskNotStarted;
                 }
 
                 if ($actual_end) {
@@ -378,33 +377,12 @@ class ProjectReportController extends Controller
             }
 
             if (! $to) {
-                return redirect()->back()->with('error', __('Not Assign a Report person'));
+                return redirect()->back()->with('error', __($this->notAssign));
             }
-            // return Pdf::loadView('project_report.email', compact('taskdata','project','project_task','actual_current_progress','actual_remaining_progress','taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
             $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task', 'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
             $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
 
             return $pdf->download($pdf_name);
-            // $data["email"] = $to;
-            // $data["title"] = $project->project_name."- Daily Productivity Report";
-            // $data["body"] = "Please find the attachment of the Today Productivity report";
-            // try
-            // {
-            //     Mail::send('construction_project.mail',$data, function($message)use($data, $pdf) {
-            //         $message->to($data["email"], $data["email"])
-            //                 ->subject($data["title"])
-            //                 ->attachData($pdf->output(),'Report.pdf');
-
-            //     });
-
-            // }catch(\Exception $e)
-            // {
-            //     $error = $e->getMessage();
-            //     dd($error);
-
-            // }
-            // return redirect()->back()->with('success', __('Email send Successfully'));
-
         }
     }
     public function pdf_report_onsearch(Request $request)
@@ -510,7 +488,7 @@ class ProjectReportController extends Controller
                     $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
-                    $actual_start = 'Task Not Started';
+                    $actual_start = $this->taskNotStarted;
                 }
 
                 if ($actual_end) {
@@ -522,26 +500,11 @@ class ProjectReportController extends Controller
                 if ($actual_end < $planned_end) {
                     $actual_end = 'Task Not Finish';
                 }
-                //finding planned percentage
-                //############## days finding ####################################################
-                $date1 = date_create($value->start_date);
                 $date2 = date_create($value->end_date);
-                $cur = date('Y-m-d');
-
-                // $diff=date_diff($date1,$date2);
-                // $no_working_days=$diff->format("%a");
                 $no_working_days = $value->duration; // include the last day
-                //############## END ##############################
-
-                //############## Remaining days ###################
-
                 $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
                 $remaining_working_days = $remaining_working_days - 1; // include the last day
 
-                // $diff=date_diff($date1,$date2);
-                // $remaining_working_days=$diff->format("%a");
-                // $remaining_working_days=$remaining_working_days-1;// include the last day
-                //############## Remaining days ##################
 
                 $completed_days = $no_working_days - $remaining_working_days;
 
@@ -557,7 +520,6 @@ class ProjectReportController extends Controller
                     $current_percentage = 100;
                 }
 
-                $remaing_percenatge = round(100 - $current_percentage);
 
                 //####################################___END____#######################################
                 //  // actual duration finding
@@ -611,9 +573,11 @@ class ProjectReportController extends Controller
             }
 
             if (! $to) {
-                return redirect()->back()->with('error', __('Not Assign a Report person'));
+                return redirect()->back()->with('error', __($this->notAssign));
             }
-            $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task', 'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
+            $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task',
+            'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))
+            ->setPaper('a4', 'landscape')->setWarnings(false);
             $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
 
             return $pdf->download($pdf_name);
@@ -718,7 +682,7 @@ class ProjectReportController extends Controller
                     $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
-                    $actual_start = 'Task Not Started';
+                    $actual_start = $this->taskNotStarted;
                 }
 
                 if ($actual_end) {
@@ -820,7 +784,7 @@ class ProjectReportController extends Controller
             }
 
             if (! $to) {
-                return redirect()->back()->with('error', __('Not Assign a Report person'));
+                return redirect()->back()->with('error', __($this->notAssign));
             }
 
             $spreadsheet = new Spreadsheet();
@@ -871,7 +835,8 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->setCellValue('J1','Actual % as of Today');
             $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
             $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0f609b'); // cell color
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('0f609b'); // cell color
             $sheet->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray); 
             $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center'); 
             $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setVertical('center'); 
@@ -893,7 +858,8 @@ class ProjectReportController extends Controller
                     $row++;
                     if($value['percentage_as_today'] != $value['actual_percent']){
                         $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
-                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffbfbd'); // cell color
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('ffbfbd'); // cell color
                     }
                 }
             }else{
@@ -1001,7 +967,7 @@ class ProjectReportController extends Controller
                     $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
-                    $actual_start = 'Task Not Started';
+                    $actual_start = $this->taskNotStarted;
                 }
 
                 if ($actual_end) {
@@ -1102,7 +1068,7 @@ class ProjectReportController extends Controller
             }
 
             if (! $to) {
-                return redirect()->back()->with('error', __('Not Assign a Report person'));
+                return redirect()->back()->with('error', __($this->notAssign));
             }
 
             $spreadsheet = new Spreadsheet();
