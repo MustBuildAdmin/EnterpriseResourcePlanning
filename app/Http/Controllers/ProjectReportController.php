@@ -392,7 +392,6 @@ class ProjectReportController extends Controller
     }
     public function pdf_report_onsearch(Request $request)
     {
-
         if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
             $project      = Project::where('id', Session::get('project_id'))->first();
             $project_id     = Session::get('project_id');
@@ -402,10 +401,8 @@ class ProjectReportController extends Controller
             $status_task    = $request->status_task;
             $task_id_arr    = $request->task_id_arr;
             $user_id_arr    = $request->user_id;
-    
             // 3 > Pending Task
             // 4 > Completed Task
-            
             $tasks = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
                 'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
                 'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
@@ -439,15 +436,12 @@ class ProjectReportController extends Controller
                     }
                 });
             }
-
-            if($status_task != null){
-                if($status_task == "3"){
-                    $tasks->where('progress','<','100')
-                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-                }
-                elseif($status_task == "4"){
-                    $tasks->where('progress','>=','100');
-                }
+            if($status_task != null && $status_task == "3"){
+                $tasks->where('progress','<','100')
+                    ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+            }
+            elseif($status_task != null && $status_task == "4"){
+                $tasks->where('progress','>=','100');
             }
 
             if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
@@ -493,7 +487,6 @@ class ProjectReportController extends Controller
                 } else {
                     $actual_start = $this->taskNotStarted;
                 }
-
                 if ($actual_end) {
                     $actual_end = date('d-m-Y', strtotime($actual_end));
                 } else {
@@ -522,8 +515,6 @@ class ProjectReportController extends Controller
                 if ($current_percentage > 100) {
                     $current_percentage = 100;
                 }
-
-
                 //####################################___END____#######################################
                 //  // actual duration finding
                 $taskdata[] = [
@@ -602,9 +593,6 @@ class ProjectReportController extends Controller
             $task_id_arr    = $request->task_id_arr;
             $user_id_arr    = $request->user_id;
     
-            // 3 > Pending Task
-            // 4 > Completed Task
-            
             $tasks = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
                 'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
                 'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
@@ -639,25 +627,21 @@ class ProjectReportController extends Controller
                 });
             }
 
-            if($status_task != null){
-                if($status_task == "3"){
-                    $tasks->where('progress','<','100')
-                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-                }
-                elseif($status_task == "4"){
-                    $tasks->where('progress','>=','100');
-                }
+            if($status_task != null && $status_task == "3"){
+                $tasks->where('progress','<','100')
+                    ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+            }
+            elseif($status_task != null && $status_task == "4"){
+                $tasks->where('progress','>=','100');
             }
 
             if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
                 $get_end_date == null && $status_task == null){
-
                         $tasks->whereIn('main_id', function ($query) {
                             $query->select('task_id')
                                 ->from('task_progress')
                                 ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
                         });
-
                 $tasks->where(function($query) {
                     $query->whereRaw('"'.date('Y-m-d').'"
                         between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
@@ -671,9 +655,6 @@ class ProjectReportController extends Controller
             // current progress amount
             $taskdata = [];
             foreach ($project_task as $value) {
-                $planned_start = date('d-m-Y', strtotime($value->start_date));
-                $planned_end = date('d-m-Y', strtotime($value->end_date));
-
                 $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
                     ->where('task_id', $value->main_id)->max('created_at');
@@ -692,7 +673,7 @@ class ProjectReportController extends Controller
                     $actual_end = $this->notFinish;
                 }
 
-                if ($actual_end < $planned_end) {
+                if ($actual_end < date('d-m-Y', strtotime($value->end_date))) {
                     $actual_end = $this->notFinish;
                 }
                 $date2 = date_create($value->end_date);
@@ -715,8 +696,8 @@ class ProjectReportController extends Controller
                 //  // actual duration finding
                 $taskdata[] = [
                     'title' => $value->text,
-                    'planed_start' => $planned_start,
-                    'planed_end' => $planned_end,
+                    'planed_start' => date('d-m-Y', strtotime($value->start_date)),
+                    'planed_end' => date('d-m-Y', strtotime($value->end_date)),
                     'duration' => $value->duration.$this->daysString,
                     'percentage_as_today' => round($current_percentage),
                     'actual_start' => $actual_start,
@@ -767,7 +748,12 @@ class ProjectReportController extends Controller
                 return redirect()->back()->with('error', __($this->notAssign));
             }
 
-            $spreadsheet = new Spreadsheet();
+            $this->generateReport($taskdata,$taskdata2,$project);
+             
+        }
+    }
+    public function generateReport($taskdata,$taskdata2,$project){
+        $spreadsheet = new Spreadsheet();
             $sheet=$spreadsheet;
             $spreadsheet->getProperties()->setCreator('PhpOffice')
                         ->setLastModifiedBy('PhpOffice')
@@ -900,8 +886,6 @@ class ProjectReportController extends Controller
 			header("Content-Disposition: attachment; filename=".$filename);
 			unlink($download_directory);
             exit($content);
-             
-        }
     }
     public function download_excel_report(Request $request)
     {
