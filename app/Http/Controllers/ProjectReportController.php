@@ -37,6 +37,8 @@ class ProjectReportController extends Controller
     public $norecord="NO Record Found";
     public $sheetRows='A2:K2';
     public $sheetRows1="A1:K1";
+    public $plannedStartDate="Planned Start Date";
+    public $plannedFinish="Planned Finish";
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -787,8 +789,8 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->getColumnDimension('J')->setWidth(50);
             $sheet->getActiveSheet()->getColumnDimension('K')->setWidth(50);
             $sheet->getActiveSheet()->setCellValue('A1','Title');
-            $sheet->getActiveSheet()->setCellValue('B1','Planned Start Date');
-            $sheet->getActiveSheet()->setCellValue('C1','Planned Finish');
+            $sheet->getActiveSheet()->setCellValue('B1',$this->plannedStartDate);
+            $sheet->getActiveSheet()->setCellValue('C1',$this->plannedFinish);
             $sheet->getActiveSheet()->setCellValue('D1','Duration');
             $sheet->getActiveSheet()->setCellValue('E1','Planned % as of today');
             $sheet->getActiveSheet()->setCellValue('F1','Planned Value');
@@ -845,8 +847,8 @@ class ProjectReportController extends Controller
             $worksheet2->getColumnDimension('J')->setWidth(50);
             $worksheet2->getColumnDimension('K')->setWidth(50);
             $worksheet2->setCellValue('A1','Title');
-            $worksheet2->setCellValue('B1','Planned Start Date');
-            $worksheet2->setCellValue('C1','Planned Finish');
+            $worksheet2->setCellValue('B1',$this->plannedStartDate);
+            $worksheet2->setCellValue('C1',$this->plannedFinish);
             $worksheet2->setCellValue('D1','Duration');
             $worksheet2->setCellValue('E1','Percentage');
             $worksheet2->setCellValue('F1','Progress Updated Date');
@@ -1036,8 +1038,8 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->getColumnDimension('J')->setWidth(50);
             $sheet->getActiveSheet()->getColumnDimension('K')->setWidth(50);
             $sheet->getActiveSheet()->setCellValue('A1','Title');
-            $sheet->getActiveSheet()->setCellValue('B1','Planned Start Date');
-            $sheet->getActiveSheet()->setCellValue('C1','Planned Finish');
+            $sheet->getActiveSheet()->setCellValue('B1',$this->plannedStartDate);
+            $sheet->getActiveSheet()->setCellValue('C1',$this->plannedFinish);
             $sheet->getActiveSheet()->setCellValue('D1','Duration');
             $sheet->getActiveSheet()->setCellValue('E1','Planned % as of today');
             $sheet->getActiveSheet()->setCellValue('F1','Planned Value');
@@ -1095,8 +1097,8 @@ class ProjectReportController extends Controller
             $worksheet2->getColumnDimension('J')->setWidth(50);
             $worksheet2->getColumnDimension('K')->setWidth(50);
             $worksheet2->setCellValue('A1','Title');
-            $worksheet2->setCellValue('B1','Planned Start Date');
-            $worksheet2->setCellValue('C1','Planned Finish');
+            $worksheet2->setCellValue('B1',$this->plannedStartDate);
+            $worksheet2->setCellValue('C1',$this->plannedFinish);
             $worksheet2->setCellValue('D1','Duration');
             $worksheet2->setCellValue('E1','Percentage');
             $worksheet2->setCellValue('F1','Progress Updated Date');
