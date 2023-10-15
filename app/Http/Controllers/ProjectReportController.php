@@ -39,6 +39,7 @@ class ProjectReportController extends Controller
     public $sheetRows1="A1:K1";
     public $plannedStartDate="Planned Start Date";
     public $plannedFinish="Planned Finish";
+    public $sheetbgColor="0f609b";
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -263,7 +264,7 @@ class ProjectReportController extends Controller
             $actual_remaining_progress = round($actual_remaining_progress);
             // current progress amount
             $taskdata = [];
-            foreach ($project_task as $key => $value) {
+            foreach ($project_task as $value) {
                 $planned_start = date('d-m-Y', strtotime($value->start_date));
                 $planned_end = date('d-m-Y', strtotime($value->end_date));
 
@@ -663,7 +664,7 @@ class ProjectReportController extends Controller
             $project_task = $tasks->get();
             // current progress amount
             $taskdata = [];
-            foreach ($project_task as $key => $value) {
+            foreach ($project_task as $value) {
                 $planned_start = date('d-m-Y', strtotime($value->start_date));
                 $planned_end = date('d-m-Y', strtotime($value->end_date));
 
@@ -801,7 +802,7 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
             ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()->setARGB('0f609b'); // cell color
+            ->getStartColor()->setARGB($this->sheetbgColor); // cell color
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray); 
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center'); 
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center'); 
@@ -856,7 +857,7 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('H1','User Name');
             $worksheet2->setCellValue('I1','User Email');
             $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()->setARGB('0f609b'); // cell color
+            ->getStartColor()->setARGB($this->sheetbgColor); // cell color
             $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray); 
             $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center'); 
             $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center'); 
@@ -916,7 +917,7 @@ class ProjectReportController extends Controller
             $actual_remaining_progress = round($actual_remaining_progress);
             // current progress amount
             $taskdata = [];
-            foreach ($project_task as $key => $value) {
+            foreach ($project_task as $value) {
                 $planned_start = date('d-m-Y', strtotime($value->start_date));
                 $planned_end = date('d-m-Y', strtotime($value->end_date));
 
@@ -1050,7 +1051,7 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
             ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()->setARGB('0f609b'); // cell color
+            ->getStartColor()->setARGB($this->sheetbgColor); // cell color
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray);
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center');
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center');
@@ -1106,7 +1107,7 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('H1','User Name');
             $worksheet2->setCellValue('I1','User Email');
             $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()->setARGB('0f609b'); // cell color
+            ->getStartColor()->setARGB($this->sheetbgColor); // cell color
             $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray);
             $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center');
             $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center');
