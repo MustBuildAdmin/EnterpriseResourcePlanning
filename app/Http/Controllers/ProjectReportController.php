@@ -343,7 +343,7 @@ class ProjectReportController extends Controller
                 ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
             $instance_id = Session::get('project_instance');
 
-            foreach ($today_task_update as $key => $value) {
+            foreach ($today_task_update as $value) {
                 $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
                 $user = User::find($value->user_id);
                 if ($user) {
@@ -369,7 +369,7 @@ class ProjectReportController extends Controller
             }
             $to = [];
             $to_array = explode(',', $project->report_to);
-            foreach ($to_array as $key => $value) {
+            foreach ($to_array as  $value) {
                 $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
             }
 
@@ -472,7 +472,7 @@ class ProjectReportController extends Controller
             $actual_remaining_progress = round($actual_remaining_progress);
             // current progress amount
             $taskdata = [];
-            foreach ($project_task as $key => $value) {
+            foreach ($project_task as  $value) {
                 $planned_start = date('d-m-Y', strtotime($value->start_date));
                 $planned_end = date('d-m-Y', strtotime($value->end_date));
 
@@ -539,7 +539,7 @@ class ProjectReportController extends Controller
                 ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
             $instance_id = Session::get('project_instance');
 
-            foreach ($today_task_update as $key => $value) {
+            foreach ($today_task_update as  $value) {
                 $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
                 $user = User::find($value->user_id);
                 if ($user) {
@@ -565,7 +565,7 @@ class ProjectReportController extends Controller
             }
             $to = [];
             $to_array = explode(',', $project->report_to);
-            foreach ($to_array as $key => $value) {
+            foreach ($to_array as  $value) {
                 $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
             }
 
@@ -726,7 +726,7 @@ class ProjectReportController extends Controller
                 ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
             $instance_id = Session::get('project_instance');
 
-            foreach ($today_task_update as $key => $value) {
+            foreach ($today_task_update as  $value) {
                 $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
                 $user = User::find($value->user_id);
                 if ($user) {
@@ -753,7 +753,7 @@ class ProjectReportController extends Controller
             
             $to = [];
             $to_array = explode(',', $project->report_to);
-            foreach ($to_array as $key => $value) {
+            foreach ($to_array as  $value) {
                 $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
             }
 
@@ -809,7 +809,7 @@ class ProjectReportController extends Controller
            
             if(count($taskdata)>0){
                 $row=2;
-                foreach ($taskdata as $key => $value) {
+                foreach ($taskdata as  $value) {
                     $sheet->getActiveSheet()->setCellValue('A'.$row,$value['title']);
                     $sheet->getActiveSheet()->setCellValue('B'.$row,$value['planed_start']);
                     $sheet->getActiveSheet()->setCellValue('C'.$row,$value['planed_end']);
@@ -864,7 +864,7 @@ class ProjectReportController extends Controller
 
             if(count($taskdata2)>0){
                 $row=2;
-                foreach ($taskdata2 as $key => $value) {
+                foreach ($taskdata2 as  $value) {
                     $worksheet2->setCellValue('A'.$row,$value['title']);
                     $worksheet2->setCellValue('B'.$row,$value['planed_start']);
                     $worksheet2->setCellValue('C'.$row,$value['planed_end']);
@@ -976,7 +976,7 @@ class ProjectReportController extends Controller
                 ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
             $instance_id = Session::get('project_instance');
 
-            foreach ($today_task_update as $key => $value) {
+            foreach ($today_task_update as  $value) {
                 $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
                 $user = User::find($value->user_id);
                 if ($user) {
@@ -1002,7 +1002,7 @@ class ProjectReportController extends Controller
             }
             $to = [];
             $to_array = explode(',', $project->report_to);
-            foreach ($to_array as $key => $value) {
+            foreach ($to_array as  $value) {
                 $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
             }
 
@@ -1057,7 +1057,7 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center');
             
             if(count($taskdata)>0){
-                foreach ($taskdata as $key => $value) {
+                foreach ($taskdata as  $value) {
                     $row=2;
                     $sheet->getActiveSheet()->setCellValue('A'.$row,$value['title']);
                     $sheet->getActiveSheet()->setCellValue('B'.$row,$value['planed_start']);
@@ -1113,7 +1113,7 @@ class ProjectReportController extends Controller
             $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center');
 
             if(count($taskdata2)>0){
-                foreach ($taskdata2 as $key => $value) {
+                foreach ($taskdata2 as  $value) {
                     $row=2;
                     $worksheet2->setCellValue('A'.$row,$value['title']);
                     $worksheet2->setCellValue('B'.$row,$value['planed_start']);
@@ -1154,7 +1154,7 @@ class ProjectReportController extends Controller
         // recordend
         $time = Carbon::now()->format('H:i');
         $project = Project::where('end_date', '>=', Carbon::now()->format('Y-m-d'))->where('report_time', $time)->get();
-        foreach ($project as $key => $value3) {
+        foreach ($project as  $value3) {
             $holidays = DB::table('project_holidays')->where(['project_id' => $value3->id,
                 'instance_id' => $value3->instance_id])->where('date', Carbon::now()->format('Y-m-d'))->first();
             if (! $holidays) {
@@ -1195,7 +1195,7 @@ class ProjectReportController extends Controller
             }
 
             $user = [];
-            foreach ($data as $key => $value) {
+            foreach ($data as $value) {
                 $user[] = ['name' => $value->name, 'id' => $value->id];
             }
 
