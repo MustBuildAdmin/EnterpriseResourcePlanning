@@ -38,11 +38,14 @@ class ProjectReportController extends Controller
     public $sheetRows='A2:K2';
     public $sheetRows1="A1:K1";
     public $sheetCol1="A1:I1";
+    public $sheetCol2="A2:I2";
     public $plannedStartDate="Planned Start Date";
     public $plannedFinish="Planned Finish";
     public $sheetbgColor="0f609b";
     public $findinSet="find_in_set('";
     public $usersSet="',users)";
+    public $xslxExtension=".xlsx";
+
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -242,7 +245,7 @@ class ProjectReportController extends Controller
     public function export($id)
     {
         $name = 'task_report_'.date('Y-m-d i:h:s');
-        return Excel::download(new task_reportExport($id), $name.'.xlsx');
+        return Excel::download(new task_reportExport($id), $name.$this->xslxExtension);
     }
 
     public function send_report_con(Request $request)
@@ -859,11 +862,12 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('G1','Description');
             $worksheet2->setCellValue('H1','User Name');
             $worksheet2->setCellValue('I1','User Email');
-            $worksheet2->getStyle($this->sheetCol1)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            $worksheet2->getStyle($this->sheetCol1)->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB($this->sheetbgColor); // cell color
-            $worksheet2->getStyle($this->sheetCol1)->applyFromArray($styleArray); 
-            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setHorizontal('center'); 
-            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setVertical('center'); 
+            $worksheet2->getStyle($this->sheetCol1)->applyFromArray($styleArray);
+            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setHorizontal('center');
+            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setVertical('center');
 
             if(count($taskdata2)>0){
                 $row=2;
@@ -881,17 +885,18 @@ class ProjectReportController extends Controller
 
                 }
             }else{
-                $worksheet2->mergeCells('A2:I2');
+                $worksheet2->mergeCells($this->sheetCol2);
                 $worksheet2->setCellValue('A2',$this->norecord);
-                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setHorizontal('center'); 
-                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setVertical('center'); 
+                $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setHorizontal('center');
+                $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setVertical('center');
             }
 
             $download_directory = './Report_list.xlsx';
             $writer = IOFactory::createWriter($sheet, 'Xlsx');
 			$writer->save($download_directory);
 			$content = file_get_contents($download_directory);
-			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'.date('Y-m-d H:i:s').'.xlsx';
+			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'
+            .date('Y-m-d H:i:s').$this->xslxExtension;
 			header("Content-Disposition: attachment; filename=".$filename);
 			unlink($download_directory);
             exit($content);
@@ -1109,7 +1114,8 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('G1','Description');
             $worksheet2->setCellValue('H1','User Name');
             $worksheet2->setCellValue('I1','User Email');
-            $worksheet2->getStyle($this->sheetCol1)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            $worksheet2->getStyle($this->sheetCol1)->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB($this->sheetbgColor); // cell color
             $worksheet2->getStyle($this->sheetCol1)->applyFromArray($styleArray);
             $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setHorizontal('center');
@@ -1131,17 +1137,18 @@ class ProjectReportController extends Controller
 
                 }
             }else{
-                $worksheet2->mergeCells('A2:I2');
+                $worksheet2->mergeCells($this->sheetCol2);
                 $worksheet2->setCellValue('A2',$this->norecord);
-                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setHorizontal('center');
-                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setVertical('center');
+                $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setHorizontal('center');
+                $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setVertical('center');
             }
 
             $download_directory = './Report_list.xlsx';
             $writer = IOFactory::createWriter($sheet, 'Xlsx');
 			$writer->save($download_directory);
 			$content = file_get_contents($download_directory);
-			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'.date('Y-m-d H:i:s').'.xlsx';
+			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'
+            .date('Y-m-d H:i:s').$this->xslxExtension;
 			header("Content-Disposition: attachment; filename=".$filename);
 			unlink($download_directory);
             exit($content);
