@@ -32,6 +32,8 @@ class ProjectReportController extends Controller
     public $notAssign="Not Assign a Report person";
     public $allProjects="projects.*";
     public $typeSuperAdmin='super admin';
+    public $notFinish="Task Not Finish";
+    public $daysString=" Days";
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -110,18 +112,11 @@ class ProjectReportController extends Controller
                 ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
                 ->where('project_users.user_id', '=', $user->id)->first();
 
-            // dd($project);
         } else {
             $project = Project::where('created_by', '=', $user->id)->where('id', $id)->first();
         }
 
         if ($user) {
-            $chartData = $this->getProjectChart(
-                [
-                    'project_id' => $id,
-                    'duration' => 'week',
-                ]
-            );
             $daysleft = round((((strtotime($user->end_date) - strtotime(date('Y-m-d'))) / 24) / 60) / 60);
 
             $project_status_task = TaskStage::join('project_tasks', 'project_tasks.stage_id', '=', 'task_stages.id')
@@ -282,18 +277,15 @@ class ProjectReportController extends Controller
                 if ($actual_end) {
                     $actual_end = date('d-m-Y', strtotime($actual_end));
                 } else {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
 
                 if ($actual_end < $planned_end) {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
                 //finding planned percentage
                 //############## days finding ####################################################
-                $date1 = date_create($value->start_date);
                 $date2 = date_create($value->end_date);
-                $cur = date('Y-m-d');
-
                 // $diff=date_diff($date1,$date2);
                 // $no_working_days=$diff->format("%a");
                 $no_working_days = $value->duration; // include the last day
@@ -323,7 +315,6 @@ class ProjectReportController extends Controller
                     $current_percentage = 100;
                 }
 
-                $remaing_percenatge = round(100 - $current_percentage);
 
                 //####################################___END____#######################################
                 //  // actual duration finding
@@ -331,12 +322,12 @@ class ProjectReportController extends Controller
                     'title' => $value->text,
                     'planed_start' => $planned_start,
                     'planed_end' => $planned_end,
-                    'duration' => $value->duration.' Days',
+                    'duration' => $value->duration.$this->daysString,
                     'percentage_as_today' => round($current_percentage),
                     'actual_start' => $actual_start,
                     'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.' Days',
-                    'remain_duration' => $value->duration.' Days',
+                    'actual_duration' => $value->duration.$this->daysString,
+                    'remain_duration' => $value->duration.$this->daysString,
                     'actual_percent' => round($value->progress),
                 ];
             }
@@ -361,7 +352,7 @@ class ProjectReportController extends Controller
                     'title' => $main_task->text,
                     'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
                     'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.' Days',
+                    'duration' => $main_task->duration.$this->daysString,
                     'percentage' => $value->percentage.'%',
                     'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
                     'description' => $value->description,
@@ -494,11 +485,11 @@ class ProjectReportController extends Controller
                 if ($actual_end) {
                     $actual_end = date('d-m-Y', strtotime($actual_end));
                 } else {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
 
                 if ($actual_end < $planned_end) {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
                 $date2 = date_create($value->end_date);
                 $no_working_days = $value->duration; // include the last day
@@ -527,12 +518,12 @@ class ProjectReportController extends Controller
                     'title' => $value->text,
                     'planed_start' => $planned_start,
                     'planed_end' => $planned_end,
-                    'duration' => $value->duration.' Days',
+                    'duration' => $value->duration.$this->daysString,
                     'percentage_as_today' => round($current_percentage),
                     'actual_start' => $actual_start,
                     'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.' Days',
-                    'remain_duration' => $value->duration.' Days',
+                    'actual_duration' => $value->duration.$this->daysString,
+                    'remain_duration' => $value->duration.$this->daysString,
                     'actual_percent' => round($value->progress),
                 ];
             }
@@ -557,7 +548,7 @@ class ProjectReportController extends Controller
                     'title' => $main_task->text,
                     'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
                     'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.' Days',
+                    'duration' => $main_task->duration.$this->daysString,
                     'percentage' => $value->percentage.'%',
                     'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
                     'description' => $value->description,
@@ -686,11 +677,11 @@ class ProjectReportController extends Controller
                 if ($actual_end) {
                     $actual_end = date('d-m-Y', strtotime($actual_end));
                 } else {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
 
                 if ($actual_end < $planned_end) {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
                 $date2 = date_create($value->end_date);
                 $no_working_days = $value->duration; // include the last day
@@ -714,12 +705,12 @@ class ProjectReportController extends Controller
                     'title' => $value->text,
                     'planed_start' => $planned_start,
                     'planed_end' => $planned_end,
-                    'duration' => $value->duration.' Days',
+                    'duration' => $value->duration.$this->daysString,
                     'percentage_as_today' => round($current_percentage),
                     'actual_start' => $actual_start,
                     'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.' Days',
-                    'remain_duration' => $value->duration.' Days',
+                    'actual_duration' => $value->duration.$this->daysString,
+                    'remain_duration' => $value->duration.$this->daysString,
                     'actual_percent' => round($value->progress),
                 ];
             }
@@ -744,7 +735,7 @@ class ProjectReportController extends Controller
                     'title' => $main_task->text,
                     'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
                     'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.' Days',
+                    'duration' => $main_task->duration.$this->daysString,
                     'percentage' => $value->percentage.'%',
                     'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
                     'description' => $value->description,
@@ -777,7 +768,7 @@ class ProjectReportController extends Controller
                         $styleArray = array(            // font color
                             'font'  => array(
                                 'bold'  => true,
-                                'color' => array('rgb' => 'ffffff')                      
+                                'color' => array('rgb' => 'ffffff')
                             ));
             // Rename worksheet
             $sheet->getActiveSheet()->setTitle('Main Task List');
@@ -894,7 +885,6 @@ class ProjectReportController extends Controller
 			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'.date('Y-m-d H:i:s').'.xlsx';
 			header("Content-Disposition: attachment; filename=".$filename);
 			unlink($download_directory);
-            // Session::flash('success2', 'The registration list downloaded successfully.'); 
             exit($content);
              
         }
@@ -940,11 +930,11 @@ class ProjectReportController extends Controller
                 if ($actual_end) {
                     $actual_end = date('d-m-Y', strtotime($actual_end));
                 } else {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
 
                 if ($actual_end < $planned_end) {
-                    $actual_end = 'Task Not Finish';
+                    $actual_end = $this->notFinish;
                 }
                 $date2 = date_create($value->end_date);
                 $no_working_days = $value->duration; // include the last day
@@ -965,12 +955,12 @@ class ProjectReportController extends Controller
                     'title' => $value->text,
                     'planed_start' => $planned_start,
                     'planed_end' => $planned_end,
-                    'duration' => $value->duration.' Days',
+                    'duration' => $value->duration.$this->daysString,
                     'percentage_as_today' => round($current_percentage),
                     'actual_start' => $actual_start,
                     'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.' Days',
-                    'remain_duration' => $value->duration.' Days',
+                    'actual_duration' => $value->duration.$this->daysString,
+                    'remain_duration' => $value->duration.$this->daysString,
                     'actual_percent' => round($value->progress),
                 ];
             }
@@ -995,7 +985,7 @@ class ProjectReportController extends Controller
                     'title' => $main_task->text,
                     'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
                     'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.' Days',
+                    'duration' => $main_task->duration.$this->daysString,
                     'percentage' => $value->percentage.'%',
                     'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
                     'description' => $value->description,
@@ -1027,10 +1017,10 @@ class ProjectReportController extends Controller
                         $styleArray = array(            // font color
                             'font'  => array(
                                 'bold'  => true,
-                                'color' => array('rgb' => 'ffffff')                             
+                                'color' => array('rgb' => 'ffffff')
                             ));
             // Rename worksheet
-            $sheet->getActiveSheet()->setTitle('Main Task List'); 
+            $sheet->getActiveSheet()->setTitle('Main Task List');
             $sheet->getActiveSheet()->getColumnDimension('A')->setWidth(30);
             $sheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
             $sheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
@@ -1053,10 +1043,12 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->setCellValue('I1','Actual Duration');
             $sheet->getActiveSheet()->setCellValue('J1','Actual % as of Today');
             $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0f609b'); // cell color
-            $sheet->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray); 
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center'); 
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setVertical('center'); 
+            $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
+            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('0f609b'); // cell color
+            $sheet->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray);
+            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center');
+            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setVertical('center');
             
             if(count($taskdata)>0){
                 foreach ($taskdata as $key => $value) {
@@ -1074,14 +1066,16 @@ class ProjectReportController extends Controller
                     $sheet->getActiveSheet()->setCellValue('K'.$row,'');
                     $row++;
                     if($value['percentage_as_today'] != $value['actual_percent']){
-                        $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('ffbfbd'); // cell color
+                        $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
+                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                        ->getStartColor()->setARGB('ffbfbd'); // cell color
                     }
                 }
             }else{
                 $sheet->getActiveSheet()->mergeCells('A2:K2');
                 $sheet->getActiveSheet()->setCellValue('A2','NO Record Found');
-                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setHorizontal('center'); 
-                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setVertical('center'); 
+                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setHorizontal('center');
+                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setVertical('center');
             }
 
             $worksheet2 = $spreadsheet->createSheet();
@@ -1108,9 +1102,9 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('I1','User Email');
             $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB('0f609b'); // cell color
-            $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray); 
-            $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center'); 
-            $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center'); 
+            $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray);
+            $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center');
+            $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center');
 
             if(count($taskdata2)>0){
                 foreach ($taskdata2 as $key => $value) {
@@ -1130,8 +1124,8 @@ class ProjectReportController extends Controller
             }else{
                 $worksheet2->mergeCells('A2:I2');
                 $worksheet2->setCellValue('A2','NO Record Found');
-                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setHorizontal('center'); 
-                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setVertical('center'); 
+                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setHorizontal('center');
+                $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setVertical('center');
             }
 
             $download_directory = './Report_list.xlsx';
