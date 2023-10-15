@@ -37,9 +37,12 @@ class ProjectReportController extends Controller
     public $norecord="NO Record Found";
     public $sheetRows='A2:K2';
     public $sheetRows1="A1:K1";
+    public $sheetCol1="A1:I1";
     public $plannedStartDate="Planned Start Date";
     public $plannedFinish="Planned Finish";
     public $sheetbgColor="0f609b";
+    public $findinSet="find_in_set('";
+    public $usersSet="',users)";
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -410,7 +413,7 @@ class ProjectReportController extends Controller
                 ->where('con_tasks.instance_id', $instance_id);
 
             if (\Auth::user()->type != 'company') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+                $tasks->whereRaw($this->findinSet.\Auth::user()->id.$this->usersSet);
             }
 
             if($task_id_arr != null){
@@ -609,7 +612,7 @@ class ProjectReportController extends Controller
                 ->where('con_tasks.instance_id', $instance_id);
 
             if (\Auth::user()->type != 'company') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+                $tasks->whereRaw($this->findinSet.\Auth::user()->id.$this->usersSet);
             }
 
             if($task_id_arr != null){
@@ -856,11 +859,11 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('G1','Description');
             $worksheet2->setCellValue('H1','User Name');
             $worksheet2->setCellValue('I1','User Email');
-            $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            $worksheet2->getStyle($this->sheetCol1)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB($this->sheetbgColor); // cell color
-            $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray); 
-            $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center'); 
-            $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center'); 
+            $worksheet2->getStyle($this->sheetCol1)->applyFromArray($styleArray); 
+            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setHorizontal('center'); 
+            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setVertical('center'); 
 
             if(count($taskdata2)>0){
                 $row=2;
@@ -1106,11 +1109,11 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('G1','Description');
             $worksheet2->setCellValue('H1','User Name');
             $worksheet2->setCellValue('I1','User Email');
-            $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            $worksheet2->getStyle($this->sheetCol1)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB($this->sheetbgColor); // cell color
-            $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray);
-            $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center');
-            $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center');
+            $worksheet2->getStyle($this->sheetCol1)->applyFromArray($styleArray);
+            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setHorizontal('center');
+            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setVertical('center');
 
             if(count($taskdata2)>0){
                 foreach ($taskdata2 as  $value) {
@@ -1216,7 +1219,7 @@ class ProjectReportController extends Controller
             $instance_id = Session::get('project_instance');
             $setting = Utility::settings(\Auth::user()->creatorId());
             if ($setting['company_type'] == 2) {
-                $data = Con_task::whereRaw("find_in_set('".$request->state_id."',users)")
+                $data = Con_task::whereRaw($this->findinSet.$request->state_id.$this->usersSet)
                     ->select('main_id as id', 'text as name')
                     ->where(['project_id' => $request->get_id, 'instance_id' => $instance_id])
                     ->get();
