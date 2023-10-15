@@ -30,6 +30,8 @@ class ProjectReportController extends Controller
      */
     public $taskNotStarted="Task Not Started";
     public $notAssign="Not Assign a Report person";
+    public $allProjects="projects.*";
+    public $typeSuperAdmin='super admin';
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -47,7 +49,7 @@ class ProjectReportController extends Controller
         } elseif (\Auth::user()->type == 'company') {
 
             if (isset($request->all_users) && ! empty($request->all_users)) {
-                $projects = Project::select('projects.*')
+                $projects = Project::select($this->allProjects)
                     ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
                     ->where('project_users.user_id', '=', $request->all_users);
 
@@ -75,7 +77,7 @@ class ProjectReportController extends Controller
             $status = Project::$project_status;
 
         } else {
-            $projects = Project::select('projects.*')
+            $projects = Project::select($this->allProjects)
                 ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
                 ->where('project_users.user_id', '=', $user->id);
 
@@ -94,7 +96,7 @@ class ProjectReportController extends Controller
 
         $user = \Auth::user();
 
-        if (\Auth::user()->type == 'super admin') {
+        if (\Auth::user()->type == $this->typeSuperAdmin) {
             $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->get();
         } else {
             $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
@@ -104,7 +106,7 @@ class ProjectReportController extends Controller
             $project = Project::where('client_id', '=', $user->id)->where('id', $id)->first();
         } elseif (\Auth::user()->type == 'employee') {
 
-            $project = Project::select('projects.*')
+            $project = Project::select($this->allProjects)
                 ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
                 ->where('project_users.user_id', '=', $user->id)->first();
 
@@ -242,7 +244,7 @@ class ProjectReportController extends Controller
     public function send_report_con(Request $request)
     {
 
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'super admin') {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
             $project      = Project::where('id', Session::get('project_id'))->first();
             $project_task = Con_task::where('project_id', Session::get('project_id'))
                 ->where('instance_id', Session::get('project_instance'))
@@ -271,9 +273,7 @@ class ProjectReportController extends Controller
                 $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
                     ->where('task_id', $value->main_id)->min('created_at');
-                $flag = 0;
                 if ($actual_start) {
-                    $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
                     $actual_start = $this->taskNotStarted;
@@ -379,7 +379,9 @@ class ProjectReportController extends Controller
             if (! $to) {
                 return redirect()->back()->with('error', __($this->notAssign));
             }
-            $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task', 'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))->setPaper('a4', 'landscape')->setWarnings(false);
+            $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task',
+             'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))
+             ->setPaper('a4', 'landscape')->setWarnings(false);
             $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
 
             return $pdf->download($pdf_name);
@@ -388,7 +390,7 @@ class ProjectReportController extends Controller
     public function pdf_report_onsearch(Request $request)
     {
 
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'super admin') {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
             $project      = Project::where('id', Session::get('project_id'))->first();
             $project_id     = Session::get('project_id');
             $instance_id    = Session::get('project_instance');
@@ -483,9 +485,7 @@ class ProjectReportController extends Controller
                 $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
                     ->where('task_id', $value->main_id)->min('created_at');
-                $flag = 0;
                 if ($actual_start) {
-                    $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
                     $actual_start = $this->taskNotStarted;
@@ -589,7 +589,7 @@ class ProjectReportController extends Controller
     public function excel_report_onsearch(Request $request)
     {
 
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'super admin') {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
             $project      = Project::where('id', Session::get('project_id'))->first();
             $project_id     = Session::get('project_id');
             $instance_id    = Session::get('project_instance');
@@ -677,9 +677,7 @@ class ProjectReportController extends Controller
                 $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
                     ->where('task_id', $value->main_id)->min('created_at');
-                $flag = 0;
                 if ($actual_start) {
-                    $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
                     $actual_start = $this->taskNotStarted;
@@ -694,27 +692,10 @@ class ProjectReportController extends Controller
                 if ($actual_end < $planned_end) {
                     $actual_end = 'Task Not Finish';
                 }
-                //finding planned percentage
-                //############## days finding ####################################################
-                $date1 = date_create($value->start_date);
                 $date2 = date_create($value->end_date);
-                $cur = date('Y-m-d');
-
-                // $diff=date_diff($date1,$date2);
-                // $no_working_days=$diff->format("%a");
                 $no_working_days = $value->duration; // include the last day
-                //############## END ##############################
-
-                //############## Remaining days ###################
-
                 $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
                 $remaining_working_days = $remaining_working_days - 1; // include the last day
-
-                // $diff=date_diff($date1,$date2);
-                // $remaining_working_days=$diff->format("%a");
-                // $remaining_working_days=$remaining_working_days-1;// include the last day
-                //############## Remaining days ##################
-
                 $completed_days = $no_working_days - $remaining_working_days;
 
                 // percentage calculator
@@ -728,10 +709,6 @@ class ProjectReportController extends Controller
                 if ($current_percentage > 100) {
                     $current_percentage = 100;
                 }
-
-                $remaing_percenatge = round(100 - $current_percentage);
-
-                //####################################___END____#######################################
                 //  // actual duration finding
                 $taskdata[] = [
                     'title' => $value->text,
@@ -800,18 +777,10 @@ class ProjectReportController extends Controller
                         $styleArray = array(            // font color
                             'font'  => array(
                                 'bold'  => true,
-                                'color' => array('rgb' => 'ffffff')                                
+                                'color' => array('rgb' => 'ffffff')                      
                             ));
-                            $styleArray2 = [
-                                'borders' => [
-                                    'allBorders' => [
-                                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                        'color' => ['argb' => '000000'],
-                                    ],
-                                ],
-                            ];
             // Rename worksheet
-            $sheet->getActiveSheet()->setTitle('Main Task List'); 
+            $sheet->getActiveSheet()->setTitle('Main Task List');
             $sheet->getActiveSheet()->getColumnDimension('A')->setWidth(30);
             $sheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
             $sheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
@@ -933,7 +902,7 @@ class ProjectReportController extends Controller
     public function download_excel_report(Request $request)
     {
 
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == 'super admin') {
+        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
             $project      = Project::where('id', Session::get('project_id'))->first();
             $project_task = Con_task::where('project_id', Session::get('project_id'))
                 ->where('instance_id', Session::get('project_instance'))
@@ -962,9 +931,7 @@ class ProjectReportController extends Controller
                 $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
                     ->where('task_id', $value->main_id)->min('created_at');
-                $flag = 0;
                 if ($actual_start) {
-                    $flag = 1;
                     $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
                     $actual_start = $this->taskNotStarted;
@@ -979,45 +946,21 @@ class ProjectReportController extends Controller
                 if ($actual_end < $planned_end) {
                     $actual_end = 'Task Not Finish';
                 }
-                //finding planned percentage
-                //############## days finding ####################################################
-                $date1 = date_create($value->start_date);
                 $date2 = date_create($value->end_date);
-                $cur = date('Y-m-d');
-
-                // $diff=date_diff($date1,$date2);
-                // $no_working_days=$diff->format("%a");
                 $no_working_days = $value->duration; // include the last day
-                //############## END ##############################
-
-                //############## Remaining days ###################
-
                 $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
                 $remaining_working_days = $remaining_working_days - 1; // include the last day
-
-                // $diff=date_diff($date1,$date2);
-                // $remaining_working_days=$diff->format("%a");
-                // $remaining_working_days=$remaining_working_days-1;// include the last day
-                //############## Remaining days ##################
-
                 $completed_days = $no_working_days - $remaining_working_days;
-
                 // percentage calculator
                 if ($no_working_days > 0) {
                     $perday = 100 / $no_working_days;
                 } else {
                     $perday = 0;
                 }
-
                 $current_percentage = round($completed_days * $perday);
                 if ($current_percentage > 100) {
                     $current_percentage = 100;
                 }
-
-                $remaing_percenatge = round(100 - $current_percentage);
-
-                //####################################___END____#######################################
-                //  // actual duration finding
                 $taskdata[] = [
                     'title' => $value->text,
                     'planed_start' => $planned_start,
@@ -1084,16 +1027,8 @@ class ProjectReportController extends Controller
                         $styleArray = array(            // font color
                             'font'  => array(
                                 'bold'  => true,
-                                'color' => array('rgb' => 'ffffff')                                
+                                'color' => array('rgb' => 'ffffff')                             
                             ));
-                            $styleArray2 = [
-                                'borders' => [
-                                    'allBorders' => [
-                                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                        'color' => ['argb' => '000000'],
-                                    ],
-                                ],
-                            ];
             // Rename worksheet
             $sheet->getActiveSheet()->setTitle('Main Task List'); 
             $sheet->getActiveSheet()->getColumnDimension('A')->setWidth(30);
@@ -1171,7 +1106,8 @@ class ProjectReportController extends Controller
             $worksheet2->setCellValue('G1','Description');
             $worksheet2->setCellValue('H1','User Name');
             $worksheet2->setCellValue('I1','User Email');
-            $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB('0f609b'); // cell color
+            $worksheet2->getStyle('A1:I1')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('0f609b'); // cell color
             $worksheet2->getStyle('A1:I1')->applyFromArray($styleArray); 
             $worksheet2->getStyle('A1:I1')->getAlignment()->setHorizontal('center'); 
             $worksheet2->getStyle('A1:I1')->getAlignment()->setVertical('center'); 
@@ -1205,7 +1141,6 @@ class ProjectReportController extends Controller
 			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'.date('Y-m-d H:i:s').'.xlsx';
 			header("Content-Disposition: attachment; filename=".$filename);
 			unlink($download_directory);
-            // Session::flash('success2', 'The registration list downloaded successfully.'); 
             exit($content);
              
         }
