@@ -34,6 +34,9 @@ class ProjectReportController extends Controller
     public $typeSuperAdmin='super admin';
     public $notFinish="Task Not Finish";
     public $daysString=" Days";
+    public $norecord="NO Record Found";
+    public $sheetRows='A2:K2';
+    public $sheetRows1="A1:K1";
     public function index(Request $request)
     {
         $user = \Auth::user();
@@ -794,12 +797,12 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->setCellValue('I1','Actual Duration');
             $sheet->getActiveSheet()->setCellValue('J1','Actual % as of Today');
             $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
             ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB('0f609b'); // cell color
-            $sheet->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray); 
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center'); 
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setVertical('center'); 
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray); 
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center'); 
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center'); 
            
             if(count($taskdata)>0){
                 $row=2;
@@ -817,19 +820,19 @@ class ProjectReportController extends Controller
                     $sheet->getActiveSheet()->setCellValue('K'.$row,'');
                     $row++;
                     if($value['percentage_as_today'] != $value['actual_percent']){
-                        $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
+                        $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
                         ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                         ->getStartColor()->setARGB('ffbfbd'); // cell color
                     }
                 }
             }else{
-                $sheet->getActiveSheet()->mergeCells('A2:K2');
-                $sheet->getActiveSheet()->setCellValue('A2','NO Record Found');
-                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setHorizontal('center'); 
-                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setVertical('center'); 
+                $sheet->getActiveSheet()->mergeCells($this->sheetRows);
+                $sheet->getActiveSheet()->setCellValue('A2',$this->norecord);
+                $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setHorizontal('center');
+                $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setVertical('center');
             }
             $worksheet2 = $spreadsheet->createSheet();
-            $worksheet2->setTitle('Today Updated Task List'); 
+            $worksheet2->setTitle('Today Updated Task List');
             $worksheet2->getColumnDimension('A')->setWidth(30);
             $worksheet2->getColumnDimension('B')->setWidth(30);
             $worksheet2->getColumnDimension('C')->setWidth(30);
@@ -873,7 +876,7 @@ class ProjectReportController extends Controller
                 }
             }else{
                 $worksheet2->mergeCells('A2:I2');
-                $worksheet2->setCellValue('A2','NO Record Found');
+                $worksheet2->setCellValue('A2',$this->norecord);
                 $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setHorizontal('center'); 
                 $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setVertical('center'); 
             }
@@ -1043,12 +1046,12 @@ class ProjectReportController extends Controller
             $sheet->getActiveSheet()->setCellValue('I1','Actual Duration');
             $sheet->getActiveSheet()->setCellValue('J1','Actual % as of Today');
             $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
             ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
             ->getStartColor()->setARGB('0f609b'); // cell color
-            $sheet->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray);
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setHorizontal('center');
-            $sheet->getActiveSheet()->getStyle('A1:K1')->getAlignment()->setVertical('center');
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray);
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center');
+            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center');
             
             if(count($taskdata)>0){
                 foreach ($taskdata as $key => $value) {
@@ -1066,16 +1069,16 @@ class ProjectReportController extends Controller
                     $sheet->getActiveSheet()->setCellValue('K'.$row,'');
                     $row++;
                     if($value['percentage_as_today'] != $value['actual_percent']){
-                        $sheet->getActiveSheet()->getStyle('A1:K1')->getFill()
+                        $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
                         ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                         ->getStartColor()->setARGB('ffbfbd'); // cell color
                     }
                 }
             }else{
-                $sheet->getActiveSheet()->mergeCells('A2:K2');
-                $sheet->getActiveSheet()->setCellValue('A2','NO Record Found');
-                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setHorizontal('center');
-                $sheet->getActiveSheet()->getStyle('A2:K2')->getAlignment()->setVertical('center');
+                $sheet->getActiveSheet()->mergeCells($this->sheetRows);
+                $sheet->getActiveSheet()->setCellValue('A2',$this->norecord);
+                $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setHorizontal('center');
+                $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setVertical('center');
             }
 
             $worksheet2 = $spreadsheet->createSheet();
@@ -1123,7 +1126,7 @@ class ProjectReportController extends Controller
                 }
             }else{
                 $worksheet2->mergeCells('A2:I2');
-                $worksheet2->setCellValue('A2','NO Record Found');
+                $worksheet2->setCellValue('A2',$this->norecord);
                 $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setHorizontal('center');
                 $sheet->getActiveSheet()->getStyle('A2:I2')->getAlignment()->setVertical('center');
             }
