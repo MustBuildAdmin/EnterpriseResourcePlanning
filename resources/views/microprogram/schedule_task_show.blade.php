@@ -6,15 +6,25 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h1 class="mb-0">{{ __('Lookahead Schedule') }} - 
-                            @if($weekEndDate >= $scheduleGet->schedule_end_date)
+                        <h1 class="mb-0">{{"(".$scheduleGet->uid.")".$scheduleGet->schedule_name}}
+                            @if($scheduleGet->active_status == 1)
                                 <span style="color: rgb(47, 179, 68)">Active</span>
+                            @elseif($scheduleGet->active_status == 2)
+                                <span style="color: rgb(212, 56, 77)">Completed</span>
+                            @else
+                                <span style="color: rgb(247, 103, 7)">In-schedule</span>
                             @endif
                         </h1>
                         <div class="card-actions">
-                            <button class="btn btn-primary pull-right" onclick="scheduleStart()">
-                                Start the Schedule
-                            </button>
+                            @if($scheduleGet->active_status == 1)
+                                <button class="btn btn-primary pull-right" onclick="scheduleComplete()">
+                                    Compelete the Schedule
+                                </button>
+                            @else
+                                <button class="btn btn-primary pull-right" onclick="scheduleStart()">
+                                    Active the Schedule
+                                </button>
+                            @endif
                         </div>
                     </div>
                     
@@ -24,7 +34,7 @@
                                 <h2 class="accordion-header" id="heading-1">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapse-1" aria-expanded="true">
-                                        {{$scheduleGet->schedule_name}}
+                                        
                                     </button>
                                 </h2>
 
@@ -353,33 +363,98 @@
     function scheduleStart(){
         schedule_id   = $("#schedule_id").val();
         schedulearray = getData();
-        console.log("schedulearray",schedulearray);
 
-        $.ajax({
-            url : '{{route("mainschedule_store")}}',
-            type : 'POST',
-            data : {
-                'schedulearray' : schedulearray,
-                'schedule_id' : schedule_id,
-                '_token' : '{{ csrf_token() }}',
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
             },
-            success : function(data_check) {
-                if(data_check == 1){
-                    toastr.success("Micro Planning Scheduled");
-                }
-                else if(data_check == 2){
-                    toastr.warning("OOPS! Your schedule is start runing, So can't be modify!");
-                }
-                else if(data_check == 0){
-                    toastr.warning("Please Drag and Drop the Task List into the Micro Planning");
-                }
-                else{
-                    toastr.error("Somenthing went wrong!");
-                }
+            buttonsStyling: false
+        })
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "Active this Schedule! Once Activated you cannot modify",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url : '{{route("mainschedule_store")}}',
+                    type : 'POST',
+                    data : {
+                        'schedulearray' : schedulearray,
+                        'schedule_id' : schedule_id,
+                        '_token' : '{{ csrf_token() }}',
+                    },
+                    success : function(data_check) {
+                        if(data_check[0] == "0"){
+                            toastr.warning(data_check[1]);
+                        }
+                        else if(data_check[0] == "1"){
+                            toastr.success(data_check[1]);
+                            location.reload();
+                        }
+                        else{
+                            toastr.error("Somenthing went wrong!");
+                        }
+                    },
+                    error : function(request,error)
+                    {
+                        toastr.error("Somenthing went wrong!.");
+                    }
+                });
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+            }
+        });
+    }
+
+    function scheduleComplete(){
+        schedule_id   = $("#schedule_id").val();
+
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success',
+                cancelButton: 'btn btn-danger'
             },
-            error : function(request,error)
-            {
-                alert("Request: "+JSON.stringify(request));
+            buttonsStyling: false
+        })
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "Complete the Schedule?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url : '{{route("schedule_complete")}}',
+                    type : 'GET',
+                    data : {
+                        'schedule_id' : schedule_id,
+                        '_token' : '{{ csrf_token() }}',
+                    },
+                    success : function(data_check) {
+                        if(data_check[0] == "1"){
+                            toastr.success(data_check[1]);
+                            location.reload();
+                        }
+                        else{
+                            toastr.error("Somenthing went wrong!");
+                        }
+                    },
+                    error : function(request,error)
+                    {
+                        toastr.error("Somenthing went wrong!.");
+                    }
+                });
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
             }
         });
     }

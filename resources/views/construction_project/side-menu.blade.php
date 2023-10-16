@@ -75,23 +75,11 @@
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    @if($checMicroProgram == 1)
-                                    <a href="{{ route('microprogram.gantt', $project_id) }}"
-                                    class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                    ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
-                                    @else
                                     @can('view grant chart')
-                                    <a href="{{ route('projects.gantt', $project_id) }}"
-                                    class="{{ (Request::route()->getName() == 'projects.gantt')
-                                    ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
+                                        <a href="{{ route('projects.gantt', $project_id) }}"
+                                        class="{{ (Request::route()->getName() == 'projects.gantt')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
                                     @endcan
-                                    @endif
-
-                                    @if($checMicroProgram == 1)
-                                        <a href="{{ route('microprogram') }}"
-                                        class="{{ (Request::route()->getName() == 'microprogram')
-                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Program') }}</a>
-                                    @endif
                                     
                                     @if(Session::get('current_revision_freeze')==1)
                                         <a href="{{ url('revision') }}"
@@ -104,15 +92,10 @@
                                         class="{{ (Request::route()->getName() == 'project_report.revsion_task_list')
                                         ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
                                     @endif
-                                    @if($checMicroProgram == 1)
-                                        <a href="{{ route('micro_taskboard') }}"
-                                            class="{{ (Request::route()->getName() == 'micro_taskboard.view')
-                                            ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Workdone') }}</a>
-                                    @else
-                                        <a href="{{ route('taskBoard.view', ['list']) }}"
-                                            class="{{ (Request::route()->getName() == 'taskBoard.view')
-                                            ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Workdone') }}</a>
-                                    @endif
+                                        
+                                    <a href="{{ route('taskBoard.view', ['list']) }}"
+                                        class="{{ (Request::route()->getName() == 'taskBoard.view')
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Workdone') }}</a>
 
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="{{ (Request::route()->getName() == 'project_report.view_task_report')
@@ -141,24 +124,65 @@
                                             @endcan
                                         @endif
                                         {{-- @can('view expense')
+                                            <a href="{{ route('projects.expenses.index',$project_id) }}"
+                                            class="dash-item">{{ __('Expense') }}</a>
+                                        @endcan
 
-                                <a href="{{ route('projects.expenses.index',$project_id) }}"
-                                  class="dash-item">{{ __('Expense') }}</a>
-
-                        @endcan
-
-                            <a href="{{ route('task.newcalendar',['all']) }}"
-                              class="dash-item">{{ __('Task Calendar') }}</a>
+                                        <a href="{{ route('task.newcalendar',['all']) }}"
+                                        class="dash-item">{{ __('Task Calendar') }}</a>
 
 
-                            <a href="{{route('project_report.index')}}"
-                              class="dash-item">{{ __('Project Reports') }}</a>
-                         --}}
+                                        <a href="{{route('project_report.index')}}"
+                                        class="dash-item">{{ __('Project Reports') }}</a>
+                                        --}}
                                     @endif
                                 </div>
                             </div>
                         </div>
                     </li>
+
+                    @if($checMicroProgram == 1)
+                        <li class=" nav-item dropdown">
+                            <a class="{{ (Request::route()->getName() == 'microprogram.gantt'
+                                || Request::route()->getName() == 'microprogram'
+                                || Request::route()->getName() == 'micro_taskboard')
+                                ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
+                                href="#microplanning" data-bs-toggle="dropdown"
+                                data-bs-auto-close="false" role="button" aria-expanded="false">
+                            
+                                <span class=" d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+                                        <path d="M4 13a8.094 8.094 0 0 0 3 5.24"></path>
+                                        <path
+                                            d="M11 15h2a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-1a1 1 0 0 0 -1 1v1a1 1 0 0 0 1 1h2">
+                                        </path>
+                                        <path d="M17 15v2a1 1 0 0 0 1 1h1"></path>
+                                        <path d="M20 15v6"></path>
+                                    </svg></span>
+                                <span class="nav-link-title">{{ __('Micro Planning') }}</span></a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a href="{{ route('microprogram.gantt', $project_id) }}"
+                                                class="{{ (Request::route()->getName() == 'microprogram.gantt')
+                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Gantt') }}</a>
+                                            
+                                            <a href="{{ route('microprogram') }}"
+                                                class="{{ (Request::route()->getName() == 'microprogram')
+                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Program') }}</a>
+                                        
+                                            <a href="{{ route('micro_taskboard') }}"
+                                                class="{{ (Request::route()->getName() == 'micro_taskboard.view')
+                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Workdone') }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                        </li>
+                    @endif
 
                     <li class=" nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'drawing_list' ||

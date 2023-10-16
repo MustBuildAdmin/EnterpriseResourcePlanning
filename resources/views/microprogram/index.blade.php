@@ -37,12 +37,9 @@
                                     @forelse ($MicroProgramScheduleModal as $microSchedule)
                                         <tr>
                                             <td>
-                                                @if($weekEndDate >= $microSchedule->schedule_end_date)
-                                                    <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">
-                                                    {{$microSchedule->uid}}</a>
-                                                @else
-                                                    <a>{{$microSchedule->uid}}</a>
-                                                @endif
+                                                <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">
+                                                    {{$microSchedule->uid}}
+                                                </a>
                                             </td>
                                             <td>
                                                 {{$microSchedule->schedule_name}}</a>
@@ -57,7 +54,7 @@
                                                 \Auth::user()->id) }}
                                             </td>
                                             <td>
-                                                @if($weekEndDate >= $microSchedule->schedule_end_date)
+                                                @if($microSchedule->active_status == 1)
                                                     <span class="badge bg-success me-1"></span> Active
                                                 @else
                                                     <span class="badge bg-warning me-1"></span> In-schedule

@@ -5113,6 +5113,9 @@ Route::any('micro_edit_particular_task/{task_progress_id}/{task_id}','MicroPorgr
 Route::any('micro_con_taskupdate', 'MicroPorgramController@micro_con_taskupdate')->name('micro_con_taskupdate')
 ->middleware(['auth', 'XSS']);
 
+Route::any('schedule_complete', 'MicroPorgramController@schedule_complete')->name('schedule_complete')
+->middleware(['auth', 'XSS']);
+
 Route::get('micro_task_file_download/{task_id}/{filename}', 'MicroPorgramController@micro_task_file_download')
     ->name('micro_task_file_download')->middleware(['auth', 'XSS']);
 

@@ -36,6 +36,7 @@ class MicroPorgramController extends Controller
                 $MicroProgramScheduleModal = MicroProgramScheduleModal::where('project_id',$project_id)
                     ->where('instance_id',$instance_id)
                     ->where('status',1)
+                    ->orderBy('id','ASC')
                     ->get();
                     
                     return view('microprogram.index')
@@ -129,7 +130,7 @@ class MicroPorgramController extends Controller
             
             $freezeCheck = Instance::where('project_id', $project_id)
                 ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
-            if($freezeCheck == 1){
+            // if($freezeCheck == 1){
                 $scheduleGet = MicroProgramScheduleModal::where('project_id',$project_id)
                     ->where('id',$secheduleId)
                     ->where('instance_id',$instance_id)
@@ -142,7 +143,7 @@ class MicroPorgramController extends Controller
                     'pros.id as project_id', 'pros.instance_id as pro_instance_id')
                     ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                     ->whereNotNull('pros.instance_id')
-                    ->where('micro_tasks.type','task')
+                    ->where('micro_tasks.micro_flag',1)
                     ->where('micro_tasks.project_id', $project_id)
                     ->where('micro_tasks.instance_id', $instance_id)
                     ->where('micro_tasks.schedule_id',$secheduleId);
@@ -180,10 +181,10 @@ class MicroPorgramController extends Controller
                         ->with('weekEndDate',$weekEndDate)
                         ->with('scheduleGet',$scheduleGet)
                         ->with('microSchedule',$microSchedule);
-            }
-            else{
-                return redirect()->back()->with('error', __('Project Not Freezed.'));
-            }
+            // }
+            // else{
+            //     return redirect()->back()->with('error', __('Project Not Freezed.'));
+            // }
         }
         else {
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
@@ -1021,11 +1022,36 @@ class MicroPorgramController extends Controller
         }
     }
 
+    public function schedule_complete(Request $request){
+        $schedule_id   = $request->schedule_id;
+        $project_id    = Session::get('project_id');
+        $instance_id   = Session::get('project_instance');
+
+        MicroProgramScheduleModal::where('id',$schedule_id)
+        ->where('project_id',$project_id)
+        ->where('instance_id',$instance_id)
+        ->where('status',1)
+        ->update(['active_status',2]);
+
+        return array(
+            '1', 'Schedule Completed'
+        );
+    }
+
     public function mainschedule_store(Request $request){
         $schedulearray = $request->schedulearray;
         $schedule_id   = $request->schedule_id;
         $project_id    = Session::get('project_id');
         $instance_id   = Session::get('project_instance');
+
+        $checkActive        = MicroProgramScheduleModal::where('active_status',1)->where('status',1)->first();
+        $checkActiveGet     = $checkActive != null ? 1 : 0;
+
+        if($checkActiveGet == 1){
+            return array(
+                '0', 'Another Schedule is running please Complete that First'
+            );
+        }
 
         $checMicroProgress = MicroTask::where('project_id',$project_id)->where('instance_id',$instance_id)
                 ->where('schedule_id',$schedule_id)
@@ -1046,12 +1072,13 @@ class MicroPorgramController extends Controller
                             ->update(['schedule_order' => $sort_number]);
                     }
                     else{
-                        $conTask = MicroTask::where('project_id',$project_id)
+                        MicroProgramScheduleModal::where('id',$schedule_id)->update(['active_status'=>1]);
+                        $conTask = Con_task::where('project_id',$project_id)
                             ->where('instance_id',$instance_id)
-                            ->where('id',$main_id)->first();
+                            ->where('main_id',$main_id)->first();
 
                         $store_array = array(
-                            'task_id'        => $main_id,
+                            'task_id'        => $conTask->main_id,
                             'text'           => $conTask->text,
                             'project_id'     => $project_id,
                             'users'          => $conTask->users,
@@ -1062,25 +1089,32 @@ class MicroPorgramController extends Controller
                             'predecessors'   => $conTask->predecessors,
                             'instance_id'    => $instance_id,
                             'achive'         => $conTask->achive,
-                            'parent'         => $conTask->parent,
-                            'sortorder'      => $conTask->sortorder,
+                            'parent'         => 0,
+                            'sortorder'      => 0,
                             'schedule_order' => $sort_number,
                             'custom'         => $conTask->custom,
                             'float_val'      => $conTask->float_val,
-                            'type'           => $conTask->type,
+                            'type'           => 'project',
+                            'micro_flag'     => 1
                         );
 
                         MicroTask::insert($store_array);
                     }
                 }
-                echo 1;
+                return array(
+                    '1', 'Shedule Activated'
+                );
             }
             else{
-                echo 0;
+                return array(
+                    '0', 'Please Drag and Drop the Task List into the Micro Planning'
+                );
             }
         }
         else{
-            echo 2;
+            return array(
+                '0', 'OOPS! Your schedule is start runing, So cannot be modify'
+            );
         }
         
     }
