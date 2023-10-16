@@ -17,11 +17,15 @@
                         </h1>
                         <div class="card-actions">
                             @if($scheduleGet->active_status == 1)
-                                <button class="btn btn-primary pull-right" onclick="scheduleComplete()">
+                                <button class="btn btn-primary pull-right" type="button" onclick="scheduleComplete()">
                                     Compelete the Schedule
                                 </button>
+                            @if($scheduleGet->active_status == 2)
+                                <button class="btn btn-primary pull-right" type="button" disabled>
+                                    Completed
+                                </button>
                             @else
-                                <button class="btn btn-primary pull-right" onclick="scheduleStart()">
+                                <button class="btn btn-primary pull-right" type="button" onclick="scheduleStart()">
                                     Active the Schedule
                                 </button>
                             @endif
