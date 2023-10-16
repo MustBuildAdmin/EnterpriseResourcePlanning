@@ -927,20 +927,33 @@
                     var check_cri=<?php  echo  $critical_update ?>;
                     if(check_cri==0){
                         var tasks = gantt.getTaskByTime();
-                        const  critical_task=new Array();
+
+                        const  updatedTask=new Array();
                         if(workflag==0){
                             for(var i=0;i < tasks.length; i++){ 
-                                let tt=gantt.isCriticalTask(gantt.getTask(tasks[i].id));
-                                if(tt){
-                                    critical_task.push(tasks[i].id);
-                                }
+
+                                const task = gantt.getTask(tasks[i].id);
+                                // const tt = gantt.isCriticalTask(task);
+                                // const totalStack = gantt.getTotalSlack(task);
+                                // const freeSlack = gantt.getFreeSlack(task)// const constraintType = gantt.getConstraintType(task);
+                                const updatedTask = {task, isCriticalTask: gantt.isCriticalTask(task),
+                                        totalStack: gantt.getTotalSlack(task),freeSlack: gantt.getFreeSlack(task),
+                                        constraintType:gantt.getConstraintType(task),
+                                 }
+
+
+                                 updatedTask.push(updatedTask);
+
+                                // if(tt){
+                                //     critical_task.push(tasks[i].id);
+                                // }
                             };
                             workflag=1;
                             $.ajax({
                                 url: '{{ route('projects.criticaltask_update') }}',
                                 type: 'get',
                                 data: {
-                                    'critical_task': critical_task
+                                    'updatedTask': updatedTask
                                 },
                                 success: function(data) {
             
