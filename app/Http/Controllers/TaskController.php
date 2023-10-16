@@ -30,6 +30,7 @@ class TaskController extends Controller
         $task->duration = $request->duration;
         $task->progress = $request->has('progress') ? $request->progress : 0;
         $task->parent = $request->parent;
+        $task->iscritical = $request->iscritical;
 
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
@@ -112,6 +113,7 @@ class TaskController extends Controller
         $task->duration = $request->duration;
         $task->progress = $request->has('progress') ? $request->progress : 0;
         $task->parent = $request->parent;
+        $task->iscritical = $request->iscritical;
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
                 $implodeusers = implode(',', json_decode($request->users));

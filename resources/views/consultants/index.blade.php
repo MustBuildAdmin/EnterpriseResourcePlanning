@@ -281,7 +281,7 @@
                         any kind of other information to them about the projects in secert or in
                         public or in mediuim of transfer.") }}
                 @endswitch
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn" data-bs-dismiss="modal">{{ __('Close') }}</button>
@@ -524,5 +524,5 @@
             }
         });
 
-   
+
 </script>

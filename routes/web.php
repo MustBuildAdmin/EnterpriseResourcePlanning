@@ -3499,6 +3499,18 @@ Route::get(
         'XSS',
     ]
 );
+Route::any(
+    'get_member', [
+        'as' => 'projects.criticaltask_update',
+        'uses' => 'ProjectController@criticaltask_update',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get(
     'projects/{id}/gantt/{duration?}', [
         'as' => 'projects.gantt',
@@ -5015,6 +5027,42 @@ Route::post('api/fetch_user_details', 'ProjectReportController@fetch_user_detail
 );
 
 Route::post('api/fetch_task_details', 'ProjectReportController@fetch_task_details')->name('project_report.fetch_task_details')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+/* Micro Program Start */
+Route::any('microprogram', 'MicroPorgramController@microprogram')->name('microprogram')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')->name('microprogram_create')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('schedule_store', 'MicroPorgramController@schedule_store')->name('schedule_store')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show')->name('schedule_task_show')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('mainschedule_store', 'MicroPorgramController@mainschedule_store')->name('mainschedule_store')->middleware(
     [
         'auth',
         'XSS',
