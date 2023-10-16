@@ -665,7 +665,7 @@
                         },
                         {
                             name: "text",
-                            label: "Task Name",
+                            label: "Schedule Name",
                             width: 150,
                             resize: true
                         },
