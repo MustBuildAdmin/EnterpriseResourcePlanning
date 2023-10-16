@@ -20,7 +20,7 @@
                                 <button class="btn btn-primary pull-right" type="button" onclick="scheduleComplete()">
                                     Compelete the Schedule
                                 </button>
-                            @if($scheduleGet->active_status == 2)
+                            @elseif($scheduleGet->active_status == 2)
                                 <button class="btn btn-primary pull-right" type="button" disabled>
                                     Completed
                                 </button>
