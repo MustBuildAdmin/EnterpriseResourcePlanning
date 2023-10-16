@@ -936,7 +936,7 @@
                                 // const tt = gantt.isCriticalTask(task);
                                 // const totalStack = gantt.getTotalSlack(task);
                                 // const freeSlack = gantt.getFreeSlack(task)// const constraintType = gantt.getConstraintType(task);
-                                const updatedTask = {task, isCriticalTask: gantt.isCriticalTask(task),
+                                const updatedTask = {...task, isCriticalTask: gantt.isCriticalTask(task),
                                         totalStack: gantt.getTotalSlack(task),freeSlack: gantt.getFreeSlack(task),
                                         constraintType:gantt.getConstraintType(task),
                                  }
