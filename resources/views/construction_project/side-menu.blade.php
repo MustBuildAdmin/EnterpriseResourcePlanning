@@ -23,7 +23,7 @@
 </style>
 <div class="page">
     <!-- Sidebar  -->
-    <aside id="sidebar" class="navbar navbar-vertical navbar-expand-lg">
+    <header id="sidebar" class="navbar navbar-expand-md subnav  d-print-none">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
                 aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -425,7 +425,7 @@
                 </ul>
             </div>
         </div>
-    </aside>
+    </header>
 
     <!-- Page Content  -->
     <div class="page-wrapper">
