@@ -6,7 +6,11 @@
 <link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
 
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
-
+<style>
+.hiddendownload{
+    display:none;
+}
+</style>
 <div class="page-wrapper">
     @include('construction_project.side-menu')
     <div class="container-fluid" id="taskboard_view">
@@ -26,15 +30,29 @@
                                                 <h4 class="card-title">Task Lists Information</h4>
                                                 <div class="card-actions">
                                                     <div class="row">
-                                                        <div class="col-6">
+                                                        <div class="col-3">
                                                             <a href="{{ route('download_excel_report') }}" 
+                                                            class="btn btn-lime w-100 downloadbtn disabled">
+                                                            Daily Report Excel
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <a href="{{ route('send_report_con') }}"
+                                                            class="btn btn-primary w-100 downloadbtn disabled">
+                                                            Daily Report PDF
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <a
+                                                            id="downloadexcel"  target="_blank"
                                                             class="btn btn-lime w-100 downloadbtn disabled">
                                                                 Download as Excel
                                                             </a>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <a href="{{ route('send_report_con') }}"
-                                                            class="btn btn-primary w-100 downloadbtn disabled">
+                                                        <div class="col-3">
+                                                            <a href="" target="_blank"
+                                                            id="downloadpdf"
+                                                            class="btn btn-lime w-100 downloadbtn disabled">
                                                                 Download as PDF
                                                             </a>
                                                         </div>
@@ -308,6 +326,14 @@
         $.each(user_id, function(i, obj){
             user_id_arr.push(obj.id);
         });
+
+       
+        let pdfurl='{{route("pdf_report_onsearch")}}?start_date='+start_date+'&end_date='+end_date+'&user_id='+
+        user_id+'&status_task='+status_task+'&task_id_arr='+task_id_arr;
+        $('#downloadpdf').attr('href',pdfurl);
+           let excelurl='{{route("excel_report_onsearch")}}?start_date='+start_date+'&end_date='+end_date+'&user_id='+
+        user_id+'&status_task='+status_task+'&task_id_arr='+task_id_arr;
+            $('#downloadexcel').attr('href',excelurl);
 
         alltask(start_date,end_date,user_id_arr,status_task,task_id_arr);
     }
