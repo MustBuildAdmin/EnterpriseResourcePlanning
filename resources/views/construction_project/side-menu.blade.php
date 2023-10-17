@@ -169,15 +169,15 @@
                                         <div class="dropdown-menu-column">
                                             <a href="{{ route('microprogram.gantt', $project_id) }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Gantt') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Gantt') }}</a>
                                             
                                             <a href="{{ route('microprogram') }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Program') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Schedule') }}</a>
                                         
                                             <a href="{{ route('micro_taskboard') }}"
                                                 class="{{ (Request::route()->getName() == 'micro_taskboard.view')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Micro Workdone') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Active Lookahead') }}</a>
                                         </div>
                                     </div>
                                 </div>

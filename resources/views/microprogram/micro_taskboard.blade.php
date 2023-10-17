@@ -36,7 +36,7 @@
                                                 1 .217 .665l-1.757 1.707l.414 2.41a.39 .39 0 0 1 -.567
                                                 .411l-2.172 -1.138z"></path>
                                             </svg>
-                                             Tasks
+                                            {{ __('Sub Tasks') }}
                                         </a>
                                     </li>
                                     <li class="nav-item" role="presentation" onclick="maintask()">
@@ -55,7 +55,7 @@
                                                 <path d="M19 22v-6"></path>
                                                 <path d="M22 19l-3 -3l-3 3"></path>
                                             </svg>
-                                            Summary
+                                            {{ __('Tasks') }}
                                         </a>
                                     </li>
                                 </ul>
@@ -76,7 +76,7 @@
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h4 class="card-title">Task Lists Information</h4>
+                                                    <h4 class="card-title">{{ __('Sub Task Lists Information') }}</h4>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
@@ -85,7 +85,7 @@
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">
-                                                                            Search By Task Name or Id
+                                                                            {{ __('Search By Sub Task Name or Id') }}
                                                                         </label>
                                                                         <input type="text" id="skill_input"
                                                                         value="{{ request()->get('q') }}" >
@@ -93,7 +93,7 @@
                                                                 </div>
                                                                 <div class="col-12 mb-3">
                                                                     <label class="form-label required">
-                                                                        Task  Planned Start Date
+                                                                        {{ __('Sub Task Planned Start Date') }}
                                                                     </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
@@ -119,7 +119,7 @@
                                                                 </div>
                                                                 <div class="col-12 mb-3">
                                                                     <label class="form-label required">
-                                                                        Task Planned End Date
+                                                                        {{ __('Sub Task Planned End Date') }}
                                                                     </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
@@ -145,7 +145,7 @@
                                                                 <div class="col-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">
-                                                                            Search Assignee
+                                                                            {{ __('Search Assignee') }}
                                                                         </label>
                                                                         <input type="text" id="user_select"
                                                                         value="{{ request()->get('selectsearch') }}" >
@@ -153,14 +153,14 @@
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
-                                                                        <label class="form-label">Task Status</label>
+                                                                        <label class="form-label">{{ __('Sub Task Status') }}</label>
                                                                         <select type="text"
                                                                         class="form-select task_status"
                                                                         placeholder="Task Status"
                                                                         id="task-status" value="">
-                                                                            <option value="">Select Status</option>
-                                                                            <option value="3">Pending</option>
-                                                                            <option value="4">Completed</option>
+                                                                            <option value="">{{ __('Select Status') }}</option>
+                                                                            <option value="3">{{ __('Pending') }}</option>
+                                                                            <option value="4">{{ __('Completed') }}</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -169,7 +169,7 @@
                                                                         <button type="button"
                                                                         class="btn btn-tabler w-100"
                                                                         onclick="submit_button()">
-                                                                        Search
+                                                                        {{ __('Search') }}
                                                                     </button>
                                                                     </div>
                                                                 </div>
@@ -190,7 +190,7 @@
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h4 class="card-title">Summary Lists Information</h4>
+                                                    <h4 class="card-title">{{ __('Task Lists Information') }}</h4>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
@@ -199,7 +199,7 @@
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">
-                                                                            Search By Summary Name or Id
+                                                                            {{ __('Search By Task Name or Id') }}
                                                                         </label>
                                                                         <input type="text" id="main_skill_input"
                                                                         value="{{ request()->get('q') }}" >
@@ -207,7 +207,7 @@
                                                                 </div>
                                                                 <div class="col-12 mb-3">
                                                                     <label class="form-label required">
-                                                                        Summary Planned Start Date
+                                                                        {{ __('Task Planned Start Date') }}
                                                                     </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
@@ -233,7 +233,7 @@
                                                                 </div>
                                                                 <div class="col-12 mb-3">
                                                                     <label class="form-label required">
-                                                                        Summary Planned End Date
+                                                                        {{ __('Task Planned End Date') }}
                                                                     </label>
                                                                     <div class="input-icon">
                                                                         <span class="input-icon-addon">
@@ -260,14 +260,14 @@
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
-                                                                        <label class="form-label">Summary Status</label>
+                                                                        <label class="form-label">{{ __('Task Status') }}</label>
                                                                         <select type="text"
                                                                         class="form-select main_task_status"
                                                                         placeholder="Task Status"
                                                                         id="main_task-status" value="">
-                                                                            <option value="">Select Status</option>
-                                                                            <option value="3">Pending</option>
-                                                                            <option value="4">Completed</option>
+                                                                            <option value="">{{ __('Select Status') }}</option>
+                                                                            <option value="3">{{ __('Pending') }}</option>
+                                                                            <option value="4">{{ __('Completed') }}</option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -275,7 +275,7 @@
                                                                     <div class="mb-3">
                                                                         <button type="button"
                                                                         class="btn btn-tabler w-100"
-                                                                        onclick="main_submit_button()">Search</button>
+                                                                        onclick="main_submit_button()">{{ __('Search') }}</button>
                                                                     </div>
                                                                 </div>
                                                             </form>
