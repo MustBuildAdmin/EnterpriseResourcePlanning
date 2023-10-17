@@ -283,7 +283,9 @@ class MicroPorgramController extends Controller
                 'micro_tasks.instance_id', 'micro_tasks.id as main_id', 'pros.project_name',
                 'pros.id as project_id', 'pros.instance_id as pro_instance_id')
                 ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
+                ->join('microprogram_schedule as micro', 'micro_tasks.schedule_id', 'micro.id')
                 ->whereNotNull('pros.instance_id')
+                ->where('micro.active_status', 1)
                 ->where('micro_tasks.project_id', $project_id)
                 ->where('micro_tasks.instance_id', $instance_id)
                 ->where('micro_tasks.type', 'task');
@@ -392,6 +394,8 @@ class MicroPorgramController extends Controller
                 'micro_tasks.instance_id','micro_tasks.task_id as id','pros.project_name',
                 'pros.id as project_id','pros.instance_id as pro_instance_id')
                 ->join('projects as pros','pros.id','micro_tasks.project_id')
+                ->join('microprogram_schedule as micro', 'micro_tasks.schedule_id', 'micro.id')
+                ->where('micro.active_status', 1)
                 ->where('micro_tasks.project_id', $project_id)
                 ->where('micro_tasks.instance_id', $instance_id)
                 ->where('micro_tasks.type','project');
