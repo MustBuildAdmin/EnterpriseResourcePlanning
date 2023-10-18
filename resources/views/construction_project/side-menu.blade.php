@@ -14,6 +14,8 @@
     .navbar-expand-lg {
         top: 4.8em !important;
     }
+   
+
     .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu
     .dropdown-item.active, .navbar-vertical.navbar-expand-lg
     .navbar-collapse .dropdown-menu .dropdown-item:active {
@@ -23,29 +25,23 @@
 </style>
 <div class="page">
     <!-- Sidebar  -->
-    <header id="sidebar" class="navbar navbar-expand-md subnav  d-print-none">
+    <header id="sidebar" class="navbar navbar-expand-md subnav d-print-none" data-bs-theme="light" style="background: #e4e4e4;">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
                 aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="sidebar-menu">
-                <ul class="navbar-nav pt-lg-3">
+                <ul class="navbar-nav pt-lg-1">
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}"
                            class="{{ (Request::route()->getName() == 'projects.show') ?'nav-link active' :'nav-link'}}">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
-                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
-                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
-                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                </svg>
-                            </span>
+                           <span class=" d-md-none d-lg-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l-2 0l9 -9l9 9l-2 0"></path><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                            </svg></span>
                             <span class="nav-link-title"> {{ __('Dashboard') }} </span></a>
                     </li>
 
@@ -59,7 +55,7 @@
                             href="#planning" data-bs-toggle="dropdown"
                             data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-home"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -71,7 +67,7 @@
                                     <path d="M17 15v2a1 1 0 0 0 1 1h1"></path>
                                     <path d="M20 15v6"></path>
                                 </svg></span>
-                            <span class="nav-link-title">{{ __('Planning') }}</span></a>
+                            <span class="nav-link-title">{{ __('Main Planning') }}</span></a>
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
@@ -81,7 +77,7 @@
                                         ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
                                     @endcan
 
-                                    @if($checMicroProgram == 1)
+                                    {{-- @if($checMicroProgram == 1)
                                         <a href="{{ route('microprogram') }}"
                                             class="dropdown-item">{{ __('Micro Program') }}</a>
                                     @endif
@@ -96,15 +92,15 @@
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
                                         class="{{ (Request::route()->getName() == 'project_report.revsion_task_list')
                                         ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
-                                    @endif
+                                    @endif --}}
 
                                     <a href="{{ route('taskBoard.view', ['list']) }}"
                                         class="{{ (Request::route()->getName() == 'taskBoard.view')
-                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Workdone') }}</a>
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task') }}</a>
 
-                                    <a href="{{ route('project_report.view_task_report', $project_id) }}"
+                                    {{-- <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="{{ (Request::route()->getName() == 'project_report.view_task_report')
-                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Reports') }}</a>
+                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Reports') }}</a> --}}
 
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
@@ -112,10 +108,10 @@
                                                 {{ __('Bug Report') }}</a>
                                         @endcan
 
-                                        @can('create project task')
+                                        {{-- @can('create project task')
                                             <a href="{{ route('projects.tasks.index', $project_id) }}"
                                                 class="dropdown-item">{{ __('Task') }}</a>
-                                        @endcan
+                                        @endcan --}}
 
                                         @if (\Auth::user()->type != 'client' || \Auth::user()->type == 'client')
                                             <a href="{{ route('projecttime.tracker', $project_id) }}"
@@ -147,223 +143,91 @@
                             </div>
                         </div>
                     </li>
-
-                    <li class=" nav-item dropdown">
-                        <a class="{{ Request::route()->getName() == 'drawing_list' ||
-                        Request::route()->getName() == 'daily_reports' ||
-                        Request::route()->getName() == 'show_project_specification' ||
-                        Request::route()->getName() == 'variation_scope_change' ||
-                        Request::route()->getName() == 'show_consultant_direction' ||
-                        Request::route()->getName() == 'rfi_show_info' ||
-                        Request::route()->getName() == 'procurement_material'
-                            ? ' nav-link dropdown-toggle show'
-                            : 'nav-link dropdown-toggle' }}"
-                            href="#planning" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
-                            aria-expanded="{{ Request::route()->getName() == 'drawing_list' ||
-                            Request::route()->getName() == 'daily_reports' ||
-                            Request::route()->getName() == 'show_project_specification' ||
-                            Request::route()->getName() == 'variation_scope_change' ||
-                            Request::route()->getName() == 'show_consultant_direction' ||
-                            Request::route()->getName() == 'rfi_show_info' ||
-                            Request::route()->getName() == 'procurement_material'
-                                ? 'true'
-                                : 'false' }}">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-address-book" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path
-                                        d="M20 6v12a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2
-                                        -2v-12a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2z">
-                                    </path>
-                                    <path d="M10 16h6"></path>
-                                    <path d="M13 11m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                    <path d="M4 8h3"></path>
-                                    <path d="M4 12h3"></path>
-                                    <path d="M4 16h3"></path>
-                                </svg>
-                            </span> <span class="nav-link-title">{{ __('Diary') }}</span></a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                          <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
+                          </span>
+                          <span class="nav-link-title">
+                          LookaHead Planning
+                          </span>
+                        </a>
                         <div class="dropdown-menu">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    <a href="{{ route('drawing_list') }}"
-                                        class="dropdown-item">{{ __('Drawing') }}
-                                        <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
-                                    
+                          <div class="dropdown-menu-columns">
+                          <div class="dropdown-menu-column">
+                            <a class="dropdown-item" >
+                           {{ __('Lookahead Gantt') }} 
+                            </a>
+                            <a class="dropdown-item" >
+                            Lookahead Schedule 
+                            </a>
+                            <a class="dropdown-item" >
+                            Active Schedule
+                            </a>
+                            
+                          </div>
+                        </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                              <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
+                              </span>
+                              <span class="nav-link-title">
+                              Team Members
+                              </span>
+                            </a>
+                            <div class="dropdown-menu">
+                              <div class="dropdown-menu-columns">
+                              <div class="dropdown-menu-column">
+                                <a class="dropdown-item" href="./alerts.html">
+                                Consultant
+                                </a>
+                                <a class="dropdown-item" href="./accordion.html">
+                                Sub Contractor
+                                </a>
+                                <a class="dropdown-item" href="{{ route('project.teammembers', $project_id) }}">
+                                Engineers
+                                </a>
+                              </div>
+                            </div>
+                            </li>
+                    
+                            <li class="nav-item">
+                            <a class="nav-link" href="{{ route('project.activities', $project_id) }}" >
+                              <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l-2 0l9 -9l9 9l-2 0"></path><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path></svg>
+                              </span>
+                              <span class="nav-link-title">
+                              Activites
+                              </span>
+                            </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                  <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
+                                  </span>
+                                  <span class="nav-link-title">
+                                  Reports
+                                  </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                  <div class="dropdown-menu-columns">
+                                  <div class="dropdown-menu-column">
+                                    <a class="dropdown-item" href="./alerts.html">
+                                    Daily Task Reports
                                     </a>
-                                    @can('manage directions')
-                                        <a href="{{ route('show_consultant_direction') }}"
-                                            class="dropdown-item">{{ __('Directions') }}
-                                            <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
-                                        </a>
-                                    @endcan
-                                    @can('manage project specification')
-                                        <a href="{{ route('show_project_specification') }}" class="dropdown-item">
-                                            {{ __('Specifications') }}
-                                            <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                                        </a>
-                                    @endcan
-                                    <!-- <a href="{{ route('procurement_material') }}" class="dropdown-item">
-                                        <span class="list">{{ __('Material Supply Log') }}</span>
-                                        <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
-                                    </a> -->
-
-                                    @can('manage RFI')
-                                        <a href="{{ route('rfi_show_info') }}"
-                                            class="dropdown-item">{{ __('RFI') }}
-                                            <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
-                                        </a>
-                                    @endcan
-
-                                    @can('manage site reports')
-                                        <a href="{{ route('daily_reports') }}"
-                                            class="dropdown-item">{{ __('Site Reports') }}
-                                            <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                                        </a>
-                                    @endcan
-
-                                    @can('manage vochange')
-                                        <a href="{{ route('variation_scope_change') }}"
-                                            class="dropdown-item">{{ __('VO/CO') }}
-                                            <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span></a>
-                                    @endcan
+                                    <a class="dropdown-item" href="./accordion.html">
+                                    OverAll Reports
+                                    </a>
+                                    <a class="dropdown-item" href="./accordion.html">
+                                     LookaHead Reports
+                                    </a>
+                                  </div>
                                 </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#quality" data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside" role="button" aria-expanded="false">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-chart-area-line" width="24"
-                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M4 19l4 -6l4 2l4 -5l4 4l0 5l-16 0"></path>
-                                    <path d="M4 12l3 -4l4 2l5 -6l4 4"></path>
-                                </svg></span>
-                            <span class="nav-link-title">{{ __('Quality') }}</span></a>
-
-                        <div class="dropdown-menu">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    <ul class="navbar-nav pt-lg-3">
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#concrete"
-                                                data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
-                                                aria-expanded="false">
-                                                {{ __('Material Testing ') }}
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <div class="dropdown-menu-columns">
-                                                    <div class="dropdown-menu-column">
-                                                        <a    class="dropdown-item"
-                                                href="{{ route('qaqc.concrete') }}">{{ __('Concrete') }}    <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>  </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#contracts" data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside" role="button" aria-expanded="false">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-chart-area-line" width="24"
-                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M4 19l4 -6l4 2l4 -5l4 4l0 5l-16 0"></path>
-                                    <path d="M4 12l3 -4l4 2l5 -6l4 4"></path>
-                                </svg></span>
-                            <span class="nav-link-title">{{ __('Contracts') }}</span></a>
-
-                        <div class="dropdown-menu">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    <ul class="navbar-nav pt-lg-3">
-                                        <li class="nav-item dropdown">
-                                            <a class="nav-link dropdown-toggle" href="#tender"
-                                                data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
-                                                aria-expanded="false">{{__('Tender')}}</a>
-                                               <div class="dropdown-menu">
-                                                <div class="dropdown-menu-columns">
-                                                    <div class="dropdown-menu-column">
-                                                        <a    class="dropdown-item"
-                                                        href="{{route('contract.boq')}}">{{__('BOQ')}}<span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>  </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
-
-
-                    <li class="nav-item">
-                        <a href="{{ route('project.teammembers', $project_id) }}" class="nav-link">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
-                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
-                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
-                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                </svg>
-                            </span>
-                            <span class="nav-link-title"> {{ __('Team Members') }} </span></a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="{{ url('project_holiday') }}" class="nav-link">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M11.5 21h-5.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6">
-                                    </path>
-                                    <path d="M16 3v4"></path>
-                                    <path d="M8 3v4"></path>
-                                    <path d="M4 11h16"></path>
-                                    <path d="M15 19l2 2l4 -4"></path>
-                                </svg>
-                            </span>
-                            <span class="nav-link-title"> {{ __('Holidays') }} </span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('project.activities', $project_id) }}" class="nav-link">
-                            <span class=" d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
-                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" fill="none" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
-                                    <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
-                                    <path d="M19 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M5 8m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                </svg>
-                            </span>
-                            <span class="nav-link-title"> {{ __('History') }} </span></a>
-                    </li>
+                            </li>
 
 
                     {{-- <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>

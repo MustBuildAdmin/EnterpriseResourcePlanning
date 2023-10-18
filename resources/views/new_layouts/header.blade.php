@@ -370,6 +370,231 @@
                                     </span>
                                 </a>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                                         <path d="M12 12l8 -4.5"></path>
+                                         <path d="M12 12l0 9"></path>
+                                         <path d="M12 12l-8 -4.5"></path>
+                                         <path d="M16 5.25l-8 4.5"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   users  
+                                   </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                <div class="dropdown-menu-columns">
+                                   <div class="dropdown-menu-column">
+                                      <a class="dropdown-item" href="./alerts.html">
+                                      Employees
+                                      </a>
+                                      <a class="dropdown-item" href="./accordion.html">
+                                      Employee Roles
+                                      </a>
+                                      <div class="dropend">
+                                         <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                         Third party Users
+                                         </a>
+                                         <div class="dropdown-menu">
+                                            <a href="./sign-in-illustration.html" class="dropdown-item">
+                                            Client
+                                            </a>
+                                            <a href="./sign-in.html" class="dropdown-item">
+                                            Consultant
+                                            </a>
+                                            <a href="./sign-in-link.html" class="dropdown-item">
+                                            Sub Contractor
+                                            </a>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </div>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Planning
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Dairy
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Contract
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Material
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Labour
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Equipment
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Safety
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   HR
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   My Details
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Accounts
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Feedback Form
+                                   </span>
+                                </a>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link" href="./form-elements.html">
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                   Support
+                                   </span>
+                                </a>
+                             </li>
                         </ul>
                     </div>
                 </div>
