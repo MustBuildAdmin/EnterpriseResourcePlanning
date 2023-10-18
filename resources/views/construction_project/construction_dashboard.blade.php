@@ -17,7 +17,7 @@ if($delay>100){
 ?>
     <!-- Page header -->
     <div class="page-header d-print-none">
-      <div class="container-xl">
+      <div class="container-fluid">
         <div class="row g-2 align-items-center">
           <div class="col-10">
             <!-- Page pre-title -->
@@ -35,9 +35,9 @@ if($delay>100){
     </div>
     <!-- Page body -->
     <div class="page-body">
-      <div class="container-xl">
+      <div class="container-fluid">
         <div class="row row-deck row-cards">
-          <div class="col-lg-6 col-xl-4">
+          <div class="col-lg-6 col-xl-3">
             <div class="card">
               <div class="card-body p-4 py-5 text-center">
                 @php
@@ -78,7 +78,7 @@ if($delay>100){
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-xl-4">
+          <div class="col-lg-6 col-xl-3">
             <div class="card">
               <div class="card-header">
                 <h3>Project Current Status</h3>
@@ -88,7 +88,7 @@ if($delay>100){
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-xl-4 projectlifetimezone" >
+          <div class="col-lg-6 col-xl-3 projectlifetimezone" >
             <div class="card">
               <div class="card-header">
                 <h3>Project Life Time Zone</h3>
@@ -122,6 +122,38 @@ if($delay>100){
                     <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-secondary">612MB</span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-xl-3">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  Current Look a Head
+                </h3>
+                <div class="card-actions">
+                  <a href="#">
+                    View the Active Look a Head<!-- Download SVG icon from http://tabler-icons.io/i/edit -->
+                  </a>
+                </div>
+              </div>
+              <div class="card-body">
+                <dl class="row">
+                  <dt class="col-5">Start Date:</dt>
+                  <dd class="col-7">2020-01-05 </dd>
+                  <dt class="col-5">End Date:</dt>
+                  <dd class="col-7">2020-01-05 </dd>
+                  <dt class="col-5">Holiday in Days:</dt>
+                  <dd class="col-7">2</dd>
+                  <dt class="col-5">Weekends in Days</dt>
+                  <dd class="col-7">1</dd>
+                  <dt class="col-5">Total working days:</dt>
+                  <dd class="col-7">4</dd>
+                  <dt class="col-5">Total Task Taken:</dt>
+                  <dd class="col-7">10</dd>
+                  <dt class="col-5">Total Sub Task Created:</dt>
+                  <dd class="col-7">10</dd>
+                </dl>
               </div>
             </div>
           </div>
