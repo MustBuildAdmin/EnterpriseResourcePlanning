@@ -49,7 +49,7 @@
                             <span class="nav-link-title"> {{ __('Dashboard') }} </span></a>
                     </li>
 
-                    <li class=" nav-item dropdown">
+                    <li class="nav-item dropdown">
                         <a class="{{ (Request::route()->getName() == 'projects.gantt'
                             || Request::route()->getName() == 'revision'
                             || Request::route()->getName() == 'project_report.revsion_task_list'
@@ -57,7 +57,7 @@
                             || Request::route()->getName() == 'project_report.view_task_report')
                             ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
                             href="#planning" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false">
+                            data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -158,7 +158,7 @@
                         Request::route()->getName() == 'procurement_material'
                             ? ' nav-link dropdown-toggle show'
                             : 'nav-link dropdown-toggle' }}"
-                            href="#planning" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                            href="#planning" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
                             aria-expanded="{{ Request::route()->getName() == 'drawing_list' ||
                             Request::route()->getName() == 'daily_reports' ||
                             Request::route()->getName() == 'show_project_specification' ||
@@ -235,7 +235,7 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#quality" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false">
+                            data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-chart-area-line" width="24"
@@ -253,7 +253,7 @@
                                     <ul class="navbar-nav pt-lg-3">
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle" href="#concrete"
-                                                data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                                                data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
                                                 aria-expanded="false">
                                                 {{ __('Material Testing ') }}
                                             </a>
@@ -274,7 +274,7 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#contracts" data-bs-toggle="dropdown"
-                            data-bs-auto-close="false" role="button" aria-expanded="false">
+                            data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-chart-area-line" width="24"
@@ -292,7 +292,7 @@
                                     <ul class="navbar-nav pt-lg-3">
                                         <li class="nav-item dropdown">
                                             <a class="nav-link dropdown-toggle" href="#tender"
-                                                data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+                                                data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
                                                 aria-expanded="false">{{__('Tender')}}</a>
                                                <div class="dropdown-menu">
                                                 <div class="dropdown-menu-columns">
