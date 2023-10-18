@@ -1459,11 +1459,15 @@ class MicroPorgramController extends Controller
         $project = Project::find($projectID);
         if ($project) {
             $instanceId = Session::get("project_instance");
-            $task = MicroTask::where("project_id", $projectID)
-                ->where("instance_id", $instanceId)
-                ->orderBy("id", "ASC")
-                ->get();
-
+            $task= DB::table('microprogram_schedule')
+            ->join('micro_tasks', 'microprogram_schedule.id', '=', 'micro_tasks.schedule_id')
+            ->select('micro_tasks.*', 'microprogram_schedule.schedule_name', 'microprogram_schedule.active_status')
+            ->where('microprogram_schedule.active_status',1)
+            ->where("micro_tasks.project_id", $projectID)
+            ->where("micro_tasks.instance_id", $instanceId)
+            ->orderBy("micro_tasks.id", "ASC")
+            ->get();
+        
             $link = MicroLink::where("project_id", $projectID)
                 ->where("instance_id", $instanceId)
                 ->orderBy("id", "ASC")
