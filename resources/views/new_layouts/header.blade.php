@@ -404,19 +404,25 @@
                                             <a href="./sign-in-illustration.html" class="dropdown-item">
                                               {{ __('Client') }}
                                             </a>
-                                            <a href="./sign-in.html" class="dropdown-item">
+                                            @if(Gate::check('manage consultant'))
+                                            <a href="{{route('consultants.index')}}" class="dropdown-item">
                                               {{ __('Consultant') }}
                                             </a>
-                                            <a href="./sign-in-link.html" class="dropdown-item">
+                                            @endif
+                                            @if(Gate::check('manage sub contractor'))
+                                            <a href="{{ route('subcontractor.index') }}" class="dropdown-item">
                                               {{ __('Sub Contractor') }}
                                             </a>
+                                            @endif
                                          </div>
                                       </div>
                                    </div>
                                 </div>
                              </li>
+                             @if(\Auth::user()->show_project() == 1)
+                             @if( Gate::check('manage project'))
                              <li class="nav-item">
-                                <a class="nav-link" href="./form-elements.html">
+                                <a class="nav-link" href="{{route('construction_main')}}">
                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                       <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -430,8 +436,12 @@
                                    </span>
                                 </a>
                               </li>
+                              @endif
+                              @endif
+                              @if(\Auth::user()->show_hrm() == 1)
+                              @can('show hrm dashboard')
                              <li class="nav-item">
-                                <a class="nav-link" href="./form-elements.html">
+                                <a class="nav-link" href="{{url('hrm_dashboard')}}">
                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                       <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -445,8 +455,13 @@
                                    </span>
                                 </a>
                              </li>
+                             @endcan
+                             @endif
+
+                             @if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company'
+                             && \Auth::user()->type != 'super admin')
                              <li class="nav-item">
-                                <a class="nav-link" href="./form-elements.html">
+                                <a class="nav-link" href="{{route('my-info')}}">
                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                       <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -456,12 +471,24 @@
                                       </svg>
                                    </span>
                                    <span class="nav-link-title">
-                                   My Details
+                                    {{ __('My Details') }}
                                    </span>
                                 </a>
                              </li>
+                             @endif
+                             
+                            @if(\Auth::user()->show_account() == 1)
+                            @if(Gate::check('manage proposal') ||  Gate::check('manage bank account')
+                              || Gate::check('manage bank transfer') || Gate::check('manage invoice')
+                              ||  Gate::check('manage revenue') ||  Gate::check('manage credit note')
+                              ||  Gate::check('manage bill')  ||  Gate::check('manage payment')
+                              || Gate::check('manage debit note') || Gate::check('manage chart of account')
+                              ||  Gate::check('manage journal entry') ||   Gate::check('balance sheet report')
+                              || Gate::check('ledger report') ||  Gate::check('trial balance report')
+                              || Gate::check('manage product & service')
+                              || Gate::check('manage vender'))
                              <li class="nav-item">
-                                <a class="nav-link" href="./form-elements.html">
+                                <a class="nav-link" href="{{ route('productservice.index') }}">
                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                       <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -475,6 +502,32 @@
                                    </span>
                                 </a>
                              </li>
+                             @endif
+                             @endif
+                               
+                             @if(\Auth::user()->show_crm() == 1)
+                  @if( Gate::check('manage lead') || Gate::check('manage deal')
+                     || Gate::check('manage form builder')  || Gate::check('manage contract')
+                     || Gate::check('manage client'))
+                             <li class="nav-item">
+                                <a class="nav-link" @if(Auth::user()->type == 'client') href="{{ route('deals.index') }}"
+                                    @else href="{{ route('clients.index') }}" @endif>
+                                   <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                      <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                         <path d="M9 11l3 3l8 -8"></path>
+                                         <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                      </svg>
+                                   </span>
+                                   <span class="nav-link-title">
+                                    {{ __('CRM') }}
+                                   </span>
+                                </a>
+                             </li>
+                             @endif
+                             @endif
+
                              <li class="nav-item">
                                 <a class="nav-link" href="./form-elements.html">
                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -486,12 +539,13 @@
                                       </svg>
                                    </span>
                                    <span class="nav-link-title">
-                                   Feedback Form
+                                    {{ __('Feedback Form') }}
                                    </span>
                                 </a>
                              </li>
+                             @if(\Auth::user()->type!='super admin')
                              <li class="nav-item">
-                                <a class="nav-link" href="./form-elements.html">
+                                <a class="nav-link" href="{{route('support.index')}}">
                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                       <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -505,6 +559,7 @@
                                    </span>
                                 </a>
                              </li>
+                             @endif
                         </ul>
                     </div>
                 </div>
