@@ -349,6 +349,7 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
                   <ul class="navbar-nav">
+                     <!--Home starts-->
                      <li class="nav-item active">
                         <a class="nav-link" href="{{ route('new_home') }}">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -368,11 +369,17 @@
                            </span>
                         </a>
                      </li>
+                     <!--Home starts-->
+
+                     <!--Users starts-->
                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                         data-bs-auto-close="outside" role="button" aria-expanded="false">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                  <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
                                  <path d="M12 12l8 -4.5"></path>
@@ -395,7 +402,9 @@
                                  {{ __('Employee Roles') }}
                                  </a>
                                  <div class="dropend">
-                                    <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication"
+                                     data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
+                                      aria-expanded="false">
                                     {{ __('Third party Users') }}
                                     </a>
                                     <div class="dropdown-menu">
@@ -417,13 +426,18 @@
                               </div>
                            </div>
                      </li>
+                     <!--Users ends-->
+
+                     <!--Planning starts-->
                      @if(\Auth::user()->show_project() == 1)
                      @if( Gate::check('manage project'))
                      <li class="nav-item">
                         <a class="nav-link" href="{{route('construction_main')}}">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                  <path d="M9 11l3 3l8 -8"></path>
                                  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
@@ -436,13 +450,18 @@
                      </li>
                      @endif
                      @endif
+                     <!--Planning ends-->
+
+                     <!--HRM starts-->
                      @if(\Auth::user()->show_hrm() == 1)
                      @can('show hrm dashboard')
                      <li class="nav-item">
                         <a class="nav-link" href="{{url('hrm_dashboard')}}">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                  <path d="M9 11l3 3l8 -8"></path>
                                  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
@@ -455,13 +474,18 @@
                      </li>
                      @endcan
                      @endif
+                     <!--HRM ends-->
+
+                     <!--My Details starts-->
                      @if(\Auth::user()->type != 'client' && \Auth::user()->type != 'company'
                      && \Auth::user()->type != 'super admin')
                      <li class="nav-item">
                         <a class="nav-link" href="{{route('my-info')}}">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                  <path d="M9 11l3 3l8 -8"></path>
                                  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
@@ -473,6 +497,9 @@
                         </a>
                      </li>
                      @endif
+                     <!--My Details ends-->
+
+                     <!--Accounts starts-->
                      @if(\Auth::user()->show_account() == 1)
                      @if(Gate::check('manage proposal') ||  Gate::check('manage bank account')
                      || Gate::check('manage bank transfer') || Gate::check('manage invoice')
@@ -487,7 +514,9 @@
                         <a class="nav-link" href="{{ route('productservice.index') }}">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                  <path d="M9 11l3 3l8 -8"></path>
                                  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
@@ -500,6 +529,9 @@
                      </li>
                      @endif
                      @endif
+                     <!--Accounts ends-->
+
+                     <!--CRM starts-->
                      @if(\Auth::user()->show_crm() == 1)
                      @if( Gate::check('manage lead') || Gate::check('manage deal')
                      || Gate::check('manage form builder')  || Gate::check('manage contract')
@@ -509,7 +541,9 @@
                         @else href="{{ route('clients.index') }}" @endif>
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                            <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
                               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                               <path d="M9 11l3 3l8 -8"></path>
                               <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
@@ -522,11 +556,16 @@
                      </li>
                      @endif
                      @endif
+                     <!--CRM ends-->
+
+                     <!--Feedback Starts-->
                      <li class="nav-item">
                         <a class="nav-link" href="./form-elements.html">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                  <path d="M9 11l3 3l8 -8"></path>
                                  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
@@ -537,12 +576,17 @@
                            </span>
                         </a>
                      </li>
+                      <!--Feedback Ends-->
+
+                     <!--Support Starts-->
                      @if(\Auth::user()->type!='super admin')
                      <li class="nav-item">
                         <a class="nav-link" href="{{route('support.index')}}">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                  <path d="M9 11l3 3l8 -8"></path>
                                  <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
@@ -554,6 +598,7 @@
                         </a>
                      </li>
                      @endif
+                     <!--Support ends-->
                      </ul>
                      </div>
                </div>
