@@ -13,12 +13,12 @@
         <input type="text" class="form-control" name="schedule_name" required
             placeholder="Enter your Schedule Name">
     </div>
-    <div class="mb-3">
+    {{-- <div class="mb-3">
         <label class="form-label required">Schedule Duration</label>
         <input type="text" class="form-control" name="schedule_duration" required
             id="schedule_duration"
             placeholder="Enter your Schedule Duration">
-    </div>
+    </div> --}}
     <div class="mb-3">
         <label class="form-label required"> Schedule Start Date</label>
         <div class="input-icon">

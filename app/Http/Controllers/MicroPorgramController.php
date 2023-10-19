@@ -21,6 +21,7 @@ use Auth;
 use DB;
 use Illuminate\Support\Str;
 use Exception;
+use DateTime;
 class MicroPorgramController extends Controller
 {
     public function microprogram(Request $request){
@@ -103,13 +104,24 @@ class MicroPorgramController extends Controller
         $project = Project::select('id','project_name')->where('id',$project_id)->first();
         $projectName = str_split($project->project_name, 3);
         $uuid = $projectName['0'].'-'.substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 5);
+
+        $date1 = new DateTime($request->schedule_start_date);
+        $date2 = new DateTime($request->schedule_end_date);
+        $interval = $date1->diff($date2);
+
+        if($interval->days == 0){
+            $intervalDays = $request->duration;
+        }
+        else{
+            $intervalDays = $interval->days;
+        }
     
         $schedule                      = new MicroProgramScheduleModal;
         $schedule->uid                 = $uuid;
         $schedule->schedule_name       = $request->schedule_name;
         $schedule->project_id          = $project_id;
         $schedule->instance_id         = $instance_id;
-        $schedule->schedule_duration   = $request->schedule_duration;
+        $schedule->schedule_duration   = $intervalDays;
         $schedule->schedule_start_date = $request->schedule_start_date;
         $schedule->schedule_end_date   = $request->schedule_end_date;
         $schedule->schedule_goals      = $request->schedule_goals;
@@ -176,11 +188,46 @@ class MicroPorgramController extends Controller
                     $weekSchedule = $weekSchedule->orderBy('con_tasks.start_date','ASC')->get();
                     // $queries = \DB::getQueryLog();
 
+                    $remaining_working_days = Utility::remaining_duration_calculator($scheduleGet->schedule_end_date,$project_id);
+                    $remaining_working_days = $remaining_working_days != 0 ?
+                    $remaining_working_days-1 : 0;// include the last day
+
+                    ############### Remaining days ##################
+
+                    $date1 = new DateTime($scheduleGet->schedule_start_date);
+                    $date2 = new DateTime($scheduleGet->schedule_end_date);
+                    $interval = $date1->diff($date2);
+
+                    if($interval->days == 0){
+                        $intervalDays = $scheduleGet->duration;
+                    }
+                    else{
+                        $intervalDays = $interval->days;
+                    }
+
+                    $completed_days = $intervalDays - $remaining_working_days;
+                    
+                    if($intervalDays == 1){
+                        $current_Planed_percentage = 100;
+                    }
+                    else{
+                        // percentage calculator
+                        if($intervalDays > 0){
+                            $perday = 100/$intervalDays;
+                        }else{
+                            $perday = 0;
+                        }
+
+                        $current_Planed_percentage = round($completed_days*$perday);
+                    }
+
                     return view('microprogram.schedule_task_show')->with('weekSchedule',$weekSchedule)
                         ->with('weekStartDate',$weekStartDate)
                         ->with('weekEndDate',$weekEndDate)
                         ->with('scheduleGet',$scheduleGet)
-                        ->with('microSchedule',$microSchedule);
+                        ->with('microSchedule',$microSchedule)
+                        ->with('current_Planed_percentage',$current_Planed_percentage)
+                        ->with('intervalDays',$intervalDays);
             // }
             // else{
             //     return redirect()->back()->with('error', __('Project Not Freezed.'));

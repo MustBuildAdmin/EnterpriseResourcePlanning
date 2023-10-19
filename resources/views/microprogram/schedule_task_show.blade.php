@@ -49,14 +49,14 @@
                                             <div class="row w-100">
                                                 <div class="col-3 p-4">
                                                     <input type="hidden" name="schedule_id" id="schedule_id" value="{{$scheduleGet->id}}">
-                                                    <span><b>Schedule Duration:</b> {{$scheduleGet->schedule_duration}} days </span>
+                                                    <span><b>Schedule Duration:</b> {{$intervalDays}} days </span>
                                                 </div>
                                                 {{-- <div class="col-4 p-4">
                                                     <span><b>Holiday Duration:</b> 4 days </span>
-                                                </div>
-                                                <div class="col-4  p-4">
-                                                    <b>Planned Percentage:</b> 20%
                                                 </div> --}}
+                                                <div class="col-4  p-4">
+                                                    <b>Planned Percentage:</b> {{$current_Planed_percentage}}
+                                                </div>
                                                 <div class="col-5 p-4">
                                                     <span><b>Schedule Start Date:</b>
                                                         {{ Utility::site_date_format($scheduleGet->schedule_start_date, \Auth::user()->id) }}
