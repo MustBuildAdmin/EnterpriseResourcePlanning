@@ -33,6 +33,15 @@
     .user-card-dropdown::after {
         display: none;
     }
+
+    .p-2.col-example {
+
+        background: #FFFFFF;
+    }
+
+    .row row-cards{
+        background: #FFFFFF;
+    }
 </style>
 
 @php

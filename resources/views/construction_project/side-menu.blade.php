@@ -163,7 +163,7 @@
                 </svg>
              </span>
              <span class="nav-link-title">
-             {{ __(' LookaHead Planning') }} 
+             {{ __('LookaHead Planning') }} 
              </span>
           </a>
           <div class="dropdown-menu">
