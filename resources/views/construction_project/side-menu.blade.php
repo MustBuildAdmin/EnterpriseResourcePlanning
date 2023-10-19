@@ -77,16 +77,24 @@
                                         ?'dropdown-item active' :'dropdown-item'}}">{{ __('Gantt') }}</a>
                                     @endcan
 
+                                    @if(Session::get('current_revision_freeze')==1)
+                                    <a href="{{ url('revision') }}"
+                                    class="{{ (Request::route()->getName() == 'revision')
+                                    ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revision') }}</a>
+                                @endif
+
+                                @if(session::has('revision_started'))
+                                <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
+                                class="{{ (Request::route()->getName() == 'project_report.revsion_task_list')
+                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
+                            @endif 
+
                                     {{-- @if($checMicroProgram == 1)
                                         <a href="{{ route('microprogram') }}"
                                             class="dropdown-item">{{ __('Micro Program') }}</a>
                                     @endif
                                     
-                                    @if(Session::get('current_revision_freeze')==1)
-                                        <a href="{{ url('revision') }}"
-                                        class="{{ (Request::route()->getName() == 'revision')
-                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revision') }}</a>
-                                    @endif
+                                 
 
                                     @if(session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
@@ -149,7 +157,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
                           </span>
                           <span class="nav-link-title">
-                          LookaHead Planning
+                            {{ __(' LookaHead Planning') }} 
                           </span>
                         </a>
                         <div class="dropdown-menu">
@@ -159,10 +167,10 @@
                            {{ __('Lookahead Gantt') }} 
                             </a>
                             <a class="dropdown-item" >
-                            Lookahead Schedule 
+                            {{ __('Lookahead Schedule') }} 
                             </a>
                             <a class="dropdown-item" >
-                            Active Schedule
+                            {{ __('Active Schedule') }} 
                             </a>
                             
                           </div>
@@ -181,12 +189,6 @@
                             <div class="dropdown-menu">
                               <div class="dropdown-menu-columns">
                               <div class="dropdown-menu-column">
-                                <a class="dropdown-item" href="./alerts.html">
-                                Consultant
-                                </a>
-                                <a class="dropdown-item" href="./accordion.html">
-                                Sub Contractor
-                                </a>
                                 <a class="dropdown-item" href="{{ route('project.teammembers', $project_id) }}">
                                 Engineers
                                 </a>
