@@ -7,16 +7,25 @@
         width: 100%!important;
         height: fit-content;
     }
+    .backbtn{
+        position: relative;
+        justify-content: flex-end;
+        display: flex;
+        left: 98%;
+    }
+    .revisioncard{
+        margin:10px;
+    }
 </style>
 
 <div class="page-wrapper">
-    <div class="row">
+   
         <div class="col-md-6">
-           <h2>{{ __('Revision Create') }}</h2>
+           <h2 class="revisioncard">{{ __('Revision Create') }}</h2>
         </div>
 
         <div class="col-md-6">
-          <div class="col-auto ms-auto d-print-none float-end">
+          <div class="col-auto ms-auto d-print-none float-end backbtn">
               <div class="input-group-btn">
                   <a href="{{ route('construction_main') }}" class="btn btn-danger"
                    data-bs-toggle="tooltip" title="{{ __('Back') }}">
@@ -25,10 +34,10 @@
               </div>
           </div>
         </div>
-    </div>
+   
   
     <div class="col-xl-12 mt-3">
-        <div class="card table-card">
+        <div class="card table-card revisioncard">
             <div class="container-fluid mt-5">
                 {{ Form::open(['url' => 'revision_store', 'method' => 'post',
                 'enctype' => 'multipart/form-data', 'id' => 'create_revision_form',

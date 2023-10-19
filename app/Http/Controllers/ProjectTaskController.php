@@ -191,7 +191,7 @@ class ProjectTaskController extends Controller
             $tasks = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
                 'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
                 'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
-                'pros.id as project_id', 'pros.instance_id as pro_instance_id')
+                'pros.id as project_id', 'pros.instance_id as pro_instance_id','con_tasks.iscritical')
                 ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
                 ->whereNotNull('pros.instance_id')
                 ->where('con_tasks.project_id', $project_id)

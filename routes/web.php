@@ -3499,6 +3499,18 @@ Route::get(
         'XSS',
     ]
 );
+Route::any(
+    'get_member', [
+        'as' => 'projects.criticaltask_update',
+        'uses' => 'ProjectController@criticaltask_update',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get(
     'projects/{id}/gantt/{duration?}', [
         'as' => 'projects.gantt',
@@ -5173,6 +5185,11 @@ Route::any('view_task_revision', 'ProjectTaskController@revsion_task_list')->nam
 Route::any('report_task_autocomplete', 'ProjectTaskController@report_task_autocomplete')
 ->name('report_task_autocomplete');
 Route::any('show_task_report', 'ProjectTaskController@show_task_report')->name('show_task_report');
+Route::any('excel_report_onsearch', 'ProjectReportController@excel_report_onsearch')->name('excel_report_onsearch');
+Route::any('pdf_report_onsearch', 'ProjectReportController@pdf_report_onsearch')->name('pdf_report_onsearch');
+
+
+
 
 Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con');
 Route::any('download_report', 'ProjectReportController@download_report')->name('download_report');
