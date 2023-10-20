@@ -1523,11 +1523,17 @@ class ProjectController extends Controller
                 $array=[
                     "iscritical"=>1,
                 ];
+               
                 if(is_array($request->critical_task)){
                     $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->whereIn('id',$request->critical_task)->update($array);
                 }else{
                     $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('id',$request->critical_task)->update($array);
                 }
+                // foreach ($request->updatedTask as $key => $value) {
+                //     $critical=$value->isCriticalTask
+                //     Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('main_id',$value->main_id)->update(['iscritical'=>$value->iscritical,'float_val'=>$value->]);
+                // }
+
                 Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
             }
         }
