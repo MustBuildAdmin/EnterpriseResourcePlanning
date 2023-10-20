@@ -45,11 +45,12 @@
 </section>
 
 <section>
+    @can('view activity')
     <div class="container-fluid">
         <div class="row row-cards">
             <div class="card">
                 <div class="card-header">
-                  <h3>All Project Activites</h3>
+                  <h3>{{__('Activity Log')}}</h3>
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
@@ -57,7 +58,7 @@
                             <div class="col-12">
                                 <div class="card">
                                   <div class="card-header">
-                                      <h4 class="card-title">Activites List</h4>
+                                      <h4 class="card-title">{{__('Activity Log of this project')}}</h4>
                                     </div>
                                     <div class="card-body">
                                        <div class="row">
@@ -132,22 +133,22 @@
                                                 <thead>
                                                     <tr>
                                                       <th>Activity ID</th>
-                                                      <th>Activity Module Name</th>
                                                       <th>Activity Type</th>
-                                                      <th>Activity Done</th>
+                                                      <th>Activity</th>
                                                       <th>Activity Date and Time</th>
                                                       <th>Activity Done By</th>
                                                     </tr>
                                                   </thead>
                                                   <tbody>
+                                                    @foreach($project->activities as $activity)
                                                         <tr>
-                                                            <td><a href="#">345432345432356</a></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
+                                                            <td><a href="#">{{$activity->id}}</a></td>
+                                                            <td>{{ __($activity->log_type) }}<</td>
+                                                            <td>{!! $activity->getRemark() !!}<</td>
+                                                            <td>{{$activity->created_at->diffForHumans()}}</td>
                                                             <td></td>
                                                        </tr>
+                                                       @endforeach
                                                   </tbody>
                                                 </table>
                                             </div>
@@ -163,6 +164,7 @@
             </div>
         </div>
     </div>
+    @endcan
 </section>
 @include('new_layouts.footer')
 
