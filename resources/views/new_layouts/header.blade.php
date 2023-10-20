@@ -559,7 +559,7 @@
                      <!--CRM ends-->
 
                      <!--Feedback Starts-->
-                     <li class="nav-item">
+                     {{-- <li class="nav-item">
                         <a class="nav-link" href="./form-elements.html">
                            <span class="nav-link-icon d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
@@ -575,7 +575,7 @@
                            {{ __('Feedback Form') }}
                            </span>
                         </a>
-                     </li>
+                     </li> --}}
                       <!--Feedback Ends-->
 
                      <!--Support Starts-->

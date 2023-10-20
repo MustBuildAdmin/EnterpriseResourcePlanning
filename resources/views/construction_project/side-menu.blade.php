@@ -249,7 +249,7 @@
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                {{ __('Activites') }}
+                                {{ __('Activities') }}
                             </span>
                         </a>
                     </li>
@@ -289,11 +289,11 @@
                                         'nav-link active' : 'nav-link' }}">
                                         {{ __('Daily Task Reports') }}
                                     </a>
-                                    <a class="dropdown-item" href="./accordion.html">
+                                    <a class="nav-link" href="./accordion.html">
                                         {{ __('OverAll Reports') }}
                                     </a>
-                                    <a class="dropdown-item" href="./accordion.html">
-                                        {{ __('LookaHead Reports') }}
+                                    <a class="nav-link" href="./accordion.html">
+                                        {{ __('Lookahead Reports') }}
                                     </a>
                                 </div>
                             </div>
