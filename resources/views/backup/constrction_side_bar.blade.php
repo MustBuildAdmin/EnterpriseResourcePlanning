@@ -33,7 +33,8 @@
                 <ul class="navbar-nav pt-lg-3">
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'projects.show' ? 'nav-link active' : 'nav-link' }}">
+                            class="{{ Request::route()->getName() == 'projects.show' ?
+                             'nav-link active' : 'nav-link' }}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -80,7 +81,9 @@
                                 <div class="dropdown-menu-column">
                                     @can('view grant chart')
                                         <a href="{{ route('projects.gantt', $project_id) }}"
-                                            class="{{ Request::route()->getName() == 'projects.gantt' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Gantt') }}</a>
+                                            class="{{ Request::route()->getName() == 'projects.gantt' ?
+                                             'dropdown-item active' : 'dropdown-item' }}">{{ __('Gantt') }}
+                                        </a>
                                     @endcan
                                     @if ($checMicroProgram == 1)
                                         <a href="{{ route('microprogram') }}"
@@ -88,16 +91,26 @@
                                     @endif
                                     @if (Session::get('current_revision_freeze') == 1)
                                         <a href="{{ url('revision') }}"
-                                            class="{{ Request::route()->getName() == 'revision' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Revision') }}</a>
+                                            class="{{ Request::route()->getName() == 'revision' ? 'dropdown-item active'
+                                             : 'dropdown-item' }}">{{ __('Revision') }}
+                                        </a>
                                     @endif
                                     @if (session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
-                                            class="{{ Request::route()->getName() == 'project_report.revsion_task_list' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Revised Program') }}</a>
+                                        class="{{ Request::route()->getName() == 'project_report.revsion_task_list' ?
+                                        'dropdown-item active' : 'dropdown-item' }}">
+                                             {{ __('Revised Program') }}
+                                        </a>
                                     @endif
                                     <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="{{ Request::route()->getName() == 'taskBoard.view' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Task Workdone') }}</a>
+                                    class="{{ Request::route()->getName() == 'taskBoard.view' ? 'dropdown-item active'
+                                         : 'dropdown-item' }}">{{ __('Task Workdone') }}
+                                    </a>
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
-                                        class="{{ Request::route()->getName() == 'project_report.view_task_report' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Task Reports') }}</a>
+                                        class="{{ Request::route()->getName() == 'project_report.view_task_report' ?
+                                         'dropdown-item active' : 'dropdown-item' }}">
+                                         {{ __('Task Reports') }}
+                                    </a>
                                     @if ($setting['company_type'] != 2)
                                         @can('manage bug report')
                                             <a href="{{ route('task.bug', $project_id) }}" class="dropdown-item">
@@ -247,8 +260,8 @@
                                                     <div class="dropdown-menu-column">
                                                         <a class="dropdown-item" href="{{ route('qaqc.concrete') }}">
                                                             {{ __('Concrete') }}
-                                                            <span
-                                                                class="badge badge-sm bg-green-lt text-uppercase ms-auto">
+                                                            <span class="badge badge-sm bg-green-lt
+                                                             text-uppercase ms-auto">
                                                                 New
                                                             </span>
                                                         </a>
@@ -289,8 +302,8 @@
                                                     <div class="dropdown-menu-column">
                                                         <a class="dropdown-item" href="{{ route('contract.boq') }}">
                                                             {{ __('BOQ') }}
-                                                            <span
-                                                                class="badge badge-sm bg-green-lt text-uppercase ms-auto">
+                                                            <span class="badge badge-sm bg-green-lt
+                                                             text-uppercase ms-auto">
                                                                 New
                                                             </span>
                                                         </a>

@@ -303,7 +303,7 @@
                     <!--Holidays starts-->
                     <li class="nav-item">
                         <a href="{{ route('project_holiday.index', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project_holiday.index' ? 
+                            class="{{ Request::route()->getName() == 'project_holiday.index' ?
                             'nav-link active' : 'nav-link' }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/home -->
