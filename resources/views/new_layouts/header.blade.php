@@ -319,7 +319,7 @@
                         onclick="event.preventDefault(); document.getElementById('frm-logout').submit();"
                         class="dropdown-item">{{ __('Logout') }}</a>
                      <form id="frm-logout" action="{{ route('logout') }}" method="POST" class="d-none">
-                        {{ csrf_field() }} 
+                        {{ csrf_field() }}
                      </form>
                   </div>
                </div>

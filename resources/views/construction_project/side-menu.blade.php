@@ -163,20 +163,20 @@
                 </svg>
              </span>
              <span class="nav-link-title">
-             {{ __('Lookahead Planning') }} 
+             {{ __('Lookahead Planning') }}
              </span>
           </a>
           <div class="dropdown-menu">
           <div class="dropdown-menu-columns">
              <div class="dropdown-menu-column">
                 <a class="dropdown-item" >
-                {{ __('Lookahead Gantt') }} 
+                {{ __('Lookahead Gantt') }}
                 </a>
                 <a class="dropdown-item" >
-                {{ __('Lookahead Schedule') }} 
+                {{ __('Lookahead Schedule') }}
                 </a>
                 <a class="dropdown-item" >
-                {{ __('Active Lookahead') }} 
+                {{ __('Active Lookahead') }}
                 </a>
              </div>
           </div>
@@ -204,7 +204,7 @@
                 </svg>
              </span>
              <span class="nav-link-title">
-             {{ __('Team Members') }} 
+             {{ __('Team Members') }}
              </span>
           </a>
           <div class="dropdown-menu">
