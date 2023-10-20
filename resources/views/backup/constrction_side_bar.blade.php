@@ -197,10 +197,7 @@
                              <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                              </a>
                              @endcan
-                             <!-- <a href="{{ route('procurement_material') }}" class="dropdown-item">
-                                <span class="list">{{ __('Material Supply Log') }}</span>
-                                <span class="badge badge-sm bg-primary-lt text-uppercase ms-auto">Coming Soon</span>
-                                </a> -->
+                            
                              @can('manage RFI')
                              <a href="{{ route('rfi_show_info') }}"
                                 class="dropdown-item">{{ __('RFI') }}
@@ -368,7 +365,7 @@
                        <span class="nav-link-title"> {{ __('History') }} </span>
                     </a>
                  </li>
-                 {{-- 
+                 {{--
                  <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                  <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
                  <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>
@@ -436,3 +433,4 @@
         @endisset
 
         {{-- @include('new_layouts.footer') --}}
+      

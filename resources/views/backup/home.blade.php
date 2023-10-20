@@ -6,9 +6,9 @@
          <nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
             <div class="custom-menu">
                <button type="button" id="sidebarCollapse"
-                class="btn btn-primary"> 
+                class="btn btn-primary">
                 <i class="fa fa-bars"></i> <span class="sr-only">
-                  Toggle Menu</span> 
+                  Toggle Menu</span>
                </button>
             </div>
             <div class="p-4">
