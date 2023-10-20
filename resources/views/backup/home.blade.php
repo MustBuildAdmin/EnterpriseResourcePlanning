@@ -5,7 +5,11 @@
       <aside class="col-2">
          <nav id="sidebar" class="navbar navbar-vertical navbar-transparent">
             <div class="custom-menu">
-               <button type="button" id="sidebarCollapse" class="btn btn-primary"> <i class="fa fa-bars"></i> <span class="sr-only">Toggle Menu</span> </button>
+               <button type="button" id="sidebarCollapse"
+                class="btn btn-primary"> 
+                <i class="fa fa-bars"></i> <span class="sr-only">
+                  Toggle Menu</span> 
+               </button>
             </div>
             <div class="p-4">
                <h1><a href="index.html" class="logo">Portfolic <span>Portfolio Agency</span></a></h1>
@@ -283,7 +287,7 @@
                      </a>
                   </div>
                   @endif
-                  <?php $check_user_leave_permission=\App\Models\User::where('name', '!=', Null)
+                  <?php $check_user_leave_permission=\App\Models\User::where('name', '!=', null)
 				  									 ->where('created_by', '=', \Auth::user()->creatorId())
 													 ->where('type', '!=', 'client')
 													 ->where('id', '!=', \Auth::user()->id)
