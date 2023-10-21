@@ -71,7 +71,7 @@
                            @can('edit project')
                                  <a class="dropdown-item active" href="#!" data-size="xl"
                                  data-url="{{ route('projects.edit', $project->id) }}"
-                                 data-ajax-popup="true" 
+                                 data-ajax-popup="true"
                                  data-bs-original-title="{{ __('Edit Project') }}">{{ __('Edit') }}
                                  </a>
                            @endcan
