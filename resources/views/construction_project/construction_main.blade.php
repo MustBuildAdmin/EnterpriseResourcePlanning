@@ -1,9 +1,4 @@
 @include('new_layouts.header')
-<style>
-    span.avatar.avatar-xl.mb-4.rounded{
-        color:#FFFFFF;
-    }
-</style>
 <div class="container-fluid ">
     <div class="card mt-5 p-4">
        <div class="card-header">
@@ -29,11 +24,13 @@
                       </div>
                    </div>
                 </div>
+                @can('create project')
                 <div class="col-4">
                    <a href="#" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#invite-Sub-Contractor">
                    Create a Project
                    </a>
                 </div>
+                @endcan
              </div>
           </div>
        </div>
@@ -58,18 +55,44 @@
                           </svg>
                        </a>
                        <div class="dropdown-menu dropdown-menu-end">
-                          @can('edit sub contractor')
-                          <a class="dropdown-item active" href="#" data-size="xl"
-                             data-url=""
-                             data-ajax-popup="true" class="dropdown-item"
-                             data-bs-original-title="{{ __('Edit Sub Contractor') }}">{{ __('Edit') }}
+                        @php
+                        $getInstance = DB::table('instance')
+                            ->where('instance',$project->instance_id)
+                            ->where('project_id',$project->id)
+                            ->where('freeze_status',0)->first();
+                        @endphp
+                       
+                     @if($getInstance != null)
+                     @can('edit project')
+                          <a class="dropdown-item active" href="#!" data-size="xl"
+                          data-url="{{ route('projects.edit', $project->id) }}"
+                          data-ajax-popup="true" 
+                          data-bs-original-title="{{ __('Edit Project') }}">{{ __('Edit') }}
                           </a>
                           @endcan
-                          <a data-url=""
-                             data-ajax-popup="true" data-size="md" class="dropdown-item"
-                             data-bs-original-title="{{ __('Reset Password') }}">
-                          {{ __('Reset Password') }}
-                          </a>
+                  
+                        
+                          @endif
+                          @can('delete project')
+                                                    {!! Form::open(['method' => 'DELETE',
+                                                        'route' => ['projects.destroy', $project->id]]) !!}
+                                                    <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
+                                                       
+                                                        <span> {{ __('Delete') }}</span>
+                                                    </a>
+
+                                                    {!! Form::close() !!}
+                                                @endcan
+                                                @can('edit project')
+                                                    <a href="#!" data-size="xl"
+                                                    data-url="{{ route('invite.project.member.view',
+                                                         $project->id) }}"
+                                                        data-ajax-popup="true" class="dropdown-item"
+                                                        data-bs-original-title="{{ __('Invite User') }}">
+                                                       
+                                                        <span>{{ __('Invite User') }}</span>
+                                                    </a>
+                                                @endcan
                        </div>
                     </div>
                  </div>
@@ -81,7 +104,7 @@
                         <img id="image"  src="{{asset(Storage::url($project->project_image))}}"
                          class="avatar avatar-xl mb-4 rounded" alt="">
                     @else
-                        <span class="avatar avatar-xl mb-4 rounded" style="background:<?php echo $color; ?>">
+                        <span class="avatar avatar-xl mb-4 rounded">
                             <?= substr($project->project_name,0,2) ?>
                         </span>
                     @endif
@@ -90,6 +113,9 @@
                     @php
                     $project_instances=\App\Models\Instance::where('project_id',$project->id)
                     ->get();
+                 
+                    
+
                 @endphp
                 @if(count($project_instances)>1)
                     <a class="text-dark"  data-size="lg"
@@ -142,9 +168,15 @@
                       </div>
                    </div>
                 </div>
+                @php
+                $progress=\App\Models\Con_Task::where('project_id',$project->id)
+                ->orderBy('main_id', 'asc')
+                ->pluck ('progress')
+                ->first();
+                @endphp
                 <div class="progress card-progress">
-                   <div class="progress-bar" style="width: 38%" role="progressbar" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100" aria-label="38% Complete">
-                      <span class="visually-hidden">38% Complete</span>
+                   <div class="progress-bar" style="width: <?php echo $progress; ?>%" role="progressbar" aria-valuenow="<?php echo $progress; ?>" aria-valuemin="0" aria-valuemax="100" aria-label="<?php echo $progress; ?>% Complete">
+                      <span class="visually-hidden"><?php echo $progress; ?>% Complete</span>
                    </div>
                 </div>
              </div>
@@ -159,11 +191,13 @@
         <p class="empty-subtitle text-secondary">
            Must BuildApp comes with feature to Enchance your construction project time and cost management
         </p>
+        @can('create project')
         <div class="empty-action">
            <a href="#" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#create-Sub-Contractor">
            Create a Project
            </a>
         </div>
+        @endcan
      </div>
        @endif
     </div>
