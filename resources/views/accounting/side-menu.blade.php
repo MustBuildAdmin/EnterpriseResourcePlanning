@@ -13,7 +13,7 @@
    }
 </style>
 <div class="page">
-<aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+<header class="navbar navbar-expand-md  d-print-none border-bottom" data-bs-theme="light">
    <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
          aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -386,7 +386,7 @@
          </ul>
       </div>
    </div>
-</aside>
+</header>
 <!-- Page Content  -->
 <div class="page-wrapper">
 <div class="container-fluild p-5">
