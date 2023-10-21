@@ -178,15 +178,17 @@
                             <div class="dropdown-menu">
                                 <div class="dropdown-menu-columns">
                                     <div class="dropdown-menu-column">
-                                        <a class="dropdown-item">
-                                            {{ __('Lookahead Gantt') }}
-                                        </a>
-                                        <a class="dropdown-item">
-                                            {{ __('Lookahead Schedule') }}
-                                        </a>
-                                        <a class="dropdown-item">
-                                            {{ __('Active Lookahead') }}
-                                        </a>
+                                        <a href="{{ route('microprogram.gantt', $project_id) }}"
+                                            class="{{ (Request::route()->getName() == 'microprogram.gantt')
+                                            ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Gantt') }}</a>
+                                        
+                                        <a href="{{ route('microprogram') }}"
+                                            class="{{ (Request::route()->getName() == 'microprogram')
+                                            ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Schedule') }}</a>
+                                    
+                                        <a href="{{ route('micro_taskboard') }}"
+                                            class="{{ (Request::route()->getName() == 'micro_taskboard.view')
+                                            ?'dropdown-item active' :'dropdown-item'}}">{{ __('Active Lookahead') }}</a>
                                     </div>
                                 </div>
                         </li>

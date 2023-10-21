@@ -3542,6 +3542,15 @@ Route::resource('task', 'TaskController')->middleware(
     ]
 );
 
+//microprogram gantt
+Route::resource('microtask', 'TaskMicroController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
 Route::resource('link', 'LinkController')->middleware(
     [
         'auth',
@@ -3549,10 +3558,32 @@ Route::resource('link', 'LinkController')->middleware(
     ]
 );
 
+Route::resource('microlink', 'MicroLinkController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+
 Route::get(
     'projects/{id}/gantt_data', [
         'as' => 'projects.gantt_data',
         'uses' => 'ProjectController@gantt_data',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
+Route::get(
+    'projects/{id}/micro_gantt_data', [
+        'as' => 'projects.micro_gantt_data',
+        'uses' => 'MicroPorgramController@micro_gantt_data',
     ]
 )->middleware(
     [
@@ -3568,13 +3599,36 @@ Route::post('freeze_status', 'ProjectController@freeze_status_change')->name('pr
     ]
 );
 
+
+Route::post('micro_freeze_status', 'MicroPorgramController@micro_freeze_status')->name('projects.micro_freeze_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('get_gantt_task_count', 'ProjectController@get_gantt_task_count')->name('projects.get_gantt_task_count')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
+
+Route::any('get_micro_gantt_task_count', 'MicroPorgramController@get_micro_gantt_task_count')->name('projects.get_micro_gantt_task_count')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('get_freeze_status', 'ProjectController@get_freeze_status')->name('projects.get_freeze_status')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('get_micro_freeze_status', 'MicroPorgramController@get_micro_freeze_status')->name('projects.get_micro_freeze_status')->middleware(
     [
         'auth',
         'XSS',
@@ -5041,7 +5095,50 @@ Route::any('microprogram', 'MicroPorgramController@microprogram')->name('micropr
     ]
 );
 
+Route::any('micro_taskboard', 'MicroPorgramController@micro_taskboard')->name('micro_taskboard')
+->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::get('micro_get_all_task', 'MicroPorgramController@micro_get_all_task')->name('micro_get_all_task')->middleware(['auth','XSS',]);
+Route::get('micro_main_task_list', 'MicroPorgramController@micro_main_task_list')->name('micro_main_task_list')
+->middleware(['auth','XSS',]);
+
+Route::get('micro_task_autocomplete', 'MicroPorgramController@micro_task_autocomplete')->name('micro_task_autocomplete')
+->middleware(['auth','XSS',]);
+
+Route::get('micro_task_autocomplete_main', 'MicroPorgramController@micro_task_autocomplete_main')->name('micro_task_autocomplete_main')
+->middleware(['auth','XSS',]);
+
+Route::any('micro_task_particular', 'MicroPorgramController@micro_task_particular')->name('micro_task_particular')
+->middleware(['auth', 'XSS']);
+
+Route::any('micro_add_particular_task/{task_id}/{get_date}', 'MicroPorgramController@micro_add_particular_task')
+->name('micro_add_particular_task')->middleware(['auth', 'XSS']);
+
+Route::any('micro_edit_particular_task/{task_progress_id}/{task_id}','MicroPorgramController@micro_edit_particular_task')
+->name('micro_edit_particular_task')->middleware(['auth', 'XSS']);
+
+Route::any('micro_con_taskupdate', 'MicroPorgramController@micro_con_taskupdate')->name('micro_con_taskupdate')
+->middleware(['auth', 'XSS']);
+
+Route::any('schedule_complete', 'MicroPorgramController@schedule_complete')->name('schedule_complete')
+->middleware(['auth', 'XSS']);
+
+Route::get('micro_task_file_download/{task_id}/{filename}', 'MicroPorgramController@micro_task_file_download')
+    ->name('micro_task_file_download')->middleware(['auth', 'XSS']);
+
 Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')->name('microprogram_create')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('change_schedule_status', 'MicroPorgramController@change_schedule_status')->name('change_schedule_status')->middleware(
     [
         'auth',
         'XSS',
@@ -5063,6 +5160,18 @@ Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show
 );
 
 Route::any('mainschedule_store', 'MicroPorgramController@mainschedule_store')->name('mainschedule_store')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::get(
+    'microprogram/{id}/gantt/{duration?}', [
+        'as' => 'microprogram.gantt',
+        'uses' => 'MicroPorgramController@gantt',
+    ]
+)->middleware(
     [
         'auth',
         'XSS',

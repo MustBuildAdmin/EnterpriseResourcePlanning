@@ -24,17 +24,26 @@
                             <table class="table table-vcenter card-table" id="schedule_table" aria-describedby="Sub Task">
                                 <thead>
                                     <tr>
+                                        <th scope="col">{{ __('Schedule ID') }}</th>
                                         <th scope="col">{{ __('Schedule Name') }}</th>
                                         <th scope="col">{{ __('Schedule Duration') }}</th>
                                         <th scope="col">{{ __('Schedule Start Date') }}</th>
                                         <th scope="col">{{ __('Schedule End Date') }}</th>
+                                        <th scope="col">{{ __('Schedule Status') }}</th>
                                         <th scope="col">{{ __('Schedule Goals') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list">
-                                    @foreach ($MicroProgramScheduleModal as $microSchedule)
+                                    @forelse ($MicroProgramScheduleModal as $microSchedule)
                                         <tr>
-                                            <td> <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">{{$microSchedule->schedule_name}}</a></td>
+                                            <td>
+                                                <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">
+                                                    {{$microSchedule->uid}}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {{$microSchedule->schedule_name}}</a>
+                                            </td>
                                             <td>{{$microSchedule->schedule_duration}}</td>
                                             <td>
                                                 {{ Utility::site_date_format($microSchedule->schedule_start_date,
@@ -44,16 +53,25 @@
                                                 {{ Utility::site_date_format($microSchedule->schedule_end_date,
                                                 \Auth::user()->id) }}
                                             </td>
+                                            <td>
+                                                @if($microSchedule->active_status == 1)
+                                                    <span class="badge bg-success me-1"></span> Active
+                                                @elseif($microSchedule->active_status == 1)
+                                                    <span class="badge bg-success me-1"></span> Completed
+                                                @else
+                                                    <span class="badge bg-warning me-1"></span> In-schedule
+                                                @endif
+                                            </td>
                                             <td>{{$microSchedule->schedule_goals}}</td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                    
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -65,5 +83,33 @@
     new DataTable('#schedule_table', {
         pagingType: 'full_numbers',
         aaSorting: []
+    });
+
+    $('.schedule_change').change(function() {
+        schedule_data = this.value;
+
+        $.ajax({
+            url : '{{route("change_schedule_status")}}',
+            type : 'POST',
+            data : {
+                'schedule_data' : schedule_data,
+                '_token' : '{{ csrf_token() }}',
+            },
+            success : function(data_check) {
+                if(data_check == 1){
+                    toastr.success("Schedule Status Changed");
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }
+                else{
+                    toastr.error("Somenthing went wrong!");
+                }
+            },
+            error : function(request,error)
+            {
+                alert("Request: "+JSON.stringify(request));
+            }
+        });
     });
 </script>
