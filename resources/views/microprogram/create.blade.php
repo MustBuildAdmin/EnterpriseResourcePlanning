@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"/>
 {{ Form::open([
     'url' => "schedule_store",
     'method' => 'post',
@@ -8,14 +9,16 @@
     <div class="text-secondary mb-3">Required fields are marked with an asterisk *</div>
     <div class="mb-3">
         <label class="form-label required">Schedule Name</label>
+        <input type="hidden" id="setScheduleDate" class="setScheduleDate" value="{{$all_dates}}">
         <input type="text" class="form-control" name="schedule_name" required
             placeholder="Enter your Schedule Name">
     </div>
-    <div class="mb-3">
+    {{-- <div class="mb-3">
         <label class="form-label required">Schedule Duration</label>
         <input type="text" class="form-control" name="schedule_duration" required
+            id="schedule_duration"
             placeholder="Enter your Schedule Duration">
-    </div>
+    </div> --}}
     <div class="mb-3">
         <label class="form-label required"> Schedule Start Date</label>
         <div class="input-icon">
@@ -68,11 +71,14 @@
 <script src="{{ asset('litepicker/litepicker.js') }}"></script>
 <script>
     $(function () {
+        var getScheduleDate  = JSON.parse($("#setScheduleDate").val());
+       
         const picker = new Litepicker({ 
             element: document.getElementById('schedule_start_date'),
             elementEnd: document.getElementById('schedule_end_date'),
             singleMode: false,
             allowRepick: true,
+            lockDays: getScheduleDate,
             buttonText: {
                 previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -83,6 +89,12 @@
                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                 stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
                 fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+            },
+            setup: (picker) => {
+                picker.on('before:click', () => {
+                    
+                });
+
             },
         });
     });
