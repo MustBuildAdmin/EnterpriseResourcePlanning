@@ -171,7 +171,7 @@
                   </div>
                </div>
                @php
-               $progress=\App\Models\Con_Task::where('project_id',$project->id)
+               $progress=\App\Models\Con_task::where('project_id',$project->id)
                ->orderBy('main_id', 'asc')
                ->pluck ('progress')
                ->first();
