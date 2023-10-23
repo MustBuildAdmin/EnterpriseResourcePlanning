@@ -119,6 +119,8 @@ class ProjectController extends Controller
             {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
+
+            $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = new Project();
             $project->project_name = $request->project_name;
             $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
@@ -173,6 +175,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
+            $project->micro_program = $microProgram;
             $project->status = "in_progress";
             ///---------end-----------------
             $project->save();
@@ -1247,6 +1250,7 @@ class ProjectController extends Controller
                     );
             }
 
+            $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
             $project->project_name = $request->project_name;
             $project->start_date = date(
@@ -1313,6 +1317,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
+            $project->micro_program = $microProgram;
             $project->save();
             if (Session::has("project_instance")) {
                 $instanceId = Session::get("project_instance");
@@ -1509,6 +1514,25 @@ class ProjectController extends Controller
         }
     }
 
+    public function criticaltask_update(Request $request)
+    {
+        if ($request->ajax()) {
+            $project=Project::find(Session::get("project_id"));
+            
+            if($project->critical_update==0){
+                $array=[
+                    "iscritical"=>1,
+                ];
+                if(is_array($request->critical_task)){
+                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->whereIn('id',$request->critical_task)->update($array);
+                }else{
+                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('id',$request->critical_task)->update($array);
+                }
+                Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
+            }
+        }
+    }
+    
     public function get_member(Request $request)
     {
         if ($request->ajax()) {
@@ -1758,6 +1782,8 @@ class ProjectController extends Controller
                         ->where("instance_id", $instanceId)
                         ->pluck("non_working_days")
                         ->first();
+                    // critical bulk update 
+                    $critical_update=Project::where("id", Session::get("project_id"))->pluck('critical_update')->first();
 
                     return view(
                         "construction_project.gantt",
@@ -1768,7 +1794,8 @@ class ProjectController extends Controller
                             "project_holidays",
                             "freezeCheck",
                             "nonWorkingDay",
-                            "projectname"
+                            "projectname",
+                            'critical_update'
                         )
                     );
                 } else {

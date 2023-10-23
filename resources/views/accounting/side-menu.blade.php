@@ -13,7 +13,7 @@
    }
 </style>
 <div class="page">
-<aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+<header class="navbar navbar-expand-md  d-print-none border-bottom" data-bs-theme="light">
    <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
          aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,12 +22,12 @@
       <div class="collapse navbar-collapse" id="sidebar-menu">
          <ul class="navbar-nav pt-lg-3">
 
-            <li>
+            <li class="nav-item dropdown">
                <a class="{{ (Request::route()->getName() == 'productservice.index'
                   || Request::route()->getName() == 'productstock.index')
-                  ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
+                  ?'nav-link  dropdown-toggle active' :'nav-link dropdown-toggle'}}"
                   href="#planning" data-bs-toggle="dropdown"
-                  data-bs-auto-close="false" role="button" aria-expanded="false" >
+                  data-bs-auto-close="outside" role="button" aria-expanded="false" >
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -107,7 +107,7 @@
                   || Request::route()->getName() == 'bank-transfer.index')
                   ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
                   href="#planning" data-bs-toggle="dropdown"
-                  data-bs-auto-close="false" role="button" aria-expanded="false">
+                  data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-bank"
                       width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -150,7 +150,7 @@
                   || Request::route()->getName() == 'credit.note')
                   ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
                   href="#planning" data-bs-toggle="dropdown"
-                  data-bs-auto-close="false" role="button" aria-expanded="false">
+                  data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-autofit-content"
                       width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -196,7 +196,7 @@
                   || Request::route()->getName() == 'debit.note')
                   ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
                   href="#planning" data-bs-toggle="dropdown"
-                  data-bs-auto-close="false" role="button" aria-expanded="false">
+                  data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-explicit"
                       width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -245,7 +245,7 @@
                  || Request::route()->getName() == 'trial.balance')
                  ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
                  href="#planning" data-bs-toggle="dropdown"
-                  data-bs-auto-close="false" role="button" aria-expanded="false">
+                  data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-desktop-down"
                       width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -386,7 +386,7 @@
          </ul>
       </div>
    </div>
-</aside>
+</header>
 <!-- Page Content  -->
 <div class="page-wrapper">
 <div class="container-fluild p-5">

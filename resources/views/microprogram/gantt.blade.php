@@ -127,14 +127,15 @@
     </div>
 </div>
 <div id="additional_elements" class="container-fluid mt-1 d-none">
-
+    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
     <div class="navbar navbar-expand-md navbar-transparent d-print-none bg-white">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#tool-menu"
                 aria-controls="tool-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 p-3 text-capitalize text-white bg-primary text-wrap" style="width: 10rem;">
+            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal
+             pe-0 pe-md-3 p-3 text-capitalize text-white bg-primary text-wrap" style="width: 10rem;">
                 {{$projectname}}
             </h1>
             <div class="navbar-nav flex-row order-md-last">
@@ -284,19 +285,6 @@
                                 Outdent</a>
 
                         </li>
-                        {{-- <li class="nav-item dropdown">
-                    <a class="action nav-link" id="del"  type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" 
-                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 7l16 0"></path>
-                            <path d="M10 11l0 6"></path>
-                            <path d="M14 11l0 6"></path>
-                            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
-                         </svg>
-                        Delete</a>
-                </li> --}}
                         <li class="nav-item">
                             <a class="nav-link" onclick="updateCriticalPath(this)">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -318,7 +306,8 @@
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M10 10m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0"></path>
                                     <path
-                                    d="M13.5 15h.5a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-1a2 2 0 0 1 2 -2h.5">
+                                    d="M13.5 15h.5a2 2 0 0 1 2 2v1a2 2 0 0 1 -2
+                                     2h-8a2 2 0 0 1 -2 -2v-1a2 2 0 0 1 2 -2h.5">
                                     </path>
                                     <path d="M16 17a5.698 5.698 0 0 0 4.467 -7.932l-.467 -1.068"></path>
                                     <path d="M10 10v.01"></path>
@@ -342,13 +331,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
+                            {{ Form::open(['route' => ['projects.micro_freeze_status'],
+                            'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
 
                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                             <a href="#" class="nav-link freeze_button" style='width: 100%;'
                                 data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}"
                                 data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
+                                data-confirm="{{ __('Are You Sure?') . '|' .__('This action can not be undone. Do you want to continue?') }}"
                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                 {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
                                 Set Baseline
@@ -404,8 +394,8 @@
                             <div class="page-search">
                                 <p class="text-muted mt-3">
                                     {{ __("It's looking like you may have taken a wrong turn.
-                                                                                                                                     Don't worry... it happens to the best of us.
-                                                                                                                                Here's a little tip that might help you get back on track.") }}
+                                          Don't worry... it happens to the best of us.
+                                    Here's a little tip that might help you get back on track.") }}
                                 </p>
                                 <div class="mt-3">
                                     <a class="btn-return-home badge-blue" href="{{ route('home') }}">
@@ -419,8 +409,8 @@
             <div class="page-search">
                 <p class="text-muted mt-3">
                     {{ __("It's looking like you may have taken a wrong turn.
-                                                                                 Don't worry... it happens to the best of us.
-                                                                                  Here's a little tip that might help you get back on track.") }}
+                        Don't worry... it happens to the best of us.
+                      Here's a little tip that might help you get back on track.") }}
                 </p>
                 <div class="mt-3">
                     <a class="btn-return-home badge-blue" href="{{ route('home') }}">
@@ -448,10 +438,10 @@
 
                 // check freeze status
 
-                var tempcsrf = '{!! csrf_token() !!}';
-                $.post("{{ route('projects.get_freeze_status') }}", {
-                        _token: tempcsrf,
-                        project_id: {{ $project->id }}
+                // var tempcsrf = '{!! csrf_token() !!}';
+                $.post("{{ route('projects.get_micro_freeze_status') }}", {
+                    "_token": $('#token').val(),
+                        "project_id": {{ $project->id }}
                     },
                     function(resp, textStatus, jqXHR) {
 
@@ -475,9 +465,9 @@
                 // check freeze status
 
                 // check gantt task count
-                var tempcsrf1 = '{!! csrf_token() !!}';
-                $.post("{{ route('projects.get_gantt_task_count') }}", {
-                        _token: tempcsrf1,
+             
+                $.post("{{ route('projects.get_micro_gantt_task_count') }}", {
+                    "_token": $('#token').val(),
                         project_id: {{ $project->id }}
                     },
                     function(resp, textStatus, jqXHR) {
@@ -665,7 +655,7 @@
                         },
                         {
                             name: "text",
-                            label: "Task Name",
+                            label: "Schedule Name",
                             width: 150,
                             resize: true
                         },
@@ -922,39 +912,12 @@
                 };
 
                 // progress end
-                var workflag=0;
                 gantt.attachEvent("onBeforeAutoSchedule", function() {
-                    var check_cri=<?php  echo  $critical_update ?>;
-                    if(check_cri==0){
-                        var tasks = gantt.getTaskByTime();
-                        const  critical_task=new Array();
-                        if(workflag==0){
-                            for(var i=0;i < tasks.length; i++){ 
-                                let tt=gantt.isCriticalTask(gantt.getTask(tasks[i].id));
-                                if(tt){
-                                    critical_task.push(tasks[i].id);
-                                }
-                            };
-                            workflag=1;
-                            $.ajax({
-                                url: '{{ route('projects.criticaltask_update') }}',
-                                type: 'get',
-                                data: {
-                                    'critical_task': critical_task
-                                },
-                                success: function(data) {
-            
-                                }
-                            });
-
-                        }
-                    }
-                    
-                   
+                    // gantt.message("Recalculating project schedule...");
                     return true;
                 });
                 gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
-                   
+
                 });
 
 
@@ -1046,7 +1009,7 @@
 
                 setTimeout(
                     function() {
-                        gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+                        gantt.load("{{ route('projects.micro_gantt_data', [$project->id]) }}");
                         $('.loader_show').hide();
                         $('#additional_elements').addClass("gantt-show");
                     }, 3000);
@@ -1123,32 +1086,74 @@
                         // }
                     })
                     if (frezee_status_actual != 1) {
-                       // var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
-                        var dp = new gantt.dataProcessor("/erp/public/");
-                        var critical=0;
-                        dp.init(gantt);
-                        
+                        var dp = new gantt.dataProcessor();
+                       
                       
-                        dp.attachEvent("onBeforeUpdate", function(id, state, data) {
-                            gantt.config.readonly = true;
-                            let tt=gantt.isCriticalTask(gantt.getTask(id));
-                            
-                            if(tt){
-                                critical=1;
-                            }else{
-                                critical=0;
-                            }
-                            data.iscritical=critical;
-                            return true;
-                        });
+                        dp.dataProcessor = gantt.createDataProcessor(function(entity, action, data, id) {
+                          console.log("entity",entity);
 
+                          if(entity=='link'){
+                            switch(action) {
+                            
+                            case "create":
+                            return gantt.ajax.post(
+                                "http://localhost/tracer/public/microlink" + "?_token={{ csrf_token() }}",
+                                data
+                            );
+                            break;
+                            case "update":
+                            return gantt.ajax.put(
+                                "http://localhost/tracer/public/microlink/"+id+"?_token={{ csrf_token() }}",
+                                data
+                                
+                                );
+                            break;
+                            case "delete":
+                            return gantt.ajax.del(
+                                "http://localhost/tracer/public/microlink/"+id+"?_token={{ csrf_token() }}",
+                                data
+                            );
+                            break;
+                            }
+
+                          }else{
+                            switch(action) {
+                            
+                            case "create":
+                            return gantt.ajax.post(
+                                "http://localhost/tracer/public/microtask" + "?_token={{ csrf_token() }}",
+                                data
+                            );
+                            break;
+                            case "update":
+                            return gantt.ajax.put(
+                                "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
+                                data
+                                
+                                );
+                            break;
+                            case "delete":
+                            return gantt.ajax.del(
+                                "http://localhost/tracer/public/microtask/"+id+"?_token={{ csrf_token() }}",
+                                data
+                            );
+                            break;
+                    }
+
+                          }
+                          
                         dp.setTransactionMode({
+                            
                             mode: "REST",
                             payload: {
-                                "_token": tempcsrf,
+                                "_token": $('#csrf-token')[0].content,
                             }
                         });
-
+                        dp.init(gantt);
+                        dp.attachEvent("onBeforeUpdate", function(id, state, data) {
+                            gantt.config.readonly = true;
+                            return true;
+                        });
                         dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
                             gantt.config.readonly = false;
                             if (action == "inserted") {
@@ -1156,6 +1161,33 @@
                                 //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
                             }
                         });
+                        
+                        });
+                     
+                        // dp.setTransactionMode({
+                            
+                        //     mode: "REST",
+                        //     payload: {
+                        //         "_token": $('#csrf-token')[0].content,
+                        //     }
+                        // });
+                        // dp.init(gantt);
+                        // dp.attachEvent("onBeforeUpdate", function(id, state, data) {
+                        //     gantt.config.readonly = true;
+                        //     return true;
+                        // });
+                        // dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
+                        //     gantt.config.readonly = false;
+                        //     if (action == "inserted") {
+                        //         gantt.showLightbox(tid);
+                        //         //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+                        //     }
+                        // });
+                      
+                      
+                        //var dp = new gantt.dataProcessor("/erp/public/");
+                        
+                        
                     }
 
 

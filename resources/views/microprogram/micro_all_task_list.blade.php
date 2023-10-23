@@ -24,7 +24,6 @@ aria-describedby="Sub Task">
         <th scope="col">{{__('TaskId')}}</th>
         <th scope="col">{{__('Tasks')}}</th>
         <th scope="col">{{__('Status')}}</th>
-        <th scope="col">{{__('Is critical Task')}}</th>
         <th scope="col">{{__('Actual Progress')}}</th>
         <th scope="col">{{__('Planned Progress')}}</th>
         <th scope="col">{{__('Planned Start Date')}}</th>
@@ -33,9 +32,7 @@ aria-describedby="Sub Task">
     </tr>
     </thead>
     <tbody class="list">
-        
         @forelse ($tasks as $task)
-
             @php
 
                 if(Session::has('project_instance')){
@@ -93,26 +90,11 @@ aria-describedby="Sub Task">
                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
                         </a>
                     @else
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
+                        <a href="{{route('micro_task_particular',['task_id' => $task->main_id,'get_date' => $get_end_date])}}" style="text-decoration: none;">
                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
                         </a>
                 @endif
-{{--                 
-                    @if(Session::get('current_revision_freeze') == 1 &&
-                        Session::get('project_instance') != Session::get('latest_project_instance') &&
-                        $   == 1)
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,
-                            'get_date' => $get_end_date])}}" style="text-decoration: none;">
-                            {{ $task->id }}
-                        </a>
-                    @elseif($checkLatestFreezeStatus >= 1 &&
-                        Session::get('project_instance') == Session::get('latest_project_instance'))
-                        <a href="{{route('task_particular',['task_id' => $task->main_id,
-                            'get_date' => $get_end_date])}}" style="text-decoration: none;">
-                            {{ $task->id }}
-                        </a> --}}
-                        {{-- <a style="text-decoration: none;">{{ $task->id }}</a>
-                    @endif --}}
+
                 </td>
 
                 <td style="width:30%; font-size: 15px;">
@@ -126,15 +108,6 @@ aria-describedby="Sub Task">
                         <span class="badge bg-success me-1"></span> Completed
                     @else
                         <span class="badge bg-info me-1"></span> In-Progress
-                    @endif
-                </td>
-
-                
-                <td style="width:20%;">
-                    @if ($task->iscritical==1)
-                        <span class="badge bg-warning me-1"></span> Critical
-                    @else
-                        <span class="badge bg-info me-1"></span> Non Critical
                     @endif
                 </td>
 

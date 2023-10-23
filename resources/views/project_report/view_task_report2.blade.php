@@ -14,7 +14,7 @@
 <div class="page-wrapper">
     @include('construction_project.side-menu')
     <div class="container-fluid" id="taskboard_view">
-        <div class="p-4">
+        <div class="p-2">
             <div class="card">
                 <div class="col-12">
                     <div class="card">
