@@ -485,6 +485,7 @@ gantt.config.auto_scheduling = true;
 gantt.config.auto_scheduling_strict = true;
 gantt.config.auto_scheduling_compatibility = true;
 var workflag = 0;
+var autoload = 0;
 gantt.attachEvent("onBeforeAutoSchedule", function() {
     var check_cri = $('#critical_update').val();
     if (check_cri == 0) {
@@ -526,7 +527,6 @@ gantt.attachEvent("onBeforeAutoSchedule", function() {
 
         }
     }
-
 
     return true;
 });
@@ -1051,14 +1051,12 @@ if (frezee_status_actual != 1) {
 
    	dp.attachEvent("onBeforeUpdate", function(id, state, data) {
    		gantt.config.readonly = true;
-   		let tt = gantt.isCriticalTask(gantt.getTask(id));
-
-   		if (tt) {
-   			critical = 1;
-   		} else {
-   			critical = 0;
-   		}
-   		data.iscritical = critical;
+   		//let tt = gantt.isCriticalTask(gantt.getTask(id));
+        let  totalStack = gantt.getTotalSlack(gantt.getTask(id));
+        let freeSlack = gantt.getFreeSlack(gantt.getTask(id));
+   		
+   		data.totalStack = totalStack;
+        data.freeSlack = freeSlack;
    		return true;
    	});
 
