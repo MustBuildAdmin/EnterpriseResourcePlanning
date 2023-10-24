@@ -25,6 +25,7 @@ aria-describedby="Sub Task">
         <th scope="col">{{__('Tasks')}}</th>
         <th scope="col">{{__('Status')}}</th>
         <th scope="col">{{__('Is critical Task')}}</th>
+        <th scope="col">{{__('Float')}}</th>
         <th scope="col">{{__('Actual Progress')}}</th>
         <th scope="col">{{__('Planned Progress')}}</th>
         <th scope="col">{{__('Planned Start Date')}}</th>
@@ -132,16 +133,31 @@ aria-describedby="Sub Task">
                 @php
                     $end_da=$task->dependency_critical;
                     $today_date=date('Y-m-d');
-                //   dd($end_da,$today_date);
+                
                 @endphp
                 <td style="width:20%;">
                     @if ($task->iscritical==1)
                         <span class="badge bg-warning me-1"></span> Critical
+                    @elseif($task->dependency_critical > date('Y-m-d') &&
+                            $task->progress < 100 && $task->entire_critical > date('Y-m-d') && 
+                            $task->progress < 100)
+                        <span class="badge bg-warning me-1"></span> Entire Critical
                     @elseif($task->dependency_critical > date('Y-m-d') && $task->progress < 100)
-                    <span class="badge bg-warning me-1"></span> Dependancy Critical
+                        <span class="badge bg-warning me-1"></span> Dependency Critical{{$task->entire_critical}}
+                    @elseif($task->entire_critical > date('Y-m-d') && $task->progress < 100)
+                        <span class="badge bg-warning me-1"></span> Entire Critical
                     @else
                         <span class="badge bg-info me-1"></span>Non Critical
                     @endif
+                </td>
+
+                <td style="width:30%; font-size: 15px;">
+                    @if ($task->float_val==null)
+                        @php $float_val=0; @endphp
+                    @else
+                        @php $float_val=$task->float_val; @endphp
+                    @endif
+                    {{$float_val}}
                 </td>
 
                 <td style="width:15%;" class="sort-progress"
