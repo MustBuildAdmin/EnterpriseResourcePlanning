@@ -15,13 +15,13 @@
 <script src="{{ asset('assets/nouislider/dist/nouislider.js') }}" ></script>
 <script src="{{ asset('assets/litepicker/dist/litepicker.js') }}" ></script>
 <script src="{{ asset('assets/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
-<script src="https://export.dhtmlx.com/gantt/api.js"></script>
+{{-- <script src="https://export.dhtmlx.com/gantt/api.js"></script> --}}
 
+   
 
-<script src="https://export.dhtmlx.com/gantt/api.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
-<script src="https://export.dhtmlx.com/gantt/api.js"></script>
+
 
 
 
@@ -85,7 +85,7 @@
     background: #ffd180;
     border: 1px solid rgb(255, 153, 0);
     }
-    /*
+    /* 
     .gantt_task_line, .gantt_line_wrapper {
     margin-top: -9px;
     } */
@@ -121,8 +121,7 @@ $holidays = implode(':', $holidays);
         <div class="progress-bar progress-bar-indeterminate"></div>
     </div>
 </div>
-<div class="page">
-
+<div id="additional_elements" class="page d-none">
 
     <div class="gantt-container" id="gantt-block">
     <header class="navbar navbar-expand-md  d-print-none" data-bs-theme="light">
@@ -190,7 +189,7 @@ $holidays = implode(':', $holidays);
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                          </svg>
-                         Indent
+                         Indent  
                       </a>
                       <a href="#" class="dropdown-item action outdent_action"  id="outdent"  onclick="expandAll();">
                          <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
@@ -210,7 +209,7 @@ $holidays = implode(':', $holidays);
           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
           </span>
           <span class="nav-link-title">
-          View
+          View  
           </span>
           </a>
           <div class="dropdown-menu">
@@ -226,7 +225,7 @@ $holidays = implode(':', $holidays);
           <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">Critical Path</label>
           <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
           <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox"> Checkbox input</label>
-          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox"> Checkbox input</label>
+          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox"> Checkbox input</label>	  
           </div>
           </div>
           </li>
@@ -236,7 +235,7 @@ $holidays = implode(':', $holidays);
           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
           </span>
           <span class="nav-link-title">
-          Hide and Show Grid Columns
+          Hide and Show Grid Columns  
           </span>
           </a>
           <div class="dropdown-menu">
@@ -309,9 +308,9 @@ $holidays = implode(':', $holidays);
     <input type='hidden' id='holidays' value='{{ $holidays }}'>
     <input type='hidden' id='frezee_status' value='{{ $freezeCheck->freeze_status }}'>
     <input type='hidden' id='critical_update' value='{{ $critical_update }}'>
+    
 
-
-
+    
 <script type="text/javascript">
 
 var tempcsrf = '{!! csrf_token() !!}';
@@ -351,64 +350,6 @@ function(resp, textStatus, jqXHR) {
 });
 // end ###############################################
 
-
-// auto schedule before
-// progress end
-var workflag = 0;
-gantt.attachEvent("onBeforeAutoSchedule", function() {
-    var check_cri = $('#critical_update').val();
-	if (check_cri == 0) {
-		var tasks = gantt.getTaskByTime();
-		const critical_task = new Array();
-		const updatedTask = new Array();
-		if (workflag == 0) {
-			for (var i = 0; i < tasks.length; i++) {
-
-				const task = gantt.getTask(tasks[i].id);
-				const tt = gantt.isCriticalTask(task);
-				// const totalStack = gantt.getTotalSlack(task);
-				// const freeSlack = gantt.getFreeSlack(task)// const constraintType = gantt.getConstraintType(task);
-				const taskdetails = {
-					...task,
-					isCriticalTask: gantt.isCriticalTask(task),
-					totalStack: gantt.getTotalSlack(task),
-					freeSlack: gantt.getFreeSlack(task),
-					constraintType: gantt.getConstraintType(task),
-				}
-
-
-				updatedTask.push(taskdetails);
-
-				if (tt) {
-					critical_task.push(tasks[i].id);
-				}
-			};
-			console.log(updatedTask);
-
-			workflag = 1;
-			$.ajax({
-				url: '{{ route('projects.criticaltask_update') }}',
-				type: 'get',
-				data: {
-					'updatedTask': updatedTask,
-					'critical_task': critical_task
-				},
-				success: function(data) {
-
-				}
-			});
-
-		}
-	}
-
-
-	return true;
-});
-gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
-
-});
-
-// end autoschedule before ##########################################################################
 
 
 
@@ -502,69 +443,129 @@ for (var i = 0; i < els.length; i++) {
 };
 </script>
      <script>
-                gantt.plugins({
-                    click_drag: true,
-                    auto_scheduling: true,
-                    critical_path: true,
-                    drag_timeline: true,
-                    overlay: true,
-                    export_api: true,
-                    fullscreen: true,
-                    grouping: true,
-                    keyboard_navigation: true,
-                    multiselect: true,
-                    quick_info: true,
-                    tooltip: true,
-                    undo: true,
-                    marker: true
-                });
-            gantt.config.branch_loading = true;
-            gantt.config.show_empty_state = true;
-            gantt.config.work_time = true;
-            gantt.config.details_on_create = false;
-            gantt.config.keep_grid_width = false;
-            gantt.config.grid_resize = true;
-            gantt.config.duration_unit = "day";
-            gantt.config.row_height = 30;
-            gantt.config.min_column_width = 40;
-            gantt.config.order_branch = true;
-            gantt.config.order_branch_free = true;
-            gantt.config.sort = true;
-            gantt.locale.labels.baseline_enable_button = 'Set';
-            gantt.locale.labels.baseline_disable_button = 'Remove';
-            gantt.templates.timeline_cell_class = function (task, date) {
-                if (!gantt.isWorkTime(date))
-                    return "week_end";
-                return "";
-            };
+ gantt.plugins({
+    click_drag: true,
+    auto_scheduling: true,
+    critical_path: true,
+    drag_timeline: true,
+    overlay: true,
+    export_api: true,
+    fullscreen: true,
+    grouping: true,
+    keyboard_navigation: true,
+    multiselect: true,
+    quick_info: true,
+    tooltip: true,
+    undo: true,
+    marker: true
+});
+gantt.config.branch_loading = true;
+gantt.config.show_empty_state = true;
+gantt.config.work_time = true;
+gantt.config.details_on_create = false;
+gantt.config.keep_grid_width = false;
+gantt.config.grid_resize = true;
+gantt.config.duration_unit = "day";
+gantt.config.row_height = 30;
+gantt.config.min_column_width = 40;
+gantt.config.order_branch = true;
+gantt.config.order_branch_free = true;
+gantt.config.sort = true;
+gantt.locale.labels.baseline_enable_button = 'Set';
+gantt.locale.labels.baseline_disable_button = 'Remove';
+gantt.templates.timeline_cell_class = function(task, date) {
+    if (!gantt.isWorkTime(date))
+        return "week_end";
+    return "";
+};
 
+// auto schedule before
+// progress end
+gantt.config.auto_scheduling = true;
+gantt.config.auto_scheduling_strict = true;
+gantt.config.auto_scheduling_compatibility = true;
+var workflag = 0;
+gantt.attachEvent("onBeforeAutoSchedule", function() {
+    var check_cri = $('#critical_update').val();
+    if (check_cri == 0) {
+        var tasks = gantt.getTaskByTime();
+        const critical_task = new Array();
+        const updatedTask = new Array();
+        if (workflag == 0) {
+            for (var i = 0; i < tasks.length; i++) {
 
-
-            gantt.ext.fullscreen.getFullscreenElement = function() {
-                    return document.getElementById("gantt-block");
+                const task = gantt.getTask(tasks[i].id);
+                const tt = gantt.isCriticalTask(task);
+                // const totalStack = gantt.getTotalSlack(task);
+                // const freeSlack = gantt.getFreeSlack(task)// const constraintType = gantt.getConstraintType(task);
+                const taskdetails = {
+                    ...task,
+                    isCriticalTask: gantt.isCriticalTask(task),
+                    totalStack: gantt.getTotalSlack(task),
+                    freeSlack: gantt.getFreeSlack(task),
+                    constraintType: gantt.getConstraintType(task),
                 }
-                gantt.init("gantt_here");
 
-                setTimeout(
-                    function() {
-                        gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-                        $('.loader_show').hide();
-                        $('#additional_elements').addClass("gantt-show");
-                    }, 3000);
-                // gantt.parse(demo_tasks);
-     </script>
-     <script>
+
+                updatedTask.push(taskdetails);
+
+            };
+            console.log(updatedTask);
+
+            workflag = 1;
+            $.ajax({
+                url: '{{ route('projects.criticaltask_update') }}',
+                type: 'get',
+                data: {
+                    'updatedTask': updatedTask,
+                },
+                success: function(data) {
+
+                }
+            });
+
+        }
+    }
+
+
+    return true;
+});
+gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
+
+});
+
+// end autoschedule before ##########################################################################
+
+
+
+
+gantt.ext.fullscreen.getFullscreenElement = function() {
+    return document.getElementById("gantt-block");
+}
+gantt.init("gantt_here");
+
+setTimeout(
+    function() {
+        gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+        $('.loader_show').hide();
+        $('#additional_elements').removeClass("d-none");
+    }, 3000);
+
+</script>
+
+
+<script>        
         (function () {
-
+        
         function shiftTask(task_id, direction) {
             var task = gantt.getTask(task_id);
             task.start_date = gantt.date.add(task.start_date, direction, "day");
             task.end_date = gantt.calculateEndDate(task.start_date, task.duration);
             gantt.updateTask(task.id);
         }
-
+        
         var actions = {
-
+            
             indent: function indent(task_id) {
                 var prev_id = gantt.getPrevSibling(task_id);
                 while (gantt.isSelectedTask(prev_id)) {
@@ -589,7 +590,7 @@ for (var i = 0; i < els.length; i++) {
                 if (gantt.isTaskExists(old_parent) && old_parent != gantt.config.root_id) {
                     var index = gantt.getTaskIndex(old_parent) + 1;
                     var prevSibling = initialSiblings[task_id].first;
-
+        
                     if(gantt.isSelectedTask(prevSibling)){
                         index += (initialIndexes[task_id] - initialIndexes[prevSibling]);
                     }
@@ -614,24 +615,24 @@ for (var i = 0; i < els.length; i++) {
             outdent: true,
             del: true
         };
-
+        
         var singularAction = {
             undo: true,
             redo: true
         };
-
+        
         gantt.performAction = function (actionName) {
             var action = actions[actionName];
             if (!action)
                 return;
-
+        
             if(singularAction[actionName]){
                 action();
                 return;
             }
-
+        
             gantt.batchUpdate(function () {
-
+        
                 // need to preserve order of items on indent/outdent,
                 // remember order before changing anything:
                 var indexes = {};
@@ -642,21 +643,21 @@ for (var i = 0; i < els.length; i++) {
                     siblings[task_id] = {
                         first: null
                     };
-
+        
                     var currentId = task_id;
                     while(gantt.isTaskExists(gantt.getPrevSibling(currentId)) && gantt.isSelectedTask(gantt.getPrevSibling(currentId))){
                         currentId = gantt.getPrevSibling(currentId);
                     }
                     siblings[task_id].first = currentId;
                 });
-
+        
                 var updated = {};
                 gantt.eachSelectedTask(function (task_id) {
-
+        
                     if (cascadeAction[actionName]) {
                         if (!updated[gantt.getParent(task_id)]) {
                             var updated_id = action(task_id, indexes, siblings);
-
+        
                             updated[updated_id] = true;
                         } else {
                             updated[task_id] = true;
@@ -667,25 +668,25 @@ for (var i = 0; i < els.length; i++) {
                 });
             });
         };
-
-
+        
+        
         })();
-
-
-
-
-
+        
+        
+        
+        
+        
         function today_scroll(){
             var today = new Date();
           var additional_width = (gantt.$container.offsetWidth - gantt.config.grid_width) / 2
-          var position = gantt.posFromDate(today) - additional_width;
+          var position = gantt.posFromDate(today) - additional_width; 
         console.log(gantt.posFromDate(today))
           console.log(position)
           gantt.scrollTo(position)
         }
-
-
-
+        
+        
+        
         function zoomIn(){
                 gantt.ext.zoom.zoomIn();
             }
@@ -706,7 +707,7 @@ for (var i = 0; i < els.length; i++) {
             // function columnHideandShow() {
             //    console.log("bhi")
             // }
-
+        
            /* show slack */
             (function () {
                 var totalSlackColumn = {
@@ -720,7 +721,7 @@ for (var i = 0; i < els.length; i++) {
                         return gantt.getTotalSlack(task);
                     }
                 }
-
+        
                 var freeSlackColumn = {
                     name: "freeSlack",
                     align: "center",
@@ -735,7 +736,7 @@ for (var i = 0; i < els.length; i++) {
                         return gantt.getFreeSlack(task);
                     }
                 };
-
+        
                 const showWbsColumn = {
                     name: "WBS",
                     align: "center",
@@ -748,10 +749,10 @@ for (var i = 0; i < els.length; i++) {
                         return gantt.getWBSCode(task);
                     }
                 }
-
-
-
-
+                
+        
+                
+        
                 const showAssignees = {
                     name: "Assignee",
                     align: "center",
@@ -764,30 +765,30 @@ for (var i = 0; i < els.length; i++) {
                                 return "";
                         }
                         var result = "";
-
+                        
                         task.assigness.forEach(function(assignee) {
                         if (!assignee)
                             return;
                         result += "<div class='owner-label' title='" + assignee.firstName + "'>" + assignee.firstName.substr(0, 1) + "</div>";
-
+        
                       });
-
+        
                     return result;
                     }
                 }
-
+                
                 Element.prototype.appendTemplate = function (html) {
                         this.insertAdjacentHTML('beforeend', html);
                         return this.lastChild;
                     };
-
+                    
                     const formatter = gantt.ext.formatters.durationFormatter({
-                    enter: "day",
-                    store: "day",
+                    enter: "day", 
+                    store: "day", 
                     format: "auto"
-                    });
+                    });	
                     const linksFormatter = gantt.ext.formatters.linkFormatter({durationFormatter: formatter});
-
+        
                 gantt.config.columns = [
                      showWbsColumn,
                     { name: "id",  width:50,label:"Task Id", resize: true ,hide:false,},
@@ -820,7 +821,7 @@ for (var i = 0; i < els.length; i++) {
               }
               return labels.join(", ")
           }
-
+              
               },
                     { name: "duration", align: "center", resize: true, width: 78 ,hide:false},
                     // showAssignees,
@@ -829,8 +830,8 @@ for (var i = 0; i < els.length; i++) {
                     { name: "add", width: 44, min_width: 44, max_width: 44 ,hide:false}
                 ];
                const columns = gantt.config.columns;
-               for(let i= 0 ; i < columns.length; i++) {
-                const template = `<label class='dropdown-item form-switch'><input class='form-check-input m-0 me-2' id=${columns[i].name} name="columns" ${columns[i].hide ? "": "checked"} type='checkbox'>${columns[i].name}
+               for(let i= 0 ; i < columns.length; i++) {	
+                const template = `<label class='dropdown-item form-switch'><input class='form-check-input m-0 me-2' id=${columns[i].name} name="columns" ${columns[i].hide ? "": "checked"} type='checkbox'>${columns[i].name} 
                     </label>`
                   const parent = document.getElementById("gantt-columns");
                   parent.appendTemplate(template);
@@ -844,44 +845,44 @@ for (var i = 0; i < els.length; i++) {
                     }
                   }
                }
-
-
-
+        
+               
+              
                 gantt.config.show_slack = false;
                 gantt.addTaskLayer(function addSlack(task) {
                     if (!gantt.config.show_slack) {
                         return null;
                     }
-
+        
                     var slack = gantt.getFreeSlack(task);
-
+        
                     if (!slack) {
                         return null;
                     }
-
+        
                     var state = gantt.getState().drag_mode;
-
+        
                     if (state == 'resize' || state == 'move') {
                         return null;
                     }
-
+        
                     var slackStart = new Date(task.end_date);
                     var slackEnd = gantt.calculateEndDate(slackStart, slack);
                     var sizes = gantt.getTaskPosition(task, slackStart, slackEnd);
                     var el = document.createElement('div');
-
+        
                     el.className = 'slack';
                     el.style.left = sizes.left + 'px';
                     el.style.top = sizes.top + 2 + 'px';
                     el.style.width = sizes.width + 'px';
                     el.style.height = sizes.height + 'px';
-
+        
                     return el;
                 });
             })();
-
+             
             const new_gantt = [];
-
+        
             const calculatingCriticalandFloatValue = function(task){
                 const updatedTask = {...task, isCriticalTask: gantt.isCriticalTask(task),
                     totalSlack: gantt.getTotalSlack(task),freeSlack: gantt.getFreeSlack(task),
@@ -889,29 +890,29 @@ for (var i = 0; i < els.length; i++) {
                 }
                 new_gantt.push(updatedTask);
             }
-
-
+        
+        
             gantt.eachTask(function(task) {calculatingCriticalandFloatValue(task)})
-
-
+        
+        
             gantt.attachEvent("onAfterTaskUpdate", function(id,item){
                  console.log(gantt.getTask(id))
            });
-
+        
            gantt.attachEvent("onAfterLinkAdd", function(id,item){
                 console.log(id,item)
            });
-
+        
            gantt.attachEvent("onAfterLinkUpdate", function(id,item){
                 console.log(id,item)
            });
-
+           
            gantt.attachEvent("onAfterLinkDelete", function(id,item){
                 console.log(id,item)
            });
-
-
-
+        
+        
+           
             gantt.config.lightbox.sections = [
                 {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
                 {name: "time", map_to: "auto", type: "duration"},
@@ -927,10 +928,10 @@ for (var i = 0; i < els.length; i++) {
                 {name: "time", map_to: "auto", type: "duration", single_date:true},
                 {name: "baseline", single_date:true,map_to: { start_date: "planned_start", end_date: "planned_end"}, button: true, type: "duration_optional"}
             ];
-
+        
            gantt.locale.labels.section_baseline = "Planned";
-
-
+        
+        
             // adding baseline display
             gantt.addTaskLayer(function draw_planned(task) {
                 if (task.planned_start && task.planned_end) {
@@ -944,7 +945,7 @@ for (var i = 0; i < els.length; i++) {
                 }
                 return false;
             });
-
+        
             gantt.templates.task_class = function (start, end, task) {
                 if (task.planned_end) {
                     var classes = ['has-baseline'];
@@ -954,7 +955,7 @@ for (var i = 0; i < els.length; i++) {
                     return classes.join(' ');
                 }
             };
-
+        
             gantt.templates.rightside_text = function (start, end, task) {
                 if (task.planned_end) {
                     if (end.getTime() > task.planned_end.getTime()) {
@@ -964,86 +965,86 @@ for (var i = 0; i < els.length; i++) {
                     }
                 }
             };
-
-
+        
+        
      </script>
 <script>
         gantt.showLightbox = function(id){
-
+        
                document.body.classList.add("modal-open");
                 taskId = id;
                 var task = gantt.getTask(id);
                 const taskTitle = document.getElementById('task-title');
-              taskTitle.innerHTML = `${task.id}-${task.text}`
+              taskTitle.innerHTML = `${task.id}-${task.text}` 
                 var form = getForm();
                 var input = form.querySelector("[name='description']");
                 input.focus();
                 input.value = task.text;
               const start_date = form.querySelector("[name='start_date']");
               const end_date = form.querySelector("[name='end_date']");
-
+  
               start_date.value = task.start_date;
-
+  
               form.style.display = "block";
                 form.querySelector("[name='save']").onclick = save;
                 form.querySelector("[name='close']").onclick = cancel;
               form.querySelector("[name='cancel']").onclick = cancel;
                 form.querySelector("[name='delete']").onclick = remove;
             }
-
-
+        
+        
         gantt.hideLightbox = function(){
             getForm().style.display = "";
             taskId = null;
-            }
-
-
+            } 
+        
+        
         function getForm() {
              const domEl = document.getElementById("modal-task");
              domEl.classList.add("show");
-
+            
             return document.getElementById("modal-task");
             };
-
+        
         function save() {
             var task = gantt.getTask(taskId);
-
+         
             task.text = getForm().querySelector("[name='description']").value;
-
+         
             if(task.$new){
                 delete task.$new;
                 gantt.addTask(task,task.parent);
             }else{
                 gantt.updateTask(task.id);
             }
-
+         
             gantt.hideLightbox();
         }
-
+         
         function cancel() {
             var task = gantt.getTask(taskId);
-
+         
             if(task.$new)
             gantt.deleteTask(task.id);
             gantt.hideLightbox();
         }
-
+         
         function remove() {
             gantt.deleteTask(taskId);
             gantt.hideLightbox();
         }
-
-
-        gantt.attachEvent("onBeforeLightbox", function(id) {
-
-
+        
+        
+        gantt.attachEvent("onBeforeLightbox", function(id) { 
+        
+      
         })
 
-// gantt create edit functionality
+// gantt create edit functionality 
 
 if (frezee_status_actual != 1) {
-   	var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
-   	//var dp = new gantt.dataProcessor("/erp/public/");
+   	// var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
+   	var dp = new gantt.dataProcessor("/erp/public/");
    	var critical = 0;
    	dp.init(gantt);
 
@@ -1072,7 +1073,7 @@ if (frezee_status_actual != 1) {
    		gantt.config.readonly = false;
    		if (action == "inserted") {
    			gantt.showLightbox(tid);
-
+   			//  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
    		}
    	});
 }
@@ -1080,8 +1081,8 @@ if (frezee_status_actual != 1) {
 
 
 </script>
-
-
+  
+  
   <script>
       // @formatter:off
       document.addEventListener("DOMContentLoaded", function () {
@@ -1100,3 +1101,4 @@ if (frezee_status_actual != 1) {
       });
       // @formatter:on
     </script>
+ 

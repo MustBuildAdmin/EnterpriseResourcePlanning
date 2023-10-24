@@ -1520,19 +1520,29 @@ class ProjectController extends Controller
             $project=Project::find(Session::get("project_id"));
             
             if($project->critical_update==0){
-                $array=[
-                    "iscritical"=>1,
-                ];
-               
-                if(is_array($request->critical_task)){
-                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->whereIn('id',$request->critical_task)->update($array);
-                }else{
-                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('id',$request->critical_task)->update($array);
+
+                //dd($request->updatedTask);
+                foreach ($request->updatedTask as $key => $value) {
+                    if(isset($value['totalStack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['totalStack']);
+                        $total_slack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $total_slack = null;
+                    }
+                    if(isset($value['totalStack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['totalStack']);
+                        $freeSlack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $freeSlack = null;
+                    }
+
+                    Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('main_id',$value['main_id'])->update(['dependency_critical'=>$freeSlack,'entire_critical'=>$total_slack]);
+    
                 }
-                // foreach ($request->updatedTask as $key => $value) {
-                //     $critical=$value->isCriticalTask
-                //     Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('main_id',$value->main_id)->update(['iscritical'=>$value->iscritical,'float_val'=>$value->]);
-                // }
 
                 Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
             }
