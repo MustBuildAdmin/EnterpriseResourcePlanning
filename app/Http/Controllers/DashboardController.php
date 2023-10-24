@@ -714,7 +714,7 @@ class DashboardController extends Controller
                 $projects->whereIn('status', $request->status);
             }
 
-            $projects = $projects->get();
+            $projects = $projects->paginate(8);
 
             return view('construction_project.construction_main', compact('projects', 'user_projects'));
         } else {
