@@ -122,11 +122,11 @@ aria-describedby="Sub Task">
 
                 <td style="width:20%;">
                     @if (strtotime($task->end_date) < time() && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> Pending
+                        <span class="badge bg-warning me-1"></span> {{__('Pending')}}
                     @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
-                        <span class="badge bg-success me-1"></span> Completed
+                        <span class="badge bg-success me-1"></span>  {{__('Completed')}}
                     @else
-                        <span class="badge bg-info me-1"></span> In-Progress
+                        <span class="badge bg-info me-1"></span> {{__('In-Progress')}}
                     @endif
                 </td>
 
@@ -137,17 +137,18 @@ aria-describedby="Sub Task">
                 @endphp
                 <td style="width:20%;">
                     @if ($task->iscritical==1)
-                        <span class="badge bg-warning me-1"></span> Critical
+                        <span class="badge bg-warning me-1"></span> {{__('Critical')}}
                     @elseif($task->dependency_critical > date('Y-m-d') &&
-                            $task->progress < 100 && $task->entire_critical > date('Y-m-d') && 
+                            $task->progress < 100 && $task->entire_critical > date('Y-m-d') &&
                             $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> Entire Critical
+                        <span class="badge bg-warning me-1"></span>  {{__('Entire Critical')}}
                     @elseif($task->dependency_critical > date('Y-m-d') && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> Dependency Critical{{$task->entire_critical}}
+                        <span class="badge bg-warning me-1"></span> {{__('Dependency Critical')}}
+                            {{$task->entire_critical}}
                     @elseif($task->entire_critical > date('Y-m-d') && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> Entire Critical
+                        <span class="badge bg-warning me-1"></span> {{__('Entire Critical')}}
                     @else
-                        <span class="badge bg-info me-1"></span>Non Critical
+                        <span class="badge bg-info me-1"></span>{{__('Non Critical')}}
                     @endif
                 </td>
 
@@ -169,8 +170,8 @@ aria-describedby="Sub Task">
                                 <div class="progress-bar" style="width: {{round($task->progress)}}%"
                                     role="progressbar" aria-valuenow="{{round($task->progress)}}"
                                     aria-valuemin="0" aria-valuemax="100"
-                                    aria-label="{{round($task->progress)}}% Complete">
-                                    <span class="visually-hidden">{{round($task->progress)}}% Complete</span>
+                                    aria-label="{{round($task->progress)}}% {{__('Complete')}}">
+                                    <span class="visually-hidden">{{round($task->progress)}}% {{__('Complete')}}</span>
                                 </div>
                             </div>
                         </div>
@@ -188,9 +189,9 @@ aria-describedby="Sub Task">
                                 <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%"
                                 role="progressbar" aria-valuenow="{{round($current_Planed_percentage)}}"
                                 aria-valuemin="0" aria-valuemax="100"
-                                aria-label="{{round($current_Planed_percentage)}}% Complete">
+                                aria-label="{{round($current_Planed_percentage)}}% {{__('Complete')}}">
                                     <span class="visually-hidden">
-                                        {{round($current_Planed_percentage)}}% Complete
+                                        {{round($current_Planed_percentage)}}% {{__('Complete')}}
                                     </span>
                                 </div>
                             </div>
