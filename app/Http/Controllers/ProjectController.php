@@ -1531,16 +1531,16 @@ class ProjectController extends Controller
                     }else{
                         $total_slack = null;
                     }
-                    if(isset($value['totalStack'])){
+                    if(isset($value['freeSlack'])){
                         $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
                         $carbonDate = Carbon::parse($cleanedDateString);
-                        $carbonDate->addDays($value['totalStack']);
+                        $carbonDate->addDays($value['freeSlack']);
                         $freeSlack = $carbonDate->format('Y-m-d');
                     }else{
                         $freeSlack = null;
                     }
 
-                    Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('main_id',$value['main_id'])->update(['dependency_critical'=>$freeSlack,'entire_critical'=>$total_slack]);
+                    Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('main_id',$value['main_id'])->update(['dependency_critical'=>$freeSlack,'entire_critical'=>$total_slack,'float_val'=>$total_slack]);
     
                 }
 
