@@ -129,12 +129,18 @@ aria-describedby="Sub Task">
                     @endif
                 </td>
 
-                
+                @php
+                    $end_da=$task->dependency_critical;
+                    $today_date=date('Y-m-d');
+                //   dd($end_da,$today_date);
+                @endphp
                 <td style="width:20%;">
                     @if ($task->iscritical==1)
                         <span class="badge bg-warning me-1"></span> Critical
+                    @elseif($task->dependency_critical > date('Y-m-d') && $task->progress < 100)
+                    <span class="badge bg-warning me-1"></span> Dependancy Critical
                     @else
-                        <span class="badge bg-info me-1"></span> Non Critical
+                        <span class="badge bg-info me-1"></span>Non Critical
                     @endif
                 </td>
 
