@@ -90,7 +90,8 @@ function setScaleConfig(level) {
             ];
             gantt.config.scale_height = 50;
             break;
-     case "quarter" :
+     case "quarter" : 
+ 
      gantt.config.scales = [
           {unit: "month", step: 1, format: "%M"},
           {
@@ -112,7 +113,8 @@ function setScaleConfig(level) {
             break;
     }
  }
-var els = document.querySelectorAll(".gantt_zoom_select");
+ 
+ var els = document.querySelectorAll(".gantt_zoom_select");
  for (var i = 0; i < els.length; i++) {
     els[i].onchange = function(e){
         var el = e.target;
@@ -121,3 +123,4 @@ var els = document.querySelectorAll(".gantt_zoom_select");
         gantt.render();
     };
  }
+ 

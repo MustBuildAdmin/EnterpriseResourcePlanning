@@ -129,22 +129,19 @@ aria-describedby="Sub Task">
                         <span class="badge bg-info me-1"></span> {{__('In-Progress')}}
                     @endif
                 </td>
-
-                @php
-                    $end_da=$task->dependency_critical;
-                    $today_date=date('Y-m-d');
                 
-                @endphp
+                <!--If the Task is Critical condition backup starts-->
+                  {{-- @if ($task->iscritical==1)
+                    {{__('Critical')}}
+                  @endif --}}
+                <!--If the Task is Critical condition backup starts-->
                 <td style="width:20%;">
-                    @if ($task->iscritical==1)
-                        <span class="badge bg-warning me-1"></span> {{__('Critical')}}
-                    @elseif($task->dependency_critical > date('Y-m-d') &&
+                    @if($task->dependency_critical > date('Y-m-d') &&
                             $task->progress < 100 && $task->entire_critical > date('Y-m-d') &&
                             $task->progress < 100)
                         <span class="badge bg-warning me-1"></span>  {{__('Entire Critical')}}
                     @elseif($task->dependency_critical > date('Y-m-d') && $task->progress < 100)
                         <span class="badge bg-warning me-1"></span> {{__('Dependency Critical')}}
-                            {{$task->entire_critical}}
                     @elseif($task->entire_critical > date('Y-m-d') && $task->progress < 100)
                         <span class="badge bg-warning me-1"></span> {{__('Entire Critical')}}
                     @else
