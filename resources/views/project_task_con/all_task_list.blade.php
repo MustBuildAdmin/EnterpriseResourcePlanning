@@ -136,7 +136,7 @@ aria-describedby="Sub Task">
                   @endif --}}
                 <!--If the Task is Critical condition backup starts-->
                 <td style="width:20%;">
-                    @if($task->dependency_critical > date('Y-m-d') &&
+                    @if(date('Y-m-d') < $task->dependency_critical &&
                             $task->progress < 100 && $task->entire_critical > date('Y-m-d') &&
                             $task->progress < 100)
                         <span class="badge bg-warning me-1"></span>  {{__('Entire Critical')}}
