@@ -137,7 +137,9 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 aria-controls="tool-menu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 p-3 text-capitalize text-white bg-primary text-wrap" style="width: 10rem;">
+            <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal
+             pe-0 pe-md-3 p-3 text-capitalize text-white bg-primary text-wrap"
+              style="width: 10rem;">
                 {{$projectname}}
             </h1>
             <div class="navbar-nav flex-row order-md-last">
@@ -289,8 +291,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         </li>
                         {{-- <li class="nav-item dropdown">
                     <a class="action nav-link" id="del"  type="button">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" 
-                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash"
+                         width="24" height="24"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                         fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M4 7l16 0"></path>
                             <path d="M10 11l0 6"></path>
@@ -321,7 +325,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M10 10m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0"></path>
                                     <path
-                                    d="M13.5 15h.5a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-1a2 2 0 0 1 2 -2h.5">
+                                    d="M13.5 15h.5a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-8a2
+                                     2 0 0 1 -2 -2v-1a2 2 0 0 1 2 -2h.5">
                                     </path>
                                     <path d="M16 17a5.698 5.698 0 0 0 4.467 -7.932l-.467 -1.068"></path>
                                     <path d="M10 10v.01"></path>
@@ -345,15 +350,18 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             </a>
                         </li>
                         <li class="nav-item">
-                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
+                            {{ Form::open(['route' => ['projects.freeze_status'],
+                            'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
 
                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                             <a href="#" class="nav-link freeze_button" style='width: 100%;'
                                 data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}"
                                 data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
+                                data-confirm="{{ __('Are You Sure?') . '|' .
+                                __('This action can not be undone. Do you want to continue?') }}"
                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                                {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'></i> Freeze --}}
+                                {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'>
+                                </i> Freeze --}}
                                 Set Baseline
                             </a>
                             {!! Form::close() !!}
@@ -407,8 +415,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             <div class="page-search">
                                 <p class="text-muted mt-3">
                                     {{ __("It's looking like you may have taken a wrong turn.
-                                                                                                                                     Don't worry... it happens to the best of us.
-                                                                                                                                Here's a little tip that might help you get back on track.") }}
+                                    Don't worry... it happens to the best of us.
+                                    Here's a little tip that might help you get back on track.") }}
                                 </p>
                                 <div class="mt-3">
                                     <a class="btn-return-home badge-blue" href="{{ route('home') }}">
@@ -422,8 +430,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <div class="page-search">
                 <p class="text-muted mt-3">
                     {{ __("It's looking like you may have taken a wrong turn.
-                                                                                 Don't worry... it happens to the best of us.
-                                                                                  Here's a little tip that might help you get back on track.") }}
+                        Don't worry... it happens to the best of us.
+                    Here's a little tip that might help you get back on track.") }}
                 </p>
                 <div class="mt-3">
                     <a class="btn-return-home badge-blue" href="{{ route('home') }}">
@@ -938,7 +946,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 const task = gantt.getTask(tasks[i].id);
                                 const tt = gantt.isCriticalTask(task);
                                 // const totalStack = gantt.getTotalSlack(task);
-                                // const freeSlack = gantt.getFreeSlack(task)// const constraintType = gantt.getConstraintType(task);
+                                // const freeSlack = gantt.getFreeSlack(task)
+                                // const constraintType = gantt.getConstraintType(task);
                                 const taskdetails = {...task, isCriticalTask: gantt.isCriticalTask(task),
                                         totalStack: gantt.getTotalSlack(task),freeSlack: gantt.getFreeSlack(task),
                                         constraintType:gantt.getConstraintType(task),

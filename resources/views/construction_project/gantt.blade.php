@@ -10,23 +10,14 @@
 <link href="{{ asset('assets/js/css/tabler-vendors.min.css') }}" rel="stylesheet"/>
 <script src="{{ asset('assets/js/js/tabler.min.js') }}" ></script>
 <script src="{{ asset('assets/js/js/demo-theme.min.js') }}" ></script>
-
-
 <script src="{{ asset('assets/nouislider/dist/nouislider.js') }}" ></script>
 <script src="{{ asset('assets/litepicker/dist/litepicker.js') }}" ></script>
 <script src="{{ asset('assets/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
 {{-- <script src="https://export.dhtmlx.com/gantt/api.js" 
 integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
-
-
-
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"
  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
-
-
-
-
 <script src="{{ asset('assets/js/js/zoomingConfig.js') }}"></script>
 <script src="{{ asset('assets/js/js/criticalPath.js') }}"></script>
 <script src="{{ asset('assets/js/js/overlay.js') }}"></script>
@@ -196,7 +187,9 @@ $holidays = implode(':', $holidays);
                        onclick="gantt.performAction('Indent')">
                          <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
                          <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon"
-                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                           stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                          </svg>
@@ -204,7 +197,10 @@ $holidays = implode(':', $holidays);
                       </a>
                       <a href="#" class="dropdown-item action outdent_action"  id="outdent"  onclick="expandAll();">
                          <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
-                         <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon"
+                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
+                          stroke="currentColor" fill="none" stroke-linecap="round"
+                           stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                          </svg>
@@ -215,9 +211,18 @@ $holidays = implode(':', $holidays);
                 </div>
           </li>
           <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-          <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
+          <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+           data-bs-auto-close="outside" role="button" aria-expanded="false">
+          <span class="nav-link-icon d-md-none d-lg-inline-block">
+            <!-- Download SVG icon from http://tabler-icons.io/i/package -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+           height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+            <path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path>
+            <path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path>
+          </svg>
           </span>
           <span class="nav-link-title">
           View
@@ -226,24 +231,54 @@ $holidays = implode(':', $holidays);
           <div class="dropdown-menu">
           <div class="dropdown-menu-columns">
           <div class="dropdown-menu-column">
-          <a href="#" class="dropdown-item"   onclick="collapseAll()"><!-- Download SVG icon from http://tabler-icons.io/i/activity -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12h4l3 8l4 -16l3 8h4"></path></svg>
+          <a href="#" class="dropdown-item"   onclick="collapseAll()">
+            <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
+           height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
+          </svg>
           Expand All</a>
-          <a href="#" class="dropdown-item" onclick="expandAll();"><!-- Download SVG icon from http://tabler-icons.io/i/activity -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12h4l3 8l4 -16l3 8h4"></path></svg>
+          <a href="#" class="dropdown-item" onclick="expandAll();">
+            <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
+           height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
+          </svg>
           Collapse All</a>
           <div class="dropdown-divider"></div>
-          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">Critical Path</label>
-          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
-          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox"> Checkbox input</label>
-          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox"> Checkbox input</label>
+          <label class="dropdown-item form-switch">
+            <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
+            Critical Path
+         </label>
+          <label class="dropdown-item form-switch">
+            <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
+          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2"
+            onchange="updateCriticalPath(this)" type="checkbox"> Checkbox input
+          </label>
+          <label class="dropdown-item form-switch">
+            <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
+            Checkbox input
+          </label>
           </div>
           </div>
           </li>
           <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-          <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
+          <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+           data-bs-auto-close="outside" role="button" aria-expanded="false">
+          <span class="nav-link-icon d-md-none d-lg-inline-block">
+            <!-- Download SVG icon from http://tabler-icons.io/i/package -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+           height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+            fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+            <path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path>
+            <path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path>
+        </svg>
           </span>
           <span class="nav-link-title">
           Hide and Show Grid Columns
@@ -256,15 +291,24 @@ $holidays = implode(':', $holidays);
           </div>
           </li>
           <li class="nav-item dropdown">
-                {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
+                {{ Form::open(['route' => ['projects.freeze_status'],
+                'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
 
                 {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                 <a href="#" class="nav-link freeze_button" style='width: 100%;'
                     data-bs-toggle="tooltip" title="{{ __('Click to save') }}"
                     data-original-title="{{ __('Delete') }}"
-                    data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
+                    data-confirm="{{ __('Are You Sure?') . '|' .
+                    __('This action can not be undone. Do you want to continue?') }}"
                     data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                      fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                      <path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path>
+                      <path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path>
+                    </svg>
                     <span class="nav-link-title">
                     Save
                 {!! Form::close() !!}
@@ -277,7 +321,8 @@ $holidays = implode(':', $holidays);
     </header>
     <div class="h-100 w-100" id="gantt_here"></div>
     </div>
-    <div class="modal modal-blur fade" id="modal-task" tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
+    <div class="modal modal-blur fade" id="modal-task"
+     tabindex="-1" style="display: none;" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
     <div class="modal-header">
@@ -292,7 +337,8 @@ $holidays = implode(':', $holidays);
     <div class="row mt-4">
      <div class="col-md-6 col-12">
          <label class="form-label">Task Start Date</label>
-         <input type="text" class="form-control" name="start_date" id="start-date" placeholder="Enter Your Task Start Date">
+         <input type="text" class="form-control" name="start_date"
+          id="start-date" placeholder="Enter Your Task Start Date">
      </div>
      <div class="col-md-6  col-12">
          <label class="form-label">Task Start Date</label>
@@ -301,12 +347,19 @@ $holidays = implode(':', $holidays);
     </div>
     </div>
     <div class="modal-footer">
-    <a href="#" class="btn btn-link link-secondary" name="cancel" data-bs-dismiss="modal">
+    <a href="#" class="btn btn-link link-secondary"
+     name="cancel" data-bs-dismiss="modal">
        Cancel
     </a>
-    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal" name="save">
+    <a href="#" class="btn btn-primary ms-auto"
+    data-bs-dismiss="modal" name="save">
     <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+      fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M12 5l0 14"></path><path d="M5 12l14 0"></path>
+    </svg>
        Add new Task
     </a>
     </div>
@@ -656,7 +709,8 @@ setTimeout(
                     };
 
                     var currentId = task_id;
-                    while(gantt.isTaskExists(gantt.getPrevSibling(currentId)) && gantt.isSelectedTask(gantt.getPrevSibling(currentId))){
+                    while(gantt.isTaskExists(gantt.getPrevSibling(currentId)) 
+                    && gantt.isSelectedTask(gantt.getPrevSibling(currentId))){
                         currentId = gantt.getPrevSibling(currentId);
                     }
                     siblings[task_id].first = currentId;
@@ -780,7 +834,9 @@ setTimeout(
                         task.assigness.forEach(function(assignee) {
                         if (!assignee)
                             return;
-                        result += "<div class='owner-label' title='" + assignee.firstName + "'>" + assignee.firstName.substr(0, 1) + "</div>";
+                        result += "<div class='owner-label' title='" + assignee.firstName + "'>"
+                               + assignee.firstName.substr(0, 1)
+                               + "</div>";
 
                       });
 
@@ -842,7 +898,10 @@ setTimeout(
                 ];
                const columns = gantt.config.columns;
                for(let i= 0 ; i < columns.length; i++) {
-                const template = `<label class='dropdown-item form-switch'><input class='form-check-input m-0 me-2' id=${columns[i].name} name="columns" ${columns[i].hide ? "": "checked"} type='checkbox'>${columns[i].name}
+                const template = `<label class='dropdown-item form-switch'>
+                    <input class='form-check-input m-0 me-2'
+                    id=${columns[i].name} name="columns" ${columns[i].hide ? "": "checked"} type='checkbox'>
+                    ${columns[i].name}
                     </label>`
                   const parent = document.getElementById("gantt-columns");
                   parent.appendTemplate(template);
@@ -927,17 +986,20 @@ setTimeout(
             gantt.config.lightbox.sections = [
                 {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
                 {name: "time", map_to: "auto", type: "duration"},
-                {name: "baseline", map_to: { start_date: "planned_start", end_date: "planned_end"}, button: true, type: "duration_optional"}
+                {name: "baseline", map_to: { start_date: "planned_start",
+                end_date: "planned_end"}, button: true, type: "duration_optional"}
             ];
             gantt.config.lightbox.project_sections = [
                 {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
                 {name: "time", map_to: "auto", type: "duration", readonly: true},
-                {name: "baseline", map_to: { start_date: "planned_start", end_date: "planned_end"}, button: true, type: "duration_optional"}
+                {name: "baseline", map_to: { start_date: "planned_start",
+                end_date: "planned_end"}, button: true, type: "duration_optional"}
             ];
             gantt.config.lightbox.milestone_sections = [
                 {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
                 {name: "time", map_to: "auto", type: "duration", single_date:true},
-                {name: "baseline", single_date:true,map_to: { start_date: "planned_start", end_date: "planned_end"}, button: true, type: "duration_optional"}
+                {name: "baseline", single_date:true,map_to: { start_date: "planned_start",
+                end_date: "planned_end"}, button: true, type: "duration_optional"}
             ];
 
            gantt.locale.labels.section_baseline = "Planned";
@@ -970,7 +1032,8 @@ setTimeout(
             gantt.templates.rightside_text = function (start, end, task) {
                 if (task.planned_end) {
                     if (end.getTime() > task.planned_end.getTime()) {
-                        var overdue = Math.ceil(Math.abs((end.getTime() - task.planned_end.getTime()) / (24 * 60 * 60 * 1000)));
+                        var overdue = Math.ceil(Math.abs((end.getTime() -
+                        task.planned_end.getTime()) / (24 * 60 * 60 * 1000)));
                         var text = "<b>Overdue: " + overdue + " days</b>";
                         return text;
                     }
@@ -1115,9 +1178,20 @@ if (frezee_status_actual != 1) {
               allowRepick: true,
               buttonText: {
                   previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon"
+        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+        stroke="currentColor" fill="none" stroke-linecap="round"
+        stroke-linejoin="round"><path stroke="none"
+        d="M0 0h24v24H0z" fill="none"/>
+          <path d="M15 6l-6 6l6 6" />
+      </svg>`,
                   nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+       height="24" viewBox="0 0 24 24" stroke-width="2"
+        stroke="currentColor" fill="none" stroke-linecap="round"
+         stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+          fill="none"/><path d="M9 6l6 6l-6 6" />
+      </svg>`,
               },
           }));
       });
