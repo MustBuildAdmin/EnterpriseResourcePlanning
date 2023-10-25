@@ -1148,8 +1148,8 @@ class MicroPorgramController extends Controller
                         if ($total_percentage != null) {
                             Con_task::where("main_id", $task_id)
                                 ->where([
-                                    "project_id" => $task->project_id,
-                                    "instance_id" => $instanceId,
+                                    "project_id" => $project_id,
+                                    "instance_id" => $instance_id,
                                 ])
                                 ->update(["progress" => $total_percentage]);
                         }
@@ -1173,8 +1173,8 @@ class MicroPorgramController extends Controller
                         if ($total_percentage != null) {
                             Con_task::where("main_id", $task_id)
                                 ->where([
-                                    "project_id" => $task->project_id,
-                                    "instance_id" => $instanceId,
+                                    "project_id" => $project_id,
+                                    "instance_id" => $instance_id,
                                 ])
                                 ->update(["progress" => $total_percentage]);
                         }
