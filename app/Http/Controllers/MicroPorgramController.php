@@ -1104,6 +1104,13 @@ class MicroPorgramController extends Controller
                     $inc_id = 1;
                 }
 
+                $alltask = Con_task::where([
+                    "project_id" => $project_id,
+                    "instance_id" => $instance_id,
+                ])
+                ->where("type", "project")
+                ->get();
+
                 if(count($microSubask) != 0) {
                     Con_task::where('main_id',$micro->task_id)
                         ->where('project_id',$project_id)->where('instance_id',$instance_id)
@@ -1127,11 +1134,51 @@ class MicroPorgramController extends Controller
                         $conTaskInsert->id          = $inc_id;
                         $conTaskInsert->save();
                     }
+
+                    foreach ($alltask as $key => $value) {
+                        $task_id = $value->main_id;
+                        $total_percentage = Con_task::where([
+                            "project_id" => $project_id,
+                            "instance_id" => $instance_id,
+                        ])
+                        ->where("parent", $value->id)
+                        ->avg("progress");
+
+                        $total_percentage = round($total_percentage);
+                        if ($total_percentage != null) {
+                            Con_task::where("main_id", $task_id)
+                                ->where([
+                                    "project_id" => $project_id,
+                                    "instance_id" => $instance_id,
+                                ])
+                                ->update(["progress" => $total_percentage]);
+                        }
+                    }
                 }
                 else{
                     Con_task::where('main_id',$micro->task_id)
                         ->where('project_id',$project_id)->where('instance_id',$instance_id)
                         ->where('type','project')->update(['progress'=>$micro->progress,'duration'=>$micro->duration]);
+
+                    foreach ($alltask as $key => $value) {
+                        $task_id = $value->main_id;
+                        $total_percentage = Con_task::where([
+                            "project_id" => $project_id,
+                            "instance_id" => $instance_id,
+                        ])
+                        ->where("parent", $value->id)
+                        ->avg("progress");
+
+                        $total_percentage = round($total_percentage);
+                        if ($total_percentage != null) {
+                            Con_task::where("main_id", $task_id)
+                                ->where([
+                                    "project_id" => $project_id,
+                                    "instance_id" => $instance_id,
+                                ])
+                                ->update(["progress" => $total_percentage]);
+                        }
+                    }
                 }
             }
         }

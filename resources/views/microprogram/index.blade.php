@@ -56,7 +56,7 @@
                                             <td>
                                                 @if($microSchedule->active_status == 1)
                                                     <span class="badge bg-success me-1"></span> Active
-                                                @elseif($microSchedule->active_status == 1)
+                                                @elseif($microSchedule->active_status == 2)
                                                     <span class="badge bg-success me-1"></span> Completed
                                                 @else
                                                     <span class="badge bg-warning me-1"></span> In-schedule
