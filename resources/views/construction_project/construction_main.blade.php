@@ -9,11 +9,14 @@
                   <div class="mb-3">
                      <div class="row g-2">
                         <div class="col">
-                           <input type="text" class="form-control" placeholder="{{ __('Search for Projects…') }}">
+                        <form action="{{ route('construction_main') }}" method="GET" id="searchproject">
+                           {{ Form::text('keyword',isset($_GET['keyword'])?$_GET['keyword']:'',
+								array('class' => 'form-control d-inline-block w-9 me-3 mt-auto',
+								'id'=>'keyword','placeholder'=>__('Search for Projects…'))) }}
+                        </form>
                         </div>
                         <div class="col-auto">
-                           <a href="#" class="btn btn-icon" aria-label="Button">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                           <a href="javascript:void(0)" id="searchbtnproj" class="btn btn-icon" aria-label="Button">
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -193,22 +196,16 @@
        </div>
       </div>
       @else
-      <div class="empty">
-       <p class="empty-title">{{ __('Create a Project') }}</p>
-       <p class="empty-subtitle text-secondary">
-        {{ __('Must BuildApp comes with feature to Enchance your construction project time and cost management.') }}
-       </p>
-       @can('create project')
-       <div class="empty-action">
-          <a href="#" data-size="xl"
-          data-url="{{ route('projects.create') }}" data-ajax-popup="true"
-          data-title="{{ __('Create New Project') }}" data-bs-toggle="tooltip"
-          title="{{__('Create New Project')}}" class="btn btn-primary " >
-          {{ __('Create a Project') }}
-          </a>
-       </div>
-       @endcan
-    </div>
+    <div class="page-body">
+         <div class="container-xl d-flex flex-column justify-content-center">
+            <div class="empty">
+               <div class="empty-img">
+                  <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}" height="128" alt="">
+               </div>
+               <p class="empty-title"> {{__('No Projects Found')}}</p>
+            </div>
+         </div>
+      </div>
       @endif
    </div>
 </div>
@@ -218,6 +215,9 @@
 @include('new_layouts.footer')
 <script>
    $(document).ready(function () {
+      $(document).on('click','#searchbtnproj',function(){
+         $('form#searchproject').submit();
+      })
       $(document).on('click', '.invite_usr', function () {
             var project_id = $('#project_id').val();
             var user_id = $(this).attr('data-id');

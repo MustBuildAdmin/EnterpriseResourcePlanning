@@ -26,6 +26,7 @@ require __DIR__.'/auth.php';
 
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index'])->middleware(['XSS']);
 Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@index'])->middleware(['auth', 'XSS']);
+Route::get('contactus', 'UserController@contactus')->name('contactus');
 
 // Route::get('/', 'DashboardController@account_dashboard_index')->name('home')->middleware(
 //     [
@@ -5205,3 +5206,4 @@ Route::any('new_rfi', 'DiaryController@new_rfi')->name('new_rfi');
 Route::any('{any}', function () {
     return view('error');
 })->where('any', '.*');
+
