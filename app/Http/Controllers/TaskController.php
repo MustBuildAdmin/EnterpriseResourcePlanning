@@ -53,8 +53,6 @@ class TaskController extends Controller
             $task->dependency_critical = $freeSlack;
         }
 
-        //$task->iscritical = $request->iscritical;
-
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
                 $implodeusers = implode(',', json_decode($request->users));
@@ -90,7 +88,7 @@ class TaskController extends Controller
 
     public function destroy($id , Request $request)
     {
-        // $task = Con_task::find($id);
+       
         $row = Con_task::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance'), 'id' => $id])->first();
         if ($row != null) {
@@ -126,7 +124,10 @@ class TaskController extends Controller
 
     public function update($id, Request $request)
     {
-        $task = Con_task::where('main_id',$request->main_id)->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])->first();
+        $task = Con_task::where('main_id',$request->main_id)
+                            ->where(['project_id' => Session::get('project_id'),
+                            'instance_id' => Session::get('project_instance')])
+                            ->first();
 
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
@@ -190,7 +191,10 @@ class TaskController extends Controller
             'float_val'=>$float_val,
         );
 
-        Con_task::where('main_id',$request->main_id)->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])->update($update_data);
+        Con_task::where('main_id',$request->main_id)
+                ->where(['project_id' => Session::get('project_id'),
+                'instance_id' => Session::get('project_instance')])
+                ->update($update_data);
 
         ActivityController::activity_store(Auth::user()->id,
             Session::get('project_id'), 'Updated Task', $request->text);

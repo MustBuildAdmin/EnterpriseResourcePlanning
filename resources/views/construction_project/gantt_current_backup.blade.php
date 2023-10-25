@@ -4,10 +4,13 @@
 <script src="{{ asset('assets/js/js/dhtmlxgantt.js?v=7.0.11') }}"></script>
 <link href="{{ asset('assets/js/css/dhtmlxgantt.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/js/gantt/common/controls_styles.css?v=7.0.11') }}">
-<script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.11"></script>
+<script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.11"
+integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"></script>
-<script src="https://export.dhtmlx.com/gantt/api.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"
+integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="https://export.dhtmlx.com/gantt/api.js" 
+integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script src="{{ asset('assets/js/js/zoomingConfig.js') }}"></script>
 <script src="{{ asset('assets/js/js/criticalPath.js') }}"></script>
 <script src="{{ asset('assets/js/js/overlay.js') }}"></script>

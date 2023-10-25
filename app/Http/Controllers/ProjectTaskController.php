@@ -188,15 +188,19 @@ class ProjectTaskController extends Controller
         $setting = Utility::settings(\Auth::user()->creatorId());
         if ($setting['company_type'] == 2) {
 
-            $tasks = Con_task::select('con_tasks.text','con_tasks.dependency_critical','con_tasks.float_val','con_tasks.entire_critical','con_tasks.users', 'con_tasks.duration',
-                'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
-                'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
-                'pros.id as project_id', 'pros.instance_id as pro_instance_id','con_tasks.iscritical')
-                ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
-                ->whereNotNull('pros.instance_id')
-                ->where('con_tasks.project_id', $project_id)
-                ->where('con_tasks.instance_id', $instance_id)
-                ->where('con_tasks.type', 'task');
+            $tasks = Con_task::select('con_tasks.text','con_tasks.dependency_critical',
+                                      'con_tasks.float_val','con_tasks.entire_critical',
+                                      'con_tasks.users', 'con_tasks.duration',
+                                      'con_tasks.progress', 'con_tasks.start_date',
+                                      'con_tasks.end_date', 'con_tasks.id',
+                                      'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
+                                      'pros.id as project_id', 'pros.instance_id as pro_instance_id',
+                                      'con_tasks.iscritical')
+                                ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
+                                ->whereNotNull('pros.instance_id')
+                                ->where('con_tasks.project_id', $project_id)
+                                ->where('con_tasks.instance_id', $instance_id)
+                                ->where('con_tasks.type', 'task');
 
             if (\Auth::user()->type != 'company') {
                 $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");

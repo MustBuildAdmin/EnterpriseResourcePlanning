@@ -15,12 +15,14 @@
 <script src="{{ asset('assets/nouislider/dist/nouislider.js') }}" ></script>
 <script src="{{ asset('assets/litepicker/dist/litepicker.js') }}" ></script>
 <script src="{{ asset('assets/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
-{{-- <script src="https://export.dhtmlx.com/gantt/api.js"></script> --}}
+{{-- <script src="https://export.dhtmlx.com/gantt/api.js" 
+integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
 
 
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"
+ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
 
 
@@ -126,13 +128,16 @@ $holidays = implode(':', $holidays);
     <div class="gantt-container" id="gantt-block">
     <header class="navbar navbar-expand-md  d-print-none" data-bs-theme="light">
        <div class="container-fluid">
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#sidebar-menu" aria-controls="sidebar-menu"
+         aria-expanded="false" aria-label="Toggle navigation">
        <span class="navbar-toggler-icon"></span>
        </button>
        <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
           Project Name
        </h1>
-       <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center" id="sidebar-menu">
+       <div class="d-flex flex-column flex-md-row flex-fill
+        align-items-stretch align-items-md-center" id="sidebar-menu">
        <ul class="navbar-nav">
           <li class="nav-item">
              <a class="nav-link undo_action" onclick="gantt.undo();">Undo</a>
@@ -154,7 +159,8 @@ $holidays = implode(':', $holidays);
           </li>
           <li>
              <a class="nav-link">
-                <select class="form-select gantt_zoom_select" style="width: 100px;height: 29px;margin-top: 2%;padding: 2px 20px 0px 10px;">
+                <select class="form-select gantt_zoom_select"
+                 style="width: 100px;height: 29px;margin-top: 2%;padding: 2px 20px 0px 10px;">
                    <option value="day">Daily</option>
                    <option value="week">Weekly</option>
                    <option value="month">Monthly</option>
@@ -164,10 +170,13 @@ $holidays = implode(':', $holidays);
              </a>
           </li>
           <li class="nav-item dropdown">
-             <a class="nav-link dropdown-toggle" href="#edit-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+             <a class="nav-link dropdown-toggle" href="#edit-base" data-bs-toggle="dropdown"
+              data-bs-auto-close="outside" role="button" aria-expanded="false">
                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                    <!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                     fill="none" stroke-linecap="round" stroke-linejoin="round">
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                       <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
                       <path d="M12 12l8 -4.5"></path>
@@ -183,9 +192,11 @@ $holidays = implode(':', $holidays);
              <div class="dropdown-menu">
                 <div class="dropdown-menu-columns">
                    <div class="dropdown-menu-column">
-                      <a href="#" class="dropdown-item action indent_action" id="indent"  onclick="gantt.performAction('Indent')">
+                      <a href="#" class="dropdown-item action indent_action" id="indent"
+                       onclick="gantt.performAction('Indent')">
                          <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
-                         <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon"
+                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                          </svg>

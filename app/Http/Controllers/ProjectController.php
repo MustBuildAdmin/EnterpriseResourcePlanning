@@ -1536,8 +1536,7 @@ class ProjectController extends Controller
             
             if($project->critical_update==0){
 
-                //dd($request->updatedTask);
-                foreach ($request->updatedTask as $key => $value) {
+                foreach ($request->updatedTask as $value) {
                     if(isset($value['totalStack'])){
                         $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
                         $carbonDate = Carbon::parse($cleanedDateString);
@@ -1555,7 +1554,12 @@ class ProjectController extends Controller
                         $freeSlack = null;
                     }
 
-                    Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('main_id',$value['main_id'])->update(['dependency_critical'=>$freeSlack,'entire_critical'=>$total_slack,'float_val'=>$total_slack]);
+                    Con_task::where('project_id',Session::get("project_id"))
+                            ->where('instance_id',Session::get("project_instance"))
+                            ->where('main_id',$value['main_id'])
+                            ->update(['dependency_critical'=>$freeSlack,
+                            'entire_critical'=>$total_slack,
+                            'float_val'=>$total_slack]);
     
                 }
 
