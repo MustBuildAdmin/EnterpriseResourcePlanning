@@ -1100,6 +1100,19 @@ class ProjectController extends Controller
                     ->whereDate('end_date', '>', date('Y-m-d'))
                     ->count();
 
+                $dependencycriticalcount = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where("type", "task")
+                    ->where("progress", "<", 100)
+                    ->whereDate('dependency_critical', '>', date('Y-m-d'))
+                    ->count();
+
+                $entirecriticalcount = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where("type", "task")
+                    ->where("progress", "<", 100)
+                    ->whereDate('entire_critical', '>', date('Y-m-d'))
+                    ->count();
 
                 $startDate = Carbon::now()->subWeeks(3);
                 $endDate = Carbon::now();
@@ -1124,6 +1137,8 @@ class ProjectController extends Controller
                     compact(
                         "project",
                         "ongoing_task",
+                        "dependencycriticalcount",
+                        "entirecriticalcount",
                         "project_data",
                         "total_sub",
                         "actual_percentage",
