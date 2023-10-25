@@ -88,10 +88,9 @@ class TaskController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy($id , Request $request)
     {
-
-        $task = Con_task::find($id);
+        // $task = Con_task::find($id);
         $row = Con_task::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance'), 'id' => $id])->first();
         if ($row != null) {
@@ -100,8 +99,8 @@ class TaskController extends Controller
         }
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
-            $task->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')]);
-            $task->delete();
+            Con_task::where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance'), 'id' => $id])->delete();
         }
 
         // checking whether its having parent or not
@@ -128,62 +127,70 @@ class TaskController extends Controller
     public function update($id, Request $request)
     {
         $task = Con_task::where('main_id',$request->main_id)->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])->first();
-        // new update functionality 
 
-        if($task){
-            $task->text = $request->text;
-            $task->start_date = date('Y-m-d', strtotime($request->start_date));
-            $task->end_date = date('Y-m-d', strtotime($request->end_date));
-            $task->duration = $request->duration;
-            $task->progress = $request->has('progress') ? $request->progress : 0;
-            $task->parent = $request->parent;
-            //$task->iscritical = $request->iscritical;
-            if (isset($request->users)) {
-                if (gettype($request->users) == 'array') {
-                    $implodeusers = implode(',', json_decode($request->users));
-                } else {
-                    $implodeusers = $request->users;
-                }
-                $task->users = $implodeusers;
-            }
-            if($request->totalStack!='undefined'){
-                $task->float_val = $request->totalStack;
-            }
-            if($request->totalStack!='undefined'){
-                $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
-                $carbonDate = Carbon::parse($cleanedDateString);
-                $carbonDate->addDays($request->totalStack);
-                $total_slack = $carbonDate->format('Y-m-d');
-                $task->entire_critical = $total_slack;
-            }
-
-            if($request->freeSlack!='undefined'){
-                $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
-                $carbonDate = Carbon::parse($cleanedDateString);
-                $carbonDate->addDays($request->freeSlack);
-                $freeSlack = $carbonDate->format('Y-m-d');
-                $task->dependency_critical = $freeSlack;
-            }
-
-
-
-            $checkparent = Con_task::where(['project_id' => Session::get('project_id'),
-                'instance_id' => Session::get('project_instance')])->where(['parent' => $task->id])->get();
-            // update  the type
-            Con_task::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
-                ->where('id', $request->parent)->update(['type' => 'project']);
-            if (count($checkparent) > 0) {
-                $task->type = 'project';
+        if (isset($request->users)) {
+            if (gettype($request->users) == 'array') {
+                $implodeusers = implode(',', json_decode($request->users));
             } else {
-                $task->type = 'task';
+                $implodeusers = $request->users;
             }
-
-            // $frezee = Project::where('id', Session::get('project_id'))->first();
-
-            // if ($frezee->freeze_status != 1) {
-                $task->save();
-        // }
+            $users = $implodeusers;
+        }else{
+            $users='';
         }
+
+      
+        if(isset($request->totalStack) && $request->totalStack!='undefined'){
+            $float_val = $request->totalStack;
+        }else{
+            $float_val=null;
+        }
+
+        if(isset($request->totalStack) && $request->totalStack!='undefined'){
+            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $carbonDate = Carbon::parse($cleanedDateString);
+            $carbonDate->addDays($request->totalStack);
+            $total_slack = $carbonDate->format('Y-m-d');
+            $entire_critical = $total_slack;
+        }else{
+            $entire_critical=null;
+        }
+
+        if(isset($request->freeSlack) && $request->freeSlack!='undefined'){
+            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $carbonDate = Carbon::parse($cleanedDateString);
+            $carbonDate->addDays($request->freeSlack);
+            $freeSlack = $carbonDate->format('Y-m-d');
+            $dependency_critical = $freeSlack;
+        }else{
+            $dependency_critical=null;
+        }
+
+        $checkparent = Con_task::where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->id])->get();
+        // update  the type
+        Con_task::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
+            ->where('id', $request->parent)->update(['type' => 'project']);
+        if (count($checkparent) > 0) {
+            $type = 'project';
+        } else {
+            $type = 'task';
+        }
+        // new update functionality 
+        $update_data=array(
+            'text'=>$request->text,
+            'start_date'=>date('Y-m-d', strtotime($request->start_date)),
+            'end_date'=>date('Y-m-d', strtotime($request->end_date)),
+            'duration'=>$request->duration,
+            'parent'=>$request->parent,
+            'users'=>$users,
+            'entire_critical'=>$entire_critical,
+            'dependency_critical'=>$dependency_critical,
+            'type'=>$type,
+            'float_val'=>$float_val,
+        );
+
+        Con_task::where('main_id',$request->main_id)->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])->update($update_data);
 
         ActivityController::activity_store(Auth::user()->id,
             Session::get('project_id'), 'Updated Task', $request->text);
