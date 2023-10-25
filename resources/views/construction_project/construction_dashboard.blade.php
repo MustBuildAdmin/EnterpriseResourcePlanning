@@ -358,6 +358,66 @@ if($delay>100){
                   </div>
                 </div>
               </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span
+                          class="bg-facebook text-white avatar">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="col">
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'dependency_critical']) }}' @endif>
+                          <div class="font-weight-medium">
+                            {{ __('Dependency Critical') }}
+                          </div>
+                          <div class="text-muted">
+                            {{ $notfinished }} Tasks
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span
+                          class="bg-facebook text-white avatar">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="col">
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'entire_critical']) }}' @endif>
+                          <div class="font-weight-medium">
+                            {{ __('Entire Critical') }}
+                          </div>
+                          <div class="text-muted">
+                            {{ $notfinished }} Tasks
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-lg-12">
