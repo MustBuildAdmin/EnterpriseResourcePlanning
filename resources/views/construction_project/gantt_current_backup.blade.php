@@ -97,9 +97,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             .gantt_task_link.start_to_start .gantt_line_wrapper div {
         @@ -303,104 +306,244 @@
             }
-            .gantt_task_cell.week_end {
-                background-color: #d6d6d6;
-            }
             .gantt_task_row.gantt_selected .gantt_task_cell.week_end {
                 background-color: #d6d6d6;
             }
@@ -941,7 +938,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         const critical_task=new Array();
                         const  updatedTask=new Array();
                         if(workflag==0){
-                            for(var i=0;i < tasks.length; i++){ 
+                            for(var i=0;i < tasks.length; i++){
 
                                 const task = gantt.getTask(tasks[i].id);
                                 const tt = gantt.isCriticalTask(task);

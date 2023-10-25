@@ -13,7 +13,7 @@
 <script src="{{ asset('assets/nouislider/dist/nouislider.js') }}" ></script>
 <script src="{{ asset('assets/litepicker/dist/litepicker.js') }}" ></script>
 <script src="{{ asset('assets/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
-{{-- <script src="https://export.dhtmlx.com/gantt/api.js" 
+{{-- <script src="https://export.dhtmlx.com/gantt/api.js"
 integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"
@@ -709,7 +709,7 @@ setTimeout(
                     };
 
                     var currentId = task_id;
-                    while(gantt.isTaskExists(gantt.getPrevSibling(currentId)) 
+                    while(gantt.isTaskExists(gantt.getPrevSibling(currentId))
                     && gantt.isSelectedTask(gantt.getPrevSibling(currentId))){
                         currentId = gantt.getPrevSibling(currentId);
                     }

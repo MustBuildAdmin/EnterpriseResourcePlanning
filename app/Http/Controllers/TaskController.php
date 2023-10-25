@@ -177,7 +177,7 @@ class TaskController extends Controller
         } else {
             $type = 'task';
         }
-        // new update functionality 
+        // new update functionality
         $update_data=array(
             'text'=>$request->text,
             'start_date'=>date('Y-m-d', strtotime($request->start_date)),
