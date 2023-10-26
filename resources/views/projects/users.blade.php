@@ -30,7 +30,6 @@
             <div class="d-flex">
             <a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}"
                 href="#" class="card-btn" onclick="copyToClipboard(this)">
-                <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +42,6 @@
             
             <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
                 class="card-btn" onclick="copyToClipboardphone(this)">
-                <!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
@@ -64,7 +62,7 @@
     No Members are available for the project,please click below to invite members
     </p>
     <div class="empty-action">
-        @can('edit project') 
+        @can('edit project')
             <div class="float-end">
                 <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}"
                 data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn  btn-primary"
@@ -76,36 +74,3 @@
     </div>
 </div>
 @endforelse
-
-
-<!-- <li class="list-group-item px-0">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-sm-auto mb-3 mb-sm-0">
-                <div class="d-flex align-items-center">
-                    
-                        @if($user->avatar)
-                            <img  src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"
-                            alt="image" class="user-initial">
-                        @else
-                        <?php  //$short=substr($user->name, 0, 1);?>
-                            <span class="user-initial">{{strtoupper($short)}}</span>
-                        @endif
-                
-                    <div class="div" style='margin-left: 10px;'>
-                        <h5 class="m-0">{{ $user->name }}</h5>
-                        <small class="text-muted">{{ $user->email }}</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-auto text-sm-end d-flex align-items-center">
-                <div class="action-btn bg-danger ms-2">
-                    {!! Form::open(['method' => 'DELETE',
-                        'route' => ['projects.user.destroy',  [$project->id,$user->id]]]) !!}
-                    <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip"
-                    title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>
-
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
-</li> -->

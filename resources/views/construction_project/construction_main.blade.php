@@ -9,14 +9,14 @@
                   <div class="mb-3">
                      <div class="row g-2">
                         <div class="col">
-                        <form action="{{ route('construction_main') }}" method="GET" id="searchproject">
+                           <form action="{{ route('construction_main') }}" method="GET" id="searchproject">
                            {{ Form::text('keyword',isset($_GET['keyword'])?$_GET['keyword']:'',
-								array('class' => 'form-control d-inline-block w-9 me-3 mt-auto',
-								'id'=>'keyword','placeholder'=>__('Search for Projects…'))) }}
-                        </form>
+                           array('class' => 'form-control d-inline-block w-9 me-3 mt-auto',
+                           'id'=>'keyword','placeholder'=>__('Search for Projects…'))) }}
+                           </form>
                         </div>
                         <div class="col-auto">
-                           <a href="javascript:void(0)" id="searchbtnproj" class="btn btn-icon" aria-label="Button">
+                        <a href="javascript:void(0)" id="searchbtnproj" class="btn btn-icon" aria-label="Button">
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
