@@ -254,8 +254,6 @@ $holidays = implode(':', $holidays);
             <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
             Critical Path
          </label>
-          <label class="dropdown-item form-switch">
-            <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
           </div>
           </div>
           </li>
