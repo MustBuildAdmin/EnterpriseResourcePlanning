@@ -256,13 +256,6 @@ $holidays = implode(':', $holidays);
          </label>
           <label class="dropdown-item form-switch">
             <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
-          <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2"
-            onchange="updateCriticalPath(this)" type="checkbox"> Checkbox input
-          </label>
-          <label class="dropdown-item form-switch">
-            <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
-            Checkbox input
-          </label>
           </div>
           </div>
           </li>
@@ -1120,7 +1113,7 @@ setTimeout(
               form.style.display = "block";
                 form.querySelector("[name='save']").onclick = save;
                 form.querySelector("[name='close']").onclick = cancel;
-              form.querySelector("[name='cancel']").onclick = cancel;
+                form.querySelector("[name='cancel']").onclick = cancel;
                 form.querySelector("[name='delete']").onclick = remove;
             }
 
