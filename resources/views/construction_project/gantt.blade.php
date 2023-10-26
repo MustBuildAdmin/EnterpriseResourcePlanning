@@ -250,6 +250,7 @@ $holidays = implode(':', $holidays);
       <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
       Critical Path
       </label>
+      <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
       </div>
       </div>
       </li>
@@ -755,7 +756,7 @@ Add new Task
       			name: "totalSlack",
       			align: "center",
       			resize: true,
-      			hide:false,
+      			hide:true,
       			width: 70,
       			label: "Total slack",
       			template: function(task) {
@@ -766,7 +767,7 @@ Add new Task
       			name: "freeSlack",
       			align: "center",
       			resize: true,
-      			hide:false,
+      			hide:true,
       			width: 70,
       			label: "Free slack",
       			template: function(task) {
@@ -782,7 +783,7 @@ Add new Task
       			align: "center",
       			resize: true,
       			tree: true,
-      			hide:false,
+      			hide:true,
       			width: 700,
       			label: "WBS",
       			template: function(task) {
@@ -1086,11 +1087,17 @@ Add new Task
    if (frezee_status_actual != 1) {
    // Configuring app url
    var app_url="{{env('APP_URL')}}";
-   
-   var dp = new gantt.dataProcessor(app_url);
+
+
+   new gantt.Promise(function(resolve, reject) {
+    var dp = new gantt.dataProcessor(app_url);
+    }).then(function(){
+        var critical = 0;
+        dp.init(gantt);
+    });
+
    // var dp = new gantt.dataProcessor("/erp/public/");
-   var critical = 0;
-   dp.init(gantt);
+
    
    
    dp.attachEvent("onBeforeDataSending", function(id, state, data){
