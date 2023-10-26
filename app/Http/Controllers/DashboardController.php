@@ -709,8 +709,7 @@ class DashboardController extends Controller
             $projects = Project::whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
 
             if (! empty($request->keyword)) {
-                $projects->where('project_name', 'LIKE', '%'.$request->keyword.'%')
-                ->orWhereRaw('FIND_IN_SET("'.$request->keyword.'",tags)');
+                $projects->where('project_name', 'LIKE', '%'.$request->keyword.'%');
             }
             if (! empty($request->status)) {
                 $projects->whereIn('status', $request->status);
