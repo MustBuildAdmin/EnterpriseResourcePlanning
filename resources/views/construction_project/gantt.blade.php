@@ -588,12 +588,7 @@ Add new Task
    }
    gantt.init("gantt_here");
    
-   setTimeout(
-      function() {
-          gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-          $('.loader_show').hide();
-          $('#additional_elements').removeClass("d-none");
-      }, 3000);
+  
    
 </script>
 <script>
@@ -1089,12 +1084,21 @@ Add new Task
    var app_url="{{env('APP_URL')}}";
 
 
+
+
    new gantt.Promise(function(resolve, reject) {
     var dp = new gantt.dataProcessor(app_url);
+
+
     }).then(function(){
         var critical = 0;
         dp.init(gantt);
-    });
+        $('.loader_show').hide();
+        $('#additional_elements').removeClass("d-none");
+    }).catch((err) => {
+        $('.loader_show').hide();
+       console.error(err);
+    });;
 
    // var dp = new gantt.dataProcessor("/erp/public/");
 
