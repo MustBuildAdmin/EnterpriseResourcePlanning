@@ -1081,10 +1081,9 @@ Add new Task
    
    if (frezee_status_actual != 1) {
    // Configuring app url
-   var app_url="{{env('APP_URL')}}";
+   const app_url="{{env('APP_URL')}}";
    const  dp = new gantt.dataProcessor(app_url);
    new gantt.Promise(function(resolve, reject) {
-
     gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
      dp.init(gantt);
     }).then(function(){
