@@ -436,7 +436,7 @@ i.ti.ti-eye.text-white.text-white {
             data: {_token: $('meta[name="csrf-token"]').attr('content'), contract_description: $(this).val()},
             type: 'POST',
             success: function (response) {
-                console.log(response)
+            
                 if (response.is_success) {
                     show_toastr('success', response.success,'success');
                 } else {
@@ -553,7 +553,7 @@ i.ti.ti-eye.text-white.text-white {
                         location.reload();
                     }, 500)
                     data = JSON.parse(data);
-                    console.log(data);
+                   
                     var html =             "<div class='list-group-item px-0'>" +
                         "                    <div class='row align-items-center'>" +
                         "                        <div class='col-auto'>" +

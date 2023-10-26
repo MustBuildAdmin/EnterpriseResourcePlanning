@@ -357,7 +357,7 @@
             var url = $(this).data('url');
             var value = this.value;
             var cat = $('.cat-active').children().data('cat-id');
-            // console.log(cat);
+          
             searchProducts(url, value,cat);
         });
 
@@ -373,7 +373,7 @@
                     'session_key': session_key
                 },
                 success: function (data) {
-                    console.log(data)
+                   
                     $('#product-listing').html(data);
                 }
             });
@@ -384,7 +384,7 @@
                 type: 'GET',
                 url: '{{ route('product.categories') }}',
                 success: function (data) {
-                    // console.log(data);
+               
                     $('#categories-listing').html(data);
                 }
             });
@@ -431,7 +431,7 @@
             var sum = 0;
             var quantity = ele.closest('span').find('input[name="quantity"]').val();
 
-            // console.log(quantity)
+           
 
             $.ajax({
                 url: ele.data('url'),
@@ -549,7 +549,7 @@
                     ele.remove();
                 },
                 success: function (data) {
-                    // console.log(data);
+                  
                     // return false;
                     if (data.code == 200) {
                         show_toastr('Success', data.success, 'success')

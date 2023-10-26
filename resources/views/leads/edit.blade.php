@@ -72,7 +72,7 @@
 
     $(document).on("change", "#commonModal select[name=pipeline_id]", function () {
         var currVal = $(this).val();
-        console.log('current val ', currVal);
+       
         getStages(currVal);
     });
 

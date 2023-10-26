@@ -109,7 +109,7 @@
                 data: data,
                 success: function (data) {
 
-                    // console.log(data);
+                 
                     $('.weekly-dates-div .weekly-dates').text(data.onewWeekDate);
                     $('.weekly-dates-div #selected_dates').val(data.selectedDate);
 

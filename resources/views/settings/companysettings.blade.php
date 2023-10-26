@@ -125,7 +125,7 @@
 
 
         $(document).on("change", '#company_country', function () {
-            console.log("testong")
+          
             var name=$(this).val();
             var settings = {
                     "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",

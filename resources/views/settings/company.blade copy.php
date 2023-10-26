@@ -40,7 +40,7 @@
                 data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
                 type: 'POST',
                 success: function (response) {
-                    console.log(response)
+                
                     if (response.is_success) {
                         show_toastr('success', response.success,'success');
                     } else {
@@ -64,7 +64,7 @@
                 data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
                 type: 'POST',
                 success: function (response) {
-                    console.log(response)
+                   
                     if (response.is_success) {
                         show_toastr('success', response.success,'success');
                     } else {
@@ -88,7 +88,7 @@
                 data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
                 type: 'POST',
                 success: function (response) {
-                    console.log(response)
+                  
                     if (response.is_success) {
                         show_toastr('success', response.success,'success');
                     } else {
@@ -112,7 +112,7 @@
                 data: {_token: $('meta[name="csrf-token"]').attr('content'), content: $(this).val()},
                 type: 'POST',
                 success: function (response) {
-                    console.log(response)
+                 
                     if (response.is_success) {
                         show_toastr('success', response.success,'success');
                     } else {

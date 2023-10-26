@@ -28,7 +28,7 @@
                 },
                 success: function (data) {
                     var job = JSON.parse(data);
-                    // console.log(job)
+                   
                     var applicant = job.applicant;
                     var visibility = job.visibility;
                     var question = job.custom_question;
@@ -69,10 +69,10 @@
                 this.$body = a("body")
             };
             t.prototype.init = function () {
-                // console.log(t);
+               
                 a('[data-plugin="dragula"]').each(function () {
 
-                    //   console.log(t);
+                  
                     var t = a(this).data("containers"),
 
                         n = [];
