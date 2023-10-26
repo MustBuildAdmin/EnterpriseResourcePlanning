@@ -1098,11 +1098,11 @@ Add new Task
    new gantt.Promise(function(resolve, reject) {
     var dp = new gantt.dataProcessor(app_url);
     gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-
+    dp.init(gantt);
     }).then(function(){
         var critical = 0;
  
-        dp.init(gantt);
+       
         $('.loader_show').hide();
         $('#additional_elements').removeClass("d-none");
     }).catch((err) => {
