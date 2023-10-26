@@ -475,7 +475,6 @@ Add new Task
                break;
        }
    }
-   
    var els = document.querySelectorAll(".gantt_zoom_select");
    for (var i = 0; i < els.length; i++) {
        els[i].onchange = function(e) {
@@ -763,7 +762,6 @@ Add new Task
       				return gantt.getTotalSlack(task);
       			}
       		}
-      
       		var freeSlackColumn = {
       			name: "freeSlack",
       			align: "center",
