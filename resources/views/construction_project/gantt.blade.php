@@ -1123,8 +1123,7 @@
                         // }
                     })
                     if (frezee_status_actual != 1) {
-                       // var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
-                        var dp = new gantt.dataProcessor("/erp/public/");
+                       var dp = new gantt.dataProcessor("https://demo.mustbuildapp.com/");
                         var critical=0;
                         dp.init(gantt);
                         
