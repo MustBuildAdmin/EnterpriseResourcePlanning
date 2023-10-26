@@ -124,11 +124,14 @@ class TaskController extends Controller
 
     public function update($id, Request $request)
     {
-        $task = Con_task::where('main_id',$request->main_id)
-                            ->where(['project_id' => Session::get('project_id'),
-                            'instance_id' => Session::get('project_instance')])
-                            ->first();
-
+        
+       
+            $task = Con_task::where('id',$id)
+            ->where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])
+            ->first();
+        
+       
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
                 $implodeusers = implode(',', json_decode($request->users));
@@ -190,8 +193,9 @@ class TaskController extends Controller
             'type'=>$type,
             'float_val'=>$float_val,
         );
+        
 
-        Con_task::where('main_id',$request->main_id)
+        Con_task::where('id',$id)
                 ->where(['project_id' => Session::get('project_id'),
                 'instance_id' => Session::get('project_instance')])
                 ->update($update_data);
