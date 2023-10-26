@@ -769,7 +769,7 @@ setTimeout(
                 gantt.render();
             }
             // function columnHideandShow() {
-            //   
+            //
             // }
 
            /* show slack */
