@@ -1093,12 +1093,12 @@ Add new Task
     
       }, 3000);
 
-
+      const  dp = new gantt.dataProcessor(app_url);
 
    new gantt.Promise(function(resolve, reject) {
-    var dp = new gantt.dataProcessor(app_url);
+
     gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-    dp.init(gantt);
+     dp.init(gantt);
     }).then(function(){
         var critical = 0;
  
