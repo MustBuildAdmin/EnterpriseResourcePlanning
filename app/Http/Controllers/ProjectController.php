@@ -1100,6 +1100,19 @@ class ProjectController extends Controller
                     ->whereDate('end_date', '>', date('Y-m-d'))
                     ->count();
 
+                $dependencycriticalcount = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where("type", "task")
+                    ->where("progress", "<", 100)
+                    ->whereDate('dependency_critical', '>', date('Y-m-d'))
+                    ->count();
+
+                $entirecriticalcount = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where("type", "task")
+                    ->where("progress", "<", 100)
+                    ->whereDate('entire_critical', '>', date('Y-m-d'))
+                    ->count();
 
                 $startDate = Carbon::now()->subWeeks(3);
                 $endDate = Carbon::now();
@@ -1111,10 +1124,15 @@ class ProjectController extends Controller
 
                     $search_date = $startDate->format('Y-m-d');
                     // completed task count
-                    $completed[]=Task_progress::where('project_id',$project->id)->where('instance_id',Session::get("project_instance"))->where('record_date', 'like', $search_date.'%')->where('percentage','100')->count();
+                    $completed[]=Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('record_date', 'like', $search_date.'%')
+                    ->where('percentage','100')->count();
 
                     // pending task count
-                    $pending[]=Task_progress::where('project_id',$project->id)->where('instance_id',Session::get("project_instance"))->where('record_date', 'like', $search_date.'%')->where('percentage','>','100')->count();
+                    $pending[]=Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('record_date', 'like', $search_date.'%')->where('percentage','>','100')->count();
 
                     $startDate->addDay();
                 }
@@ -1124,6 +1142,8 @@ class ProjectController extends Controller
                     compact(
                         "project",
                         "ongoing_task",
+                        "dependencycriticalcount",
+                        "entirecriticalcount",
                         "project_data",
                         "total_sub",
                         "actual_percentage",
@@ -1510,6 +1530,7 @@ class ProjectController extends Controller
             return response()->json([
                 "success" => true,
                 "html" => $returnHTML,
+                "project"=>$project->get()
             ]);
         }
     }
@@ -1520,14 +1541,34 @@ class ProjectController extends Controller
             $project=Project::find(Session::get("project_id"));
             
             if($project->critical_update==0){
-                $array=[
-                    "iscritical"=>1,
-                ];
-                if(is_array($request->critical_task)){
-                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->whereIn('id',$request->critical_task)->update($array);
-                }else{
-                    $data=Con_task::where('project_id',Session::get("project_id"))->where('instance_id',Session::get("project_instance"))->where('id',$request->critical_task)->update($array);
+
+                foreach ($request->updatedTask as $value) {
+                    if(isset($value['totalStack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['totalStack']);
+                        $total_slack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $total_slack = null;
+                    }
+                    if(isset($value['freeSlack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['freeSlack']);
+                        $freeSlack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $freeSlack = null;
+                    }
+
+                    Con_task::where('project_id',Session::get("project_id"))
+                            ->where('instance_id',Session::get("project_instance"))
+                            ->where('main_id',$value['main_id'])
+                            ->update(['dependency_critical'=>$freeSlack,
+                            'entire_critical'=>$total_slack,
+                            'float_val'=>$total_slack]);
+    
                 }
+
                 Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
             }
         }

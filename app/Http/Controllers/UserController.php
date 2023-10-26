@@ -14,6 +14,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\UserToDo;
 use App\Models\Utility;
+use App\Models\Enquiry;
 use Config;
 use Exception;
 use File;
@@ -1009,6 +1010,24 @@ class UserController extends Controller
             } else {
                 return 0; //Error
             }
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+    }
+    public function contactus(Request $request)
+    {
+        try {
+            
+            $enquiry = new Enquiry();
+            $enquiry['name'] = $request->name;
+            $enquiry['email'] = $request->email;
+            $enquiry['subject'] = $request->subject;
+            $enquiry['message'] = $request->message;
+            $enquiry->save();
+            return response()->json(['status' => true]);
 
         } catch (Exception $e) {
 

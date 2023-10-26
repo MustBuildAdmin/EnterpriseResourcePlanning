@@ -12,26 +12,32 @@
 <div class="page-wrapper dashboard">
 
 @include('construction_project.side-menu')
-<section class="container">
-  <div class="col-lg-12 bgwhite">
-    <div class="card">
-      <div class="card-header">
-        <div class="headingnew align-items-center justify-content-between">
-          <h5>{{__('Members')}}</h5> @can('edit project') <div class="float-end">
-            <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}"
-             data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn btn-sm btn-primary"
-              data-bs-original-title="{{__('Add Member')}}">
-              <i class="ti ti-plus"></i>
-            </a>
-          </div> @endcan
+<div class="container-fluid">
+      <div class="card mt-5 p-4">
+        <div class="card-header">
+          <h3>Members of the Project</h3>
+          <div class="card-actions">
+            <div class="row">
+              <div class="col-12">
+              @can('edit project') <div class="float-end">
+                  <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}"
+                  data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn  btn-primary"
+                   >
+                    {{__(' Invite a Member')}}
+                  </a>
+                </div> @endcan
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="row row-cards" id="project_users">
+         
         </div>
       </div>
-      <div class="card-body">
-        <ul class="list-group list-group-flush list" id="project_users"></ul>
-      </div>
+     
     </div>
-  </div>
-</section>
+
 
 <section class="statis  text-center main2">
   <div class="row">
@@ -43,6 +49,25 @@
 @include('new_layouts.footer')
 
     <script>
+      function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        copy_email = $(element).data('copy_email');
+        $temp.val(copy_email).select();
+        document.execCommand("copy");
+        $temp.remove();
+        toastr.info("Copying to clipboard was successful!");
+      }
+      function copyToClipboardphone(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        copy_phone = $(element).data('copy_phone');
+        $temp.val(copy_phone).select();
+        document.execCommand("copy");
+        $temp.remove();
+        toastr.success("Copying to clipboard was successful!");
+      }
+
         $(document).ready(function () {
             loadProjectUser();
         });
