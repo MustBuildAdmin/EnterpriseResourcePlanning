@@ -147,7 +147,7 @@
 
     function getKeyId(){
         getKeyI = $("#example2 tbody tr").length;
-        console.log("getKeyI",getKeyI);
+     
         if(getKeyI != 0){
             return getKeyI;
         }

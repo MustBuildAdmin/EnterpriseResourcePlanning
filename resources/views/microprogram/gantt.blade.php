@@ -471,7 +471,7 @@
                         project_id: {{ $project->id }}
                     },
                     function(resp, textStatus, jqXHR) {
-                        console.log(resp, "resprespresp")
+                       
                         if (resp == 0) {
                             $('.freeze_button').addClass('disabled');
                             $('.undo_action').addClass('disabled');
@@ -511,7 +511,7 @@
                 var els = document.getElementsByClassName("action");
                 for (var i = 0; i < els.length; i++) {
                     els[i].onclick = function() {
-                        console.log(els[i])
+                    
                         gantt.performAction(this.id)
                     }
                 }
@@ -961,7 +961,7 @@
                         return html;
                     },
                     set_value: function(node, value, ev, sns) {
-                        console.log("value", value);
+                      
                         node.style.overflow = "visible";
                         node.parentNode.style.overflow = "visible";
                         node.style.display = "inline-block";
@@ -1090,7 +1090,7 @@
                        
                       
                         dp.dataProcessor = gantt.createDataProcessor(function(entity, action, data, id) {
-                          console.log("entity",entity);
+                        
 
                           if(entity=='link'){
                             switch(action) {

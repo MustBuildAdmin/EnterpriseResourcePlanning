@@ -489,7 +489,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         project_id: {{ $project->id }}
                     },
                     function(resp, textStatus, jqXHR) {
-                        console.log(resp, "resprespresp")
+                      
                         if (resp == 0) {
                             $('.freeze_button').addClass('disabled');
                             $('.undo_action').addClass('disabled');
@@ -529,7 +529,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 var els = document.getElementsByClassName("action");
                 for (var i = 0; i < els.length; i++) {
                     els[i].onclick = function() {
-                        console.log(els[i])
+                     
                         gantt.performAction(this.id)
                     }
                 }
@@ -957,7 +957,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     critical_task.push(tasks[i].id);
                                 }
                             };
-                            console.log(updatedTask);
+                         
 
                             workflag=1;
                             $.ajax({
@@ -1023,7 +1023,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         return html;
                     },
                     set_value: function(node, value, ev, sns) {
-                        console.log("value", value);
+                      
                         node.style.overflow = "visible";
                         node.parentNode.style.overflow = "visible";
                         node.style.display = "inline-block";

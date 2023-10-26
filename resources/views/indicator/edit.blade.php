@@ -68,7 +68,7 @@
                 "department_id": did, "_token": "{{ csrf_token() }}",
             },
             success: function (data) {
-                console.log(data);
+        
                 $('#designation_id').empty();
                 $('#designation_id').append('<option value="">Select any Designation</option>');
                 $.each(data, function (key, value) {

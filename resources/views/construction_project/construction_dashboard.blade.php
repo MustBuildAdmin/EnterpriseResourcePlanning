@@ -455,7 +455,7 @@ if($delay>100){
     const data=<?php echo json_encode($alldates)?>;
     const completed=<?php echo json_encode($completed)?>;
     const pending=<?php echo json_encode($pending)?>;
-    console.log(pending);
+
     document.addEventListener("DOMContentLoaded", function () {
       window.ApexCharts && (new ApexCharts(document.getElementById('chart-mentions'), {
         chart: {

@@ -170,7 +170,7 @@
                     var tr = '';
                     // <tr><td class="dataTables-empty" colspan="1">No entries found</td></tr>
                     if (data.length > 0) {
-                        console.log(data);
+                       
                         $.each(data, function (indexInArray, valueOfElement) {
                             var status =
                                 '<div class="badge bg-danger p-2 px-3 rounded"><a href="#" class="text-white">' +
@@ -359,7 +359,7 @@
                     url: url,
                     dataType: "JSON",
                     success: function (data) {
-                        console.log(data);
+                     
 
 
                         // show_toastr(data.status, data.msg, 'data.status');

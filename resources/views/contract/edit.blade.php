@@ -76,12 +76,12 @@
             url: `{{ url('contract/clients/select')}}/${bid}`,
             type: 'GET',
             success: function (data) {
-                console.log(data);
+              
                 $("#project_id").html('');
                 $('#project_id').append('<select class="form-control" id="project_id" name="project_id[]"  ></select>');
                 //var sdfdsfd = JSON.parse(data);
                 $.each(data, function (i, item) {
-                    //console.log(item.name);
+                   
                     $('#project_id').append('<option value="' + item.id + '">' + item.name + '</option>');
                 });
 

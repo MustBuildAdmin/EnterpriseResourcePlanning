@@ -27,18 +27,18 @@
 });
 brick.showPaymentForm(function(data) {
       if(data.flag == 1){
-        console.log('dsfrserf');
+      
         window.location.href ='{{route("error.invoice.show",[1, 'invoice_id'])}}'.replace('invoice_id',data.invoice);
       }else{
-        console.log('22222');
+       
         window.location.href ='{{route("error.invoice.show",[2, 'invoice_id'])}}'.replace('invoice_id',data.invoice);
       }
     }, function(errors) {
       if(errors.flag == 1){
-        console.log('xcfdr');
+      
         window.location.href ='{{route("error.invoice.show",[1,'invoice_id'])}}'.replace('invoice_id',errors.invoice);
       }else{
-        console.log('11111');
+       
         window.location.href ='{{route("error.invoice.show",[2, 'invoice_id'])}}'.replace('invoice_id',errors.invoice);
       }
 

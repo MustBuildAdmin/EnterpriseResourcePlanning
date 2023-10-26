@@ -247,7 +247,6 @@
 @include('new_layouts.footer')
 <script type="text/javascript">
  $(document).on("change", '#company_country', function () {
-    console.log("testongsdfsdfs")
             var name=$(this).val();
             var settings = {
                     "url": "https://api.countrystatecity.in/v1/countries/"+name+"/states",
