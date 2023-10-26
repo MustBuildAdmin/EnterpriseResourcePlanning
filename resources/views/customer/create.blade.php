@@ -236,7 +236,7 @@ $(document).on("change", '#billing_country', function () {
 //             };
     
 //             $.ajax(settings).done(function (response) {
-//             console.log(response);
+//           
 //                     $('#billing_city').empty();
 //                     $('#billing_city').append('<option value="">{{__('Select City ...')}}</option>');
 //                         $.each(response, function (key, value) {
@@ -274,7 +274,7 @@ $(document).on("change", '#shipping_country', function () {
 //             };
     
 //             $.ajax(settings).done(function (response) {
-//             console.log(response);
+//          
 //                     $('#shipping_city').empty();
 //                     $('#shipping_city').append('<option value="">{{__('Select City ...')}}</option>');
 //                         $.each(response, function (key, value) {

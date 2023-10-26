@@ -339,7 +339,7 @@
                     }).then((result) => {
                     /* Read more about handling dismissals below */
                     if (result.dismiss === Swal.DismissReason.timer) {
-                        console.log('I was closed by the timer')
+                  
                     }
                     })
 
@@ -401,7 +401,7 @@
                     cache: false,
                     success: function (data) {
                         var item = JSON.parse(data);
-                        console.log(item)
+                      
                         $(el.parent().parent().find('.quantity')).val(1);
                         $(el.parent().parent().find('.price')).val(item.product.sale_price);
                         $('.pro_description').text(item.product.description);

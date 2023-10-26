@@ -776,7 +776,7 @@
 
             //all total //
             var total_inputs = $(el.parent().find('.totalIncome'));
-            console.log(total_inputs)
+           
             var income = 0;
             for (var i = 0; i < total_inputs.length; i++) {
                 var price = $(total_inputs[i]).html();
@@ -813,7 +813,7 @@
 
             //all total //
             var total_inputs = $(el.parent().find('.totalExpense'));
-            console.log(total_inputs)
+        
             var expense = 0;
             for (var i = 0; i < total_inputs.length; i++) {
                 var price = $(total_inputs[i]).html();

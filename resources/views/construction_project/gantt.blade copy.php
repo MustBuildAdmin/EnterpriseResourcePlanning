@@ -221,7 +221,7 @@ $holidays=implode(':',$holidays);
 		var els = document.getElementsByClassName("action");
 		for (var i = 0; i < els.length; i++) {
 			els[i].onclick = function () {
-				console.log(els[i])
+			
 				gantt.performAction(this.name)
 			}
 		}

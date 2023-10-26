@@ -117,7 +117,7 @@
                           `;
                 },
                 on_click: function (task) {
-                    //console.log(task);
+                 
                 },
                 on_date_change: function(task, start, end) {
                     task_id = task.id;

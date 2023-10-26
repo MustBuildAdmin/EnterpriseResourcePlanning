@@ -220,7 +220,7 @@
                                 totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
                             }
 
-                            console.log(itemTaxPriceInput[0]);
+                       
 
                             $('.totalTax').html(totalItemTaxPrice.toFixed(2));
                             $('.totalAmount').html((parseFloat(subTotal) - parseFloat(totalItemDiscountPrice) + parseFloat(totalItemTaxPrice)).toFixed(2));

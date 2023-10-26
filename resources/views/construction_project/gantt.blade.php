@@ -575,7 +575,7 @@ gantt.attachEvent("onBeforeAutoSchedule", function() {
                 updatedTask.push(taskdetails);
 
             };
-            console.log(updatedTask);
+          
 
             workflag = 1;
             $.ajax({
@@ -745,8 +745,7 @@ setTimeout(
             var today = new Date();
           var additional_width = (gantt.$container.offsetWidth - gantt.config.grid_width) / 2
           var position = gantt.posFromDate(today) - additional_width;
-        console.log(gantt.posFromDate(today))
-          console.log(position)
+      
           gantt.scrollTo(position)
         }
 
@@ -770,7 +769,7 @@ setTimeout(
                 gantt.render();
             }
             // function columnHideandShow() {
-            //    console.log("bhi")
+            //   
             // }
 
            /* show slack */
@@ -870,7 +869,7 @@ setTimeout(
                         var labels = [];
                         for(var i = 0; i < links.length; i++){
                         var link = gantt.getLink(links[i]);
-                        console.log(link)
+                       
                         labels.push(linksFormatter.format(link));
                         }
                         return labels.join(", ")
@@ -966,19 +965,19 @@ setTimeout(
 
 
             gantt.attachEvent("onAfterTaskUpdate", function(id,item){
-                 console.log(gantt.getTask(id))
+                
            });
 
            gantt.attachEvent("onAfterLinkAdd", function(id,item){
-                console.log(id,item)
+               
            });
 
            gantt.attachEvent("onAfterLinkUpdate", function(id,item){
-                console.log(id,item)
+               
            });
 
            gantt.attachEvent("onAfterLinkDelete", function(id,item){
-                console.log(id,item)
+               
            });
 
 
@@ -1117,8 +1116,10 @@ setTimeout(
 // gantt create edit functionality
 
 if (frezee_status_actual != 1) {
+    // Configuring app url
+    var app_url="{{env('APP_URL')}}";
 
-   	var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
+   	var dp = new gantt.dataProcessor(app_url);
    	// var dp = new gantt.dataProcessor("/erp/public/");
    	var critical = 0;
    	dp.init(gantt);

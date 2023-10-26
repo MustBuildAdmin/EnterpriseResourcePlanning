@@ -274,7 +274,7 @@
 		});
 
 	var rowIdx = $(this).find(':last-child .count').val();
-	console.log("adsf",rowIdx++);
+	
 
 // jQuery button click event to add a row
 

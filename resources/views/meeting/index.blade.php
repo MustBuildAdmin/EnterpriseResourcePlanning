@@ -97,7 +97,7 @@
                 },
 
                 success: function (data) {
-                    console.log(data);
+                   
                     $('#department_id').empty();
 
                     $("#department_div").html('');
@@ -107,7 +107,7 @@
 
                     $('#department_id').append('<option value="0"> {{__('All Department')}} </option>');
                     $.each(data, function (key, value) {
-                        console.log(key, value);
+                     
                         $('#department_id').append('<option value="' + key + '">' + value + '</option>');
                     });
                     var multipleCancelButton = new Choices('#department_id', {
@@ -134,7 +134,7 @@
                     "department_id": did, "_token": "{{ csrf_token() }}",
                 },
                 success: function (data) {
-                    console.log(data);
+                  
                     $('#employee_id').empty();
 
                     $("#employee_div").html('');

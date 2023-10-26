@@ -161,7 +161,7 @@ $(document).on("keyup", 'input[type=date]', function () {
 // };
 
 // $.ajax(settings).done(function (response) {
-//   console.log(response);
+//
 // });
 
 // $(document).on("keyup", 'input[type=date]', function () {
@@ -174,7 +174,7 @@ $(document).on("keyup", 'input[type=date]', function () {
 //         };
 
 //         $.ajax(settings).done(function (response) {
-//         console.log(response);
+//
 //         });
 // });
 // end country list
