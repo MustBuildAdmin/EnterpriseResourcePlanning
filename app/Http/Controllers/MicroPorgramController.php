@@ -1200,8 +1200,13 @@ class MicroPorgramController extends Controller
         $project_id    = Session::get('project_id');
         $instance_id   = Session::get('project_instance');
 
-        $checkActive        = MicroProgramScheduleModal::where('active_status',1)->where('status',1)->first();
-        $checkActiveGet     = $checkActive != null ? 1 : 0;
+        $checkActive = MicroProgramScheduleModal::where('project_id',$project_id)
+        ->where('instance_id',$instance_id)
+        ->where('active_status',1)
+        ->where('status',1)
+        ->first();
+
+        $checkActiveGet = $checkActive != null ? 1 : 0;
 
         if($checkActiveGet == 1){
             return array(
