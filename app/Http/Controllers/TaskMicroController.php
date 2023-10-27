@@ -131,7 +131,7 @@ class TaskMicroController extends Controller
 
     public function update($id, Request $request)
     {
-        
+       
        
             $task = MicroTask::where('id',$id)
             ->where(['project_id' => Session::get('project_id'),

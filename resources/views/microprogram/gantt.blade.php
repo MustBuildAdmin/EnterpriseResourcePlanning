@@ -967,10 +967,7 @@ setTimeout(
 
             gantt.attachEvent("onAfterTaskUpdate", function(id,item){
                 console.log("id",id);
-                console.log(" task.id", task.id);
-                
-               
-           });
+            });
 
            gantt.attachEvent("onAfterLinkAdd", function(id,item){
                
@@ -1125,7 +1122,25 @@ if (frezee_status_actual != 1) {
 
     
 
-    dp.dataProcessor = gantt.createDataProcessor(function(entity, action, data, id) {
+    dp.dataProcessor = gantt.createDataProcessor(function(entity, action, data, id, response) {
+        dp.dataProcessor.attachEvent("onAfterUpdate", function(id, action, tid, response) {
+           
+            gantt.config.readonly = false;
+            if (action == "inserted") {
+                response_code = $.parseJSON(response.response) ;
+                newtid = response_code.tid;
+                console.log("ok_id_tid",tid);
+                console.log("ok_id",id);
+                console.log("response",response_code.tid);
+                setTimeout(function () {
+                    gantt.showLightbox(newtid);
+                }, 5000);
+                //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+            }
+        });
+
+        console.log("new res",data);
+
         if(entity=='link'){
             switch(action) {
                 case "create":
@@ -1148,7 +1163,6 @@ if (frezee_status_actual != 1) {
                     );
                 break;
             }
-
         }
         else{
             switch(action) {
@@ -1173,16 +1187,7 @@ if (frezee_status_actual != 1) {
             }
         }
 
-        dp.dataProcessor.attachEvent("onAfterUpdate", function(id, action, tid, response) {
-            gantt.config.readonly = false;
-            if (action == "inserted") {
-                
-                gantt.showLightbox(tid);
-                console.log("tid",tid);
-                console.log("id",id);
-                //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-            }
-        });
+        
     });
 
     var critical = 0;
