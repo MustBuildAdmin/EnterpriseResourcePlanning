@@ -250,7 +250,9 @@ $holidays = implode(':', $holidays);
       <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
       Critical Path
       </label>
-      <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
+      <label class="dropdown-item form-switch">
+        <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack
+      </label>
       </div>
       </div>
       </li>
@@ -334,11 +336,11 @@ $holidays = implode(':', $holidays);
 </div>
 <div class="modal-footer">
 <a href="#" class="btn btn-link link-secondary"
-   name="cancel" data-bs-dismiss="modal">
+    data-bs-dismiss="modal">
 Cancel
 </a>
 <a href="#" class="btn btn-primary ms-auto"
-   data-bs-dismiss="modal" name="save">
+   data-bs-dismiss="modal">
 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -803,7 +805,8 @@ Add new Task
       				task.assigness.forEach(function(assignee) {
       				if (!assignee)
       					return;
-      				result += "<div class='owner-label' title='" + assignee.firstName + "'>" + assignee.firstName.substr(0, 1) + "</div>";
+      				result += "<div class='owner-label' title='" + assignee.firstName + "'>"
+                        + assignee.firstName.substr(0, 1) + "</div>";
       
       			  });
       
@@ -817,10 +820,10 @@ Add new Task
       			};
       			
       			const formatter = gantt.ext.formatters.durationFormatter({
-      			enter: "day", 
-      			store: "day", 
+      			enter: "day",
+      			store: "day",
       			format: "auto"
-      			});	
+      			});
       			const linksFormatter = gantt.ext.formatters.linkFormatter({durationFormatter: formatter});
       
       		gantt.config.columns = [
@@ -865,7 +868,9 @@ Add new Task
       		];
       	   const columns = gantt.config.columns;
       	   for(let i= 0 ; i < columns.length; i++) {	
-      		const template = `<label class='dropdown-item form-switch'><input class='form-check-input m-0 me-2' id=${columns[i].name} name="columns" ${columns[i].hide ? "": "checked"} type='checkbox'>${columns[i].name} 
+      		const template = `<label class='dropdown-item form-switch'>
+                <input class='form-check-input m-0 me-2' id=${columns[i].name} name="columns"
+                ${columns[i].hide ? "": "checked"} type='checkbox'>${columns[i].name}
       			</label>`
       		  const parent = document.getElementById("gantt-columns");
       		  parent.appendTemplate(template);
