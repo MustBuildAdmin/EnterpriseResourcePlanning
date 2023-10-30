@@ -216,7 +216,7 @@
                     'is_display': is_display,
                 },
                 success: function (data) {
-                    // console.log(data);
+                  
                 }
             });
         })

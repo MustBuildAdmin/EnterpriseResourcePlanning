@@ -111,7 +111,7 @@
                         },
 
                         callback: function (response) {
-                            console.log(response.reference, order_id);
+                           
                             window.location.href = paystack_callback + '/' + response.reference + '/' + '{{encrypt($plan->id)}}' + '?coupon_id=' + coupon_id
                         },
                         onClose: function () {

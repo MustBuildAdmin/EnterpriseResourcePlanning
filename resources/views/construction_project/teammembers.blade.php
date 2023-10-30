@@ -30,13 +30,6 @@
                       </a>
                     </div>
                   @endcan
-               <!-- <div class="float-end">
-                  <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}"
-                  data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn  btn-primary"
-                   >
-                    {{__(' Invite a Member')}}
-                  </a>
-                </div> -->
               </div>
             </div>
           </div>

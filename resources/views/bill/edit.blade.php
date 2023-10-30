@@ -225,7 +225,7 @@
                                 totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
                             }
 
-                            console.log(itemTaxPriceInput[0]);
+                          
 
                             $('#indiangst').val(item.setting.indiangst);
                             $('#stategst').val(item.taxestype);

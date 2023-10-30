@@ -327,10 +327,10 @@
                 }
             },
             update: function(event, ui) {
-                console.log("lllkk");
+              
             },
             receive : function (event, ui) {
-                console.log("rec 1");
+              
             },
         });
     });
@@ -355,7 +355,7 @@
                 
             },
             onSort: function (/**Event*/evt) {
-                console.log("ll");
+          
                 $(".sortable_microschedule .card").each(function(index) {
                     index++;
                     $(this).attr('data-sortnumber',index);
@@ -471,8 +471,7 @@
             order_number = $(this).data('sortnumber');
             task_id      = $(this).data('task_id');
 
-            console.log("order_number",order_number);
-            console.log("task_id",task_id);
+          
 
             innerarray = {'sort_number':order_number,'task_id':task_id};
             schedulearray.push(innerarray);

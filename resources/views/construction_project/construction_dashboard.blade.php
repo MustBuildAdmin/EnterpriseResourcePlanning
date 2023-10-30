@@ -22,10 +22,10 @@ if($delay>100){
           <div class="col-10">
             <!-- Page pre-title -->
             <div class="page-pretitle">
-              Overview
+              {{ __('Overview')}}
             </div>
             <h2 class="page-title">
-              Dashboard
+              {{ __('Dashboard')}}
             </h2>
           </div>
 
@@ -81,7 +81,7 @@ if($delay>100){
           <div class="col-lg-6 col-xl-3">
             <div class="card">
               <div class="card-header">
-                <h3>Project Current Status</h3>
+                <h3>{{ __('Project Current Status')}}</h3>
               </div>
               <div class="card-body">
                 <div id="chart-demo-pie"></div>
@@ -129,11 +129,11 @@ if($delay>100){
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  Current Look a Head
+                  {{ __('Current Look a Head')}}
                 </h3>
                 <div class="card-actions">
                   <a href="#">
-                    View the Active Look a Head<!-- Download SVG icon from http://tabler-icons.io/i/edit -->
+                    {{ __('View the Active Look a Head')}}<!-- Download SVG icon from http://tabler-icons.io/i/edit -->
                   </a>
                 </div>
               </div>
@@ -163,11 +163,11 @@ if($delay>100){
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center">
-                  <div class="subheader">Total Task</div>
+                  <div class="subheader">{{ __('Total Task')}}</div>
                 </div>
-                <div class="h1 mb-3">{{$project_data['task']['total'] }} Tasks</div>
+                <div class="h1 mb-3">{{$project_data['task']['total'] }} {{ __('Tasks')}}</div>
                 <div class="d-flex mb-2">
-                  <div>Planned Percentage</div>
+                  <div>{{ __('Planned Percentage')}}</div>
                   <div class="ms-auto">
                     <span class="text-blue d-inline-flex align-items-center lh-1">
                     {{ round($current_Planed_percentage) }}%
@@ -188,7 +188,7 @@ if($delay>100){
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center">
-                  <div class="subheader">Completed Task</div>
+                  <div class="subheader"> {{ __('Completed Task')}}</div>
                   <div class="ms-auto lh-1">
                     {{-- <div class="dropdown">
                       <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -202,10 +202,10 @@ if($delay>100){
                   </div>
                 </div>
                 <div class="h1 mb-3">
-                  <div class="h1 mb-0 me-2">{{$completed_task}} Tasks</div>
+                  <div class="h1 mb-0 me-2">{{$completed_task}} {{ __('Tasks')}}</div>
                 </div>
                 <div class="d-flex mb-2">
-                  <div>Actual Percentage</div>
+                  <div>{{ __('Actual Percentage')}}</div>
                   <div class="ms-auto">
                     <span class="text-blue d-inline-flex align-items-center lh-1">
                     {{round($actual_percentage)}}% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
@@ -248,11 +248,11 @@ if($delay>100){
                           <a @if( Session::get('current_revision_freeze')==1)
                           href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
                           <div class="font-weight-medium">
-                            Completed Sub-Task Today
+                            {{ __('Completed Sub-Task Today')}}
                           </div>
                           </a>
                           <div class="text-muted">
-                          {{  $completed_task }} Tasks
+                          {{  $completed_task }} {{ __('Tasks')}}
                           </div>
                         </div>
 
@@ -282,10 +282,10 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                         href='{{ route('taskBoard.view', ['list','status'=>'ongoing']) }}' @endif>
                           <div class="font-weight-medium">
-                            Ongoing Sub-Task Today
+                            {{ __('Ongoing Sub-Task Today')}}
                           </div>
                           <div class="text-muted">
-                          {{ $ongoing_task }} Tasks
+                          {{ $ongoing_task }} {{ __('Tasks')}}
                           </div>
                         </a>
                       </div>
@@ -317,10 +317,10 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                          href='{{ route('taskBoard.view', ['list','status'=>'remaning']) }}' @endif>
                           <div class="font-weight-medium">
-                            Remaining Sub-Task Today
+                            {{ __('Remaining Sub-Task Today')}}
                           </div>
                           <div class="text-muted">
-                          {{ $total_sub- $completed_task-$ongoing_task }} Tasks
+                          {{ $total_sub- $completed_task-$ongoing_task }} {{ __('Tasks')}}
                           </div>
                         </a>
                       </div>
@@ -347,10 +347,10 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                          href='{{ route('taskBoard.view', ['list','status'=>'pending']) }}' @endif>
                           <div class="font-weight-medium">
-                            Pending Sub-Task Today
+                            {{ __('Pending Sub-Task Today')}}
                           </div>
                           <div class="text-muted">
-                            {{ $notfinished }} Tasks
+                            {{ $notfinished }} {{ __('Tasks')}}
                           </div>
                         </a>
                       </div>
@@ -358,6 +358,82 @@ if($delay>100){
                   </div>
                 </div>
               </div>
+
+               <!--This is a Dependency Critical task count starts-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span
+                          class="bg-facebook text-white avatar">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                           viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809
+                             -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75
+                              -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158
+                              -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
+                            </path>
+                              <path d="M10 8v8h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-2z"></path>
+                            </svg>
+                        </span>
+                      </div>
+                      <div class="col">
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'dependency_critical']) }}' @endif>
+                          <div class="font-weight-medium">
+                            {{ __('Dependency Critical Task') }}
+                          </div>
+                          <div class="text-muted">
+                            {{ $dependencycriticalcount }} {{ __('Tasks')}}
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--This is a Dependency Critical task count ends-->
+
+              <!--This is a Entire Critical task count starts-->
+              <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <span
+                          class="bg-facebook text-white avatar">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                           viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555
+                             -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1
+                             -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443
+                              -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
+                            </path>
+                            <path d="M14 8h-4v8h4"></path><path d="M10 12h2.5"></path>
+                          </svg>
+                        </span>
+                      </div>
+                      <div class="col">
+                        <a @if( Session::get('current_revision_freeze')==1)
+                         href='{{ route('taskBoard.view', ['list','status'=>'entire_critical']) }}' @endif>
+                          <div class="font-weight-medium">
+                            {{ __('Entire Critical Task') }}
+                          </div>
+                          <div class="text-muted">
+                            {{ $entirecriticalcount }} {{ __('Tasks')}}
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--This is a Entire Critical task count ends-->
             </div>
           </div>
           <div class="col-lg-12">
@@ -379,7 +455,7 @@ if($delay>100){
     const data=<?php echo json_encode($alldates)?>;
     const completed=<?php echo json_encode($completed)?>;
     const pending=<?php echo json_encode($pending)?>;
-    console.log(pending);
+
     document.addEventListener("DOMContentLoaded", function () {
       window.ApexCharts && (new ApexCharts(document.getElementById('chart-mentions'), {
         chart: {

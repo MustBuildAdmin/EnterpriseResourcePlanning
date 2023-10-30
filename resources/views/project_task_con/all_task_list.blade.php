@@ -25,6 +25,7 @@ aria-describedby="Sub Task">
         <th scope="col">{{__('Tasks')}}</th>
         <th scope="col">{{__('Status')}}</th>
         <th scope="col">{{__('Is critical Task')}}</th>
+        <th scope="col">{{__('Float')}}</th>
         <th scope="col">{{__('Actual Progress')}}</th>
         <th scope="col">{{__('Planned Progress')}}</th>
         <th scope="col">{{__('Planned Start Date')}}</th>
@@ -121,21 +122,40 @@ aria-describedby="Sub Task">
 
                 <td style="width:20%;">
                     @if (strtotime($task->end_date) < time() && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> Pending
+                        <span class="badge bg-warning me-1"></span> {{__('Pending')}}
                     @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
-                        <span class="badge bg-success me-1"></span> Completed
+                        <span class="badge bg-success me-1"></span>  {{__('Completed')}}
                     @else
-                        <span class="badge bg-info me-1"></span> In-Progress
+                        <span class="badge bg-info me-1"></span> {{__('In-Progress')}}
+                    @endif
+                </td>
+                
+                <!--If the Task is Critical condition backup starts-->
+                  {{-- @if ($task->iscritical==1)
+                    {{__('Critical')}}
+                  @endif --}}
+                <!--If the Task is Critical condition backup starts-->
+                <td style="width:20%;">
+                    @if(date('Y-m-d') < $task->dependency_critical &&
+                            $task->progress < 100 && $task->entire_critical > date('Y-m-d') &&
+                            $task->progress < 100)
+                        <span class="badge bg-warning me-1"></span>  {{__('Entire Critical')}}
+                    @elseif($task->dependency_critical > date('Y-m-d') && $task->progress < 100)
+                        <span class="badge bg-warning me-1"></span> {{__('Dependency Critical')}}
+                    @elseif($task->entire_critical > date('Y-m-d') && $task->progress < 100)
+                        <span class="badge bg-warning me-1"></span> {{__('Entire Critical')}}
+                    @else
+                        <span class="badge bg-info me-1"></span>{{__('Non Critical')}}
                     @endif
                 </td>
 
-                
-                <td style="width:20%;">
-                    @if ($task->iscritical==1)
-                        <span class="badge bg-warning me-1"></span> Critical
+                <td style="width:30%; font-size: 15px;">
+                    @if ($task->float_val==null)
+                        @php $float_val=0; @endphp
                     @else
-                        <span class="badge bg-info me-1"></span> Non Critical
+                        @php $float_val=$task->float_val; @endphp
                     @endif
+                    {{$float_val}}
                 </td>
 
                 <td style="width:15%;" class="sort-progress"
@@ -147,8 +167,8 @@ aria-describedby="Sub Task">
                                 <div class="progress-bar" style="width: {{round($task->progress)}}%"
                                     role="progressbar" aria-valuenow="{{round($task->progress)}}"
                                     aria-valuemin="0" aria-valuemax="100"
-                                    aria-label="{{round($task->progress)}}% Complete">
-                                    <span class="visually-hidden">{{round($task->progress)}}% Complete</span>
+                                    aria-label="{{round($task->progress)}}% {{__('Complete')}}">
+                                    <span class="visually-hidden">{{round($task->progress)}}% {{__('Complete')}}</span>
                                 </div>
                             </div>
                         </div>
@@ -166,9 +186,9 @@ aria-describedby="Sub Task">
                                 <div class="progress-bar" style="width: {{round($current_Planed_percentage)}}%"
                                 role="progressbar" aria-valuenow="{{round($current_Planed_percentage)}}"
                                 aria-valuemin="0" aria-valuemax="100"
-                                aria-label="{{round($current_Planed_percentage)}}% Complete">
+                                aria-label="{{round($current_Planed_percentage)}}% {{__('Complete')}}">
                                     <span class="visually-hidden">
-                                        {{round($current_Planed_percentage)}}% Complete
+                                        {{round($current_Planed_percentage)}}% {{__('Complete')}}
                                     </span>
                                 </div>
                             </div>

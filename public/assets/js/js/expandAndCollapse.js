@@ -15,3 +15,8 @@ function toggleChart(){
     gantt.config.show_chart = !gantt.config.show_chart;
     gantt.render()
 }
+
+
+
+
+

@@ -99,7 +99,7 @@
                         type: 'POST',
                         success: function (data) {
                             data = JSON.parse(data);
-                            console.log(data);
+                          
                             var html = "<div class='list-group-item px-0'>" +
                                 "                    <div class='row align-items-center'>" +
                                 "                        <div class='col-auto'>" +
@@ -162,7 +162,7 @@
                         type: 'POST',
                         success: function (data) {
                             data = JSON.parse(data);
-                            console.log('form-checklist', data);
+                          
                             load_task($('.task-id').attr('id'));
                             show_toastr('{{__('success')}}', '{{ __("Checklist Added Successfully!")}}');
                             var html = '<div class="card border shadow-none checklist-member">' +
@@ -288,7 +288,7 @@
                         },
                         error: function (data) {
                             data = data.responseJSON;
-                            console.log('error', data);
+                          
                             if (data.message) {
                                 show_toastr('error', data.errors.file[0]);
                                 $('#file-error').text(data.errors.file[0]).show();
@@ -300,7 +300,7 @@
                 } else {
                     show_toastr('error', '{{ __("Please select file!")}}');
                 }
-                console.log('not working');
+              
             });
             $(document).on("click", ".delete-comment-file", function () {
                 var btn = $(this);

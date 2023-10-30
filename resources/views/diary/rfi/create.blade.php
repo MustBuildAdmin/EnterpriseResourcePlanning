@@ -71,7 +71,7 @@ $(document).ready(function() {
 
 	$('.get_consultant').on('change', function() {
 		get_val = $(this).val();
-		console.log("get_val", get_val);
+		
 
 		if (get_val != "") {
 			$("#consultant_toerr").hide();

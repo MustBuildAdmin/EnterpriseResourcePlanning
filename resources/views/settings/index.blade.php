@@ -238,7 +238,7 @@
                     $('#test_email .btn-create').attr('disabled', 'disabled');
                 },
                 success: function(data) {
-                    // console.log(data)
+                    
                     if (data.success) {
                         show_toastr('success', data.message, 'success');
                     } else {
