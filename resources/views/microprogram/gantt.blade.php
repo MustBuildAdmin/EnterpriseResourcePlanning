@@ -1,27 +1,25 @@
 @include('new_layouts.header')
-{{-- @extends('layouts.admin') --}}
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/js/js/dhtmlxgantt.js') }}"></script>
+<!-- css starts -->
 <link href="{{ asset('assets/js/css/dhtmlxgantt.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/js/gantt/common/controls_styles.css') }}">
-
 <link href="{{ asset('assets/js/css/tabler.min.css') }}" rel="stylesheet"/>
 <link href="{{ asset('assets/js/css/demo.min.css') }}" rel="stylesheet"/>
 <link href="{{ asset('assets/js/css/tabler-vendors.min.css') }}" rel="stylesheet"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
+<!-- css ends -->
+<!-- script starts -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/js/js/dhtmlxgantt.js') }}"></script>
 <script src="{{ asset('assets/js/js/tabler.min.js') }}" ></script>
 <script src="{{ asset('assets/js/js/demo-theme.min.js') }}" ></script>
 <script src="{{ asset('assets/nouislider/dist/nouislider.js') }}" ></script>
 <script src="{{ asset('assets/litepicker/dist/litepicker.js') }}" ></script>
 <script src="{{ asset('assets/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
-{{-- <script src="https://export.dhtmlx.com/gantt/api.js"
-integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="{{ asset('assets/js/js/Chart.min.js') }}"></script>
 <script src="{{ asset('assets/js/js/zoomingConfig.js') }}"></script>
 <script src="{{ asset('assets/js/js/criticalPath.js') }}"></script>
 <script src="{{ asset('assets/js/js/overlay.js') }}"></script>
 <script src="{{ asset('assets/js/js/export.js') }}"></script>
-{{-- <script src="{{asset('assets/js/js/lightBox.js')}}"></script> --}}
 <script src="{{ asset('assets/js/js/expandAndCollapse.js') }}"></script>
 <script src="{{ asset('assets/js/js/taskPostion.js') }}"></script>
 <script src="{{ asset('assets/js/js/slack.js') }}"></script>
@@ -29,6 +27,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <script src="{{ asset('assets/js/js/taskText.js') }}"></script>
 <script src="{{ asset('assets/js/js/highlight.js') }}"></script>
 <script src="{{ asset('assets/js/js/slackrow.js') }}"></script>
+<!-- script ends -->
 <style>
     .gantt_task_line{
     background-color: rgb(0 84 166 / 75%);
@@ -130,32 +129,32 @@ $holidays = implode(':', $holidays);
         align-items-stretch align-items-md-center" id="sidebar-menu">
        <ul class="navbar-nav">
           <li class="nav-item">
-             <a class="nav-link undo_action" onclick="gantt.undo();">Undo</a>
+             <a class="nav-link undo_action" onclick="gantt.undo();">{{ __('Undo') }}</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link redo_action" onclick="gantt.redo();">Redo</a>
+             <a class="nav-link redo_action" onclick="gantt.redo();">{{ __('Redo') }}</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link"  onclick="zoomIn()">Zoom In</a>
+             <a class="nav-link"  onclick="zoomIn()">{{ __('Zoom In') }}</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link" onclick="zoomOut()">Zoom Out</a>
+             <a class="nav-link" onclick="zoomOut()">{{ __('Zoom Out') }}</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link" onclick="today_scroll()">Today</a>
+             <a class="nav-link" onclick="today_scroll()">{{ __('Today') }}</a>
           </li>
           <li class="nav-item">
-             <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()">FullScreen</a>
+             <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()">{{ __('FullScreen') }}</a>
           </li>
           <li>
              <a class="nav-link">
                 <select class="form-select gantt_zoom_select"
                  style="width: 100px;height: 29px;margin-top: 2%;padding: 2px 20px 0px 10px;">
-                   <option value="day">Daily</option>
-                   <option value="week">Weekly</option>
-                   <option value="month">Monthly</option>
-                   <option value="quarter">Quaterly</option>
-                   <option value="year">Yearly</option>
+                   <option value="day">{{ __('Daily') }}</option>
+                   <option value="week">{{ __('Weekly') }}</option>
+                   <option value="month">{{ __('Monthly') }}</option>
+                   <option value="quarter">{{ __('Quaterly') }}</option>
+                   <option value="year">{{ __('Yearly') }}</option>
                 </select>
              </a>
           </li>
@@ -176,7 +175,7 @@ $holidays = implode(':', $holidays);
                    </svg>
                 </span>
                 <span class="nav-link-title">
-                Edit
+                    {{ __('Edit') }}
                 </span>
              </a>
              <div class="dropdown-menu">
@@ -192,7 +191,7 @@ $holidays = implode(':', $holidays);
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                          </svg>
-                         Indent
+                         {{ __('Indent') }}
                       </a>
                       <a href="#" class="dropdown-item action outdent_action"  id="outdent"  onclick="expandAll();">
                          <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
@@ -203,7 +202,7 @@ $holidays = implode(':', $holidays);
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                          </svg>
-                         Outdent
+                         {{ __('Outdent') }}
                       </a>
                       <div class="dropdown-divider"></div>
                    </div>
@@ -224,7 +223,7 @@ $holidays = implode(':', $holidays);
           </svg>
           </span>
           <span class="nav-link-title">
-          View
+            {{ __('View') }}
           </span>
           </a>
           <div class="dropdown-menu">
@@ -238,7 +237,9 @@ $holidays = implode(':', $holidays);
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
           </svg>
-          Expand All</a>
+          {{ __('Expand All') }}
+         
+        </a>
           <a href="#" class="dropdown-item" onclick="expandAll();">
             <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
           <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
@@ -247,11 +248,13 @@ $holidays = implode(':', $holidays);
             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
             <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
           </svg>
-          Collapse All</a>
+         
+          {{ __('Collapse All') }}
+        </a>
           <div class="dropdown-divider"></div>
           <label class="dropdown-item form-switch">
             <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
-            Critical Path
+            {{ __('Critical Path') }}
          </label>
           <label class="dropdown-item form-switch">
             <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)" type="checkbox">Show Slack</label>
@@ -260,7 +263,7 @@ $holidays = implode(':', $holidays);
           </label>
           <label class="dropdown-item form-switch">
             <input class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)" type="checkbox">
-            Checkbox input
+            {{ __('Checkbox input') }}
           </label>
           </div>
           </div>
@@ -280,7 +283,7 @@ $holidays = implode(':', $holidays);
         </svg>
           </span>
           <span class="nav-link-title">
-          Hide and Show Grid Columns
+            {{ __('Hide and Show Grid Columns') }}
           </span>
           </a>
           <div class="dropdown-menu">
@@ -325,22 +328,22 @@ $holidays = implode(':', $holidays);
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
     <div class="modal-header">
-    <h5 class="modal-title"id="task-title">New Task</h5>
+    <h5 class="modal-title"id="task-title">  {{ __('New Task') }}</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" name="close"></button>
     </div>
     <div class="modal-body">
     <div class="mb-3">
-    <label class="form-label">Task Name</label>
+    <label class="form-label"> {{ __('Task Name') }}</label>
     <input type="text" class="form-control" name="description" placeholder="Type your Task Name">
     </div>
     <div class="row mt-4">
      <div class="col-md-6 col-12">
-         <label class="form-label">Task Start Date</label>
+         <label class="form-label">{{ __('Task Start Date') }}</label>
          <input type="text" class="form-control" name="start_date"
           id="start-date" placeholder="Enter Your Task Start Date">
      </div>
      <div class="col-md-6  col-12">
-         <label class="form-label">Task Start Date</label>
+         <label class="form-label">{{ __('Task End Date') }}</label>
          <input type="text" class="form-control" name="end_date" id="end-date" placeholder="Enter Your Task End Date">
      </div>
     </div>
@@ -348,7 +351,7 @@ $holidays = implode(':', $holidays);
     <div class="modal-footer">
     <a href="#" class="btn btn-link link-secondary"
      name="cancel" data-bs-dismiss="modal">
-       Cancel
+     {{ __('Cancel') }}
     </a>
     <a href="#" class="btn btn-primary ms-auto"
     data-bs-dismiss="modal" name="save">
@@ -359,7 +362,7 @@ $holidays = implode(':', $holidays);
       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
       <path d="M12 5l0 14"></path><path d="M5 12l14 0"></path>
     </svg>
-       Add new Task
+    {{ __('Add new Task') }}
     </a>
     </div>
     </div>
@@ -858,7 +861,7 @@ setTimeout(
 
                 gantt.config.columns = [
                      showWbsColumn,
-                    { name: "id",  width:50,label:"Task Id", resize: true ,hide:false,},
+                    { name: "task_id",  width:50,label:"Task Id", resize: true ,hide:false,},
                     { name: "text", width:150, resize: true,hide:false },
                     { name: "start_date", align: "center", resize: true, width: 120,hide:false },
                     {name: "end_date", label:"End", align: "center", width: 120, template: function(task){
