@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Session;
 use Exception;
 use DB;
+use Carbon\Carbon;
 class TaskMicroController extends Controller
 {
     public function store(Request $request)
@@ -21,6 +22,7 @@ class TaskMicroController extends Controller
             $maxid = 0;
         }
         $task = new MicroTask();
+        Session::put('ok','ok');
         $schedule_id= DB::table('microprogram_schedule')
         ->where('project_id',Session::get('project_id'))
         ->where('instance_id',Session::get('project_instance'))

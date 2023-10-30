@@ -14,11 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('cronmail', 'ProjectReportController@cronmail');
 Route::post('login', 'ApiController@login');
-
+Route::resource('task', 'TaskMicroController');
+Route::resource('link', 'MicroLinkController');
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', 'ApiController@logout');
     Route::get('get-projects', 'ApiController@getProjects');
     Route::post('add-tracker', 'ApiController@addTracker');
     Route::post('stop-tracker', 'ApiController@stopTracker');
     Route::post('upload-photos', 'ApiController@uploadImage');
+
+    
+    
+  
 });
