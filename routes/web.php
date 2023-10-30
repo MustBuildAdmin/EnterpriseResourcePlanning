@@ -63,7 +63,9 @@ Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@
 Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
 Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
 ->middleware('guest');
-
+Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection')->middleware('guest');
+Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection')
+->middleware('guest');
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
         'auth',
@@ -3392,6 +3394,35 @@ Route::get(
     [
         'auth',
         'XSS',
+    ]
+);
+Route::get(
+    'invite_teammember/{id}', [
+        'as' => 'invite.project.invite_teammember',
+        'uses' => 'ProjectController@invite_teammember',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('search_teammember/{id}', 'ProjectController@search_member')
+->name('invite.search_teammember')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
+Route::any('save_teammember', 'ProjectController@save_teammember')
+->name('save_teammember')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
     ]
 );
 Route::post(

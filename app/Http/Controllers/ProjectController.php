@@ -1476,6 +1476,63 @@ class ProjectController extends Controller
 
         return view("projects.invite", compact("project_id", "users"));
     }
+    public function save_teammember(Request $request){
+       
+        try {
+            $authuser = Auth::user();
+            $teammemberID = explode(',', $request->teammember_id);
+            $project_id = explode(',', $request->project_id);
+            $project = Project::find($project_id)->first();
+            foreach($teammemberID as $id){
+    
+                $createConnection =  ProjectUser::create([
+                    "project_id" => $request->project_id,
+                    "user_id" => $id,
+                    "invited_by" => $authuser->id,
+                    'invite_status'=>'requested'
+                ]);
+        
+                $inviteUrl=url('').Config::get('constants.INVITATION_URL_teammember').$createConnection->id;
+                $userArr = [
+                    'invite_link' => $inviteUrl,
+                    'user_name' => \Auth::user()->name,
+                    'project_name' => $project->project_name,
+                    'email' => \Auth::user()->email,
+                ];
+    
+                Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                        [$id => \Auth::user()->email],$userArr);
+            
+            }
+
+
+                return redirect()->route('project.teammembers', $project_id)
+                             ->with('success', __('Team Member Invitation Sent Successfully.'));
+   
+    
+        } catch (Exception $e) {
+          
+               return $e->getMessage();
+          
+        }
+    }
+    public function createConnection(Request $request)
+    {
+        // Need to check invitation link is valid or expired based on that need to redirect
+        $checkConnection = ProjectUser::where(['id' => $request->id])->first();
+        $project = Project::find($checkConnection->project_id)->first();
+        $msg = 'valid';
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg'));
+    }
+
+    public function submitConnection(Request $request)
+    {
+        $msg = $request->status;
+        ProjectUser::where(['id' => $request->id])->update(['invite_status' => $msg]);
+        $checkConnection = ProjectUser::where(['id' => $request->id])->first();
+        $project = Project::find($checkConnection->project_id)->first();
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg'));
+    }
 
     public function inviteProjectUserMember(Request $request)
     {
@@ -1529,8 +1586,7 @@ class ProjectController extends Controller
 
             return response()->json([
                 "success" => true,
-                "html" => $returnHTML,
-                "project"=>$project->get()
+                "html" => $returnHTML
             ]);
         }
     }
@@ -2993,5 +3049,62 @@ class ProjectController extends Controller
         }
 
         return $result;
+    }
+    public function invite_teammember(Request $request, $project_id){
+        try {
+            return view('construction_project.invite')->with('project_id', $project_id);
+        } catch (Exception $e) {
+              return $e->getMessage();
+        }
+    }
+    public function search_member(Request $request, $project_id){
+
+        try {
+
+            $searchValue = $request['q'];
+
+            if($request->filled('q')){
+                $project = Project::find($project_id);
+
+                $user_project = $project->users->pluck("id")->toArray();
+
+                $user_contact = User::where("created_by", \Auth::user()->creatorId())
+                    ->where("type", "!=", "client")
+                    ->whereNOTIn("id", $user_project)
+                    ->pluck("id")
+                    ->toArray();
+                $arrUser = array_unique($user_contact);
+
+                if($request->filled('q')){
+                    $userlist = User::search($searchValue)
+                                    ->whereIn("id", $arrUser)
+                                    ->orderBy('name','ASC')
+                                    ->get();
+                    
+                }
+            }
+
+            
+            $userData = array();
+            if(count($userlist) > 0){
+                foreach($userlist as $task){
+                    $setUser = [
+                        'id' => $task->id,
+                        'name' => $task->name.' - '.$task->email,
+                    ];
+                    $userData[] = $setUser;
+                }
+            }
+
+            echo json_encode($userData);
+          
+    
+        } catch (Exception $e) {
+          
+              return $e->getMessage();
+          
+        }
+
+       
     }
 }
