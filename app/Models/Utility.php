@@ -1236,10 +1236,10 @@ class Utility extends Model
                 // find template is exist or not in our record
                 $template = EmailTemplate::where('name', 'LIKE', $emailTemplate)->first();
                 if (isset($template) && ! empty($template)) {
-
                     // check template is active or not by company
                     if ($usr->type != 'super admin') {
-                        $is_active = UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id', '=', $usr->creatorId())->first();
+                        $is_active = UserEmailTemplate::where('template_id', '=', $template->id)
+                        ->where('user_id', '=', $usr->creatorId())->first();
 
                     } else {
 
@@ -1638,6 +1638,7 @@ class Utility extends Model
             '{contract_end_date}',
             '{set_password_url}',
             '{inviteconsultantHeader}',
+            '{inviteteamMemberHeader}',
             '{invite_link}',
             '{invite_btn}'
 
@@ -1748,6 +1749,7 @@ class Utility extends Model
             'contract_end_date' => '-',
             'set_password_url'=>'-',
             'inviteconsultantHeader'=>'-',
+            'inviteteamMemberHeader'=>'-',
             'invite_link'=>'-',
             'invite_btn'=>'-'
 
@@ -1765,6 +1767,7 @@ class Utility extends Model
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $short_lname = substr($arrValue['company_name'], 0, 2);
+        $short_projname = substr($arrValue['project_name'], 0, 2);
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
         $arrValue['inviteconsultantHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
         <tr><td class="w-50p"></td>
@@ -1776,6 +1779,16 @@ class Utility extends Model
           class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td>
           <div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'
           .$short_lname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
+        $arrValue['inviteteamMemberHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
+          <tr><td class="w-50p"></td>
+          <td><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
+           class="avatar avatar-rounded" width="56" height="56" alt=""></td><td>
+           <table class="icon icon-md bg-none" cellspacing="0" cellpadding="0"><tr>
+           <td align="center">
+           <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
+            class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td>
+            <div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'
+            .$short_projname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
         
         if(isset($obj['invite_link'])){
             $arrValue['invite_link']=' <td class="content pt-0"> You can <a href="'.$obj['invite_link'].

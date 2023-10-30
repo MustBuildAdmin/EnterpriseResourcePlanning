@@ -19,13 +19,24 @@
           <div class="card-actions">
             <div class="row">
               <div class="col-12">
-              @can('edit project') <div class="float-end">
+                @can('edit project')
+                  <div class="col-3">
+                      <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
+                          data-url="{{ route('invite.project.invite_teammember', $project->id) }}"
+                          data-ajax-popup="true"
+                          data-bs-toggle="tooltip" title="{{ __('Invite a Member') }}"
+                          data-bs-original-title="{{ __('Invite Member') }}">
+                          {{ __('Invite a Member') }}
+                      </a>
+                    </div>
+                  @endcan
+               <!-- <div class="float-end">
                   <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}"
                   data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn  btn-primary"
                    >
                     {{__(' Invite a Member')}}
                   </a>
-                </div> @endcan
+                </div> -->
               </div>
             </div>
           </div>
