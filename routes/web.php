@@ -3512,6 +3512,18 @@ Route::any(
     ]
 );
 
+Route::any(
+    'micro_critical_update', [
+        'as' => 'micro.criticaltask_update',
+        'uses' => 'MicroPorgramController@criticaltask_update',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get(
     'projects/{id}/gantt/{duration?}', [
         'as' => 'projects.gantt',
