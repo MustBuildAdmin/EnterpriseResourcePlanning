@@ -6,7 +6,7 @@
             {{ Form::label('seach_teammember', __('Search a Member')) }}
             <input type="text" id="skill_input" name="teammember_id"
             value="{{ request()->get('q') }}" >
-            <input type="hidden" id="skill_input" name="project_id" 
+            <input type="hidden" id="skill_input" name="project_id"
             value="{{ $project_id }}" >
         </div>
     </div>
