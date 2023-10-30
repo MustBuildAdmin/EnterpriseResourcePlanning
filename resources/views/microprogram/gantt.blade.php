@@ -879,7 +879,7 @@
         gantt.config.columns = [
             showWbsColumn,
             {
-                name: "id",
+                name: "task_id",
                 width: 50,
                 label: "Task Id",
                 resize: true,
@@ -1256,9 +1256,9 @@
                     console.log("ok_id_tid", tid);
                     console.log("ok_id", id);
                     console.log("response", response_code.tid);
-                    setTimeout(function() {
-                        gantt.showLightbox(newtid);
-                    }, 5000);
+                 
+                        gantt.showLightbox(tid);
+                   
                     //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
                 }
             });

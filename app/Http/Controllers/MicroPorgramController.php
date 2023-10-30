@@ -1620,6 +1620,7 @@ class MicroPorgramController extends Controller
             ->where("micro_tasks.instance_id", $instanceId)
             ->orderBy("micro_tasks.id", "ASC")
             ->get();
+    
         
             $link = MicroLink::where("project_id", $projectID)
                 ->where("instance_id", $instanceId)
@@ -1634,6 +1635,8 @@ class MicroPorgramController extends Controller
             return "";
         }
     }
+
+    
 
     public function criticaltask_update(Request $request)
     {
@@ -1662,7 +1665,7 @@ class MicroPorgramController extends Controller
 
                     MicroTask::where('project_id',Session::get("project_id"))
                             ->where('instance_id',Session::get("project_instance"))
-                            ->where('main_id',$value['main_id'])
+                            ->where('id',$value['id'])
                             ->update(['dependency_critical'=>$freeSlack,
                             'entire_critical'=>$total_slack,
                             'float_val'=>$total_slack]);

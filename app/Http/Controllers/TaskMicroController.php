@@ -73,7 +73,7 @@ class TaskMicroController extends Controller
             ->where('id', $request->parent)->update(['type' => 'project']);
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
-            ->where(['parent' => $task->id])->get();
+            ->where(['parent' => $task->task_id])->get();
         if (count($checkparent) > 0) {
             $task->type = 'project';
         } else {
@@ -138,7 +138,7 @@ class TaskMicroController extends Controller
             'instance_id' => Session::get('project_instance')])
             ->first();
         
-       
+ 
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
                 $implodeusers = implode(',', json_decode($request->users));
@@ -178,7 +178,7 @@ class TaskMicroController extends Controller
         }
 
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->id])->get();
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
             ->where('id', $request->parent)->update(['type' => 'project']);

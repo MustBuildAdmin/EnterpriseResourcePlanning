@@ -13,12 +13,12 @@ class MicroLinkController extends Controller
 {
     public function store(Request $request)
     {
-        $max_id = MicroLink::where(['project_id' => Session::get('project_id')])->max('id');
+        $max_id = MicroLink::where(['project_id' => Session::get('project_id')])->max('task_id');
         if ($max_id == null) {
             $max_id = 0;
         }
         $link = new MicroLink();
-        $link->id = $max_id + 1;
+        $link->task_id = $max_id + 1;
         $rowid = $max_id + 1;
         $link->type = $request->type;
         $link->source = $request->source;
