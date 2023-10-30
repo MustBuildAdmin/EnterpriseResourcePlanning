@@ -1635,4 +1635,43 @@ class MicroPorgramController extends Controller
         }
     }
 
+    public function criticaltask_update(Request $request)
+    {
+        if ($request->ajax()) {
+            $project=Project::find(Session::get("project_id"));
+            
+            if($project->critical_update==0){
+
+                foreach ($request->updatedTask as $value) {
+                    if(isset($value['totalStack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['totalStack']);
+                        $total_slack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $total_slack = null;
+                    }
+                    if(isset($value['freeSlack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['freeSlack']);
+                        $freeSlack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $freeSlack = null;
+                    }
+
+                    MicroTask::where('project_id',Session::get("project_id"))
+                            ->where('instance_id',Session::get("project_instance"))
+                            ->where('main_id',$value['main_id'])
+                            ->update(['dependency_critical'=>$freeSlack,
+                            'entire_critical'=>$total_slack,
+                            'float_val'=>$total_slack]);
+    
+                }
+
+                Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
+            }
+        }
+    }
+
 }
