@@ -221,13 +221,93 @@ class MicroPorgramController extends Controller
                         $current_Planed_percentage = round($completed_days*$perday);
                     }
 
+                    if (\Auth::user()->type == "company") {
+                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->id)
+                            ->where("project_id", $project_id)
+                            ->where("instance_id", $instance_id)
+                            ->get();
+                    } else {
+                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->creatorId())
+                        ->where("project_id", $project_id)
+                        ->where("instance_id", $instance_id)
+                        ->get();
+                    }
+
+                    $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date', 'micro_tasks.id',)
+                        ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
+                        ->whereNotNull('pros.instance_id')
+                        ->where('micro_tasks.micro_flag',1)
+                        ->where('micro_tasks.project_id', $project_id)
+                        ->where('micro_tasks.instance_id', $instance_id)
+                        ->where('micro_tasks.schedule_id',$secheduleId)
+                        ->get();
+
+                    $taskDates = [];
+                    $holidayCount = 0;
+                    if(count($microallDate) != 0){
+                        foreach($microallDate as $getDate){
+                            $startDate = Carbon::createFromFormat('Y-m-d', $getDate->start_date);
+                            $endDate = Carbon::createFromFormat('Y-m-d', $getDate->end_date);
+
+                            while ($startDate->lte($endDate)) {
+                                $taskDates[] = $startDate->copy()->format('Y-m-d');
+                                $startDate->addDay();
+                            }
+                        }
+                        if(count($getHoliday) != 0){
+                            foreach($getHoliday as $holidaydate){
+                                if(in_array($holidaydate->date,$taskDates)){
+                                    $holidayCount++;
+                                }
+                            }
+                        }
+                    }
+
+                    $get_non_work_day = [];
+                    $nonWorkingDay = NonWorkingDaysModal::where("project_id",$project_id)
+                        ->where("instance_id", $instance_id)
+                        ->orderBy("id", "DESC")
+                        ->first();
+            
+                    if (
+                        $nonWorkingDay != null &&
+                        $nonWorkingDay->non_working_days != null
+                    ) {
+                        $split_non_working = explode(",", $nonWorkingDay->non_working_days);
+                        foreach ($split_non_working as $non_working) {
+                            if ($non_working == 0) {
+                                $get_non_work_day[] = "Sunday";
+                            } elseif ($non_working == 1) {
+                                $get_non_work_day[] = "Monday";
+                            } elseif ($non_working == 2) {
+                                $get_non_work_day[] = "Tuesday";
+                            } elseif ($non_working == 3) {
+                                $get_non_work_day[] = "Wednesday";
+                            } elseif ($non_working == 4) {
+                                $get_non_work_day[] = "Thursday";
+                            } elseif ($non_working == 5) {
+                                $get_non_work_day[] = "Friday";
+                            } elseif ($non_working == 6) {
+                                $get_non_work_day[] = "Saturday";
+                            }
+                        }
+                    }
+
+                    foreach($taskDates as $split_dates){
+                        $getCurrentDay = date("l", strtotime($split_dates));
+                        if(in_array($getCurrentDay,$get_non_work_day)){
+                            $holidayCount++;
+                        }
+                    }
+
                     return view('microprogram.schedule_task_show')->with('weekSchedule',$weekSchedule)
                         ->with('weekStartDate',$weekStartDate)
                         ->with('weekEndDate',$weekEndDate)
                         ->with('scheduleGet',$scheduleGet)
                         ->with('microSchedule',$microSchedule)
                         ->with('current_Planed_percentage',$current_Planed_percentage)
-                        ->with('intervalDays',$intervalDays);
+                        ->with('intervalDays',$intervalDays)
+                        ->with('holidayCount',$holidayCount);
             // }
             // else{
             //     return redirect()->back()->with('error', __('Project Not Freezed.'));
