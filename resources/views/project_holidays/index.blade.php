@@ -8,7 +8,7 @@
 
     @include('construction_project.side-menu')
    
-<div class="card mt-5" >
+<div class="card m-3" >
 
     <div class="card-header">
         <h4 class="card-title">Project Holidays</h4>
