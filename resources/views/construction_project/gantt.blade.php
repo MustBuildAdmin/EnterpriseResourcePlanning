@@ -1116,8 +1116,8 @@ setTimeout(
 // gantt create edit functionality
 
 if (frezee_status_actual != 1) {
-
-   	var dp = new gantt.dataProcessor("http://localhost/tracer/public/");
+    var app_url="{{env('APP_URL')}}";
+   	var dp = new gantt.dataProcessor(app_url);
    	// var dp = new gantt.dataProcessor("/erp/public/");
    	var critical = 0;
    	dp.init(gantt);
