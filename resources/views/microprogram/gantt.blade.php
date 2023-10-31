@@ -1193,14 +1193,14 @@
         var input = form.querySelector("[name='description']");
         input.focus();
         input.value = task.text;
-        const start_date = form.querySelector("[name='start_date']");
-        const end_date = form.querySelector("[name='end_date']");
-
+        var start_date = form.querySelector("[name='start_date']");
+        var end_date = form.querySelector("[name='end_date']");
+        start_date.value = task.start_date;
         // start_date.value = task.start_date;
         validatedate(id);
-        setTimeout(function(){ 
+        setTimeout(function(){
             dateset();
-}, 800);
+        }, 800);
       
 
         form.style.display = "block";
@@ -1331,13 +1331,15 @@
     
       $('input#start_date_input').val(data.start_date);
       $('input#end_date_input').val(data.end_date);
+      $('#start-date').val(data.start_date);
+      $('#end-date').val(data.end_date);
     }
     });
         }
     // @formatter:off
       
         function dateset(){
-            var start_date_input=$('input#start_date_input').val();
+        var start_date_input=$('input#start_date_input').val();
         var end_date_input=$('input#end_date_input').val();
         console.log("start_date_input",start_date_input);
       console.log("end_date_input",end_date_input);
