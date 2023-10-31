@@ -11,7 +11,8 @@
 }
 </style>
 @forelse($project->users as $user)
-    @if($user->type!='company')
+<?php $get_Status = \App\Models\ProjectUser::where(['user_id'=>$user->id])->first();?>
+    @if($user->type!='company' && $get_Status->invite_status=='accepted')
     <div class="col-md-6 col-lg-3">
         <div class="card">
             <div class="card-body p-4 text-center">
