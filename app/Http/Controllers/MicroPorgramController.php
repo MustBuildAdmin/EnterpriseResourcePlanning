@@ -1762,4 +1762,15 @@ class MicroPorgramController extends Controller
         }
     }
 
+    public function get_validated_date(Request $request){
+
+        $id=$request->id;
+        $get_data=  MicroTask::select('start_date','end_date')->where('project_id',Session::get("project_id"))
+        ->where('instance_id',Session::get("project_instance"))
+        ->where('id',$id)
+        ->first();
+
+        return $get_data;
+    }
+
 }

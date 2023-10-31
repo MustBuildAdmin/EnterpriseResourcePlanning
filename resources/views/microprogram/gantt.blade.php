@@ -400,7 +400,8 @@
 <input type='hidden' id='holidays' value='{{ $holidays }}'>
 <input type='hidden' id='frezee_status' value='{{ $freezeCheck->freeze_status }}'>
 <input type='hidden' id='critical_update' value='{{ $critical_update }}'>
-
+<input type='hidden' id='start_date_input'>
+<input type='hidden' id='end_date_input'>
 
 
 
@@ -1178,6 +1179,9 @@
     };
 </script>
 <script>
+    function call_num(){
+        validatedate();
+    }
     gantt.showLightbox = function(id) {
 
         document.body.classList.add("modal-open");
@@ -1192,7 +1196,12 @@
         const start_date = form.querySelector("[name='start_date']");
         const end_date = form.querySelector("[name='end_date']");
 
-        start_date.value = task.start_date;
+        // start_date.value = task.start_date;
+        validatedate(id);
+        setTimeout(function(){ 
+            dateset();
+}, 800);
+      
 
         form.style.display = "block";
         form.querySelector("[name='save']").onclick = save;
@@ -1308,11 +1317,35 @@
 
 
 <script>
+ 
+        function validatedate(id){
+            console.log("Fff",id);
+            $.ajax({
+      type: 'GET',
+      url: "{{ route('get_validated_date') }}",
+      data: {
+                    _token: tempcsrf,
+                    id: id,
+                },
+      success: function(data) {
+    
+      $('input#start_date_input').val(data.start_date);
+      $('input#end_date_input').val(data.end_date);
+    }
+    });
+        }
     // @formatter:off
-    document.addEventListener("DOMContentLoaded", function() {
-        window.Litepicker && (new Litepicker({
+      
+        function dateset(){
+            var start_date_input=$('input#start_date_input').val();
+        var end_date_input=$('input#end_date_input').val();
+        console.log("start_date_input",start_date_input);
+      console.log("end_date_input",end_date_input);
+      window.Litepicker && (new Litepicker({
             element: document.getElementById('start-date'),
             elementEnd: document.getElementById('end-date'),
+            minDate:   start_date_input,
+            maxDate: end_date_input,
             singleMode: false,
             allowRepick: true,
             buttonText: {
@@ -1333,6 +1366,37 @@
       </svg>`,
             },
         }));
+        }
+      
+      
+        
+    document.addEventListener("DOMContentLoaded", function() {
+
+        
     });
+
+  
+    // $(function() {
+      
+    //     window.Litepicker && (new Litepicker({
+    //         element: document.getElementById('start-date'),
+    //         elementEnd: document.getElementById('end-date'),
+    //         minDate: document.getElementById('#start_date'),
+    //         maxDate: document.getElementById('#end_date'),
+          
+    //         buttonText: {
+    //             previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+    //             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+    //             fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none"
+    //             d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                
+    //             nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+    //             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+    //             stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+    //             fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+    //         },
+    //     }));
+    // });
+
     // @formatter:on
 </script>

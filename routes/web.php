@@ -5181,6 +5181,9 @@ Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')-
         'XSS',
     ]
 );
+Route::any('get_validated_date', 'MicroPorgramController@get_validated_date')->name('get_validated_date')
+->middleware(['auth', 'XSS']);
+
 
 Route::any('change_schedule_status', 'MicroPorgramController@change_schedule_status')->name('change_schedule_status')->middleware(
     [
