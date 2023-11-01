@@ -47,20 +47,27 @@ class Project_holiday_Controller extends Controller
             return redirect()->back()->with('error', $messages->first());
         }
         $project = Project::where('id', $request->project_id)->first();
-        $Project_holiday = new Project_holiday();
-        $Project_holiday['project_id'] = $request->project_id;
-        $Project_holiday['date'] = $request->date;
-        $Project_holiday['description'] = $request->description;
-        $Project_holiday['created_by'] = \Auth::user()->creatorId();
-        if (Session::has('project_instance')) {
-            $instanceId = Session::get('project_instance');
-        } else {
-            $instanceId = $project->instance_id;
+        $checkHolidayExist=Project_holiday::where(['project_id'=> $request->project_id,
+        'date' => $request->date])->count();
+        if($checkHolidayExist!=0){
+            return redirect()->back()->with('error', "Holiday already available for this date");
+        }else{
+            $Project_holiday = new Project_holiday();
+            $Project_holiday['project_id'] = $request->project_id;
+            $Project_holiday['date'] = $request->date;
+            $Project_holiday['description'] = $request->description;
+            $Project_holiday['created_by'] = \Auth::user()->creatorId();
+            if (Session::has('project_instance')) {
+                $instanceId = Session::get('project_instance');
+            } else {
+                $instanceId = $project->instance_id;
+            }
+            $Project_holiday['instance_id'] = $instanceId;
+            $Project_holiday->save();
+    
+            return redirect()->route('project_holiday.index');
         }
-        $Project_holiday['instance_id'] = $instanceId;
-        $Project_holiday->save();
-
-        return redirect()->route('project_holiday.index');
+       
 
     }
 
@@ -89,20 +96,26 @@ class Project_holiday_Controller extends Controller
             return redirect()->back()->with('error', $messages->first());
         }
         $project = Project::where('id', $request->project_id)->first();
-        $Project_holiday = Project_holiday::find($id);
-        $Project_holiday['project_id'] = $request->project_id;
-        $Project_holiday['date'] = $request->date;
-        $Project_holiday['description'] = $request->description;
-        $Project_holiday['created_by'] = \Auth::user()->creatorId();
-        if (Session::has('project_instance')) {
-            $instanceId = Session::get('project_instance');
-        } else {
-            $instanceId = $project->instance_id;
-        }
-        $Project_holiday['instance_id'] = $instanceId;
-        $Project_holiday->save();
+        $checkHolidayExist=Project_holiday::where(['project_id'=> $request->project_id,
+        'date' => $request->date])->whereNotIn('id', [$id])->count();
+        if($checkHolidayExist!=0){
+            return redirect()->back()->with('error', "Holiday already available for this date");
+        }else{
+            $Project_holiday = Project_holiday::find($id);
+            $Project_holiday['project_id'] = $request->project_id;
+            $Project_holiday['date'] = $request->date;
+            $Project_holiday['description'] = $request->description;
+            $Project_holiday['created_by'] = \Auth::user()->creatorId();
+            if (Session::has('project_instance')) {
+                $instanceId = Session::get('project_instance');
+            } else {
+                $instanceId = $project->instance_id;
+            }
+            $Project_holiday['instance_id'] = $instanceId;
+            $Project_holiday->save();
 
-        return redirect()->route('project_holiday.index');
+            return redirect()->route('project_holiday.index');
+        }
 
     }
 
