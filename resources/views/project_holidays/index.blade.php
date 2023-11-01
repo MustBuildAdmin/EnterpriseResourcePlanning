@@ -31,7 +31,7 @@
                         <table class="table datatable">
                             <thead>
                             <tr>
-                                <th>{{__('Project')}}</th>
+                                <!-- <th>{{__('Project')}}</th> -->
                                 <th>{{__('Date')}}</th>
                                 <th>{{__('Description')}}</th>
                                 @if($project->freeze_status!=1)
@@ -42,9 +42,9 @@
                             <tbody class="font-style">
                             @foreach ($holidays as $project_each)
                                 <tr>
-                                    <td>@isset($project->project_name)
+                                    <!-- <td>@isset($project->project_name)
                                         {{ $project->project_name }}
-                                    @endisset</td>
+                                    @endisset</td> -->
                                     <td>{{ $project_each->date }}</td>
                                     <td>{{ $project_each->description }}</td>
                                     @if($project->freeze_status!=1)
