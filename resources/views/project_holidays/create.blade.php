@@ -1,4 +1,6 @@
+
 <style>
+
 .form-check {
     margin: 8px 12px !important;
 }
@@ -7,6 +9,7 @@
     display:none;
 }
 </style>
+
 {{Form::open(array('url'=>'project_holiday','method'=>'post'))}}
 <div class="modal-body">
 
