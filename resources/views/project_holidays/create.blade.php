@@ -6,9 +6,6 @@
     display:none;
 }
 </style>
-<!-- <script src="{{ asset('tabler/tabler.min.js') }}"></script> -->
-<!-- <script src="{{ asset('theme/demo-theme.min.js') }}"></script> -->
-<!-- <script src="{{ asset('tinymce/tinymce.min.js') }}"></script> -->
 {{Form::open(array('url'=>'project_holiday','method'=>'post'))}}
 <div class="modal-body">
 
@@ -22,7 +19,6 @@
                 </select>
                 <br>
                 {{Form::label('date',__('Date'),['class'=>'form-label'])}}
-                <!-- {{Form::date('date',null,array('class'=>'form-control','required' => 'required'))}} -->
                 <div class="mb-3">
                     <div class="input-icon">
                         <span class="input-icon-addon">
@@ -51,7 +47,7 @@
                 </span>
                 @enderror
             </div>
-        </div>  
+        </div>
     </div>
 </div>
 <div class="modal-footer">
@@ -75,7 +71,6 @@ $(document).on("keyup", '#name', function () {
             },
             success: function(data) {
                 if(data=='in'){
-                    // show_toastr('error', 'Please enter valid date');
                     $('#error').text('Project Name already exit');
                 }else{
                     $('#error').text('');
