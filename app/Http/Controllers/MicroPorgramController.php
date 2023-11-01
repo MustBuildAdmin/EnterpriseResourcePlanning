@@ -1390,8 +1390,10 @@ class MicroPorgramController extends Controller
                 ->where("instance", $instanceId)
                 ->first();
 
-            $projectname = Project::where("id", Session::get("project_id"))
-                ->pluck("project_name")
+            $projectname = DB::table('microprogram_schedule')->where("project_id", Session::get("project_id"))
+                ->where("instance_id", Session::get("project_instance"))
+                ->where("active_status", 1)
+                ->pluck("schedule_name")
                 ->first();
 
             if ($project) {
