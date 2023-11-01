@@ -3,7 +3,7 @@
     {{__('Manage Bug Report')}}
 @endsection
 @push('script-page')
-    <script src="{{asset('assets/libs/dragula/dist/dragula.min.js')}}"></script>
+    <script src="{{asset('assets/libs/dragula/dist/dragula.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <script>
         !function (a) {
             "use strict";

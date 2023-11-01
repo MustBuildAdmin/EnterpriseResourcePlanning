@@ -1,8 +1,8 @@
 @include('new_layouts.header')
 {{-- @extends('layouts.admin') --}}
-<script src="{{asset('assets/js/gantt/codebase/dhtmlxgantt.js')}}"></script>
+<script src="{{asset('assets/js/gantt/codebase/dhtmlxgantt.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <link href="{{asset('assets/js/gantt/codebase/dhtmlxgantt.css')}}" rel="stylesheet">
-<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/jquery.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <link rel="stylesheet" href="{{asset('assets/js/gantt/codebase/skins/dhtmlxgantt_material.css?v=7.0.11')}}">
 <link rel="stylesheet" href="{{asset('assets/js/gantt/common/controls_styles.css?v=7.0.11')}}">
 

@@ -48,13 +48,13 @@
 </head>
 <body  class=" d-flex flex-column">
 @yield('content')
-<script src="{{asset('assets/dist/js/demo-theme.min.js?1674944402')}}"></script>
+<script src="{{asset('assets/dist/js/demo-theme.min.js?1674944402')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <!-- Required Js -->
-<script src="{{asset('assets/dist/js/tabler.min.js?1674944402')}}" defer></script>
-<script src="{{asset('assets/dist/js/demo.min.js?1674944402')}}" defer></script>
-<script src="{{ asset('assets/js/vendor-all.js') }}"></script>
-<script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
+<script src="{{asset('assets/dist/js/tabler.min.js?1674944402')}}" defer  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/dist/js/demo.min.js?1674944402')}}" defer  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/js/vendor-all.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/js/plugins/feather.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script>
     feather.replace();
 </script>

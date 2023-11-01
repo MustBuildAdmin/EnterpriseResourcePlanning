@@ -21,8 +21,8 @@
 
 <head>
     <title>{{(Utility::getValByName('title_text')) ? Utility::getValByName('title_text') : config('app.name', 'Must BuildApp')}} -  {{__('Settings')}}</title>
-    <!-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script> -->
-    <!-- <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> -->
+    <!-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> -->
+    <!-- <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> -->
 
     <!-- Meta -->
     <meta charset="utf-8"/>
@@ -120,7 +120,7 @@
 
 @endphp
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
     <script>
 
@@ -271,7 +271,7 @@
 
 
 @endpush
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <div class="page-body">
   <div class="container-xl">
   <div id="multi-step-form-container">
@@ -775,7 +775,7 @@
   </div>
 </div>
 <div>
-<script src="{{ asset('js/jquery.validate.js') }}"></script>
+<script src="{{ asset('js/jquery.validate.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
 <script>
 $('#nextbtn').click(function(){

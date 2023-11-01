@@ -22,12 +22,12 @@
 @endpush
 @push('script-page')
 
-    <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
-{{--    <script src="{{ asset('js/datatable/dataTables.buttons.min.js') }}"></script>--}}
-{{--    <script src="{{ asset('js/datatable/jszip.min.js') }}"></script>--}}
-{{--    <script src="{{ asset('js/datatable/pdfmake.min.js') }}"></script>--}}
-{{--    <script src="{{ asset('js/datatable/vfs_fonts.js') }}"></script>--}}
-{{--    <script src="{{ asset('js/datatable/buttons.html5.min.js') }}"></script>--}}
+    <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+{{--    <script src="{{ asset('js/datatable/dataTables.buttons.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>--}}
+{{--    <script src="{{ asset('js/datatable/jszip.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>--}}
+{{--    <script src="{{ asset('js/datatable/pdfmake.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>--}}
+{{--    <script src="{{ asset('js/datatable/vfs_fonts.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>--}}
+{{--    <script src="{{ asset('js/datatable/buttons.html5.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>--}}
     <script>
 
         var filename = $('#filename').val();
@@ -482,10 +482,10 @@ $lastStage=\App\Models\TaskStage::where('created_by',\Auth::user()->creatorId())
 
 @endsection
 @push('script-page')
-{{--<script src="{{ asset('public/custom/js/jquery.dataTables.min.js') }}"></script>--}}
-            <script src="{{ asset('assets/js/datatables.min.js') }}"></script>
+{{--<script src="{{ asset('public/custom/js/jquery.dataTables.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>--}}
+            <script src="{{ asset('assets/js/datatables.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
-            <script src="{{asset('assets/js/plugins/apexcharts.min.js')}}"></script>
+            <script src="{{asset('assets/js/plugins/apexcharts.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
 <script>
     var filename = $('#chart-hours').val();

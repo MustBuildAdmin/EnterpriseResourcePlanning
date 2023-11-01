@@ -25,14 +25,14 @@
 @endpush
 @push('script-page')
 
-    <script src="{{asset('js/bootstrap-tagsinput.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap-tagsinput.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <script>
         var e = $('[data-toggle="tags"]');
         e.length && e.each(function () {
             $(this).tagsinput({tagClass: "badge badge-primary"})
         });
     </script>
-    <script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
+    <script src="{{asset('css/summernote/summernote-lite.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 @endpush
 @section('content')
     {{Form::open(array('url'=>'job','method'=>'post'))}}

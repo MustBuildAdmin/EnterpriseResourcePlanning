@@ -3,15 +3,15 @@
     {{__('Account Statement Summary')}}
 @endsection
 @push('script-page')
-    <!-- <script src="{{ asset('js/jspdf.min.js') }} "></script>
-    <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/jszip.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/pdfmake.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/vfs_fonts.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/dataTables.buttons.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/buttons.html5.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/buttons.print.min.js') }}"></script> -->
-    <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
+    <!-- <script src="{{ asset('js/jspdf.min.js') }} "  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/jszip.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/pdfmake.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/vfs_fonts.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/dataTables.buttons.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/buttons.html5.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/buttons.print.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> -->
+    <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
     <script>
 

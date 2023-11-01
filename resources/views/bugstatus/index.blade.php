@@ -7,7 +7,7 @@
     <li class="breadcrumb-item">{{__('Project Bug Status')}}</li>
 @endsection
 @push('script-page')
-    <script src="{{asset('js/jquery-ui.min.js')}}"></script>
+    <script src="{{asset('js/jquery-ui.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     @if(\Auth::user()->type=='company')
         <script>
             $(function () {

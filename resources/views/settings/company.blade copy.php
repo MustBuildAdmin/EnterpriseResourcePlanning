@@ -31,7 +31,7 @@
 @endpush
 
 @push('script-page')
-    <script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
+    <script src="{{asset('css/summernote/summernote-lite.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <script>
   
         $('.summernote-simple0').on('summernote.blur', function () {

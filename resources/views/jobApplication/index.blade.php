@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/dragula.min.css') }}" id="main-style-link">
 @endpush
 @push('script-page')
-    {{-- <script src="{{ asset('libs/dragula/dist/dragula.min.js') }}"></script>
-    <script src="{{ asset('libs/autosize/dist/autosize.min.js') }}"></script> --}}
-    <script src="{{ asset('assets/js/plugins/dragula.min.js') }}"></script>
+    {{-- <script src="{{ asset('libs/dragula/dist/dragula.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script src="{{ asset('libs/autosize/dist/autosize.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
+    <script src="{{ asset('assets/js/plugins/dragula.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
     <script>
         $(document).on('change', '#jobs', function () {

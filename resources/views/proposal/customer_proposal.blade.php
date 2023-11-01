@@ -303,25 +303,25 @@
         </div>
     </div>
 </footer>
-<script src="{{ asset('assets/js/site.core.js') }}"></script>
+<script src="{{ asset('assets/js/site.core.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
-<script src="{{ asset('assets/libs/progressbar.js/dist/progressbar.min.js') }}"></script>
-<script src="{{ asset('assets/libs/moment/min/moment.min.js') }}"></script>
-<script src="{{ asset('assets/libs/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
-<script src="{{ asset('assets/libs/bootstrap-timepicker/js/bootstrap-timepicker.js') }}"></script>
-<script src="{{ asset('assets/libs/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-<script src="{{ asset('assets/libs/select2/dist/js/select2.min.js') }}"></script>
-<script src="{{ asset('assets/libs/nicescroll/jquery.nicescroll.min.js')}} "></script>
-<script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js')}}"></script>
+<script src="{{ asset('assets/libs/progressbar.js/dist/progressbar.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/libs/moment/min/moment.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/libs/bootstrap-notify/bootstrap-notify.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/libs/bootstrap-timepicker/js/bootstrap-timepicker.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/libs/bootstrap-daterangepicker/daterangepicker.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/libs/select2/dist/js/select2.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/libs/nicescroll/jquery.nicescroll.min.js')}} "  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script>moment.locale('en');</script>
-<script src="{{ asset('assets/libs/autosize/dist/autosize.min.js') }}"></script>
-<script src="{{ asset('assets/js/site.js') }}"></script>
-<script src="{{ asset('assets/js/demo.js') }} "></script>
-<script src="{{ asset('assets/js/datatables.min.js') }}"></script>
-<script src="{{ asset('assets/js/jscolor.js') }} "></script>
+<script src="{{ asset('assets/libs/autosize/dist/autosize.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/js/site.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/js/demo.js') }} "  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/js/datatables.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('assets/js/jscolor.js') }} "  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script >
     var toster_pos='right';
 </script>
-<script src="{{ asset('assets/js/custom.js') }} "></script>
+<script src="{{ asset('assets/js/custom.js') }} "  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
 

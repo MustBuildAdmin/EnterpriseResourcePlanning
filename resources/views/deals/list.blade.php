@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{asset('css/summernote/summernote-lite.css')}}">
 @endpush
 @push('script-page')
-    <script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
+    <script src="{{asset('css/summernote/summernote-lite.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <script>
         $(document).on("change", ".change-pipeline select[name=default_pipeline_id]", function () {
             $('#change-pipeline').submit();

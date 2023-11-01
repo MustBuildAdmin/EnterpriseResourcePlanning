@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="{{asset('assets/libs/summernote/summernote-bs4.css')}}">
 @endpush
 @push('script-page')
-    <script src="{{asset('assets/libs/summernote/summernote-bs4.js')}}"></script>
+    <script src="{{asset('assets/libs/summernote/summernote-bs4.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 @endpush
 @if(isset($call))
     {{ Form::model($call, array('route' => array('deals.calls.update', $deal->id, $call->id), 'method' => 'PUT')) }}

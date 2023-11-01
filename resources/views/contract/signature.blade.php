@@ -20,7 +20,7 @@
     </div>
 </form>
 
-<script src="{{asset('assets/js/plugins/signature_pad/signature_pad.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/signature_pad/signature_pad.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script>
     var signature = {
         canvas: null,

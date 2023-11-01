@@ -95,7 +95,7 @@
                 ],
             };
         </script>
-        <script src="{{asset('js/frappe-gantt.js')}}"></script>
+        <script src="{{asset('js/frappe-gantt.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
         <script>
             var tasks = JSON.parse('{!! addslashes(json_encode($tasks)) !!}');
             var gantt_chart = new Gantt(".gantt-target", tasks, {

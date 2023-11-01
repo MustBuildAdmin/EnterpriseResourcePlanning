@@ -23,7 +23,7 @@
     </style>
   </head>
   <body  class=" border-top-wide border-primary d-flex flex-column">
-    <script src="./dist/js/demo-theme.min.js?1674944402"></script>
+    <script src="./dist/js/demo-theme.min.js?1674944402"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <div class="page page-center">
       <div class="container-tight py-4">
         <div class="empty">

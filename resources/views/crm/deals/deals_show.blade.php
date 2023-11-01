@@ -835,8 +835,8 @@
 	</div>
 	
 
-<script src="{{asset('css/summernote/summernote-lite.js')}}"></script>
-<script src="{{asset('assets/js/plugins/dropzone-amd-module.min.js')}}"></script>
+<script src="{{asset('css/summernote/summernote-lite.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/plugins/dropzone-amd-module.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script>
     var scrollSpy = new bootstrap.ScrollSpy(document.body, {
         target: '#deal-sidenav',

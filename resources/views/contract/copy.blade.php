@@ -50,7 +50,7 @@
 {{ Form::close() }}
 
 
-<script src="{{asset('assets/js/plugins/choices.min.js')}}"></script>
+<script src="{{asset('assets/js/plugins/choices.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script>
     if ($(".multi-select").length > 0) {
               $( $(".multi-select") ).each(function( index,element ) {

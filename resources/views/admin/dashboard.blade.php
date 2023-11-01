@@ -19,8 +19,8 @@
 
 @push('theme-script')
     @if(Auth::user()->type != 'admin')
-        <script src="{{ asset('assets/libs/dragula/dist/dragula.min.js') }}"></script>
-        <script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+        <script src="{{ asset('assets/libs/dragula/dist/dragula.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+        <script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     @endif
 @endpush
 

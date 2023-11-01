@@ -40,7 +40,7 @@ In HTML file
 <iframe id="vimeo" src="https://player.vimeo.com/video/22439234" width="1920px" height="1080px"
     frameBorder="0" allow="autoplay; fullscreen" allowFullScreen />
 
-<script src="fslightbox.js"></script>
+<script src="fslightbox.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 ```
 
 

@@ -23,11 +23,11 @@
     <title>
         {{ Utility::getValByName('title_text') ? Utility::getValByName('title_text') : config('app.name', 'Must BuildApp') }}
         - @yield('page-title')</title>
-    {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> --}}
+    {{-- <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 		
 
 
@@ -55,8 +55,8 @@
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap.min.css">
 
-	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"></script> --}}
-	{{-- <script src="{{ asset('assets/js/datatables.min.js') }}"></script>--}}
+	{{-- <script src="{{ asset('assets/js/plugins/simple-datatables.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
+	{{-- <script src="{{ asset('assets/js/datatables.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>--}}
 
 	<link rel="stylesheet" href="{{ asset('assets/css/plugins/style.css') }}">
 	<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
@@ -66,7 +66,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 	<link href="https://harvesthq.github.io/chosen/chosen.css" rel="stylesheet"/>
-	<script src="https://harvesthq.github.io/chosen/chosen.jquery.js"></script>
+	<script src="https://harvesthq.github.io/chosen/chosen.jquery.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <style>
          @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
         :root {

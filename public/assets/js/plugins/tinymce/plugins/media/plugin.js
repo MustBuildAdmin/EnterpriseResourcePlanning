@@ -606,7 +606,7 @@
       }
     };
     var getScriptHtml = function (data) {
-      return '<script src="' + data.source + '"></script>';
+      return '<script src="' + data.source + '"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>';
     };
     var dataToHtml = function (editor, dataIn) {
       var data = global$8.extend({}, dataIn);

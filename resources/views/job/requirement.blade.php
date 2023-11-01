@@ -144,10 +144,10 @@
         </div>
     </div>
 </footer>
-<script src="{{ asset('js/site.core.js') }}"></script>
-<script src="{{ asset('js/autosize/dist/autosize.min.js') }}"></script>
-<script src="{{ asset('js/site.js') }}"></script>
-<script src="{{ asset('js/demo.js') }} "></script>
+<script src="{{ asset('js/site.core.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('js/autosize/dist/autosize.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('js/site.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{ asset('js/demo.js') }} "  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 </body>
 
 </html>

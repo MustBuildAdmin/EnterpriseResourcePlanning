@@ -1,26 +1,26 @@
 @include('new_layouts.header')
 {{-- @extends('layouts.admin') --}}
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{asset('assets/js/js/dhtmlxgantt.js?v=7.0.11')}}"></script>
+<script src="{{ asset('js/jquery.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/dhtmlxgantt.js?v=7.0.11')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <link href="{{asset('assets/js/css/skins/dhtmlxgantt_material.css?v=7.0.11')}}" rel="stylesheet">
 
 <link rel="stylesheet" href="{{asset('assets/js/gantt/codebase/skins/dhtmlxgantt_material.css?v=7.0.11')}}">
 <link rel="stylesheet" href="{{asset('assets/js/gantt/common/controls_styles.css?v=7.0.11')}}">
-<script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.11"></script>
+<script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.11"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"></script>
-<script src="{{asset('assets/js/js/zoomingConfig.js')}}"></script>
-<script src="{{asset('assets/js/js/criticalPath.js')}}"></script>
-<script src="{{asset('assets/js/js/overlay.js')}}"></script>
-<script src="{{asset('assets/js/js/export.js')}}"></script>
-<script src="{{asset('assets/js/js/lightBox.js')}}"></script>
-<script src="{{asset('assets/js/js/expandAndCollapse.js')}}"></script>
-<script src="{{asset('assets/js/js/taskPostion.js')}}"></script>
-<script src="{{asset('assets/js/js/slack.js')}}"></script>
-<script src="{{asset('assets/js/js/dynamicProgress.js')}}"></script>
-<script src="{{asset('assets/js/js/taskText.js')}}"></script>
-<script src="{{asset('assets/js/js/highlight.js')}}"></script>
-<script src="{{asset('assets/js/js/slackrow.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/zoomingConfig.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/criticalPath.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/overlay.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/export.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/lightBox.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/expandAndCollapse.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/taskPostion.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/slack.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/dynamicProgress.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/taskText.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/highlight.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="{{asset('assets/js/js/slackrow.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <style>
 .gantt_task_line.gantt_critical_task .gantt_task_content {
     color: red !important;

@@ -1,13 +1,13 @@
 @include('new_layouts.header')
 @include('hrm.hrm_main',['hrm_header' => 'Dashboard'])
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <script src="https://tabler.io/demo/dist/libs/apexcharts/dist/apexcharts.min.js?1685976846"></script>
-    <script src="https://tabler.io/demo/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1685976846"></script>
-    <script src="https://tabler.io/demo/dist/libs/jsvectormap/dist/maps/world-merc.js?1685976846"></script>
+    <script src="https://tabler.io/demo/dist/libs/apexcharts/dist/apexcharts.min.js?1685976846"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script src="https://tabler.io/demo/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1685976846"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script src="https://tabler.io/demo/dist/libs/jsvectormap/dist/maps/world-merc.js?1685976846"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <script src="https://tabler.io/demo/dist/js/tabler.min.js?1685976846">
         >
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <div>
     <!-- Page header -->
     <div class="page-header d-print-none">

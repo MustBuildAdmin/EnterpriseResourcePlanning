@@ -5,7 +5,7 @@
 @endsection
 
 @push('theme-script')
-    <script src="{{ asset('assets/libs/dragula/dist/dragula.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/dragula/dist/dragula.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 @endpush
 
 @section('action-button')
@@ -120,8 +120,8 @@
 @endsection
 
 @push('script-page')
-    <script src="{{ asset('assets/libs/autosize/dist/autosize.min.js') }}"></script>
-    <script src="{{ asset('assets/js/colorPick.js') }}"></script>
+    <script src="{{ asset('assets/libs/autosize/dist/autosize.min.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    <script src="{{ asset('assets/js/colorPick.js') }}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
     <script>
         var now = "{{__('Now')}}";
 

@@ -112,7 +112,7 @@
 
 @push('script-page')
 
-<script src="{{url('js/swiper.min.js')}}"></script>
+<script src="{{url('js/swiper.min.js')}}"  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 
 
 <script type="text/javascript">
