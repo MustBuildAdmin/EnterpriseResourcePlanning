@@ -4,30 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\MicroTask;
 use App\Models\Project;
-use App\Models\Instance;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
+use Carbon\Carbon;
+use App\Models\Instance;
 use Exception;
 use DB;
-use Carbon\Carbon;
-class TaskMicroController extends Controller
+class TaskController extends Controller
 {
     public function store(Request $request)
     {
 
-        $maxid = MicroTask::where(['project_id' => Session::get('project_id'),
+        $maxid = Con_task::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])->max('task_id');
         if ($maxid == null) {
             $maxid = 0;
         }
-        $task = new MicroTask();
-        Session::put('ok','ok');
-        $schedule_id= DB::table('microprogram_schedule')
-        ->where('project_id',Session::get('project_id'))
-        ->where('instance_id',Session::get('project_instance'))
-        ->where('active_status',1)
-        ->first();
+        $task = new Con_task();
 
         $task->text = $request->text;
         $task->task_id = $maxid + 1;
@@ -39,8 +33,6 @@ class TaskMicroController extends Controller
         $task->duration = $request->duration;
         $task->progress = $request->has('progress') ? $request->progress : 0;
         $task->parent = $request->parent;
-        $task->schedule_id = $schedule_id->id;
-      
         if($request->totalStack!='undefined'){
             $task->float_val = $request->totalStack;
         }
@@ -72,10 +64,10 @@ class TaskMicroController extends Controller
         }
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
-            ->where('id', $request->parent)->update(['type' => 'project']);
-        $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
+            ->where('task_id', $request->parent)->update(['type' => 'project']);
+        $checkparent = Con_task::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
-            ->where(['parent' => $task->task_id])->get();
+            ->where(['parent' => $task->id])->get();
         if (count($checkparent) > 0) {
             $task->type = 'project';
         } else {
@@ -99,7 +91,7 @@ class TaskMicroController extends Controller
     {
        
         $row = MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance'), 'id' => $id])->first();
+            'instance_id' => Session::get('project_instance'), 'task_id' => $id])->first();
         if ($row != null) {
             ActivityController::activity_store(Auth::user()->id,
                 Session::get('project_id'), 'Deleted Task', $row->text);
@@ -107,7 +99,7 @@ class TaskMicroController extends Controller
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
             MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance'), 'id' => $id])->delete();
+            'instance_id' => Session::get('project_instance'), 'task_id' => $id])->delete();
         }
 
         // checking whether its having parent or not
@@ -118,12 +110,12 @@ class TaskMicroController extends Controller
             // update  the type
             MicroTask::where(['project_id' => Session::get('project_id'),
                 'instance_id' => Session::get('project_instance')])
-                ->where('id', $row->parent)->update(['type' => 'project']);
+                ->where('task_id', $row->parent)->update(['type' => 'project']);
         } else {
             // update  the type
             MicroTask::where(['project_id' => Session::get('project_id'),
                 'instance_id' => Session::get('project_instance')])
-                ->where('id', $row->parent)->update(['type' => 'task']);
+                ->where('task_id', $row->parent)->update(['type' => 'task']);
         }
 
         return response()->json([
@@ -133,14 +125,14 @@ class TaskMicroController extends Controller
 
     public function update($id, Request $request)
     {
+        
        
-       
-            $task = MicroTask::where('id',$id)
+            $task = MicroTask::where('task_id',$id)
             ->where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
             ->first();
         
- 
+       
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
                 $implodeusers = implode(',', json_decode($request->users));
@@ -179,11 +171,11 @@ class TaskMicroController extends Controller
             $dependency_critical=null;
         }
 
-        $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
+        $checkparent = Con_task::where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->id])->get();
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
-            ->where('id', $request->parent)->update(['type' => 'project']);
+            ->where('task_id', $request->parent)->update(['type' => 'project']);
         if (count($checkparent) > 0) {
             $type = 'project';
         } else {
@@ -204,7 +196,7 @@ class TaskMicroController extends Controller
         );
         
 
-        MicroTask::where('id',$id)
+        MicroTask::where('task_id',$id)
                 ->where(['project_id' => Session::get('project_id'),
                 'instance_id' => Session::get('project_instance')])
                 ->update($update_data);
@@ -216,7 +208,4 @@ class TaskMicroController extends Controller
             'action' => 'updated',
         ]);
     }
-
-    
-
 }

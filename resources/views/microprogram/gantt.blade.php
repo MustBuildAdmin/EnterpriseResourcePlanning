@@ -1195,7 +1195,7 @@
         input.value = task.text;
         var start_date = form.querySelector("[name='start_date']");
         var end_date = form.querySelector("[name='end_date']");
-        start_date.value = task.start_date;
+       
         // start_date.value = task.start_date;
         validatedate(id);
         setTimeout(function(){

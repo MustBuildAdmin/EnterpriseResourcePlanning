@@ -1048,7 +1048,7 @@ setTimeout(
                 taskId = id;
                 var task = gantt.getTask(id);
                 const taskTitle = document.getElementById('task-title');
-              taskTitle.innerHTML = `${task.id}-${task.text}`
+                taskTitle.innerHTML = `${task.id}-${task.text}`
                 var form = getForm();
                 var input = form.querySelector("[name='description']");
                 input.focus();
@@ -1056,12 +1056,28 @@ setTimeout(
               const start_date = form.querySelector("[name='start_date']");
               const end_date = form.querySelector("[name='end_date']");
 
-              start_date.value = task.start_date;
+              var startdate = task.start_date;
+              var sdate    = new Date(startdate),
+              yr      = sdate.getFullYear(),
+              month   = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
+              day     = sdate.getDate()  < 10 ? '0' + sdate.getDate()  : sdate.getDate(),
+              newone = yr + '-' + month + '-' + day;
+              start_date.value=newone;
+
+              var enddate = task.end_date;
+              var edate    = new Date(enddate),
+              year      = edate.getFullYear(),
+              mon   = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
+              days     = edate.getDate()  < 10 ? '0' + edate.getDate()  : edate.getDate(),
+              newsecond = year + '-' + mon + '-' + days;
+              end_date.value=newsecond;
+
+
 
               form.style.display = "block";
                 form.querySelector("[name='save']").onclick = save;
                 form.querySelector("[name='close']").onclick = cancel;
-              form.querySelector("[name='cancel']").onclick = cancel;
+                form.querySelector("[name='cancel']").onclick = cancel;
                 form.querySelector("[name='delete']").onclick = remove;
             }
 
@@ -1081,8 +1097,13 @@ setTimeout(
 
         function save() {
             var task = gantt.getTask(taskId);
-
+            
             task.text = getForm().querySelector("[name='description']").value;
+            get_start_date = getForm().querySelector("[name='start_date']").value;
+            get_end_date   = getForm().querySelector("[name='end_date']").value;
+
+            task.start_date = new Date(get_start_date);
+            task.end_date   = new Date(get_end_date);
 
             if(task.$new){
                 delete task.$new;
