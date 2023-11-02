@@ -21,6 +21,13 @@ class TaskMicroController extends Controller
         if ($maxid == null) {
             $maxid = 0;
         }
+
+        $schedule_id= DB::table('microprogram_schedule')
+        ->where('project_id',Session::get('project_id'))
+        ->where('instance_id',Session::get('project_instance'))
+        ->where('active_status',1)
+        ->first();
+
         $task = new MicroTask();
 
         $task->text = $request->text;
@@ -32,6 +39,7 @@ class TaskMicroController extends Controller
         $task->end_date = date('Y-m-d', strtotime($request->end_date));
         $task->duration = $request->duration;
         $task->progress = $request->has('progress') ? $request->progress : 0;
+        $task->schedule_id = $schedule_id->id;
         $task->parent = $request->parent;
         if($request->totalStack!='undefined'){
             $task->float_val = $request->totalStack;
