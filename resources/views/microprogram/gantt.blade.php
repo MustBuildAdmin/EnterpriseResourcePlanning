@@ -1207,7 +1207,7 @@
         form.querySelector("[name='save']").onclick = save;
         form.querySelector("[name='close']").onclick = cancel;
         form.querySelector("[name='cancel']").onclick = cancel;
-        form.querySelector("[name='delete']").onclick = remove;
+      
     }
 
 
@@ -1227,7 +1227,12 @@
     function save() {
         var task = gantt.getTask(taskId);
 
+        get_start_date = getForm().querySelector("[name='start_date']").value;
+        get_end_date   = getForm().querySelector("[name='end_date']").value;
+
         task.text = getForm().querySelector("[name='description']").value;
+        task.start_date = new Date(get_start_date);
+        task.end_date   = new Date(get_end_date);
 
         if (task.$new) {
             delete task.$new;
@@ -1331,8 +1336,8 @@
     
       $('input#start_date_input').val(data.start_date);
       $('input#end_date_input').val(data.end_date);
-      $('#start-date').val(data.start_date);
-      $('#end-date').val(data.end_date);
+    //   $('#start-date').val(data.start_date);
+    //   $('#end-date').val(data.end_date);
     }
     });
         }
