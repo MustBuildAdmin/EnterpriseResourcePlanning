@@ -65,9 +65,9 @@ class TaskMicroController extends Controller
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
             ->where('task_id', $request->parent)->update(['type' => 'project']);
-        $checkparent = Con_task::where(['project_id' => Session::get('project_id'),
+        $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
-            ->where(['parent' => $task->id])->get();
+            ->where(['parent' => $task->task_id])->get();
         if (count($checkparent) > 0) {
             $task->type = 'project';
         } else {
