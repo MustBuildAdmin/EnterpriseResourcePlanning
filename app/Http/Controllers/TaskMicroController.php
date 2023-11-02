@@ -11,17 +11,17 @@ use Carbon\Carbon;
 use App\Models\Instance;
 use Exception;
 use DB;
-class TaskController extends Controller
+class TaskMicroController extends Controller
 {
     public function store(Request $request)
     {
 
-        $maxid = Con_task::where(['project_id' => Session::get('project_id'),
+        $maxid = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])->max('task_id');
         if ($maxid == null) {
             $maxid = 0;
         }
-        $task = new Con_task();
+        $task = new MicroTask();
 
         $task->text = $request->text;
         $task->task_id = $maxid + 1;
@@ -171,8 +171,8 @@ class TaskController extends Controller
             $dependency_critical=null;
         }
 
-        $checkparent = Con_task::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->id])->get();
+        $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
             ->where('task_id', $request->parent)->update(['type' => 'project']);

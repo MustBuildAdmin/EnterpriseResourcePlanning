@@ -1,34 +1,16 @@
 @include('new_layouts.header')
-<!-- css starts -->
+{{-- @extends('layouts.admin') --}}
+<!-- css link starts -->
 <link href="{{ asset('assets/js/css/dhtmlxgantt.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/js/gantt/common/controls_styles.css') }}">
 <link href="{{ asset('assets/js/css/tabler.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/js/css/demo.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/js/css/tabler-vendors.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
-<!-- css ends -->
-<!-- script starts -->
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('assets/js/js/dhtmlxgantt.js') }}"></script>
-<script src="{{ asset('assets/js/js/tabler.min.js') }}"></script>
-<script src="{{ asset('assets/js/js/demo-theme.min.js') }}"></script>
-<script src="{{ asset('assets/nouislider/dist/nouislider.js') }}"></script>
-<script src="{{ asset('assets/litepicker/dist/litepicker.js') }}"></script>
-<script src="{{ asset('assets/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
-<script src="{{ asset('assets/js/js/Chart.min.js') }}"></script>
-<script src="{{ asset('assets/js/js/zoomingConfig.js') }}"></script>
-<script src="{{ asset('assets/js/js/criticalPath.js') }}"></script>
-<script src="{{ asset('assets/js/js/overlay.js') }}"></script>
-<script src="{{ asset('assets/js/js/export.js') }}"></script>
-<script src="{{ asset('assets/js/js/expandAndCollapse.js') }}"></script>
-<script src="{{ asset('assets/js/js/taskPostion.js') }}"></script>
-<script src="{{ asset('assets/js/js/slack.js') }}"></script>
-<script src="{{ asset('assets/js/js/dynamicProgress.js') }}"></script>
-<script src="{{ asset('assets/js/js/taskText.js') }}"></script>
-<script src="{{ asset('assets/js/js/highlight.js') }}"></script>
-<script src="{{ asset('assets/js/js/slackrow.js') }}"></script>
-<!-- script ends -->
-<style>
+<!-- css link ends -->
+
+<!-- css starts -->
+<style type="text/css">
     .gantt_task_line {
         background-color: rgb(0 84 166 / 75%);
     }
@@ -84,9 +66,9 @@
     }
 
     /*
-    .gantt_task_line, .gantt_line_wrapper {
-    margin-top: -9px;
-    } */
+        .gantt_task_line, .gantt_line_wrapper {
+        margin-top: -9px;
+        } */
     .gantt_side_content {
         margin-bottom: 7px;
     }
@@ -99,6 +81,32 @@
         bottom: 0;
     }
 </style>
+<!-- css ends -->
+
+<!-- script js starts -->
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/js/js/dhtmlxgantt.js') }}"></script>
+<script src="{{ asset('assets/js/js/tabler.min.js') }}"></script>
+<script src="{{ asset('assets/js/js/demo-theme.min.js') }}"></script>
+<script src="{{ asset('assets/nouislider/dist/nouislider.js') }}"></script>
+<script src="{{ asset('assets/litepicker/dist/litepicker.js') }}"></script>
+<script src="{{ asset('assets/tom-select/dist/js/tom-select.popular.min.js') }}"></script>
+{{-- <script src="https://export.dhtmlx.com/gantt/api.js"
+integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script> --}}
+<script src="{{ asset('assets/js/js/Chart.min.js') }}"></script>
+<script src="{{ asset('assets/js/js/zoomingConfig.js') }}"></script>
+<script src="{{ asset('assets/js/js/criticalPath.js') }}"></script>
+<script src="{{ asset('assets/js/js/overlay.js') }}"></script>
+<script src="{{ asset('assets/js/js/export.js') }}"></script>
+{{-- <script src="{{asset('assets/js/js/lightBox.js')}}"></script> --}}
+<script src="{{ asset('assets/js/js/expandAndCollapse.js') }}"></script>
+<script src="{{ asset('assets/js/js/taskPostion.js') }}"></script>
+<script src="{{ asset('assets/js/js/slack.js') }}"></script>
+<script src="{{ asset('assets/js/js/dynamicProgress.js') }}"></script>
+<script src="{{ asset('assets/js/js/taskText.js') }}"></script>
+<script src="{{ asset('assets/js/js/highlight.js') }}"></script>
+<script src="{{ asset('assets/js/js/slackrow.js') }}"></script>
+<!-- script js ends -->
 @php
     $holidays = [];
 
@@ -116,7 +124,7 @@
             <img src="./static/logo-small.svg" height="36" alt="">
         </a>
     </div>
-    <div class="text-secondary mb-3">{{ __('Loading') }}</div>
+    <div class="text-secondary mb-3">{{__('Loading')}}</div>
     <div class="progress progress-sm">
         <div class="progress-bar progress-bar-indeterminate"></div>
     </div>
@@ -136,34 +144,35 @@
                 <div class="d-flex flex-column flex-md-row flex-fill
                             align-items-stretch align-items-md-center"
                     id="sidebar-menu">
+                    <!-- top nav menu list  starts-->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link undo_action" onclick="gantt.undo();">{{ __('Undo') }}</a>
+                            <a class="nav-link undo_action" onclick="gantt.undo();">{{__('Undo')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link redo_action" onclick="gantt.redo();">{{ __('Redo') }}</a>
+                            <a class="nav-link redo_action" onclick="gantt.redo();">{{__('Redo')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="zoomIn()">{{ __('Zoom In') }}</a>
+                            <a class="nav-link" onclick="zoomIn()">{{__('Zoom In')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="zoomOut()">{{ __('Zoom Out') }}</a>
+                            <a class="nav-link" onclick="zoomOut()">{{__('Zoom Out')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="today_scroll()">{{ __('Today') }}</a>
+                            <a class="nav-link" onclick="today_scroll()">{{__('Today')}}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()">{{ __('FullScreen') }}</a>
+                            <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()">{{__('FullScreen')}}</a>
                         </li>
                         <li>
                             <a class="nav-link">
                                 <select class="form-select gantt_zoom_select"
                                     style="width: 100px;height: 29px;margin-top: 2%;padding: 2px 20px 0px 10px;">
-                                    <option value="day">{{ __('Daily') }}</option>
-                                    <option value="week">{{ __('Weekly') }}</option>
-                                    <option value="month">{{ __('Monthly') }}</option>
-                                    <option value="quarter">{{ __('Quaterly') }}</option>
-                                    <option value="year">{{ __('Yearly') }}</option>
+                                    <option value="day">{{__('Daily')}}</option>
+                                    <option value="week">{{__('Weekly')}}</option>
+                                    <option value="month">{{__('Monthly')}}</option>
+                                    <option value="quarter">{{__('Quaterly')}}</option>
+                                    <option value="year">{{__('Yearly')}}</option>
                                 </select>
                             </a>
                         </li>
@@ -184,7 +193,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    {{ __('Edit') }}
+                                    {{__('Edit')}}
                                 </span>
                             </a>
                             <div class="dropdown-menu">
@@ -200,7 +209,7 @@
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-                                            {{ __('Indent') }}
+                                            {{__('Indent')}}
                                         </a>
                                         <a href="#" class="dropdown-item action outdent_action" id="outdent"
                                             onclick="expandAll();">
@@ -212,7 +221,7 @@
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-                                            {{ __('Outdent') }}
+                                            {{__('Outdent')}}
                                         </a>
                                         <div class="dropdown-divider"></div>
                                     </div>
@@ -235,7 +244,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    {{ __('View') }}
+                                    {{__('View')}}
                                 </span>
                             </a>
                             <div class="dropdown-menu">
@@ -250,8 +259,7 @@
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-                                            {{ __('Expand All') }}
-
+                                            {{__('Expand All')}}
                                         </a>
                                         <a href="#" class="dropdown-item" onclick="expandAll();">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
@@ -262,26 +270,25 @@
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-
-                                            {{ __('Collapse All') }}
+                                            {{__('Collapse All')}}
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         <label class="dropdown-item form-switch">
                                             <input class="form-check-input m-0 me-2"
                                                 onchange="updateCriticalPath(this)" type="checkbox">
-                                            {{ __('Critical Path') }}
+                                            {{__('Critical Path')}}
                                         </label>
                                         <label class="dropdown-item form-switch">
                                             <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)"
-                                                type="checkbox">{{ __('Show Slack') }}</label>
+                                                type="checkbox">{{__('Show Slack')}}</label>
                                         <label class="dropdown-item form-switch"><input
                                                 class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)"
-                                                type="checkbox"> {{ __('Checkbox input') }}
+                                                type="checkbox">  {{__('Checkbox input')}}
                                         </label>
                                         <label class="dropdown-item form-switch">
                                             <input class="form-check-input m-0 me-2"
                                                 onchange="updateCriticalPath(this)" type="checkbox">
-                                            {{ __('Checkbox input') }}
+                                            {{__('Checkbox input')}}
                                         </label>
                                     </div>
                                 </div>
@@ -303,7 +310,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    {{ __('Hide and Show Grid Columns') }}
+                                    {{__('Hide and Show Grid Columns')}}
                                 </span>
                             </a>
                             <div class="dropdown-menu">
@@ -313,7 +320,7 @@
                                 </div>
                         </li>
                         <li class="nav-item dropdown">
-                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
+                            {{ Form::open(['route' => ['projects.micro_freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
 
                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                             <a href="#" class="nav-link freeze_button" style='width: 100%;'
@@ -332,50 +339,51 @@
                                     <path d="M16 5.25l-8 4.5"></path>
                                 </svg>
                                 <span class="nav-link-title">
-                                    {{ __('Save') }}
+                                    {{__('Save')}}
                                     {!! Form::close() !!}
                                 </span>
 
                             </a>
                         </li>
                     </ul>
+                    <!-- top nav menu list ends-->
                 </div>
         </header>
         <div class="h-100 w-100" id="gantt_here"></div>
     </div>
 
-    <!--custom popup starts-->
+  <!-- custom lightbox starts-->
     <div class="modal modal-blur fade" id="modal-task" tabindex="-1" style="display: none;" aria-hidden="true"
         role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"id="task-title"> {{ __('New Task') }}</h5>
+                    <h5 class="modal-title"id="task-title">{{__('New Task')}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         name="close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label"> {{ __('Task Name') }}</label>
+                        <label class="form-label">{{__('Task Name')}}</label>
                         <input type="text" class="form-control" name="description"
-                            placeholder="{{ __('Type your Task Name') }}">
+                            placeholder="Type your Task Name">
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
-                            <label class="form-label">{{ __('Task Start Date') }}</label>
+                            <label class="form-label">{{__('Task Start Date')}}</label>
                             <input type="text" class="form-control" name="start_date" id="start-date"
                                 placeholder="Enter Your Task Start Date">
                         </div>
                         <div class="col-md-6  col-12">
-                            <label class="form-label">{{ __('Task End Date') }}</label>
+                            <label class="form-label">{{__('Task End Date')}}</label>
                             <input type="text" class="form-control" name="end_date" id="end-date"
-                                placeholder="{{ __('Enter Your Task End Date') }}">
+                                placeholder="Enter Your Task End Date">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-link link-secondary" name="cancel" data-bs-dismiss="modal">
-                        {{ __('Cancel') }}
+                        {{__('Cancel')}}
                     </a>
                     <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal" name="save">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -386,13 +394,13 @@
                             <path d="M12 5l0 14"></path>
                             <path d="M5 12l14 0"></path>
                         </svg>
-                        {{ __('Add new Task') }}
+                        {{__('Add new Task')}}
                     </a>
                 </div>
             </div>
         </div>
     </div>
-   <!--custom popup ends-->
+  <!-- custom lightbox ends-->
 
 </div>
 
@@ -400,8 +408,6 @@
 <input type='hidden' id='holidays' value='{{ $holidays }}'>
 <input type='hidden' id='frezee_status' value='{{ $freezeCheck->freeze_status }}'>
 <input type='hidden' id='critical_update' value='{{ $critical_update }}'>
-<input type='hidden' id='start_date_input'>
-<input type='hidden' id='end_date_input'>
 
 
 
@@ -428,7 +434,7 @@
     }
 
     // check the data is empty #############################
-    $.post("{{ route('projects.get_gantt_task_count') }}", {
+    $.post("{{ route('projects.get_micro_gantt_task_count') }}", {
             _token: tempcsrf,
             project_id: {{ $project->id }}
         },
@@ -891,7 +897,7 @@
         gantt.config.columns = [
             showWbsColumn,
             {
-                name: "task_id",
+                name: "id",
                 width: 50,
                 label: "Task Id",
                 resize: true,
@@ -1179,9 +1185,6 @@
     };
 </script>
 <script>
-    function call_num(){
-        validatedate();
-    }
     gantt.showLightbox = function(id) {
 
         document.body.classList.add("modal-open");
@@ -1193,21 +1196,32 @@
         var input = form.querySelector("[name='description']");
         input.focus();
         input.value = task.text;
-        var start_date = form.querySelector("[name='start_date']");
-        var end_date = form.querySelector("[name='end_date']");
-       
-        // start_date.value = task.start_date;
-        validatedate(id);
-        setTimeout(function(){
-            dateset();
-        }, 800);
-      
+        const start_date = form.querySelector("[name='start_date']");
+        const end_date = form.querySelector("[name='end_date']");
+
+        var startdate = task.start_date;
+        var sdate = new Date(startdate),
+        yr = sdate.getFullYear(),
+        month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
+        day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
+        newone = yr + '-' + month + '-' + day;
+        start_date.value = newone;
+
+        var enddate = task.end_date;
+        var edate = new Date(enddate),
+        year = edate.getFullYear(),
+        mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
+        days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
+        newsecond = year + '-' + mon + '-' + days;
+        end_date.value = newsecond;
+
+
 
         form.style.display = "block";
         form.querySelector("[name='save']").onclick = save;
         form.querySelector("[name='close']").onclick = cancel;
         form.querySelector("[name='cancel']").onclick = cancel;
-      
+       
     }
 
 
@@ -1227,12 +1241,12 @@
     function save() {
         var task = gantt.getTask(taskId);
 
-        get_start_date = getForm().querySelector("[name='start_date']").value;
-        get_end_date   = getForm().querySelector("[name='end_date']").value;
-
         task.text = getForm().querySelector("[name='description']").value;
+        get_start_date = getForm().querySelector("[name='start_date']").value;
+        get_end_date = getForm().querySelector("[name='end_date']").value;
+
         task.start_date = new Date(get_start_date);
-        task.end_date   = new Date(get_end_date);
+        task.end_date = new Date(get_end_date);
 
         if (task.$new) {
             delete task.$new;
@@ -1266,7 +1280,6 @@
     // gantt create edit functionality
 
     if (frezee_status_actual != 1) {
-
         var dp = new gantt.dataProcessor("../../api/");
         // var dp = new gantt.dataProcessor("/erp/public/");
         var critical = 0;
@@ -1322,37 +1335,11 @@
 
 
 <script>
- 
-        function validatedate(id){
-            console.log("Fff",id);
-            $.ajax({
-      type: 'GET',
-      url: "{{ route('get_validated_date') }}",
-      data: {
-                    _token: tempcsrf,
-                    id: id,
-                },
-      success: function(data) {
-    
-      $('input#start_date_input').val(data.start_date);
-      $('input#end_date_input').val(data.end_date);
-    //   $('#start-date').val(data.start_date);
-    //   $('#end-date').val(data.end_date);
-    }
-    });
-        }
     // @formatter:off
-      
-        function dateset(){
-        var start_date_input=$('input#start_date_input').val();
-        var end_date_input=$('input#end_date_input').val();
-        console.log("start_date_input",start_date_input);
-      console.log("end_date_input",end_date_input);
-      window.Litepicker && (new Litepicker({
+    document.addEventListener("DOMContentLoaded", function() {
+        window.Litepicker && (new Litepicker({
             element: document.getElementById('start-date'),
             elementEnd: document.getElementById('end-date'),
-            minDate:   start_date_input,
-            maxDate: end_date_input,
             singleMode: false,
             allowRepick: true,
             buttonText: {
@@ -1373,37 +1360,6 @@
       </svg>`,
             },
         }));
-        }
-      
-      
-        
-    document.addEventListener("DOMContentLoaded", function() {
-
-        
     });
-
-  
-    // $(function() {
-      
-    //     window.Litepicker && (new Litepicker({
-    //         element: document.getElementById('start-date'),
-    //         elementEnd: document.getElementById('end-date'),
-    //         minDate: document.getElementById('#start_date'),
-    //         maxDate: document.getElementById('#end_date'),
-          
-    //         buttonText: {
-    //             previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-    //             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-    //             fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none"
-    //             d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-                
-    //             nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
-    //             height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-    //             stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
-    //             fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
-    //         },
-    //     }));
-    // });
-
     // @formatter:on
 </script>
