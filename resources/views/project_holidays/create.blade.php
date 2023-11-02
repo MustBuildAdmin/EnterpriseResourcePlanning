@@ -1,6 +1,12 @@
+
 <style>
+
 .form-check {
     margin: 8px 12px !important;
+}
+
+#project_id{
+    display:none;
 }
 </style>
 
@@ -10,15 +16,29 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                {{Form::label('project',__('Project'),['class'=>'form-label'])}}
-                <select class="form-control" required name='project_id'>
+                <select class="form-control" required name='project_id' id="project_id">
                         @foreach($projects as $key => $value)
                             <option value="{{$value->id}}" >{{$value->project_name}}</option>
                         @endforeach
                 </select>
                 <br>
                 {{Form::label('date',__('Date'),['class'=>'form-label'])}}
-                {{Form::date('date',null,array('class'=>'form-control','required' => 'required'))}}
+                <div class="mb-3">
+                    <div class="input-icon">
+                        <span class="input-icon-addon">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon"
+                             width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                            <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" />
+                            <path d="M12 15v3" /></svg>
+                        </span>
+                        <input class="form-control" placeholder="Select a date"
+                         id="datepicker-icon-prepend" name="date" required/>
+                        </div>
+                </div>
                 <br>
                 {{Form::label('description',__('Description'),['class'=>'form-label'])}}
                 {{Form::textarea('description',null,array('class'=>'form-control','required' => 'required'))}}
@@ -31,7 +51,7 @@
                 </span>
                 @enderror
             </div>
-        </div>  
+        </div>
     </div>
 </div>
 <div class="modal-footer">
@@ -55,7 +75,6 @@ $(document).on("keyup", '#name', function () {
             },
             success: function(data) {
                 if(data=='in'){
-                    // show_toastr('error', 'Please enter valid date');
                     $('#error').text('Project Name already exit');
                 }else{
                     $('#error').text('');
@@ -68,3 +87,27 @@ $(document).on("keyup", '#name', function () {
 });
 </script>
 
+
+<script src="{{ asset('tabler/tabler.min.js') }}"></script>
+<script src="{{ asset('theme/demo-theme.min.js') }}"></script>
+<script src="{{ asset('litepicker/litepicker.js') }}"></script>
+<script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
+
+<script>
+    $( document ).ready(function() {
+        window.Litepicker && (new Litepicker({
+            element: document.getElementById('datepicker-icon-prepend'),
+            buttonText: {
+                previousMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none"
+                d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+                
+                nextMonth: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+            },
+        }));
+    });
+</script>
