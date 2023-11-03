@@ -349,11 +349,17 @@ if($delay>100){
                       <div class="col-auto">
                         <span
                           class="bg-facebook text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list" 
+                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                           stroke="currentColor" fill="none" stroke-linecap="round" 
+                                                    stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M9 6l11 0"></path>
+                            <path d="M9 12l11 0"></path>
+                            <path d="M9 18l11 0"></path>
+                            <path d="M5 6l0 .01"></path>
+                            <path d="M5 12l0 .01"></path>
+                            <path d="M5 18l0 .01"></path>
                           </svg>
                         </span>
                       </div>
@@ -417,17 +423,13 @@ if($delay>100){
                       <div class="col-auto">
                         <span
                           class="bg-facebook text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                           viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555
-                             -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1
-                             -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443
-                              -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z">
-                            </path>
-                            <path d="M14 8h-4v8h4"></path><path d="M10 12h2.5"></path>
-                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" 
+                          class="icon icon-tabler icon-tabler-alert-triangle-filled" 
+                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                      <path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" stroke-width="0" fill="currentColor"></path>
+                                    </svg>
                         </span>
                       </div>
                       <div class="col">
