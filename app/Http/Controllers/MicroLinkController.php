@@ -49,7 +49,7 @@ class MicroLinkController extends Controller
 
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
-            $link = MicroLink::where(['project_id' => Session::get('project_id'),
+            MicroLink::where(['project_id' => Session::get('project_id'),
                                  'instance_id' => Session::get('project_instance'),'id'=>$id])
                                  ->update(['type'=>$request->type,
                                  'source'=>$request->source,
@@ -68,7 +68,7 @@ class MicroLinkController extends Controller
     {
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
-            $link = MicroLink::where(['project_id' => Session::get('project_id'),
+            MicroLink::where(['project_id' => Session::get('project_id'),
                                 'instance_id' => Session::get('project_instance'),'id'=>$id])
                                 ->delete();
         }

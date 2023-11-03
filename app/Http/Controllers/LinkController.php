@@ -48,7 +48,7 @@ class LinkController extends Controller
 
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
-            $link = Link::where(['project_id' => Session::get('project_id'),
+            Link::where(['project_id' => Session::get('project_id'),
                                  'instance_id' => Session::get('project_instance'),'id'=>$id])
                                  ->update(['type'=>$request->type,
                                  'source'=>$request->source,
@@ -67,7 +67,7 @@ class LinkController extends Controller
     {
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
-            $link = Link::where(['project_id' => Session::get('project_id'), 
+            Link::where(['project_id' => Session::get('project_id'),
                                 'instance_id' => Session::get('project_instance'),'id'=>$id])
                                 ->delete();
         }

@@ -1414,7 +1414,7 @@ class MicroPorgramController extends Controller
                         ->where("instance_id", $instanceId)
                         ->pluck("non_working_days")
                         ->first();
-                    // critical bulk update 
+                    // critical bulk update
                     $critical_update=Project::where("id", Session::get("project_id"))
                                             ->pluck('critical_update')->first();
 
@@ -1782,7 +1782,7 @@ class MicroPorgramController extends Controller
         return MicroTask::select('start_date','end_date')->where('project_id',Session::get("project_id"))
         ->where('instance_id',Session::get("project_instance"))
         ->where('id',$id)
-        ->first();;
+        ->first();
     }
 
 }

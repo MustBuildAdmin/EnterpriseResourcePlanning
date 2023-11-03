@@ -134,7 +134,8 @@ if($delay>100){
                   </h3>
                   <div class="card-actions">
                     <a href="{{ route('micro_taskboard') }}">
-                      {{ __('View the Active Look a Head')}}<!-- Download SVG icon from http://tabler-icons.io/i/edit -->
+                      {{ __('View the Active Look a Head')}}
+                      <!-- Download SVG icon from http://tabler-icons.io/i/edit -->
                     </a>
                   </div>
                 </div>
@@ -142,9 +143,13 @@ if($delay>100){
                   <dl class="row">
                     @if($microProgram != null)
                       <dt class="col-5">{{ __('Start Date')}}:</dt>
-                      <dd class="col-7">{{ Utility::site_date_format($microProgram->schedule_start_date,\Auth::user()->id) }}</dd>
+                      <dd class="col-7">
+                        {{ Utility::site_date_format($microProgram->schedule_start_date,\Auth::user()->id) }}
+                      </dd>
                       <dt class="col-5">{{ __('End Date')}}:</dt>
-                      <dd class="col-7">{{ Utility::site_date_format($microProgram->schedule_end_date,\Auth::user()->id) }}</dd>
+                      <dd class="col-7">
+                        {{ Utility::site_date_format($microProgram->schedule_end_date,\Auth::user()->id) }}
+                      </dd>
                       <dt class="col-5">{{ __('Holiday in Days')}}:</dt>
                       <dd class="col-7">{{$holidayCount}}</dd>
                       <dt class="col-5">{{ __('Weekends in Days')}}</dt>

@@ -1161,7 +1161,7 @@ class ProjectController extends Controller
                             ->where('schedule_id',$microProgram->id)
                             ->where('type','task')->get()->count();
 
-                        $microTaskTaken = MicroTask::where('project_id',$project->id)
+                        $conTaskTaken = MicroTask::where('project_id',$project->id)
                             ->where('instance_id',Session::get("project_instance"))
                             ->where('schedule_id',$microProgram->id)
                             ->where('type','project')
