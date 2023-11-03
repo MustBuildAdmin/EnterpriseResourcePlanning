@@ -133,7 +133,7 @@ if($delay>100){
                     {{ __('Current Look a Head')}}
                   </h3>
                   <div class="card-actions">
-                    <a href="#">
+                    <a href="{{ route('micro_taskboard') }}">
                       {{ __('View the Active Look a Head')}}<!-- Download SVG icon from http://tabler-icons.io/i/edit -->
                     </a>
                   </div>
