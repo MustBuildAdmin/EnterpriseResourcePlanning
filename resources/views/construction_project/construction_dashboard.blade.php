@@ -387,7 +387,7 @@ if($delay>100){
                     <div class="row align-items-center">
                       <div class="col-auto">
                         <span
-                          class="bg-facebook text-white avatar">
+                          class="bg-orange text-white avatar">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           class="icon icon-tabler icon-tabler-route-2" width="24" height="24" 
                           viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" 
@@ -423,7 +423,7 @@ if($delay>100){
                     <div class="row align-items-center">
                       <div class="col-auto">
                         <span
-                          class="bg-facebook text-white avatar">
+                          class="bg-red  text-white avatar">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           class="icon icon-tabler icon-tabler-alert-triangle-filled" 
                           width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
