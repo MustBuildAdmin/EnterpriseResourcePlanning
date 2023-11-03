@@ -280,15 +280,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                         </label>
                                         <label class="dropdown-item form-switch">
                                             <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)"
-                                                type="checkbox">{{__('Show Slack')}}</label>
-                                        <label class="dropdown-item form-switch"><input
-                                                class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)"
-                                                type="checkbox">  {{__('Checkbox input')}}
-                                        </label>
-                                        <label class="dropdown-item form-switch">
-                                            <input class="form-check-input m-0 me-2"
-                                                onchange="updateCriticalPath(this)" type="checkbox">
-                                            {{__('Checkbox input')}}
+                                                type="checkbox">{{__('Show Slack')}}
                                         </label>
                                     </div>
                                 </div>
@@ -817,7 +809,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             resize: true,
             hide: false,
             width: 70,
-            label: "Total slack",
+            label: "{{__('Total slack')}}",
             template: function(task) {
                 return gantt.getTotalSlack(task);
             }
@@ -829,7 +821,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             resize: true,
             hide: false,
             width: 70,
-            label: "Free slack",
+            label: "{{__('Free slack')}}",
             template: function(task) {
                 if (gantt.isSummaryTask(task)) {
                     return "";
@@ -845,7 +837,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             tree: true,
             hide: false,
             width: 700,
-            label: "WBS",
+            label: "{{__('WBS')}}",
             template: function(task) {
                 return gantt.getWBSCode(task);
             }
@@ -860,7 +852,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             resize: true,
             hide: false,
             width: 700,
-            label: "Assignee",
+            label: "{{__('Assignee')}}",
             template: function(task) {
                 if (task.type == gantt.config.types.project) {
                     return "";
@@ -899,7 +891,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             {
                 name: "id",
                 width: 50,
-                label: "Task Id",
+                label: "{{__('Task Id')}}",
                 resize: true,
                 hide: false,
             },
@@ -914,12 +906,14 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 align: "center",
                 resize: true,
                 width: 120,
+                label: "{{__('Start Date')}}",
                 hide: false
             },
             {
                 name: "end_date",
                 label: "End",
                 align: "center",
+                label: "{{__('End Date')}}",
                 width: 120,
                 template: function(task) {
                     return gantt.templates.date_grid(task.end_date, task);
@@ -929,7 +923,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             },
             {
                 name: "predecessors",
-                label: "Predecessors",
+                label: "{{__('Predecessors')}}",
                 width: 200,
                 align: "left",
                 resize: true,
@@ -947,7 +941,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             },
             {
                 name: "successors",
-                label: "Successors",
+                label: "{{__('Successors')}}",
                 width: 200,
                 align: "left",
                 resize: true,
@@ -969,6 +963,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             {
                 name: "duration",
                 align: "center",
+                label: "{{__('Duration')}}",
                 resize: true,
                 width: 78,
                 hide: false

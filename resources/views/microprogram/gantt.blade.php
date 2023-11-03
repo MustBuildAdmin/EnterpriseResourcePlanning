@@ -80,6 +80,10 @@
     .gantt_side_content.gantt_right {
         bottom: 0;
     }
+
+    .gantt_grid_head_cell.gantt_grid_head_add.gantt_last_cell {
+        display: none;
+    }
 </style>
 <!-- css ends -->
 
@@ -280,15 +284,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                         </label>
                                         <label class="dropdown-item form-switch">
                                             <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)"
-                                                type="checkbox">{{__('Show Slack')}}</label>
-                                        <label class="dropdown-item form-switch"><input
-                                                class="form-check-input m-0 me-2" onchange="updateCriticalPath(this)"
-                                                type="checkbox">  {{__('Checkbox input')}}
-                                        </label>
-                                        <label class="dropdown-item form-switch">
-                                            <input class="form-check-input m-0 me-2"
-                                                onchange="updateCriticalPath(this)" type="checkbox">
-                                            {{__('Checkbox input')}}
+                                                type="checkbox">{{__('Show Slack')}}
                                         </label>
                                     </div>
                                 </div>
