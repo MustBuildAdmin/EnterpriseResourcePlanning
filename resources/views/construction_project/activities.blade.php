@@ -9,8 +9,13 @@
 </style>
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
-    <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
-    <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
+<link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
+<link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
+<script src="{{ asset('tabler/tabler.min.js') }}"></script>
+<script src="{{ asset('theme/demo-theme.min.js') }}"></script>
+<script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
+<script src="{{ asset('litepicker/litepicker.js') }}"></script>
+<script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
 
 <div class="page-wrapper dashboard">
 
@@ -35,31 +40,50 @@
                                        <div class="row">
                                         <div class="col-md-2 border-end p-3">
                                         <form>
-                                           <div class="col-12 mb-3">
-                                            <label class="form-label required">Activity Start Date</label>
-                                            <div class="input-icon">
-                                                <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
-                                                </span>
-                                                <input class="form-control" placeholder="Select a Start date" id="start-date"/>
-                                              </div>
-                                           </div>
-                                           <div class="col-12 mb-3">
+                                            <div class="col-12 mb-3">
+                                                <label class="form-label required">Activity Start Date</label>
+                                                <div class="input-icon">
+                                                    <span class="input-icon-addon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                     height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                      stroke="currentColor"
+                                                      fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2
+                                                         0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                        <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" />
+                                                        <path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                    </span>
+                                                    <input class="form-control" placeholder="Select a Start date"
+                                                     id="start-date"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mb-3">
                                             <label class="form-label required">Activity End Date</label>
                                             <div class="input-icon">
-                                                <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                <span class="input-icon-addon">
+                                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                                   height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                    <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2
+                                                     2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+                                                    <path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" />
+                                                    <path d="M11 15h1" /><path d="M12 15v3" /></svg>
                                                 </span>
-                                                <input class="form-control" placeholder="Select a End date" id="end-date"/>
+                                                <input class="form-control" placeholder="Select a End date"
+                                                 id="end-date"/>
                                               </div>
                                            </div>
                                            <div class="col-md-12">
                                            <div class="mb-3">
                                             <label class="form-label">Task Action Method</label>
-                                            <select type="text" class="form-select" placeholder="Select Status" id="task-status" value="" multiple>
-                                              <option value="HTML">Create</option>
-                                              <option value="JavaScript">Update</option>
-                                              <option value="CSS">Delete</option>
+                                            <select type="text" class="form-select" placeholder="Select Status"
+                                             id="task-status" value="" multiple>
+                                              <option value="Create">Create</option>
+                                              <option value="Update">Update</option>
+                                              <option value="Delete">Delete</option>
                                             </select>
                                           </div>
                                         </div>
@@ -72,12 +96,14 @@
                                         </div>
                                         <div class="col-md-10">
                                             <div class="table-responsive card p-4">
-                                              <table class="table table-vcenter card-table" id="task-table">
+                                              <table class="table table-vcenter card-table"
+                                               id="task-table">
                                                 <thead>
                                                     <tr>
                                                       <th>Activity ID</th>
                                                       <th>Activity Type</th>
                                                       <th>Activity</th>
+                                                      <th>Activity Done By</th>
                                                       <th>Activity Date and Time</th>
                                                     </tr>
                                                   </thead>
@@ -85,8 +111,9 @@
                                                     @foreach($project->activities as $activity)
                                                         <tr>
                                                             <td><a href="#">{{$activity->id}}</a></td>
-                                                            <td>{{ __($activity->log_type) }}</td>
+                                                            <td>{!! $activity->logType() !!}</td>
                                                             <td>{!! $activity->getRemark() !!}</td>
+                                                            <td>{!! $activity->doneBy() !!}</td>
                                                             <td>{{$activity->created_at->diffForHumans()}}</td>
                                                        </tr>
                                                        @endforeach
@@ -129,13 +156,15 @@
             render:{
                 item: function(data,escape) {
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                         + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },
                 option: function(data,escape){
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                         + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },
@@ -156,13 +185,15 @@
             render:{
                 item: function(data,escape) {
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                         + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },
                 option: function(data,escape){
                     if( data.customProperties ){
-                        return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                        return '<div><span class="dropdown-item-indicator">'
+                         + data.customProperties + '</span>' + escape(data.text) + '</div>';
                     }
                     return '<div>' + escape(data.text) + '</div>';
                 },
@@ -180,10 +211,16 @@
                 singleMode: false,
                 allowRepick: true,
                 buttonText: {
-                    previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
-                    nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+                    previousMonth: `
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+          stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+          <path d="M15 6l-6 6l6 6" /></svg>`,
+                    nextMonth: `
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24
+        " viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+         stroke-linecap="round" stroke-linejoin="round"><path stroke="none"
+          d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
                 },
             })).DateTime();
         });
@@ -191,27 +228,30 @@
       </script>
        <script>
         // @formatter:off
+        // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
-            var el;
-            window.TomSelect && (new TomSelect(el = document.getElementById('task-status'), {
-                          copyClassesToDropdown: false,            plugins: ['remove_button'],
-                dropdownParent: 'body',
-                controlInput: '<input>',
-                render:{
-                    item: function(data,escape) {
-                        if( data.customProperties ){
-                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                        }
-                        return '<div>' + escape(data.text) + '</div>';
+                var el;
+                window.TomSelect && (new TomSelect(el = document.getElementById('task-status'), {
+                              copyClassesToDropdown: false,            plugins: ['remove_button'],
+                    dropdownParent: 'body',
+                    controlInput: '<input>',
+                    render:{
+                        item: function(data,escape) {
+                            if( data.customProperties ){
+                                return '<div><span class="dropdown-item-indicator">'
+                                 + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                            }
+                            return '<div>' + escape(data.text) + '</div>';
+                        },
+                        option: function(data,escape){
+                            if( data.customProperties ){
+                                return '<div><span class="dropdown-item-indicator">'
+                                 + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                            }
+                            return '<div>' + escape(data.text) + '</div>';
+                        },
                     },
-                    option: function(data,escape){
-                        if( data.customProperties ){
-                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-                        }
-                        return '<div>' + escape(data.text) + '</div>';
-                    },
-                },
-            }));
-        });
-        // @formatter:on
+                }));
+            });
+       
       </script>
