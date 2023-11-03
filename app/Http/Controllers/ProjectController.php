@@ -22,6 +22,7 @@ use App\Models\TaskStage;
 use App\Models\TimeTracker;
 use App\Models\User;
 use App\Models\Utility;
+use App\Models\MicroTask;
 use Carbon\Carbon;
 use Config;
 use DateInterval;
@@ -1137,6 +1138,120 @@ class ProjectController extends Controller
                     $startDate->addDay();
                 }
                 $alldates=$datesBetween;
+            
+                // Micro task Start
+                $microTaskCount = 0;
+                $conTaskTaken = 0;
+                $holidayCount = 0;
+                $microWeekEndCount = 0;
+                $totalWorkingDays = 0;
+                $microProgram  = null;
+                $taskDates = [];
+
+                $checkProject = Project::where('id',$project->id)->where('micro_program',1)->first();
+                if($checkProject != null){
+                    $microProgram = DB::table('microprogram_schedule')
+                        ->where('project_id',$project->id)
+                        ->where('active_status',1)
+                        ->first();
+
+                    if($microProgram != null){
+                        $microTaskCount = MicroTask::where('project_id',$project->id)
+                            ->where('instance_id',Session::get("project_instance"))
+                            ->where('schedule_id',$microProgram->id)
+                            ->where('type','task')->get()->count();
+
+                        $microTaskTaken = MicroTask::where('project_id',$project->id)
+                            ->where('instance_id',Session::get("project_instance"))
+                            ->where('schedule_id',$microProgram->id)
+                            ->where('type','project')
+                            ->where('micro_flag',1)->get()->count();
+                    }
+
+                    if (\Auth::user()->type == "company") {
+                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->id)
+                            ->where("project_id", $project->id)
+                            ->where("instance_id", Session::get("project_instance"))
+                            ->get();
+                    } else {
+                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->creatorId())
+                        ->where("project_id", $project->id)
+                        ->where("instance_id", Session::get("project_instance"))
+                        ->get();
+                    }
+
+                    $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id',)
+                        ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
+                        ->whereNotNull('pros.instance_id')
+                        ->where('micro_tasks.micro_flag',1)
+                        ->where('micro_tasks.project_id', $project->id)
+                        ->where('micro_tasks.instance_id', Session::get("project_instance"))
+                        ->where('micro_tasks.schedule_id',$microProgram->id)
+                        ->get();
+                    
+                    if(count($microallDate) != 0){
+                        foreach($microallDate as $getDate){
+                            $startDate = Carbon::createFromFormat('Y-m-d', $getDate->start_date);
+                            $endDate = Carbon::createFromFormat('Y-m-d', $getDate->end_date);
+
+                            while ($startDate->lte($endDate)) {
+                                $taskDates[] = $startDate->copy()->format('Y-m-d');
+                                $startDate->addDay();
+                            }
+                        }
+                        if(count($getHoliday) != 0){
+                            foreach($getHoliday as $holidaydate){
+                                if(in_array($holidaydate->date,$taskDates)){
+                                    $holidayCount++;
+                                }
+                                
+                            }
+                        }
+
+                        $countDates = count($taskDates);
+
+                        $totalWorkingDays = ($countDates-$holidayCount);
+                    }
+
+                    $micro_get_non_work_day = [];
+                    $nonWorkingDay = NonWorkingDaysModal::where("project_id",$project->id)
+                        ->where("instance_id", Session::get("project_instance"))
+                        ->orderBy("id", "DESC")
+                        ->first();
+
+                    if (
+                        $nonWorkingDay != null &&
+                        $nonWorkingDay->non_working_days != null
+                    ) {
+                        $split_non_working = explode(",", $nonWorkingDay->non_working_days);
+                        foreach ($split_non_working as $non_working) {
+                            if ($non_working == 0) {
+                                $micro_get_non_work_day[] = "Sunday";
+                            } elseif ($non_working == 1) {
+                                $micro_get_non_work_day[] = "Monday";
+                            } elseif ($non_working == 2) {
+                                $micro_get_non_work_day[] = "Tuesday";
+                            } elseif ($non_working == 3) {
+                                $micro_get_non_work_day[] = "Wednesday";
+                            } elseif ($non_working == 4) {
+                                $micro_get_non_work_day[] = "Thursday";
+                            } elseif ($non_working == 5) {
+                                $micro_get_non_work_day[] = "Friday";
+                            } elseif ($non_working == 6) {
+                                $micro_get_non_work_day[] = "Saturday";
+                            }
+                        }
+                    }
+
+                    foreach($taskDates as $split_dates){
+                        $getCurrentDay = date("l", strtotime($split_dates));
+                        if(in_array($getCurrentDay,$micro_get_non_work_day)){
+                            $microWeekEndCount++;
+                        }
+                    }
+                }
+
+                // Micro task End
                 return view(
                     "construction_project.construction_dashboard",
                     compact(
@@ -1155,7 +1270,14 @@ class ProjectController extends Controller
                         "completed_task",
                         'alldates',
                         'completed',
-                        'pending'
+                        'pending',
+                        'microProgram',
+                        'microTaskCount',
+                        'conTaskTaken',
+                        'holidayCount',
+                        'microWeekEndCount',
+                        'totalWorkingDays',
+                        'checkProject'
                     )
                 );
             } else {

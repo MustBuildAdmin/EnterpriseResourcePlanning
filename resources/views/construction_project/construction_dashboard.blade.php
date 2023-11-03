@@ -125,38 +125,44 @@ if($delay>100){
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-xl-3">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">
-                  {{ __('Current Look a Head')}}
-                </h3>
-                <div class="card-actions">
-                  <a href="#">
-                    {{ __('View the Active Look a Head')}}<!-- Download SVG icon from http://tabler-icons.io/i/edit -->
-                  </a>
+          @if($checkProject != null)
+            <div class="col-lg-6 col-xl-3">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title">
+                    {{ __('Current Look a Head')}}
+                  </h3>
+                  <div class="card-actions">
+                    <a href="#">
+                      {{ __('View the Active Look a Head')}}<!-- Download SVG icon from http://tabler-icons.io/i/edit -->
+                    </a>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <dl class="row">
+                    @if($microProgram != null)
+                      <dt class="col-5">{{ __('Start Date')}}:</dt>
+                      <dd class="col-7">{{ Utility::site_date_format($microProgram->schedule_start_date,\Auth::user()->id) }}</dd>
+                      <dt class="col-5">{{ __('End Date')}}:</dt>
+                      <dd class="col-7">{{ Utility::site_date_format($microProgram->schedule_end_date,\Auth::user()->id) }}</dd>
+                      <dt class="col-5">{{ __('Holiday in Days')}}:</dt>
+                      <dd class="col-7">{{$holidayCount}}</dd>
+                      <dt class="col-5">{{ __('Weekends in Days')}}</dt>
+                      <dd class="col-7">{{$microWeekEndCount}}</dd>
+                      <dt class="col-5">{{ __('Total working days')}}:</dt>
+                      <dd class="col-7">{{$totalWorkingDays}}</dd>
+                      <dt class="col-5">{{ __('Total Task Taken')}}:</dt>
+                      <dd class="col-7">{{$conTaskTaken}}</dd>
+                      <dt class="col-5">{{ __('Total Sub Task Created')}}:</dt>
+                      <dd class="col-7">{{$microTaskCount}}</dd>
+                    @else
+                      <dd class="col-7">{{ __('No schedule is active')}}</dd>
+                    @endif
+                  </dl>
                 </div>
               </div>
-              <div class="card-body">
-                <dl class="row">
-                  <dt class="col-5">Start Date:</dt>
-                  <dd class="col-7">2020-01-05 </dd>
-                  <dt class="col-5">End Date:</dt>
-                  <dd class="col-7">2020-01-05 </dd>
-                  <dt class="col-5">Holiday in Days:</dt>
-                  <dd class="col-7">2</dd>
-                  <dt class="col-5">Weekends in Days</dt>
-                  <dd class="col-7">1</dd>
-                  <dt class="col-5">Total working days:</dt>
-                  <dd class="col-7">4</dd>
-                  <dt class="col-5">Total Task Taken:</dt>
-                  <dd class="col-7">10</dd>
-                  <dt class="col-5">Total Sub Task Created:</dt>
-                  <dd class="col-7">10</dd>
-                </dl>
-              </div>
             </div>
-          </div>
+          @endif
         </div>
         <div class="row row-deck row-cards mt-5">
           <div class="col-sm-6 col-lg-6">
