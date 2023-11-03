@@ -312,13 +312,15 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 </div>
                         </li>
                         <li class="nav-item dropdown">
-                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
+                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
+                            'id' => 'gantt_chart_submit']) }}
 
                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                             <a href="#" class="nav-link freeze_button" style='width: 100%;'
                                 data-bs-toggle="tooltip" title="{{ __('Click to save') }}"
                                 data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
+                                data-confirm="{{ __('Are You Sure?') . '|'
+                                . __('This action can not be undone. Do you want to continue?') }}"
                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -374,10 +376,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-link link-secondary" name="cancel" data-bs-dismiss="modal">
+                    <a href="#" class="btn btn-link link-secondary"  data-bs-dismiss="modal">
                         {{__('Cancel')}}
                     </a>
-                    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal" name="save">
+                    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -589,7 +591,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     const task = gantt.getTask(tasks[i].id);
                     const tt = gantt.isCriticalTask(task);
                     // const totalStack = gantt.getTotalSlack(task);
-                    // const freeSlack = gantt.getFreeSlack(task)// const constraintType = gantt.getConstraintType(task);
+                    // const freeSlack = gantt.getFreeSlack(task)
+                    // const constraintType = gantt.getConstraintType(task);
                     const taskdetails = {
                         ...task,
                         isCriticalTask: gantt.isCriticalTask(task),

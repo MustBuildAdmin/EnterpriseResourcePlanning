@@ -233,7 +233,8 @@ class MicroPorgramController extends Controller
                         ->get();
                     }
 
-                    $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date', 'micro_tasks.id',)
+                    $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date',
+                                                      'micro_tasks.id',)
                         ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                         ->whereNotNull('pros.instance_id')
                         ->where('micro_tasks.micro_flag',1)
@@ -1414,7 +1415,8 @@ class MicroPorgramController extends Controller
                         ->pluck("non_working_days")
                         ->first();
                     // critical bulk update 
-                    $critical_update=Project::where("id", Session::get("project_id"))->pluck('critical_update')->first();
+                    $critical_update=Project::where("id", Session::get("project_id"))
+                                            ->pluck('critical_update')->first();
 
                     return view(
                         "microprogram.gantt",
@@ -1700,10 +1702,14 @@ class MicroPorgramController extends Controller
         if ($project) {
             $instanceId = Session::get("project_instance");
             $task= DB::table('microprogram_schedule')
-            ->select('micro_tasks.id as main_id','micro_tasks.task_id as id','micro_tasks.text','micro_tasks.schedule_order','micro_tasks.project_id',
-            'micro_tasks.users','micro_tasks.duration','micro_tasks.progress','micro_tasks.start_date','micro_tasks.end_date','micro_tasks.predecessors','micro_tasks.instance_id',
-            'micro_tasks.work_flag','micro_tasks.schedule_id','micro_tasks.achive','micro_tasks.parent','micro_tasks.sortorder','micro_tasks.custom','micro_tasks.created_at',
-            'micro_tasks.updated_at','micro_tasks.float_val','micro_tasks.type','micro_tasks.iscritical','micro_tasks.micro_flag','micro_tasks.dependency_critical',
+            ->select('micro_tasks.id as main_id','micro_tasks.task_id as id','micro_tasks.text',
+            'micro_tasks.schedule_order','micro_tasks.project_id','micro_tasks.users',
+            'micro_tasks.duration','micro_tasks.progress','micro_tasks.start_date',
+            'micro_tasks.end_date','micro_tasks.predecessors','micro_tasks.instance_id',
+            'micro_tasks.work_flag','micro_tasks.schedule_id','micro_tasks.achive',
+            'micro_tasks.parent','micro_tasks.sortorder','micro_tasks.custom',
+            'micro_tasks.created_at','micro_tasks.updated_at','micro_tasks.float_val',
+            'micro_tasks.type','micro_tasks.iscritical','micro_tasks.micro_flag','micro_tasks.dependency_critical',
             'micro_tasks.entire_critical','microprogram_schedule.schedule_name','microprogram_schedule.active_status')
             ->join('micro_tasks', 'microprogram_schedule.id', '=', 'micro_tasks.schedule_id')
             ->where('microprogram_schedule.active_status',1)
@@ -1771,12 +1777,12 @@ class MicroPorgramController extends Controller
     public function get_validated_date(Request $request){
 
         $id=$request->id;
-        $get_data=  MicroTask::select('start_date','end_date')->where('project_id',Session::get("project_id"))
+     
+
+        return MicroTask::select('start_date','end_date')->where('project_id',Session::get("project_id"))
         ->where('instance_id',Session::get("project_instance"))
         ->where('id',$id)
-        ->first();
-
-        return $get_data;
+        ->first();;
     }
 
 }

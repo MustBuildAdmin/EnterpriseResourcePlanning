@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\Models\Instance;
 use Exception;
 use DB;
+use Config;
 class TaskMicroController extends Controller
 {
     public function store(Request $request)
@@ -47,7 +48,7 @@ class TaskMicroController extends Controller
         
 
         if(isset($request->totalStack)){
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->totalStack);
             $total_slack = $carbonDate->format('Y-m-d');
@@ -55,7 +56,7 @@ class TaskMicroController extends Controller
         }
 
         if(isset($request->freeSlack)){
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->freeSlack);
             $freeSlack = $carbonDate->format('Y-m-d');
@@ -71,7 +72,8 @@ class TaskMicroController extends Controller
             $task->users = $implodeusers;
         }
         // update  the type
-        MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
+        MicroTask::where(['project_id' => Session::get('project_id'),
+                          'instance_id' => Session::get('project_instance')])
             ->where('task_id', $request->parent)->update(['type' => 'project']);
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
@@ -160,7 +162,7 @@ class TaskMicroController extends Controller
         }
 
         if(isset($request->totalStack) && $request->totalStack!='undefined'){
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->totalStack);
             $total_slack = $carbonDate->format('Y-m-d');
@@ -170,7 +172,7 @@ class TaskMicroController extends Controller
         }
 
         if(isset($request->freeSlack) && $request->freeSlack!='undefined'){
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->freeSlack);
             $freeSlack = $carbonDate->format('Y-m-d');
@@ -182,7 +184,8 @@ class TaskMicroController extends Controller
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
         // update  the type
-        MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
+        MicroTask::where(['project_id' => Session::get('project_id'),
+                          'instance_id' => Session::get('project_instance')])
             ->where('task_id', $request->parent)->update(['type' => 'project']);
         if (count($checkparent) > 0) {
             $type = 'project';
