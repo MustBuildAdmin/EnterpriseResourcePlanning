@@ -351,7 +351,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"id="task-title">{{ __('New Task') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         name="close"></button>
                 </div>
                 <div class="modal-body">
@@ -374,10 +374,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                    <a href="#" class="btn btn-link link-secondary" id="cancel" data-bs-dismiss="modal">
                         {{ __('Cancel') }}
                     </a>
-                    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                    <a href="#" class="btn btn-primary ms-auto" id="save" data-bs-dismiss="modal">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -1214,10 +1214,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 
         form.style.display = "block";
-        form.querySelector("[name='save']").onclick = save;
-        form.querySelector("[name='close']").onclick = cancel;
-        form.querySelector("[name='cancel']").onclick = cancel;
-        form.querySelector("[name='delete']").onclick = remove;
+        form.querySelector("#save").onclick = save;
+        form.querySelector("#close").onclick = cancel;
+        form.querySelector("#cancel").onclick = cancel;
+      
     }
 
 
