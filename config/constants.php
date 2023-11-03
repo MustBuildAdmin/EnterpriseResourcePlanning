@@ -32,5 +32,7 @@ return [
     'CR_CONSULTANT'=>'Create Consultant',
     'SR_CONSULTANT'=>'Create Sub Contractor',
     'INSR'=>'Invite Sub Contractor',
-    'URL'=>'/storage/uploads/avatar/avatar.png'
+    'URL'=>'/storage/uploads/avatar/avatar.png',
+    'pregreplace'=>'/\s\(.*\)/',
+    'micro_url'=>'../../api/'
 ];

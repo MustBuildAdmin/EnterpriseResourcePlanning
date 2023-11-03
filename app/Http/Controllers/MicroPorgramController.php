@@ -221,13 +221,94 @@ class MicroPorgramController extends Controller
                         $current_Planed_percentage = round($completed_days*$perday);
                     }
 
+                    if (\Auth::user()->type == "company") {
+                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->id)
+                            ->where("project_id", $project_id)
+                            ->where("instance_id", $instance_id)
+                            ->get();
+                    } else {
+                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->creatorId())
+                        ->where("project_id", $project_id)
+                        ->where("instance_id", $instance_id)
+                        ->get();
+                    }
+
+                    $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date',
+                                                      'micro_tasks.id',)
+                        ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
+                        ->whereNotNull('pros.instance_id')
+                        ->where('micro_tasks.micro_flag',1)
+                        ->where('micro_tasks.project_id', $project_id)
+                        ->where('micro_tasks.instance_id', $instance_id)
+                        ->where('micro_tasks.schedule_id',$secheduleId)
+                        ->get();
+
+                    $taskDates = [];
+                    $holidayCount = 0;
+                    if(count($microallDate) != 0){
+                        foreach($microallDate as $getDate){
+                            $startDate = Carbon::createFromFormat('Y-m-d', $getDate->start_date);
+                            $endDate = Carbon::createFromFormat('Y-m-d', $getDate->end_date);
+
+                            while ($startDate->lte($endDate)) {
+                                $taskDates[] = $startDate->copy()->format('Y-m-d');
+                                $startDate->addDay();
+                            }
+                        }
+                        if(count($getHoliday) != 0){
+                            foreach($getHoliday as $holidaydate){
+                                if(in_array($holidaydate->date,$taskDates)){
+                                    $holidayCount++;
+                                }
+                            }
+                        }
+                    }
+
+                    $get_non_work_day = [];
+                    $nonWorkingDay = NonWorkingDaysModal::where("project_id",$project_id)
+                        ->where("instance_id", $instance_id)
+                        ->orderBy("id", "DESC")
+                        ->first();
+            
+                    if (
+                        $nonWorkingDay != null &&
+                        $nonWorkingDay->non_working_days != null
+                    ) {
+                        $split_non_working = explode(",", $nonWorkingDay->non_working_days);
+                        foreach ($split_non_working as $non_working) {
+                            if ($non_working == 0) {
+                                $get_non_work_day[] = "Sunday";
+                            } elseif ($non_working == 1) {
+                                $get_non_work_day[] = "Monday";
+                            } elseif ($non_working == 2) {
+                                $get_non_work_day[] = "Tuesday";
+                            } elseif ($non_working == 3) {
+                                $get_non_work_day[] = "Wednesday";
+                            } elseif ($non_working == 4) {
+                                $get_non_work_day[] = "Thursday";
+                            } elseif ($non_working == 5) {
+                                $get_non_work_day[] = "Friday";
+                            } elseif ($non_working == 6) {
+                                $get_non_work_day[] = "Saturday";
+                            }
+                        }
+                    }
+
+                    foreach($taskDates as $split_dates){
+                        $getCurrentDay = date("l", strtotime($split_dates));
+                        if(in_array($getCurrentDay,$get_non_work_day)){
+                            $holidayCount++;
+                        }
+                    }
+
                     return view('microprogram.schedule_task_show')->with('weekSchedule',$weekSchedule)
                         ->with('weekStartDate',$weekStartDate)
                         ->with('weekEndDate',$weekEndDate)
                         ->with('scheduleGet',$scheduleGet)
                         ->with('microSchedule',$microSchedule)
                         ->with('current_Planed_percentage',$current_Planed_percentage)
-                        ->with('intervalDays',$intervalDays);
+                        ->with('intervalDays',$intervalDays)
+                        ->with('holidayCount',$holidayCount);
             // }
             // else{
             //     return redirect()->back()->with('error', __('Project Not Freezed.'));
@@ -1200,8 +1281,13 @@ class MicroPorgramController extends Controller
         $project_id    = Session::get('project_id');
         $instance_id   = Session::get('project_instance');
 
-        $checkActive        = MicroProgramScheduleModal::where('active_status',1)->where('status',1)->first();
-        $checkActiveGet     = $checkActive != null ? 1 : 0;
+        $checkActive = MicroProgramScheduleModal::where('project_id',$project_id)
+        ->where('instance_id',$instance_id)
+        ->where('active_status',1)
+        ->where('status',1)
+        ->first();
+
+        $checkActiveGet = $checkActive != null ? 1 : 0;
 
         if($checkActiveGet == 1){
             return array(
@@ -1291,96 +1377,96 @@ class MicroPorgramController extends Controller
 
         return $result;
     }
-    public function gantt($projectID, $duration = "Week"){
-        try {
-            if (\Auth::user()->can("view grant chart")) {
-                $project = Project::find($projectID);
-                $tasks = [];
-                if (Session::has("project_instance")) {
-                    $instanceId = Session::get("project_instance");
-                } else {
-                    $instanceId = $project->instance_id;
-                }
-                $freezeCheck = Instance::where("project_id", $projectID)
-                    ->where("instance", $instanceId)
-                    ->first();
-    
-                $projectname = Project::where("id", Session::get("project_id"))
-                    ->pluck("project_name")
-                    ->first();
-    
-                if ($project) {
-                    $setting = Utility::settings(\Auth::user()->creatorId());
-                    if ($setting["company_type"] == 2) {
-                        $project_holidays = Project_holiday::select("date")
-                            ->where([
-                                "project_id" => $projectID,
-                                "instance_id" => $instanceId,
-                            ])
-                            ->get();
-    
-                        $nonWorkingDay = NonWorkingDaysModal::where(
-                            "project_id",
-                            $projectID
+    public function gantt($projectID, $duration = "Week")
+    {
+        if (\Auth::user()->can("view grant chart")) {
+            $project = Project::find($projectID);
+            $tasks = [];
+            if (Session::has("project_instance")) {
+                $instanceId = Session::get("project_instance");
+            } else {
+                $instanceId = $project->instance_id;
+            }
+            $freezeCheck = Instance::where("project_id", $projectID)
+                ->where("instance", $instanceId)
+                ->first();
+
+            $projectname = DB::table('microprogram_schedule')->where("project_id", Session::get("project_id"))
+                ->where("instance_id", Session::get("project_instance"))
+                ->where("active_status", 1)
+                ->pluck("schedule_name")
+                ->first();
+
+            if ($project) {
+                $setting = Utility::settings(\Auth::user()->creatorId());
+                if ($setting["company_type"] == 2) {
+                    $project_holidays = Project_holiday::select("date")
+                        ->where([
+                            "project_id" => $projectID,
+                            "instance_id" => $instanceId,
+                        ])
+                        ->get();
+
+                    $nonWorkingDay = NonWorkingDaysModal::where(
+                        "project_id",
+                        $projectID
+                    )
+                        ->where("instance_id", $instanceId)
+                        ->pluck("non_working_days")
+                        ->first();
+                    // critical bulk update
+                    $critical_update=Project::where("id", Session::get("project_id"))
+                                            ->pluck('critical_update')->first();
+
+                    return view(
+                        "microprogram.gantt",
+                        compact(
+                            "project",
+                            "tasks",
+                            "duration",
+                            "project_holidays",
+                            "freezeCheck",
+                            "nonWorkingDay",
+                            "projectname",
+                            'critical_update'
                         )
-                            ->where("instance_id", $instanceId)
-                            ->pluck("non_working_days")
-                            ->first();
-    
-                        return view(
-                            "microprogram.gantt",
-                            compact(
-                                "project",
-                                "tasks",
-                                "duration",
-                                "project_holidays",
-                                "freezeCheck",
-                                "nonWorkingDay",
-                                "projectname"
-                            )
+                    );
+                } else {
+                    $tasksobj = $project->tasks;
+                    foreach ($tasksobj as $task) {
+                        $tmp = [];
+                        $tmp["id"] = "task_" . $task->id;
+                        $tmp["name"] = $task->name;
+                        $tmp["start"] = $task->start_date;
+                        $tmp["end"] = $task->end_date;
+                        $tmp["type"] = $task->type;
+                        $tmp["custom_class"] = empty($task->priority_color)
+                            ? "#ecf0f1"
+                            : $task->priority_color;
+                        $tmp["progress"] = str_replace(
+                            "%",
+                            "",
+                            $task->taskProgress()["percentage"]
                         );
-                    } else {
-                        $tasksobj = $project->tasks;
-                        foreach ($tasksobj as $task) {
-                            $tmp = [];
-                            $tmp["id"] = "task_" . $task->id;
-                            $tmp["name"] = $task->name;
-                            $tmp["start"] = $task->start_date;
-                            $tmp["end"] = $task->end_date;
-                            $tmp["type"] = $task->type;
-                            $tmp["custom_class"] = empty($task->priority_color)
-                                ? "#ecf0f1"
-                                : $task->priority_color;
-                            $tmp["progress"] = str_replace(
-                                "%",
-                                "",
-                                $task->taskProgress()["percentage"]
-                            );
-                            $tmp["extra"] = [
-                                "priority" => ucfirst(__($task->priority)),
-                                "comments" => count($task->comments),
-                                "duration" =>
-                                    Utility::getDateFormated($task->start_date) .
-                                    " - " .
-                                    Utility::getDateFormated($task->end_date),
-                            ];
-                            $tasks[] = $tmp;
-                        }
+                        $tmp["extra"] = [
+                            "priority" => ucfirst(__($task->priority)),
+                            "comments" => count($task->comments),
+                            "duration" =>
+                                Utility::getDateFormated($task->start_date) .
+                                " - " .
+                                Utility::getDateFormated($task->end_date),
+                        ];
+                        $tasks[] = $tmp;
                     }
                 }
-    
-                //return view('projects.gantt', compact('project', 'tasks', 'duration'));
-            } else {
-                return redirect()
-                    ->back()
-                    ->with("error", __("Permission Denied."));
             }
-          
-          } catch (Exception $e) {
-          
-              return $e->getMessage();
-          
-          }
+
+            //return view('projects.gantt', compact('project', 'tasks', 'duration'));
+        } else {
+            return redirect()
+                ->back()
+                ->with("error", __("Permission Denied."));
+        }
     }
 
     public function get_micro_freeze_status(Request $request)
@@ -1616,13 +1702,22 @@ class MicroPorgramController extends Controller
         if ($project) {
             $instanceId = Session::get("project_instance");
             $task= DB::table('microprogram_schedule')
+            ->select('micro_tasks.id as main_id','micro_tasks.task_id as id','micro_tasks.text',
+            'micro_tasks.schedule_order','micro_tasks.project_id','micro_tasks.users',
+            'micro_tasks.duration','micro_tasks.progress','micro_tasks.start_date',
+            'micro_tasks.end_date','micro_tasks.predecessors','micro_tasks.instance_id',
+            'micro_tasks.work_flag','micro_tasks.schedule_id','micro_tasks.achive',
+            'micro_tasks.parent','micro_tasks.sortorder','micro_tasks.custom',
+            'micro_tasks.created_at','micro_tasks.updated_at','micro_tasks.float_val',
+            'micro_tasks.type','micro_tasks.iscritical','micro_tasks.micro_flag','micro_tasks.dependency_critical',
+            'micro_tasks.entire_critical','microprogram_schedule.schedule_name','microprogram_schedule.active_status')
             ->join('micro_tasks', 'microprogram_schedule.id', '=', 'micro_tasks.schedule_id')
-            ->select('micro_tasks.*', 'microprogram_schedule.schedule_name', 'microprogram_schedule.active_status')
             ->where('microprogram_schedule.active_status',1)
             ->where("micro_tasks.project_id", $projectID)
             ->where("micro_tasks.instance_id", $instanceId)
             ->orderBy("micro_tasks.id", "ASC")
             ->get();
+    
         
             $link = MicroLink::where("project_id", $projectID)
                 ->where("instance_id", $instanceId)
@@ -1636,6 +1731,58 @@ class MicroPorgramController extends Controller
         } else {
             return "";
         }
+    }
+
+    
+
+    public function criticaltask_update(Request $request)
+    {
+        if ($request->ajax()) {
+            $project=Project::find(Session::get("project_id"));
+            
+            if($project->critical_update==0){
+
+                foreach ($request->updatedTask as $value) {
+                    if(isset($value['totalStack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['totalStack']);
+                        $total_slack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $total_slack = null;
+                    }
+                    if(isset($value['freeSlack'])){
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                        $carbonDate = Carbon::parse($cleanedDateString);
+                        $carbonDate->addDays($value['freeSlack']);
+                        $freeSlack = $carbonDate->format('Y-m-d');
+                    }else{
+                        $freeSlack = null;
+                    }
+
+                    MicroTask::where('project_id',Session::get("project_id"))
+                            ->where('instance_id',Session::get("project_instance"))
+                            ->where('id',$value['id'])
+                            ->update(['dependency_critical'=>$freeSlack,
+                            'entire_critical'=>$total_slack,
+                            'float_val'=>$total_slack]);
+    
+                }
+
+                Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
+            }
+        }
+    }
+
+    public function get_validated_date(Request $request){
+
+        $id=$request->id;
+     
+
+        return MicroTask::select('start_date','end_date')->where('project_id',Session::get("project_id"))
+        ->where('instance_id',Session::get("project_instance"))
+        ->where('id',$id)
+        ->first();
     }
 
 }
