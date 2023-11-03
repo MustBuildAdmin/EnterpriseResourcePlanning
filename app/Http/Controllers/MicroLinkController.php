@@ -43,20 +43,18 @@ class MicroLinkController extends Controller
         ]);
     }
 
+   
     public function update($id, Request $request)
     {
-        $link = MicroLink::find($id);
-        $link->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')]);
-        $link->type = $request->type;
-        $link->source = $request->source;
-        $link->target = $request->target;
+
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
-            $link->save();
+            $link = MicroLink::where(['project_id' => Session::get('project_id'),
+                                 'instance_id' => Session::get('project_instance'),'id'=>$id])
+                                 ->update(['type'=>$request->type,
+                                 'source'=>$request->source,
+                                 'target'=>$request->target]);
         }
-
-        MicroTask::where(['id' => $request->source, 'project_id' => Session::get('project_id')])
-            ->update(['predecessors' => $request->target]);
 
         ActivityController::activity_store(Auth::user()->id,
             Session::get('project_id'), 'Update Predecessors', $request->target);
@@ -68,18 +66,15 @@ class MicroLinkController extends Controller
 
     public function destroy($id)
     {
-        $link = MicroLink::find($id);
-        $link->where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')]);
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
-            $link->delete();
+            $link = MicroLink::where(['project_id' => Session::get('project_id'),
+                                'instance_id' => Session::get('project_instance'),'id'=>$id])
+                                ->delete();
         }
 
         ActivityController::activity_store(Auth::user()->id,
             Session::get('project_id'), 'Deleted Predecessors', $id);
-
-            MicroTask::where(['id' => $link->source, 'project_id' => Session::get('project_id')])
-                     ->update(['predecessors' => 0]);
 
         return response()->json([
             'action' => 'deleted',

@@ -128,7 +128,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <img src="./static/logo-small.svg" height="36" alt="">
         </a>
     </div>
-    <div class="text-secondary mb-3">{{__('Loading')}}</div>
+    <div class="text-secondary mb-3">{{ __('Loading') }}</div>
     <div class="progress progress-sm">
         <div class="progress-bar progress-bar-indeterminate"></div>
     </div>
@@ -151,32 +151,32 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     <!-- top nav menu list  starts-->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link undo_action" onclick="gantt.undo();">{{__('Undo')}}</a>
+                            <a class="nav-link undo_action" onclick="gantt.undo();">{{ __('Undo') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link redo_action" onclick="gantt.redo();">{{__('Redo')}}</a>
+                            <a class="nav-link redo_action" onclick="gantt.redo();">{{ __('Redo') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="zoomIn()">{{__('Zoom In')}}</a>
+                            <a class="nav-link" onclick="zoomIn()">{{ __('Zoom In') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="zoomOut()">{{__('Zoom Out')}}</a>
+                            <a class="nav-link" onclick="zoomOut()">{{ __('Zoom Out') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="today_scroll()">{{__('Today')}}</a>
+                            <a class="nav-link" onclick="today_scroll()">{{ __('Today') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()">{{__('FullScreen')}}</a>
+                            <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()">{{ __('FullScreen') }}</a>
                         </li>
                         <li>
                             <a class="nav-link">
                                 <select class="form-select gantt_zoom_select"
                                     style="width: 100px;height: 29px;margin-top: 2%;padding: 2px 20px 0px 10px;">
-                                    <option value="day">{{__('Daily')}}</option>
-                                    <option value="week">{{__('Weekly')}}</option>
-                                    <option value="month">{{__('Monthly')}}</option>
-                                    <option value="quarter">{{__('Quaterly')}}</option>
-                                    <option value="year">{{__('Yearly')}}</option>
+                                    <option value="day">{{ __('Daily') }}</option>
+                                    <option value="week">{{ __('Weekly') }}</option>
+                                    <option value="month">{{ __('Monthly') }}</option>
+                                    <option value="quarter">{{ __('Quaterly') }}</option>
+                                    <option value="year">{{ __('Yearly') }}</option>
                                 </select>
                             </a>
                         </li>
@@ -197,7 +197,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    {{__('Edit')}}
+                                    {{ __('Edit') }}
                                 </span>
                             </a>
                             <div class="dropdown-menu">
@@ -213,7 +213,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-                                            {{__('Indent')}}
+                                            {{ __('Indent') }}
                                         </a>
                                         <a href="#" class="dropdown-item action outdent_action" id="outdent"
                                             onclick="expandAll();">
@@ -225,7 +225,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-                                            {{__('Outdent')}}
+                                            {{ __('Outdent') }}
                                         </a>
                                         <div class="dropdown-divider"></div>
                                     </div>
@@ -248,7 +248,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    {{__('View')}}
+                                    {{ __('View') }}
                                 </span>
                             </a>
                             <div class="dropdown-menu">
@@ -263,7 +263,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-                                            {{__('Expand All')}}
+                                            {{ __('Expand All') }}
                                         </a>
                                         <a href="#" class="dropdown-item" onclick="expandAll();">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
@@ -274,17 +274,17 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                 <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
                                             </svg>
-                                            {{__('Collapse All')}}
+                                            {{ __('Collapse All') }}
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         <label class="dropdown-item form-switch">
                                             <input class="form-check-input m-0 me-2"
                                                 onchange="updateCriticalPath(this)" type="checkbox">
-                                            {{__('Critical Path')}}
+                                            {{ __('Critical Path') }}
                                         </label>
                                         <label class="dropdown-item form-switch">
                                             <input class="form-check-input m-0 me-2" onchange="toggleSlack(this)"
-                                                type="checkbox">{{__('Show Slack')}}
+                                                type="checkbox">{{ __('Show Slack') }}
                                         </label>
                                     </div>
                                 </div>
@@ -306,7 +306,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    {{__('Hide and Show Grid Columns')}}
+                                    {{ __('Hide and Show Grid Columns') }}
                                 </span>
                             </a>
                             <div class="dropdown-menu">
@@ -316,15 +316,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 </div>
                         </li>
                         <li class="nav-item dropdown">
-                            {{ Form::open(['route' => ['projects.micro_freeze_status'], 'method' => 'POST',
-                            'id' => 'gantt_chart_submit']) }}
+                            {{ Form::open(['route' => ['projects.micro_freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
 
                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                             <a href="#" class="nav-link freeze_button" style='width: 100%;'
                                 data-bs-toggle="tooltip" title="{{ __('Click to save') }}"
                                 data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|'
-                                . __('This action can not be undone. Do you want to continue?') }}"
+                                data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -337,7 +335,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     <path d="M16 5.25l-8 4.5"></path>
                                 </svg>
                                 <span class="nav-link-title">
-                                    {{__('Save')}}
+                                    {{ __('Save') }}
                                     {!! Form::close() !!}
                                 </span>
 
@@ -350,38 +348,38 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         <div class="h-100 w-100" id="gantt_here"></div>
     </div>
 
-  <!-- custom lightbox starts-->
+    <!-- custom lightbox starts-->
     <div class="modal modal-blur fade" id="modal-task" tabindex="-1" style="display: none;" aria-hidden="true"
         role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"id="task-title">{{__('New Task')}}</h5>
+                    <h5 class="modal-title"id="task-title">{{ __('New Task') }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         name="close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">{{__('Task Name')}}</label>
+                        <label class="form-label">{{ __('Task Name') }}</label>
                         <input type="text" class="form-control" name="description"
                             placeholder="Type your Task Name">
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
-                            <label class="form-label">{{__('Task Start Date')}}</label>
+                            <label class="form-label">{{ __('Task Start Date') }}</label>
                             <input type="text" class="form-control" name="start_date" id="start-date"
                                 placeholder="Enter Your Task Start Date">
                         </div>
                         <div class="col-md-6  col-12">
-                            <label class="form-label">{{__('Task End Date')}}</label>
+                            <label class="form-label">{{ __('Task End Date') }}</label>
                             <input type="text" class="form-control" name="end_date" id="end-date"
                                 placeholder="Enter Your Task End Date">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="#" class="btn btn-link link-secondary"  data-bs-dismiss="modal">
-                        {{__('Cancel')}}
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        {{ __('Cancel') }}
                     </a>
                     <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
@@ -392,13 +390,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             <path d="M12 5l0 14"></path>
                             <path d="M5 12l14 0"></path>
                         </svg>
-                        {{__('Add new Task')}}
+                        {{ __('Add new Task') }}
                     </a>
                 </div>
             </div>
         </div>
     </div>
-  <!-- custom lightbox ends-->
+    <!-- custom lightbox ends-->
 
 </div>
 
@@ -816,7 +814,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             resize: true,
             hide: false,
             width: 70,
-            label: "{{__('Total slack')}}",
+            label: "{{ __('Total slack') }}",
             template: function(task) {
                 return gantt.getTotalSlack(task);
             }
@@ -828,7 +826,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             resize: true,
             hide: false,
             width: 70,
-            label: "{{__('Free slack')}}",
+            label: "{{ __('Free slack') }}",
             template: function(task) {
                 if (gantt.isSummaryTask(task)) {
                     return "";
@@ -838,7 +836,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         };
 
         const showWbsColumn = {
-            name: "{{__('WBS')}}",
+            name: "{{ __('WBS') }}",
             align: "center",
             resize: true,
             tree: true,
@@ -898,7 +896,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             {
                 name: "id",
                 width: 50,
-                label: "{{__('Task Id')}}",
+                label: "{{ __('Task Id') }}",
                 resize: true,
                 hide: false,
             },
@@ -911,14 +909,14 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             {
                 name: "start_date",
                 align: "center",
-                label: "{{__('Start Date')}}",
+                label: "{{ __('Start Date') }}",
                 resize: true,
                 width: 120,
                 hide: false
             },
             {
                 name: "end_date",
-                label: "{{__('End Date')}}",
+                label: "{{ __('End Date') }}",
                 align: "center",
                 width: 120,
                 template: function(task) {
@@ -929,7 +927,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             },
             {
                 name: "predecessors",
-                label: "{{__('Predecessors')}}",
+                label: "{{ __('Predecessors') }}",
                 width: 200,
                 align: "left",
                 resize: true,
@@ -947,7 +945,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             },
             {
                 name: "successors",
-                label: "{{__('Successors')}}",
+                label: "{{ __('Successors') }}",
                 width: 200,
                 align: "left",
                 resize: true,
@@ -971,7 +969,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 align: "center",
                 resize: true,
                 width: 78,
-                label:"{{__('Duration')}}",
+                label: "{{ __('Duration') }}",
                 hide: false
             },
             // showAssignees,
@@ -1202,18 +1200,18 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         var startdate = task.start_date;
         var sdate = new Date(startdate),
-        yr = sdate.getFullYear(),
-        month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
-        day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
-        newone = yr + '-' + month + '-' + day;
+            yr = sdate.getFullYear(),
+            month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
+            day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
+            newone = yr + '-' + month + '-' + day;
         start_date.value = newone;
 
         var enddate = task.end_date;
         var edate = new Date(enddate),
-        year = edate.getFullYear(),
-        mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
-        days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
-        newsecond = year + '-' + mon + '-' + days;
+            year = edate.getFullYear(),
+            mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
+            days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
+            newsecond = year + '-' + mon + '-' + days;
         end_date.value = newsecond;
 
 
@@ -1222,7 +1220,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         form.querySelector("[name='save']").onclick = save;
         form.querySelector("[name='close']").onclick = cancel;
         form.querySelector("[name='cancel']").onclick = cancel;
-       
+
     }
 
 
@@ -1281,7 +1279,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     // gantt create edit functionality
 
     if (frezee_status_actual != 1) {
-        var dp = new gantt.dataProcessor("{{Config::get('constants.micro_url')}}");
+        var dp = new gantt.dataProcessor("{{ Config::get('constants.micro_url') }}");
         var critical = 0;
         dp.init(gantt);
 
@@ -1295,21 +1293,24 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         dp.attachEvent("onBeforeUpdate", function(id, state, data) {
 
             gantt.config.readonly = true;
-            let task = gantt.getTask(id);
+            if (gantt.isTaskExists(id)) {
 
-            if (typeof task != 'undefined') {
-                let totalStack = gantt.getTotalSlack(task);
-                let freeSlack = gantt.getFreeSlack(task);
+                let task = gantt.getTask(id);
+                if (typeof task != 'undefined') {
+                    let totalStack = gantt.getTotalSlack(task);
+                    let freeSlack = gantt.getFreeSlack(task);
 
-                if (typeof totalStack != 'undefined') {
-                    data.totalStack = totalStack;
-                }
+                    if (typeof totalStack != 'undefined') {
+                        data.totalStack = totalStack;
+                    }
 
 
-                if (typeof freeSlack != 'undefined') {
-                    data.freeSlack = freeSlack;
+                    if (typeof freeSlack != 'undefined') {
+                        data.freeSlack = freeSlack;
+                    }
                 }
             }
+
             return true;
         });
 
