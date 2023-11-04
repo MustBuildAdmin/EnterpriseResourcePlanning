@@ -312,7 +312,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 </div>
                         </li>
                         <li class="nav-item dropdown">
-                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
+                            {{-- {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
                             'id' => 'gantt_chart_submit']) }}
 
                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
@@ -338,7 +338,21 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 </span>
 
                             </a>
-                        </li>
+                        </li> --}}
+                        <a href="#"  class="nav-link freeze_button" data-bs-toggle="modal"
+                         data-bs-target="#modal-danger">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                               stroke-linecap="round" stroke-linejoin="round">
+                               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                               <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                               <path d="M12 12l8 -4.5"></path>
+                               <path d="M12 12l0 9"></path>
+                               <path d="M12 12l-8 -4.5"></path>
+                               <path d="M16 5.25l-8 4.5"></path>
+                            </svg>
+                            {{ __('Save') }}
+                         </a>
                     </ul>
                     <!-- top nav menu list ends-->
                 </div>
@@ -396,6 +410,82 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     </div>
     <!-- custom lightbox ends-->
 
+    <!-- Delete Confirmation starts-->
+<div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+       <div class="modal-content">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-status bg-danger"></div>
+          <div class="modal-body text-center py-4">
+             <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+             <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg"
+                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 9v4" />
+                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0
+                   1.636 2.871h16.214a1.914 1.914 0 0 0 1.636
+                   -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                <path d="M12 16h.01" />
+             </svg>
+             <h3>{{ __('Are you sure?') }}</h3>
+             <div class="text-secondary">{{ __('This action is IRREVERSIBLE.') }}</div>
+             <div class="text-secondary">{{ __('Do you want to continue?') }}</div>
+          </div>
+          <div class="modal-footer">
+             <div class="w-100">
+                <div class="row">
+                   <div class="col">
+                      <a href="#" id="confirm_del_no" class="btn w-100" data-bs-dismiss="modal">
+                      {{ __('No') }}
+                      </a>
+                   </div>
+                   <div class="col">
+                      <a href="#" id="confirm_del_yes" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                      {{ __('Yes') }}
+                      </a>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+ <!-- Delete Confirmation ends-->
+ 
+ <!-- Suc alert starts-->
+ <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+       <div class="modal-content">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-status bg-success"></div>
+          <div class="modal-body text-center py-4">
+             <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
+             <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg"
+              width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+               stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                <path d="M9 12l2 2l4 -4" />
+             </svg>
+             <h3>{{ __('Success') }}</h3>
+             <div class="text-secondary">{{ __('Baseline Status successfully changed.') }}</div>
+          </div>
+          <div class="modal-footer">
+             <div class="w-100">
+                <div class="row">
+                   <div class="col">
+                      <a href="#" id="confirm_ok" class="btn w-100" data-bs-dismiss="modal">
+                        {{ __('Ok') }}
+                      </a>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+ <!-- Suc alert ends-->
 </div>
 
 <input type='hidden' id='weekends' value='{{ $nonWorkingDay }}'>
@@ -443,7 +533,34 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     // end ###############################################
 
+        
+    // delete confirmation show  #############################
+    $(document).on("click", "#confirm_del_yes", function () {
+        $("#modal-success").modal('show');
+        var project_id = {{ $project->id }};
+        $.ajax({
+            url: "{{route('projects.freeze_status')}}",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),project_id: project_id
+            },
+            type: 'POST',
+            success: function(response) {
+                    location.reload();
+            },
+            error: function(response) {
+                    show_toastr('error', response.error, 'error');
+            }
+        })
+    });
+    // delete confirmation show  #############################
 
+    // delete confirmation hide  #############################
+    $(document).on("click", "#confirm_del_no", function () {
+
+        $("#confirm_del_yes").modal('hide');
+
+    });
+    // delete confirmation hide  #############################
 
 
     function setScaleConfig(level) {

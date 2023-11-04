@@ -1147,6 +1147,7 @@ class ProjectController extends Controller
                 $totalWorkingDays = 0;
                 $microProgram  = null;
                 $taskDates = [];
+                $microallDate = [];
 
                 $checkProject = Project::where('id',$project->id)->where('micro_program',1)->first();
                 if($checkProject != null){
@@ -1166,6 +1167,15 @@ class ProjectController extends Controller
                             ->where('schedule_id',$microProgram->id)
                             ->where('type','project')
                             ->where('micro_flag',1)->get()->count();
+
+                        $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id',)
+                            ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
+                            ->whereNotNull('pros.instance_id')
+                            ->where('micro_tasks.micro_flag',1)
+                            ->where('micro_tasks.project_id', $project->id)
+                            ->where('micro_tasks.instance_id', Session::get("project_instance"))
+                            ->where('micro_tasks.schedule_id',$microProgram->id)
+                            ->get();
                     }
 
                     if (\Auth::user()->type == "company") {
@@ -1180,15 +1190,6 @@ class ProjectController extends Controller
                         ->get();
                     }
 
-                    $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id',)
-                        ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
-                        ->whereNotNull('pros.instance_id')
-                        ->where('micro_tasks.micro_flag',1)
-                        ->where('micro_tasks.project_id', $project->id)
-                        ->where('micro_tasks.instance_id', Session::get("project_instance"))
-                        ->where('micro_tasks.schedule_id',$microProgram->id)
-                        ->get();
-                    
                     if(count($microallDate) != 0){
                         foreach($microallDate as $getDate){
                             $startDate = Carbon::createFromFormat('Y-m-d', $getDate->start_date);
