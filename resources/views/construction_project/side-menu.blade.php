@@ -21,7 +21,7 @@
         color: black !important;
     }
  :root {
-     --theadColor: #6c7ae0;
+     --theadColor: #206bc4;
 }
 
  table.dataTable {
@@ -31,8 +31,8 @@
      background-color: var(--theadColor);
 }
  thead > tr, thead > tr > th {
-     background-color: transparent;
-     color: #fff;
+     background-color: transparent !important;
+     color: #fff ;
      font-weight: normal;
      text-align: start;
 }
@@ -94,8 +94,7 @@
      border-radius: 50px !important;
      background-color: #000 !important;
      color: #fff !important;
-}
-s
+|}
 </style>
 <div class="page">
     <!-- Sidebar  -->
