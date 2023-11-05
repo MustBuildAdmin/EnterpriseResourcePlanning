@@ -129,12 +129,6 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
  integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 
-
- <!-- <script>
-    new DataTable('#task-table', {
-      pagingType: 'full_numbers'
-  });
-      </script> -->
       <script>
         $.ajaxSetup({
             headers: {

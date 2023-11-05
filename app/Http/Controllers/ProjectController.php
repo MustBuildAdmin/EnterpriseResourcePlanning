@@ -729,10 +729,6 @@ class ProjectController extends Controller
         $pageLength = $request->length;
         $skip       = ($pageNumber-1) * $pageLength;
 
-        // Page Order
-        $orderColumnIndex = $request->order[0]['column'] ?? '0';
-        $orderBy = $request->order[0]['dir'] ?? 'desc';
-
         // get data from products table
         $query = \DB::table('activity_logs')->select('*')
         ->join('users', 'users.id', '=', 'activity_logs.user_id');
@@ -745,20 +741,6 @@ class ProjectController extends Controller
         });
         $query->where("project_id", $project_id);
 
-        // $orderByName = 'name';
-        // switch($orderColumnIndex){
-        //     case '0':
-        //         $orderByName = 'name';
-        //         break;
-        //     case '1':
-        //         $orderByName = 'description';
-        //         break;
-        //     case '2':
-        //         $orderByName = 'amount';
-        //         break;
-        
-        // }
-        // $query = $query->orderBy($orderByName, $orderBy);
         $recordsFiltered = $recordsTotal = $query->count();
         $users = $query->skip($skip)->take($pageLength)->get();
 
