@@ -722,8 +722,34 @@ class ProjectController extends Controller
      * @param  \App\Poject  $poject
      * @return \Illuminate\Http\Response
      */
+    public function getActivityLog(Request $request, $project_id){
+      
+        // Page Length
+        $pageNumber = ( $request->start / $request->length )+1;
+        $pageLength = $request->length;
+        $skip       = ($pageNumber-1) * $pageLength;
+
+        // get data from products table
+        $query = \DB::table('activity_logs')->select('*')
+        ->join('users', 'users.id', '=', 'activity_logs.user_id');
+
+        // Search
+        $search = $request->search;
+        $query = $query->where(function($query) use ($search){
+            $query->orWhere('remark', 'like', "%".$search."%");
+            
+        });
+        $query->where("project_id", $project_id);
+
+        $recordsFiltered = $recordsTotal = $query->count();
+        $users = $query->skip($skip)->take($pageLength)->get();
+
+        return response()->json(["draw"=> $request->draw, "recordsTotal"=> $recordsTotal,
+         "recordsFiltered" => $recordsFiltered, 'data' => $users], 200);
+    }
     public function projectActivities(Request $request, $project_id)
     {
+
         $project = Project::where(["id" => $project_id])->first();
         $usr = Auth::user();
         if (\Auth::user()->type == "client") {
@@ -734,7 +760,7 @@ class ProjectController extends Controller
             $user_projects = $usr->projects->pluck("id")->toArray();
         }
         if (in_array($project->id, $user_projects)) {
-            return view("construction_project.activities", compact("project"));
+            return view("construction_project.activities", compact("project","project_id"));
         } else {
             return redirect()
                 ->back()
