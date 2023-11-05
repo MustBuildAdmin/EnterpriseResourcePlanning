@@ -26,7 +26,7 @@
                <a class="{{ (Request::route()->getName() == 'productservice.index'
                   || Request::route()->getName() == 'productstock.index')
                   ?'nav-link  dropdown-toggle active' :'nav-link dropdown-toggle'}}"
-                  href="#planning" data-bs-toggle="dropdown"
+                  href="#products" data-bs-toggle="dropdown"
                   data-bs-auto-close="outside" role="button" aria-expanded="false" >
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-24-hours"
@@ -102,11 +102,11 @@
             </li>
             @endif
             @if( Gate::check('manage bank account') ||  Gate::check('manage bank transfer'))
-            <li>
+            <li class="nav-item dropdown">
                <a class="{{ (Request::route()->getName() == 'bank-account.index'
                   || Request::route()->getName() == 'bank-transfer.index')
                   ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
-                  href="#planning" data-bs-toggle="dropdown"
+                  href="#banking" data-bs-toggle="dropdown"
                   data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-bank"
@@ -144,12 +144,12 @@
             </li>
             @endif
             @if( Gate::check('manage invoice') ||  Gate::check('manage revenue') ||  Gate::check('manage credit note'))
-            <li>
+            <li class="nav-item dropdown">
                <a class="{{ (Request::route()->getName() == 'invoice.index'
                   || Request::route()->getName() == 'revenue.index'
                   || Request::route()->getName() == 'credit.note')
                   ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
-                  href="#planning" data-bs-toggle="dropdown"
+                  href="#income" data-bs-toggle="dropdown"
                   data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-autofit-content"
@@ -190,12 +190,12 @@
             </li>
             @endif
             @if( Gate::check('manage bill')  ||  Gate::check('manage payment') ||  Gate::check('manage debit note'))
-            <li>
+            <li class="nav-item dropdown">
                <a class="{{ (Request::route()->getName() == 'bill.index'
                   || Request::route()->getName() == 'payment.index'
                   || Request::route()->getName() == 'debit.note')
                   ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
-                  href="#planning" data-bs-toggle="dropdown"
+                  href="#expenses" data-bs-toggle="dropdown"
                   data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-explicit"
@@ -237,14 +237,14 @@
             @if( Gate::check('manage chart of account') ||  Gate::check('manage journal entry')
              || Gate::check('balance sheet report') ||  Gate::check('ledger report')
              ||  Gate::check('trial balance report'))
-            <li>
+            <li class="nav-item dropdown">
                <a class="{{ (Request::route()->getName() == 'chart-of-account.index'
                  || Request::route()->getName() == 'journal-entry.index'
                  || Request::route()->getName() == 'report.ledger'
                  || Request::route()->getName() == 'report.balance.sheet'
                  || Request::route()->getName() == 'trial.balance')
                  ?'nav-link active dropdown-toggle' :'nav-link dropdown-toggle'}}"
-                 href="#planning" data-bs-toggle="dropdown"
+                 href="#doubleentry" data-bs-toggle="dropdown"
                   data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class=" d-md-none d-lg-inline-block">
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-desktop-down"
