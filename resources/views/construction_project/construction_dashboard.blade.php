@@ -403,7 +403,7 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                          href='{{ route('taskBoard.view', ['list','status'=>'dependency_critical']) }}' @endif>
                           <div class="font-weight-medium">
-                            {{ __('Total Dependency Critical Tasks:') }}
+                            {{ __('Total Dependency Critical Tasks') }}
                           </div>
                           <div class="text-muted">
                             {{ $dependencycriticalcount }} {{ __('Tasks')}}
