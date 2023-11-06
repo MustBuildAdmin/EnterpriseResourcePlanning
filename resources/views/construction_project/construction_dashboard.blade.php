@@ -259,7 +259,7 @@ if($delay>100){
                           <a @if( Session::get('current_revision_freeze')==1)
                           href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
                           <div class="font-weight-medium">
-                            {{ __('Completed Sub-Task Today')}}
+                            {{ __('Total Completed Sub-Tasks')}}
                           </div>
                           </a>
                           <div class="text-muted">
@@ -296,7 +296,7 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                         href='{{ route('taskBoard.view', ['list','status'=>'ongoing']) }}' @endif>
                           <div class="font-weight-medium">
-                            {{ __('Ongoing Sub-Task Today')}}
+                            {{ __('Total Ongoing Sub-Tasks')}}
                           </div>
                           <div class="text-muted">
                           {{ $ongoing_task }} {{ __('Tasks')}}
@@ -332,7 +332,7 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                          href='{{ route('taskBoard.view', ['list','status'=>'remaning']) }}' @endif>
                           <div class="font-weight-medium">
-                            {{ __('Remaining Sub-Task Today')}}
+                            {{ __('Total Remaining Sub-Tasks')}}
                           </div>
                           <div class="text-muted">
                           {{ $total_sub- $completed_task-$ongoing_task }} {{ __('Tasks')}}
@@ -368,7 +368,7 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                          href='{{ route('taskBoard.view', ['list','status'=>'pending']) }}' @endif>
                           <div class="font-weight-medium">
-                            {{ __('Pending Sub-Task Today')}}
+                            {{ __('Total Pending Sub-Tasks')}}
                           </div>
                           <div class="text-muted">
                             {{ $notfinished }} {{ __('Tasks')}}
@@ -403,7 +403,7 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                          href='{{ route('taskBoard.view', ['list','status'=>'dependency_critical']) }}' @endif>
                           <div class="font-weight-medium">
-                            {{ __('Dependency Critical Task') }}
+                            {{ __('Total Dependency Critical Tasks') }}
                           </div>
                           <div class="text-muted">
                             {{ $dependencycriticalcount }} {{ __('Tasks')}}
@@ -437,7 +437,7 @@ if($delay>100){
                         <a @if( Session::get('current_revision_freeze')==1)
                          href='{{ route('taskBoard.view', ['list','status'=>'entire_critical']) }}' @endif>
                           <div class="font-weight-medium">
-                            {{ __('Entire Critical Task') }}
+                            {{ __('Total Critical Tasks') }}
                           </div>
                           <div class="text-muted">
                             {{ $entirecriticalcount }} {{ __('Tasks')}}
