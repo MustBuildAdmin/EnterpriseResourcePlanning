@@ -43,7 +43,6 @@ th.sorting_disabled{
                                     <div class="card-body">
                                        <div class="row">
                                         <div class="col-md-2 border-end p-3">
-                                        <!-- <form action="{{ route('project.activities', $project_id) }}"> -->
                                             <div class="col-12 mb-3">
                                                 <label class="form-label required">Activity Start Date</label>
                                                 <div class="input-icon">
@@ -78,7 +77,7 @@ th.sorting_disabled{
                                                     <path d="M11 15h1" /><path d="M12 15v3" /></svg>
                                                 </span>
                                                 <input class="form-control" placeholder="Select a End date"
-                                                name="end_date" id="end-date" value=/>
+                                                name="end_date" id="end-date"/>
                                               </div>
                                            </div>
                                            <div class="col-md-12">
@@ -98,7 +97,6 @@ th.sorting_disabled{
                                                 onclick="searchResult()">Search</button>
                                               </div>
                                            </div>
-                                        <!-- </form> -->
                                         </div>
                                         <div class="col-md-10">
                                             <div class="table-responsive card p-4">
