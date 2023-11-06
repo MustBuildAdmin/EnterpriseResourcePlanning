@@ -4104,6 +4104,17 @@ Route::get(
         'XSS',
     ]
 );
+Route::post(
+    '/project/{id}/activitieslog', [
+        'as' => 'project.activitieslog',
+        'uses' => 'ProjectController@getActivityLog',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::get(
     '/project/{id}/teammembers', [
         'as' => 'project.teammembers',

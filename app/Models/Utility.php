@@ -3537,4 +3537,9 @@ class Utility extends Model
 
         return implode($pass); //turn the array into a string
     }
+    public static function activityRemark($data){
+        print_r($data);
+        exit;
+        return $data['remark'];
+    }
 }

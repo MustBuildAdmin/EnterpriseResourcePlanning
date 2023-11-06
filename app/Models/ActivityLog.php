@@ -25,6 +25,11 @@ class ActivityLog extends Model
         return $this->hasOne('App\Models\UserDetail', 'user_id', 'user_id');
     }
 
+    public function doneBy()
+    {
+        return $this->user ? $this->user->name : '';
+
+    }
     public function getRemark()
     {
         $remark = json_decode($this->remark, true);
@@ -33,86 +38,101 @@ class ActivityLog extends Model
             $user_name = $this->user ? $this->user->name : '';
 
             if ($this->log_type == 'Invite User') {
-                return $user_name.' '.__('has invited').' <b>'.$remark['title'].'</b>';
+                return __('has invited').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'User Assigned to the Task') {
-                return $user_name.' '.__('has assigned task ').' <b>'.$remark['task_name'].'</b> '.__(' to').' <b>'.$remark['member_name'].'</b>';
+                return __('has assigned task ').' - <b>'.$remark['task_name'].'</b> '.__(' to').
+                ' - <b>'.$remark['member_name'].'</b>';
             } elseif ($this->log_type == 'User Removed from the Task') {
-                return $user_name.' '.__('has removed ').' <b>'.$remark['member_name'].'</b>'.__(' from task').' <b>'.$remark['task_name'].'</b>';
+                return __('has removed ').' - <b>'.$remark['member_name'].'</b>'.__(' from task').
+                ' - <b>'.$remark['task_name'].'</b>';
             } elseif ($this->log_type == 'Upload File') {
-                return $user_name.' '.__('Upload new file').' <b>'.$remark['file_name'].'</b>';
+                return __('Upload new file').' - <b>'.$remark['file_name'].'</b>';
             } elseif ($this->log_type == 'Create Bug') {
-                return $user_name.' '.__('Created new bug').' <b>'.$remark['title'].'</b>';
+                return __('Created new bug').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Create Milestone') {
-                return $user_name.' '.__('Create new milestone').' <b>'.$remark['title'].'</b>';
+                return __('Create new milestone').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Create Task') {
-                return $user_name.' '.__('Create new Task').' <b>'.$remark['title'].'</b>';
+                return __('Create new Task').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Move Task') {
-                return $user_name.' '.__('Moved the Task').' <b>'.$remark['title'].'</b> '.__('from').' '.__(ucwords($remark['old_stage'])).' '.__('to').' '.__(ucwords($remark['new_stage']));
+                return __('Moved the Task').' - <b>'.$remark['title'].'</b> '.__('from').' '.
+                __(ucwords($remark['old_stage'])).' '.__('to').' '.__(ucwords($remark['new_stage']));
             } elseif ($this->log_type == 'Create Expense') {
-                return $user_name.' '.__('Create new Expense').' <b>'.$remark['title'].'</b>';
-            } elseif ($this->log_type == 'Create Task') {
-                return $user_name.' '.__('Create new Task').' <b>'.$remark['title'].'</b>';
+                return __('Create new Expense').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Add Product') {
-                return $user_name.' '.__('Add new Products').' <b>'.$remark['title'].'</b>';
+                return __('Add new Products').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Update Sources') {
-                return $user_name.' '.__('Update Sources');
+                return __('Update Sources');
             } elseif ($this->log_type == 'Create Deal Call') {
-                return $user_name.' '.__('Create new Deal Call');
+                return __('Create new Deal Call');
             } elseif ($this->log_type == 'Create Deal Email') {
-                return $user_name.' '.__('Create new Deal Email');
+                return __('Create new Deal Email');
             } elseif ($this->log_type == 'Move') {
-                return $user_name.' '.__('Moved the deal').' <b>'.$remark['title'].'</b> '.__('from').' '.__(ucwords($remark['old_status'])).' '.__('to').' '.__(ucwords($remark['new_status']));
+                return __('Moved the deal').' - <b>'.$remark['title'].'</b> '.__('from').' '
+                .__(ucwords($remark['old_status'])).' '.__('to').' '.__(ucwords($remark['new_status']));
             } elseif ($this->log_type == 'Added New Consultant') {
-                return $user_name.' '.__('Added new Consultant').' <b>'.$remark['title'].'</b>';
+                return __('Added new Consultant').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated Consultant') {
-                return $user_name.' '.__('Updated Consultant').' <b>'.$remark['title'].'</b>';
+                return __('Updated Consultant').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Deleted Consultant') {
-                return $user_name.' '.__('Deleted Consultant').' <b>'.$remark['title'].'</b>';
+                return __('Deleted Consultant').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Added New RFIStatus') {
-                return $user_name.' '.__('Added New RFIStatus').' <b>'.$remark['title'].'</b>';
+                return __('Added New RFIStatus').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated RFIStatus') {
-                return $user_name.' '.__('Updated RFIStatus').' <b>'.$remark['title'].'</b>';
+                return __('Updated RFIStatus').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Deleted RFIStatus') {
-                return $user_name.' '.__('Deleted RFIStatus').' <b>'.$remark['title'].'</b>';
+                return __('Deleted RFIStatus').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Added New ProjectSpecification') {
-                return $user_name.' '.__('Added New ProjectSpecification').' <b>'.$remark['title'].'</b>';
+                return __('Added New ProjectSpecification').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated ProjectSpecification') {
-                return $user_name.' '.__('Updated ProjectSpecification').' <b>'.$remark['title'].'</b>';
+                return __('Updated ProjectSpecification').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Added New Variation Scope') {
-                return $user_name.' '.__('Added New Variation Scope').' <b>'.$remark['title'].'</b>';
+                return __('Added New Variation Scope').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated Variation Scope') {
-                return $user_name.' '.__('Updated Variation Scope').' <b>'.$remark['title'].'</b>';
+                return __('Updated Variation Scope').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Deleted Variation Scope') {
-                return $user_name.' '.__('Deleted Variation Scope').' <b>'.$remark['title'].'</b>';
+                return __('Deleted Variation Scope').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Added New ProcurementMaterial') {
-                return $user_name.' '.__('Added New ProcurementMaterial').' <b>'.$remark['title'].'</b>';
+                return __('Added New ProcurementMaterial').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated ProcurementMaterial') {
-                return $user_name.' '.__('Updated ProcurementMaterial').' <b>'.$remark['title'].'</b>';
+                return __('Updated ProcurementMaterial').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Deleted ProcurementMaterial') {
-                return $user_name.' '.__('Deleted ProcurementMaterial').' <b>'.$remark['title'].'</b>';
+                return __('Deleted ProcurementMaterial').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Added New SiteReport') {
-                return $user_name.' '.__('Added New SiteReport').' <b>'.$remark['title'].'</b>';
+                return __('Added New SiteReport').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated SiteReport') {
-                return $user_name.' '.__('Updated SiteReport').' <b>'.$remark['title'].'</b>';
+                return __('Updated SiteReport').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Deleted SiteReport') {
-                return $user_name.' '.__('Deleted SiteReport').' <b>'.$remark['title'].'</b>';
+                return __('Deleted SiteReport').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Added New ConcretePouring') {
-                return $user_name.' '.__('Added New ConcretePouring').' <b>'.$remark['title'].'</b>';
+                return __('Added New ConcretePouring').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated ConcretePouring') {
-                return $user_name.' '.__('Updated ConcretePouring').' <b>'.$remark['title'].'</b>';
+                return __('Updated ConcretePouring').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Deleted ConcretePouring') {
-                return $user_name.' '.__('Deleted ConcretePouring').' <b>'.$remark['title'].'</b>';
+                return __('Deleted ConcretePouring').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Added New Task') {
-                return $user_name.' '.__('Added New Task').' <b>'.$remark['title'].'</b>';
+                return __('Added New Task').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Updated Task') {
-                return $user_name.' '.__('Updated Task').' <b>'.$remark['title'].'</b>';
+                return __('Updated Task').' - <b>'.$remark['title'].'</b>';
             } elseif ($this->log_type == 'Deleted Task') {
-                return $user_name.' '.__('Deleted Task').' <b>'.$remark['title'].'</b>';
+                return __('Deleted Task').' - <b>'.$remark['title'].'</b>';
             }
 
         } else {
             return $this->remark;
         }
+    }
+    public function logType()
+    {
+        $log_type=$this->log_type;
+        if ($this->log_type == 'Added New Task') {
+            $log_type =  __('Create');
+        } elseif ($this->log_type == 'Updated Task') {
+            $log_type = __('Update');
+        } elseif ($this->log_type == 'Deleted Task') {
+            $log_type = __('Delete');
+        }
+        return $log_type;
+        
     }
 
     public function logIcon($type = '')
