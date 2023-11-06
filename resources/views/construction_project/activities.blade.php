@@ -93,7 +93,7 @@ th.sorting_disabled{
                                         </div>
                                            <div class="col-12 mt-4">
                                             <div class="mb-3">
-                                                <button class="btn btn-tabler w-100" 
+                                                <button class="btn btn-tabler w-100"
                                                 onclick="searchResult()">Search</button>
                                               </div>
                                            </div>
