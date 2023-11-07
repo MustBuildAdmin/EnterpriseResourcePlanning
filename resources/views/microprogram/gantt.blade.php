@@ -415,37 +415,37 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
     // check freeze status #############################
 
-    var frezee_status_actual = $('#frezee_status').val();
-    if (frezee_status_actual == '1') {
-        gantt.config.readonly = true;
-        $('.freeze_button').addClass('disabled');
-        $('.undo_action').addClass('disabled');
-        $('.redo_action').addClass('disabled');
-        $('.indent_action').addClass('disabled');
-        $('.outdent_action').addClass('disabled');
-    } else {
-        gantt.config.readonly = false;
-        $('.freeze_button').removeClass('disabled');
-        $('.undo_action').removeClass('disabled');
-        $('.redo_action').removeClass('disabled');
-        $('.indent_action').removeClass('disabled');
-        $('.outdent_action').removeClass('disabled');
-    }
+    // var frezee_status_actual = $('#frezee_status').val();
+    // if (frezee_status_actual == '1') {
+    //     gantt.config.readonly = true;
+    //     $('.freeze_button').addClass('disabled');
+    //     $('.undo_action').addClass('disabled');
+    //     $('.redo_action').addClass('disabled');
+    //     $('.indent_action').addClass('disabled');
+    //     $('.outdent_action').addClass('disabled');
+    // } else {
+    //     gantt.config.readonly = false;
+    //     $('.freeze_button').removeClass('disabled');
+    //     $('.undo_action').removeClass('disabled');
+    //     $('.redo_action').removeClass('disabled');
+    //     $('.indent_action').removeClass('disabled');
+    //     $('.outdent_action').removeClass('disabled');
+    // }
 
     // check the data is empty #############################
-    $.post("{{ route('projects.get_micro_gantt_task_count') }}", {
-            _token: tempcsrf,
-            project_id: {{ $project->id }}
-        },
-        function(resp, textStatus, jqXHR) {
-            if (resp == 0) {
-                $('.freeze_button').addClass('disabled');
-                $('.undo_action').addClass('disabled');
-                $('.redo_action').addClass('disabled');
-                $('.indent_action').addClass('disabled');
-                $('.outdent_action').addClass('disabled');
-            }
-        });
+    // $.post("{{ route('projects.get_micro_gantt_task_count') }}", {
+    //         _token: tempcsrf,
+    //         project_id: {{ $project->id }}
+    //     },
+    //     function(resp, textStatus, jqXHR) {
+    //         if (resp == 0) {
+    //             $('.freeze_button').addClass('disabled');
+    //             $('.undo_action').addClass('disabled');
+    //             $('.redo_action').addClass('disabled');
+    //             $('.indent_action').addClass('disabled');
+    //             $('.outdent_action').addClass('disabled');
+    //         }
+    //     });
     // end ###############################################
 
 
@@ -1281,7 +1281,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
     // gantt create edit functionality
 
-    if (frezee_status_actual != 1) {
+    // if (frezee_status_actual != 1) {
         var dp = new gantt.dataProcessor("{{ Config::get('constants.micro_url') }}");
         var critical = 0;
         dp.init(gantt);
@@ -1333,7 +1333,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
             }
         });
-    }
+    // }
     // gantt crud end
 </script>
 
