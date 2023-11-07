@@ -1097,17 +1097,17 @@ class MicroPorgramController extends Controller
             ->get();
 
             foreach ($alltask as $key => $value) {
-                $task_id = $value->id;
+                $task_id = $value->task_id;
                 $total_percentage = MicroTask::where([
                     "project_id" => $task->project_id,
                     "instance_id" => $instanceId,
                 ])
-                ->where("parent", $value->id)
+                ->where("parent", $value->task_id)
                 ->avg("progress");
 
                 $total_percentage = round($total_percentage);
                 if ($total_percentage != null) {
-                    MicroTask::where("id", $task_id)
+                    MicroTask::where("task_id", $task_id)
                     ->where([
                         "project_id" => $task->project_id,
                         "instance_id" => $instanceId,
@@ -1167,7 +1167,7 @@ class MicroPorgramController extends Controller
         foreach($microTask as $micro){
             $microSubask = MicroTask::where('schedule_id',$schedule_id)
                 ->where('project_id',$project_id)->where('instance_id',$instance_id)
-                ->where('parent',$micro->id)->where('type','task')->get();
+                ->where('parent',$micro->task_id)->where('type','task')->get();
 
             $conTask = Con_task::where('main_id',$micro->task_id)
                 ->where('project_id',$project_id)->where('instance_id',$instance_id)
@@ -1211,13 +1211,13 @@ class MicroPorgramController extends Controller
                         $conTaskInsert->updated_at  = $subtask->updated_at;
                         $conTaskInsert->custom      = $subtask->custom;
                         $conTaskInsert->type        = "task";
-                        $conTaskInsert->parent      = $conTask->main_id;
+                        $conTaskInsert->parent      = $conTask->id;
                         $conTaskInsert->id          = $inc_id;
                         $conTaskInsert->save();
                     }
 
                     foreach ($alltask as $key => $value) {
-                        $task_id = $value->main_id;
+                        $task_id = $value->id;
                         $total_percentage = Con_task::where([
                             "project_id" => $project_id,
                             "instance_id" => $instance_id,
@@ -1227,7 +1227,7 @@ class MicroPorgramController extends Controller
 
                         $total_percentage = round($total_percentage);
                         if ($total_percentage != null) {
-                            Con_task::where("main_id", $task_id)
+                            Con_task::where("id", $task_id)
                                 ->where([
                                     "project_id" => $project_id,
                                     "instance_id" => $instance_id,
@@ -1242,7 +1242,7 @@ class MicroPorgramController extends Controller
                         ->where('type','project')->update(['progress'=>$micro->progress,'duration'=>$micro->duration]);
 
                     foreach ($alltask as $key => $value) {
-                        $task_id = $value->main_id;
+                        $task_id = $value->id;
                         $total_percentage = Con_task::where([
                             "project_id" => $project_id,
                             "instance_id" => $instance_id,
@@ -1252,7 +1252,7 @@ class MicroPorgramController extends Controller
 
                         $total_percentage = round($total_percentage);
                         if ($total_percentage != null) {
-                            Con_task::where("main_id", $task_id)
+                            Con_task::where("id", $task_id)
                                 ->where([
                                     "project_id" => $project_id,
                                     "instance_id" => $instance_id,
@@ -1705,12 +1705,8 @@ class MicroPorgramController extends Controller
             ->select('micro_tasks.id as main_id','micro_tasks.task_id as id','micro_tasks.text',
             'micro_tasks.schedule_order','micro_tasks.project_id','micro_tasks.users',
             'micro_tasks.duration','micro_tasks.progress','micro_tasks.start_date',
-            'micro_tasks.end_date','micro_tasks.predecessors','micro_tasks.instance_id',
-            'micro_tasks.work_flag','micro_tasks.schedule_id','micro_tasks.achive',
-            'micro_tasks.parent','micro_tasks.sortorder','micro_tasks.custom',
-            'micro_tasks.created_at','micro_tasks.updated_at','micro_tasks.float_val',
-            'micro_tasks.type','micro_tasks.iscritical','micro_tasks.micro_flag','micro_tasks.dependency_critical',
-            'micro_tasks.entire_critical','microprogram_schedule.schedule_name','microprogram_schedule.active_status')
+            'micro_tasks.end_date','micro_tasks.predecessors',
+            'micro_tasks.parent')
             ->join('micro_tasks', 'microprogram_schedule.id', '=', 'micro_tasks.schedule_id')
             ->where('microprogram_schedule.active_status',1)
             ->where("micro_tasks.project_id", $projectID)
