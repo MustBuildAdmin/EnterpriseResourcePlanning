@@ -1705,12 +1705,8 @@ class MicroPorgramController extends Controller
             ->select('micro_tasks.id as main_id','micro_tasks.task_id as id','micro_tasks.text',
             'micro_tasks.schedule_order','micro_tasks.project_id','micro_tasks.users',
             'micro_tasks.duration','micro_tasks.progress','micro_tasks.start_date',
-            'micro_tasks.end_date','micro_tasks.predecessors','micro_tasks.instance_id',
-            'micro_tasks.work_flag','micro_tasks.schedule_id','micro_tasks.achive',
-            'micro_tasks.parent','micro_tasks.sortorder','micro_tasks.custom',
-            'micro_tasks.created_at','micro_tasks.updated_at','micro_tasks.float_val',
-            'micro_tasks.type','micro_tasks.iscritical','micro_tasks.micro_flag','micro_tasks.dependency_critical',
-            'micro_tasks.entire_critical','microprogram_schedule.schedule_name','microprogram_schedule.active_status')
+            'micro_tasks.end_date','micro_tasks.predecessors',
+            'micro_tasks.parent')
             ->join('micro_tasks', 'microprogram_schedule.id', '=', 'micro_tasks.schedule_id')
             ->where('microprogram_schedule.active_status',1)
             ->where("micro_tasks.project_id", $projectID)
