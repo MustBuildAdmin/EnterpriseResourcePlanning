@@ -45,8 +45,8 @@ if($delay>100){
                 @endphp
                 <span class="avatar avatar-xl mb-4 rounded">{{ $avatar }}</span>
                 <h3 class="mb-0">{{$project->project_name}}</h3>
-                <p class="text-secondary"><b>Start from:</b>
-                {{ Utility::getDateFormated($project->start_date) }} - <b>Due to:</b>
+                <p class="text-secondary"><b>{{ __('Start from')}}:</b>
+                {{ Utility::getDateFormated($project->start_date) }} - <b>{{ __('Due to')}}:</b>
                  {{ Utility::getDateFormated($project->end_date) }}</p>
                 <p class="mb-3">
                 @if($project->status == 'in_progress')
