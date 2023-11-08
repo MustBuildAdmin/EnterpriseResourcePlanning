@@ -35,7 +35,8 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_start_date" class="form-control" placeholder="{{__('Select a start date')}}" id="schedule_start_date" />
+            <input name="schedule_start_date" class="form-control"
+             placeholder="{{__('Select a start date')}}" id="schedule_start_date" />
         </div>
     </div>
     <div class="mb-3">
@@ -54,7 +55,8 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_end_date" class="form-control" placeholder="{{__('Select a End date')}}" id="schedule_end_date" />
+            <input name="schedule_end_date" class="form-control"
+            placeholder="{{__('Select a End date')}}" id="schedule_end_date" />
         </div>
     </div>
 

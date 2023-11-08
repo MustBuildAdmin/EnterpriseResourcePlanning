@@ -48,21 +48,29 @@
                                         <div class="card p-3 mb-3 ">
                                             <div class="row w-100">
                                                 <div class="col-3 p-4">
-                                                    <input type="hidden" name="schedule_id" id="schedule_id" value="{{$scheduleGet->id}}">
-                                                    <span><b> {{ __('Schedule Duration') }}:</b> {{$intervalDays}} days </span>
+                                                    <input type="hidden" name="schedule_id" id="schedule_id"
+                                                     value="{{$scheduleGet->id}}">
+                                                    <span>
+                                                        <b> {{ __('Schedule Duration') }}:</b> {{$intervalDays}} days
+                                                    </span>
                                                 </div>
                                                 <div class="col-4 p-4">
-                                                    <span><b>{{ __('Holiday Duration') }}:</b> {{$holidayCount}} days </span>
+                                                    <span>
+                                                        <b>{{ __('Holiday Duration') }}:</b> {{$holidayCount}} days
+                                                    </span>
                                                 </div>
                                                 <div class="col-4  p-4">
-                                                    <b>{{ __('Planned Percentage') }}:</b> {{$current_Planed_percentage}}
+                                                    <b>{{ __('Planned Percentage') }}:</b>
+                                                    {{$current_Planed_percentage}}
                                                 </div>
                                                 <div class="col-5 p-4">
                                                     <span><b>{{ __('Schedule Start Date') }}:</b>
-                                                        {{ Utility::site_date_format($scheduleGet->schedule_start_date, \Auth::user()->id) }}
+                                                        {{ Utility::site_date_format($scheduleGet->schedule_start_date,
+                                                        \Auth::user()->id) }}
                                                         - <b>
                                                             {{ __('Schedule End Date') }}:</b>
-                                                        {{ Utility::site_date_format($scheduleGet->schedule_end_date, \Auth::user()->id) }}
+                                                        {{ Utility::site_date_format($scheduleGet->schedule_end_date,
+                                                        \Auth::user()->id) }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -70,34 +78,44 @@
                                                 <div class="group__goals sortable_microschedule">
                                                     @forelse ($microSchedule as $key_sort => $microschedule)
                                                         @php $key_sort++; @endphp
-                                                        <div class="card" data-task_id="{{ $microschedule->main_id }}" data-sortnumber="{{$key_sort}}">
+                                                        <div class="card" data-task_id="{{ $microschedule->main_id }}"
+                                                             data-sortnumber="{{$key_sort}}">
                                                             <div class="row">
                                                                 <div
                                                                     class="col-md-1 py-3  border-end bg-primary text-white">
-                                                                    <div class="datagrid-title text-white">{{ __('Micro Id') }}
+                                                                    <div class="datagrid-title text-white">
+                                                                        {{ __('Micro Id') }}
                                                                     </div>
                                                                     <div class="datagrid-content">
                                                                         {{ $microschedule->id }}</div>
                                                                 </div>
                                                                 <div class="col-md-5 p-3">
-                                                                    <div class="datagrid-title ">{{ __('Task Name') }}</div>
+                                                                    <div class="datagrid-title ">
+                                                                        {{ __('Task Name') }}
+                                                                    </div>
                                                                     <div class="datagrid-content">
                                                                         {{ $microschedule->text }}</div>
                                                                 </div>
                                                                 <div class="col-md-2 p-3">
-                                                                    <div class="datagrid-title">{{ __('Start Date') }}</div>
+                                                                    <div class="datagrid-title">
+                                                                        {{ __('Start Date') }}
+                                                                    </div>
                                                                     <div class="datagrid-content">
                                                                         {{ Utility::site_date_format($microschedule->start_date, \Auth::user()->id) }}
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 p-3">
-                                                                    <div class="datagrid-title">{{ __('End date') }}</div>
+                                                                    <div class="datagrid-title">
+                                                                        {{ __('End date') }}
+                                                                    </div>
                                                                     <div class="datagrid-content">
                                                                         {{ Utility::site_date_format($microschedule->end_date, \Auth::user()->id) }}
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-2 p-3">
-                                                                    <div class="datagrid-title">{{ __('Assignees') }}</div>
+                                                                    <div class="datagrid-title">
+                                                                        {{ __('Assignees') }}
+                                                                    </div>
                                                                     @php
                                                                         if ($microschedule->users != '') {
                                                                             $users_data_micro = json_decode($microschedule->users);

@@ -38,7 +38,8 @@
                                     @forelse ($MicroProgramScheduleModal as $microSchedule)
                                         <tr>
                                             <td>
-                                                <a href="{{ route('schedule_task_show', ['id' => $microSchedule->id]) }}">
+                                                <a href="{{ route('schedule_task_show',
+                                                ['id' => $microSchedule->id]) }}">
                                                     {{ $microSchedule->uid }}
                                                 </a>
                                             </td>
@@ -47,10 +48,12 @@
                                             </td>
                                             <td>{{ $microSchedule->schedule_duration }}</td>
                                             <td>
-                                                {{ Utility::site_date_format($microSchedule->schedule_start_date, \Auth::user()->id) }}
+                                                {{ Utility::site_date_format($microSchedule->schedule_start_date,
+                                                \Auth::user()->id) }}
                                             </td>
                                             <td>
-                                                {{ Utility::site_date_format($microSchedule->schedule_end_date, \Auth::user()->id) }}
+                                                {{ Utility::site_date_format($microSchedule->schedule_end_date,
+                                                \Auth::user()->id) }}
                                             </td>
                                             <td>
                                                 @if ($microSchedule->active_status == 1)

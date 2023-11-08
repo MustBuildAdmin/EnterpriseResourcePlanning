@@ -47,7 +47,8 @@
                     ->count();
 
                 $remaining_working_days = Utility::remaining_duration_calculator($task->end_date, $task->project_id);
-                $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days - 1 : 0; // include the last day
+                $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days - 1 : 0; 
+                // include the last day
 
                 ############### Remaining days ##################
 
@@ -90,7 +91,8 @@
                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
                         </a>
                     @else
-                        <a href="{{ route('micro_task_particular', ['task_id' => $task->main_id, 'get_date' => $get_end_date]) }}"
+                        <a href="{{ route('micro_task_particular', ['task_id' => $task->main_id,
+                        'get_date' => $get_end_date]) }}"
                             style="text-decoration: none;">
                             <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
                         </a>
@@ -174,11 +176,13 @@
                             @if ($key < 3)
                                 @if ($user_db->avatar)
                                     <a href="#" class="avatar rounded-circle avatar-sm">
-                                        <img data-original-title="{{ $user_db != null ? $user_db->name : '' }}"
-                                            @if ($user_db->avatar) src="{{ asset('/storage/uploads/avatar/' . $user_db->avatar) }}"
-                                        @else
+                                        <img
+                                            data-original-title="{{ $user_db != null ? $user_db->name : '' }}" alt=""
+                                            @if ($user_db->avatar)
+                                            src="{{ asset('/storage/uploads/avatar/' . $user_db->avatar) }}" 
+                                            @else
                                             src="{{ asset('/storage/uploads/avatar/avatar.png') }}" @endif
-                                            title="{{ $user_db != null ? $user_db->name : '' }}" class="hweb">
+                                            title="{{ $user_db != null ? $user_db->name : '' }}" class="hweb" >
                                     </a>
                                 @else
                                     <?php $short = substr($user_db->name, 0, 1); ?>
