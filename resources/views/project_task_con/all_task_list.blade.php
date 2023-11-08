@@ -21,16 +21,16 @@
 aria-describedby="Sub Task">
     <thead>
     <tr>
-        <th scope="col">{{__('TaskId')}}</th>
-        <th scope="col">{{__('Tasks')}}</th>
-        <th scope="col">{{__('Status')}}</th>
-        <th scope="col">{{__('Is critical Task')}}</th>
-        <th scope="col">{{__('Float')}}</th>
-        <th scope="col">{{__('Actual Progress')}}</th>
-        <th scope="col">{{__('Planned Progress')}}</th>
-        <th scope="col">{{__('Planned Start Date')}}</th>
-        <th scope="col">{{__('Planned End Date')}}</th>
-        <th scope="col">{{__('Assigned To')}}</th>
+        <th scope="col" style="color: white;">{{__('TaskId')}}</th>
+        <th scope="col" style="color: white;">{{__('Tasks')}}</th>
+        <th scope="col" style="color: white;">{{__('Status')}}</th>
+        <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
+        <th scope="col" style="color: white;">{{__('Float')}}</th>
+        <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
+        <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
+        <th scope="col" style="color: white;">{{__('Planned Start Date')}}</th>
+        <th scope="col" style="color: white;">{{__('Planned End Date')}}</th>
+        <th scope="col" style="color: white;">{{__('Assigned To')}}</th>
     </tr>
     </thead>
     <tbody class="list">
