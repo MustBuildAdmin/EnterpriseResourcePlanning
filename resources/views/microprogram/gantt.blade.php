@@ -560,6 +560,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     gantt.config.branch_loading = true;
     gantt.config.show_empty_state = true;
     gantt.config.work_time = true;
+    gantt.config.auto_types = true;
     gantt.config.details_on_create = false;
     gantt.config.keep_grid_width = false;
     gantt.config.grid_resize = true;
