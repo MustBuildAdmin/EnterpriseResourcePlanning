@@ -20,13 +20,13 @@
 aria-describedby="Main Task">
     <thead>
         <tr>
-            <th scope="col">{{__('SummaryId')}}</th>
-            <th scope="col">{{__('Tasks')}}</th>
-            <th scope="col">{{__('Status')}}</th>
-            <th scope="col">{{__('Actual Progress')}}</th>
-            <th scope="col">{{__('Planned Progress')}}</th>
-            <th scope="col">{{__('Planned Start Date')}}</th>
-            <th scope="col">{{__('Planned End Date')}}</th>
+            <th scope="col" style='color:white;'>{{__('SummaryId')}}</th>
+            <th scope="col" style='color:white;'>{{__('Tasks')}}</th>
+            <th scope="col" style='color:white;'>{{__('Status')}}</th>
+            <th scope="col" style='color:white;'>{{__('Actual Progress')}}</th>
+            <th scope="col" style='color:white;'>{{__('Planned Progress')}}</th>
+            <th scope="col" style='color:white;'>{{__('Planned Start Date')}}</th>
+            <th scope="col" style='color:white;'>{{__('Planned End Date')}}</th>
         </tr>
     </thead>
     <tbody class="list">

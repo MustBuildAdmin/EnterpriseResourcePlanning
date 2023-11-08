@@ -3448,7 +3448,7 @@ Route::get(
     ]
 );
 Route::get(
-    'instance_project/{instance_id}/{project_id}', [
+    'instance_project/{instance_id}/{project_id}/{name}', [
         'as' => 'projects.instance_project',
         'uses' => 'RevisionController@instance_project',
     ]

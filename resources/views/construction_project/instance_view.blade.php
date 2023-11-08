@@ -10,10 +10,12 @@
                             <div class="card-header border-0 pb-0">
                                 <div class="d-flex align-items-center">
                                     @if($key==0)
-                                        <h5 class="mb-0"><a class="text-dark" href="{{ route('projects.instance_project', [$project->id,$project->project_id]) }}">Main</a></h5>
+                                         @php  $name='Main'; @endphp
+                                        <h5 class="mb-0"><a class="text-dark" href="{{ route('projects.instance_project', [$project->id,$project->project_id,$name]) }}">Main</a></h5>
                                     @else
-                                        @php $row=$row+1; @endphp
-                                        <h5 class="mb-0"><a class="text-dark" href="{{ route('projects.instance_project', [$project->id,$project->project_id]) }}">Revision {{$row}}</a></h5>
+                                        @php $row=$row+1; 
+                                        $name='Revision'.$row; @endphp
+                                        <h5 class="mb-0"><a class="text-dark" href="{{ route('projects.instance_project', [$project->id,$project->project_id,$name]) }}">Revision {{$row}}</a></h5>
                                     @endif
                                 </div>
                             </div>

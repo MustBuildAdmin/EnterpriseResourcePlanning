@@ -730,22 +730,50 @@ class ProjectController extends Controller
         $skip       = ($pageNumber-1) * $pageLength;
 
         // get data from products table
-        $query = \DB::table('activity_logs')->select('*')
+        $query = \DB::table('activity_logs')->select('*','activity_logs.id as activitylogID',
+        'activity_logs.created_at as activitylogcreatedAt')
         ->join('users', 'users.id', '=', 'activity_logs.user_id');
 
         // Search
-        $search = $request->search;
-        $query = $query->where(function($query) use ($search){
-            $query->orWhere('remark', 'like', "%".$search."%");
-            
-        });
+        $start_date = $request->start_date;
+        $end_date = $request->end_date;
+        if($start_date!='' && $end_date!=''){
+            $query = $query->where(function($query) use ($start_date,$end_date){
+                $start_date = $start_date.' 00:00:00.000000';
+                $end_date = $end_date.' 23:59:59.000000';
+                $query->whereBetween(
+                    'activity_logs.created_at', [
+                        $start_date,
+                        $end_date,
+                    ]
+                );
+                
+            });
+        }
+       
+        $task_status=array();
+        if(!empty($request->task_status)){
+            if(in_array("Create",$request->task_status)){
+                array_push($task_status,'Added New Task');
+            }
+            if(in_array("Update",$request->task_status)){
+                array_push($task_status,'Updated Task');
+            }
+            if(in_array("Delete",$request->task_status)){
+                array_push($task_status,'Deleted Task');
+            }
+            if(!empty($task_status)){
+                $query->whereIn('log_type', $task_status);
+            }
+        }
+        
+        
         $query->where("project_id", $project_id);
-
         $recordsFiltered = $recordsTotal = $query->count();
         $users = $query->skip($skip)->take($pageLength)->get();
 
         return response()->json(["draw"=> $request->draw, "recordsTotal"=> $recordsTotal,
-         "recordsFiltered" => $recordsFiltered, 'data' => $users], 200);
+         "recordsFiltered" => $recordsFiltered, 'data' => $users,'end_date'=>$end_date,'start_date'=>$start_date], 200);
     }
     public function projectActivities(Request $request, $project_id)
     {

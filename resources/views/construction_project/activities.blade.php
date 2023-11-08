@@ -6,6 +6,10 @@
 .activity-scroll{
   height:700px !important;
 }
+th.sorting_disabled{
+    color:white !important;
+}
+
 </style>
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
@@ -39,7 +43,6 @@
                                     <div class="card-body">
                                        <div class="row">
                                         <div class="col-md-2 border-end p-3">
-                                        <form action="{{ route('project.activities', $project_id) }}">
                                             <div class="col-12 mb-3">
                                                 <label class="form-label required">Activity Start Date</label>
                                                 <div class="input-icon">
@@ -90,10 +93,10 @@
                                         </div>
                                            <div class="col-12 mt-4">
                                             <div class="mb-3">
-                                                <button class="btn btn-tabler w-100">Search</button>
+                                                <button class="btn btn-tabler w-100"
+                                                onclick="searchResult()">Search</button>
                                               </div>
                                            </div>
-                                        </form>
                                         </div>
                                         <div class="col-md-10">
                                             <div class="table-responsive card p-4">
@@ -136,25 +139,27 @@
             }
         });
         $(document).ready(function() {
-            $('#task-table').DataTable({
+      $('#task-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
                     url: "{{ route('project.activitieslog', $project_id) }}",
                     type: "POST",
                     data: function (data) {
-                        data.search = $('input[type="search"]').val();
                         data.start_date = $('#start-date').val();
                         data.end_date = $('#end-date').val();
+                        data.task_status=$('#task-status').val();
+
 
                     }
                 },
-                order: ['1', 'DESC'],
+                order: [],
+                columnDefs: [ { orderable: false, targets: [0,1,2,3,4]}],
                 pageLength: 10,
                 searching: false,
                 aoColumns: [
                     {
-                        data: 'id',
+                        data: 'activitylogID',
                     },
                     {
                         data: 'log_type',
@@ -272,19 +277,26 @@
                         }
                     },
                     {
-                        data: 'created_at',
+                        data: 'activitylogcreatedAt',
                         render: function(data, type, row) {
+                            // return data;
                           return new Date(data).toDateString()+" "+new Date(data).toLocaleTimeString();
                         }
                     }
                 ]
             });
+           
         });
 
         function capitalize(s)
         {
             return s[0].toUpperCase() + s.slice(1);
         }
+        function searchResult(){
+            console.log("searchResult")
+            $('#task-table').DataTable().ajax.reload();
+        }
+
 
     </script>
 <script>
