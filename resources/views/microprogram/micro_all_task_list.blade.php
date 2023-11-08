@@ -47,7 +47,7 @@
                     ->count();
 
                 $remaining_working_days = Utility::remaining_duration_calculator($task->end_date, $task->project_id);
-                $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days - 1 : 0; 
+                $remaining_working_days = $remaining_working_days != 0 ? $remaining_working_days - 1 : 0;
                 // include the last day
 
                 ############### Remaining days ##################
@@ -106,11 +106,11 @@
 
                 <td style="width:20%;">
                     @if (strtotime($task->end_date) < time() && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> Pending
+                        <span class="badge bg-warning me-1"></span> {{ __('Pending') }}
                     @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
-                        <span class="badge bg-success me-1"></span> Completed
+                        <span class="badge bg-success me-1"></span> {{ __('Completed') }}
                     @else
-                        <span class="badge bg-info me-1"></span> In-Progress
+                        <span class="badge bg-info me-1"></span> {{ __('In-Progress') }}
                     @endif
                 </td>
 
@@ -179,7 +179,7 @@
                                         <img
                                             data-original-title="{{ $user_db != null ? $user_db->name : '' }}" alt=""
                                             @if ($user_db->avatar)
-                                            src="{{ asset('/storage/uploads/avatar/' . $user_db->avatar) }}" 
+                                            src="{{ asset('/storage/uploads/avatar/' . $user_db->avatar) }}"
                                             @else
                                             src="{{ asset('/storage/uploads/avatar/avatar.png') }}" @endif
                                             title="{{ $user_db != null ? $user_db->name : '' }}" class="hweb" >

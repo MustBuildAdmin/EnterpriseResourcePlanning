@@ -113,7 +113,7 @@
                                                                             <path d="M12 15v3" /></svg>
                                                                         </span>
                                                                         <input class="form-control start_date"
-                                                                        placeholder="Select a Start date"
+                                                                        placeholder="{{ __('Select a Start date') }}"
                                                                         id="start-date"/>
                                                                     </div>
                                                                 </div>
@@ -139,7 +139,8 @@
                                                                             </svg>
                                                                         </span>
                                                                         <input class="form-control end_date"
-                                                                        placeholder="Select a End date" id="end-date"/>
+                                                                        placeholder="{{ __('Select a End date') }}"
+                                                                         id="end-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -153,14 +154,22 @@
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
-                                                                        <label class="form-label">{{ __('Sub Task Status') }}</label>
+                                                                        <label class="form-label">
+                                                                            {{ __('Sub Task Status') }}
+                                                                        </label>
                                                                         <select type="text"
                                                                         class="form-select task_status"
                                                                         placeholder="Task Status"
                                                                         id="task-status" value="">
-                                                                            <option value="">{{ __('Select Status') }}</option>
-                                                                            <option value="3">{{ __('Pending') }}</option>
-                                                                            <option value="4">{{ __('Completed') }}</option>
+                                                                            <option value="">
+                                                                                {{ __('Select Status') }}
+                                                                            </option>
+                                                                            <option value="3">
+                                                                                {{ __('Pending') }}
+                                                                            </option>
+                                                                            <option value="4">
+                                                                                {{ __('Completed') }}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -227,7 +236,7 @@
                                                                             <path d="M12 15v3" /></svg>
                                                                         </span>
                                                                         <input class="form-control main_start_date"
-                                                                        placeholder="Select a Start date"
+                                                                        placeholder="{{ __('Select a Start date') }}"
                                                                         id="main_start-date"/>
                                                                     </div>
                                                                 </div>
@@ -254,20 +263,28 @@
                                                                             </svg>
                                                                         </span>
                                                                         <input class="form-control main_end_date"
-                                                                        placeholder="Select a End date"
+                                                                        placeholder="{{ __('Select a End date') }}"
                                                                         id="main_end-date"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
-                                                                        <label class="form-label">{{ __('Task Status') }}</label>
+                                                                        <label class="form-label">
+                                                                            {{ __('Task Status') }}
+                                                                        </label>
                                                                         <select type="text"
                                                                         class="form-select main_task_status"
                                                                         placeholder="Task Status"
                                                                         id="main_task-status" value="">
-                                                                            <option value="">{{ __('Select Status') }}</option>
-                                                                            <option value="3">{{ __('Pending') }}</option>
-                                                                            <option value="4">{{ __('Completed') }}</option>
+                                                                            <option value="">
+                                                                                {{ __('Select Status') }}
+                                                                            </option>
+                                                                            <option value="3">
+                                                                                {{ __('Pending') }}
+                                                                            </option>
+                                                                            <option value="4">
+                                                                                {{ __('Completed') }}
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
