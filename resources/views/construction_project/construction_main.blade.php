@@ -1,3 +1,4 @@
+
 @include('new_layouts.header')
 <div class="container-fluid">
    <div class="card mt-5 p-4">
@@ -106,7 +107,10 @@
                    $project_image=$project->project_image;
                    ?>
                    @if($project_image!=0 && $project_image!='')
-                       <img id="image"  src="{{asset(Storage::url($project->project_image))}}"
+                        @php 
+                        $image=\App\Models\Utility::get_file('uploads/logo').$project->project_image;
+                        @endphp
+                       <img id="image"  src="{{$image}}"
                         class="avatar avatar-xl mb-4 rounded" alt="">
                    @else
                        <span class="avatar avatar-xl mb-4 rounded">
@@ -117,6 +121,7 @@
                @php
                   $project_instances=\App\Models\Instance::where('project_id',$project->id)
                                     ->get();
+                
                @endphp
                @if(count($project_instances)>1)
                    <a class="text-dark"  data-size="lg"
@@ -126,7 +131,7 @@
                @else
                    <a class="text-dark"  data-size="lg"
                    href="{{ route('projects.instance_project',
-                           [$project_instances[0]['id'],$project->id]) }}"
+                           [$project_instances[0]['id'],$project->id,'Base']) }}"
                    data-bs-toggle="tooltip">{{ $project->project_name }}</a>
                @endif
                   </h3>
