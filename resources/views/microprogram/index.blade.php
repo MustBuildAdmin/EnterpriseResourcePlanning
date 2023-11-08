@@ -1,7 +1,7 @@
 @include('new_layouts.header')
 {{-- @extends('layouts.admin') --}}
 <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
-<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
 <div class="page-wrapper">
     @include('construction_project.side-menu')
     <div class="container-fluid" id="taskboard_view">
@@ -21,7 +21,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table table-vcenter card-table" id="schedule_table" aria-describedby="Sub Task">
+                            <table class="table table-vcenter card-table" id="schedule_table"
+                                aria-describedby="Sub Task">
                                 <thead>
                                     <tr>
                                         <th scope="col">{{ __('Schedule ID') }}</th>
@@ -37,24 +38,22 @@
                                     @forelse ($MicroProgramScheduleModal as $microSchedule)
                                         <tr>
                                             <td>
-                                                <a href="{{route('schedule_task_show',['id'=>$microSchedule->id])}}">
-                                                    {{$microSchedule->uid}}
+                                                <a href="{{ route('schedule_task_show', ['id' => $microSchedule->id]) }}">
+                                                    {{ $microSchedule->uid }}
                                                 </a>
                                             </td>
                                             <td>
-                                                {{$microSchedule->schedule_name}}</a>
+                                                {{ $microSchedule->schedule_name }}</a>
                                             </td>
-                                            <td>{{$microSchedule->schedule_duration}}</td>
+                                            <td>{{ $microSchedule->schedule_duration }}</td>
                                             <td>
-                                                {{ Utility::site_date_format($microSchedule->schedule_start_date,
-                                                \Auth::user()->id) }}
-                                            </td>
-                                            <td>
-                                                {{ Utility::site_date_format($microSchedule->schedule_end_date,
-                                                \Auth::user()->id) }}
+                                                {{ Utility::site_date_format($microSchedule->schedule_start_date, \Auth::user()->id) }}
                                             </td>
                                             <td>
-                                                @if($microSchedule->active_status == 1)
+                                                {{ Utility::site_date_format($microSchedule->schedule_end_date, \Auth::user()->id) }}
+                                            </td>
+                                            <td>
+                                                @if ($microSchedule->active_status == 1)
                                                     <span class="badge bg-success me-1"></span> Active
                                                 @elseif($microSchedule->active_status == 2)
                                                     <span class="badge bg-success me-1"></span> Completed
@@ -62,10 +61,9 @@
                                                     <span class="badge bg-warning me-1"></span> In-schedule
                                                 @endif
                                             </td>
-                                            <td>{{$microSchedule->schedule_goals}}</td>
+                                            <td>{{ $microSchedule->schedule_goals }}</td>
                                         </tr>
                                     @empty
-                                    
                                     @endforelse
                                 </tbody>
                             </table>
@@ -82,33 +80,45 @@
 <script>
     new DataTable('#schedule_table', {
         pagingType: 'full_numbers',
-        aaSorting: []
+        aaSorting: [],
+        "language": {
+            "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+            "sZeroRecords": "{{ __('No data available in table') }}",
+            "sEmptyTable": "{{ __('No data available in table') }}",
+            "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+            "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+            "sSearch": "{{ __('Search') }}:",
+            "oPaginate": {
+                "sFirst": "{{ __('First') }}",
+                "sLast": "{{ __('Last') }}",
+                "sNext": "{{ __('Next') }}",
+                "sPrevious": "{{ __('Previous') }}"
+            },
+        }
     });
 
     $('.schedule_change').change(function() {
         schedule_data = this.value;
 
         $.ajax({
-            url : '{{route("change_schedule_status")}}',
-            type : 'POST',
-            data : {
-                'schedule_data' : schedule_data,
-                '_token' : '{{ csrf_token() }}',
+            url: '{{ route('change_schedule_status') }}',
+            type: 'POST',
+            data: {
+                'schedule_data': schedule_data,
+                '_token': '{{ csrf_token() }}',
             },
-            success : function(data_check) {
-                if(data_check == 1){
+            success: function(data_check) {
+                if (data_check == 1) {
                     toastr.success("Schedule Status Changed");
                     setTimeout(function() {
                         location.reload();
                     }, 1000);
-                }
-                else{
+                } else {
                     toastr.error("Somenthing went wrong!");
                 }
             },
-            error : function(request,error)
-            {
-                alert("Request: "+JSON.stringify(request));
+            error: function(request, error) {
+                alert("Request: " + JSON.stringify(request));
             }
         });
     });
