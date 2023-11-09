@@ -257,7 +257,21 @@ aria-describedby="Sub Task">
     function datatable2(){
         new DataTable('#task-table', {
             pagingType: 'full_numbers',
-            aaSorting: []
+            aaSorting: [],
+            "language": {
+                "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+                "sZeroRecords": "{{ __('No data available in table') }}",
+                "sEmptyTable": "{{ __('No data available in table') }}",
+                "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+                "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+                "sSearch": "{{ __('Search') }}:",
+                "oPaginate": {
+                    "sFirst": "{{ __('First') }}",
+                    "sLast": "{{ __('Last') }}",
+                    "sNext": "{{ __('Next') }}",
+                    "sPrevious": "{{ __('Previous') }}"
+                },
+            }
         });
     }
 </script>

@@ -723,8 +723,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     updatedTask.push(taskdetails);
 
                 };
-                console.log(updatedTask);
-
+             
                 workflag = 1;
                 $.ajax({
                     url: '{{ route('projects.criticaltask_update') }}',
@@ -892,8 +891,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var today = new Date();
         var additional_width = (gantt.$container.offsetWidth - gantt.config.grid_width) / 2
         var position = gantt.posFromDate(today) - additional_width;
-        console.log(gantt.posFromDate(today))
-        console.log(position)
         gantt.scrollTo(position)
     }
 
@@ -1054,7 +1051,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     var labels = [];
                     for (var i = 0; i < links.length; i++) {
                         var link = gantt.getLink(links[i]);
-                        console.log(link)
                         labels.push(linksFormatter.format(link));
                     }
                     return labels.join(", ")
@@ -1175,19 +1171,19 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 
     gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
-        console.log(gantt.getTask(id))
+       
     });
 
     gantt.attachEvent("onAfterLinkAdd", function(id, item) {
-        console.log(id, item)
+       
     });
 
     gantt.attachEvent("onAfterLinkUpdate", function(id, item) {
-        console.log(id, item)
+       
     });
 
     gantt.attachEvent("onAfterLinkDelete", function(id, item) {
-        console.log(id, item)
+       
     });
 
 
@@ -1312,26 +1308,24 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var input = form.querySelector("[name='description']");
         input.focus();
         input.value = task.text;
-        const start_date = form.querySelector("[name='start_date']");
-        const end_date = form.querySelector("[name='end_date']");
+        var start_date = form.querySelector("[name='start_date']");
+        var end_date = form.querySelector("[name='end_date']");
 
         var startdate = task.start_date;
         var sdate = new Date(startdate),
-            yr = sdate.getFullYear(),
-            month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
-            day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
-            newone = yr + '-' + month + '-' + day;
+        yr = sdate.getFullYear(),
+        month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
+        day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
+        newone = yr + '-' + month + '-' + day;
         start_date.value = newone;
 
         var enddate = task.end_date;
         var edate = new Date(enddate),
-            year = edate.getFullYear(),
-            mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
-            days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
-            newsecond = year + '-' + mon + '-' + days;
+        year = edate.getFullYear(),
+        mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
+        days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
+        newsecond = year + '-' + mon + '-' + days;
         end_date.value = newsecond;
-
-
 
         form.style.display = "block";
         form.querySelector("#save").onclick = save;
