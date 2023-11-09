@@ -723,8 +723,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     updatedTask.push(taskdetails);
 
                 };
-                console.log(updatedTask);
-
+             
                 workflag = 1;
                 $.ajax({
                     url: '{{ route('projects.criticaltask_update') }}',
@@ -892,8 +891,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var today = new Date();
         var additional_width = (gantt.$container.offsetWidth - gantt.config.grid_width) / 2
         var position = gantt.posFromDate(today) - additional_width;
-        console.log(gantt.posFromDate(today))
-        console.log(position)
         gantt.scrollTo(position)
     }
 
@@ -1054,7 +1051,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     var labels = [];
                     for (var i = 0; i < links.length; i++) {
                         var link = gantt.getLink(links[i]);
-                        console.log(link)
                         labels.push(linksFormatter.format(link));
                     }
                     return labels.join(", ")
@@ -1175,19 +1171,19 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 
     gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
-        console.log(gantt.getTask(id))
+       
     });
 
     gantt.attachEvent("onAfterLinkAdd", function(id, item) {
-        console.log(id, item)
+       
     });
 
     gantt.attachEvent("onAfterLinkUpdate", function(id, item) {
-        console.log(id, item)
+       
     });
 
     gantt.attachEvent("onAfterLinkDelete", function(id, item) {
-        console.log(id, item)
+       
     });
 
 
