@@ -407,8 +407,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <input type='hidden' id='holidays' value='{{ $holidays }}'>
 <input type='hidden' id='frezee_status' value='{{ $freezeCheck->freeze_status }}'>
 <input type='hidden' id='critical_update' value='{{ $critical_update }}'>
-
-
+<input type='hidden' id='start_date_input'>
+<input type='hidden' id='end_date_input'>
 
 <script type="text/javascript">
     var tempcsrf = '{!! csrf_token() !!}';
@@ -1188,6 +1188,11 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     };
 </script>
 <script>
+
+    function call_num(){
+        validatedate();
+    }
+
     gantt.showLightbox = function(id) {
 
         document.body.classList.add("modal-open");
@@ -1204,21 +1209,24 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         var startdate = task.start_date;
         var sdate = new Date(startdate),
-            yr = sdate.getFullYear(),
-            month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
-            day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
-            newone = yr + '-' + month + '-' + day;
+        yr = sdate.getFullYear(),
+        month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
+        day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
+        newone = yr + '-' + month + '-' + day;
         start_date.value = newone;
 
         var enddate = task.end_date;
         var edate = new Date(enddate),
-            year = edate.getFullYear(),
-            mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
-            days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
-            newsecond = year + '-' + mon + '-' + days;
+        year = edate.getFullYear(),
+        mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
+        days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
+        newsecond = year + '-' + mon + '-' + days;
         end_date.value = newsecond;
 
-
+        validatedate(id);
+        setTimeout(function(){
+            dateset();
+        }, 800);
 
         form.style.display = "block";
         form.querySelector("#save").onclick = save;
@@ -1341,14 +1349,37 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 <script>
     // @formatter:off
-    document.addEventListener("DOMContentLoaded", function() {
-        window.Litepicker && (new Litepicker({
-            element: document.getElementById('start-date'),
-            elementEnd: document.getElementById('end-date'),
-            singleMode: false,
-            allowRepick: true,
-            buttonText: {
-                previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+    function validatedate(id) {
+     console.log("Fff", id);
+     $.ajax({
+         type: 'GET',
+         url: "{{ route('get_validated_date') }}",
+         data: {
+             _token: tempcsrf,
+             id: id,
+         },
+         success: function(data) {
+             $('input#start_date_input').val(data.start_date);
+             $('input#end_date_input').val(data.end_date);
+         }
+     });
+ }
+ // @formatter:off
+
+ function dateset() {
+     var start_date_input = $('input#start_date_input').val();
+     var end_date_input = $('input#end_date_input').val();
+     console.log("start_date_input", start_date_input);
+     console.log("end_date_input", end_date_input);
+     window.Litepicker && (new Litepicker({
+         element: document.getElementById('start-date'),
+         elementEnd: document.getElementById('end-date'),
+         minDate: start_date_input,
+         maxDate: end_date_input,
+         singleMode: false,
+         allowRepick: true,
+         buttonText: {
+             previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
       <svg xmlns="http://www.w3.org/2000/svg" class="icon"
         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -1356,15 +1387,20 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         d="M0 0h24v24H0z" fill="none"/>
           <path d="M15 6l-6 6l6 6" />
       </svg>`,
-                nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+             nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
        height="24" viewBox="0 0 24 24" stroke-width="2"
         stroke="currentColor" fill="none" stroke-linecap="round"
          stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
           fill="none"/><path d="M9 6l6 6l-6 6" />
       </svg>`,
-            },
-        }));
-    });
-    // @formatter:on
+         },
+     }));
+ }
+
+ document.addEventListener("DOMContentLoaded", function() {
+
+
+ });
+// @formatter:on
 </script>
