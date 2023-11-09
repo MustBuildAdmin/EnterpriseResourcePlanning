@@ -268,6 +268,7 @@ class ProjectController extends Controller
                   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                   CURLOPT_CUSTOMREQUEST => 'POST',
                   CURLOPT_SSL_VERIFYPEER => false,
+                  CURLOPT_SSL_VERIFYPEERNAME => false,
                   CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                 ));
 
