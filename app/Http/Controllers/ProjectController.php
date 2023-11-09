@@ -807,7 +807,45 @@ class ProjectController extends Controller
             $user_projects = $usr->projects->pluck("id")->toArray();
         }
         if (in_array($project->id, $user_projects)) {
-            return view("construction_project.teammembers", compact("project"));
+            return view("construction_project.teammembers", compact("project","project_id"));
+        } else {
+            return redirect()
+                ->back()
+                ->with("error", __("Permission Denied."));
+        }
+    }
+    public function projectConsultant(Request $request, $project_id)
+    {
+        $project = Project::where(["id" => $project_id])->first();
+        $usr = Auth::user();
+        if (\Auth::user()->type == "client") {
+            $user_projects = Project::where("client_id", \Auth::user()->id)
+                ->pluck("id", "id")
+                ->toArray();
+        } else {
+            $user_projects = $usr->projects->pluck("id")->toArray();
+        }
+        if (in_array($project->id, $user_projects)) {
+            return view("construction_project.consultant", compact("project","project_id"));
+        } else {
+            return redirect()
+                ->back()
+                ->with("error", __("Permission Denied."));
+        }
+    }
+    public function projectSubcontractor(Request $request, $project_id)
+    {
+        $project = Project::where(["id" => $project_id])->first();
+        $usr = Auth::user();
+        if (\Auth::user()->type == "client") {
+            $user_projects = Project::where("client_id", \Auth::user()->id)
+                ->pluck("id", "id")
+                ->toArray();
+        } else {
+            $user_projects = $usr->projects->pluck("id")->toArray();
+        }
+        if (in_array($project->id, $user_projects)) {
+            return view("construction_project.subcontractor", compact("project","project_id"));
         } else {
             return redirect()
                 ->back()
@@ -1758,8 +1796,12 @@ class ProjectController extends Controller
     public function loadUser(Request $request)
     {
         if ($request->ajax()) {
+            $user = \Auth::user();
             $project = Project::find($request->project_id);
-            $returnHTML = view("projects.users", compact("project"))->render();
+            $type=$request->type;
+            $consultant = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'consultant')->get();
+            
+            $returnHTML = view("projects.users", compact("project","type","consultant"))->render();
 
             return response()->json([
                 "success" => true,
@@ -3239,17 +3281,32 @@ class ProjectController extends Controller
         try {
 
             $searchValue = $request['q'];
+            $type = $request['type'];
 
             if($request->filled('q')){
                 $project = Project::find($project_id);
 
                 $user_project = $project->users->pluck("id")->toArray();
-
-                $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                    ->where("type", "!=", "client")
-                    ->whereNOTIn("id", $user_project)
+                if(str_contains($type,'subcontractor')){
+                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
+                    ->whereIn("type", ["sub_contractor"])
                     ->pluck("id")
                     ->toArray();
+                }
+                if(str_contains($type,'consultant')){
+                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
+                    ->whereIn("type", ["consultant"])
+                    ->pluck("id")
+                    ->toArray();
+                }
+                if(str_contains($type,'teammembers')){
+                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
+                    ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
+                    ->pluck("id")
+                    ->toArray();
+                }
+
+                
                 $arrUser = array_unique($user_contact);
 
                 if($request->filled('q')){

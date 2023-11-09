@@ -4127,6 +4127,27 @@ Route::get(
     ]
 );
 Route::get(
+    '/project/{id}/subcontractor', [
+        'as' => 'project.subcontractor',
+        'uses' => 'ProjectController@projectSubcontractor',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    '/project/{id}/consultant', [
+        'as' => 'project.consultant',
+        'uses' => 'ProjectController@projectConsultant',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]);
+Route::get(
     '/project/{id}/timesheet/create', [
         'as' => 'timesheet.create',
         'uses' => 'TimesheetController@timesheetCreate',

@@ -15,7 +15,7 @@
 <div class="container-fluid">
       <div class="card mt-5 p-4">
         <div class="card-header">
-          <h3>Members of the Project</h3>
+          <h3>Consultant of the Project</h3>
           <div class="card-actions">
             <div class="row">
               <div class="col-12">
@@ -24,9 +24,9 @@
                       <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
                           data-url="{{ route('invite.project.invite_teammember', $project->id) }}"
                           data-ajax-popup="true"
-                          data-bs-toggle="tooltip" title="{{ __('Invite a Member') }}"
-                          data-bs-original-title="{{ __('Invite Member') }}">
-                          {{ __('Invite a Member') }}
+                          data-bs-toggle="tooltip" title="{{ __('Invite a Consultant') }}"
+                          data-bs-original-title="{{ __('Invite Consultant') }}">
+                          {{ __('Invite a Consultant') }}
                       </a>
                     </div>
                   @endcan
@@ -82,7 +82,7 @@
 
             $.ajax({
                 url: '{{ route('project.user') }}',
-                data: {project_id: project_id,type:"teammember"},
+                data: {project_id: project_id,type:"consultant"},
                 beforeSend: function () {
                     $('#project_users')
                     .html('<tr><th colspan="2" class="h6 text-center pt-5">{{__('Loading...')}}</th></tr>');
@@ -96,4 +96,4 @@
         }
 
     </script>
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>

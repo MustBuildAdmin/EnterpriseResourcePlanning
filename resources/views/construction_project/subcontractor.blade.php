@@ -15,7 +15,7 @@
 <div class="container-fluid">
       <div class="card mt-5 p-4">
         <div class="card-header">
-          <h3>Members of the Project</h3>
+          <h3>Sub Contractor of the Project</h3>
           <div class="card-actions">
             <div class="row">
               <div class="col-12">
@@ -82,7 +82,7 @@
 
             $.ajax({
                 url: '{{ route('project.user') }}',
-                data: {project_id: project_id,type:"teammember"},
+                data: {project_id: project_id,type:"subcontractor"},
                 beforeSend: function () {
                     $('#project_users')
                     .html('<tr><th colspan="2" class="h6 text-center pt-5">{{__('Loading...')}}</th></tr>');

@@ -103,6 +103,14 @@ class Project extends Model
     {
         return $this->belongsToMany('App\Models\User', 'project_users', 'project_id', 'user_id');
     }
+    public function projectsubcontractors()
+    {
+        return $this->belongsToMany('App\Models\User', 'project_subcontractors', 'project_id', 'user_id');
+    }
+    public function projectconsultants()
+    {
+        return $this->belongsToMany('App\Models\User', 'project_consultants', 'project_id', 'user_id');
+    }
 
     //for project-report
     public function client()

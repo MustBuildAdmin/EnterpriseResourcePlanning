@@ -8,6 +8,10 @@
             value="{{ request()->get('q') }}" >
             <input type="hidden" id="skill_input" name="project_id"
             value="{{ $project_id }}" >
+            <input type="hidden" id="getName" name="type"
+            value="{{ Request::route()->getName() }}" >
+            
+            
         </div>
     </div>
 </div>
@@ -19,7 +23,9 @@
 <script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
 <script>
     $(document).ready(function() {
-    $("#skill_input").tokenInput("{{route('invite.search_teammember',$project_id)}}", {
+        let type=window.location.href;
+        let slug=type.split('/');
+    $("#skill_input").tokenInput("{{route('invite.search_teammember',$project_id)}}?type="+slug[slug.length-1], {
         propertyToSearch:"name",
         tokenValue:"id",
         tokenDelimiter:",",
