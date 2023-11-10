@@ -1310,21 +1310,33 @@ class ProjectController extends Controller
                     }
                 }
 
-                $all_completed = Task_progress::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
-                    ->where('percentage','100')->count();
+                $all_pending = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where("type", "project")
+                    ->where("end_date", "<", $cur)
+                    ->where("progress", "!=", "100")
+                    ->count();
+
+                $all_completed = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where("type", "project")
+                    ->where("end_date", "<", $cur)
+                    ->where("progress", "100")
+                    ->count();
+
+                $all_inprogress = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where("type", "project")
+                    ->where("progress", "<", 100)
+                    ->where("progress", ">", 0)
+                    ->whereDate('end_date', '>', date('Y-m-d'))
+                    ->count();
 
                 $all_upcoming = Con_task::where('project_id',$project->id)
                     ->where('instance_id',Session::get("project_instance"))
-                    ->whereDate('start_date','>',date('Y-m-d'))->count();
-
-                $all_pending = Task_progress::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
-                    ->where('percentage','>','100')->count();
-
-                $all_inprogress = Con_task::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
-                    ->whereDate('start_date','=',date('Y-m-d'))->count();
+                    ->where("type", "project")
+                    ->whereDate('start_date','>',date('Y-m-d'))
+                    ->count();
 
                 // Micro task End
                 return view(
