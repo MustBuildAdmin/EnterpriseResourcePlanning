@@ -108,7 +108,7 @@
                    ?>
                    @if($project_image!=0 && $project_image!='')
                         @php 
-                        $image=\App\Models\Utility::get_file('uploads/logo').$project->project_image;
+                        $image=\App\Models\Utility::get_file($project->project_image);
                         @endphp
                        <img id="image"  src="{{$image}}"
                         class="avatar avatar-xl mb-4 rounded" alt="">

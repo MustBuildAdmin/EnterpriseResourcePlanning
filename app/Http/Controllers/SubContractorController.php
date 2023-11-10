@@ -613,35 +613,43 @@ class SubContractorController extends Controller
     {
 
         try {
-            $subcontractortid = explode(',', $request->subcontractor_id);
+            if(!is_null($request->subcontractor_id)){
+                $subcontractortid = explode(',', $request->subcontractor_id);
 
-            foreach ($subcontractortid as $cid) {
+                foreach ($subcontractortid as $cid) {
+    
+                    $requesteddate = Config::get('constants.TIMESTUMP');
+                    $createconnection = SubContractorCompanies::create([
+                        "company_id" => \Auth::user()->creatorId(),
+                        'sub_contractor_id' => $cid,
+                        'requested_date' => $requesteddate,
+                        'status' => 'requested',
+                    ]);
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor').$createconnection->id;
+                    $userarr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'company_name' => \Auth::user()->company_name,
+                        'email' => \Auth::user()->email,
+                    ];
+    
+                    Utility::sendEmailTemplate('Invite Sub Contractor', [$cid => \Auth::user()->email], $userarr);
+    
+                }
+    
+                return redirect()->route('subcontractor.index')
+                    ->with('success', __('Sub Contractor Invitation Sent Successfully.'));
+            }else{
 
-                $requesteddate = Config::get('constants.TIMESTUMP');
-                $createconnection = SubContractorCompanies::create([
-                    "company_id" => \Auth::user()->creatorId(),
-                    'sub_contractor_id' => $cid,
-                    'requested_date' => $requesteddate,
-                    'status' => 'requested',
-                ]);
-                $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createconnection->id;
-                $userarr = [
-                    'invite_link' => $inviteUrl,
-                    'user_name' => \Auth::user()->name,
-                    'company_name' => \Auth::user()->company_name,
-                    'email' => \Auth::user()->email,
-                ];
-
-                Utility::sendEmailTemplate('Invite Sub Contractor', [$cid => \Auth::user()->email], $userarr);
-
+                return redirect()->route('subcontractor.index')
+                    ->with('error', __('There is no Subcontractor.'));
             }
-
-            return redirect()->route('subcontractor.index')
-                ->with('success', __('Sub Contractor Invitation Sent Successfully.'));
+            
 
         }
         catch (Exception $e) {
             return $e->getMessage();
         }
     }
+
 }
