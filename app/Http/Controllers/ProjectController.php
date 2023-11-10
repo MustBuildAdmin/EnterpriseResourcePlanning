@@ -1307,6 +1307,22 @@ class ProjectController extends Controller
                     }
                 }
 
+                $all_completed = Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('percentage','100')->count();
+
+                $all_upcoming = Con_task::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->whereDate('start_date','>',date('Y-m-d'))->count();
+
+                $all_pending = Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('percentage','>','100')->count();
+
+                $all_inprogress = Con_task::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->whereDate('start_date','=',date('Y-m-d'))->count();
+
                 // Micro task End
                 return view(
                     "construction_project.construction_dashboard",
@@ -1333,7 +1349,11 @@ class ProjectController extends Controller
                         'holidayCount',
                         'microWeekEndCount',
                         'totalWorkingDays',
-                        'checkProject'
+                        'checkProject',
+                        'all_completed',
+                        'all_upcoming',
+                        'all_inprogress',
+                        'all_pending',
                     )
                 );
             } else {
