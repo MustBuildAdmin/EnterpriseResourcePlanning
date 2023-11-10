@@ -467,6 +467,56 @@ if($delay>100){
   </div>
   <script>
     // @formatter:off
+    all_completed  = "{{$all_completed}}";
+    all_upcoming   = "{{$all_upcoming}}";
+    all_inprogress = "{{$all_inprogress}}";
+    all_pending    = "{{$all_pending}}";
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
+            chart: {
+                type: "donut",
+                fontFamily: 'inherit',
+                height: 240,
+                sparkline: {
+                    enabled: true
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+            series: [all_pending, all_completed, all_inprogress, all_upcoming],
+            labels: ["Pending", "Completed", "In-Progress", "UpComming"],
+            tooltip: {
+                theme: 'dark'
+            },
+            grid: {
+                strokeDashArray: 4,
+            },
+            colors: [tabler.getColor("danger"), tabler.getColor("green", 0.8), tabler.getColor("primary", 0.6), tabler.getColor("orange -300")],
+            legend: {
+                show: true,
+                position: 'bottom',
+                offsetY: 12,
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 100,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8
+                },
+            },
+            tooltip: {
+                fillSeriesColor: false
+            },
+        })).render();
+    });
+
     const data=<?php echo json_encode($alldates)?>;
     const completed=<?php echo json_encode($completed)?>;
     const pending=<?php echo json_encode($pending)?>;
