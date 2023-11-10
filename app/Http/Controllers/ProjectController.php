@@ -259,17 +259,18 @@ class ProjectController extends Controller
 
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
-                  CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => '',
-                  CURLOPT_MAXREDIRS => 10,
-                  CURLOPT_TIMEOUT => 0,
-                  CURLOPT_FOLLOWLOCATION => true,
-                  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_CUSTOMREQUEST => 'POST',
-                  CURLOPT_SSL_VERIFYPEER => false,
-                  CURLOPT_SSL_VERIFYPEERNAME => false,
-                  CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
+                    CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                  //   CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST=> 0,
+                    CURLOPT_SSL_VERIFYPEER=>0,
+                    CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                 ));
 
                 $responseBody = curl_exec($curl);
@@ -388,7 +389,9 @@ class ProjectController extends Controller
                       CURLOPT_FOLLOWLOCATION => true,
                       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                       CURLOPT_CUSTOMREQUEST => 'POST',
-                      CURLOPT_SSL_VERIFYPEER => false,
+                     //   CURLOPT_SSL_VERIFYPEER => false,
+                      CURLOPT_SSL_VERIFYHOST => 0,
+                      CURLOPT_SSL_VERIFYPEER => 0,
                       CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
                     ));
 
@@ -1307,6 +1310,22 @@ class ProjectController extends Controller
                     }
                 }
 
+                $all_completed = Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('percentage','100')->count();
+
+                $all_upcoming = Con_task::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->whereDate('start_date','>',date('Y-m-d'))->count();
+
+                $all_pending = Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('percentage','>','100')->count();
+
+                $all_inprogress = Con_task::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->whereDate('start_date','=',date('Y-m-d'))->count();
+
                 // Micro task End
                 return view(
                     "construction_project.construction_dashboard",
@@ -1333,7 +1352,11 @@ class ProjectController extends Controller
                         'holidayCount',
                         'microWeekEndCount',
                         'totalWorkingDays',
-                        'checkProject'
+                        'checkProject',
+                        'all_completed',
+                        'all_upcoming',
+                        'all_inprogress',
+                        'all_pending',
                     )
                 );
             } else {

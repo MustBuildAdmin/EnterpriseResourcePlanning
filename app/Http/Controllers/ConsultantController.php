@@ -581,34 +581,38 @@ class ConsultantController extends Controller
        
         try {
 
-  
-            $consulantid = explode(',', $request->consulant_id);
+            if(!is_null($request->consulant_id)){
+                $consulantid = explode(',', $request->consulant_id);
 
-            foreach($consulantid as $cid){
+                foreach($consulantid as $cid){
+        
+                    $requested_date = Config::get('constants.TIMESTUMP');
+                    $createConnection = ConsultantCompanies::create([
+                        "company_id"=>\Auth::user()->creatorId(),
+                        'consultant_id'=>$cid,
+                        'requested_date'=>$requested_date,
+                        'status'=>'requested'
+                    ]);
+                    $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'company_name' => \Auth::user()->company_name,
+                        'email' => \Auth::user()->email,
+                    ];
+        
+                    Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT'),
+                            [$cid => \Auth::user()->email],$userArr);
+                
+                }
     
-                $requested_date = Config::get('constants.TIMESTUMP');
-                $createConnection = ConsultantCompanies::create([
-                    "company_id"=>\Auth::user()->creatorId(),
-                    'consultant_id'=>$cid,
-                    'requested_date'=>$requested_date,
-                    'status'=>'requested'
-                ]);
-                $inviteUrl=url('').Config::get('constants.INVITATION_URL').$createConnection->id;
-                $userArr = [
-                    'invite_link' => $inviteUrl,
-                    'user_name' => \Auth::user()->name,
-                    'company_name' => \Auth::user()->company_name,
-                    'email' => \Auth::user()->email,
-                ];
-    
-                Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT'),
-                        [$cid => \Auth::user()->email],$userArr);
-            
-            }
-
+                    return redirect()->route('consultants.index')
+                                 ->with('success', __('Consultant Invitation Sent Successfully.'));
+            }else{
                 return redirect()->route('consultants.index')
-                             ->with('success', __('Consultant Invitation Sent Successfully.'));
-   
+                ->with('error', __('There is no consultant.'));
+            }
+           
     
         } catch (Exception $e) {
           
@@ -616,9 +620,8 @@ class ConsultantController extends Controller
           
         }
 
-       
-
     }
+
 
 
 }
