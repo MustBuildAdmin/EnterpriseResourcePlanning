@@ -66,6 +66,16 @@ Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorContr
 Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection')->middleware('guest');
 Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection')
 ->middleware('guest');
+Route::get('/company-invitation-consultant-project/{id}','ProjectController@createConnectionConsultant')
+->middleware('guest');
+Route::get('/company-invitation-consultant-project/{id}/{status}','ProjectController@submitConnectionConsultant')
+->middleware('guest');
+
+Route::get('/company-invitation-subcontractor-project/{id}','ProjectController@createConnectionSubcontractor')
+->middleware('guest');
+Route::get('/company-invitation-subcontractor-project/{id}/{status}','ProjectController@submitConnectionSubcontractor')
+->middleware('guest');
+
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
         'auth',
@@ -3492,7 +3502,8 @@ Route::get(
         'XSS',
     ]
 );
-Route::post('projects/{id}/store-stages/{slug}', 'ProjectController@storeProjectTaskStages')->name('project.stages.store')->middleware(
+Route::post('projects/{id}/store-stages/{slug}', 'ProjectController@storeProjectTaskStages')
+->name('project.stages.store')->middleware(
     [
         'auth',
         'XSS',

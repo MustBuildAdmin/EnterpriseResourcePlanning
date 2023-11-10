@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultant Invitation</title>
+    <title>Project Invitation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,19 +98,46 @@
                 <a class="button" href="/">Go to Home</a>
             </div>
         @else
-            <h1>Project Team Member Invitation</h1>
+            @if($type=='sub contractor')
+                <h1>Project Sub Contractor Invitation</h1>
+            @elseif($type=='consultant')
+                <h1>Project Consultant Invitation</h1>
+            @elseif($type=='team member')
+                <h1>Project Team Member Invitation</h1>
+            @else
+                <h1>Project Invitation</h1>
             <p>
-                You have received an invitation to collaborate on a team member for this project
+                You have received an invitation to collaborate on a {{$type}} for this project
                  {{$project->project_name}}.
             </p>
-            <div class="btn-container">
-                <button class="btn accept">
-                    <a href="/company-invitation-teammember/{{$checkConnection->id}}/accepted">Accept</a>
-                </button>
-                <button class="btn decline">
-                    <a href="/company-invitation-teammember/{{$checkConnection->id}}/declined">Decline</a>
-                </button>
-            </div>
+            @if($type=='sub contractor')
+                <div class="btn-container">
+                    <button class="btn accept">
+                        <a href="/company-invitation-subcontractor-project/{{$checkConnection->id}}/accepted">Accept</a>
+                    </button>
+                    <button class="btn decline">
+                        <a href="/company-invitation-subcontractor-project/{{$checkConnection->id}}/declined">
+                            Decline</a>
+                    </button>
+                </div>
+            @elseif($type=='consultant')
+                <div class="btn-container">
+                    <button class="btn accept">
+                        <a href="/company-invitation-consultant-project/{{$checkConnection->id}}/accepted">Accept</a>
+                    </button>
+                    <button class="btn decline">
+                        <a href="/company-invitation-consultant-project/{{$checkConnection->id}}/declined">Decline</a>
+                    </button>
+                </div>
+            @else
+                <div class="btn-container">
+                    <button class="btn accept">
+                        <a href="/company-invitation-teammember/{{$checkConnection->id}}/accepted">Accept</a>
+                    </button>
+                    <button class="btn decline">
+                        <a href="/company-invitation-teammember/{{$checkConnection->id}}/declined">Decline</a>
+                    </button>
+                </div>
         @endif
     </div>
 </body>

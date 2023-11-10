@@ -1767,7 +1767,11 @@ class Utility extends Model
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $short_lname = substr($arrValue['company_name'], 0, 2);
-        $short_projname = substr($arrValue['project_name'], 0, 2);
+        if(isset($arrValue['project_name'])){
+            $short_projname = substr($arrValue['project_name'], 0, 2);
+        }else{
+            $short_projname = '';
+        }
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
         $arrValue['inviteconsultantHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
         <tr><td class="w-50p"></td>

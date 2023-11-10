@@ -10,43 +10,41 @@
   line-height: 50px;
 }
 </style>
-<?php if($type=='teammember'){
-    $userList=$project->users;
- } elseif($type=='consultant'){
-    $userList=$consultant;
- } elseif($type=='subcontractor'){
-    $userList=$project->projectsubcontractors;
- }
+<?php
  $key=0;
  ?>
-@forelse($userList as $user)
-<?php if($type=='teammember'){
-    $get_Status = \App\Models\ProjectUser::where(['user_id'=>$user->id])->first();
-}elseif($type=='consultant'){
-    $get_Status = \App\Models\ProjectConsultant::where(['user_id'=>$user->id])->first();
- } elseif($type=='subcontractor'){
-    $get_Status = \App\Models\ProjectSubcontractor::where(['user_id'=>$user->id])->first();
- } ?>
-    @if($get_Status)
-        @if($user->type!='company' && $get_Status->invite_status=='accepted')
+@forelse($user_contact as $user)
+<?php ?>
+    @if($user->projectUsers->type!='company')
         <?php $key=$key+1; ?>
         <div class="col-md-6 col-lg-3">
             <div class="card">
                 <div class="card-body p-4 text-center">
-                @if($user->avatar)
+                @if($user->projectUsers->avatar)
                 <span class="avatar avatar-xl mb-3 rounded"
-                        style="background-image: url({{asset('/storage/uploads/avatar/'.$user->avatar)}})"></span>
+                        style="background-image: url({{asset('/storage/uploads/avatar/'.$user->projectUsers->avatar)}})">
+                    </span>
                 @else
-                    <?php  $short=substr($user->name, 0, 2);?>
+                    <?php  $short=substr($user->projectUsers->name, 0, 2);?>
                     <span class="avatar avatar-xl mb-3 rounded">{{strtoupper($short)}}</span>
                 @endif
-                <h3 class="m-0 mb-1"><a href="#">{{$user->name }}</a></h3>
+                <h3 class="m-0 mb-1"><a href="#">{{$user->projectUsers->name }}</a></h3>
                 <div class="mt-3">
-                    <span class="badge bg-purple-lt">{{$user->type}}</span>
+                    <span class="badge bg-purple-lt">{{$user->projectUsers->type}}</span>
                 </div>
+                <div class="mt-3">
+                    @if($user->invite_status!='')
+                        <span class="badge bg-purple-lt">{{$user->invite_status}}</span>
+                    @else
+                        <span class="badge bg-purple-lt">Invited</span>
+                    @endif
+                    
+                </div>
+               
                 </div>
                 <div class="d-flex">
-                <a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}"
+                <a data-bs-toggle="tooltip" data-copy_email="{{ $user->projectUsers->email }}" 
+                title="{{ $user->projectUsers->email }}"
                     href="#" class="card-btn" onclick="copyToClipboard(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -58,7 +56,7 @@
                     {{__('Email')}}
                 </a>
                 
-                <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
+                <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->projectUsers->phone }}" title="{{ $user->projectUsers->phone }}"
                     class="card-btn" onclick="copyToClipboardphone(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -72,7 +70,6 @@
                 </div>
             </div>
         </div>
-        @endif
     @endif
 
 @empty
@@ -87,7 +84,7 @@
         <div class="empty-action">
             @can('edit project')
                 <div class="float-end">
-                    <a href="#" data-size="lg"  
+                    <a href="#" data-size="lg"
                     data-url="{{ route('invite.project.invite_teammember', $project->id) }}"
                     data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn  btn-primary"
                     >
@@ -107,7 +104,7 @@
         <div class="empty-action">
             @can('edit project')
                 <div class="float-end">
-                    <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}"
+                    <a href="#" data-size="lg" data-url="{{ route('invite.project.invite_teammember', $project->id) }}"
                     data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn  btn-primary"
                     >
                     {{__(' Invite a Consultant')}}
@@ -126,7 +123,7 @@
         <div class="empty-action">
             @can('edit project')
                 <div class="float-end">
-                    <a href="#" data-size="lg" data-url="{{ route('invite.project.member.view', $project->id) }}"
+                    <a href="#" data-size="lg" data-url="{{ route('invite.project.invite_teammember', $project->id) }}"
                     data-ajax-popup="true" data-bs-toggle="tooltip" title="" class="btn  btn-primary"
                     >
                     {{__(' Invite a Sub Contractor')}}
