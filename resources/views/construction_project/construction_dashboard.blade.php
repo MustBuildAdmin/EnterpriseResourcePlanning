@@ -496,7 +496,8 @@ if($delay>100){
             grid: {
                 strokeDashArray: 4,
             },
-            colors: [tabler.getColor("danger"), tabler.getColor("green", 0.8), tabler.getColor("primary", 0.6), tabler.getColor("orange -300")],
+            colors: [tabler.getColor("danger"), tabler.getColor("green", 0.8),
+            tabler.getColor("primary", 0.6), tabler.getColor("orange -300")],
             legend: {
                 show: true,
                 position: 'bottom',

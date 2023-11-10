@@ -625,7 +625,7 @@ class SubContractorController extends Controller
                         'requested_date' => $requesteddate,
                         'status' => 'requested',
                     ]);
-                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor') . $createconnection->id;
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor').$createconnection->id;
                     $userarr = [
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
