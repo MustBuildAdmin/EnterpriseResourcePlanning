@@ -1,11 +1,7 @@
 pipeline {
     agent any
     stages{
-      stage('SCM') {
-            steps {
-                git url: 'https://github.com/MustBuildAdmin/EnterpriseResourcePlanning.git'
-            }
-        }
+      
          stage('build && SonarQube analysis') {
             steps {
                 withSonarQubeEnv('My SonarQube Server') {
