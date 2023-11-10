@@ -1351,6 +1351,9 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 id: id,
             },
             success: function(data) {
+
+                $('input#start-date').val(data.start_date);
+                $('input#end-date').val(data.end_date);
                 $('input#start_date_input').val(data.start_date);
                 $('input#end_date_input').val(data.end_date);
             }
