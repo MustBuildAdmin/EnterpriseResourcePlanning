@@ -478,6 +478,14 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
+Route::get('instance_project_dairy/{instance_id}/{project_id}', 'RevisionController@instance_project_dairy')->name('projects.instance_project_dairy')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::get('hrm_dashboard', 'DashboardController@hrm_dashboard')->name('hrm_dashboard')->middleware(
     [
         'auth',
@@ -515,6 +523,13 @@ Route::get('/company-settings', 'SystemController@companysettings')->name('compa
 Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['auth', 'XSS', 'revalidate']);
 
 Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+Route::get('/dairy_main/dairy/productivity', 'DashboardController@dairy_main')->name('dairy_main')->middleware(
     [
         'auth',
         'XSS',
@@ -3448,7 +3463,22 @@ Route::get(
     ]
 );
 Route::get(
+<<<<<<< HEAD
     'instance_project/{instance_id}/{project_id}/{name}', [
+=======
+    'check_instance_dairy/{id}', [
+        'as' => 'projects.check_instance_dairy',
+        'uses' => 'ProjectController@check_instance_dairy',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    'instance_project/{instance_id}/{project_id}', [
+>>>>>>> 9d77f33b (Dairy menu creation)
         'as' => 'projects.instance_project',
         'uses' => 'RevisionController@instance_project',
     ]
@@ -3458,6 +3488,7 @@ Route::get(
         'XSS',
     ]
 );
+
 Route::delete(
     'projects/{id}/users/{uid}', [
         'as' => 'projects.user.destroy',
@@ -3685,6 +3716,9 @@ Route::resource('projects', 'ProjectController')->middleware(
         'XSS',
     ]
 );
+Route::get('projects_dairy/{project_id}', 'ProjectController@show_dairy')->name('show_dairy')->middleware(['auth',
+'XSS',
+'revalidate']);
 
 Route::get('boq_file/{project_id}', 'ProjectController@boq_file')->name('boq_file')->middleware(['auth', 'XSS']);
 Route::any('boq_code_verify', 'ProjectController@boq_code_verify')->name('boq_code_verify')->middleware(['auth', 'XSS']);
@@ -4313,6 +4347,7 @@ Route::resource('consultants', 'ConsultantController')->middleware(
     ]
 );
 
+
 Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->name('consultants.edit.new')
     ->middleware(
         [
@@ -4321,6 +4356,18 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
             'revalidate',
         ]
     );
+
+Route::get('drawing_list', 'DrawingsController@index')->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
+Route::get('drawing_reference_add/{drawing_type}/{reference_number}', 'DrawingsController@addReference')->name('drawing.reference.add')->middleware(
+    ['auth','XSS']
+);
+Route::post('add_drawings/{drawing_type_id}/{reference_number}', 'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
+Route::resource('drawings', 'DrawingsController')->middleware(['auth','XSS','revalidate',]);
+Route::delete('drawing_del/{id}/{drawing_type}/{ref_number}/{user}', 'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
+    ['auth','XSS',]
+);
+Route::get('drawings_search', 'DrawingsController@index')->name('drawings.search')->middleware(['auth','XSS']);
+Route::get('drawing_autocomplete', 'DrawingsController@drawing_autocomplete')->name('drawing_autocomplete')->middleware(['auth','XSS',]);
 
 Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_consultant')
     ->middleware(

@@ -2750,8 +2750,7 @@ class Utility extends Model
     {
         try {
             $settings = Utility::getStorageSetting();
-            //                dd($settings);
-
+            
             if (! empty($settings['storage_setting'])) {
 
                 if ($settings['storage_setting'] == 'wasabi') {
