@@ -1,5 +1,13 @@
 
 @include('new_layouts.header')
+<style>
+a.text-dark {
+   cursor: pointer !important;
+}
+</style>
+@php
+   $profile=\App\Models\Utility::get_file('uploads/avatar/');
+@endphp
 <div class="container-fluid">
    <div class="card mt-5 p-4">
       <div class="card-header">
@@ -127,12 +135,14 @@
                    <a class="text-dark"  data-size="lg"
                    data-url="{{ route('projects.check_instance',$project->id) }}"
                    data-title="Choose Your Revision" data-ajax-popup="true"
-                   data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                   data-bs-toggle="tooltip">{{ $project->project_name }}
+                  </a>
                @else
-                   <a class="text-dark"  data-size="lg"
+                   <a class="text-dark"  id="pointer" data-size="lg"
                    href="{{ route('projects.instance_project',
                            [$project_instances[0]['id'],$project->id,'Base']) }}"
-                   data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                   data-bs-toggle="tooltip">{{ $project->project_name }}
+                  </a>
                @endif
                   </h3>
                   <p class="text-secondary mb-0">Start Date: {{ Utility::getDateFormated($project->start_date) }}</p>
@@ -155,12 +165,15 @@
                        @if (isset($project->users) && !empty($project->users)
                        && count($project->users) > 0)
                           @foreach ($project->users as $key => $user)
-                          <?php  $short=substr($user->name, 0, 1);?>
+                          @php
+                          $short=substr($user->name, 0, 1);
+                          @endphp
                               @if ($key < 3)
                                   @if ($user->avatar)
+ 
                                       <a href="#" class="avatar avatar-sm rounded">
-                                          <img  src="{{ asset('/storage/uploads/avatar/'
-                                               . $user->avatar) }}"
+                                          <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$user->avatar :
+                                                asset(Storage::url("uploads/avatar/avatar.png"))}}"
                                               alt="{{strtoupper($short)}}" data-bs-toggle="tooltip"
                                               title="{{ $user->name }}" class="avatar avatar-sm rounded">
                                       </a>
