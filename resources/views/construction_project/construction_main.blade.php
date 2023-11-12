@@ -124,12 +124,12 @@
                 
                @endphp
                @if(count($project_instances)>1)
-                   <a class="text-dark"  data-size="lg"
+                   <a class="text-dark text-capitalize"  data-size="lg"
                    data-url="{{ route('projects.check_instance',$project->id) }}"
                    data-title="Choose Your Revision" data-ajax-popup="true"
                    data-bs-toggle="tooltip">{{ $project->project_name }}</a>
                @else
-                   <a class="text-dark"  data-size="lg"
+                   <a class="text-dark text-capitalize"  data-size="lg"
                    href="{{ route('projects.instance_project',
                            [$project_instances[0]['id'],$project->id,'Base']) }}"
                    data-bs-toggle="tooltip">{{ $project->project_name }}</a>
