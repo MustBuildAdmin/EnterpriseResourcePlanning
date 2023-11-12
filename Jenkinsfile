@@ -1,12 +1,6 @@
 pipeline {
     agent any
     stages{
-            stage('SonarQube Analysis') {
-                def scannerHome = tool 'SonarScanner';
-                withSonarQubeEnv() {
-                sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
             stage('AWS Demo Release') {
             steps{
                 sh 'sudo chmod -R 777 /var/www/html/'
