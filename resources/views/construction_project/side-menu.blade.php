@@ -20,81 +20,110 @@
         background: var(--tblr-navbar-active-bg) !important;
         color: black !important;
     }
- :root {
-     --theadColor: #206bc4;
-}
 
- table.dataTable {
-     box-shadow: #bbbbbb 0px 0px 5px 0px;
-}
- thead {
-     background-color: var(--theadColor);
-}
- thead > tr, thead > tr > th {
-     background-color: transparent !important;
-     color: #fff ;
-     font-weight: normal;
-     text-align: start;
-}
- table.dataTable thead th, table.dataTable thead td {
-     border-bottom: 0px solid #111 !important;
-}
- .dataTables_wrapper > div {
-     margin: 5px;
-}
- table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column.stripe tbody tr.even> .sorting_1, table.dataTable.display tbody tr.even, table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd > .sorting_1, table.dataTable.display tbody tr.odd {
-     background-color: #ffffff;
-}
- table.dataTable thead th {
-     position: relative;
-     background-image: none !important;
-}
- table.dataTable thead th.sorting:after, table.dataTable thead th.sorting_asc:after, table.dataTable thead th.sorting_desc:after {
-     position: absolute;
-     top: 12px;
-     right: 8px;
-     display: block;
-     font-family: "Font Awesome\ 5 Free";
-}
- table.dataTable thead th.sorting:after {
-     content: "\f0dc";
-     color: #ddd;
-     font-size: 0.8em;
-     padding-top: 0.12em;
-}
- table.dataTable thead th.sorting_asc:after {
-     content: "\f0de";
-}
- table.dataTable thead th.sorting_desc:after {
-     content: "\f0dd";
-}
- table.dataTable.display tbody tr:hover > .sorting_1, table.dataTable.order-column.hover tbody tr:hover > .sorting_1 {
-     background-color: #f2f2f2 !important;
-     color: #000;
-}
- tbody tr:hover {
-     background-color: #f2f2f2 !important;
-     color: #000;
-}
- .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-     background: none !important;
-     border-radius: 50px;
-     background-color: var(--theadColor) !important;
-     color:#fff !important 
-}
- .paginate_button.current:hover {
-     background: none !important;
-     border-radius: 50px;
-     background-color: var(--theadColor) !important;
-     color:#fff !important 
-}
- .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-     border: 1px solid #979797;
-     background: none !important;
-     border-radius: 50px !important;
-     background-color: #000 !important;
-     color: #fff !important;
-|}
+    :root {
+        --theadColor: #206bc4;
+    }
+
+    table.dataTable {
+        box-shadow: #bbbbbb 0px 0px 5px 0px;
+    }
+
+    thead {
+        background-color: var(--theadColor);
+    }
+
+    thead>tr,
+    thead>tr>th {
+        background-color: transparent !important;
+        color: #fff;
+        font-weight: normal;
+        text-align: start;
+    }
+
+    table.dataTable thead th,
+    table.dataTable thead td {
+        border-bottom: 0px solid #111 !important;
+    }
+
+    .dataTables_wrapper>div {
+        margin: 5px;
+    }
+
+    table.dataTable.display tbody tr.even>.sorting_1,
+    table.dataTable.order-column.stripe tbody tr.even>.sorting_1,
+    table.dataTable.display tbody tr.even,
+    table.dataTable.display tbody tr.odd>.sorting_1,
+    table.dataTable.order-column.stripe tbody tr.odd>.sorting_1,
+    table.dataTable.display tbody tr.odd {
+        background-color: #ffffff;
+    }
+
+    table.dataTable thead th {
+        position: relative;
+        background-image: none !important;
+    }
+
+    table.dataTable thead th.sorting:after,
+    table.dataTable thead th.sorting_asc:after,
+    table.dataTable thead th.sorting_desc:after {
+        position: absolute;
+        top: 12px;
+        right: 8px;
+        display: block;
+        font-family: "Font Awesome\ 5 Free";
+    }
+
+    table.dataTable thead th.sorting:after {
+        content: "\f0dc";
+        color: #ddd;
+        font-size: 0.8em;
+        padding-top: 0.12em;
+    }
+
+    table.dataTable thead th.sorting_asc:after {
+        content: "\f0de";
+    }
+
+    table.dataTable thead th.sorting_desc:after {
+        content: "\f0dd";
+    }
+
+    table.dataTable.display tbody tr:hover>.sorting_1,
+    table.dataTable.order-column.hover tbody tr:hover>.sorting_1 {
+        background-color: #f2f2f2 !important;
+        color: #000;
+    }
+
+    tbody tr:hover {
+        background-color: #f2f2f2 !important;
+        color: #000;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        background: none !important;
+        border-radius: 50px;
+        background-color: var(--theadColor) !important;
+        color: #fff !important
+    }
+
+    .paginate_button.current:hover {
+        background: none !important;
+        border-radius: 50px;
+        background-color: var(--theadColor) !important;
+        color: #fff !important
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        border: 1px solid #979797;
+        background: none !important;
+        border-radius: 50px !important;
+        background-color: #000 !important;
+        color: #fff !important;
+        |
+    }
 </style>
 <div class="page">
     <!-- Sidebar  -->
@@ -110,8 +139,7 @@
                     <!--Dashboard start-->
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'projects.show' ?
-                            'nav-link active' : 'nav-link' }}">
+                            class="{{ Request::route()->getName() == 'projects.show' ? 'nav-link active' : 'nav-link' }}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -159,23 +187,20 @@
                                 <div class="dropdown-menu-column">
                                     @can('view grant chart')
                                         <a href="{{ route('projects.gantt', $project_id) }}"
-                                            class="{{ Request::route()->getName() == 'projects.gantt' ?
-                                            'dropdown-item active' : 'dropdown-item' }}">
+                                            class="{{ Request::route()->getName() == 'projects.gantt' ? 'dropdown-item active' : 'dropdown-item' }}">
                                             {{ __('Gantt') }}
                                         </a>
                                     @endcan
                                     @if (Session::get('current_revision_freeze') == 1)
                                         <a href="{{ url('revision') }}"
-                                            class="{{ Request::route()->getName() == 'revision' ?
-                                            'dropdown-item active' : 'dropdown-item' }}">
+                                            class="{{ Request::route()->getName() == 'revision' ? 'dropdown-item active' : 'dropdown-item' }}">
                                             {{ __('Revision') }}
                                         </a>
                                     @endif
                                     @if (session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
-                                            class="{{ Request::route()->getName() == 'project_report.revsion_task_list'
-                                             ?'dropdown-item active' : 'dropdown-item' }}">
-                                          {{ __('Revised Program') }}
+                                            class="{{ Request::route()->getName() == 'project_report.revsion_task_list' ? 'dropdown-item active' : 'dropdown-item' }}">
+                                            {{ __('Revised Program') }}
                                         </a>
                                     @endif
                                     {{-- @if ($checMicroProgram == 1)
@@ -188,8 +213,7 @@
                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
                                     @endif --}}
                                     <a href="{{ route('taskBoard.view', ['list']) }}"
-                                        class="{{ Request::route()->getName() == 'taskBoard.view' ?
-                                        'dropdown-item active' :'dropdown-item' }}">{{ __('Task') }}</a>
+                                        class="{{ Request::route()->getName() == 'taskBoard.view' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Task') }}</a>
                                     {{-- <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                     class="{{ (Request::route()->getName() == 'project_report.view_task_report')
                                     ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Reports') }}</a> --}}
@@ -230,15 +254,15 @@
 
                     <!--LookaHead Planning starts-->
                     @if ($checMicroProgram == 1)
-                        @if(Session::get('latest_project_instance') == Session::get('project_instance'))
+                        @if (Session::get('latest_project_instance') == Session::get('project_instance'))
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                             <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
                                             <path d="M12 12l8 -4.5"></path>
@@ -255,16 +279,13 @@
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
                                             <a href="{{ route('microprogram.gantt', $project_id) }}"
-                                                class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Gantt') }}</a>
-                                            
+                                                class="{{ Request::route()->getName() == 'microprogram.gantt' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Lookahead Gantt') }}</a>
+
                                             <a href="{{ route('microprogram') }}"
-                                                class="{{ (Request::route()->getName() == 'microprogram')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Schedule') }}</a>
-                                        
+                                                class="{{ Request::route()->getName() == 'microprogram' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Lookahead Schedule') }}</a>
+
                                             <a href="{{ route('micro_taskboard') }}"
-                                                class="{{ (Request::route()->getName() == 'micro_taskboard.view')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Active Lookahead') }}</a>
+                                                class="{{ Request::route()->getName() == 'micro_taskboard.view' ? 'dropdown-item active' : 'dropdown-item' }}">{{ __('Active Lookahead') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -302,18 +323,15 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a href="{{ route('project.teammembers', $project_id) }}"
-                                        class="{{ Request::route()->getName() == 'project.teammembers' ?
-                                        'dropdown-item active' : 'dropdown-item' }}">
+                                        class="{{ Request::route()->getName() == 'project.teammembers' ? 'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Engineers') }}
                                     </a>
                                     <a href="{{ route('project.consultant', $project_id) }}"
-                                        class="{{ Request::route()->getName() == 'project.consultant' ?
-                                        'dropdown-item active' : 'dropdown-item' }}">
+                                        class="{{ Request::route()->getName() == 'project.consultant' ? 'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Consultant') }}
                                     </a>
                                     <a href="{{ route('project.subcontractor', $project_id) }}"
-                                        class="{{ Request::route()->getName() == 'project.subcontractor' ?
-                                        'dropdown-item active' : 'dropdown-item' }}">
+                                        class="{{ Request::route()->getName() == 'project.subcontractor' ? 'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Sub Contractor') }}
                                     </a>
                                 </div>
@@ -325,8 +343,7 @@
                     <!--Activites starts-->
                     <li class="nav-item">
                         <a href="{{ route('project.activities', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project.activities' ?
-                            'nav-link active' : 'nav-link' }}">
+                            class="{{ Request::route()->getName() == 'project.activities' ? 'nav-link active' : 'nav-link' }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -375,8 +392,7 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
-                                        class="{{ Request::route()->getName() == 'project_report.view_task_report' ?
-                                        'nav-link active' : 'nav-link' }}">
+                                        class="{{ Request::route()->getName() == 'project_report.view_task_report' ? 'nav-link active' : 'nav-link' }}">
                                         {{ __('Daily Task Reports') }}
                                     </a>
                                     <a class="nav-link" href="./accordion.html">
@@ -393,8 +409,7 @@
                     <!--Holidays starts-->
                     <li class="nav-item">
                         <a href="{{ route('project_holiday.index', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project_holiday.index' ?
-                            'nav-link active' : 'nav-link' }}">
+                            class="{{ Request::route()->getName() == 'project_holiday.index' ? 'nav-link active' : 'nav-link' }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -411,15 +426,15 @@
                             </span>
                         </a>
                     </li>
-                     <!--Holidays ends-->
-                     {{--
+                    <!--Holidays ends-->
+                    {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                      <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
                      <li class=""><a href="{{route('qaqc.sand')}}">{{__('Sand')}}</a></li>
                      <li class=""><a href="{{route('qaqc.steel')}}">{{__('Steel')}}</a></li>
                      --}}
-                     {{-- Contracts --}}
-                     {{--
+                    {{-- Contracts --}}
+                    {{--
                      <li class="">
                         <a data-bs-target="#submenuContracts" data-bs-toggle="collapse"
                            aria-expanded="false" class="accordion-collapse collapse list-unstyled">

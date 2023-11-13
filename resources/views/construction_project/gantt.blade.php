@@ -489,7 +489,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     </div>
  </div>
  <!-- Delete Confirmation ends-->
- 
+
  <!-- Suc alert starts-->
  <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
@@ -570,7 +570,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     // end ###############################################
 
-        
+
     // delete confirmation show  #############################
     $(document).on("click", "#confirm_del_yes", function () {
         $("#modal-success").modal('show');
@@ -760,7 +760,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     updatedTask.push(taskdetails);
 
                 };
-             
+
                 workflag = 1;
                 $.ajax({
                     url: '{{ route('projects.criticaltask_update') }}',
@@ -1207,7 +1207,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     })
 
 
-  
+
 
 
 
@@ -1354,7 +1354,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         form.querySelector("#save").onclick = save;
         form.querySelector("#close").onclick = cancel;
         form.querySelector("#cancel").onclick = cancel;
-      
+
     }
 
 

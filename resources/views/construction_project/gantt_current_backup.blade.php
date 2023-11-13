@@ -5,12 +5,12 @@
 <link href="{{ asset('assets/js/css/dhtmlxgantt.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('assets/js/gantt/common/controls_styles.css?v=7.0.11') }}">
 <script src="https://export.dhtmlx.com/gantt/api.js?v=7.0.11"
-integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"
-integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
-<script src="https://export.dhtmlx.com/gantt/api.js" 
-integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+    integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
+<script src="https://export.dhtmlx.com/gantt/api.js"
+    integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script src="{{ asset('assets/js/js/zoomingConfig.js') }}"></script>
 <script src="{{ asset('assets/js/js/criticalPath.js') }}"></script>
 <script src="{{ asset('assets/js/js/overlay.js') }}"></script>
@@ -105,12 +105,12 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 @php
     $holidays = [];
-    
+
     foreach ($project_holidays as $key => $value) {
         // $time = strtotime($value->date);
         $holidays[] = date('Y,m,d', strtotime($value->date));
     }
-    
+
     $holidays = implode(':', $holidays);
 @endphp
 @include('construction_project.side-menu')
@@ -136,8 +136,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             </button>
             <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal
              pe-0 pe-md-3 p-3 text-capitalize text-white bg-primary text-wrap"
-              style="width: 10rem;">
-                {{$projectname}}
+                style="width: 10rem;">
+                {{ $projectname }}
             </h1>
             <div class="navbar-nav flex-row order-md-last">
                 <div class="d-none d-md-flex">
@@ -206,9 +206,9 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         <li class="nav-item">
                             <a class="nav-link" type="button" onclick="openAll()">
                                 <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-arrow-bear-left" width="24"
-                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    class="icon icon-tabler icon-tabler-arrow-bear-left" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M13 3h-5v5"></path>
                                     <path d="M8 3l7.536 7.536a5 5 0 0 1 1.464 3.534v6.93"></path>
@@ -219,7 +219,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link"  type="button" onclick="closeAll()">
+                            <a class="nav-link" type="button" onclick="closeAll()">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-arrow-bear-left" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -321,8 +321,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M10 10m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0"></path>
-                                    <path
-                                    d="M13.5 15h.5a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-8a2
+                                    <path d="M13.5 15h.5a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-8a2
                                      2 0 0 1 -2 -2v-1a2 2 0 0 1 2 -2h.5">
                                     </path>
                                     <path d="M16 17a5.698 5.698 0 0 0 4.467 -7.932l-.467 -1.068"></path>
@@ -347,15 +346,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             </a>
                         </li>
                         <li class="nav-item">
-                            {{ Form::open(['route' => ['projects.freeze_status'],
-                            'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
+                            {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST', 'id' => 'gantt_chart_submit']) }}
 
                             {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
                             <a href="#" class="nav-link freeze_button" style='width: 100%;'
                                 data-bs-toggle="tooltip" title="{{ __('Click to change Set Baseline status') }}"
                                 data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|' .
-                                __('This action can not be undone. Do you want to continue?') }}"
+                                data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                 {{-- <i class="fa fa-lock" aria-hidden="true" style='margin-right: 5px;'>
                                 </i> Freeze --}}
@@ -412,8 +409,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             <div class="page-search">
                                 <p class="text-muted mt-3">
                                     {{ __("It's looking like you may have taken a wrong turn.
-                                    Don't worry... it happens to the best of us.
-                                    Here's a little tip that might help you get back on track.") }}
+                                                                        Don't worry... it happens to the best of us.
+                                                                        Here's a little tip that might help you get back on track.") }}
                                 </p>
                                 <div class="mt-3">
                                     <a class="btn-return-home badge-blue" href="{{ route('home') }}">
@@ -427,8 +424,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <div class="page-search">
                 <p class="text-muted mt-3">
                     {{ __("It's looking like you may have taken a wrong turn.
-                        Don't worry... it happens to the best of us.
-                    Here's a little tip that might help you get back on track.") }}
+                                            Don't worry... it happens to the best of us.
+                                        Here's a little tip that might help you get back on track.") }}
                 </p>
                 <div class="mt-3">
                     <a class="btn-return-home badge-blue" href="{{ route('home') }}">
@@ -441,7 +438,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     </div>
 </div>
 
-          
+
 </div>
 <input type='hidden' id='weekends' value='{{ $nonWorkingDay }}'>
 <input type='hidden' id='holidays' value='{{ $holidays }}'>
@@ -454,759 +451,763 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     var frezee_status_actual = $('#frezee_status').val();
     $(document).ready(function() {
 
-                // check freeze status
+        // check freeze status
 
-                var tempcsrf = '{!! csrf_token() !!}';
-                $.post("{{ route('projects.get_freeze_status') }}", {
-                        _token: tempcsrf,
-                        project_id: {{ $project->id }}
-                    },
-                    function(resp, textStatus, jqXHR) {
+        var tempcsrf = '{!! csrf_token() !!}';
+        $.post("{{ route('projects.get_freeze_status') }}", {
+                _token: tempcsrf,
+                project_id: {{ $project->id }}
+            },
+            function(resp, textStatus, jqXHR) {
 
-                        if (resp == '1') {
-                            gantt.config.readonly = true;
-                            $('.freeze_button').addClass('disabled');
-                            $('.undo_action').addClass('disabled');
-                            $('.redo_action').addClass('disabled');
-                            $('.indent_action').addClass('disabled');
-                            $('.outdent_action').addClass('disabled');
-                        } else {
-                            gantt.config.readonly = false;
-                            $('.freeze_button').removeClass('disabled');
-                            $('.undo_action').removeClass('disabled');
-                            $('.redo_action').removeClass('disabled');
-                            $('.indent_action').removeClass('disabled');
-                            $('.outdent_action').removeClass('disabled');
-                        }
-                    });
-
-                // check freeze status
-
-                // check gantt task count
-                var tempcsrf1 = '{!! csrf_token() !!}';
-                $.post("{{ route('projects.get_gantt_task_count') }}", {
-                        _token: tempcsrf1,
-                        project_id: {{ $project->id }}
-                    },
-                    function(resp, textStatus, jqXHR) {
-                      
-                        if (resp == 0) {
-                            $('.freeze_button').addClass('disabled');
-                            $('.undo_action').addClass('disabled');
-                            $('.redo_action').addClass('disabled');
-                            $('.indent_action').addClass('disabled');
-                            $('.outdent_action').addClass('disabled');
-                        }
-                        // if(resp=='1'){
-                        //     gantt.config.readonly = true;
-                        //     $('.freeze_button').addClass('disabled');
-                        // }
-                        // else{
-                        //     gantt.config.readonly = false;
-                        //     $('.freeze_button').removeClass('disabled');
-                        // }
-
-                    });
-
-                    var button = document.getElementById("fullscreen_button");
-                        button.addEventListener("click", function(){
-                            if (!gantt.getState().fullscreen) {
-                                // expanding the gantt to full screen
-                                gantt.expand();
-                            }
-                            else {
-                                // collapsing the gantt to the normal mode
-                                gantt.collapse();
-                            }
-                        }, false);
-                // check gantt task count
-                //zoom
-                var selectOption = document.getElementById("zoomscale");
-                selectOption.onchange = function(event) {
-                    gantt.ext.zoom.setLevel(event.target.value)
+                if (resp == '1') {
+                    gantt.config.readonly = true;
+                    $('.freeze_button').addClass('disabled');
+                    $('.undo_action').addClass('disabled');
+                    $('.redo_action').addClass('disabled');
+                    $('.indent_action').addClass('disabled');
+                    $('.outdent_action').addClass('disabled');
+                } else {
+                    gantt.config.readonly = false;
+                    $('.freeze_button').removeClass('disabled');
+                    $('.undo_action').removeClass('disabled');
+                    $('.redo_action').removeClass('disabled');
+                    $('.indent_action').removeClass('disabled');
+                    $('.outdent_action').removeClass('disabled');
                 }
-                //task position
-                var els = document.getElementsByClassName("action");
-                for (var i = 0; i < els.length; i++) {
-                    els[i].onclick = function() {
-                     
-                        gantt.performAction(this.id)
-                    }
-                }
-                gantt.templates.rightside_text = function(start, end, task) {
-                    if (task.type == gantt.config.types.milestone) {
-                        return task.text;
-                    }
-                    return "";
-                };
+            });
 
-                function get_editon_multiselect() {
-                    set_data = "";
+        // check freeze status
+
+        // check gantt task count
+        var tempcsrf1 = '{!! csrf_token() !!}';
+        $.post("{{ route('projects.get_gantt_task_count') }}", {
+                _token: tempcsrf1,
+                project_id: {{ $project->id }}
+            },
+            function(resp, textStatus, jqXHR) {
+
+                if (resp == 0) {
+                    $('.freeze_button').addClass('disabled');
+                    $('.undo_action').addClass('disabled');
+                    $('.redo_action').addClass('disabled');
+                    $('.indent_action').addClass('disabled');
+                    $('.outdent_action').addClass('disabled');
+                }
+                // if(resp=='1'){
+                //     gantt.config.readonly = true;
+                //     $('.freeze_button').addClass('disabled');
+                // }
+                // else{
+                //     gantt.config.readonly = false;
+                //     $('.freeze_button').removeClass('disabled');
+                // }
+
+            });
+
+        var button = document.getElementById("fullscreen_button");
+        button.addEventListener("click", function() {
+            if (!gantt.getState().fullscreen) {
+                // expanding the gantt to full screen
+                gantt.expand();
+            } else {
+                // collapsing the gantt to the normal mode
+                gantt.collapse();
+            }
+        }, false);
+        // check gantt task count
+        //zoom
+        var selectOption = document.getElementById("zoomscale");
+        selectOption.onchange = function(event) {
+            gantt.ext.zoom.setLevel(event.target.value)
+        }
+        //task position
+        var els = document.getElementsByClassName("action");
+        for (var i = 0; i < els.length; i++) {
+            els[i].onclick = function() {
+
+                gantt.performAction(this.id)
+            }
+        }
+        gantt.templates.rightside_text = function(start, end, task) {
+            if (task.type == gantt.config.types.milestone) {
+                return task.text;
+            }
+            return "";
+        };
+
+        function get_editon_multiselect() {
+            set_data = "";
+            $.ajax({
+                url: '{{ route('projects.get_member') }}',
+                type: 'GET',
+                async: false,
+                data: {
+                    'project_id': "<?php echo $project->id; ?>"
+                },
+                success: function(data) {
+                    set_data = data;
+                }
+            });
+
+            return set_data;
+        }
+
+
+        // 	gantt.message("Loading...");
+        // });
+
+        // gantt.attachEvent("onLoadEnd", function () {
+        // 	gantt.message({
+        // 		text: "Loaded " + gantt.getTaskCount() + " tasks, " + gantt.getLinkCount() + " links",
+        // 		expire: 8 * 1000
+        // 	});
+        // })s
+
+        gantt.i18n.setLocale({
+            labels: {
+                time_enable_button: 'Schedule',
+                time_disable_button: 'Unschedule',
+            }
+        });
+
+
+        gantt.config.open_tree_initially = true;
+
+        gantt.plugins({
+            quick_info: false,
+            tooltip: false,
+            multiselect: true,
+            undo: true,
+            fullscreen: true,
+            drag_timeline: true,
+            critical_path: true,
+            keyboard_navigation: true,
+            auto_scheduling: true
+        });
+        gantt.ext.fullscreen.getFullscreenElement = function() {
+            return document.getElementById("additional_elements");
+        }
+        gantt.config.date_format = "%Y-%m-%d %H:%i";
+        gantt.config.auto_scheduling = true;
+        gantt.config.auto_scheduling_strict = true;
+        gantt.config.auto_scheduling_compatibility = true;
+        var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
+        var today = new Date();
+        // gantt.addMarker({
+        // 	start_date: today,
+        // 	css: "today",
+        // 	text: "Today",
+        // 	title: "Today: " + dateToStr(today)
+        // });
+
+        // var start = new Date();
+        // gantt.addMarker({
+        // 	start_date: start,
+        // 	css: "status_line",
+        // 	text: "Start project",
+        // 	title: "Start project: " + dateToStr(start)
+        // });
+        gantt.config.scale_height = 50;
+        gantt.templates.task_class = gantt.templates.grid_row_class =
+            gantt.templates.task_row_class = function(start, end, task) {
+                if (gantt.isSelectedTask(task.id))
+                    return "gantt_selected";
+            };
+
+        var formatter = gantt.ext.formatters.durationFormatter({
+            enter: "day",
+            store: "day",
+            format: "auto"
+        });
+        var linksFormatter = gantt.ext.formatters.linkFormatter({
+            durationFormatter: formatter
+        });
+
+        var editors = {
+            text: {
+                type: "text",
+                map_to: "text"
+            },
+            start_date: {
+                type: "date",
+                map_to: "start_date",
+            },
+            end_date: {
+                type: "date",
+                map_to: "end_date",
+            },
+            duration: {
+                type: "duration",
+                map_to: "duration",
+                min: 0,
+                max: 100,
+                formatter: formatter
+            },
+            priority: {
+                type: "select",
+                map_to: "priority",
+                options: gantt.serverList("priority")
+            },
+            predecessors: {
+                type: "predecessor",
+                map_to: "auto",
+                formatter: linksFormatter
+            }
+        };
+
+        gantt.config.reorder_grid_columns = true;
+        if (frezee_status_actual != 1) {
+            gantt.config.columns = [{
+                    name: "wbs",
+                    label: "#",
+                    width: 60,
+                    align: "center",
+                    template: gantt.getWBSCode,
+                    tree: true,
+                    resize: true
+                },
+                {
+                    name: "text",
+                    label: "Task Name",
+                    width: 150,
+                    resize: true
+                },
+                {
+                    name: "start_date",
+                    label: "Start Date",
+                    width: 80,
+                    align: "center",
+                    resize: true
+                },
+                {
+                    name: "end_date",
+                    label: "End Date",
+                    width: 80,
+                    align: "center",
+                    resize: true
+                },
+                {
+                    name: "duration",
+                    label: "Duration",
+                    width: 80,
+                    align: "center",
+                    resize: true
+                },
+                {
+                    name: "predecessors",
+                    label: "Predecessors",
+                    width: 110,
+                    align: "left",
+                    editor: editors.predecessors,
+                    resize: true,
+                    template: function(task) {
+                        var links = task.$target;
+                        var labels = [];
+                        for (var i = 0; i < links.length; i++) {
+                            var link = gantt.getLink(links[i]);
+                            labels.push(linksFormatter.format(link));
+                        }
+                        return labels.join(", ")
+                    }
+                },
+                // totalSlackColumn,
+                freeSlackColumn,
+                {
+                    name: "add"
+                }
+            ];
+            // scale length
+            gantt.config.scale_height = 20 * 2;
+            gantt.config.min_column_width = 50;
+            gantt.config.scales = [{
+                    unit: "month",
+                    step: 1,
+                    date: "%M, %Y"
+                },
+                {
+                    unit: "day",
+                    step: 1,
+                    date: "%d %M"
+                }
+            ];
+
+            gantt.config.layout = {
+                css: "gantt_container",
+                cols: [{
+                        width: 680,
+                        min_width: 300,
+                        rows: [{
+                                view: "grid",
+                                scrollX: "gridScroll",
+                                scrollable: true,
+                                scrollY: "scrollVer"
+                            },
+                            {
+                                view: "scrollbar",
+                                id: "gridScroll",
+                                group: "horizontal"
+                            }
+                        ]
+                    },
+                    {
+                        resizer: true,
+                        width: 1
+                    },
+                    {
+                        rows: [{
+                                view: "timeline",
+                                scrollX: "scrollHor",
+                                scrollY: "scrollVer"
+                            },
+                            {
+                                view: "scrollbar",
+                                id: "scrollHor",
+                                group: "horizontal"
+                            }
+                        ]
+                    },
+                    {
+                        view: "scrollbar",
+                        id: "scrollVer"
+                    }
+                ]
+            };
+
+        } else {
+            gantt.config.columns = [{
+                    name: "wbs",
+                    label: "#",
+                    width: 60,
+                    align: "center",
+                    template: gantt.getWBSCode,
+                    tree: true,
+                    resize: true
+                },
+                {
+                    name: "text",
+                    label: "Task Name",
+                    width: 150,
+                    resize: true
+                },
+                {
+                    name: "start_date",
+                    label: "Start Date",
+                    width: 80,
+                    align: "center",
+                    resize: true
+                },
+                {
+                    name: "end_date",
+                    label: "End Date",
+                    width: 80,
+                    align: "center",
+                    resize: true
+                },
+                {
+                    name: "duration",
+                    label: "Duration",
+                    width: 80,
+                    align: "center",
+                    resize: true
+                },
+                {
+                    name: "predecessors",
+                    label: "Predecessors",
+                    width: 110,
+                    align: "left",
+                    editor: editors.predecessors,
+                    resize: true,
+                    template: function(task) {
+                        var links = task.$target;
+                        var labels = [];
+                        for (var i = 0; i < links.length; i++) {
+                            var link = gantt.getLink(links[i]);
+                            labels.push(linksFormatter.format(link));
+                        }
+                        return labels.join(", ")
+                    }
+                },
+                // totalSlackColumn,
+                freeSlackColumn,
+            ];
+            // scale length
+            gantt.config.scale_height = 20 * 2;
+            gantt.config.min_column_width = 50;
+            gantt.config.scales = [{
+                    unit: "month",
+                    step: 1,
+                    date: "%M, %Y"
+                },
+                {
+                    unit: "day",
+                    step: 1,
+                    date: "%d %M"
+                }
+            ];
+
+            gantt.config.layout = {
+                css: "gantt_container",
+                cols: [{
+                        width: 620,
+                        min_width: 300,
+                        rows: [{
+                                view: "grid",
+                                scrollX: "gridScroll",
+                                scrollable: true,
+                                scrollY: "scrollVer"
+                            },
+                            {
+                                view: "scrollbar",
+                                id: "gridScroll",
+                                group: "horizontal"
+                            }
+                        ]
+                    },
+                    {
+                        resizer: true,
+                        width: 1
+                    },
+                    {
+                        rows: [{
+                                view: "timeline",
+                                scrollX: "scrollHor",
+                                scrollY: "scrollVer"
+                            },
+                            {
+                                view: "scrollbar",
+                                id: "scrollHor",
+                                group: "horizontal"
+                            }
+                        ]
+                    },
+                    {
+                        view: "scrollbar",
+                        id: "scrollVer"
+                    }
+                ]
+            };
+        }
+
+
+        gantt.attachEvent("onParse", function() {
+            gantt.eachTask(function(task) {
+                // fill 'task.user' field with random data
+                task.user = Math.round(Math.random() * 3);
+                //
+                if (gantt.hasChild(task.id))
+                    task.type = gantt.config.types.project
+            });
+        });
+
+
+        // scale length end
+        gantt.templates.task_class = function(start, end, task) {
+            if (task.type == gantt.config.types.project)
+                return "hide_project_progress_drag";
+        };
+
+        // ###############################################
+        var weekScaleTemplate = function(date) {
+            var dateToStr = gantt.date.date_to_str("%d %M");
+            var weekNum = gantt.date.date_to_str("(week %W)");
+            var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
+            return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
+        };
+
+        gantt.templates.timeline_cell_class = function(task, date) {
+            if (!gantt.isWorkTime(date))
+                return "week_end";
+            return "";
+        };
+        // progress name
+        gantt.templates.progress_text = function(start, end, task) {
+            return "<span style='text-align:left;'>" + Math.round(task.progress) + "% </span>";
+        };
+
+        // progress end
+        var workflag = 0;
+        gantt.attachEvent("onBeforeAutoSchedule", function() {
+            var check_cri = <?php echo $critical_update; ?>;
+            if (check_cri == 0) {
+                var tasks = gantt.getTaskByTime();
+                const critical_task = new Array();
+                const updatedTask = new Array();
+                if (workflag == 0) {
+                    for (var i = 0; i < tasks.length; i++) {
+
+                        const task = gantt.getTask(tasks[i].id);
+                        const tt = gantt.isCriticalTask(task);
+                        // const totalStack = gantt.getTotalSlack(task);
+                        // const freeSlack = gantt.getFreeSlack(task)
+                        // const constraintType = gantt.getConstraintType(task);
+                        const taskdetails = {
+                            ...task,
+                            isCriticalTask: gantt.isCriticalTask(task),
+                            totalStack: gantt.getTotalSlack(task),
+                            freeSlack: gantt.getFreeSlack(task),
+                            constraintType: gantt.getConstraintType(task),
+                        }
+
+
+                        updatedTask.push(taskdetails);
+
+                        if (tt) {
+                            critical_task.push(tasks[i].id);
+                        }
+                    };
+
+
+                    workflag = 1;
                     $.ajax({
-                        url: '{{ route('projects.get_member') }}',
-                        type: 'GET',
-                        async: false,
+                        url: '{{ route('projects.criticaltask_update') }}',
+                        type: 'get',
                         data: {
-                            'project_id': "<?php echo $project->id; ?>"
+                            'updatedTask': updatedTask,
+                            'critical_task': critical_task
                         },
                         success: function(data) {
-                            set_data = data;
+
                         }
                     });
 
-                    return set_data;
                 }
+            }
 
 
-                // 	gantt.message("Loading...");
-                // });
+            return true;
+        });
+        gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
 
-                // gantt.attachEvent("onLoadEnd", function () {
-                // 	gantt.message({
-                // 		text: "Loaded " + gantt.getTaskCount() + " tasks, " + gantt.getLinkCount() + " links",
-                // 		expire: 8 * 1000
-                // 	});
-                // })s
-
-                gantt.i18n.setLocale({
-                    labels: {
-                        time_enable_button: 'Schedule',
-                        time_disable_button: 'Unschedule',
-                    }
-                });
+        });
 
 
-                gantt.config.open_tree_initially = true;
+        // holidays end
+        gantt.config.bar_height = 100;
+        gantt.init("gantt_here");
+        set_data = "";
+        gantt.form_blocks["my_editor"] = {
+            render: function(sns) {
+                get_data = get_editon_multiselect();
+                set_data = get_data['1'];
+                return set_data;
+            },
+            set_value: function(node, value, task) {
+                node.querySelector(".editor_description").value = value || "";
+            },
+            get_value: function(node, task) {
+                return node.querySelector(".editor_description").value;
+            },
+            focus: function(node) {
+                var a = node.querySelector(".editor_description");
+                a.select();
+                a.focus();
+            }
+        };
 
-                gantt.plugins({
-                    quick_info: false,
-                    tooltip: false,
-                    multiselect: true,
-                    undo: true,
-                    fullscreen: true,
-                    drag_timeline: true,
-                    critical_path: true,
-                    keyboard_navigation: true,
-                    auto_scheduling: true
-                });
-                gantt.ext.fullscreen.getFullscreenElement = function() {
-                    return document.getElementById("additional_elements");
+        gantt.form_blocks["multiselect"] = {
+            render: function(sns) {
+                var height = (sns.height || "23") + "px";
+                var html =
+                    "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect' style='height:" +
+                    height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
+                if (sns.options) {
+                    multi_data = get_editon_multiselect();
+                    $.each(multi_data['0'], function(multi_key, multi_value) {
+                        html += "<option value=" + multi_value.key + ">" + multi_value.label +
+                            "</option>";
+                    });
                 }
-                gantt.config.date_format = "%Y-%m-%d %H:%i";
-                gantt.config.auto_scheduling = true;
-                gantt.config.auto_scheduling_strict = true;
-                gantt.config.auto_scheduling_compatibility = true;
-                var dateToStr = gantt.date.date_to_str(gantt.config.task_date);
-                var today = new Date();
-                // gantt.addMarker({
-                // 	start_date: today,
-                // 	css: "today",
-                // 	text: "Today",
-                // 	title: "Today: " + dateToStr(today)
-                // });
+                html += "</select></div>";
+                return html;
+            },
+            set_value: function(node, value, ev, sns) {
 
-                // var start = new Date();
-                // gantt.addMarker({
-                // 	start_date: start,
-                // 	css: "status_line",
-                // 	text: "Start project",
-                // 	title: "Start project: " + dateToStr(start)
-                // });
-                gantt.config.scale_height = 50;
-                gantt.templates.task_class = gantt.templates.grid_row_class =
-                    gantt.templates.task_row_class = function(start, end, task) {
-                        if (gantt.isSelectedTask(task.id))
-                            return "gantt_selected";
-                    };
+                node.style.overflow = "visible";
+                node.parentNode.style.overflow = "visible";
+                node.style.display = "inline-block";
+                var select = $(node.firstChild);
 
-                var formatter = gantt.ext.formatters.durationFormatter({
-                    enter: "day",
-                    store: "day",
-                    format: "auto"
-                });
-                var linksFormatter = gantt.ext.formatters.linkFormatter({
-                    durationFormatter: formatter
-                });
-
-                var editors = {
-                    text: {
-                        type: "text",
-                        map_to: "text"
-                    },
-                    start_date: {
-                        type: "date",
-                        map_to: "start_date",
-                    },
-                    end_date: {
-                        type: "date",
-                        map_to: "end_date",
-                    },
-                    duration: {
-                        type: "duration",
-                        map_to: "duration",
-                        min: 0,
-                        max: 100,
-                        formatter: formatter
-                    },
-                    priority: {
-                        type: "select",
-                        map_to: "priority",
-                        options: gantt.serverList("priority")
-                    },
-                    predecessors: {
-                        type: "predecessor",
-                        map_to: "auto",
-                        formatter: linksFormatter
+                if (value) {
+                    if (value != '') {
+                        value = $.parseJSON(value);
                     }
-                };
-
-                gantt.config.reorder_grid_columns = true;
-                if (frezee_status_actual != 1) {
-                    gantt.config.columns = [{
-                            name: "wbs",
-                            label: "#",
-                            width: 60,
-                            align: "center",
-                            template: gantt.getWBSCode,
-                            tree: true,
-                            resize: true
-                        },
-                        {
-                            name: "text",
-                            label: "Task Name",
-                            width: 150,
-                            resize: true
-                        },
-                        {
-                            name: "start_date",
-                            label: "Start Date",
-                            width: 80,
-                            align: "center",
-                            resize: true
-                        },
-                        {
-                            name: "end_date",
-                            label: "End Date",
-                            width: 80,
-                            align: "center",
-                            resize: true
-                        },
-                        {
-                            name: "duration",
-                            label: "Duration",
-                            width: 80,
-                            align: "center",
-                            resize: true
-                        },
-                        {
-                            name: "predecessors",
-                            label: "Predecessors",
-                            width: 110,
-                            align: "left",
-                            editor: editors.predecessors,
-                            resize: true,
-                            template: function(task) {
-                                var links = task.$target;
-                                var labels = [];
-                                for (var i = 0; i < links.length; i++) {
-                                    var link = gantt.getLink(links[i]);
-                                    labels.push(linksFormatter.format(link));
-                                }
-                                return labels.join(", ")
-                            }
-                        },
-                        // totalSlackColumn,
-                        freeSlackColumn,
-                        {
-                            name: "add"
-                        }
-                    ];
-                    // scale length
-                    gantt.config.scale_height = 20 * 2;
-                    gantt.config.min_column_width = 50;
-                    gantt.config.scales = [{
-                            unit: "month",
-                            step: 1,
-                            date: "%M, %Y"
-                        },
-                        {
-                            unit: "day",
-                            step: 1,
-                            date: "%d %M"
-                        }
-                    ];
-
-                    gantt.config.layout = {
-                        css: "gantt_container",
-                        cols: [{
-                                width: 680,
-                                min_width: 300,
-                                rows: [{
-                                        view: "grid",
-                                        scrollX: "gridScroll",
-                                        scrollable: true,
-                                        scrollY: "scrollVer"
-                                    },
-                                    {
-                                        view: "scrollbar",
-                                        id: "gridScroll",
-                                        group: "horizontal"
-                                    }
-                                ]
-                            },
-                            {
-                                resizer: true,
-                                width: 1
-                            },
-                            {
-                                rows: [{
-                                        view: "timeline",
-                                        scrollX: "scrollHor",
-                                        scrollY: "scrollVer"
-                                    },
-                                    {
-                                        view: "scrollbar",
-                                        id: "scrollHor",
-                                        group: "horizontal"
-                                    }
-                                ]
-                            },
-                            {
-                                view: "scrollbar",
-                                id: "scrollVer"
-                            }
-                        ]
-                    };
-
+                    select.val([]);
+                    select.val(value);
                 } else {
-                    gantt.config.columns = [{
-                            name: "wbs",
-                            label: "#",
-                            width: 60,
-                            align: "center",
-                            template: gantt.getWBSCode,
-                            tree: true,
-                            resize: true
-                        },
-                        {
-                            name: "text",
-                            label: "Task Name",
-                            width: 150,
-                            resize: true
-                        },
-                        {
-                            name: "start_date",
-                            label: "Start Date",
-                            width: 80,
-                            align: "center",
-                            resize: true
-                        },
-                        {
-                            name: "end_date",
-                            label: "End Date",
-                            width: 80,
-                            align: "center",
-                            resize: true
-                        },
-                        {
-                            name: "duration",
-                            label: "Duration",
-                            width: 80,
-                            align: "center",
-                            resize: true
-                        },
-                        {
-                            name: "predecessors",
-                            label: "Predecessors",
-                            width: 110,
-                            align: "left",
-                            editor: editors.predecessors,
-                            resize: true,
-                            template: function(task) {
-                                var links = task.$target;
-                                var labels = [];
-                                for (var i = 0; i < links.length; i++) {
-                                    var link = gantt.getLink(links[i]);
-                                    labels.push(linksFormatter.format(link));
-                                }
-                                return labels.join(", ")
-                            }
-                        },
-                        // totalSlackColumn,
-                        freeSlackColumn,
-                    ];
-                    // scale length
-                    gantt.config.scale_height = 20 * 2;
-                    gantt.config.min_column_width = 50;
-                    gantt.config.scales = [{
-                            unit: "month",
-                            step: 1,
-                            date: "%M, %Y"
-                        },
-                        {
-                            unit: "day",
-                            step: 1,
-                            date: "%d %M"
-                        }
-                    ];
-
-                    gantt.config.layout = {
-                        css: "gantt_container",
-                        cols: [{
-                                width: 620,
-                                min_width: 300,
-                                rows: [{
-                                        view: "grid",
-                                        scrollX: "gridScroll",
-                                        scrollable: true,
-                                        scrollY: "scrollVer"
-                                    },
-                                    {
-                                        view: "scrollbar",
-                                        id: "gridScroll",
-                                        group: "horizontal"
-                                    }
-                                ]
-                            },
-                            {
-                                resizer: true,
-                                width: 1
-                            },
-                            {
-                                rows: [{
-                                        view: "timeline",
-                                        scrollX: "scrollHor",
-                                        scrollY: "scrollVer"
-                                    },
-                                    {
-                                        view: "scrollbar",
-                                        id: "scrollHor",
-                                        group: "horizontal"
-                                    }
-                                ]
-                            },
-                            {
-                                view: "scrollbar",
-                                id: "scrollVer"
-                            }
-                        ]
-                    };
+                    select.val([]);
                 }
 
-
-                gantt.attachEvent("onParse", function() {
-                    gantt.eachTask(function(task) {
-                        // fill 'task.user' field with random data
-                        task.user = Math.round(Math.random() * 3);
-                        //
-                        if (gantt.hasChild(task.id))
-                            task.type = gantt.config.types.project
-                    });
-                });
-
-
-                // scale length end
-                gantt.templates.task_class = function(start, end, task) {
-                    if (task.type == gantt.config.types.project)
-                        return "hide_project_progress_drag";
-                };
-
-                // ###############################################
-                var weekScaleTemplate = function(date) {
-                    var dateToStr = gantt.date.date_to_str("%d %M");
-                    var weekNum = gantt.date.date_to_str("(week %W)");
-                    var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
-                    return dateToStr(date) + " - " + dateToStr(endDate) + " " + weekNum(date);
-                };
-
-                gantt.templates.timeline_cell_class = function(task, date) {
-                    if (!gantt.isWorkTime(date))
-                        return "week_end";
-                    return "";
-                };
-                // progress name
-                gantt.templates.progress_text = function(start, end, task) {
-                    return "<span style='text-align:left;'>" + Math.round(task.progress) + "% </span>";
-                };
-
-                // progress end
-                var workflag=0;
-                gantt.attachEvent("onBeforeAutoSchedule", function() {
-                    var check_cri=<?php  echo  $critical_update ?>;
-                    if(check_cri==0){
-                        var tasks = gantt.getTaskByTime();
-                        const critical_task=new Array();
-                        const  updatedTask=new Array();
-                        if(workflag==0){
-                            for(var i=0;i < tasks.length; i++){
-
-                                const task = gantt.getTask(tasks[i].id);
-                                const tt = gantt.isCriticalTask(task);
-                                // const totalStack = gantt.getTotalSlack(task);
-                                // const freeSlack = gantt.getFreeSlack(task)
-                                // const constraintType = gantt.getConstraintType(task);
-                                const taskdetails = {...task, isCriticalTask: gantt.isCriticalTask(task),
-                                        totalStack: gantt.getTotalSlack(task),freeSlack: gantt.getFreeSlack(task),
-                                        constraintType:gantt.getConstraintType(task),
-                                 }
-
-                                 
-                                 updatedTask.push(taskdetails);
-
-                                if(tt){
-                                    critical_task.push(tasks[i].id);
-                                }
-                            };
-                         
-
-                            workflag=1;
-                            $.ajax({
-                                url: '{{ route('projects.criticaltask_update') }}',
-                                type: 'get',
-                                data: {
-                                    'updatedTask': updatedTask,
-                                    'critical_task':critical_task
-                                },
-                                success: function(data) {
-            
-                                }
-                            });
-
-                        }
-                    }
-                    
-                   
-                    return true;
-                });
-                gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
-                   
-                });
-
-
-                // holidays end
-                gantt.config.bar_height = 100;
-                gantt.init("gantt_here");
-                set_data = "";
-                gantt.form_blocks["my_editor"] = {
-                    render: function(sns) {
-                        get_data = get_editon_multiselect();
-                        set_data = get_data['1'];
-                        return set_data;
-                    },
-                    set_value: function(node, value, task) {
-                        node.querySelector(".editor_description").value = value || "";
-                    },
-                    get_value: function(node, task) {
-                        return node.querySelector(".editor_description").value;
-                    },
-                    focus: function(node) {
-                        var a = node.querySelector(".editor_description");
-                        a.select();
-                        a.focus();
-                    }
-                };
-
-                gantt.form_blocks["multiselect"] = {
-                    render: function(sns) {
-                        var height = (sns.height || "23") + "px";
-                        var html =
-                            "<div class='gantt_cal_ltext gantt_cal_chosen gantt_cal_multiselect' style='height:" +
-                            height + ";'><select data-placeholder='...' class='chosen-select' multiple>";
-                        if (sns.options) {
-                            multi_data = get_editon_multiselect();
-                            $.each(multi_data['0'], function(multi_key, multi_value) {
-                                html += "<option value=" + multi_value.key + ">" + multi_value.label +
-                                    "</option>";
-                            });
-                        }
-                        html += "</select></div>";
-                        return html;
-                    },
-                    set_value: function(node, value, ev, sns) {
-                      
-                        node.style.overflow = "visible";
-                        node.parentNode.style.overflow = "visible";
-                        node.style.display = "inline-block";
-                        var select = $(node.firstChild);
-
-                        if (value) {
-                            if (value != '') {
-                                value = $.parseJSON(value);
-                            }
-                            select.val([]);
-                            select.val(value);
-                        } else {
-                            select.val([]);
-                        }
-
-                        select.chosen();
-                        if (sns.onchange) {
-                            select.change(function() {
-                                sns.onchange.call(this);
-                            })
-                        }
-                        select.trigger('chosen:updated');
-                        select.trigger("change");
-                    },
-                    get_value: function(node, ev) {
-                        var value = $(node.firstChild).val();
-                        return value;
-                    },
-                    focus: function(node) {
-                        $(node.firstChild).focus();
-                    }
-                };
-
-                gantt.locale.labels.section_users = "Users";
-
-                function findUser(id) {
-                    var list = gantt.serverList("people");
-                    for (var i = 0; i < list.length; i++) {
-                        if (list[i].key == id) {
-                            return list[i];
-                        }
-                    }
-                    return null;
-                }
-
-                setTimeout(
-                    function() {
-                        gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-                        $('.loader_show').hide();
-                        $('#additional_elements').addClass("gantt-show");
-                    }, 3000);
-
-
-
-                gantt.config.lightbox.sections = [{
-                        name: "description",
-                        height: 400,
-                        map_to: "text",
-                        type: "my_editor",
-                        focus: true
-                    },
-                    {
-                        name: "users",
-                        height: 60,
-                        type: "multiselect",
-                        options: gantt.serverList("people"),
-                        map_to: "users"
-                    },
-                    {
-                        name: "time",
-                        height: 72,
-                        type: "duration",
-                        map_to: "auto"
-                    }
-                ];
-                gantt.config.lightbox.project_sections = [{
-                    name: "description",
-                    height: 200,
-                    map_to: "text",
-                    type: "my_editor",
-                    focus: true
-                }, ];
-
-
-                // holidays
-                gantt.config.work_time = true;
-                gantt.config.auto_types = true;
-                // gantt.config.details_on_create = false;
-                // gantt.config.scale_unit = "day";
-                // gantt.config.duration_unit = "day";
-                // gantt.config.row_height = 30;
-                // gantt.config.min_column_width = 40;
-
-                // weekdays appending
-                var weekend_list = $('#weekends').val();
-                var result = [0, 1, 2, 3, 4, 5, 6];
-                result.forEach(element => {
-                        if (weekend_list.includes(element)) {
-                            gantt.setWorkTime({
-                                day: element,
-                                hours: false
-                            });
-                        } else {
-                            gantt.setWorkTime({
-                                day: element,
-                                hours: ["8:00-17:00"]
-                            });
-                        }
-
-                        var dateToStr = gantt.date.date_to_str("%d %F");
-                        //  gantt.message("Following holidays are excluded from working time:");
-                        // for (var i = 0; i < holidays.length; i++) {
-                        //     setTimeout(
-                        //         (function (i) {
-                        //             return function () {
-                        //                 gantt.message(dateToStr(holidays[i]))
-                        //             }
-                        //         })(i)
-                        //         ,
-                        //         (i + 1) * 600
-                        //     );
-                        // }
+                select.chosen();
+                if (sns.onchange) {
+                    select.change(function() {
+                        sns.onchange.call(this);
                     })
-                    if (frezee_status_actual != 1) {
-                       // var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
-                        var dp = new gantt.dataProcessor("/erp/public/");
-                        var critical=0;
-                        dp.init(gantt);
-                        
-                      
-                        dp.attachEvent("onBeforeUpdate", function(id, state, data) {
-                            gantt.config.readonly = true;
-                            let tt=gantt.isCriticalTask(gantt.getTask(id));
-                            
-                            if(tt){
-                                critical=1;
-                            }else{
-                                critical=0;
-                            }
-                            data.iscritical=critical;
-                            return true;
-                        });
+                }
+                select.trigger('chosen:updated');
+                select.trigger("change");
+            },
+            get_value: function(node, ev) {
+                var value = $(node.firstChild).val();
+                return value;
+            },
+            focus: function(node) {
+                $(node.firstChild).focus();
+            }
+        };
 
-                        dp.setTransactionMode({
-                            mode: "REST",
-                            payload: {
-                                "_token": tempcsrf,
-                            }
-                        });
+        gantt.locale.labels.section_users = "Users";
 
-                        dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
-                            gantt.config.readonly = false;
-                            if (action == "inserted") {
-                                gantt.showLightbox(tid);
-                                //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-                            }
-                        });
-                    }
+        function findUser(id) {
+            var list = gantt.serverList("people");
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].key == id) {
+                    return list[i];
+                }
+            }
+            return null;
+        }
+
+        setTimeout(
+            function() {
+                gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+                $('.loader_show').hide();
+                $('#additional_elements').addClass("gantt-show");
+            }, 3000);
 
 
-                    gantt.templates.link_class = function(link) {
-                        var types = gantt.config.links;
-                        switch (link.type) {
-                            case types.finish_to_start:
-                                return "finish_to_start";
-                                break;
-                            case types.start_to_start:
-                                return "start_to_start";
-                                break;
-                            case types.finish_to_finish:
-                                return "finish_to_finish";
-                                break;
-                        }
-                    };
+
+        gantt.config.lightbox.sections = [{
+                name: "description",
+                height: 400,
+                map_to: "text",
+                type: "my_editor",
+                focus: true
+            },
+            {
+                name: "users",
+                height: 60,
+                type: "multiselect",
+                options: gantt.serverList("people"),
+                map_to: "users"
+            },
+            {
+                name: "time",
+                height: 72,
+                type: "duration",
+                map_to: "auto"
+            }
+        ];
+        gantt.config.lightbox.project_sections = [{
+            name: "description",
+            height: 200,
+            map_to: "text",
+            type: "my_editor",
+            focus: true
+        }, ];
+
+
+        // holidays
+        gantt.config.work_time = true;
+        gantt.config.auto_types = true;
+        // gantt.config.details_on_create = false;
+        // gantt.config.scale_unit = "day";
+        // gantt.config.duration_unit = "day";
+        // gantt.config.row_height = 30;
+        // gantt.config.min_column_width = 40;
+
+        // weekdays appending
+        var weekend_list = $('#weekends').val();
+        var result = [0, 1, 2, 3, 4, 5, 6];
+        result.forEach(element => {
+            if (weekend_list.includes(element)) {
+                gantt.setWorkTime({
+                    day: element,
+                    hours: false
                 });
+            } else {
+                gantt.setWorkTime({
+                    day: element,
+                    hours: ["8:00-17:00"]
+                });
+            }
+
+            var dateToStr = gantt.date.date_to_str("%d %F");
+            //  gantt.message("Following holidays are excluded from working time:");
+            // for (var i = 0; i < holidays.length; i++) {
+            //     setTimeout(
+            //         (function (i) {
+            //             return function () {
+            //                 gantt.message(dateToStr(holidays[i]))
+            //             }
+            //         })(i)
+            //         ,
+            //         (i + 1) * 600
+            //     );
+            // }
+        })
+        if (frezee_status_actual != 1) {
+            // var dp = new gantt.dataProcessor("http://demo.mustbuildapp.com/");
+            var dp = new gantt.dataProcessor("/erp/public/");
+            var critical = 0;
+            dp.init(gantt);
+
+
+            dp.attachEvent("onBeforeUpdate", function(id, state, data) {
+                gantt.config.readonly = true;
+                let tt = gantt.isCriticalTask(gantt.getTask(id));
+
+                if (tt) {
+                    critical = 1;
+                } else {
+                    critical = 0;
+                }
+                data.iscritical = critical;
+                return true;
+            });
+
+            dp.setTransactionMode({
+                mode: "REST",
+                payload: {
+                    "_token": tempcsrf,
+                }
+            });
+
+            dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
+                gantt.config.readonly = false;
+                if (action == "inserted") {
+                    gantt.showLightbox(tid);
+                    //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+                }
+            });
+        }
+
+
+        gantt.templates.link_class = function(link) {
+            var types = gantt.config.links;
+            switch (link.type) {
+                case types.finish_to_start:
+                    return "finish_to_start";
+                    break;
+                case types.start_to_start:
+                    return "start_to_start";
+                    break;
+                case types.finish_to_finish:
+                    return "finish_to_finish";
+                    break;
+            }
+        };
+    });
 </script>
 <style>
     .loader_show_hide {
         display: none;
     }
+
     .gantt-show {
         display: block !important;
     }
+
     .loader_show {
         height: 100%;
     }
