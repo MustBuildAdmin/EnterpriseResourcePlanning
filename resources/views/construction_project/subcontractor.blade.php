@@ -4,6 +4,7 @@
     background-color: #206bc4 !important;
 }
 </style>
+
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">

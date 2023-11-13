@@ -3421,7 +3421,6 @@ class ProjectController extends Controller
             if($request->filled('q')){
                 $project = Project::find($project_id);
 
-                $user_project = $project->users->pluck("id")->toArray();
                 if(str_contains($type,'subcontractor')){
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                     ->whereIn("type", ["sub_contractor"])

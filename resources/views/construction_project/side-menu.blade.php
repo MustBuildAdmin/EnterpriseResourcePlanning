@@ -304,7 +304,7 @@
                                     <a href="{{ route('project.teammembers', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.teammembers' ?
                                         'dropdown-item active' : 'dropdown-item' }}">
-                                        {{ __('Engineers') }} 
+                                        {{ __('Engineers') }}
                                     </a>
                                     <a href="{{ route('project.consultant', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.consultant' ?
