@@ -38,9 +38,7 @@
                     @else
                         <span class="badge bg-purple-lt">Invited</span>
                     @endif
-                    
                 </div>
-               
                 </div>
                 <div class="d-flex">
                 <a data-bs-toggle="tooltip" data-copy_email="{{ $user->projectUsers->email }}" 
