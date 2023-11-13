@@ -1,8 +1,11 @@
 @include('new_layouts.header')
+
 <style>
+
 .green {
     background-color: #206bc4 !important;
 }
+
 </style>
 
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
@@ -13,6 +16,7 @@
 <div class="page-wrapper dashboard">
 
 @include('construction_project.side-menu')
+
 <div class="container-fluid">
       <div class="card mt-5 p-4">
         <div class="card-header">
