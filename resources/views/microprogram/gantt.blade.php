@@ -323,8 +323,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             <a href="#" class="nav-link freeze_button" style='width: 100%;'
                                 data-bs-toggle="tooltip" title="{{ __('Click to save') }}"
                                 data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|'
-                                . __('This action can not be undone. Do you want to continue?') }}"
+                                data-confirm="{{ __('Are You Sure?') .
+                                '|' . __('This action can not be undone. Do you want to continue?') }}"
                                 data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -357,8 +357,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"id="task-title">{{ __('New Task') }}</h5>
-                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        name="close">
+                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close" name="close">
                     </button>
                 </div>
                 <div class="modal-body">
@@ -407,45 +407,45 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <input type='hidden' id='holidays' value='{{ $holidays }}'>
 <input type='hidden' id='frezee_status' value='{{ $freezeCheck->freeze_status }}'>
 <input type='hidden' id='critical_update' value='{{ $critical_update }}'>
-
-
+<input type='hidden' id='start_date_input'>
+<input type='hidden' id='end_date_input'>
 
 <script type="text/javascript">
     var tempcsrf = '{!! csrf_token() !!}';
 
     // check freeze status #############################
 
-    var frezee_status_actual = $('#frezee_status').val();
-    if (frezee_status_actual == '1') {
-        gantt.config.readonly = true;
-        $('.freeze_button').addClass('disabled');
-        $('.undo_action').addClass('disabled');
-        $('.redo_action').addClass('disabled');
-        $('.indent_action').addClass('disabled');
-        $('.outdent_action').addClass('disabled');
-    } else {
-        gantt.config.readonly = false;
-        $('.freeze_button').removeClass('disabled');
-        $('.undo_action').removeClass('disabled');
-        $('.redo_action').removeClass('disabled');
-        $('.indent_action').removeClass('disabled');
-        $('.outdent_action').removeClass('disabled');
-    }
+    // var frezee_status_actual = $('#frezee_status').val();
+    // if (frezee_status_actual == '1') {
+    //     gantt.config.readonly = true;
+    //     $('.freeze_button').addClass('disabled');
+    //     $('.undo_action').addClass('disabled');
+    //     $('.redo_action').addClass('disabled');
+    //     $('.indent_action').addClass('disabled');
+    //     $('.outdent_action').addClass('disabled');
+    // } else {
+    //     gantt.config.readonly = false;
+    //     $('.freeze_button').removeClass('disabled');
+    //     $('.undo_action').removeClass('disabled');
+    //     $('.redo_action').removeClass('disabled');
+    //     $('.indent_action').removeClass('disabled');
+    //     $('.outdent_action').removeClass('disabled');
+    // }
 
     // check the data is empty #############################
-    $.post("{{ route('projects.get_micro_gantt_task_count') }}", {
-            _token: tempcsrf,
-            project_id: {{ $project->id }}
-        },
-        function(resp, textStatus, jqXHR) {
-            if (resp == 0) {
-                $('.freeze_button').addClass('disabled');
-                $('.undo_action').addClass('disabled');
-                $('.redo_action').addClass('disabled');
-                $('.indent_action').addClass('disabled');
-                $('.outdent_action').addClass('disabled');
-            }
-        });
+    // $.post("{{ route('projects.get_micro_gantt_task_count') }}", {
+    //         _token: tempcsrf,
+    //         project_id: {{ $project->id }}
+    //     },
+    //     function(resp, textStatus, jqXHR) {
+    //         if (resp == 0) {
+    //             $('.freeze_button').addClass('disabled');
+    //             $('.undo_action').addClass('disabled');
+    //             $('.redo_action').addClass('disabled');
+    //             $('.indent_action').addClass('disabled');
+    //             $('.outdent_action').addClass('disabled');
+    //         }
+    //     });
     // end ###############################################
 
 
@@ -560,6 +560,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     gantt.config.branch_loading = true;
     gantt.config.show_empty_state = true;
     gantt.config.work_time = true;
+    gantt.config.auto_types = true;
     gantt.config.details_on_create = false;
     gantt.config.keep_grid_width = false;
     gantt.config.grid_resize = true;
@@ -610,7 +611,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     updatedTask.push(taskdetails);
 
                 };
-                console.log(updatedTask);
+              
 
                 workflag = 1;
                 $.ajax({
@@ -779,8 +780,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var today = new Date();
         var additional_width = (gantt.$container.offsetWidth - gantt.config.grid_width) / 2
         var position = gantt.posFromDate(today) - additional_width;
-        console.log(gantt.posFromDate(today))
-        console.log(position)
         gantt.scrollTo(position)
     }
 
@@ -940,7 +939,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     var labels = [];
                     for (var i = 0; i < links.length; i++) {
                         var link = gantt.getLink(links[i]);
-                        console.log(link)
                         labels.push(linksFormatter.format(link));
                     }
                     return labels.join(", ")
@@ -1061,19 +1059,19 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 
     gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
-        console.log(gantt.getTask(id))
+       
     });
 
     gantt.attachEvent("onAfterLinkAdd", function(id, item) {
-        console.log(id, item)
+       
     });
 
     gantt.attachEvent("onAfterLinkUpdate", function(id, item) {
-        console.log(id, item)
+       
     });
 
     gantt.attachEvent("onAfterLinkDelete", function(id, item) {
-        console.log(id, item)
+        
     });
 
 
@@ -1187,6 +1185,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     };
 </script>
 <script>
+    function call_num() {
+        validatedate();
+    }
+
     gantt.showLightbox = function(id) {
 
         document.body.classList.add("modal-open");
@@ -1198,8 +1200,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var input = form.querySelector("[name='description']");
         input.focus();
         input.value = task.text;
-        const start_date = form.querySelector("[name='start_date']");
-        const end_date = form.querySelector("[name='end_date']");
+        var start_date = form.querySelector("[name='start_date']");
+        var end_date = form.querySelector("[name='end_date']");
 
         var startdate = task.start_date;
         var sdate = new Date(startdate),
@@ -1217,7 +1219,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             newsecond = year + '-' + mon + '-' + days;
         end_date.value = newsecond;
 
-
+        validatedate(id);
+        setTimeout(function() {
+            dateset();
+        }, 800);
 
         form.style.display = "block";
         form.querySelector("#save").onclick = save;
@@ -1281,69 +1286,89 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
     // gantt create edit functionality
 
-    if (frezee_status_actual != 1) {
-        var dp = new gantt.dataProcessor("{{ Config::get('constants.micro_url') }}");
-        var critical = 0;
-        dp.init(gantt);
+    // if (frezee_status_actual != 1) {
+    var dp = new gantt.dataProcessor("{{ Config::get('constants.micro_url') }}");
+    var critical = 0;
+    dp.init(gantt);
 
 
-        dp.attachEvent("onBeforeDataSending", function(id, state, data) {
+    dp.attachEvent("onBeforeDataSending", function(id, state, data) {
+        return true;
+    });
+    dp.attachEvent("onBeforeUpdate", function(id, state, data) {
+
+        gantt.config.readonly = true;
+        if (gantt.isTaskExists(id)) {
+
+            let task = gantt.getTask(id);
+            if (typeof task != 'undefined') {
+                let totalStack = gantt.getTotalSlack(task);
+                let freeSlack = gantt.getFreeSlack(task);
+
+                if (typeof totalStack != 'undefined') {
+                    data.totalStack = totalStack;
+                }
 
 
-
-            return true;
-        });
-        dp.attachEvent("onBeforeUpdate", function(id, state, data) {
-
-            gantt.config.readonly = true;
-            if (gantt.isTaskExists(id)) {
-
-                let task = gantt.getTask(id);
-                if (typeof task != 'undefined') {
-                    let totalStack = gantt.getTotalSlack(task);
-                    let freeSlack = gantt.getFreeSlack(task);
-
-                    if (typeof totalStack != 'undefined') {
-                        data.totalStack = totalStack;
-                    }
-
-
-                    if (typeof freeSlack != 'undefined') {
-                        data.freeSlack = freeSlack;
-                    }
+                if (typeof freeSlack != 'undefined') {
+                    data.freeSlack = freeSlack;
                 }
             }
+        }
 
-            return true;
-        });
+        return true;
+    });
 
-        dp.setTransactionMode({
-            mode: "REST",
-            payload: {
-                "_token": tempcsrf,
-            }
-        });
+    dp.setTransactionMode({
+        mode: "REST",
+        payload: {
+            "_token": tempcsrf,
+        }
+    });
 
-        dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
+    dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
 
-            gantt.config.readonly = false;
-            if (action == "inserted") {
+        gantt.config.readonly = false;
+        if (action == "inserted") {
 
-                gantt.showLightbox(tid);
-                //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
-            }
-        });
-    }
+            gantt.showLightbox(tid);
+            //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+        }
+    });
+    // }
     // gantt crud end
 </script>
 
 
 <script>
+    //validates= start date and end date
+    function validatedate(id) {
+        $.ajax({
+            type: 'GET',
+            url: "{{ route('get_validated_date') }}",
+            data: {
+                _token: tempcsrf,
+                id: id,
+            },
+            success: function(data) {
+
+                $('input#start-date').val(data.start_date);
+                $('input#end-date').val(data.end_date);
+                $('input#start_date_input').val(data.start_date);
+                $('input#end_date_input').val(data.end_date);
+            }
+        });
+    }
     // @formatter:off
-    document.addEventListener("DOMContentLoaded", function() {
+
+    function dateset() {
+        var start_date_input = $('input#start_date_input').val();
+        var end_date_input = $('input#end_date_input').val();
         window.Litepicker && (new Litepicker({
             element: document.getElementById('start-date'),
             elementEnd: document.getElementById('end-date'),
+            minDate: start_date_input,
+            maxDate: end_date_input,
             singleMode: false,
             allowRepick: true,
             buttonText: {
@@ -1364,6 +1389,11 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
       </svg>`,
             },
         }));
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+
     });
     // @formatter:on
 </script>

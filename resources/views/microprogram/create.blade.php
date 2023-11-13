@@ -6,12 +6,12 @@
     'enctype' => 'multipart/form-data',
 ]) }}
 <div class="modal-body">
-    <div class="text-secondary mb-3">Required fields are marked with an asterisk *</div>
+    <div class="text-secondary mb-3">{{__('Required fields are marked with an asterisk *')}}</div>
     <div class="mb-3">
-        <label class="form-label required">Schedule Name</label>
+        <label class="form-label required">{{__('Schedule Name')}}</label>
         <input type="hidden" id="setScheduleDate" class="setScheduleDate" value="{{$all_dates}}">
         <input type="text" class="form-control" name="schedule_name" required
-            placeholder="Enter your Schedule Name">
+            placeholder="{{__('Enter your Schedule Name')}}">
     </div>
     {{-- <div class="mb-3">
         <label class="form-label required">Schedule Duration</label>
@@ -20,7 +20,7 @@
             placeholder="Enter your Schedule Duration">
     </div> --}}
     <div class="mb-3">
-        <label class="form-label required"> Schedule Start Date</label>
+        <label class="form-label required">{{__('Schedule Start Date')}}</label>
         <div class="input-icon">
             <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
@@ -35,11 +35,12 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_start_date" class="form-control" placeholder="Select a End date" id="schedule_start_date" />
+            <input name="schedule_start_date" class="form-control"
+             placeholder="{{__('Select a start date')}}" id="schedule_start_date" />
         </div>
     </div>
     <div class="mb-3">
-        <label class="form-label required"> Schedule End Date</label>
+        <label class="form-label required">{{__('Schedule End Date')}}</label>
         <div class="input-icon">
             <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
@@ -54,13 +55,14 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_end_date" class="form-control" placeholder="Select a End date" id="schedule_end_date" />
+            <input name="schedule_end_date" class="form-control"
+            placeholder="{{__('Select a End date')}}" id="schedule_end_date" />
         </div>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Schedule Goals<span class="form-label-description">56/100</span></label>
-        <textarea class="form-control" name="schedule_goals" rows="6" placeholder="Content.."></textarea>
+        <label class="form-label">{{ __('Schedule Goals') }}<span class="form-label-description">56/100</span></label>
+        <textarea class="form-control" name="schedule_goals" rows="6" placeholder="{{ __('Content..') }}"></textarea>
     </div>
 </div>
 <div class="modal-footer">

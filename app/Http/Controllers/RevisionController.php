@@ -118,7 +118,7 @@ class RevisionController extends Controller
         }
     }
 
-    public function instance_project($instance_id, $project_id)
+    public function instance_project($instance_id, $project_id,$name)
     {
 
         $getInstance = Instance::where('project_id', $project_id)->where(['id' => $instance_id])->first();
@@ -127,10 +127,12 @@ class RevisionController extends Controller
         Session::forget('project_instance');
         Session::forget('latest_project_instance');
         Session::forget('current_revision_freeze');
+        Session::forget('current_revision_name');
       
         ////
             Session::put('project_id',$project_id);
             Session::put('project_instance',$instanceId);
+            Session::put('current_revision_name',$name);
             
             $checkInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
             Session::put('latest_project_instance',$checkInstanceFreeze->instance);

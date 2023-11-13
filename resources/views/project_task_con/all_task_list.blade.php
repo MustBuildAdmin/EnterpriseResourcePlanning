@@ -21,16 +21,16 @@
 aria-describedby="Sub Task">
     <thead>
     <tr>
-        <th scope="col">{{__('TaskId')}}</th>
-        <th scope="col">{{__('Tasks')}}</th>
-        <th scope="col">{{__('Status')}}</th>
-        <th scope="col">{{__('Is critical Task')}}</th>
-        <th scope="col">{{__('Float')}}</th>
-        <th scope="col">{{__('Actual Progress')}}</th>
-        <th scope="col">{{__('Planned Progress')}}</th>
-        <th scope="col">{{__('Planned Start Date')}}</th>
-        <th scope="col">{{__('Planned End Date')}}</th>
-        <th scope="col">{{__('Assigned To')}}</th>
+        <th scope="col" style="color: white;">{{__('TaskId')}}</th>
+        <th scope="col" style="color: white;">{{__('Tasks')}}</th>
+        <th scope="col" style="color: white;">{{__('Status')}}</th>
+        <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
+        <th scope="col" style="color: white;">{{__('Float')}}</th>
+        <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
+        <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
+        <th scope="col" style="color: white;">{{__('Planned Start Date')}}</th>
+        <th scope="col" style="color: white;">{{__('Planned End Date')}}</th>
+        <th scope="col" style="color: white;">{{__('Assigned To')}}</th>
     </tr>
     </thead>
     <tbody class="list">
@@ -257,7 +257,21 @@ aria-describedby="Sub Task">
     function datatable2(){
         new DataTable('#task-table', {
             pagingType: 'full_numbers',
-            aaSorting: []
+            aaSorting: [],
+            "language": {
+                "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+                "sZeroRecords": "{{ __('No data available in table') }}",
+                "sEmptyTable": "{{ __('No data available in table') }}",
+                "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+                "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+                "sSearch": "{{ __('Search') }}:",
+                "oPaginate": {
+                    "sFirst": "{{ __('First') }}",
+                    "sLast": "{{ __('Last') }}",
+                    "sNext": "{{ __('Next') }}",
+                    "sPrevious": "{{ __('Previous') }}"
+                },
+            }
         });
     }
 </script>

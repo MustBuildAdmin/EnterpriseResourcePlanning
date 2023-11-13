@@ -5,7 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-
+use DB;
 class Project extends Model
 {
     protected $fillable = [
@@ -417,5 +417,23 @@ class Project extends Model
             ];
 
         }
+    }
+
+    public static function project_member($projectid)
+    {
+        return ProjectUser::whereNot('user_id',\Auth::user()->creatorId())
+        ->where('project_id',$projectid)
+        ->get();
+    }
+
+    public static function actual_progress($projectid){
+        return Con_task::where('project_id',$projectid)
+        ->orderBy('main_id', 'asc')
+        ->pluck ('progress')
+        ->first();
+    }
+
+    public static function get_user_name($userid){
+        return User::where('id',$userid)->first();
     }
 }

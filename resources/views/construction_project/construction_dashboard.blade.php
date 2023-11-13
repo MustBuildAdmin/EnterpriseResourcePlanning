@@ -45,8 +45,8 @@ if($delay>100){
                 @endphp
                 <span class="avatar avatar-xl mb-4 rounded">{{ $avatar }}</span>
                 <h3 class="mb-0">{{$project->project_name}}</h3>
-                <p class="text-secondary"><b>Start from:</b>
-                {{ Utility::getDateFormated($project->start_date) }} - <b>Due to:</b>
+                <p class="text-secondary"><b>{{ __('Start from')}}:</b>
+                {{ Utility::getDateFormated($project->start_date) }} - <b>{{ __('Due to')}}:</b>
                  {{ Utility::getDateFormated($project->end_date) }}</p>
                 <p class="mb-3">
                 @if($project->status == 'in_progress')
@@ -454,7 +454,7 @@ if($delay>100){
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title">Task summary</h3>
+                <h3 class="card-title">{{ __('Task summary')}}</h3>
                 <div id="chart-mentions" class="chart-lg"></div>
               </div>
             </div>
@@ -467,6 +467,57 @@ if($delay>100){
   </div>
   <script>
     // @formatter:off
+    all_completed  = "{{$all_completed}}";
+    all_upcoming   = "{{$all_upcoming}}";
+    all_inprogress = "{{$all_inprogress}}";
+    all_pending    = "{{$all_pending}}";
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
+            chart: {
+                type: "donut",
+                fontFamily: 'inherit',
+                height: 240,
+                sparkline: {
+                    enabled: true
+                },
+                animations: {
+                    enabled: false
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+            series: [all_pending, all_completed, all_inprogress, all_upcoming],
+            labels: ["Pending", "Completed", "In-Progress", "UpComming"],
+            tooltip: {
+                theme: 'dark'
+            },
+            grid: {
+                strokeDashArray: 4,
+            },
+            colors: [tabler.getColor("danger"), tabler.getColor("green", 0.8),
+            tabler.getColor("primary", 0.6), tabler.getColor("orange -300")],
+            legend: {
+                show: true,
+                position: 'bottom',
+                offsetY: 12,
+                markers: {
+                    width: 10,
+                    height: 10,
+                    radius: 100,
+                },
+                itemMargin: {
+                    horizontal: 8,
+                    vertical: 8
+                },
+            },
+            tooltip: {
+                fillSeriesColor: false
+            },
+        })).render();
+    });
+
     const data=<?php echo json_encode($alldates)?>;
     const completed=<?php echo json_encode($completed)?>;
     const pending=<?php echo json_encode($pending)?>;
