@@ -55,7 +55,6 @@
                     </svg>
                     {{__('Email')}}
                 </a>
-                
                 <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->projectUsers->phone }}" title="{{ $user->projectUsers->phone }}"
                     class="card-btn" onclick="copyToClipboardphone(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
@@ -71,7 +70,6 @@
             </div>
         </div>
     @endif
-
 @empty
 @endforelse
 @if($key==0)
@@ -134,4 +132,3 @@
     </div>
     @endif
 @endif
-
