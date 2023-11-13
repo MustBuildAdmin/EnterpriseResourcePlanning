@@ -36,9 +36,7 @@ class TaskMicroController extends Controller
         $rowid = $maxid + 1;
         $task->project_id = Session::get('project_id');
         $task->instance_id = Session::get('project_instance');
-        // $task->start_date = date('Y-m-d', strtotime($request->start_date));
         $task->start_date = date('Y-m-d');
-        // $task->end_date = date('Y-m-d', strtotime($request->end_date));
         $task->end_date = date("Y-m-d", strtotime("+ 1 day"));
         $task->duration = $request->duration;
         $task->progress = $request->has('progress') ? $request->progress : 0;
@@ -145,24 +143,22 @@ class TaskMicroController extends Controller
                 ->first();
 
             if($task->parent == 0){
-                $setStartDate = $task->start_date;
-                $setEndDate   = $task->end_date;
+                $setstartdate = $task->start_date;
+                $setenddate   = $task->end_date;
             }
             else{
                 $parentId = $task->task_id;
 
-                $ParentTask = MicroTask::where('task_id',$parentId)
+                $parenttask = MicroTask::where('task_id',$parentId)
                     ->where(['project_id' => Session::get('project_id'),
                     'instance_id' => Session::get('project_instance')])
                     ->first();
 
-                $setStartDate = $ParentTask->start_date;
-                $setEndDate   = $ParentTask->end_date;
+                $setstartdate = $parenttask->start_date;
+                $setenddate   = $parenttask->end_date;
             }
 
-            // if($request->start_date > $setStartDate || $request->end_date < $setEndDate){
-            //     return response()->json(['success'=>false,'action' => 'Date restriction']);
-            // }
+          
        
             if (isset($request->users)) {
                 if (gettype($request->users) == 'array') {

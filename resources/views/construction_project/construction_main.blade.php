@@ -115,7 +115,7 @@ a.text-dark {
                    $project_image=$project->project_image;
                    ?>
                    @if($project_image!=0 && $project_image!='')
-                        @php 
+                        @php
                         $image=\App\Models\Utility::get_file($project->project_image);
                         @endphp
                        <img id="image"  src="{{$image}}"
