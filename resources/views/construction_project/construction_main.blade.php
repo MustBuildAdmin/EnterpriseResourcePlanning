@@ -1,5 +1,13 @@
 
 @include('new_layouts.header')
+<style>
+a.text-dark {
+   cursor: pointer !important;
+}
+</style>
+@php
+   $profile=\App\Models\Utility::get_file('uploads/avatar/');
+@endphp
 <div class="container-fluid">
    <div class="card mt-5 p-4">
       <div class="card-header">
@@ -107,7 +115,7 @@
                    $project_image=$project->project_image;
                    ?>
                    @if($project_image!=0 && $project_image!='')
-                        @php 
+                        @php
                         $image=\App\Models\Utility::get_file($project->project_image);
                         @endphp
                        <img id="image"  src="{{$image}}"
@@ -127,12 +135,14 @@
                    <a class="text-dark text-capitalize"  data-size="lg"
                    data-url="{{ route('projects.check_instance',$project->id) }}"
                    data-title="Choose Your Revision" data-ajax-popup="true"
-                   data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                   data-bs-toggle="tooltip">{{ $project->project_name }}{{$project->project_id}}
+                  </a>
                @else
                    <a class="text-dark text-capitalize"  data-size="lg"
                    href="{{ route('projects.instance_project',
                            [$project_instances[0]['id'],$project->id,'Base']) }}"
-                   data-bs-toggle="tooltip">{{ $project->project_name }}</a>
+                   data-bs-toggle="tooltip">{{ $project->project_name }}{{$project->project_id}}
+                  </a>
                @endif
                   </h3>
                   <p class="text-secondary mb-0">Start Date: {{ Utility::getDateFormated($project->start_date) }}</p>
@@ -152,22 +162,29 @@
                   </p>
                   <div>
                      <div class="avatar-list avatar-list-stacked">
-                       @if (isset($project->users) && !empty($project->users)
-                       && count($project->users) > 0)
-                          @foreach ($project->users as $key => $user)
-                          <?php  $short=substr($user->name, 0, 1);?>
+                        @php
+                           $projectmembers=\App\Models\Project::project_member($project->id);
+                        @endphp
+                       @if (isset($projectmembers) && !empty($projectmembers)
+                       && count($projectmembers) > 0)
+                          @foreach ($projectmembers as $key => $user)
+                          @php
+                          $name_r=\App\Models\Project::get_user_name($user->user_id);
+                          $short=substr($name_r->name, 0, 1);
+                          @endphp
                               @if ($key < 3)
-                                  @if ($user->avatar)
+                                  @if ($name_r->avatar)
+ 
                                       <a href="#" class="avatar avatar-sm rounded">
-                                          <img  src="{{ asset('/storage/uploads/avatar/'
-                                               . $user->avatar) }}"
+                                          <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$name_r->avatar :
+                                                asset(Storage::url("uploads/avatar/avatar.png"))}}"
                                               alt="{{strtoupper($short)}}" data-bs-toggle="tooltip"
-                                              title="{{ $user->name }}" class="avatar avatar-sm rounded">
+                                              title="{{ $name_r->name }}" class="avatar avatar-sm rounded">
                                       </a>
                                   @else
                                       {{-- <a href="#" class="avatar rounded-circle avatar-sm"> --}}
                                          <span class="avatar avatar-sm rounded" data-bs-toggle="tooltip"
-                                          title="{{ $user->name }}">{{strtoupper($short)}}</span>
+                                          title="{{ $name_r->name }}">{{strtoupper($short)}}</span>
                                       {{-- </a> --}}
                                   @endif
                               @else
@@ -179,10 +196,7 @@
                   </div>
                </div>
                @php
-               $progress=\App\Models\Con_task::where('project_id',$project->id)
-               ->orderBy('main_id', 'asc')
-               ->pluck ('progress')
-               ->first();
+                  $progress=\App\Models\Project::actual_progress($project->id);
                @endphp
                <div class="progress card-progress">
                   <div class="progress-bar" style="width: <?php echo $progress; ?>%" role="progressbar"
