@@ -135,13 +135,13 @@ a.text-dark {
                    <a class="text-dark"  data-size="lg"
                    data-url="{{ route('projects.check_instance',$project->id) }}"
                    data-title="Choose Your Revision" data-ajax-popup="true"
-                   data-bs-toggle="tooltip">{{ $project->project_name }}
+                   data-bs-toggle="tooltip">{{ $project->project_name }}{{$project->project_id}}m
                   </a>
                @else
                    <a class="text-dark"  id="pointer" data-size="lg"
                    href="{{ route('projects.instance_project',
                            [$project_instances[0]['id'],$project->id,'Base']) }}"
-                   data-bs-toggle="tooltip">{{ $project->project_name }}
+                   data-bs-toggle="tooltip">{{ $project->project_name }}{{$project->project_id}}n
                   </a>
                @endif
                   </h3>
@@ -162,25 +162,29 @@ a.text-dark {
                   </p>
                   <div>
                      <div class="avatar-list avatar-list-stacked">
-                       @if (isset($project->users) && !empty($project->users)
-                       && count($project->users) > 0)
-                          @foreach ($project->users as $key => $user)
+                        @php
+                           $projectmembers=\App\Models\Project::project_member($project->id);
+                        @endphp
+                       @if (isset($projectmembers) && !empty($projectmembers)
+                       && count($projectmembers) > 0)
+                          @foreach ($projectmembers as $key => $user)
                           @php
-                          $short=substr($user->name, 0, 1);
+                          $name_r=\App\Models\Project::get_user_name($user->user_id);
+                          $short=substr($name_r->name, 0, 1);
                           @endphp
                               @if ($key < 3)
-                                  @if ($user->avatar)
+                                  @if ($name_r->avatar)
  
                                       <a href="#" class="avatar avatar-sm rounded">
-                                          <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$user->avatar :
+                                          <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$name_r->avatar :
                                                 asset(Storage::url("uploads/avatar/avatar.png"))}}"
                                               alt="{{strtoupper($short)}}" data-bs-toggle="tooltip"
-                                              title="{{ $user->name }}" class="avatar avatar-sm rounded">
+                                              title="{{ $name_r->name }}" class="avatar avatar-sm rounded">
                                       </a>
                                   @else
                                       {{-- <a href="#" class="avatar rounded-circle avatar-sm"> --}}
                                          <span class="avatar avatar-sm rounded" data-bs-toggle="tooltip"
-                                          title="{{ $user->name }}">{{strtoupper($short)}}</span>
+                                          title="{{ $name_r->name }}">{{strtoupper($short)}}</span>
                                       {{-- </a> --}}
                                   @endif
                               @else
@@ -192,10 +196,7 @@ a.text-dark {
                   </div>
                </div>
                @php
-               $progress=\App\Models\Con_task::where('project_id',$project->id)
-               ->orderBy('main_id', 'asc')
-               ->pluck ('progress')
-               ->first();
+                  $progress=\App\Models\Project::actual_progress($project->id);
                @endphp
                <div class="progress card-progress">
                   <div class="progress-bar" style="width: <?php echo $progress; ?>%" role="progressbar"
