@@ -41,7 +41,7 @@
                 </div>
                 </div>
                 <div class="d-flex">
-                <a data-bs-toggle="tooltip" data-copy_email="{{ $user->projectUsers->email }}" 
+                <a data-bs-toggle="tooltip" data-copy_email="{{ $user->projectUsers->email }}"
                 title="{{ $user->projectUsers->email }}"
                     href="#" class="card-btn" onclick="copyToClipboard(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
