@@ -161,7 +161,8 @@ class Project extends Model
                             $timesheetArray[$k]['taskArray'][$i]['task_id'] = $task->id;
                             $timesheetArray[$k]['taskArray'][$i]['task_name'] = $task->name;
                             $new_projects_timesheet = clone $projects_timesheet;
-                            $users = $new_projects_timesheet->where('task_id', $task->id)->groupBy('created_by')->pluck('created_by')->toArray();
+                            $users = $new_projects_timesheet->where('task_id', $task->id)->groupBy('created_by')
+                            ->pluck('created_by')->toArray();
                             foreach ($users as $count => $user_id) {
                                 $times = [];
                                 for ($j = 0; $j < 7; $j++) {
@@ -173,24 +174,33 @@ class Project extends Model
                                     );
                                     $key = array_keys($filtered_array);
                                     $user = User::find($user_id);
-                                    $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['user_id'] = $user != null ? $user->id : '';
-                                    $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['user_name'] = $user != null ? $user->name : '';
-                                    $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['date'] = $date;
+                                    $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['user_id'] =
+                                     $user != null ? $user->id : '';
+                                    $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['user_name'] =
+                                     $user != null ? $user->name : '';
+                                    $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['date']
+                                     = $date;
                                     if (! empty($key) && count($key) > 0) {
                                         $time = Carbon::parse($tasktimesheet[$key[0]]['time'])->format('H:i');
                                         $times[] = $time;
-                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['time'] = $time;
-                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['type'] = 'edit';
-                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['url'] = route(
+                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['time']
+                                         = $time;
+                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['type']
+                                         = 'edit';
+                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['url']
+                                         = route(
                                             'timesheet.edit', [
                                                 $project_id,
                                                 $tasktimesheet[$key[0]]['id'],
                                             ]
                                         );
                                     } else {
-                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['time'] = '00:00';
-                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['type'] = 'create';
-                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['url'] = route('timesheet.create', $project_id);
+                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['time']
+                                         = '00:00';
+                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['type']
+                                         = 'create';
+                                        $timesheetArray[$k]['taskArray'][$i]['dateArray'][$count]['week'][$j]['url']
+                                         = route('timesheet.create', $project_id);
                                     }
                                 }
                                 $calculatedtasktime = Utility::calculateTimesheetHours($times);
