@@ -1235,7 +1235,7 @@ class ProjectController extends Controller
                             ->where('type','project')
                             ->where('micro_flag',1)->get()->count();
 
-                        $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id',)
+                        $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id')
                             ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                             ->whereNotNull('pros.instance_id')
                             ->where('micro_tasks.micro_flag',1)
