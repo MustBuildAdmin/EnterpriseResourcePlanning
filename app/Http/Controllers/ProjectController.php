@@ -1206,11 +1206,20 @@ class ProjectController extends Controller
                 $microProgram  = null;
                 $taskDates = [];
                 $microallDate = [];
+                $microProgramName = [];
+                $micro_current_Planed_percentage = 0;
+                $micro_actual_percentage = "0";
+                $micro_no_working_days   = $project->estimated_days;
+                $micro_date2 = date_create($project->end_date);
+                $micro_planned_set = [];
+                $micro_actual_percentage_set = [];
+                $micro_actual_percentage = 0;
 
                 $checkProject = Project::where('id',$project->id)->where('micro_program',1)->first();
                 if($checkProject != null){
                     $microProgram = DB::table('microprogram_schedule')
                         ->where('project_id',$project->id)
+                        ->where("instance_id", Session::get("project_instance"))
                         ->where('active_status',1)
                         ->first();
 
@@ -1226,7 +1235,7 @@ class ProjectController extends Controller
                             ->where('type','project')
                             ->where('micro_flag',1)->get()->count();
 
-                        $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id',)
+                        $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id')
                             ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                             ->whereNotNull('pros.instance_id')
                             ->where('micro_tasks.micro_flag',1)
@@ -1308,6 +1317,70 @@ class ProjectController extends Controller
                             $microWeekEndCount++;
                         }
                     }
+
+                    $microProgramName = DB::table('microprogram_schedule')
+                        ->where('project_id',$project->id)
+                        ->where("instance_id", Session::get("project_instance"))
+                        ->orderBy('id','DESC')
+                        ->pluck('schedule_name');
+
+                    $microProgramLoop = DB::table('microprogram_schedule')
+                        ->where('project_id',$project->id)
+                        ->where("instance_id", Session::get("project_instance"))
+                        ->orderBy('id','DESC')
+                        ->get();
+
+                    foreach($microProgramLoop as $micro_loop){
+                        $micro_no_working_days = $micro_loop->schedule_duration; // include the last day
+                        $micro_date2           = date_create($micro_loop->schedule_end_date);
+                        $micro_remaining_working_days = Utility::remaining_duration_calculator(
+                            $micro_date2,
+                            $project->id
+                        );
+
+                        $micro_remaining_working_days = $micro_remaining_working_days - 1;
+                        $micro_completed_days         = $micro_no_working_days - $micro_remaining_working_days;
+
+                        if ($micro_no_working_days == 1) {
+                            $micro_current_Planed_percentage = 100;
+                        } else {
+                            // percentage calculator
+                            if ($micro_no_working_days > 0) {
+                                $micro_perday = 100 / $micro_no_working_days;
+                            } else {
+                                $micro_perday = 0;
+                            }
+    
+                            $micro_current_Planed_percentage = round(
+                                $micro_completed_days * $micro_perday
+                            );
+                        }
+
+                        if ($micro_current_Planed_percentage > 100) {
+                            $micro_current_Planed_percentage = 100;
+                        }
+                        if ($micro_current_Planed_percentage < 0) {
+                            $micro_current_Planed_percentage = 0;
+                        }
+
+                        $micro_planned_set[] = $micro_current_Planed_percentage;
+
+                        $microProgramProgressSum = MicroTask::where('project_id',$project->id)
+                            ->where("instance_id", Session::get("project_instance"))
+                            ->where('schedule_id',$micro_loop->id)
+                            ->where('type','project')
+                            ->sum('progress');
+
+                        if($microProgram != null){
+                            $micro_duration = $microProgram->schedule_duration;
+                            $micro_actual_percentage = round($microProgramProgressSum / $micro_duration);
+                        }
+                        else{
+                            $micro_actual_percentage = 0;
+                        }
+
+                        $micro_actual_percentage_set[] = $micro_actual_percentage;
+                    } 
                 }
 
                 $all_pending = Con_task::where("project_id", $project->id)
@@ -1369,6 +1442,9 @@ class ProjectController extends Controller
                         'all_upcoming',
                         'all_inprogress',
                         'all_pending',
+                        'microProgramName',
+                        'micro_planned_set',
+                        'micro_actual_percentage_set'
                     )
                 );
             } else {
