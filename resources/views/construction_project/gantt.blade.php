@@ -388,6 +388,43 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 placeholder="Enter Your Task End Date">
                         </div>
                     </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6 col-12">
+                            <label class="form-label">{{ __('Assignee') }}</label>
+                            <input type="text" class="form-control" name="taskassignee" id="task-assignee"
+                                placeholder="Search your task assignee">
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6 col-12">
+                            <label class="form-label">{{ __('Reporting To') }}</label>
+                            <input type="text" class="form-control" name="taskassignee" id="task-reporting"
+                                placeholder="Search your Reporting to">
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="mb-3">
+                            <div class="form-label">Task Assignment Mode</div>
+                            <div>
+                              <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="Assignment" checked="">
+                                <span class="form-check-label">Self Task</span>
+                              </label>
+                              <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="Assignment">
+                                <span class="form-check-label">Sub Contract Task</span>
+                              </label>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-md-6 col-12">
+                            <label class="form-label">{{ __('SubContractor') }}</label>
+                            <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
+                                placeholder="Search your  subcontractor">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a href="#" class="btn btn-link link-secondary" id="cancel" data-bs-dismiss="modal">
@@ -411,11 +448,11 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     <!-- custom lightbox ends-->
 
     <!-- Delete Confirmation starts-->
-<div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-warning" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
        <div class="modal-content">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <div class="modal-status bg-danger"></div>
+          <div class="modal-status btn-warning"></div>
           <div class="modal-body text-center py-4">
              <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
              <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg"
@@ -1170,21 +1207,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     })
 
 
-    gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
-       
-    });
-
-    gantt.attachEvent("onAfterLinkAdd", function(id, item) {
-       
-    });
-
-    gantt.attachEvent("onAfterLinkUpdate", function(id, item) {
-       
-    });
-
-    gantt.attachEvent("onAfterLinkDelete", function(id, item) {
-       
-    });
+  
 
 
 

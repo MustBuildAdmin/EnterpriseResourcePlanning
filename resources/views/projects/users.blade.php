@@ -39,9 +39,7 @@
                     @else
                         <span class="badge bg-purple-lt">Invited</span>
                     @endif
-                    
                 </div>
-               
                 </div>
                 <div class="d-flex">
                 <a data-bs-toggle="tooltip" data-copy_email="{{ $user->projectUsers->email }}"
@@ -56,9 +54,9 @@
                     </svg>
                     {{__('Email')}}
                 </a>
-                
-                <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->projectUsers->phone }}"
-                 title="{{ $user->projectUsers->phone }}"
+                <a data-bs-toggle="tooltip"
+                    data-copy_phone="{{ $user->projectUsers->phone }}"
+                    title="{{ $user->projectUsers->phone }}"
                     class="card-btn" onclick="copyToClipboardphone(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -73,7 +71,6 @@
             </div>
         </div>
     @endif
-
 @empty
 @endforelse
 @if($key==0)
@@ -136,4 +133,3 @@
     </div>
     @endif
 @endif
-
