@@ -12,6 +12,9 @@ use App\Models\Utility;
 
 class DrawingsController extends Controller
 {
+
+    const DENIED = 'Permission denied.';
+
     /**
      * Create a new controller instance.
      *
@@ -28,18 +31,18 @@ class DrawingsController extends Controller
      */
     public function index(Request $request)
     {
-        $drawings = Drawing::select('reference_number', 'drawing_type', 'created_by', 'drawings.created_at as created_on', 'drawings.updated_at as updated_on', 'drawing_types.drawing_types', 'drawing_types.id as drawing_type_id')
+        $drawings = Drawing::select('reference_number', 'drawing_type', 'created_by',
+        'drawings.created_at as created_on', 'drawings.updated_at as updated_on',
+        'drawing_types.drawing_types','drawing_types.id as drawing_type_id')
             ->join('drawing_types', 'drawing_types.id' ,'=', 'drawings.drawing_type');
         
         if ($request->drawing_type)
         {
-            $drawings = $drawings->where('drawings.drawing_type', '=', $request->drawing_type);  
-        } 
-        else if($request->ref_id){
+            $drawings = $drawings->where('drawings.drawing_type', '=', $request->drawing_type);
+        }elseif($request->ref_id){
             $ref_id = explode(",", $request->ref_id);
-            $drawings = $drawings->whereIn('drawings.id', $ref_id); 
-        }
-        else if ($request->start_date && $request->end_date) {
+            $drawings = $drawings->whereIn('drawings.id', $ref_id);
+        }elseif ($request->start_date && $request->end_date) {
             $drawings = $drawings->whereDate('drawings.created_at', '>=', $request->start_date)
             ->whereDate('drawings.created_at', '<=', $request->end_date);
         }
@@ -59,14 +62,16 @@ class DrawingsController extends Controller
             $drawing->save();
             return redirect()->route('drawings.index')->with('success', __('Drawing Space Created Successfully.'));
         } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __(DENIED));
         }
         
     }
 
     public function addReference($drawing_type, $ref_number)
     {
-        $uploadedDrawings = UploadDrawingsToTypes::select('upload_drawings_to_types.id', 'drawing_type', 'revisions', 'status', 'file_name', 'drawing_path', 'upload_drawings_to_types.created_at', 'upload_drawings_to_types.created_by', 'users.name as creator')
+        $uploadedDrawings = UploadDrawingsToTypes::select('upload_drawings_to_types.id',
+        'drawing_type', 'revisions', 'status', 'file_name', 'drawing_path', 'upload_drawings_to_types.created_at',
+        'upload_drawings_to_types.created_by', 'users.name as creator')
         ->join('users', 'users.id', '=', 'upload_drawings_to_types.created_by')
         ->where('drawing_type', $drawing_type)
         ->orderBy('upload_drawings_to_types.revisions', 'DESC')->get();
@@ -79,13 +84,11 @@ class DrawingsController extends Controller
             $latest_upload = UploadDrawingsToTypes::where('drawing_type', $drawing_type_id)
             ->latest('created_at')
             ->first();
-            // dd($latest_upload);
             if($latest_upload != null) {
                 $latest_drawing = UploadDrawingsToTypes::find($latest_upload->id);
                 $latest_drawing->status = 'Inactive';
                 $latest_drawing->save();
-            } 
-
+            }
             $uploadDrawing = new UploadDrawingsToTypes();
             $uploadDrawing->drawing_type = $drawing_type_id;
             $uploadDrawing->revisions = $latest_upload == null ? 0 : $latest_upload->revisions+1;
@@ -98,16 +101,16 @@ class DrawingsController extends Controller
                 if ($path['flag'] == 0) {
                     return redirect()->back()->with('error', __($path['msg']));
                 }
-                // dd($dir.'/'.$fileName);
                 $uploadDrawing->file_name = $request->file('drawing_file')->getClientOriginalName();
                 $uploadDrawing->drawing_path = $dir.'/'.$fileName;
                 
             }
             $uploadDrawing->created_by = \Auth::user()->creatorId();
             $uploadDrawing->save();
-            return redirect()->route('drawing.reference.add', [$drawing_type_id, $reference_number])->with('success', __('Drawings Uploaded Successfully.'));
+            return redirect()->route('drawing.reference.add', [$drawing_type_id, $reference_number])
+            ->with('success', __('Drawings Uploaded Successfully.'));
         } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __(DENIED));
         }
     }
 
@@ -117,9 +120,10 @@ class DrawingsController extends Controller
             $drawing = UploadDrawingsToTypes::find($id);
             $drawing->delete();
 
-            return redirect()->route('drawing.reference.add', [$drawing_type, $reference_number])->with('success', __('Drawing successfully deleted.'));
+            return redirect()->route('drawing.reference.add', [$drawing_type, $reference_number])
+            ->with('success', __('Drawing successfully deleted.'));
         } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return redirect()->back()->with('error', __(DENIED));
         }
     }
 

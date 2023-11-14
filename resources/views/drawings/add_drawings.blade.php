@@ -21,7 +21,7 @@
     margin-left: 6px;
 }
 </style>
-@php $setting  = Utility::settings(\Auth::user()->creatorId()); 
+@php $setting  = Utility::settings(\Auth::user()->creatorId());
 if($drawing_type == 3 & count($uploadedDrawings))
 {
     $disable = 'disabled';
@@ -50,8 +50,6 @@ if($drawing_type == 3 & count($uploadedDrawings))
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <!-- <img id="imagePreview" src="" alt="Image Preview" style="max-width: 100%;"> -->
-                <!-- <img id="image" class="mt-3" style="width:25%;"/> -->
                 <div id="pdf-viewer"></div>
             </div>
             <div class="modal-footer">
@@ -67,17 +65,21 @@ if($drawing_type == 3 & count($uploadedDrawings))
              
               <div class="mt-5 card">
               
-              <form class="upload_form" id="upload_form" action="{{ route('add.drawings',[$drawing_type,$ref_number]) }}" enctype="multipart/form-data" method="POST">
-                @csrf  
+              <form class="upload_form" id="upload_form"
+              action="{{ route('add.drawings',[$drawing_type,$ref_number]) }}"
+              enctype="multipart/form-data" method="POST">
+                @csrf
                 <div class="card-header">
                    <h3>{{$ref_number}}</h3>
                    
                         <div class="col-md-3 form-group upload">
                             {{Form::label('drawing_file',__('Upload Drawing'),['class'=>'form-label'])}}
                             <div class="choose-file ">
-                            <label for="drawing_file" class="form-label"><span style="font-size: 2m;font-size: 11px;color: #c71616;"></span>
+                            <label for="drawing_file" class="form-label">
+                              <span style="font-size: 2m;font-size: 11px;color: #c71616;"></span>
                             <span id="image-label"></span>
-                                <input type="file" class="form-control" name="drawing_file" id="drawing_file" data-filename="drawing_file_create" required accept="application/pdf">
+                                <input type="file" class="form-control" name="drawing_file"
+                                id="drawing_file" data-filename="drawing_file_create" required accept="application/pdf">
                             </label>
                             </div>
                         </div>
@@ -110,10 +112,15 @@ if($drawing_type == 3 & count($uploadedDrawings))
                                      <tbody>
                                        <tr>
                                            <td>Revision_{{$drawing->revisions}}</td>
-                                           <td>@if($drawing->status == 'Active')<span class="badge bg-success me-1"> @else <span class="badge bg-warning me-1"> @endif{{$drawing->status}}</td>
+                                           <td>@if($drawing->status == 'Active')
+                                            <span class="badge bg-success me-1"> @else
+                                              <span class="badge bg-warning me-1">
+                                              @endif{{$drawing->status}}</td>
                                            <td data-filepath="{{$drawing->drawing_path}}">
                                                 {{$drawing->file_name}}
-                                                <button type="button" id="file_path" class="btn preview-btn" onclick="getFilepath(this)" data-bs-toggle="modal"  data-bs-target="#modal-large">
+                                                <button type="button" id="file_path"
+                                                class="btn preview-btn" onclick="getFilepath(this)"
+                                                data-bs-toggle="modal"  data-bs-target="#modal-large">
                                                     <i class="far fa-eye me-2"></i>
                                                 </button>
                                            </td>
@@ -121,8 +128,12 @@ if($drawing_type == 3 & count($uploadedDrawings))
                                            <td>{{$drawing->creator}}</td>
                                            @if($drawing_type == 3)
                                            <td>
-                                           {!! Form::open(['method' => 'DELETE', 'route' => ['uploaded.drawing.destroy', [$drawing->id, $drawing_type, $ref_number, $drawing->created_by]],'id'=>'delete-form-'.$drawing->id]) !!}
-                                                <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" ><i class="ti ti-trash text-white"></i></a>
+                                           {!! Form::open(['method' => 'DELETE', 'route' => ['uploaded.drawing.destroy',
+                                            [$drawing->id, $drawing_type, $ref_number, $drawing->created_by]],
+                                            'id'=>'delete-form-'.$drawing->id]) !!}
+                                                <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para"
+                                                data-bs-toggle="tooltip" title="{{__('Delete')}}" >
+                                                <i class="ti ti-trash text-white"></i></a>
                                             {!! Form::close() !!}
                                            </td>
                                            @endif
@@ -154,7 +165,7 @@ if($drawing_type == 3 & count($uploadedDrawings))
         var filePath = filepathElement.data('filepath');
         // $('#imagePreview').attr('src', "{{ asset('') }}" + filePath);
         var pdfPath = "{{ asset('') }}" + filePath;
-        alert(pdfPath);
+        
 
     // Asynchronously download the PDF and render it
     pdfjsLib.getDocument(pdfPath).promise.then(function(pdfDoc) {

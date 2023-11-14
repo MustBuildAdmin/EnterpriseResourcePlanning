@@ -3328,17 +3328,6 @@ Route::get(
         'XSS',
     ]
 );
-//Route::delete(
-//    '/projects/{id}/users/{uid}', [
-//                                    'as' => 'projects.users.destroy',
-//                                    'uses' => 'ProjectController@userDestroy',
-//                                ]
-//)->middleware(
-//    [
-//        'auth',
-//        'XSS',
-//    ]
-//);
 Route::post(
     'projects/{id}/milestone', [
         'as' => 'project.milestone.store',
@@ -4037,13 +4026,15 @@ Route::group(
 );
 
 // Project Timesheet
-Route::get('append-timesheet-task-html', 'TimesheetController@appendTimesheetTaskHTML')->name('append.timesheet.task.html')->middleware(
+Route::get('append-timesheet-task-html', 'TimesheetController@appendTimesheetTaskHTML')
+->name('append.timesheet.task.html')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
-Route::get('timesheet-table-view', 'TimesheetController@filterTimesheetTableView')->name('filter.timesheet.table.view')->middleware(
+Route::get('timesheet-table-view', 'TimesheetController@filterTimesheetTableView')
+->name('filter.timesheet.table.view')->middleware(
     [
         'auth',
         'XSS',
@@ -4182,7 +4173,8 @@ Route::group(
         Route::post('projects/{id}/bug/{bid}/comment', 'ProjectController@bugCommentStore')->name('bug.comment.store');
         Route::post('projects/bug/{bid}/file', 'ProjectController@bugCommentStoreFile')->name('bug.comment.file.store');
         Route::delete('projects/bug/comment/{id}', 'ProjectController@bugCommentDestroy')->name('bug.comment.destroy');
-        Route::delete('projects/bug/file/{id}', 'ProjectController@bugCommentDestroyFile')->name('bug.comment.file.destroy');
+        Route::delete('projects/bug/file/{id}', 'ProjectController@bugCommentDestroyFile')
+        ->name('bug.comment.file.destroy');
         Route::resource('bugstatus', 'BugStatusController');
         Route::post(
             '/bugstatus/order', [
@@ -4205,7 +4197,6 @@ Route::group(
 
     }
 );
-// User_Todo Module
 Route::post(
     '/todo/create', [
         'as' => 'todo.store',
@@ -4298,17 +4289,22 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
         ]
     );
 
-Route::get('drawing_list', 'DrawingsController@index')->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
-Route::get('drawing_reference_add/{drawing_type}/{reference_number}', 'DrawingsController@addReference')->name('drawing.reference.add')->middleware(
+Route::get('drawing_list', 'DrawingsController@index')
+->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
+Route::get('drawing_reference_add/{drawing_type}/{reference_number}',
+'DrawingsController@addReference')->name('drawing.reference.add')->middleware(
     ['auth','XSS']
 );
-Route::post('add_drawings/{drawing_type_id}/{reference_number}', 'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
+Route::post('add_drawings/{drawing_type_id}/{reference_number}',
+'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
 Route::resource('drawings', 'DrawingsController')->middleware(['auth','XSS','revalidate',]);
-Route::delete('drawing_del/{id}/{drawing_type}/{ref_number}/{user}', 'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
+Route::delete('drawing_del/{id}/{drawing_type}/{ref_number}/{user}',
+'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
     ['auth','XSS',]
 );
 Route::get('drawings_search', 'DrawingsController@index')->name('drawings.search')->middleware(['auth','XSS']);
-Route::get('drawing_autocomplete', 'DrawingsController@drawing_autocomplete')->name('drawing_autocomplete')->middleware(['auth','XSS',]);
+Route::get('drawing_autocomplete', 'DrawingsController@drawing_autocomplete')
+->name('drawing_autocomplete')->middleware(['auth','XSS',]);
 
 Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_consultant')
     ->middleware(

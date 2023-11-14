@@ -17,7 +17,6 @@
 
 <link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
-    <!-- <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}"> -->
     <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
 <div class="page-wrapper dashboard">
@@ -38,9 +37,11 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      {{ Form::label('name', __('Enter the Reference Number of the Drawing'),['class'=>'form-label', 'required'=>'required']) }}<span class="text-danger">*</span>
+                      {{ Form::label('name', __('Enter the Reference Number of the Drawing'),['class'=>'form-label',
+                        'required'=>'required']) }}<span class="text-danger">*</span>
                       <div class="form-icon-user">
-                        {{ Form::text('reference_number', '', array('class' => 'form-control','required'=>'required')) }}
+                        {{ Form::text('reference_number', '', array('class' => 'form-control',
+                          'required'=>'required')) }}
                       </div>
                     </div>
                   </div>
@@ -51,7 +52,7 @@
                             <option value="">Search by Overall Drawing Status</option>
                             @foreach($drawingTypes as $drawingtype)
                               <option value="{{ $drawingtype->id }}">{{ $drawingtype->drawing_types }}</option>
-                            @endforeach    
+                            @endforeach
                         </select>
                       </div>
                     </div>
@@ -93,7 +94,7 @@
                                   <option value="">Search by Overall Drawing Status</option>
                                   @foreach($drawingTypes as $drawingtype)
                                     <option value="{{ $drawingtype->id }}">{{ $drawingtype->drawing_types }}</option>
-                                  @endforeach    
+                                  @endforeach
                                 </select>
                                 </div>
                               </div>
@@ -153,7 +154,8 @@
                             </div>
                             <div class="col-12 mt-4">
                              <div class="mb-3">
-                                 <button type="submit" class="btn btn-tabler w-100" onclick="search_drawings()">Search</button>
+                                 <button type="submit" class="btn btn-tabler w-100"
+                                 onclick="search_drawings()">Search</button>
                                </div>
                             </div>
                          </form>
@@ -173,10 +175,14 @@
                                        @foreach ($drawings as $drawing)
                                        <tbody>
                                          <tr>
-                                             <td style="width: 100px; font-size: 15px;"><a href="{{route('drawing.reference.add', [$drawing->drawing_type_id, $drawing->reference_number])}}">
+                                             <td style="width: 100px; font-size: 15px;">
+                                             <a href="{{route('drawing.reference.add',[$drawing->drawing_type_id,
+                                              $drawing->reference_number])}}">
                                              {{ $drawing->reference_number }}
                                                </a></td>
-                                             <td style="width:400px; font-size: 14px;">{{ $drawing->drawing_types }}</td>
+                                             <td style="width:400px; font-size: 14px;">
+                                             {{ $drawing->drawing_types }}
+                                             </td>
                                              <td style="width:400px; font-size: 14px;">{{ $drawing->created_on }}</td>
                                              <td style="width:400px; font-size: 14px;">{{ $drawing->updated_on }}</td>
                                         </tr>
@@ -291,9 +297,15 @@
                 allowRepick: true,
                 buttonText: {
                     previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"><path stroke="none"
+        d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
                     nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+        fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
                 },
             })).DateTime();
         });
@@ -310,13 +322,15 @@
                 render:{
                     item: function(data,escape) {
                         if( data.customProperties ){
-                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties +
+                            '</span>' + escape(data.text) + '</div>';
                         }
                         return '<div>' + escape(data.text) + '</div>';
                     },
                     option: function(data,escape){
                         if( data.customProperties ){
-                            return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+                            return '<div><span class="dropdown-item-indicator">' + data.customProperties +
+                            '</span>' + escape(data.text) + '</div>';
                         }
                         return '<div>' + escape(data.text) + '</div>';
                     },
@@ -325,3 +339,4 @@
         });
         // @formatter:on
       </script>
+

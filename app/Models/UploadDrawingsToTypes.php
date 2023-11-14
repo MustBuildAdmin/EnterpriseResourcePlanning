@@ -10,3 +10,4 @@ class UploadDrawingsToTypes extends Model
         'drawing_type', 'revisions', 'status', 'drawing_path', 'created_by', 'created_at', 'updated_at',
     ];
 }
+
