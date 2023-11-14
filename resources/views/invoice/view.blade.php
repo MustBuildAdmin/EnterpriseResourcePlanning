@@ -309,7 +309,10 @@
                         <a href="{{ route('invoice.resent',$invoice->id)}}" class="btn  btn-primary me-2">{{__('Resend Invoice')}}</a>
                     </div>
                     <div class="all-button-box">
-                        <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" target="_blank" class="btn  btn-primary">{{__('Download')}}</a>
+                        <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" rel="noopener"
+                             target="_blank" class="btn  btn-primary">
+                             {{__('Download')}}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -690,7 +693,11 @@
                                 <tr>
                                     <td>
                                         @if(!empty($payment->add_receipt))
-                                            <a href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}" download="" class="btn  btn-secondary btn-icon rounded-pill" target="_blank"><span class="btn-inner--icon"><i class="ti ti-download"></i></span></a>
+                                            <a href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}"
+                                                download="" class="btn  btn-secondary btn-icon rounded-pill"
+                                                 target="_blank" rel="noopener">
+                                                <span class="btn-inner--icon"><i class="ti ti-download"></i></span>
+                                            </a>
                                         @else
                                             -
                                         @endif
@@ -701,7 +708,13 @@
                                     <td>{{!empty($payment->bankAccount)?$payment->bankAccount->bank_name.' '.$payment->bankAccount->holder_name:'--'}}</td>
                                     <td>{{!empty($payment->reference)?$payment->reference:'--'}}</td>
                                     <td>{{!empty($payment->description)?$payment->description:'--'}}</td>
-                                    <td>@if(!empty($payment->receipt))<a href="{{$payment->receipt}}" target="_blank"> <i class="ti ti-file"></i></a>@else -- @endif</td>
+                                    <td>@if(!empty($payment->receipt))
+                                        <a href="{{$payment->receipt}}" target="_blank" rel="noopener">
+                                            <i class="ti ti-file"></i></a>
+                                        @else
+                                        --
+                                        @endif
+                                    </td>
                                     <td>{{!empty($payment->order_id)?$payment->order_id:'--'}}</td>
                                     @can('delete invoice product')
                                         <td>

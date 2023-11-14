@@ -98,9 +98,15 @@
                                     <td>
                                         @if($item->created_by == \Auth::user()->id && $item->checkDateTime())
 
-                                            <a href="{{$item->start_url}}" target="_blank"> {{__('Start meeting')}} <i class="ti ti-external-link-square-alt "></i></a>
+                                            <a href="{{$item->start_url}}" target="_blank" rel="noopener">
+                                                {{__('Start meeting')}} 
+                                                <i class="ti ti-external-link-square-alt "></i>
+                                            </a>
                                         @elseif($item->checkDateTime())
-                                            <a href="{{$item->join_url}}" target="_blank"> {{__('Join meeting')}} <i class="ti ti-external-link-square-alt "></i></a>
+                                            <a href="{{$item->join_url}}" target="_blank" rel="noopener">
+                                                {{__('Join meeting')}}
+                                                <i class="ti ti-external-link-square-alt "></i>
+                                            </a>
                                         @else
                                             -
                                         @endif

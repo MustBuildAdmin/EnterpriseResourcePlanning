@@ -131,10 +131,16 @@
 
                                     <td>
                                         @if(!empty($payment->add_receipt))
-                                            <a  class="action-btn bg-primary ms-2 btn btn-sm align-items-center" href="{{ $paymentpath . '/' . $payment->add_receipt }}" download="">
+                                            <a  class="action-btn bg-primary ms-2 btn btn-sm align-items-center"
+                                             href="{{ $paymentpath . '/' . $payment->add_receipt }}" rel="noopener" download="">
                                                 <i class="ti ti-download text-white"></i>
                                             </a>
-                                            <a href="{{ $paymentpath . '/' . $payment->add_receipt }}"  class="action-btn bg-secondary ms-2 mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Download')}}" target="_blank"><span class="btn-inner--icon"><i class="ti ti-crosshair text-white" ></i></span></a>
+                                            <a href="{{ $paymentpath . '/' . $payment->add_receipt }}"  class="action-btn bg-secondary ms-2 mx-3 btn btn-sm align-items-center"
+                                                 data-bs-toggle="tooltip" title="{{__('Download')}}" target="_blank"
+                                                  rel="noopener"><span class="btn-inner--icon">
+                                                    <i class="ti ti-crosshair text-white" ></i>
+                                                </span>
+                                            </a>
                                         @else
                                             -
                                         @endif

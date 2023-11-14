@@ -56,7 +56,8 @@
       <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
 
           <div class="all-button-box mx-2">
-              <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" target="_blank" class="btn btn-primary mt-3">
+              <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" target="_blank"
+                 rel="noopener" class="btn btn-primary mt-3">
                   {{__('Download')}}
               </a>
           </div>
@@ -342,7 +343,12 @@
                               <td>{{!empty($payment->bankAccount)?$payment->bankAccount->bank_name.' '.$payment->bankAccount->holder_name:'--'}}</td>
                               <td>{{!empty($payment->reference)?$payment->reference:'--'}}</td>
                               <td>{{!empty($payment->description)?$payment->description:'--'}}</td>
-                              <td>@if(!empty($payment->receipt))<a href="{{$payment->receipt}}" target="_blank"> <i class="ti ti-file"></i></a>@else -- @endif</td>
+                              <td>
+                                @if(!empty($payment->receipt))<a href="{{$payment->receipt}}" target="_blank" rel="noopener">
+                                <i class="ti ti-file"></i></a>
+                                @else --
+                                @endif
+                            </td>
                               <td>{{!empty($payment->order_id)?$payment->order_id:'--'}}</td>
                               <!-- <td>
                                 <a href="#" class="delete-icon" data-toggle="tooltip" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$payment->id}}').submit();">
@@ -860,8 +866,10 @@
 <script src="ttps://js.paystack.co/v1/inline.js"></script>
 <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
+integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 
 
 

@@ -123,7 +123,9 @@
                         <a href="{{ route('proposal.resent',$proposal->id) }}" class="btn btn-primary">{{__('Resend Proposal')}}</a>
                     </div>
                     <div class="all-button-box">
-                        <a href="{{ route('proposal.pdf', Crypt::encrypt($proposal->id))}}" class="btn btn-primary" target="_blank">{{__('Download')}}</a>
+                        <a href="{{ route('proposal.pdf', Crypt::encrypt($proposal->id))}}" class="btn btn-primary"
+                             target="_blank" rel="noopener">{{__('Download')}}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -132,7 +134,11 @@
         <div class="row justify-content-between align-items-center mb-3">
             <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
                 <div class="all-button-box">
-                    <a href="{{ route('proposal.pdf', Crypt::encrypt($proposal->id))}}" class="btn btn-xs btn-white btn-icon-only width-auto" target="_blank">{{__('Download')}}</a>
+                    <a href="{{ route('proposal.pdf', Crypt::encrypt($proposal->id))}}"
+                         class="btn btn-xs btn-white btn-icon-only width-auto"
+                          target="_blank" rel="noopener">
+                          {{__('Download')}}
+                        </a>
                 </div>
             </div>
         </div>
