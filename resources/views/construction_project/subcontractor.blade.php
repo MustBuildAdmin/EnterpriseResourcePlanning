@@ -1,3 +1,4 @@
+
 @include('new_layouts.header')
 
 <style>

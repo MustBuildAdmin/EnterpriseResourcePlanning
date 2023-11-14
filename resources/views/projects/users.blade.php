@@ -22,7 +22,8 @@
                 <div class="card-body p-4 text-center">
                 @if($user->projectUsers->avatar)
                 <span class="avatar avatar-xl mb-3 rounded"
-                        style="background-image: url({{asset('/storage/uploads/avatar/'.$user->projectUsers->avatar)}})">
+                        style="background-image:
+                        url({{asset('/storage/uploads/avatar/'.$user->projectUsers->avatar)}})">
                     </span>
                 @else
                     <?php  $short=substr($user->projectUsers->name, 0, 2);?>
@@ -43,7 +44,7 @@
                
                 </div>
                 <div class="d-flex">
-                <a data-bs-toggle="tooltip" data-copy_email="{{ $user->projectUsers->email }}" 
+                <a data-bs-toggle="tooltip" data-copy_email="{{ $user->projectUsers->email }}"
                 title="{{ $user->projectUsers->email }}"
                     href="#" class="card-btn" onclick="copyToClipboard(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
@@ -56,7 +57,8 @@
                     {{__('Email')}}
                 </a>
                 
-                <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->projectUsers->phone }}" title="{{ $user->projectUsers->phone }}"
+                <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->projectUsers->phone }}"
+                 title="{{ $user->projectUsers->phone }}"
                     class="card-btn" onclick="copyToClipboardphone(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
