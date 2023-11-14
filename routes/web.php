@@ -26,7 +26,6 @@ require __DIR__.'/auth.php';
 
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index'])->middleware(['XSS']);
 Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@index'])->middleware(['auth', 'XSS']);
-Route::get('contactus', 'UserController@contactus')->name('contactus');
 
 // Route::get('/', 'DashboardController@account_dashboard_index')->name('home')->middleware(
 //     [
@@ -63,9 +62,7 @@ Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@
 Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
 Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
 ->middleware('guest');
-Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection')->middleware('guest');
-Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection')
-->middleware('guest');
+
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
         'auth',
@@ -3411,35 +3408,6 @@ Route::get(
         'XSS',
     ]
 );
-Route::get(
-    'invite_teammember/{id}', [
-        'as' => 'invite.project.invite_teammember',
-        'uses' => 'ProjectController@invite_teammember',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('search_teammember/{id}', 'ProjectController@search_member')
-->name('invite.search_teammember')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
-
-Route::any('save_teammember', 'ProjectController@save_teammember')
-->name('save_teammember')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
 Route::post(
     'invite-project-user-member', [
         'as' => 'invite.project.user.member',
@@ -3463,9 +3431,6 @@ Route::get(
     ]
 );
 Route::get(
-<<<<<<< HEAD
-    'instance_project/{instance_id}/{project_id}/{name}', [
-=======
     'check_instance_dairy/{id}', [
         'as' => 'projects.check_instance_dairy',
         'uses' => 'ProjectController@check_instance_dairy',
@@ -3478,7 +3443,6 @@ Route::get(
 );
 Route::get(
     'instance_project/{instance_id}/{project_id}', [
->>>>>>> 9d77f33b (Dairy menu creation)
         'as' => 'projects.instance_project',
         'uses' => 'RevisionController@instance_project',
     ]
@@ -3514,7 +3478,7 @@ Route::get(
 );
 Route::get(
     'projects-view', [
-        'as' => 'filter.project.view',
+    'filter.project.view',
         'uses' => 'ProjectController@filterProjectView',
     ]
 )->middleware(
@@ -3566,18 +3530,6 @@ Route::any(
     'get_member', [
         'as' => 'projects.criticaltask_update',
         'uses' => 'ProjectController@criticaltask_update',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'micro_critical_update', [
-        'as' => 'micro.criticaltask_update',
-        'uses' => 'MicroPorgramController@criticaltask_update',
     ]
 )->middleware(
     [
@@ -4131,17 +4083,6 @@ Route::get(
     '/project/{id}/activities', [
         'as' => 'project.activities',
         'uses' => 'ProjectController@projectActivities',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-Route::post(
-    '/project/{id}/activitieslog', [
-        'as' => 'project.activitieslog',
-        'uses' => 'ProjectController@getActivityLog',
     ]
 )->middleware(
     [
@@ -5239,9 +5180,6 @@ Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')-
         'XSS',
     ]
 );
-Route::any('get_validated_date', 'MicroPorgramController@get_validated_date')->name('get_validated_date')
-->middleware(['auth', 'XSS']);
-
 
 Route::any('change_schedule_status', 'MicroPorgramController@change_schedule_status')->name('change_schedule_status')->middleware(
     [
@@ -5310,4 +5248,3 @@ Route::any('new_rfi', 'DiaryController@new_rfi')->name('new_rfi');
 Route::any('{any}', function () {
     return view('error');
 })->where('any', '.*');
-

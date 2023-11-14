@@ -161,6 +161,7 @@
                          <div class="col-md-10">
                              <div class="table-responsive card p-4">
                                  <table class="table table-vcenter card-table" id="task-table">
+                                 <caption>Lists Drawings Index</caption>
                                      <thead>
                                          <tr>
                                            <th>Drawing reference Id</th>

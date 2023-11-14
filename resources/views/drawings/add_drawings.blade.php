@@ -93,6 +93,7 @@ if($drawing_type == 3 & count($uploadedDrawings))
                        <div class="col-md-12">
                            <div class="table-responsive card p-4">
                                <table class="table table-vcenter card-table" id="task-table">
+                               <caption>Lists all drawings associated with drawing type</caption>
                                    <thead>
                                        <tr>
                                          <th>Revision</th>
