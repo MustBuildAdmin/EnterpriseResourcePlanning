@@ -38,6 +38,7 @@ if($drawing_type == 3 & count($uploadedDrawings))
 @include('construction_project.side_menu_dairy')
 <section>
 <head>
+<title>{{__('Add Drawings')}}</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
 </head>
 <div class="container-fluid">
