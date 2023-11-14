@@ -36,7 +36,6 @@ class Project extends Model
         'complete' => 'success',
         'canceled' => 'danger',
     ];
-    public $userModel='App\Models\User';
 
     public function milestones()
     {
@@ -102,21 +101,21 @@ class Project extends Model
 
     public function users()
     {
-        return $this->belongsToMany($userModel, 'project_users', 'project_id', 'user_id');
+        return $this->belongsToMany('App\Models\User', 'project_users', 'project_id', 'user_id');
     }
     public function projectsubcontractors()
     {
-        return $this->belongsToMany($userModel, 'project_subcontractors', 'project_id', 'user_id');
+        return $this->belongsToMany('App\Models\User', 'project_subcontractors', 'project_id', 'user_id');
     }
     public function projectconsultants()
     {
-        return $this->belongsToMany($userModel, 'project_consultants', 'project_id', 'user_id');
+        return $this->belongsToMany('App\Models\User', 'project_consultants', 'project_id', 'user_id');
     }
 
     //for project-report
     public function client()
     {
-        return $this->hasOne($userModel, 'id', 'client_id');
+        return $this->hasOne('App\Models\User', 'id', 'client_id');
     }
 
     public function projectAttachments()
@@ -141,7 +140,8 @@ class Project extends Model
     }
 
     // Return timesheet html in table format
-    public static function getProjectAssignedTimesheetHTML($projects_timesheet = null, $timesheets = [], $days = [], $project_id = null)
+    public static function getProjectAssignedTimesheetHTML($projects_timesheet = null,
+     $timesheets = [], $days = [], $project_id = null)
     {
 
         $i = $k = 0;

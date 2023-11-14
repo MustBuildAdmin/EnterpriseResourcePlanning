@@ -8,8 +8,8 @@
             value="{{ request()->get('q') }}" >
             <input type="hidden" id="skill_input" name="project_id"
             value="{{ $project_id }}" >
-            <input type="hidden" id="getName" name="type"
-            value="{{ Request::route()->getName() }}" >
+            <input type="hidden" id="getType" name="type"
+            value="" >
             
             
         </div>
@@ -29,6 +29,7 @@
     "{{ __('Search a Consultant...')}}"
         : slug[slug.length-1].includes("subcontractor") ? "{{ __('Search a Sub Contractor...')}}" :
         "{{ __('Search a Member...')}}";
+        $('#getType').val(slug[slug.length-1])
     // $("label[for*='seach_teammember']").html(value);
     console.log(value,"valuevalue")
     $("#skill_input").tokenInput("{{route('invite.search_teammember',$project_id)}}?type="+slug[slug.length-1], {

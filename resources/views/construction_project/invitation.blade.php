@@ -97,47 +97,64 @@
             <div class="button-container">
                 <a class="button" href="/">Go to Home</a>
             </div>
-        @else
-            @if($type=='sub contractor')
-                <h1>Project Sub Contractor Invitation</h1>
-            @elseif($type=='consultant')
-                <h1>Project Consultant Invitation</h1>
-            @elseif($type=='team member')
-                <h1>Project Team Member Invitation</h1>
-            @else
-                <h1>Project Invitation</h1>
+        @elseif($type=='sub contractor')
+            <h1>Project Sub Contractor Invitation</h1>
             <p>
                 You have received an invitation to collaborate on a {{$type}} for this project
                  {{$project->project_name}}.
             </p>
-            @if($type=='sub contractor')
-                <div class="btn-container">
-                    <button class="btn accept">
-                        <a href="/company-invitation-subcontractor-project/{{$checkConnection->id}}/accepted">Accept</a>
-                    </button>
-                    <button class="btn decline">
-                        <a href="/company-invitation-subcontractor-project/{{$checkConnection->id}}/declined">
-                            Decline</a>
-                    </button>
-                </div>
-            @elseif($type=='consultant')
-                <div class="btn-container">
-                    <button class="btn accept">
-                        <a href="/company-invitation-consultant-project/{{$checkConnection->id}}/accepted">Accept</a>
-                    </button>
-                    <button class="btn decline">
-                        <a href="/company-invitation-consultant-project/{{$checkConnection->id}}/declined">Decline</a>
-                    </button>
-                </div>
-            @else
-                <div class="btn-container">
-                    <button class="btn accept">
-                        <a href="/company-invitation-teammember/{{$checkConnection->id}}/accepted">Accept</a>
-                    </button>
-                    <button class="btn decline">
-                        <a href="/company-invitation-teammember/{{$checkConnection->id}}/declined">Decline</a>
-                    </button>
-                </div>
+            <div class="btn-container">
+                <button class="btn accept">
+                    <a href="/company-invitation-subcontractor-project/{{$checkConnection->id}}/accepted">Accept</a>
+                </button>
+                <button class="btn decline">
+                    <a href="/company-invitation-subcontractor-project/{{$checkConnection->id}}/declined">
+                        Decline</a>
+                </button>
+            </div>
+        @elseif($type=='consultant')
+            <h1>Project Consultant Invitation</h1>
+            <p>
+                You have received an invitation to collaborate on a {{$type}} for this project
+                 {{$project->project_name}}.
+            </p>
+            <div class="btn-container">
+                <button class="btn accept">
+                    <a href="/company-invitation-consultant-project/{{$checkConnection->id}}/accepted">Accept</a>
+                </button>
+                <button class="btn decline">
+                    <a href="/company-invitation-consultant-project/{{$checkConnection->id}}/declined">Decline</a>
+                </button>
+            </div>
+        @elseif($type=='team member')
+            <h1>Project Team Member Invitation</h1>
+            <p>
+                You have received an invitation to collaborate on a {{$type}} for this project
+                 {{$project->project_name}}.
+            </p>
+            <div class="btn-container">
+                <button class="btn accept">
+                    <a href="/company-invitation-teammember/{{$checkConnection->id}}/accepted">Accept</a>
+                </button>
+                <button class="btn decline">
+                    <a href="/company-invitation-teammember/{{$checkConnection->id}}/declined">Decline</a>
+                </button>
+            </div>
+        
+        @else
+            <h1>Project Invitation</h1>
+            <p>
+                You have received an invitation to collaborate on a {{$type}} for this project
+                 {{$project->project_name}}.
+            </p>
+            <div class="btn-container">
+                <button class="btn accept">
+                    <a href="/company-invitation-teammember/{{$checkConnection->id}}/accepted">Accept</a>
+                </button>
+                <button class="btn decline">
+                    <a href="/company-invitation-teammember/{{$checkConnection->id}}/declined">Decline</a>
+                </button>
+            </div>
         @endif
     </div>
 </body>
