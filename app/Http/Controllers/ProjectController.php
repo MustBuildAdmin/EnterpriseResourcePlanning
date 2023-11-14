@@ -268,8 +268,8 @@ class ProjectController extends Controller
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST => 'POST',
                   //   CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST=> 0,
-                    CURLOPT_SSL_VERIFYPEER=>0,
+                    CURLOPT_SSL_VERIFYHOST=> false,
+                    CURLOPT_SSL_VERIFYPEER=>false,
                     CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                 ));
 
@@ -390,8 +390,8 @@ class ProjectController extends Controller
                       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                       CURLOPT_CUSTOMREQUEST => 'POST',
                      //   CURLOPT_SSL_VERIFYPEER => false,
-                      CURLOPT_SSL_VERIFYHOST => 0,
-                      CURLOPT_SSL_VERIFYPEER => 0,
+                      CURLOPT_SSL_VERIFYHOST => false,
+                      CURLOPT_SSL_VERIFYPEER => false,
                       CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
                     ));
 
