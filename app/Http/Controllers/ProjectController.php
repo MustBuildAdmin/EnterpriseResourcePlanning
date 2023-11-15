@@ -1267,9 +1267,6 @@ class ProjectController extends Controller
                 $microallDate = [];
                 $microProgramName = [];
                 $micro_current_Planed_percentage = 0;
-                $micro_actual_percentage = "0";
-                $micro_no_working_days   = $project->estimated_days;
-                $micro_date2 = date_create($project->end_date);
                 $micro_planned_set = [];
                 $micro_actual_percentage_set = [];
                 $micro_actual_percentage = 0;
@@ -1294,7 +1291,8 @@ class ProjectController extends Controller
                             ->where('type','project')
                             ->where('micro_flag',1)->get()->count();
 
-                        $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id')
+                        $microallDate = MicroTask::select('micro_tasks.start_date',
+                         'micro_tasks.end_date','micro_tasks.id')
                             ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                             ->whereNotNull('pros.instance_id')
                             ->where('micro_tasks.micro_flag',1)
