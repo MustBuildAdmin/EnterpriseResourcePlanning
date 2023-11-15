@@ -485,7 +485,6 @@ if($delay>100){
     const all_pending    = <?php echo $all_pending ?>;
 
     document.addEventListener("DOMContentLoaded", function () {
-      setTimeout(function() {
         window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
             chart: {
                 type: "donut",
@@ -529,7 +528,6 @@ if($delay>100){
                 fillSeriesColor: false
             },
         })).render();
-      }, 2500);
     });
 
     const data=<?php echo json_encode($alldates)?>;
