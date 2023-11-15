@@ -1870,10 +1870,16 @@ class ProjectController extends Controller
 
                     $search_date = $startDate->format('Y-m-d');
                     // completed task count
-                    $completed[]=Task_progress::where('project_id',$project->id)->where('instance_id',Session::get("project_instance"))->where('record_date', 'like', $search_date.'%')->where('percentage','100')->count();
+                    $completed[]=Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('record_date', 'like', $search_date.'%')
+                    ->where('percentage','100')->count();
 
                     // pending task count
-                    $pending[]=Task_progress::where('project_id',$project->id)->where('instance_id',Session::get("project_instance"))->where('record_date', 'like', $search_date.'%')->where('percentage','>','100')->count();
+                    $pending[]=Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('record_date', 'like', $search_date.'%')
+                    ->where('percentage','>','100')->count();
 
                     $startDate->addDay();
                 }
@@ -2720,7 +2726,8 @@ class ProjectController extends Controller
                         ->pluck("non_working_days")
                         ->first();
                     // critical bulk update 
-                    $critical_update=Project::where("id", Session::get("project_id"))->pluck('critical_update')->first();
+                    $critical_update=Project::where("id", Session::get("project_id"))
+                    ->pluck('critical_update')->first();
 
                     return view(
                         "construction_project.gantt",
@@ -2765,7 +2772,6 @@ class ProjectController extends Controller
                 }
             }
 
-            //return view('projects.gantt', compact('project', 'tasks', 'duration'));
         } else {
             return redirect()
                 ->back()
