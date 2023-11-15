@@ -153,4 +153,38 @@ class RevisionController extends Controller
         return redirect(route('projects.show', $project_id));
        
     }
+
+    public function instance_project_dairy($instance_id, $project_id)
+    {
+        
+        $getInstance = Instance::where('project_id', $project_id)->where(['id' => $instance_id])->first();
+        $instanceId = $getInstance->instance;
+        Session::forget('project_id');
+        Session::forget('project_instance');
+        Session::forget('latest_project_instance');
+        Session::forget('current_revision_freeze');
+      
+        ////
+            Session::put('project_id',$project_id);
+            Session::put('project_instance',$instanceId);
+            
+            $checkInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
+            Session::put('latest_project_instance',$checkInstanceFreeze->instance);
+
+            if($getInstance->freeze_status == 1){
+                Session::put('current_revision_freeze', 1); //Freezed
+            }
+            else{
+                Session::put('current_revision_freeze', 0); //Not Freeze
+            }
+
+            $instanceall = Instance::where('project_id',$project_id)->orderBy('id','DESC')->get();
+            if(count($instanceall)>1){
+                Session::put('revision_started', 1); //Not Freeze
+            }
+
+        ///
+        return redirect(route('show_dairy', $project_id));
+       
+    }
 }
