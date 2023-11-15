@@ -1066,7 +1066,7 @@ class ProjectController extends Controller
                 $cnt = 0;
                 $cnt1 = 0;
 
-                foreach (array_keys($seven_days) as $k => $date) {
+                foreach (array_keys($seven_days) as $date) {
                     $task_cnt = $project
                         ->tasks()
                         ->where("is_complete", "=", 1)
@@ -1707,7 +1707,7 @@ class ProjectController extends Controller
                 $cnt = 0;
                 $cnt1 = 0;
 
-                foreach (array_keys($seven_days) as $k => $date) {
+                foreach (array_keys($seven_days) as $date) {
                     $task_cnt = $project
                         ->tasks()
                         ->where("is_complete", "=", 1)
