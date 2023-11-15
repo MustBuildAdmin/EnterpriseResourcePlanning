@@ -2837,51 +2837,27 @@ class Utility extends Model
 
                     // $path = $path.$name;
 
-                } elseif ($settings['storage_setting'] == 's3') {
-                    // print_r($name);
-                    // dd($path);
-
-                    if (! $path = \Storage::disk('s3')->putFileAs($path, $file, $name)) {
-                        // echo 'no';
-                    } else {
-                        // echo 'uploaded';
-                    }
-                    // $path = \Storage::disk('s3')->putFileAs(
-                    //         $path,
-                    //         $file,
-                    //         $name
-                    // );
-
-                    // $path = $path.$name;
-                    // dd($path);
                 }
-
-                $res = [
+                return [
                     'flag' => 1,
                     'msg' => 'success',
                     'url' => $path,
                 ];
-
-                return $res;
                 // }
 
             } else {
-                $res = [
+                return [
                     'flag' => 0,
                     'msg' => __('Please set proper configuration for storage.'),
                 ];
-
-                return $res;
             }
 
         } catch (\Exception $e) {
 
-            $res = [
+            return [
                 'flag' => 0,
                 'msg' => $e->getMessage(),
             ];
-
-            return $res;
         }
     }
 
