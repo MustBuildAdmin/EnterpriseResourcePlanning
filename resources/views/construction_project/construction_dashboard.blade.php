@@ -479,12 +479,13 @@ if($delay>100){
   </div>
   <script>
     // @formatter:off
-    all_completed  = "{{$all_completed}}";
-    all_upcoming   = "{{$all_upcoming}}";
-    all_inprogress = "{{$all_inprogress}}";
-    all_pending    = "{{$all_pending}}";
+    const all_completed  = <?php echo $all_completed ?>;
+    const all_upcoming   = <?php echo $all_upcoming ?>;
+    const all_inprogress = <?php echo $all_inprogress ?>;
+    const all_pending    = <?php echo $all_pending ?>;
 
     document.addEventListener("DOMContentLoaded", function () {
+      setTimeout(function() {
         window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
             chart: {
                 type: "donut",
@@ -500,7 +501,7 @@ if($delay>100){
             fill: {
                 opacity: 1,
             },
-            series: [all_pending, all_completed, all_inprogress, all_upcoming],
+            series: [all_completed, all_upcoming, all_inprogress, all_upcoming],
             labels: ["Pending", "Completed", "In-Progress", "UpComming"],
             tooltip: {
                 theme: 'dark'
@@ -528,6 +529,7 @@ if($delay>100){
                 fillSeriesColor: false
             },
         })).render();
+      }, 2500);
     });
 
     const data=<?php echo json_encode($alldates)?>;
