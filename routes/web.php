@@ -487,7 +487,9 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
-Route::get('instance_project_dairy/{instance_id}/{project_id}', 'RevisionController@instance_project_dairy')->name('projects.instance_project_dairy')->middleware(
+Route::get('instance_project_dairy/{instance_id}/{project_id}',
+ 'RevisionController@instance_project_dairy')
+->name('projects.instance_project_dairy')->middleware(
     [
         'auth',
         'XSS',

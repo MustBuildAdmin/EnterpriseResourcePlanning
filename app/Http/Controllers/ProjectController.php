@@ -1437,7 +1437,7 @@ class ProjectController extends Controller
                         }
 
                         $micro_actual_percentage_set[] = $micro_actual_percentage;
-                    } 
+                    }
                 }
 
                 $all_pending = Con_task::where("project_id", $project->id)
@@ -1817,7 +1817,6 @@ class ProjectController extends Controller
                 if ($workdone_percentage > 100) {
                     $workdone_percentage = 100;
                 }
-                $remaing_percenatge = round(100 - $current_Planed_percentage);
                 $project_task = Con_task::where(
                     "con_tasks.project_id",
                     Session::get("project_id")
