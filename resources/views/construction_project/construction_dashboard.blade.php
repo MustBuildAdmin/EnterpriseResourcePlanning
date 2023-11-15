@@ -169,6 +169,18 @@ if($delay>100){
             </div>
           @endif
         </div>
+
+        @if($checkProject != null)
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">{{ __('Look a Head')}}</h3>
+                <div id="micro_chart-mentions" class="chart-lg"></div>
+              </div>
+            </div>
+          </div>
+        @endif
+
         <div class="row row-deck row-cards mt-5">
           <div class="col-sm-6 col-lg-6">
             <div class="card">
@@ -467,10 +479,10 @@ if($delay>100){
   </div>
   <script>
     // @formatter:off
-    all_completed  = "{{$all_completed}}";
-    all_upcoming   = "{{$all_upcoming}}";
-    all_inprogress = "{{$all_inprogress}}";
-    all_pending    = "{{$all_pending}}";
+    const all_completed  = <?php echo $all_completed ?>;
+    const all_upcoming   = <?php echo $all_upcoming ?>;
+    const all_inprogress = <?php echo $all_inprogress ?>;
+    const all_pending    = <?php echo $all_pending ?>;
 
     document.addEventListener("DOMContentLoaded", function () {
         window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
@@ -596,6 +608,78 @@ if($delay>100){
         },
       })).render();
     });
-        // @formatter:on
+
+    const microProgramName=<?php echo json_encode($microProgramName)?>;
+    const micro_planned_set =<?php echo json_encode($micro_planned_set)?>;
+    const micro_actual_percentage_set = <?php echo json_encode($micro_actual_percentage_set)?>;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        window.ApexCharts && (new ApexCharts(document.getElementById('micro_chart-mentions'), {
+        chart: {
+            type: "bar",
+            fontFamily: 'inherit',
+            height: 320,
+            parentHeightOffset: 0,
+            toolbar: {
+            show: false,
+            },
+            animations: {
+            enabled: false
+            },
+        },
+        plotOptions: {
+            bar: {
+            columnWidth: '50%',
+            }
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        fill: {
+            opacity: 1,
+        },
+        series: [{
+            name: "Planned",
+            data: micro_planned_set
+        }, {
+            name: "Actual",
+            data: micro_actual_percentage_set
+        }],
+        tooltip: {
+            theme: 'dark'
+        },
+        grid: {
+            padding: {
+            top: -20,
+            right: 0,
+            left: -4,
+            bottom: -4
+            },
+            strokeDashArray: 4,
+        },
+        xaxis: {
+            labels: {
+            padding: 0,
+            },
+            tooltip: {
+            enabled: false
+            },
+            axisBorder: {
+            show: false,
+            },
+            categories: microProgramName,
+        },
+        yaxis: {
+            labels: {
+            padding: 4
+            },
+        },
+        colors: [tabler.getColor("primary")],
+        legend: {
+            show: false,
+        },
+        })).render();
+    });
+    // @formatter:on
   </script>
 @include('new_layouts.footer')
