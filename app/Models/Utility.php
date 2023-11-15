@@ -2838,7 +2838,22 @@ class Utility extends Model
                     // $path = $path.$name;
 
                 } elseif ($settings['storage_setting'] == 's3') {
-                    $diskPath=Storage::disk('s3')->putFileAs($path, $file, $name);
+                    // print_r($name);
+                    // dd($path);
+
+                    if (! $path = \Storage::disk('s3')->putFileAs($path, $file, $name)) {
+                        // echo 'no';
+                    } else {
+                        // echo 'uploaded';
+                    }
+                    // $path = \Storage::disk('s3')->putFileAs(
+                    //         $path,
+                    //         $file,
+                    //         $name
+                    // );
+
+                    // $path = $path.$name;
+                    // dd($path);
                 }
 
                 $res = [
@@ -2933,8 +2948,7 @@ class Utility extends Model
                         $name
                     );
                 } elseif ($settings['storage_setting'] == 's3') {
-                    $diskPath=Storage::disk('s3')->putFileAs($path, $file, $name);
-                    if (! $path = $diskPath) {
+                    if (! $path = \Storage::disk('s3')->putFileAs($path, $file, $name)) {
                         // echo 'no';
                     } else {
                         // echo 'uploaded';
@@ -3057,15 +3071,22 @@ class Utility extends Model
                             $name
                         );
 
+                        // $path = $path.$name;
 
                     } elseif ($settings['storage_setting'] == 's3') {
 
-                        $diskPath=Storage::disk('s3')->putFileAs($path, $file, $name);
-                        if (! $path = $diskPath) {
+                        // $path = \Storage::disk('s3')->putFileAs(
+                        //     $path,
+                        //     $file,
+                        //     $name
+                        // );
+                        if (! $path = \Storage::disk('s3')->putFileAs($path, $file, $name)) {
                             echo 'no';
                         } else {
                             echo 'uploaded';
                         }
+                        // $path = $path.$name;
+                        // dd($path);
                     }
 
                     $res = [
