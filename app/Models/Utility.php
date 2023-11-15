@@ -2838,22 +2838,7 @@ class Utility extends Model
                     // $path = $path.$name;
 
                 } elseif ($settings['storage_setting'] == 's3') {
-                    // print_r($name);
-                    // dd($path);
-
-                    if (! $path = Storage::disk('s3')->putFileAs($path, $file, $name)) {
-                        // echo 'no';
-                    } else {
-                        // echo 'uploaded';
-                    }
-                    // $path = \Storage::disk('s3')->putFileAs(
-                    //         $path,
-                    //         $file,
-                    //         $name
-                    // );
-
-                    // $path = $path.$name;
-                    // dd($path);
+                    $diskPath=Storage::disk('s3')->putFileAs($path, $file, $name);
                 }
 
                 $res = [
@@ -2948,7 +2933,8 @@ class Utility extends Model
                         $name
                     );
                 } elseif ($settings['storage_setting'] == 's3') {
-                    if (! $path = Storage::disk('s3')->putFileAs($path, $file, $name)) {
+                    $diskPath=Storage::disk('s3')->putFileAs($path, $file, $name);
+                    if (! $path = $diskPath) {
                         // echo 'no';
                     } else {
                         // echo 'uploaded';
@@ -3071,22 +3057,15 @@ class Utility extends Model
                             $name
                         );
 
-                        // $path = $path.$name;
 
                     } elseif ($settings['storage_setting'] == 's3') {
 
-                        // $path = \Storage::disk('s3')->putFileAs(
-                        //     $path,
-                        //     $file,
-                        //     $name
-                        // );
-                        if (! $path = Storage::disk('s3')->putFileAs($path, $file, $name)) {
+                        $diskPath=Storage::disk('s3')->putFileAs($path, $file, $name);
+                        if (! $path = $diskPath) {
                             echo 'no';
                         } else {
                             echo 'uploaded';
                         }
-                        // $path = $path.$name;
-                        // dd($path);
                     }
 
                     $res = [
