@@ -135,46 +135,6 @@ h3, .h3 {
 @endsection
 
 @push('script-page')
-{{-- <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.5/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.5/js/buttons.print.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('.datatable').DataTable({
-        dom: 'Bfrtip',
-        searching: false,
-        info: false,
-        paging: false,
-        buttons: [
-
-            {
-
-                extend: 'excelHtml5',
-                title: 'Task Report',
-                titleAttr: 'Excel',
-                text: '<i class="fa fa-file-excel-o"></i>',
-
-                exportOptions: {
-                    modifier: {
-                        order: 'index', // 'current', 'applied','index', 'original'
-                        page: 'all', // 'all', 'current'
-                        search: 'none' // 'none', 'applied', 'removed'
-                    },
-                   
-                }
-            },
-
-            'colvis'
-        ]
-       
-    });
-}); 
-
-</script> --}}
 <script>
  $("#diary_template_select").change(function() {
 

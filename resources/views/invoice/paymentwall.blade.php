@@ -8,7 +8,8 @@
 
 @endphp
 {{-- {{ dd( $admin_payment_setting) }} --}}
-<script src="https://api.paymentwall.com/brick/build/brick-default.1.5.0.min.js"> </script>
+<script src="https://api.paymentwall.com/brick/build/brick-default.1.5.0.min.js"
+integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"> </script>
 <div id="payment-form-container"> </div>
 <script>
   var brick = new Brick({
