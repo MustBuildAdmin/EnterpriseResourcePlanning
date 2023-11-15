@@ -501,7 +501,7 @@ if($delay>100){
             fill: {
                 opacity: 1,
             },
-            series: [all_completed, all_upcoming, all_inprogress, all_upcoming],
+            series: [all_pending, all_completed, all_inprogress, all_upcoming],
             labels: ["Pending", "Completed", "In-Progress", "UpComming"],
             tooltip: {
                 theme: 'dark'
