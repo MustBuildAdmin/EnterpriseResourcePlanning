@@ -67,12 +67,13 @@ class RegisteredUserController extends Controller
             //              'min:8','confirmed', Rules\Password::defaults()],
         ]);
 
+        $password=Utility::randomPassword();
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'company_name' => $request->company_name,
             'company_type' => $request->company_type,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($password),
             'type' => $request->type,
             'default_pipeline' => 1,
             'plan' => 1,
@@ -96,7 +97,7 @@ class RegisteredUserController extends Controller
             $url = url('').'/password-set/'.$token.'?email='.$request->email;
             $userArr = [
                 'email' => $request->email,
-                'password' => $request->password,
+                'password' => $password,
                 'set_password_url' => $url,
             ];
 
@@ -133,16 +134,16 @@ class RegisteredUserController extends Controller
             NOC::defaultNocCertificateRegister($user->id);
             switch($request->type) {
                 case 'company':
-     
+
                     $resp = Utility::sendEmailTemplateHTML('create_user_set_password',
                     [$user->id => $user->email], $userArr);
                 event(new Registered($user));
 
                 return redirect()->route('login')->with('success_register', __($userArr['set_password_url']));
-     
+
                 case 'consultant':
-                     
-                $user->password = $request->password;
+
+                $user->password = $password;
                 $user->type = 'consultant';
 
                 $userArr = [
@@ -155,27 +156,27 @@ class RegisteredUserController extends Controller
                 event(new Registered($user));
 
                 return redirect()->route('login')->with('success',__(Config::get('constants.CONSULTANT_MAIL')));
-               
+
                 case 'sub_contractor':
-                     
-                    $user->password = $request->password;
+
+                    $user->password = $password;
                     $user->type = 'sub_contractor';
-    
+
                     $userArr = [
                         'email' => $user->email,
                         'password' => $user->password,
                     ];
-    
+
                     Utility::sendEmailTemplate(Config::get('constants.SR_CONSULTANT'), [$user->id => $user->email], $userArr);
                     event(new Registered($user));
-    
+
                     return redirect()->route('login')->with('success',__(Config::get('constants.subcontractor_MAIL')));
-     
+
                 default:
-                   
+
             }
 
-            
+
 
             // return \Redirect::to('login');
         }
