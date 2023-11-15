@@ -694,7 +694,9 @@
                                                 <small>
                                                     {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
                                                     <a href="https://stripe.com/docs/currencies"
-                                                       target="_blank" rel="noopener">{{ __('you can find out here..') }}</a>
+                                                       target="_blank" rel="noopener">
+                                                       {{ __('you can find out here..') }}
+                                                    </a>
                                                 </small>
                                                 <br>
                                                 @error('currency')

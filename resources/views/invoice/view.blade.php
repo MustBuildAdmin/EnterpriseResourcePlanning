@@ -696,7 +696,8 @@
                                 <tr>
                                     <td>
                                         @if(!empty($payment->add_receipt))
-                                            <a href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}"
+                                            <a
+                                            href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}"
                                                 download="" class="btn  btn-secondary btn-icon rounded-pill"
                                                  target="_blank" rel="noopener">
                                                 <span class="btn-inner--icon"><i class="ti ti-download"></i></span>
