@@ -165,7 +165,8 @@
                                             </a>
                                             <a href="{{ $supportpath . '/' . $support->attachment }}"
                                                 class="action-btn bg-secondary ms-2 mx-3 btn btn-sm align-items-center"
-                                                data-bs-toggle="tooltip" title="{{__('Download')}}" target="_blank" rel="noopener">
+                                                data-bs-toggle="tooltip" title="{{__('Download')}}"
+                                                target="_blank" rel="noopener">
                                                 <span class="btn-inner--icon">
                                                     <i class="ti ti-crosshair text-white" ></i>
                                                 </span>

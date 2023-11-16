@@ -692,7 +692,8 @@
                                                 {{ Form::label('currency', __('Currency *'), ['class' => 'form-label']) }}
                                                 {{ Form::text('currency', env('CURRENCY'), ['class' => 'form-control font-style', 'required', 'placeholder' => __('Enter Currency')]) }}
                                                 <small>
-                                                    {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
+                                                    {{ __('Note: Add currency code as per three-letter ISO code.') }}
+                                                    <br>
                                                     <a href="https://stripe.com/docs/currencies"
                                                        target="_blank" rel="noopener">
                                                        {{ __('you can find out here..') }}

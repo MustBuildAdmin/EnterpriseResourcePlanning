@@ -99,7 +99,7 @@
                                         @if($item->created_by == \Auth::user()->id && $item->checkDateTime())
 
                                             <a href="{{$item->start_url}}" target="_blank" rel="noopener">
-                                                {{__('Start meeting')}} 
+                                                {{__('Start meeting')}}
                                                 <i class="ti ti-external-link-square-alt "></i>
                                             </a>
                                         @elseif($item->checkDateTime())
