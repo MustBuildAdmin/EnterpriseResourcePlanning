@@ -275,7 +275,7 @@
 
 
 @endpush
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="{{ asset('assets/dist/js/jquery-3.6.4.min.js') }}"></script>
 
 @section('content')
 <div>
@@ -315,9 +315,13 @@
                                 <div class="form-group col-md-6">
                                     {{Form::label('site_currency',__('Currency *'),array('class' => 'form-label')) }}
                                     {{ Form::text('site_currency', $settings['site_currency'], ['class' => 'form-control font-style', 'required', 'placeholder' => __('Enter Currency')]) }}
-                                    <small> {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
+                                    <small>
+                                        {{ __('Note: Add currency code as per three-letter ISO code.') }}<br>
                                         <a href="https://stripe.com/docs/currencies"
-                                            target="_blank">{{ __('you can find out here..') }}</a></small> <br>
+                                            target="_blank" rel="noopener">
+                                            {{ __('you can find out here..') }}
+                                        </a>
+                                        </small> <br>
                                     @error('site_currency')
                                     <span class="invalid-site_currency" role="alert">
                                         <strong class="text-danger">{{ $message }}</strong>

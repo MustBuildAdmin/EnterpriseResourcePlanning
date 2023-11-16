@@ -1,16 +1,10 @@
 @include('new_layouts.header')
 @include('hrm.hrm_main',['hrm_header' => 'Dashboard'])
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-    <script src="https://tabler.io/demo/dist/libs/apexcharts/dist/apexcharts.min.js?1685976846"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://tabler.io/demo/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1685976846"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://tabler.io/demo/dist/libs/jsvectormap/dist/maps/world-merc.js?1685976846"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://tabler.io/demo/dist/js/tabler.min.js?1685976846"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
+<script src="{{ asset('assets/dist/js/jsvectormap.min.js') }}"></script>
+<script src="{{ asset('assets/dist/js/world-merc.js') }}"></script>
+<script src="{{ asset('assets/dist/js/tabler.min.js') }}"></script>
 <div>
     <!-- Page header -->
     <div class="page-header d-print-none">

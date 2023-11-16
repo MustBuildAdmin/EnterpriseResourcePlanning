@@ -175,7 +175,7 @@ a.text-dark {
                               @if ($key < 3)
                                   @if ($name_r->avatar)
  
-                                      <a href="#" class="avatar avatar-sm rounded">
+                                      <a href="#" class="">
                                           <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$name_r->avatar :
                                                 asset(Storage::url("uploads/avatar/avatar.png"))}}"
                                               alt="{{strtoupper($short)}}" data-bs-toggle="tooltip"

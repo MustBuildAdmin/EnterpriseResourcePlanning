@@ -193,7 +193,10 @@
 {{--                                    @if(!empty($support->attachment))--}}
 {{--                                        <div class="action-btn bg-primary ms-2">--}}
 
-{{--                                        <a href="{{asset(Storage::url('uploads/supports')).'/'.$support->attachment}}" download="" class="mx-3 btn btn-sm align-items-center" target="_blank">--}}
+{{--                                        <a
+                                                href="{{asset(Storage::url('uploads/supports')).'/'.$support->attachment}}"
+                                                download=""
+                                                 class="mx-3 btn btn-sm align-items-center" target="_blank" rel="noopener">--}}
 
 {{--                                                <i class="ti ti-download text-white" data-bs-toggle="tooltip" data-bs-original-title="{{ __('Download') }}"></i></a>--}}
 {{--                                        </div>--}}
@@ -209,10 +212,19 @@
 
                                 <td>
                                     @if(!empty($support->attachment))
-                                        <a  class="action-btn bg-primary ms-2 btn btn-sm align-items-center" href="{{ $supportpath . '/' . $support->attachment }}" download="">
+                                        <a  class="action-btn bg-primary ms-2 btn btn-sm align-items-center"
+                                         href="{{ $supportpath . '/' . $support->attachment }}" download=""
+                                         rel="noopener">
                                             <i class="ti ti-download text-white"></i>
                                         </a>
-                                        <a href="{{ $supportpath . '/' . $support->attachment }}"  class="action-btn bg-secondary ms-2 mx-3 btn btn-sm align-items-center" data-bs-toggle="tooltip" title="{{__('Download')}}" target="_blank"><span class="btn-inner--icon"><i class="ti ti-crosshair text-white" ></i></span></a>
+                                        <a href="{{ $supportpath . '/' . $support->attachment }}"
+                                            class="action-btn bg-secondary ms-2 mx-3 btn btn-sm align-items-center"
+                                            data-bs-toggle="tooltip" title="{{__('Download')}}" target="_blank"
+                                            rel="noopener">
+                                            <span class="btn-inner--icon">
+                                                <i class="ti ti-crosshair text-white" ></i>
+                                            </span>
+                                        </a>
                                     @else
                                         -
                                     @endif

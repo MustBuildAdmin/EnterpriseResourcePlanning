@@ -169,7 +169,7 @@ class ProjectController extends Controller
 
             $project->created_by = \Auth::user()->creatorId();
             // instance creation------------------------
-            $var=rand('100000','555555').date('dmyhisa').$request->client_id.$request->project_name;
+            $var=mt_rand(9, 999999999).date('dmyhisa').$request->client_id.$request->project_name;
             $instance_id=Hash::make($var);
             $project->instance_id=$instance_id;
             $project->country = $request->country;
@@ -180,6 +180,11 @@ class ProjectController extends Controller
             $project->longitude = $request->longitude;
             $project->micro_program = $microProgram;
             $project->status = "in_progress";
+            if($request->file_status!='M'){
+
+                $project->critical_update = 0;
+
+            }
             ///---------end-----------------
             $project->save();
 
@@ -748,7 +753,7 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getActivityLog(Request $request, $project_id){
-      
+
         // Page Length
         $pageNumber = ( $request->start / $request->length )+1;
         $pageLength = $request->length;
@@ -772,10 +777,10 @@ class ProjectController extends Controller
                         $end_date,
                     ]
                 );
-                
+
             });
         }
-       
+
         $task_status=array();
         if(!empty($request->task_status)){
             if(in_array("Create",$request->task_status)){
@@ -791,8 +796,8 @@ class ProjectController extends Controller
                 $query->whereIn('log_type', $task_status);
             }
         }
-        
-        
+
+
         $query->where("project_id", $project_id);
         $recordsFiltered = $recordsTotal = $query->count();
         $users = $query->skip($skip)->take($pageLength)->get();
@@ -1255,7 +1260,7 @@ class ProjectController extends Controller
                     $startDate->addDay();
                 }
                 $alldates=$datesBetween;
-            
+
                 // Micro task Start
                 $microTaskCount = 0;
                 $conTaskTaken = 0;
@@ -1329,7 +1334,7 @@ class ProjectController extends Controller
                                 if(in_array($holidaydate->date,$taskDates)){
                                     $holidayCount++;
                                 }
-                                
+
                             }
                         }
 
@@ -1407,7 +1412,7 @@ class ProjectController extends Controller
                             } else {
                                 $micro_perday = 0;
                             }
-    
+
                             $micro_current_Planed_percentage = round(
                                 $micro_completed_days * $micro_perday
                             );
@@ -2221,7 +2226,7 @@ class ProjectController extends Controller
         return view("projects.invite", compact("project_id", "users"));
     }
     public function save_teammember(Request $request){
-       
+
         try {
             $authuser = Auth::user();
             $teammemberID = explode(',', $request->teammember_id);
@@ -2297,9 +2302,9 @@ class ProjectController extends Controller
             return redirect()->route($routing, $project_id)->with('success', $msg);
     
         } catch (Exception $e) {
-          
+
                return $e->getMessage();
-          
+
         }
     }
 //    Team Member
@@ -2440,7 +2445,7 @@ class ProjectController extends Controller
     {
         if ($request->ajax()) {
             $project=Project::find(Session::get("project_id"));
-            
+
             if($project->critical_update==0){
 
                 foreach ($request->updatedTask as $value) {
@@ -2467,14 +2472,14 @@ class ProjectController extends Controller
                             ->update(['dependency_critical'=>$freeSlack,
                             'entire_critical'=>$total_slack,
                             'float_val'=>$total_slack]);
-    
+
                 }
 
                 Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
             }
         }
     }
-    
+
     public function get_member(Request $request)
     {
         if ($request->ajax()) {
@@ -3938,11 +3943,11 @@ class ProjectController extends Controller
                                     ->whereIn("id", $arrUser)
                                     ->orderBy('name','ASC')
                                     ->get();
-                    
+
                 }
             }
 
-            
+
             $userData = array();
             if(count($userlist) > 0){
                 foreach($userlist as $task){
@@ -3955,14 +3960,14 @@ class ProjectController extends Controller
             }
 
             echo json_encode($userData);
-          
-    
+
+
         } catch (Exception $e) {
-          
+
               return $e->getMessage();
-          
+
         }
 
-       
+
     }
 }
