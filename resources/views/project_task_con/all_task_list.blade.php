@@ -139,13 +139,13 @@ aria-describedby="Sub Task">
                     @if(date('Y-m-d') < $task->dependency_critical &&
                             $task->progress < 100 && $task->entire_critical > date('Y-m-d') &&
                             $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span>  {{__('Entire Critical')}}
+                        <span class="badge bg-warning me-1"></span>  {{__('High')}}
                     @elseif($task->dependency_critical > date('Y-m-d') && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> {{__('Dependency Critical')}}
+                        <span class="badge bg-warning me-1"></span> {{__('Medium')}}
                     @elseif($task->entire_critical > date('Y-m-d') && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> {{__('Entire Critical')}}
+                        <span class="badge bg-warning me-1"></span> {{__('High')}}
                     @else
-                        <span class="badge bg-info me-1"></span>{{__('Non Critical')}}
+                        <span class="badge bg-info me-1"></span>{{__('Low')}}
                     @endif
                 </td>
 

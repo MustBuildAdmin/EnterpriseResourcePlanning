@@ -308,7 +308,8 @@
 @include('new_layouts.footer')
 <script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
 <script src="{{ asset('litepicker/litepicker.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="{{ asset('assets/js/js/Sortable.min.js') }}">
+</script>
 <script>
    document.addEventListener("DOMContentLoaded", function() {
        window.Litepicker && (new Litepicker({

@@ -26,7 +26,6 @@ require __DIR__.'/auth.php';
 
 Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index'])->middleware(['XSS']);
 Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@index'])->middleware(['auth', 'XSS']);
-Route::get('contactus', 'UserController@contactus')->name('contactus');
 
 // Route::get('/', 'DashboardController@account_dashboard_index')->name('home')->middleware(
 //     [
@@ -63,9 +62,7 @@ Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@
 Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
 Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
 ->middleware('guest');
-Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection')->middleware('guest');
-Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection')
-->middleware('guest');
+
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
         'auth',
@@ -478,6 +475,14 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
+Route::get('instance_project_dairy/{instance_id}/{project_id}', 'RevisionController@instance_project_dairy')->name('projects.instance_project_dairy')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+
 Route::get('hrm_dashboard', 'DashboardController@hrm_dashboard')->name('hrm_dashboard')->middleware(
     [
         'auth',
@@ -515,6 +520,13 @@ Route::get('/company-settings', 'SystemController@companysettings')->name('compa
 Route::get('/system-settings', 'SystemController@systemsettings')->name('systemsettings')->middleware(['auth', 'XSS', 'revalidate']);
 
 Route::get('/construction_main/productivity', 'DashboardController@construction_main')->name('construction_main')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
+Route::get('/dairy_main/dairy/productivity', 'DashboardController@dairy_main')->name('dairy_main')->middleware(
     [
         'auth',
         'XSS',
@@ -3316,17 +3328,6 @@ Route::get(
         'XSS',
     ]
 );
-//Route::delete(
-//    '/projects/{id}/users/{uid}', [
-//                                    'as' => 'projects.users.destroy',
-//                                    'uses' => 'ProjectController@userDestroy',
-//                                ]
-//)->middleware(
-//    [
-//        'auth',
-//        'XSS',
-//    ]
-//);
 Route::post(
     'projects/{id}/milestone', [
         'as' => 'project.milestone.store',
@@ -3396,35 +3397,6 @@ Route::get(
         'XSS',
     ]
 );
-Route::get(
-    'invite_teammember/{id}', [
-        'as' => 'invite.project.invite_teammember',
-        'uses' => 'ProjectController@invite_teammember',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any('search_teammember/{id}', 'ProjectController@search_member')
-->name('invite.search_teammember')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
-
-Route::any('save_teammember', 'ProjectController@save_teammember')
-->name('save_teammember')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
 Route::post(
     'invite-project-user-member', [
         'as' => 'invite.project.user.member',
@@ -3448,7 +3420,18 @@ Route::get(
     ]
 );
 Route::get(
-    'instance_project/{instance_id}/{project_id}/{name}', [
+    'check_instance_dairy/{id}', [
+        'as' => 'projects.check_instance_dairy',
+        'uses' => 'ProjectController@check_instance_dairy',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    'instance_project/{instance_id}/{project_id}', [
         'as' => 'projects.instance_project',
         'uses' => 'RevisionController@instance_project',
     ]
@@ -3458,6 +3441,7 @@ Route::get(
         'XSS',
     ]
 );
+
 Route::delete(
     'projects/{id}/users/{uid}', [
         'as' => 'projects.user.destroy',
@@ -3483,7 +3467,7 @@ Route::get(
 );
 Route::get(
     'projects-view', [
-        'as' => 'filter.project.view',
+    'filter.project.view',
         'uses' => 'ProjectController@filterProjectView',
     ]
 )->middleware(
@@ -3535,18 +3519,6 @@ Route::any(
     'get_member', [
         'as' => 'projects.criticaltask_update',
         'uses' => 'ProjectController@criticaltask_update',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-
-Route::any(
-    'micro_critical_update', [
-        'as' => 'micro.criticaltask_update',
-        'uses' => 'MicroPorgramController@criticaltask_update',
     ]
 )->middleware(
     [
@@ -3685,6 +3657,9 @@ Route::resource('projects', 'ProjectController')->middleware(
         'XSS',
     ]
 );
+Route::get('projects_dairy/{project_id}', 'ProjectController@show_dairy')->name('show_dairy')->middleware(['auth',
+'XSS',
+'revalidate']);
 
 Route::get('boq_file/{project_id}', 'ProjectController@boq_file')->name('boq_file')->middleware(['auth', 'XSS']);
 Route::any('boq_code_verify', 'ProjectController@boq_code_verify')->name('boq_code_verify')->middleware(['auth', 'XSS']);
@@ -4051,13 +4026,15 @@ Route::group(
 );
 
 // Project Timesheet
-Route::get('append-timesheet-task-html', 'TimesheetController@appendTimesheetTaskHTML')->name('append.timesheet.task.html')->middleware(
+Route::get('append-timesheet-task-html', 'TimesheetController@appendTimesheetTaskHTML')
+->name('append.timesheet.task.html')->middleware(
     [
         'auth',
         'XSS',
     ]
 );
-Route::get('timesheet-table-view', 'TimesheetController@filterTimesheetTableView')->name('filter.timesheet.table.view')->middleware(
+Route::get('timesheet-table-view', 'TimesheetController@filterTimesheetTableView')
+->name('filter.timesheet.table.view')->middleware(
     [
         'auth',
         'XSS',
@@ -4097,17 +4074,6 @@ Route::get(
     '/project/{id}/activities', [
         'as' => 'project.activities',
         'uses' => 'ProjectController@projectActivities',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
-Route::post(
-    '/project/{id}/activitieslog', [
-        'as' => 'project.activitieslog',
-        'uses' => 'ProjectController@getActivityLog',
     ]
 )->middleware(
     [
@@ -4207,7 +4173,8 @@ Route::group(
         Route::post('projects/{id}/bug/{bid}/comment', 'ProjectController@bugCommentStore')->name('bug.comment.store');
         Route::post('projects/bug/{bid}/file', 'ProjectController@bugCommentStoreFile')->name('bug.comment.file.store');
         Route::delete('projects/bug/comment/{id}', 'ProjectController@bugCommentDestroy')->name('bug.comment.destroy');
-        Route::delete('projects/bug/file/{id}', 'ProjectController@bugCommentDestroyFile')->name('bug.comment.file.destroy');
+        Route::delete('projects/bug/file/{id}', 'ProjectController@bugCommentDestroyFile')
+        ->name('bug.comment.file.destroy');
         Route::resource('bugstatus', 'BugStatusController');
         Route::post(
             '/bugstatus/order', [
@@ -4230,7 +4197,6 @@ Route::group(
 
     }
 );
-// User_Todo Module
 Route::post(
     '/todo/create', [
         'as' => 'todo.store',
@@ -4313,6 +4279,7 @@ Route::resource('consultants', 'ConsultantController')->middleware(
     ]
 );
 
+
 Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->name('consultants.edit.new')
     ->middleware(
         [
@@ -4321,6 +4288,23 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
             'revalidate',
         ]
     );
+
+Route::get('drawing_list', 'DrawingsController@index')
+->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
+Route::get('drawing_reference_add/{drawing_type}/{reference_number}',
+'DrawingsController@addReference')->name('drawing.reference.add')->middleware(
+    ['auth','XSS']
+);
+Route::post('add_drawings/{drawing_type_id}/{reference_number}',
+'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
+Route::resource('drawings', 'DrawingsController')->middleware(['auth','XSS','revalidate',]);
+Route::delete('drawing_del/{id}/{drawing_type}/{ref_number}/{user}',
+'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
+    ['auth','XSS',]
+);
+Route::get('drawings_search', 'DrawingsController@index')->name('drawings.search')->middleware(['auth','XSS']);
+Route::get('drawing_autocomplete', 'DrawingsController@drawing_autocomplete')
+->name('drawing_autocomplete')->middleware(['auth','XSS',]);
 
 Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_consultant')
     ->middleware(
@@ -5192,9 +5176,6 @@ Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')-
         'XSS',
     ]
 );
-Route::any('get_validated_date', 'MicroPorgramController@get_validated_date')->name('get_validated_date')
-->middleware(['auth', 'XSS']);
-
 
 Route::any('change_schedule_status', 'MicroPorgramController@change_schedule_status')->name('change_schedule_status')->middleware(
     [
@@ -5263,4 +5244,3 @@ Route::any('new_rfi', 'DiaryController@new_rfi')->name('new_rfi');
 Route::any('{any}', function () {
     return view('error');
 })->where('any', '.*');
-

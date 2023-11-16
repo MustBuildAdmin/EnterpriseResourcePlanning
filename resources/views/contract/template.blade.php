@@ -93,7 +93,8 @@ $settings    = Utility::settings();
 @endsection
 
 @push('script-page')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
 <script>
     function closeScript() {

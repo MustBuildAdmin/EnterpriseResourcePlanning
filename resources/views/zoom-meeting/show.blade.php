@@ -26,13 +26,23 @@
                                 <dd class="col-sm-8"><span class="text-sm">{{ $zoomMeeting->duration }}</span></dd>
 
                                 <dt class="col-sm-4"><span class="h6 text-sm mb-0">{{__('Start URl')}}</span></dt>
-                                <dd class="col-sm-8"><span class="text-sm">@if($zoomMeeting->created_by == \Auth::user()->id && $zoomMeeting->checkDateTime())
-                                            <a href="{{$zoomMeeting->start_url}}" target="_blank"> {{__('Start meeting')}} <i class="ti ti-external-link-square-alt "></i></a>
+                                <dd class="col-sm-8"><span class="text-sm">
+                                        @if($zoomMeeting->created_by ==\Auth::user()->id
+                                            && $zoomMeeting->checkDateTime())
+                                            <a href="{{$zoomMeeting->start_url}}" target="_blank" rel="noopener">
+                                                {{__('Start meeting')}}
+                                                <i class="ti ti-external-link-square-alt "></i>
+                                            </a>
                                         @elseif($zoomMeeting->checkDateTime())
-                                            <a href="{{$zoomMeeting->join_url}}" target="_blank"> {{__('Join meeting')}} <i class="ti ti-external-link-square-alt "></i></a>
+                                            <a href="{{$zoomMeeting->join_url}}" target="_blank" rel="noopener">
+                                                {{__('Join meeting')}}
+                                                <i class="ti ti-external-link-square-alt "></i>
+                                            </a>
                                         @else
                                             -
-                                        @endif</span></dd>
+                                        @endif
+                                    </span>
+                                </dd>
 
                                 <dt class="col-sm-4"><span class="h6 text-sm mb-0">{{__('Status')}}</span></dt>
                                 <dd class="col-sm-8">@if($zoomMeeting->checkDateTime())

@@ -103,7 +103,7 @@
             </span>
             @enderror
           </div>
-          <input type="hidden" name="password" value="{{Utility::randomPassword()}}">
+          {{-- <input type="hidden" name="password" value="{{Utility::randomPassword()}}"> --}}
           <div class="mb-3">
             <label for="company_name" class="form-label">{{ __('Company Name') }}
               <span class="error_class">*</span>
@@ -164,7 +164,7 @@
             @enderror
           </div>
 
-          @endif 
+          @endif
           <div class="mb-3">
             <label class="form-check">
               <input type="checkbox" class="form-check-input">

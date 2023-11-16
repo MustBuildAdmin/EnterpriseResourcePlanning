@@ -104,27 +104,27 @@
 
         .Short {  
             width: 100%;   
-            color: #dc3545;  
-            font-weight: 500;  
-            font-size: 15px;  
+            color: #dc3545;
+            font-weight: 500;
+            font-size: 15px;
         }  
         .Weak {  
-            width: 100%;  
-            color: #ffc107;  
-            font-weight: 500;  
-            font-size: 15px;  
+            width: 100%;
+            color: #ffc107;
+            font-weight: 500;
+            font-size: 15px;
         }  
         .Good {  
-            width: 100%;   
-            color: #28a745;  
-            font-weight: 500;  
-            font-size: 15px;  
+            width: 100%;
+            color: #28a745;
+            font-weight: 500;
+            font-size: 15px;
         }  
         .Strong {  
-            width: 100%;   
-            color: #d39e00;  
-            font-weight: 500;  
-            font-size: 15px;  
+            width: 100%;
+            color: #d39e00;
+            font-weight: 500;
+            font-size: 15px;
         } 
     </style>
 
@@ -192,7 +192,8 @@
     @endsection
 
     <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="{{ asset('assets/js/js/jquery.validate.min.js') }}"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
     <script>
         $.strength = function( element, password ) {
