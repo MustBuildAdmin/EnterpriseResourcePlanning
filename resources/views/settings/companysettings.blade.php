@@ -119,8 +119,8 @@
 
 @endphp
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
 
+    <script src="{{ asset('assets/dist/js/jquery-3.6.4.min.js') }}"></script>
     <script>
 
 
@@ -270,7 +270,7 @@
 
 
 @endpush
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" type="text/javascript"></script>
+   
 <div class="page-body">
   <div class="container-xl">
   <div id="multi-step-form-container">

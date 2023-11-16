@@ -9,7 +9,8 @@
 @endphp
 
 {{-- {{ dd( $admin_payment_setting) }} --}}
-<script src="https://api.paymentwall.com/brick/build/brick-default.1.5.0.min.js"> </script>
+
+<script src="{{ asset('assets/dist/js/brick-default.1.5.0.min.js') }}"></script>
 <div id="payment-form-container"> </div>
 <script>
 var brick = new Brick({

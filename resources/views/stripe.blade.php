@@ -1,10 +1,11 @@
 @extends('layouts.admin')
 @push('script-page')
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
+    <script src="https://js.stripe.com/v3/"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/dist/js/inline.js') }}"></script>
+    <script src="{{ asset('assets/dist/js/flwpbf-inline.js') }}"></script>
+    <script src="{{ asset('assets/dist/js/checkout.js') }}"></script>
+    
     <script type="text/javascript">
         @if($plan->price > 0.0 && $admin_payment_setting['is_stripe_enabled'] == 'on' && !empty($admin_payment_setting['stripe_key']) && !empty($admin_payment_setting['stripe_secret']))
         var stripe = Stripe('{{ $admin_payment_setting['stripe_key'] }}');
