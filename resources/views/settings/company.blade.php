@@ -275,7 +275,7 @@
 
 
 @endpush
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script src="{{ asset('assets/dist/js/jquery-3.6.4.min.js') }}"></script>
 
 @section('content')
 <div>
