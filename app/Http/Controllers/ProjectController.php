@@ -167,7 +167,7 @@ class ProjectController extends Controller
 
             $project->created_by = \Auth::user()->creatorId();
             // instance creation------------------------
-            $var=rand('100000','555555').date('dmyhisa').$request->client_id.$request->project_name;
+            $var=mt_rand(9, 999999999).date('dmyhisa').$request->client_id.$request->project_name;
             $instance_id=Hash::make($var);
             $project->instance_id=$instance_id;
             $project->country = $request->country;
