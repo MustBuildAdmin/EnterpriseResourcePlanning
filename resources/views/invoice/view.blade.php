@@ -17,10 +17,13 @@
     </style>
 @endpush
 @push('script-page')
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script src="https://js.stripe.com/v3/"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://js.paystack.co/v1/inline.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         @if($invoice->getDue() > 0  && !empty($company_payment_setting) &&  $company_payment_setting['is_stripe_enabled'] == 'on' && !empty($company_payment_setting['stripe_key']) && !empty($company_payment_setting['stripe_secret']))
 
@@ -309,7 +312,10 @@
                         <a href="{{ route('invoice.resent',$invoice->id)}}" class="btn  btn-primary me-2">{{__('Resend Invoice')}}</a>
                     </div>
                     <div class="all-button-box">
-                        <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" target="_blank" class="btn  btn-primary">{{__('Download')}}</a>
+                        <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id))}}" rel="noopener"
+                             target="_blank" class="btn  btn-primary">
+                             {{__('Download')}}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -690,7 +696,12 @@
                                 <tr>
                                     <td>
                                         @if(!empty($payment->add_receipt))
-                                            <a href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}" download="" class="btn  btn-secondary btn-icon rounded-pill" target="_blank"><span class="btn-inner--icon"><i class="ti ti-download"></i></span></a>
+                                            <a
+                                            href="{{asset(Storage::url('uploads/payment')).'/'.$payment->add_receipt}}"
+                                                download="" class="btn  btn-secondary btn-icon rounded-pill"
+                                                 target="_blank" rel="noopener">
+                                                <span class="btn-inner--icon"><i class="ti ti-download"></i></span>
+                                            </a>
                                         @else
                                             -
                                         @endif
@@ -701,7 +712,13 @@
                                     <td>{{!empty($payment->bankAccount)?$payment->bankAccount->bank_name.' '.$payment->bankAccount->holder_name:'--'}}</td>
                                     <td>{{!empty($payment->reference)?$payment->reference:'--'}}</td>
                                     <td>{{!empty($payment->description)?$payment->description:'--'}}</td>
-                                    <td>@if(!empty($payment->receipt))<a href="{{$payment->receipt}}" target="_blank"> <i class="ti ti-file"></i></a>@else -- @endif</td>
+                                    <td>@if(!empty($payment->receipt))
+                                        <a href="{{$payment->receipt}}" target="_blank" rel="noopener">
+                                            <i class="ti ti-file"></i></a>
+                                        @else
+                                        --
+                                        @endif
+                                    </td>
                                     <td>{{!empty($payment->order_id)?$payment->order_id:'--'}}</td>
                                     @can('delete invoice product')
                                         <td>

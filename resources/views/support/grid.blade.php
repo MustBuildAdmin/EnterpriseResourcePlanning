@@ -77,7 +77,11 @@
                             <div class="col text-center">
                                 <span class="h6 mb-0">
                                     @if(!empty($support->attachment))
-                                        <a href="{{asset(Storage::url('uploads/supports')).'/'.$support->attachment}}" download="" class="btn btn-sm btn-secondary btn-icon rounded-pill" target="_blank"><span class="btn-inner--icon"><i class="ti ti-download"></i></span></a>
+                                        <a href="{{asset(Storage::url('uploads/supports')).'/'.$support->attachment}}"
+                                            download="" class="btn btn-sm btn-secondary btn-icon rounded-pill"
+                                             target="_blank" rel="noopener"><span class="btn-inner--icon">
+                                                <i class="ti ti-download"></i></span>
+                                        </a>
 
                                     @else
                                         -
