@@ -7,6 +7,8 @@
 <link href="{{ asset('assets/js/css/demo.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/js/css/tabler-vendors.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
+<link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <!-- css link ends -->
 
 <!-- css starts -->
@@ -410,6 +412,17 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <input type='hidden' id='start_date_input'>
 <input type='hidden' id='end_date_input'>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    @if(Session::has('error'))
+    <script>
+    toastr.options =
+    {
+        "closeButton" : true,
+        "progressBar" : true
+    }
+            toastr.error("{{ session('error') }}");
+    </script>
+    @endif
 <script type="text/javascript">
     var tempcsrf = '{!! csrf_token() !!}';
 
@@ -1333,6 +1346,12 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
             gantt.showLightbox(tid);
             //  gantt.load("{{ route('projects.gantt_data', [$project->id]) }}");
+        }
+        else{
+            if(response.action == "Date restriction"){
+                toastr.error("Date restriction");
+                gantt.load("{{ route('projects.micro_gantt_data', [$project->id]) }}");
+            }
         }
     });
     // }
