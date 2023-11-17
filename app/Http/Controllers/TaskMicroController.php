@@ -143,8 +143,8 @@ class TaskMicroController extends Controller
                 ->first();
 
             if($task->parent == 0){
-                $setstartdate = $task->start_date;
-                $setenddate   = $task->end_date;
+                $setstartdate = date('Y-m-d',strtotime($task->start_date));
+                $setenddate   = date('Y-m-d',strtotime($task->end_date));
             }
             else{
                 $parentId = $task->task_id;
@@ -154,11 +154,15 @@ class TaskMicroController extends Controller
                     'instance_id' => Session::get('project_instance')])
                     ->first();
 
-                $setstartdate = $parenttask->start_date;
-                $setenddate   = $parenttask->end_date;
+                $setstartdate = date('Y-m-d',strtotime($parenttask->start_date));
+                $setenddate   = date('Y-m-d',strtotime($parenttask->end_date));
             }
 
-          
+            // dd($setstartdate, date('Y-m-d',strtotime($request->start_date)), $setenddate, date('Y-m-d',strtotime($request->end_date)));
+
+            if($setstartdate < date('Y-m-d',strtotime($request->start_date))  || $setenddate > date('Y-m-d',strtotime($request->end_date))){
+                return response()->json(['success'=>false,'action' => 'Date restriction']);
+            }
        
             if (isset($request->users)) {
                 if (gettype($request->users) == 'array') {
