@@ -20,6 +20,8 @@ use App\Models\ProjectUser;
 use App\Models\Task_progress;
 use App\Models\TaskStage;
 use App\Models\TimeTracker;
+use App\Models\ProjectConsultant;
+use App\Models\ProjectSubcontractor;
 use App\Models\User;
 use App\Models\Utility;
 use App\Models\MicroTask;
@@ -835,7 +837,45 @@ class ProjectController extends Controller
             $user_projects = $usr->projects->pluck("id")->toArray();
         }
         if (in_array($project->id, $user_projects)) {
-            return view("construction_project.teammembers", compact("project"));
+            return view("construction_project.teammembers", compact("project","project_id"));
+        } else {
+            return redirect()
+                ->back()
+                ->with("error", __("Permission Denied."));
+        }
+    }
+    public function projectConsultant(Request $request, $project_id)
+    {
+        $project = Project::where(["id" => $project_id])->first();
+        $usr = Auth::user();
+        if (\Auth::user()->type == "client") {
+            $user_projects = Project::where("client_id", \Auth::user()->id)
+                ->pluck("id", "id")
+                ->toArray();
+        } else {
+            $user_projects = $usr->projects->pluck("id")->toArray();
+        }
+        if (in_array($project->id, $user_projects)) {
+            return view("construction_project.consultant", compact("project","project_id"));
+        } else {
+            return redirect()
+                ->back()
+                ->with("error", __("Permission Denied."));
+        }
+    }
+    public function projectSubcontractor(Request $request, $project_id)
+    {
+        $project = Project::where(["id" => $project_id])->first();
+        $usr = Auth::user();
+        if (\Auth::user()->type == "client") {
+            $user_projects = Project::where("client_id", \Auth::user()->id)
+                ->pluck("id", "id")
+                ->toArray();
+        } else {
+            $user_projects = $usr->projects->pluck("id")->toArray();
+        }
+        if (in_array($project->id, $user_projects)) {
+            return view("construction_project.subcontractor", compact("project","project_id"));
         } else {
             return redirect()
                 ->back()
@@ -1031,7 +1071,7 @@ class ProjectController extends Controller
                 $cnt = 0;
                 $cnt1 = 0;
 
-                foreach (array_keys($seven_days) as $k => $date) {
+                foreach (array_keys($seven_days) as $date) {
                     $task_cnt = $project
                         ->tasks()
                         ->where("is_complete", "=", 1)
@@ -1232,9 +1272,6 @@ class ProjectController extends Controller
                 $microallDate = [];
                 $microProgramName = [];
                 $micro_current_Planed_percentage = 0;
-                $micro_actual_percentage = "0";
-                $micro_no_working_days   = $project->estimated_days;
-                $micro_date2 = date_create($project->end_date);
                 $micro_planned_set = [];
                 $micro_actual_percentage_set = [];
                 $micro_actual_percentage = 0;
@@ -1259,7 +1296,8 @@ class ProjectController extends Controller
                             ->where('type','project')
                             ->where('micro_flag',1)->get()->count();
 
-                        $microallDate = MicroTask::select('micro_tasks.start_date', 'micro_tasks.end_date','micro_tasks.id')
+                        $microallDate = MicroTask::select('micro_tasks.start_date',
+                         'micro_tasks.end_date','micro_tasks.id')
                             ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                             ->whereNotNull('pros.instance_id')
                             ->where('micro_tasks.micro_flag',1)
@@ -1674,7 +1712,7 @@ class ProjectController extends Controller
                 $cnt = 0;
                 $cnt1 = 0;
 
-                foreach (array_keys($seven_days) as $k => $date) {
+                foreach (array_keys($seven_days) as $date) {
                     $task_cnt = $project
                         ->tasks()
                         ->where("is_complete", "=", 1)
@@ -1784,7 +1822,6 @@ class ProjectController extends Controller
                 if ($workdone_percentage > 100) {
                     $workdone_percentage = 100;
                 }
-                $remaing_percenatge = round(100 - $current_Planed_percentage);
                 $project_task = Con_task::where(
                     "con_tasks.project_id",
                     Session::get("project_id")
@@ -1837,10 +1874,16 @@ class ProjectController extends Controller
 
                     $search_date = $startDate->format('Y-m-d');
                     // completed task count
-                    $completed[]=Task_progress::where('project_id',$project->id)->where('instance_id',Session::get("project_instance"))->where('record_date', 'like', $search_date.'%')->where('percentage','100')->count();
+                    $completed[]=Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('record_date', 'like', $search_date.'%')
+                    ->where('percentage','100')->count();
 
                     // pending task count
-                    $pending[]=Task_progress::where('project_id',$project->id)->where('instance_id',Session::get("project_instance"))->where('record_date', 'like', $search_date.'%')->where('percentage','>','100')->count();
+                    $pending[]=Task_progress::where('project_id',$project->id)
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('record_date', 'like', $search_date.'%')
+                    ->where('percentage','>','100')->count();
 
                     $startDate->addDay();
                 }
@@ -2189,57 +2232,142 @@ class ProjectController extends Controller
             $teammemberID = explode(',', $request->teammember_id);
             $project_id = explode(',', $request->project_id);
             $project = Project::find($project_id)->first();
-            foreach($teammemberID as $id){
-
-                $createConnection =  ProjectUser::create([
-                    "project_id" => $request->project_id,
-                    "user_id" => $id,
-                    "invited_by" => $authuser->id,
-                    'invite_status'=>'requested'
-                ]);
-
-                $inviteUrl=url('').Config::get('constants.INVITATION_URL_teammember').$createConnection->id;
-                $userArr = [
-                    'invite_link' => $inviteUrl,
-                    'user_name' => \Auth::user()->name,
-                    'project_name' => $project->project_name,
-                    'email' => \Auth::user()->email,
-                ];
-
-                Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
-                        [$id => \Auth::user()->email],$userArr);
+            $type=$request->type;
+            if(str_contains($type,'subcontractor')){
+                foreach($teammemberID as $id){
+                    $createConnection =  ProjectSubcontractor::create([
+                        "project_id" => $request->project_id,
+                        "user_id" => $id,
+                        "invited_by" => $authuser->id,
+                        'invite_status'=>'requested'
+                    ]);
+                    $inviteUrl=url('').Config::get('constants.INVITATION_URL_subcontractor_proj').$createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'project_name' => $project->project_name,
+                        'email' => \Auth::user()->email,
+                    ];
+                    Utility::sendEmailTemplate(Config::get('constants.INSR_PROJ'),
+                            [$id => \Auth::user()->email],$userArr);
+                }
+                $msg=__('Sub Contractor Invitation to project sent successfully.');
+                $routing='project.subcontractor';
+            }
+            if(str_contains($type,'consultant')){
+                foreach($teammemberID as $id){
+                    $createConnection =  ProjectConsultant::create([
+                        "project_id" => $request->project_id,
+                        "user_id" => $id,
+                        "invited_by" => $authuser->id,
+                        'invite_status'=>'requested'
+                    ]);
+                    $inviteUrl=url('').Config::get('constants.INVITATION_URL_consultant_proj').$createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'project_name' => $project->project_name,
+                        'email' => \Auth::user()->email,
+                    ];
+                    Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT_PROJ'),
+                            [$id => \Auth::user()->email],$userArr);
+                }
+                $msg=__('Consultant Invitation to project sent successfully.');
+                $routing='project.consultant';
 
             }
+            if(str_contains($type,'teammember')){
+                foreach($teammemberID as $id){
+                    $createConnection =  ProjectUser::create([
+                        "project_id" => $request->project_id,
+                        "user_id" => $id,
+                        "invited_by" => $authuser->id,
+                        'invite_status'=>'requested'
+                    ]);
+            
+                    $inviteUrl=url('').Config::get('constants.INVITATION_URL_teammember').$createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'project_name' => $project->project_name,
+                        'email' => \Auth::user()->email,
+                    ];
+                    Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                            [$id => \Auth::user()->email],$userArr);
+                }
+                $msg=__('Team Member Invitation Sent Successfully.');
+                $routing='project.teammembers';
 
-
-                return redirect()->route('project.teammembers', $project_id)
-                             ->with('success', __('Team Member Invitation Sent Successfully.'));
-
-
+            }
+            return redirect()->route($routing, $project_id)->with('success', $msg);
+    
         } catch (Exception $e) {
 
                return $e->getMessage();
 
         }
     }
+//    Team Member
     public function createConnection(Request $request)
     {
         // Need to check invitation link is valid or expired based on that need to redirect
         $checkConnection = ProjectUser::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
         $msg = 'valid';
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg'));
+        $type="team member";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
     }
 
     public function submitConnection(Request $request)
     {
         $msg = $request->status;
+        $type="team member";
         ProjectUser::where(['id' => $request->id])->update(['invite_status' => $msg]);
         $checkConnection = ProjectUser::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg'));
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+    }
+    //    Team Member
+    public function createConnectionConsultant(Request $request)
+    {
+        // Need to check invitation link is valid or expired based on that need to redirect
+        $checkConnection = ProjectConsultant::where(['id' => $request->id])->first();
+        $project = Project::find($checkConnection->project_id)->first();
+        $msg = 'valid';
+        $type="consultant";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
     }
 
+    public function submitConnectionConsultant(Request $request)
+    {
+        $msg = $request->status;
+        ProjectConsultant::where(['id' => $request->id])->update(['invite_status' => $msg]);
+        $checkConnection = ProjectConsultant::where(['id' => $request->id])->first();
+        $project = Project::find($checkConnection->project_id)->first();
+        $type="consultant";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+    }
+
+    //    Team Member
+    public function createConnectionSubcontractor(Request $request)
+    {
+        // Need to check invitation link is valid or expired based on that need to redirect
+        $checkConnection = ProjectSubcontractor::where(['id' => $request->id])->first();
+        $project = Project::find($checkConnection->project_id)->first();
+        $msg = 'valid';
+        $type="sub contractor";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+    }
+
+    public function submitConnectionSubcontractor(Request $request)
+    {
+        $msg = $request->status;
+        ProjectSubcontractor::where(['id' => $request->id])->update(['invite_status' => $msg]);
+        $checkConnection = ProjectSubcontractor::where(['id' => $request->id])->first();
+        $project = Project::find($checkConnection->project_id)->first();
+        $type="sub contractor";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+    }
     public function inviteProjectUserMember(Request $request)
     {
         $authuser = Auth::user();
@@ -2287,8 +2415,24 @@ class ProjectController extends Controller
     public function loadUser(Request $request)
     {
         if ($request->ajax()) {
+           
             $project = Project::find($request->project_id);
-            $returnHTML = view("projects.users", compact("project"))->render();
+            $type=$request->type;
+            if(str_contains($type,'subcontractor')){
+                $user_contact=ProjectSubcontractor::with('projectUsers')
+                ->where(['project_id'=>$request->project_id])->get();
+            }
+            if(str_contains($type,'consultant')){
+                $user_contact=ProjectConsultant::with('projectUsers')
+                ->where(['project_id'=>$request->project_id])->get();
+
+            }
+            if(str_contains($type,'teammember')){
+                $user_contact=ProjectUser::with('projectUsers')->where(['project_id'=>$request->project_id])->get();
+            }
+            
+           
+            $returnHTML = view("projects.users", compact("project","type","user_contact"))->render();
 
             return response()->json([
                 "success" => true,
@@ -2585,8 +2729,9 @@ class ProjectController extends Controller
                         ->where("instance_id", $instanceId)
                         ->pluck("non_working_days")
                         ->first();
-                    // critical bulk update
-                    $critical_update=Project::where("id", Session::get("project_id"))->pluck('critical_update')->first();
+                    // critical bulk update 
+                    $critical_update=Project::where("id", Session::get("project_id"))
+                    ->pluck('critical_update')->first();
 
                     return view(
                         "construction_project.gantt",
@@ -2631,7 +2776,6 @@ class ProjectController extends Controller
                 }
             }
 
-            //return view('projects.gantt', compact('project', 'tasks', 'duration'));
         } else {
             return redirect()
                 ->back()
@@ -3768,17 +3912,30 @@ class ProjectController extends Controller
         try {
 
             $searchValue = $request['q'];
+            $type = $request['type'];
 
             if($request->filled('q')){
-                $project = Project::find($project_id);
 
-                $user_project = $project->users->pluck("id")->toArray();
-
-                $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                    ->where("type", "!=", "client")
-                    ->whereNOTIn("id", $user_project)
+                if(str_contains($type,'subcontractor')){
+                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
+                    ->whereIn("type", ["sub_contractor"])
                     ->pluck("id")
                     ->toArray();
+                }
+                if(str_contains($type,'consultant')){
+                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
+                    ->whereIn("type", ["consultant"])
+                    ->pluck("id")
+                    ->toArray();
+                }
+                if(str_contains($type,'teammembers')){
+                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
+                    ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
+                    ->pluck("id")
+                    ->toArray();
+                }
+
+                
                 $arrUser = array_unique($user_contact);
 
                 if($request->filled('q')){

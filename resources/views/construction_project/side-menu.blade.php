@@ -306,6 +306,16 @@
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Engineers') }}
                                     </a>
+                                    <a href="{{ route('project.consultant', $project_id) }}"
+                                        class="{{ Request::route()->getName() == 'project.consultant' ?
+                                        'dropdown-item active' : 'dropdown-item' }}">
+                                        {{ __('Consultant') }}
+                                    </a>
+                                    <a href="{{ route('project.subcontractor', $project_id) }}"
+                                        class="{{ Request::route()->getName() == 'project.subcontractor' ?
+                                        'dropdown-item active' : 'dropdown-item' }}">
+                                        {{ __('Sub Contractor') }}
+                                    </a>
                                 </div>
                             </div>
                         </div>

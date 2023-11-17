@@ -1767,7 +1767,11 @@ class Utility extends Model
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $short_lname = substr($arrValue['company_name'], 0, 2);
-        $short_projname = substr($arrValue['project_name'], 0, 2);
+        if(isset($arrValue['project_name'])){
+            $short_projname = substr($arrValue['project_name'], 0, 2);
+        }else{
+            $short_projname = '';
+        }
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
         $arrValue['inviteconsultantHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
         <tr><td class="w-50p"></td>
@@ -2833,51 +2837,27 @@ class Utility extends Model
 
                     // $path = $path.$name;
 
-                } elseif ($settings['storage_setting'] == 's3') {
-                    // print_r($name);
-                    // dd($path);
-
-                    if (! $path = Storage::disk('s3')->putFileAs($path, $file, $name)) {
-                        // echo 'no';
-                    } else {
-                        // echo 'uploaded';
-                    }
-                    // $path = \Storage::disk('s3')->putFileAs(
-                    //         $path,
-                    //         $file,
-                    //         $name
-                    // );
-
-                    // $path = $path.$name;
-                    // dd($path);
                 }
-
-                $res = [
+                return [
                     'flag' => 1,
                     'msg' => 'success',
                     'url' => $path,
                 ];
-
-                return $res;
                 // }
 
             } else {
-                $res = [
+                return [
                     'flag' => 0,
                     'msg' => __('Please set proper configuration for storage.'),
                 ];
-
-                return $res;
             }
 
         } catch (\Exception $e) {
 
-            $res = [
+            return [
                 'flag' => 0,
                 'msg' => $e->getMessage(),
             ];
-
-            return $res;
         }
     }
 
@@ -2943,39 +2923,29 @@ class Utility extends Model
                         $file,
                         $name
                     );
-                } elseif ($settings['storage_setting'] == 's3') {
-                    if (! $path = Storage::disk('s3')->putFileAs($path, $file, $name)) {
-                        // echo 'no';
-                    } else {
-                        // echo 'uploaded';
-                    }
                 }
 
-                $res = [
+                return [
                     'flag' => 1,
                     'msg' => 'success',
                     'url' => $path,
                 ];
 
-                return $res;
-
             } else {
-                $res = [
+
+                return [
                     'flag' => 0,
                     'msg' => __('Please set proper configuration for storage.'),
                 ];
-
-                return $res;
             }
 
         } catch (\Exception $e) {
 
-            $res = [
+
+            return [
                 'flag' => 0,
                 'msg' => $e->getMessage(),
             ];
-
-            return $res;
         }
     }
 
@@ -3076,7 +3046,7 @@ class Utility extends Model
                         //     $file,
                         //     $name
                         // );
-                        if (! $path = Storage::disk('s3')->putFileAs($path, $file, $name)) {
+                        if (! $path = \Storage::disk('s3')->putFileAs($path, $file, $name)) {
                             echo 'no';
                         } else {
                             echo 'uploaded';

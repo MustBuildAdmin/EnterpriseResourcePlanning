@@ -1,9 +1,14 @@
+
 @include('new_layouts.header')
+
 <style>
+
 .green {
     background-color: #206bc4 !important;
 }
+
 </style>
+
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
     <link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
@@ -12,10 +17,11 @@
 <div class="page-wrapper dashboard">
 
 @include('construction_project.side-menu')
+
 <div class="container-fluid">
       <div class="card mt-5 p-4">
         <div class="card-header">
-          <h3>Members of the Project</h3>
+          <h3>Sub Contractor of the Project</h3>
           <div class="card-actions">
             <div class="row">
               <div class="col-12">
@@ -82,7 +88,7 @@
 
             $.ajax({
                 url: '{{ route('project.user') }}',
-                data: {project_id: project_id,type:"teammember"},
+                data: {project_id: project_id,type:"subcontractor"},
                 beforeSend: function () {
                     $('#project_users')
                     .html('<tr><th colspan="2" class="h6 text-center pt-5">{{__('Loading...')}}</th></tr>');

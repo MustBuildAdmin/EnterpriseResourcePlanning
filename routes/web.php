@@ -62,6 +62,18 @@ Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@
 Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
 Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
 ->middleware('guest');
+Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection')->middleware('guest');
+Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection')
+->middleware('guest');
+Route::get('/company-invitation-consultant-project/{id}','ProjectController@createConnectionConsultant')
+->middleware('guest');
+Route::get('/company-invitation-consultant-project/{id}/{status}','ProjectController@submitConnectionConsultant')
+->middleware('guest');
+
+Route::get('/company-invitation-subcontractor-project/{id}','ProjectController@createConnectionSubcontractor')
+->middleware('guest');
+Route::get('/company-invitation-subcontractor-project/{id}/{status}','ProjectController@submitConnectionSubcontractor')
+->middleware('guest');
 
 Route::get('diary/{id}', 'DiaryController@show')->name('diary.show')->middleware(
     [
@@ -475,7 +487,9 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
-Route::get('instance_project_dairy/{instance_id}/{project_id}', 'RevisionController@instance_project_dairy')->name('projects.instance_project_dairy')->middleware(
+Route::get('instance_project_dairy/{instance_id}/{project_id}',
+ 'RevisionController@instance_project_dairy')
+->name('projects.instance_project_dairy')->middleware(
     [
         'auth',
         'XSS',
@@ -3476,7 +3490,8 @@ Route::get(
         'XSS',
     ]
 );
-Route::post('projects/{id}/store-stages/{slug}', 'ProjectController@storeProjectTaskStages')->name('project.stages.store')->middleware(
+Route::post('projects/{id}/store-stages/{slug}', 'ProjectController@storeProjectTaskStages')
+->name('project.stages.store')->middleware(
     [
         'auth',
         'XSS',
@@ -4092,6 +4107,27 @@ Route::get(
         'XSS',
     ]
 );
+Route::get(
+    '/project/{id}/subcontractor', [
+        'as' => 'project.subcontractor',
+        'uses' => 'ProjectController@projectSubcontractor',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::get(
+    '/project/{id}/consultant', [
+        'as' => 'project.consultant',
+        'uses' => 'ProjectController@projectConsultant',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]);
 Route::get(
     '/project/{id}/timesheet/create', [
         'as' => 'timesheet.create',
