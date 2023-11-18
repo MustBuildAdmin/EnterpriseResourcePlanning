@@ -3398,7 +3398,34 @@ Route::get(
     ]
 );
 // End Milestone
+Route::get(
+    'invite_teammember/{id}', [
+        'as' => 'invite.project.invite_teammember',
+        'uses' => 'ProjectController@invite_teammember',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::any('search_teammember/{id}', 'ProjectController@search_member')
+->name('invite.search_teammember')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
+Route::any('save_teammember', 'ProjectController@save_teammember')
+->name('save_teammember')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 // Project Module
 Route::get(
     'invite-project-member/{id}', [
