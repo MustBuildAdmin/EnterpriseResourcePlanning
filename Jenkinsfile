@@ -15,18 +15,19 @@ pipeline {
                 sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
+
+        stage("Unit test") {
+            steps {
+                sh 'php artisan test'
+            }
+        }
         stage('SonarQube Analysis') {
             def scannerHome = tool 'SonarScanner';
             withSonarQubeEnv() {
             sh "${scannerHome}/bin/sonar-scanner"
             }
         }
-        stage("Unit test") {
-            steps {
-                sh 'php artisan test'
-            }
-        }
-         stage("Code coverage") {
+        stage("Code coverage") {
             steps {
                 sh "vendor/bin/phpunit --coverage-html 'reports/coverage'"
             }
