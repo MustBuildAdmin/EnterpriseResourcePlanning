@@ -3409,6 +3409,17 @@ Route::get(
         'XSS',
     ]
 );
+Route::post(
+    '/project/{id}/activitieslog', [
+        'as' => 'project.activitieslog',
+        'uses' => 'ProjectController@getActivityLog',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::any('search_teammember/{id}', 'ProjectController@search_member')
 ->name('invite.search_teammember')->middleware(
     [
