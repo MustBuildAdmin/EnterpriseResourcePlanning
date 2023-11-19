@@ -1535,6 +1535,7 @@ class Utility extends Model
     {
         $arrVariable = [
             '{app_name}',
+            '{project_name}',
             '{company_name}',
             '{user_name}',
             '{app_url}',
@@ -1646,6 +1647,7 @@ class Utility extends Model
         $arrValue = [
             'app_name' => '-',
             'company_name' => '-',
+            'project_name'=>'-',
             'user_name'=>'-',
             'app_url' => '-',
             'email' => '-',
