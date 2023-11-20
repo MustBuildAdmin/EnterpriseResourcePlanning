@@ -94,7 +94,15 @@
      border-radius: 50px !important;
      background-color: #000 !important;
      color: #fff !important;
-|}
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    cursor: default;
+    color: #fff !important;
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none;
+}
 </style>
 <div class="page">
     <!-- Sidebar  -->
@@ -132,8 +140,7 @@
                         <a class="{{ Request::route()->getName() == 'projects.gantt' ||
                         Request::route()->getName() == 'revision' ||
                         Request::route()->getName() == 'project_report.revsion_task_list' ||
-                        Request::route()->getName() == 'taskBoard.view' ||
-                        Request::route()->getName() == 'project_report.view_task_report'
+                        Request::route()->getName() == 'taskBoard.view'
                             ? 'nav-link active dropdown-toggle'
                             : 'nav-link dropdown-toggle' }}"
                             href="#planning" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
@@ -232,9 +239,15 @@
                     @if ($checMicroProgram == 1)
                         @if(Session::get('latest_project_instance') == Session::get('project_instance'))
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                <a class="{{ Request::route()->getName() == 'microprogram' ||
+                                    Request::route()->getName() == 'micro_taskboard' ||
+                                    Request::route()->getName() == 'micro_task_particular' ||
+                                    Request::route()->getName() == 'microprogram.gantt'
+                                        ? 'nav-link active dropdown-toggle'
+                                        : 'nav-link dropdown-toggle' }}"
+                                    href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <span class="d-md-none d-lg-inline-block">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -263,7 +276,7 @@
                                                 ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Schedule') }}</a>
                                         
                                             <a href="{{ route('micro_taskboard') }}"
-                                                class="{{ (Request::route()->getName() == 'micro_taskboard.view')
+                                                class="{{ (Request::route()->getName() == 'micro_taskboard')
                                                 ?'dropdown-item active' :'dropdown-item'}}">{{ __('Active Lookahead') }}</a>
                                         </div>
                                     </div>
@@ -276,7 +289,9 @@
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
                         <a href="{{ route('project.teammembers', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project.teammembers'
+                            class="{{ Request::route()->getName() == 'project.teammembers' ||
+                            Request::route()->getName() == 'project.consultant' ||
+                            Request::route()->getName() == 'project.subcontractor'
                                 ? 'nav-link active dropdown-toggle'
                                 : 'nav-link dropdown-toggle' }}"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
@@ -327,11 +342,10 @@
                         <a href="{{ route('project.activities', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project.activities' ?
                             'nav-link active' : 'nav-link' }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                            <span class="d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-home"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
                                     <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
@@ -350,11 +364,11 @@
                     <li class="nav-item dropdown">
                         <a href="{{ route('project_report.view_task_report', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project_report.view_task_report'
-                                ? 'nav-link active dropdown-toggle'
-                                : 'nav-link dropdown-toggle' }}"
+                                ? 'nav-link active dropdown-item dropdown-toggle'
+                                : 'nav-link dropdown-item dropdown-toggle' }}"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
                             aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -376,13 +390,13 @@
                                 <div class="dropdown-menu-column">
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project_report.view_task_report' ?
-                                        'nav-link active' : 'nav-link' }}">
+                                        'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Daily Task Reports') }}
                                     </a>
-                                    <a class="nav-link" href="./accordion.html">
+                                    <a class="dropdown-item" href="./accordion.html">
                                         {{ __('OverAll Reports') }}
                                     </a>
-                                    <a class="nav-link" href="./accordion.html">
+                                    <a class="dropdown-item" href="./accordion.html">
                                         {{ __('Lookahead Reports') }}
                                     </a>
                                 </div>
@@ -395,7 +409,7 @@
                         <a href="{{ route('project_holiday.index', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project_holiday.index' ?
                             'nav-link active' : 'nav-link' }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
