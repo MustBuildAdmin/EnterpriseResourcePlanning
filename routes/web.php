@@ -3568,29 +3568,21 @@ Route::get(
         'XSS',
     ]
 );
-Route::any(
-    'get_member', [
-        'as' => 'projects.criticaltask_update',
-        'uses' => 'ProjectController@criticaltask_update',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
 
-Route::any(
-    'get_member', [
-        'as' => 'micro.criticaltask_update',
-        'uses' => 'MicroPorgramController@criticaltask_update',
-    ]
-)->middleware(
+Route::any('get_member', 'ProjectController@criticaltask_update')->middleware(
     [
         'auth',
         'XSS',
     ]
-);
+)->name('projects.criticaltask_update');
+
+Route::any('micro_get_member', 'MicroPorgramController@criticaltask_update')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+)->name('micro.criticaltask_update');
+
 
 Route::any(
     'get_validated_date', [

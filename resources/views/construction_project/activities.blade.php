@@ -13,14 +13,14 @@ th.sorting_disabled{
 </style>
 @php $setting  = Utility::settings(\Auth::user()->creatorId()); @endphp
 @push('css-page')
-<link rel="stylesheet" href="{{ asset('css/datatable/buttons.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 <script src="{{ asset('tabler/tabler.min.js') }}"></script>
 <script src="{{ asset('theme/demo-theme.min.js') }}"></script>
 <script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
 <script src="{{ asset('litepicker/litepicker.js') }}"></script>
 <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
-
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <div class="page-wrapper dashboard">
 
 @include('construction_project.side-menu')
@@ -128,7 +128,7 @@ th.sorting_disabled{
     @endcan
 </section>
 @include('new_layouts.footer')
-
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'
  integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 
@@ -139,9 +139,26 @@ th.sorting_disabled{
             }
         });
         $(document).ready(function() {
+            
       $('#task-table').DataTable({
                 processing: true,
                 serverSide: true,
+                pagingType: 'full_numbers',
+                aaSorting: [],
+                "language": {
+                    "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+                    "sZeroRecords": "{{ __('No data available in table') }}",
+                    "sEmptyTable": "{{ __('No data available in table') }}",
+                    "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+                    "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+                    "sSearch": "{{ __('Search') }}:",
+                    "oPaginate": {
+                        "sFirst": "{{ __('First') }}",
+                        "sLast": "{{ __('Last') }}",
+                        "sNext": "{{ __('Next') }}",
+                        "sPrevious": "{{ __('Previous') }}"
+                    },
+                },
                 ajax: {
                     url: "{{ route('project.activitieslog', $project_id) }}",
                     type: "POST",
@@ -154,9 +171,9 @@ th.sorting_disabled{
                     }
                 },
                 order: [],
-                columnDefs: [ { orderable: false, targets: [0,1,2,3,4]}],
+                columnDefs: [ { orderable: true, targets: [0,1,2,3,4]}],
                 pageLength: 10,
-                searching: false,
+                searching: true,
                 aoColumns: [
                     {
                         data: 'activitylogID',
