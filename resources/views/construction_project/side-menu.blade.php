@@ -32,7 +32,7 @@
 }
  thead > tr, thead > tr > th {
      background-color: transparent !important;
-     color: #fff ;
+     color: #fff  !important;
      font-weight: normal;
      text-align: start;
 }
