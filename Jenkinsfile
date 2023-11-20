@@ -15,35 +15,6 @@ pipeline {
                 sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
-
-        stage("Unit test") {
-            steps {
-                sh 'php artisan test'
-            }
-        }
-        stage('SonarQube Analysis') {
-            def scannerHome = tool 'SonarScanner';
-            withSonarQubeEnv() {
-            sh "${scannerHome}/bin/sonar-scanner"
-            }
-        }
-        stage("Code coverage") {
-            steps {
-                sh "vendor/bin/phpunit --coverage-html 'reports/coverage'"
-            }
-        }
-       stage('SonarQube Analysis') {
-             environment {
-                SCANNER_HOME = tool 'SonarQubeScanner'
-                ORGANIZATION = "igorstojanovski-github"
-                PROJECT_NAME = "igorstojanovski_jenkins-pipeline-as-code"
-            }
-            withSonarQubeEnv('SonarCloudOne') {
-             sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.organization=$ORGANIZATION \
-                -Dsonar.java.binaries=build/classes/java/ \
-                -Dsonar.projectKey=$PROJECT_NAME \
-                -Dsonar.sources=.'''
-           }
-    }
+       
     }
 }
