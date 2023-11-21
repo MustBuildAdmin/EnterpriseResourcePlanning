@@ -11,7 +11,6 @@ pipeline {
                 sh 'composer install --no-interaction --optimize-autoloader --no-dev'
                 sh 'composer --version'  
                 sh 'php artisan key:generate'
-                sh 'php artisan migrate'
                 sh 'sudo chmod -R 777 /var/www/html/'
             }
         }
