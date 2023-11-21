@@ -7,6 +7,9 @@
 <link href="{{ asset('assets/js/css/demo.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/js/css/tabler-vendors.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
+<!-- token input css link starts -->
+<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}" />
+<!-- token input css link end -->
 <!-- css link ends -->
 
 <!-- css starts -->
@@ -106,6 +109,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <script src="{{ asset('assets/js/js/taskText.js') }}"></script>
 <script src="{{ asset('assets/js/js/highlight.js') }}"></script>
 <script src="{{ asset('assets/js/js/slackrow.js') }}"></script>
+<script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
 <!-- script js ends -->
 @php
     $holidays = [];
@@ -139,7 +143,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    {{ $projectname }} - {{session::get('current_revision_name')}}
+                    {{ $projectname }} - {{ session::get('current_revision_name') }}
                 </h1>
                 <div class="d-flex flex-column flex-md-row flex-fill
                             align-items-stretch align-items-md-center"
@@ -339,20 +343,20 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
                             </a>
                         </li> --}}
-                        <a href="#"  class="nav-link freeze_button" data-bs-toggle="modal"
-                         data-bs-target="#modal-danger">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                               stroke-linecap="round" stroke-linejoin="round">
-                               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                               <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
-                               <path d="M12 12l8 -4.5"></path>
-                               <path d="M12 12l0 9"></path>
-                               <path d="M12 12l-8 -4.5"></path>
-                               <path d="M16 5.25l-8 4.5"></path>
-                            </svg>
-                            {{ __('Save') }}
-                         </a>
+                            <a href="#" class="nav-link freeze_button" data-bs-toggle="modal"
+                                data-bs-target="#modal-danger">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                                    <path d="M12 12l8 -4.5"></path>
+                                    <path d="M12 12l0 9"></path>
+                                    <path d="M12 12l-8 -4.5"></path>
+                                    <path d="M16 5.25l-8 4.5"></path>
+                                </svg>
+                                {{ __('Save') }}
+                            </a>
                     </ul>
                     <!-- top nav menu list ends-->
                 </div>
@@ -367,56 +371,58 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"id="task-title">{{ __('New Task') }}</h5>
-                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        name="close"></button>
+                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close" name="close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Task Name') }}</label>
+                        <input type="text" id="user_id" name="user_id">
+                        <input type="text" id="reporter_id" name="reporter_id">
                         <input type="text" class="form-control" name="description"
-                            placeholder="Type your Task Name">
+                            placeholder="{{ __('Type your Task Name') }}">
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Task Start Date') }}</label>
                             <input type="text" class="form-control" name="start_date" id="start-date"
-                                placeholder="Enter Your Task Start Date">
+                                placeholder="{{ __('Enter Your Task Start Date') }}">
                         </div>
                         <div class="col-md-6  col-12">
                             <label class="form-label">{{ __('Task End Date') }}</label>
                             <input type="text" class="form-control" name="end_date" id="end-date"
-                                placeholder="Enter Your Task End Date">
+                                placeholder="{{ __('Enter Your Task End Date') }}">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Assignee') }}</label>
-                            <input type="text" class="form-control" name="taskassignee" id="task-assignee"
-                                placeholder="Search your task assignee">
+                            <input type="text" id="taskassignee" name="users"
+                                value="{{ request()->get('q') }}" required>
                         </div>
                     </div>
 
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Reporting To') }}</label>
-                            <input type="text" class="form-control" name="taskassignee" id="task-reporting"
-                                placeholder="Search your Reporting to">
+                            <input type="text" class="form-control" name="reported_to" id="task-reporting"
+                                placeholder="{{ __('Search your Reporting to') }}">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="mb-3">
-                            <div class="form-label">Task Assignment Mode</div>
+                            <div class="form-label">{{ __('Task Assignment Mode') }}</div>
                             <div>
-                              <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Assignment" checked="">
-                                <span class="form-check-label">Self Task</span>
-                              </label>
-                              <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Assignment">
-                                <span class="form-check-label">Sub Contract Task</span>
-                              </label>
+                                <label class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Assignment" checked="">
+                                    <span class="form-check-label">{{ __('Self Task') }}</span>
+                                </label>
+                                <label class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Assignment">
+                                    <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
+                                </label>
                             </div>
-                          </div>
+                        </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
@@ -448,81 +454,82 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     <!-- custom lightbox ends-->
 
     <!-- Delete Confirmation starts-->
-<div class="modal modal-blur fade" id="modal-warning" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-       <div class="modal-content">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <div class="modal-status btn-warning"></div>
-          <div class="modal-body text-center py-4">
-             <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-             <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg"
-                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                <path d="M12 9v4" />
-                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0
+    <div class="modal modal-blur fade" id="modal-warning" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status btn-warning"></div>
+                <div class="modal-body text-center py-4">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24"
+                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 9v4" />
+                        <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0
                    1.636 2.871h16.214a1.914 1.914 0 0 0 1.636
                    -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
-                <path d="M12 16h.01" />
-             </svg>
-             <h3>{{ __('Are you sure?') }}</h3>
-             <div class="text-secondary">{{ __('This action is IRREVERSIBLE.') }}</div>
-             <div class="text-secondary">{{ __('Do you want to continue?') }}</div>
-          </div>
-          <div class="modal-footer">
-             <div class="w-100">
-                <div class="row">
-                   <div class="col">
-                      <a href="#" id="confirm_del_no" class="btn w-100" data-bs-dismiss="modal">
-                      {{ __('No') }}
-                      </a>
-                   </div>
-                   <div class="col">
-                      <a href="#" id="confirm_del_yes" class="btn btn-danger w-100" data-bs-dismiss="modal">
-                      {{ __('Yes') }}
-                      </a>
-                   </div>
+                        <path d="M12 16h.01" />
+                    </svg>
+                    <h3>{{ __('Are you sure?') }}</h3>
+                    <div class="text-secondary">{{ __('This action is IRREVERSIBLE.') }}</div>
+                    <div class="text-secondary">{{ __('Do you want to continue?') }}</div>
                 </div>
-             </div>
-          </div>
-       </div>
-    </div>
- </div>
- <!-- Delete Confirmation ends-->
- 
- <!-- Suc alert starts-->
- <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-       <div class="modal-content">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <div class="modal-status bg-success"></div>
-          <div class="modal-body text-center py-4">
-             <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
-             <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg"
-              width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-               stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                <path d="M9 12l2 2l4 -4" />
-             </svg>
-             <h3>{{ __('Success') }}</h3>
-             <div class="text-secondary">{{ __('Baseline Status successfully changed.') }}</div>
-          </div>
-          <div class="modal-footer">
-             <div class="w-100">
-                <div class="row">
-                   <div class="col">
-                      <a href="#" id="confirm_ok" class="btn w-100" data-bs-dismiss="modal">
-                        {{ __('Ok') }}
-                      </a>
-                   </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" id="confirm_del_no" class="btn w-100" data-bs-dismiss="modal">
+                                    {{ __('No') }}
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a href="#" id="confirm_del_yes" class="btn btn-danger w-100"
+                                    data-bs-dismiss="modal">
+                                    {{ __('Yes') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-             </div>
-          </div>
-       </div>
+            </div>
+        </div>
     </div>
- </div>
- <!-- Suc alert ends-->
+    <!-- Delete Confirmation ends-->
+
+    <!-- Suc alert starts-->
+    <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-success"></div>
+                <div class="modal-body text-center py-4">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24"
+                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                        <path d="M9 12l2 2l4 -4" />
+                    </svg>
+                    <h3>{{ __('Success') }}</h3>
+                    <div class="text-secondary">{{ __('Baseline Status successfully changed.') }}</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" id="confirm_ok" class="btn w-100" data-bs-dismiss="modal">
+                                    {{ __('Ok') }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Suc alert ends-->
 </div>
 
 <input type='hidden' id='weekends' value='{{ $nonWorkingDay }}'>
@@ -570,29 +577,30 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     // end ###############################################
 
-        
+
     // delete confirmation show  #############################
-    $(document).on("click", "#confirm_del_yes", function () {
+    $(document).on("click", "#confirm_del_yes", function() {
         $("#modal-success").modal('show');
         var project_id = {{ $project->id }};
         $.ajax({
-            url: "{{route('projects.freeze_status')}}",
+            url: "{{ route('projects.freeze_status') }}",
             data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),project_id: project_id
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                project_id: project_id
             },
             type: 'POST',
             success: function(response) {
-                    location.reload();
+                location.reload();
             },
             error: function(response) {
-                    show_toastr('error', response.error, 'error');
+                show_toastr('error', response.error, 'error');
             }
         })
     });
     // delete confirmation show  #############################
 
     // delete confirmation hide  #############################
-    $(document).on("click", "#confirm_del_no", function () {
+    $(document).on("click", "#confirm_del_no", function() {
 
         $("#confirm_del_yes").modal('hide');
 
@@ -760,7 +768,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     updatedTask.push(taskdetails);
 
                 };
-             
+
                 workflag = 1;
                 $.ajax({
                     url: '{{ route('projects.criticaltask_update') }}',
@@ -1207,7 +1215,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     })
 
 
-  
+
 
 
 
@@ -1350,11 +1358,66 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         newsecond = year + '-' + mon + '-' + days;
         end_date.value = newsecond;
 
+        var users = form.querySelector("[name='users']");
+
+        var user_id = form.querySelector("[name='user_id']");
+        user_id.value = task.users;
+        var reported_to = form.querySelector("[name='reported_to']");
+        var reporter_id = form.querySelector("[name='reporter_id']");
+        reporter_id.value = task.reported_to;
+      
+        var asignee = '';
+
+        $('#taskassignee').tokenInput("clear");
+
+        if (task.users != null) {
+
+            $.ajax({
+                url: "{{ route('project.get_assignee_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#user_id').val()
+                },
+                success: function(d) {
+                    asignee = {
+                        id: d.id,
+                        name: d.name
+                    };
+                    setTimeout(function() {
+                        $('#taskassignee').tokenInput("add", asignee);
+                    }, 200);
+                }
+            });
+
+        }
+        var reportedto = '';
+        if (task.reported_to != null) {
+
+            $.ajax({
+                url: "{{ route('project.get_assignee_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#reported_to').val()
+                },
+                success: function(d) {
+                    reportedto = {
+                        id: d.id,
+                        name: d.name
+                    };
+                    setTimeout(function() {
+                        $('#task-reporting').tokenInput("add", reportedto);
+                    }, 200);
+                }
+            });
+
+        }
+
+
         form.style.display = "block";
         form.querySelector("#save").onclick = save;
         form.querySelector("#close").onclick = cancel;
         form.querySelector("#cancel").onclick = cancel;
-      
+
     }
 
 
@@ -1377,7 +1440,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         task.text = getForm().querySelector("[name='description']").value;
         get_start_date = getForm().querySelector("[name='start_date']").value;
         get_end_date = getForm().querySelector("[name='end_date']").value;
-
+        task.users = getForm().querySelector("[name='users']").value;
+        task.reported_to = getForm().querySelector("[name='reported_to']").value;
         task.start_date = new Date(get_start_date);
         task.end_date = new Date(get_end_date);
 
@@ -1397,6 +1461,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         if (task.$new)
             gantt.deleteTask(task.id);
         gantt.hideLightbox();
+
     }
 
     function remove() {
@@ -1469,10 +1534,45 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     }
     // gantt crud end
-</script>
 
 
-<script>
+    $("#taskassignee").tokenInput("{{ route('project.user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Task Assignee...') }}",
+        noResultsText: "{{ __('Task Assignee not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
+
+    $("#task-reporting").tokenInput("{{ route('project.user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Reporting To...') }}",
+        noResultsText: "{{ __('Reporting To not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
+    // user scott search
+
     // @formatter:off
     document.addEventListener("DOMContentLoaded", function() {
         window.Litepicker && (new Litepicker({

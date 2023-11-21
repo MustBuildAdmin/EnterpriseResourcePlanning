@@ -61,6 +61,15 @@ class TaskController extends Controller
             }
             $task->users = $implodeusers;
         }
+
+        if (isset($request->reported_to)) {
+            if (gettype($request->reported_to) == 'array') {
+                $implodereporter = implode(',', json_decode($request->reported_to));
+            } else {
+                $implodereporter = $request->reported_to;
+            }
+            $task->reported_to = $implodereporter;
+        }
         // update  the type
         Con_task::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
             ->where('id', $request->parent)->update(['type' => 'project']);
@@ -143,6 +152,17 @@ class TaskController extends Controller
             $users='';
         }
 
+        if (isset($request->reported_to)) {
+            if (gettype($request->reported_to) == 'array') {
+                $implodereportedto = implode(',', json_decode($request->reported_to));
+            } else {
+                $implodereportedto = $request->reported_to;
+            }
+            $reportedto = $implodeusers;
+        }else{
+            $reportedto='';
+        }
+
       
         if(isset($request->totalStack) && $request->totalStack!='undefined'){
             $float_val = $request->totalStack;
@@ -192,6 +212,7 @@ class TaskController extends Controller
             'dependency_critical'=>$dependency_critical,
             'type'=>$type,
             'float_val'=>$float_val,
+            'reported_to'=>$reportedto,
         );
         
 

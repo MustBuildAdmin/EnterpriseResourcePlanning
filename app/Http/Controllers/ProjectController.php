@@ -3970,4 +3970,68 @@ class ProjectController extends Controller
 
 
     }
+
+    public function task_assignee_search(Request $request){
+
+        try {
+
+            
+            $searchValue = $request['q'];
+        
+
+            if($request->filled('q')){
+
+                if (\Auth::user()->type != 'company') {
+                    $userid = Auth::user()->creatorId();
+                } else {
+                    $userid = \Auth::user()->id;
+                }
+              
+                $user_contact = User::where("created_by",$userid)
+                ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
+                ->pluck("id")
+                ->toArray();
+                
+
+                
+                $arrUser = array_unique($user_contact);
+
+                if($request->filled('q')){
+                    $userlist = User::search($searchValue)
+                                    ->whereIn("id", $arrUser)
+                                    ->orderBy('name','ASC')
+                                    ->get();
+
+                }
+            }
+
+
+            $userData = array();
+            if(count($userlist) > 0){
+                foreach($userlist as $task){
+                    $setUser = [
+                        'id' => $task->id,
+                        'name' => $task->name.' - '.$task->email,
+                    ];
+                    $userData[] = $setUser;
+                }
+            }
+
+            echo json_encode($userData);
+          
+    
+        } catch (Exception $e) {
+          
+              return $e->getMessage();
+        
+        }
+
+       
+    }
+
+    public function get_assignee_name(Request $request){
+        $getval=User::where('id',$request->id)->first();
+        return json_decode($getval);
+    }
+
 }
