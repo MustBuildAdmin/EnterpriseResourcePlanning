@@ -1,5 +1,6 @@
 
 @include('new_layouts.header')
+<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <style>
     tr.highlighted {
@@ -118,11 +119,23 @@
 <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('#example2').DataTable({
-            dom: 'Bfrtip',
-            searching: true,
-            info: true,
-            paging: true,
+        new DataTable('#example2', {
+            pagingType: 'full_numbers',
+            aaSorting: [],
+            "language": {
+                "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+                "sZeroRecords": "{{ __('No data available in table') }}",
+                "sEmptyTable": "{{ __('No data available in table') }}",
+                "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+                "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+                "sSearch": "{{ __('Search') }}:",
+                "oPaginate": {
+                    "sFirst": "{{ __('First') }}",
+                    "sLast": "{{ __('Last') }}",
+                    "sNext": "{{ __('Next') }}",
+                    "sPrevious": "{{ __('Previous') }}"
+                },
+            }
         });
     });
 </script>
