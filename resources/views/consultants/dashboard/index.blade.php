@@ -65,7 +65,7 @@
                                     @endif
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <a href="#!" data-size="lg"
-                                            data-url="{{ route('consultant.get_company_details', [$user->id]) }}"
+                                            data-url="{{ route('consultant.consultant_get_company_details', [$user->id]) }}"
                                             data-ajax-popup="true" class="dropdown-item"
                                             data-bs-original-title="{{ __('View Company details') }}">
                                             <i class="ti ti-eye"></i>

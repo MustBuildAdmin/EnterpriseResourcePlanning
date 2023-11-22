@@ -715,6 +715,10 @@ class DashboardController extends Controller
                 $projects->whereIn('status', $request->status);
             }
 
+            if(Auth::user()->type == "consultant"){
+                $projects->Join('consultant_companies as consultant','consultant.company_id');
+            }
+
             $projects = $projects->paginate(8);
 
             return view('construction_project.construction_main', compact('projects', 'user_projects'));

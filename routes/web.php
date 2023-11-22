@@ -4444,8 +4444,8 @@ Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswor
 
 
 
-Route::get('get_company_details/{id}', 'ConsultantController@get_company_details')
-->name('consultant.get_company_details')->middleware(
+Route::get('consultant_get_company_details/{id}', 'ConsultantController@get_company_details')
+->name('consultant.consultant_get_company_details')->middleware(
     [
         'auth',
         'XSS',

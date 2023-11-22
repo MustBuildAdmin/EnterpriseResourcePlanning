@@ -498,7 +498,7 @@ class ConsultantController extends Controller
 
 
 
-    public function get_company_details(Request $request,$id){
+    public function consultant_get_company_details(Request $request,$id){
 
         try {
 
