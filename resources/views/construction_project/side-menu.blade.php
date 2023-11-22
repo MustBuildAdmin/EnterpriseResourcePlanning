@@ -286,6 +286,7 @@
                     @endif
                     <!--LookaHead Planning end-->
 
+                    @if (Auth::user()->type != "consultant")
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
                         <a href="{{ route('project.teammembers', $project_id) }}"
@@ -425,6 +426,7 @@
                             </span>
                         </a>
                     </li>
+                    @endif
                      <!--Holidays ends-->
                      {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>

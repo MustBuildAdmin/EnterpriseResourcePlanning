@@ -884,13 +884,19 @@ class ProjectController extends Controller
     }
     public function show(Project $project)
     {
-        if (\Auth::user()->can("view project")) {
+        
             $usr = Auth::user();
             if (\Auth::user()->type == "client") {
                 $user_projects = Project::where("client_id", \Auth::user()->id)
                     ->pluck("id", "id")
                     ->toArray();
-            } else {
+            } 
+            else if(Auth::user()->type == "consultant"){
+                $user_projects = ProjectConsultant::where('invite_status','active')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else {
                 $user_projects = $usr->projects->pluck("id")->toArray();
             }
             if (in_array($project->id, $user_projects)) {
@@ -1473,52 +1479,47 @@ class ProjectController extends Controller
                     ->whereDate('start_date','>',date('Y-m-d'))
                     ->count();
 
-                // Micro task End
-                return view(
-                    "construction_project.construction_dashboard",
-                    compact(
-                        "project",
-                        "ongoing_task",
-                        "dependencycriticalcount",
-                        "entirecriticalcount",
-                        "project_data",
-                        "total_sub",
-                        "actual_percentage",
-                        "workdone_percentage",
-                        "current_Planed_percentage",
-                        "not_started",
-                        "notfinished",
-                        "remaining_working_days",
-                        "completed_task",
-                        'alldates',
-                        'completed',
-                        'pending',
-                        'microProgram',
-                        'microTaskCount',
-                        'conTaskTaken',
-                        'holidayCount',
-                        'microWeekEndCount',
-                        'totalWorkingDays',
-                        'checkProject',
-                        'all_completed',
-                        'all_upcoming',
-                        'all_inprogress',
-                        'all_pending',
-                        'microProgramName',
-                        'micro_planned_set',
-                        'micro_actual_percentage_set'
-                    )
-                );
+                if (\Auth::user()->can("view project")) {
+                    // Micro task End
+                    return view("construction_project.construction_dashboard",
+                        compact(
+                            "project","ongoing_task","dependencycriticalcount","entirecriticalcount","project_data",
+                            "total_sub","actual_percentage","workdone_percentage","current_Planed_percentage",
+                            "not_started","notfinished","remaining_working_days","completed_task",'alldates',
+                            'completed','pending','microProgram','microTaskCount','conTaskTaken','holidayCount',
+                            'microWeekEndCount','totalWorkingDays','checkProject','all_completed','all_upcoming',
+                            'all_inprogress','all_pending','microProgramName','micro_planned_set',
+                            'micro_actual_percentage_set'
+                        )
+                    );
+                }
+                else if(Auth::user()->type == "consultant"){
+                    // Micro task End
+                    return view(
+                        "construction_project.construction_dashboard",
+                        compact(
+                            "project","ongoing_task","dependencycriticalcount","entirecriticalcount","project_data",
+                            "total_sub","actual_percentage","workdone_percentage","current_Planed_percentage",
+                            "not_started","notfinished","remaining_working_days","completed_task",'alldates',
+                            'completed','pending','microProgram','microTaskCount','conTaskTaken','holidayCount',
+                            'microWeekEndCount','totalWorkingDays','checkProject','all_completed','all_upcoming',
+                            'all_inprogress','all_pending','microProgramName','micro_planned_set',
+                            'micro_actual_percentage_set'
+                        )
+                    );
+                }
+                else {
+                    return redirect()
+                        ->back()
+                        ->with("error", __("Permission Denied."));
+                }
+                
             } else {
                 return redirect()
                     ->back()
                     ->with("error", __("Permission Denied."));
             }
-        } else {
-            return redirect()
-                ->back()
-                ->with("error", __("Permission Denied."));
-        }
+        
     }
 
     public function show_dairy($project_id)
