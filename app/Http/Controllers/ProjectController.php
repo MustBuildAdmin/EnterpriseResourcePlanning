@@ -3941,4 +3941,35 @@ class ProjectController extends Controller
 
 
     }
+
+    public function get_assignee_name(Request $request)
+    {
+        try {
+
+            $getval = User::where('id', $request->id)->first();
+            return json_decode($getval);
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+
+    }
+
+    public function get_reporter_name(Request $request)
+    {
+
+        try {
+
+            $getname = User::where('id', $request->id)->first();
+            return json_decode($getname);
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+
+    }
 }

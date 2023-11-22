@@ -367,56 +367,58 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"id="task-title">{{ __('New Task') }}</h5>
-                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        name="close"></button>
+                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close" name="close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Task Name') }}</label>
+                        <input type="text" id="user_id" name="user_id">
+                        <input type="text" id="reporter_id" name="reporter_id">
                         <input type="text" class="form-control" name="description"
-                            placeholder="Type your Task Name">
+                            placeholder="{{ __('Type your Task Name') }}">
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Task Start Date') }}</label>
                             <input type="text" class="form-control" name="start_date" id="start-date"
-                                placeholder="Enter Your Task Start Date">
+                                placeholder="{{ __('Enter Your Task Start Date') }}">
                         </div>
                         <div class="col-md-6  col-12">
                             <label class="form-label">{{ __('Task End Date') }}</label>
                             <input type="text" class="form-control" name="end_date" id="end-date"
-                                placeholder="Enter Your Task End Date">
+                                placeholder="{{ __('Enter Your Task End Date') }}">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Assignee') }}</label>
-                            <input type="text" class="form-control" name="taskassignee" id="task-assignee"
-                                placeholder="Search your task assignee">
+                            <input type="text" id="taskassignee" name="users"
+                                value="{{ request()->get('q') }}" required>
                         </div>
                     </div>
 
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Reporting To') }}</label>
-                            <input type="text" class="form-control" name="taskassignee" id="task-reporting"
-                                placeholder="Search your Reporting to">
+                            <input type="text" class="form-control" name="reported_to" id="task-reporting"
+                                placeholder="{{ __('Search your Reporting to') }}">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="mb-3">
-                            <div class="form-label">Task Assignment Mode</div>
+                            <div class="form-label">{{ __('Task Assignment Mode') }}</div>
                             <div>
-                              <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Assignment" checked="">
-                                <span class="form-check-label">Self Task</span>
-                              </label>
-                              <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Assignment">
-                                <span class="form-check-label">Sub Contract Task</span>
-                              </label>
+                                <label class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Assignment" checked="">
+                                    <span class="form-check-label">{{ __('Self Task') }}</span>
+                                </label>
+                                <label class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="Assignment">
+                                    <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
+                                </label>
                             </div>
-                          </div>
+                        </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
@@ -1350,6 +1352,62 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         newsecond = year + '-' + mon + '-' + days;
         end_date.value = newsecond;
 
+        var users = form.querySelector("[name='users']");
+
+        var user_id = form.querySelector("[name='user_id']");
+        user_id.value = task.users;
+        var reported_to = form.querySelector("[name='reported_to']");
+        var reporter_id = form.querySelector("[name='reporter_id']");
+        reporter_id.value = task.reported_to;
+
+        var asignee = '';
+
+        $('#taskassignee').tokenInput("clear");
+
+        if (task.users != null) {
+
+            $.ajax({
+                url: "{{ route('project.get_assignee_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#user_id').val()
+                },
+                success: function(d) {
+                    asignee = {
+                        id: d.id,
+                        name: d.name
+                    };
+                    setTimeout(function() {
+                        $('#taskassignee').tokenInput("add", asignee);
+                    }, 200);
+                }
+            });
+
+        }
+        var reportedto = '';
+        if (task.reported_to != null) {
+
+            $.ajax({
+                url: "{{ route('project.get_reporter_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#reporter_id').val()
+                },
+                success: function(dd) {
+                
+                    reportedto = {
+                        id: dd.id,
+                        name: dd.name
+                    };
+                    setTimeout(function() {
+                        $('#task-reporting').tokenInput("add", reportedto);
+                    }, 200);
+                }
+            });
+
+        }
+
+
         form.style.display = "block";
         form.querySelector("#save").onclick = save;
         form.querySelector("#close").onclick = cancel;
@@ -1377,6 +1435,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         task.text = getForm().querySelector("[name='description']").value;
         get_start_date = getForm().querySelector("[name='start_date']").value;
         get_end_date = getForm().querySelector("[name='end_date']").value;
+        task.users = getForm().querySelector("[name='users']").value;
+        task.reported_to = getForm().querySelector("[name='reported_to']").value;
 
         task.start_date = new Date(get_start_date);
         task.end_date = new Date(get_end_date);
@@ -1469,10 +1529,42 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     }
     // gantt crud end
-</script>
 
+    $("#taskassignee").tokenInput("{{ route('project.user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Task Assignee...') }}",
+        noResultsText: "{{ __('Task Assignee not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
 
-<script>
+    $("#task-reporting").tokenInput("{{ route('project.user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Reporting To...') }}",
+        noResultsText: "{{ __('Reporting To not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
     // @formatter:off
     document.addEventListener("DOMContentLoaded", function() {
         window.Litepicker && (new Litepicker({
