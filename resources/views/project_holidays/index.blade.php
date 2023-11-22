@@ -1,9 +1,8 @@
 @include('new_layouts.header')
 <style>
-    .table-responsive {
-        max-width: inherit !important;
-    }
 </style>
+<link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
+<link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <div class="page-wrapper">
 @include('construction_project.side-menu')
 <div class="card m-3" >
@@ -26,7 +25,7 @@
                 <div class="card-body table-border-style">
 
                     <div class="table-responsive">
-                        <table class="table datatable">
+                        <table class="table table-vcenter card-table" id="holiday_table">
                             <thead>
                             <tr>
                                 <th>{{__('Date')}}</th>
@@ -100,5 +99,31 @@
 
     </div>
 </div>
+<script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
+<script>
+    $(function () {
+        datatable2();
+    });
 
+    function datatable2(){
+        new DataTable('#holiday_table', {
+            pagingType: 'full_numbers',
+            aaSorting: [],
+            "language": {
+                "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+                "sZeroRecords": "{{ __('No data available in table') }}",
+                "sEmptyTable": "{{ __('No data available in table') }}",
+                "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+                "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+                "sSearch": "{{ __('Search') }}:",
+                "oPaginate": {
+                    "sFirst": "{{ __('First') }}",
+                    "sLast": "{{ __('Last') }}",
+                    "sNext": "{{ __('Next') }}",
+                    "sPrevious": "{{ __('Previous') }}"
+                },
+            }
+        });
+    }
+</script>
 @include('new_layouts.footer')

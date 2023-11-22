@@ -115,17 +115,12 @@
                   $project_instances=\App\Models\Instance::where('project_id',$project->id)
                                     ->get();
                @endphp
-               @if(count($project_instances)>1)
-                   <a class="text-dark"  data-size="lg"
-                   data-url="{{ route('projects.check_instance_dairy',$project->id) }}"
-                   data-title="Choose Your Revision" data-ajax-popup="true"
-                   data-bs-toggle="tooltip">{{ $project->project_name }}</a>
-               @else
+               
                    <a class="text-dark"  data-size="lg"
                    href="{{ route('projects.instance_project_dairy',
                            [$project_instances[0]['id'],$project->id]) }}"
                    data-bs-toggle="tooltip">{{ $project->project_name }}</a>
-               @endif
+              
                   </h3>
                   <p class="text-secondary mb-0">Start Date: {{ Utility::getDateFormated($project->start_date) }}</p>
                   <p class="text-secondary">End Date: {{ Utility::getDateFormated($project->end_date) }}</p>

@@ -1394,15 +1394,16 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         if (task.reported_to != null) {
 
             $.ajax({
-                url: "{{ route('project.get_assignee_name') }}",
+                url: "{{ route('project.get_reporter_name') }}",
                 type: "GET",
                 data: {
-                    id: $('#reported_to').val()
+                    id: $('#reporter_id').val()
                 },
-                success: function(d) {
+                success: function(dd) {
+                   
                     reportedto = {
-                        id: d.id,
-                        name: d.name
+                        id: dd.id,
+                        name: dd.name
                     };
                     setTimeout(function() {
                         $('#task-reporting').tokenInput("add", reportedto);

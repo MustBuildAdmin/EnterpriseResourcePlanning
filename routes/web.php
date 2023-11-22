@@ -3483,7 +3483,7 @@ Route::get(
     ]
 );
 Route::get(
-    'instance_project/{instance_id}/{project_id}', [
+    'instance_project/{instance_id}/{project_id}/{name}', [
         'as' => 'projects.instance_project',
         'uses' => 'RevisionController@instance_project',
     ]
@@ -3568,29 +3568,21 @@ Route::get(
         'XSS',
     ]
 );
-Route::any(
-    'get_member', [
-        'as' => 'projects.criticaltask_update',
-        'uses' => 'ProjectController@criticaltask_update',
-    ]
-)->middleware(
+
+Route::any('get_member', 'ProjectController@criticaltask_update')->middleware(
     [
         'auth',
         'XSS',
     ]
-);
+)->name('projects.criticaltask_update');
 
-// Route::any(
-//     'get_member', [
-//         'as' => 'micro.criticaltask_update',
-//         'uses' => 'MicroPorgramController@criticaltask_update',
-//     ]
-// )->middleware(
-//     [
-//         'auth',
-//         'XSS',
-//     ]
-// );
+Route::any('micro_get_member', 'MicroPorgramController@criticaltask_update')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+)->name('micro.criticaltask_update');
+
 
 Route::any(
     'get_validated_date', [
@@ -3628,7 +3620,17 @@ Route::any(
     ]
 );
 
-
+Route::any(
+    'get_reporter_name', [
+        'as' => 'project.get_reporter_name',
+        'uses' => 'ProjectController@get_reporter_name',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 
 Route::get(
@@ -4454,7 +4456,7 @@ Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
     ->name('consultants.password.update');
 
-    
+
 
     Route::any('consultant-seach_result', 'ConsultantController@seach_result')
     ->name('consultant.seach_result')->middleware(
@@ -4474,7 +4476,7 @@ Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswor
         ]
     );
 
-    
+
 
 
 

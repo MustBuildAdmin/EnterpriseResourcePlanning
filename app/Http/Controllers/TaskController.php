@@ -158,7 +158,7 @@ class TaskController extends Controller
             } else {
                 $implodereportedto = $request->reported_to;
             }
-            $reportedto = $implodeusers;
+            $reportedto = $implodereportedto;
         }else{
             $reportedto='';
         }
