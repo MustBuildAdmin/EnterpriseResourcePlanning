@@ -487,7 +487,7 @@ Route::get('/new_home', 'DashboardController@account_dashboard')->name('new_home
     ]
 );
 
-Route::get('instance_project_dairy/{instance_id}/{project_id}/{name}',
+Route::get('instance_project_dairy/{instance_id}/{project_id}',
  'RevisionController@instance_project_dairy')
 ->name('projects.instance_project_dairy')->middleware(
     [
@@ -3483,7 +3483,7 @@ Route::get(
     ]
 );
 Route::get(
-    'instance_project/{instance_id}/{project_id}', [
+    'instance_project/{instance_id}/{project_id}/{name}', [
         'as' => 'projects.instance_project',
         'uses' => 'RevisionController@instance_project',
     ]
@@ -4420,7 +4420,7 @@ Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
     ->name('consultants.password.update');
 
-    
+
 
     Route::any('consultant-seach_result', 'ConsultantController@seach_result')
     ->name('consultant.seach_result')->middleware(
@@ -4440,7 +4440,7 @@ Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswor
         ]
     );
 
-    
+
 
 
 
