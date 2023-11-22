@@ -21,6 +21,7 @@ class Project extends Model
         'status',
         'tags',
         'created_by',
+        'otheraddress'
     ];
 
     public static $project_status = [

@@ -174,6 +174,7 @@ class ProjectController extends Controller
             $project->instance_id=$instance_id;
             $project->country = $request->country;
             $project->state = $request->state;
+            $project->otheraddress = $request->otheraddress;
             $project->city = $request->city;
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
@@ -219,37 +220,7 @@ class ProjectController extends Controller
                     );
                     Project_holiday::insert($insert);
                 }
-
-                $holiday_date = $request->holiday_date;
-
-                foreach($holiday_date as $holi_key => $holi_value){
-                    $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())
-                    ->where('date',$holi_value)->first();
-                    if($holidays_list == null){
-                        $holiday_insert=array(
-                            'project_id'=>$project->id,
-                            'date'=>$holi_value,
-                            'description'=>$request->holiday_description[$holi_key],
-                            'created_by'=>\Auth::user()->creatorId(),
-                            'instance_id'=>$instance_id
-                        );
-
-                        Project_holiday::insert($holiday_insert);
-                    }
-                    else{
-                        if($holidays_list->date != $holi_value){
-                            $holiday_insert=array(
-                                'project_id'=>$project->id,
-                                'date'=>$holi_value,
-                                'description'=>$request->holiday_description[$holi_key],
-                                'created_by'=>\Auth::user()->creatorId(),
-                                'instance_id'=>$instance_id
-                            );
-
-                            Project_holiday::insert($holiday_insert);
-                        }
-                    }
-                }
+                
             }
             if(isset($request->file)){
                if($request->file_status=='MP'){
