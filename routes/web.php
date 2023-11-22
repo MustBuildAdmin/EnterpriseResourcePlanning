@@ -3596,6 +3596,29 @@ Route::any(
     ]
 );
 
+Route::any(
+    'task_assignee_search', [
+        'as' => 'project.user_search',
+        'uses' => 'ProjectController@task_assignee_search',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'get_assignee_name', [
+        'as' => 'project.get_assignee_name',
+        'uses' => 'ProjectController@get_assignee_name',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 Route::get(
     'projects/{id}/gantt/{duration?}', [
