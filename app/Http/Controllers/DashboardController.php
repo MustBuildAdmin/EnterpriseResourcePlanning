@@ -702,7 +702,13 @@ class DashboardController extends Controller
             if (\Auth::user()->type == 'client') {
                 $user_projects = Project::where('client_id', \Auth::user()->id)
                 ->where('created_by', \Auth::user()->creatorId())->pluck('id', 'id')->toArray();
-            } else {
+            }
+            else if(\Auth::user()->type == 'consultant'){
+                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else {
                 $user_projects = $usr->projects()->pluck('project_id', 'project_id')->toArray();
             }
 
@@ -719,36 +725,6 @@ class DashboardController extends Controller
             // if(Auth::user()->type == "consultant"){
             //     $projects->Join('consultant_companies as consultant','consultant.company_id');
             // }
-
-            $projects = $projects->paginate(8);
-
-            return view('construction_project.construction_main', compact('projects', 'user_projects'));
-        }
-        else if(Auth::user()->type == "consultant"){
-            Session::forget('project_id');
-            Session::forget('project_instance');
-            Session::forget('latest_project_instance');
-            Session::forget('current_revision_freeze');
-
-            $usr = Auth::user();
-            if (\Auth::user()->type == 'client') {
-                $user_projects = Project::where('client_id', \Auth::user()->id)
-                ->where('created_by', \Auth::user()->creatorId())->pluck('id', 'id')->toArray();
-            } else {
-                $user_projects = ProjectConsultant::where('invite_status','active')
-                    ->where('user_id',\Auth::user()->id)
-                    ->pluck('project_id', 'project_id')->toArray();
-            }
-
-            $sort = explode('-', 'created_at-desc');
-            $projects = Project::whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
-
-            if (! empty($request->keyword)) {
-                $projects->where('project_name', 'LIKE', '%'.$request->keyword.'%');
-            }
-            if (! empty($request->status)) {
-                $projects->whereIn('status', $request->status);
-            }
 
             $projects = $projects->paginate(8);
 

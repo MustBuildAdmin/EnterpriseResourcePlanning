@@ -11,6 +11,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="mb-0">{{ __('Micro Planning Schedule') }}</h1>
+                            @if(Auth::user()->type != "consultant")
                             <div class="card-actions">
                                 <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
                                     data-url="{{ route('microprogram_create') }}" data-ajax-popup="true"
@@ -19,6 +20,7 @@
                                     {{ __('Create a New Schedule') }}
                                 </a>
                             </div>
+                            @endif
                         </div>
                         <div class="card-body">
                             <table class="table table-vcenter card-table" id="schedule_table"

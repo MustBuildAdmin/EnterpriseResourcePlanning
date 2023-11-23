@@ -143,6 +143,7 @@
             </div>
 
             <div class="card">
+                @if(Auth::user()->type != "consultant")
                 <div class="card-header">
                     <div class="card-actions">
                         @php $get_date = $data['get_date']; @endphp
@@ -155,6 +156,7 @@
                         </a>
                     </div>
                 </div>
+                @endif
                 <div class="card-body">
                     <div class="table-responsive card p-4">
                         <table class="table table-vcenter card-table" id="task-progress"
@@ -167,7 +169,9 @@
                                     <th scope="col">{{ __('Actual Progress as per a Day') }}</th>
                                     <th scope="col">{{ __('FileName') }}</th>
                                     <th scope="col">{{ __('Description') }}</th>
+                                    @if(Auth::user()->type != "consultant")
                                     <th scope="col">{{ __('Action') }}</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -221,6 +225,7 @@
                                             @endforelse
                                         </td>
                                         <td>{!! $task_progress->description !!}</td>
+                                        @if(Auth::user()->type != "consultant")
                                         <td>
                                             <div class="actions">
                                                 <a class="backgroundnone"
@@ -234,6 +239,7 @@
                                                 </a>
                                             </div>
                                         </td>
+                                        @endif
                                     </tr>
                                 @empty
                                 @endforelse

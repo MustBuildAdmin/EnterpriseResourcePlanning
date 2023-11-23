@@ -884,7 +884,7 @@ class ProjectController extends Controller
     }
     public function show(Project $project)
     {
-        
+        if (\Auth::user()->can("view project")) {
             $usr = Auth::user();
             if (\Auth::user()->type == "client") {
                 $user_projects = Project::where("client_id", \Auth::user()->id)
@@ -892,13 +892,14 @@ class ProjectController extends Controller
                     ->toArray();
             } 
             else if(Auth::user()->type == "consultant"){
-                $user_projects = ProjectConsultant::where('invite_status','active')
+                $user_projects = ProjectConsultant::where('invite_status','accepeted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
             else {
                 $user_projects = $usr->projects->pluck("id")->toArray();
             }
+
             if (in_array($project->id, $user_projects)) {
                 // test the holidays
                 if ($project->holidays == 0) {
@@ -1479,7 +1480,7 @@ class ProjectController extends Controller
                     ->whereDate('start_date','>',date('Y-m-d'))
                     ->count();
 
-                if (\Auth::user()->can("view project")) {
+                
                     // Micro task End
                     return view("construction_project.construction_dashboard",
                         compact(
@@ -1492,33 +1493,19 @@ class ProjectController extends Controller
                             'micro_actual_percentage_set'
                         )
                     );
-                }
-                else if(Auth::user()->type == "consultant"){
-                    // Micro task End
-                    return view(
-                        "construction_project.construction_dashboard",
-                        compact(
-                            "project","ongoing_task","dependencycriticalcount","entirecriticalcount","project_data",
-                            "total_sub","actual_percentage","workdone_percentage","current_Planed_percentage",
-                            "not_started","notfinished","remaining_working_days","completed_task",'alldates',
-                            'completed','pending','microProgram','microTaskCount','conTaskTaken','holidayCount',
-                            'microWeekEndCount','totalWorkingDays','checkProject','all_completed','all_upcoming',
-                            'all_inprogress','all_pending','microProgramName','micro_planned_set',
-                            'micro_actual_percentage_set'
-                        )
-                    );
-                }
-                else {
-                    return redirect()
-                        ->back()
-                        ->with("error", __("Permission Denied."));
-                }
                 
             } else {
                 return redirect()
                     ->back()
                     ->with("error", __("Permission Denied."));
             }
+
+        }
+        else {
+            return redirect()
+                ->back()
+                ->with("error", __("Permission Denied."));
+        }
         
     }
 
@@ -2257,6 +2244,7 @@ class ProjectController extends Controller
             }
             if(str_contains($type,'consultant')){
                 foreach($teammemberID as $id){
+                    $get_email = User::select('email','name')->where('id',$id)->first();
                     $createConnection =  ProjectConsultant::create([
                         "project_id" => $request->project_id,
                         "user_id" => $id,
@@ -2266,12 +2254,12 @@ class ProjectController extends Controller
                     $inviteUrl=url('').Config::get('constants.INVITATION_URL_consultant_proj').$createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
+                        'user_name' => $get_email->emailname,
                         'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
+                        'email' => $get_email->email,
                     ];
                     Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT_PROJ'),
-                            [$id => \Auth::user()->email],$userArr);
+                            [$id => $get_email->email],$userArr);
                 }
                 $msg=__('Consultant Invitation to project sent successfully.');
                 $routing='project.consultant';
