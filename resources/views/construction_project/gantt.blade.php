@@ -7,6 +7,9 @@
 <link href="{{ asset('assets/js/css/demo.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/js/css/tabler-vendors.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
+<!-- token input css link starts -->
+<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}" />
+<!-- token input css link end -->
 <!-- css link ends -->
 
 <!-- css starts -->
@@ -106,6 +109,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <script src="{{ asset('assets/js/js/taskText.js') }}"></script>
 <script src="{{ asset('assets/js/js/highlight.js') }}"></script>
 <script src="{{ asset('assets/js/js/slackrow.js') }}"></script>
+<script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
 <!-- script js ends -->
 @php
     $holidays = [];
@@ -373,8 +377,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Task Name') }}</label>
-                        <input type="text" id="user_id" name="user_id">
-                        <input type="text" id="reporter_id" name="reporter_id">
+                        <input type="hidden" id="user_id" name="user_id">
+                        <input type="hidden" id="reporter_id" name="reporter_id">
                         <input type="text" class="form-control" name="description"
                             placeholder="{{ __('Type your Task Name') }}">
                     </div>
@@ -1363,7 +1367,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var asignee = '';
 
         $('#taskassignee').tokenInput("clear");
-
+        $('#task-reporting').tokenInput("clear");
         if (task.users != null) {
 
             $.ajax({
