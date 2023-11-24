@@ -3620,6 +3620,18 @@ Route::any(
     ]
 );
 
+Route::any(
+    'get_reporter_name', [
+        'as' => 'project.get_reporter_name',
+        'uses' => 'ProjectController@get_reporter_name',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get(
     'projects/{id}/gantt/{duration?}', [
         'as' => 'projects.gantt',
