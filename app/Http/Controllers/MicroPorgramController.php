@@ -103,7 +103,7 @@ class MicroPorgramController extends Controller
 
         $project = Project::select('id','project_name')->where('id',$project_id)->first();
         $projectName = str_split($project->project_name, 3);
-        $uuid = $projectName['0'].'-'.substr(base_convert(sha1(uniqid(mt_rand(9, 999999999))), 16, 36), 0, 5);
+        $uuid = $projectName['0'].'-'.substr(base_convert(sha1(uniqid(random_int(9, 999999999))), 16, 36), 0, 5);
 
         $date1 = new DateTime($request->schedule_start_date);
         $date2 = new DateTime($request->schedule_end_date);
