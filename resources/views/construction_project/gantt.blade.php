@@ -379,6 +379,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         <label class="form-label">{{ __('Task Name') }}</label>
                         <input type="hidden" id="user_id" name="user_id">
                         <input type="hidden" id="reporter_id" name="reporter_id">
+                        <input type="hidden" id="subcontractor_id" name="subcontractor_id">
+                        
                         <input type="text" class="form-control" name="description"
                             placeholder="{{ __('Type your Task Name') }}">
                     </div>
@@ -414,11 +416,11 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             <div class="form-label">{{ __('Task Assignment Mode') }}</div>
                             <div>
                                 <label class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="Assignment" checked="">
+                                    <input class="form-check-input" value="0" type="radio" name="taskmode" id="taskmode_one">
                                     <span class="form-check-label">{{ __('Self Task') }}</span>
                                 </label>
                                 <label class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="Assignment">
+                                    <input class="form-check-input" value="1" type="radio" name="taskmode"  id="taskmode_two">
                                     <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
                                 </label>
                             </div>
@@ -1364,9 +1366,29 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var reporter_id = form.querySelector("[name='reporter_id']");
         reporter_id.value = task.reported_to;
 
+        var subcontractor = form.querySelector("[name='subcontractor']");
+        var subcontractor_id = form.querySelector("[name='subcontractor_id']");
+        subcontractor_id.value = task.subcontractor;
+
+        var taskmode = form.querySelector("[name='taskmode']");
+        taskmode.value = task.taskmode;
+        if(taskmode.value==1){
+            $("#taskmode_one").prop( "checked", true );
+            
+        }else if(taskmode.value==0){
+            $("#taskmode_two").prop( "checked", true );
+            
+        }else{
+            $("#taskmode_one").prop( "checked", false );
+            $("#taskmode_two").prop( "checked", false );
+        }
+        console.log("taskmode.value",taskmode.value);
         var asignee = '';
 
         $('#taskassignee').tokenInput("clear");
+        $('#task-reporting').tokenInput("clear");
+        $('#sub-contractor').tokenInput("clear");
+        
 
         if (task.users != null) {
 
@@ -1411,6 +1433,28 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         }
 
+        var subcontractorto = '';
+        if (task.subcontractor != '') {
+
+            $.ajax({
+                url: "{{ route('project.get_reporter_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#subcontractor_id').val()
+                },
+                success: function(subcon) {
+                subcontractorto = {
+                        id: subcon.id,
+                        name: subcon.name
+                    };
+                    setTimeout(function() {
+                        $('#sub-contractor').tokenInput("add", subcontractorto);
+                    }, 200);
+                }
+            });
+
+        }
+
 
         form.style.display = "block";
         form.querySelector("#save").onclick = save;
@@ -1441,6 +1485,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         get_end_date = getForm().querySelector("[name='end_date']").value;
         task.users = getForm().querySelector("[name='users']").value;
         task.reported_to = getForm().querySelector("[name='reported_to']").value;
+        task.subcontractor = getForm().querySelector("[name='subcontractor']").value;
+        task.taskmode = getForm().querySelector("[name='taskmode']").value;
 
         task.start_date = new Date(get_start_date);
         task.end_date = new Date(get_end_date);
@@ -1558,6 +1604,24 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         tokenDelimiter: ",",
         hintText: "{{ __('Search Reporting To...') }}",
         noResultsText: "{{ __('Reporting To not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
+
+    $("#sub-contractor").tokenInput("{{ route('project.subcon_user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Subcontractor To...') }}",
+        noResultsText: "{{ __('Subcontractor To not found.') }}",
         searchingText: "{{ __('Searching...') }}",
         deleteText: "&#215;",
         minChars: 2,

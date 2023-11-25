@@ -3609,6 +3609,18 @@ Route::any(
 );
 
 Route::any(
+    'subcon_user_search', [
+        'as' => 'project.subcon_user_search',
+        'uses' => 'ProjectController@subcon_user_search',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
     'get_assignee_name', [
         'as' => 'project.get_assignee_name',
         'uses' => 'ProjectController@get_assignee_name',
