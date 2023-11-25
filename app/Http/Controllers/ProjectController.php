@@ -25,6 +25,7 @@ use App\Models\ProjectSubcontractor;
 use App\Models\User;
 use App\Models\Utility;
 use App\Models\MicroTask;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Config;
 use DateInterval;
@@ -185,8 +186,8 @@ class ProjectController extends Controller
                 $project->critical_update = 0;
 
             }
-            ///---------end-----------------
-            $project->save();
+            // /---------end-----------------
+           $project->save();
 
             if(isset($request->non_working_days)){
                 $nonWorkingDaysInsert = array(
@@ -263,30 +264,38 @@ class ProjectController extends Controller
                 }
 
                 $request->file->move(public_path($path), $name);
-
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                  //   CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST=> false,
-                    CURLOPT_SSL_VERIFYPEER=>false,
-                    CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
-                ));
-
-                $responseBody = curl_exec($curl);
-                curl_close($curl);
+                for ($i=0; $i <3 ; $i++) { 
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                      //   CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_SSL_VERIFYHOST=> false,
+                        CURLOPT_SSL_VERIFYPEER=>false,
+                        CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
+                    ));
+    
+                    $responseBody = curl_exec($curl);
+                    curl_close($curl);
+                    $responseBody = json_decode($responseBody, true);
+                    if(isset($responseBody['data'])){
+                        $i=3;
+                    }else{
+                        Project::where('id',$project->id)->update(['status'=>'on_hold']);
+                    }
+                }
+    
                 if (file_exists(public_path($pathname))){
                     unlink(public_path($pathname));
                 }
 
-                $responseBody = json_decode($responseBody, true);
+                
 
                 if(isset($responseBody['data']['data'])){
 
@@ -386,28 +395,37 @@ class ProjectController extends Controller
 
                     $request->file->move(public_path($path), $name);
 
-                    $curl = curl_init();
-                    curl_setopt_array($curl, array(
-                      CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
-                      CURLOPT_RETURNTRANSFER => true,
-                      CURLOPT_ENCODING => '',
-                      CURLOPT_MAXREDIRS => 10,
-                      CURLOPT_TIMEOUT => 0,
-                      CURLOPT_FOLLOWLOCATION => true,
-                      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                      CURLOPT_CUSTOMREQUEST => 'POST',
-                     //   CURLOPT_SSL_VERIFYPEER => false,
-                      CURLOPT_SSL_VERIFYHOST => false,
-                      CURLOPT_SSL_VERIFYPEER => false,
-                      CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
-                    ));
+                    for ($i=0; $i <3 ; $i++) { 
+                        $curl = curl_init();
+                        curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        //   CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_SSL_VERIFYHOST => false,
+                        CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
+                        ));
 
-                    $responseBody = curl_exec($curl);
-                    curl_close($curl);
+                        $responseBody = curl_exec($curl);
+                        $responseBody = json_decode($responseBody, true);
+                        if(isset($responseBody['data'])){
+                            $i=3;
+                        }else{
+                            Project::where('id',$project->id)->update(['status'=>'on_hold']);
+                        }
+                        curl_close($curl);
+                    }
+
                     if (file_exists(public_path($pathname))){
                         unlink(public_path($pathname));
                     }
-                    $responseBody = json_decode($responseBody, true);
+                   
                     if(isset($responseBody['data']['data'])){
 
                         foreach($responseBody['data']['data'] as $key=>$value){
@@ -3970,4 +3988,357 @@ class ProjectController extends Controller
 
 
     }
+
+    public function overall_report(Request $request){
+        $project_id=Session::get("project_id");
+
+        $project = Project::where('id', $project_id)->first();
+        $instance_id = Session::get("project_instance");
+        $cur = date("Y-m-d");
+
+        $project_task = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
+           ->where('type', 'project')->get();
+
+        $user = User::find($project->client_id);
+        if ($user) {
+            $client_name = $user->name;
+        } else {
+            $client_name = '';
+        }
+
+        $all_pending = Con_task::where("project_id", $project->id)
+        ->where("instance_id", Session::get("project_instance"))
+        ->where("type", "project")
+        ->where("end_date", "<", $cur)
+        ->where("progress", "!=", "100")
+        ->count();
+
+        $all_completed = Con_task::where("project_id", $project->id)
+            ->where("instance_id", Session::get("project_instance"))
+            ->where("type", "project")
+            ->where("end_date", "<", $cur)
+            ->where("progress", "100")
+            ->count();
+
+        $all_inprogress = Con_task::where("project_id", $project->id)
+            ->where("instance_id", Session::get("project_instance"))
+            ->where("type", "project")
+            ->where("progress", "<", 100)
+            ->where("progress", ">", 0)
+            ->whereDate('end_date', '>', date('Y-m-d'))
+            ->count();
+
+        $all_upcoming = Con_task::where('project_id',$project->id)
+            ->where('instance_id',Session::get("project_instance"))
+            ->where("type", "project")
+            ->whereDate('start_date','>',date('Y-m-d'))
+            ->count();
+
+
+       ################ actual progress finding ############################
+
+       $total_task = Con_task::where("project_id", $project->id)
+        ->where("instance_id", Session::get("project_instance"))
+        ->count();
+
+        $first_task = Con_task::where("project_id", $project->id)
+        ->where("instance_id", Session::get("project_instance"))
+        ->orderBy("id", "ASC")
+        ->first();
+
+        if ($first_task) {
+
+            $workdone_percentage = $first_task->progress;
+            $actual_percentage = $first_task->progress;
+            $no_working_days = $first_task->duration; // include the last day
+            $date2 = date_create($first_task->end_date);
+            
+        } else {
+
+            $workdone_percentage = "0";
+            $actual_percentage = "0";
+            $no_working_days = $project->estimated_days; // include the last day
+            $date2 = date_create($project->end_date);
+
+        }
+        if ($actual_percentage > 100) {
+
+            $actual_percentage = 100;
+
+        }
+        if ($actual_percentage < 0) {
+
+            $actual_percentage = 0;
+
+        }
+
+               
+                //############## END ##############################
+                //############## Remaining days ###################
+                $remaining_working_days = Utility::remaining_duration_calculator(
+                    $date2,
+                    $project->id
+                );
+                $remaining_working_days = $remaining_working_days - 1; // include the last day
+                //############## Remaining days ##################
+                $completed_days = $no_working_days - $remaining_working_days;
+
+                if ($no_working_days == 1) {
+                    $current_Planed_percentage = 100;
+                } else {
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+
+                    $current_Planed_percentage = round(
+                        $completed_days * $perday
+                    );
+                }
+
+                if ($current_Planed_percentage > 100) {
+                    $current_Planed_percentage = 100;
+                }
+                if ($current_Planed_percentage < 0) {
+                    $current_Planed_percentage = 0;
+                }
+
+                if ($current_Planed_percentage > 0) {
+                    $workdone_percentage = $workdone_percentage =
+                        $workdone_percentage / $current_Planed_percentage;
+                } else {
+                    $workdone_percentage = 0;
+                }
+                $workdone_percentage = $workdone_percentage * 100;
+                if ($workdone_percentage > 100) {
+                    $workdone_percentage = 100;
+                }
+                $remaing_percenatge = round(100 - $current_Planed_percentage);
+
+
+
+
+
+        $actual_current_progress = Con_task::where(['project_id' => $project_id, 'instance_id' => $instance_id])
+            ->orderBy('id', 'ASC')->pluck('progress')->first();
+
+        $actual_current_progress = round($actual_current_progress);
+        $actual_remaining_progress = 100 - $actual_current_progress;
+        $actual_remaining_progress = round($actual_remaining_progress);
+        // current progress amount
+        $taskdata = [];
+        foreach ($project_task as $key => $value) {
+            $planned_start = date('d-m-Y', strtotime($value->start_date));
+            $planned_end = date('d-m-Y', strtotime($value->end_date));
+
+            $actual_start = DB::table('task_progress')->where('project_id', $project_id)
+                ->where('task_id', $value->main_id)->min('created_at');
+            $actual_end = DB::table('task_progress')->where('project_id', $project_id)
+                ->where('task_id', $value->main_id)->max('created_at');
+            $flag = 0;
+            if ($actual_start) {
+                $flag = 1;
+                $actual_start = date('d-m-Y', strtotime($actual_start));
+            } else {
+                $actual_start = 'Task Not Started';
+            }
+
+            if ($actual_end) {
+                $actual_end = date('d-m-Y', strtotime($actual_end));
+            } else {
+                $actual_end = 'Task Not Finish';
+            }
+
+            if ($actual_end < $planned_end) {
+                $actual_end = 'Task Not Finish';
+            }
+            //finding planned percentage
+            //############## days finding ####################################################
+            $date1 = date_create($value->start_date);
+            $date2 = date_create($value->end_date);
+            $cur = date('Y-m-d');
+
+            $diff = date_diff($date1, $date2);
+            $no_working_days = $diff->format('%a');
+            $no_working_days = $value->duration; // include the last day
+            //############## END ##############################
+
+            //############## Remaining days ###################
+
+            $date2 = date_create($value->end_date);
+            // update one report
+
+            $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
+            $remaining_working_days = $remaining_working_days - 1; // include the last day
+
+            $completed_days = $no_working_days - $remaining_working_days;
+
+            if ($no_working_days == 1) {
+                $current_percentage = 100;
+            } else {
+                // percentage calculator
+                if ($no_working_days > 0) {
+                    $perday = 100 / $no_working_days;
+                } else {
+                    $perday = 0;
+                }
+
+                $current_percentage = round($completed_days * $perday);
+            }
+
+            if ($current_percentage > 100) {
+                $current_percentage = 100;
+            }
+            if ($current_percentage < 0) {
+                $current_percentage = 0;
+            }
+            //
+            $status='';
+            ##### status of the task
+            if($value->progress!=100){
+                if($planned_end < date('d-m-Y')){
+                    $status='Pending';
+                }else{
+                    $status='Ongoing';
+                }
+            }else{
+                $status='Completed';
+            }
+           
+
+
+            $taskdata[] = [
+                'id' => $value->id,
+                'title' => $value->text,
+                'status'=>$status,
+                'planed_start' => $planned_start,
+                'planed_end' => $planned_end,
+                'duration' => $value->duration.' Days',
+                'percentage_as_today' => round($current_percentage),
+                'actual_start' => $actual_start,
+                'actual_end' => $actual_end,
+                'actual_duration' => $value->duration.' Days',
+                'remain_duration' => $value->duration.' Days',
+                'actual_percent' => round($value->progress),
+            ];
+        }
+        $taskdata2 = [];
+        $today_task_update = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
+        ->where('type', 'task')->get();
+        foreach ($today_task_update as $key => $value) {
+
+            $user = User::find($value->user_id);
+            if ($user) {
+                $user_name = $user->name;
+                $user_email = $user->email;
+            } else {
+                $user_name = '';
+                $user_email = '';
+            }
+
+            ##### status of the task
+            $status='';
+            if($value->progress!=100){
+                if($value->end_date < date('d-m-Y')){
+                    $status='Pending';
+                }else{
+                    $status='Ongoing';
+                }
+            }else{
+                $status='Completed';
+            }
+
+            $actual_start = DB::table('task_progress')->where('project_id', $project_id)
+            ->where('task_id', $value->main_id)->min('created_at');
+            $actual_end = DB::table('task_progress')->where('project_id', $project_id)
+                ->where('task_id', $value->main_id)->max('created_at');
+
+
+            if ($actual_start) {
+                $actual_start = date('d-m-Y', strtotime($actual_start));
+            } else {
+                $actual_start = 'Task Not Started';
+            }
+
+            if ($actual_end) {
+                $actual_end = date('d-m-Y', strtotime($actual_end));
+            } else {
+                $actual_end = 'Task Not Finish';
+            }
+
+            if ($actual_end < $planned_end) {
+                $actual_end = 'Task Not Finish';
+            }
+
+            ########################## Planed percentage calculator ####################################
+
+            $date2=$value->end_date;
+            $remaining_working_days = Utility::remaining_duration_calculator(
+                    $date2,
+                    $project_id
+                );
+                $remaining_working_days = $remaining_working_days - 1; // include the last day
+                //############## Remaining days ##################
+                $completed_days = $no_working_days - $remaining_working_days;
+
+                if ($no_working_days == 1) {
+                    $current_Planed_percentage = 100;
+                } else {
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+
+                    $current_Planed_percentage = round(
+                        $completed_days * $perday
+                    );
+                }
+
+                if ($current_Planed_percentage > 100) {
+                    $current_Planed_percentage = 100;
+                }
+                if ($current_Planed_percentage < 0) {
+                    $current_Planed_percentage = 0;
+                }
+
+                if($value->progress==''){
+                    $progress=0;
+                }else{
+                    $progress=$value->progress;
+                }
+            ########################## END ###################################################
+
+            $taskdata2[] = [
+                'id' => $value->id,
+                'title' => $value->text,
+                'status'=>$status,
+                'planed_start' => date('d-m-Y', strtotime($value->start_date)),
+                'planed_end' => date('d-m-Y', strtotime($value->end_date)),
+                'actual_start'=>$actual_start,
+                'actual_end'=>$actual_end,
+                'duration' => $value->duration.' Days',
+                'actual_percentage' => $progress.'%',
+                'planned_percentage'=>$current_Planed_percentage,
+          
+
+            ];
+        }
+
+        $setting  = Utility::settings(\Auth::user()->creatorId());
+        $pdf = Pdf::loadview('project_report.overal',
+                compact('taskdata', 'project', 'project_task', 'actual_current_progress',
+                    'actual_remaining_progress', 'taskdata2','client_name','current_Planed_percentage','all_upcoming','all_pending','all_completed','total_task','setting'))
+        ->setPaper('a4', 'landscape')->setWarnings(false);
+        // return $pdf->stream();
+
+        $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
+
+        return $pdf->download($pdf_name);
+
+    }
+    
 }

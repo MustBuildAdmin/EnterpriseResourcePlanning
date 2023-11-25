@@ -3494,6 +3494,22 @@ Route::get(
     ]
 );
 
+// Overall report download 
+Route::get(
+    'overall_report', [
+        'as' => 'overall_report',
+        'uses' => 'ProjectController@overall_report',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+// end
+
+
 Route::delete(
     'projects/{id}/users/{uid}', [
         'as' => 'projects.user.destroy',
@@ -4420,7 +4436,7 @@ Route::any('consultants-reset-password/{id}', 'ConsultantController@userPassword
 Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswordReset')
     ->name('consultants.password.update');
 
-
+    
 
     Route::any('consultant-seach_result', 'ConsultantController@seach_result')
     ->name('consultant.seach_result')->middleware(
@@ -4440,7 +4456,7 @@ Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswor
         ]
     );
 
-
+    
 
 
 
