@@ -3,13 +3,9 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-                sh 'sudo chmod -R 777 /var/www/html/'
-                sh 'sudo rm -rf /var/www/html/erpdemo/*'
-                sh 'scp -r /var/lib/jenkins/workspace/demo-v0.1/*  /var/www/html/erpdemo/'
-                sh 'cd /var/www/html/erpdemo/'
-                sh 'php --version'
+                git 'https://github.com/MustBuildAdmin/EnterpriseResourcePlanning.git'
                 sh 'composer install --no-interaction --optimize-autoloader --no-dev'
-                sh 'composer --version'  
+                sh 'cp .env.example .env'
                 sh 'php artisan key:generate'
                 sh 'sudo chmod -R 777 /var/www/html/'
             }
