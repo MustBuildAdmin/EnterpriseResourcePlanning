@@ -13,6 +13,7 @@ pipeline {
                sh 'composer install --no-interaction --optimize-autoloader --no-dev'
                sh 'cp .env.example .env'
                sh 'php artisan key:generate'
+               sh 'php artisan migrate'
             } 
         }
         stage("Build") {
