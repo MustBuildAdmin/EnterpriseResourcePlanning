@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+        DISABLE_AUTH = 'true'
+        DB_ENGINE    = DB_CONNECTION
+    }
     agent any
     stages {
         stage ("install packages") {
