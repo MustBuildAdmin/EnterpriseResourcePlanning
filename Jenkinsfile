@@ -7,6 +7,9 @@ pipeline {
     stages {
         stage ("install packages") {
             steps { 
+               echo "Database engine is ${DB_ENGINE}"
+               echo "DISABLE_AUTH is ${DISABLE_AUTH}"
+               sh 'printenv'
                sh 'composer install --no-interaction --optimize-autoloader --no-dev'
                sh 'cp .env.example .env'
                sh 'php artisan key:generate'
