@@ -4,7 +4,7 @@ pipeline {
         stage ("install packages") {
             steps { 
                sh 'composer install --no-interaction --optimize-autoloader --no-dev'
-               sh 'cp .env.example .env'\
+               sh 'cp .env.example .env'
                sh 'php artisan key:generate'
             } 
         }
