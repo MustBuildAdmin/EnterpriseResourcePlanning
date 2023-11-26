@@ -4,7 +4,7 @@ pipeline {
         stage("Checkout"){
             steps {
                 script{
-                 git branch: "develop", credentialsId:"github-cred" , url: "https://github.com/MustBuildAdmin/EnterpriseResourcePlanning.git"
+                 git branch: "develop", credentialsId:"github-cred" , url: "git@github.com:MustBuildAdmin/EnterpriseResourcePlanning.git"
             }
         }
         }
