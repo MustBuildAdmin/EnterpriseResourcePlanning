@@ -426,7 +426,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
+                    <div class="row mt-4" id="sub_con">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('SubContractor') }}</label>
                             <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
@@ -542,7 +542,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 <script type="text/javascript">
     var tempcsrf = '{!! csrf_token() !!}';
-
+    $('#sub_con').hide();
     // check freeze status #############################
 
     var frezee_status_actual = $('#frezee_status').val();
@@ -1373,14 +1373,19 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var taskmode = form.querySelector("[name='taskmode']");
         taskmode.value = task.taskmode;
         if(taskmode.value==1){
+            $('#sub_con').hide();
             $("#taskmode_one").prop( "checked", true );
+          
             
         }else if(taskmode.value==0){
+            $('#sub_con').show();
             $("#taskmode_two").prop( "checked", true );
             
         }else{
+            $('#sub_con').show();
             $("#taskmode_one").prop( "checked", false );
             $("#taskmode_two").prop( "checked", false );
+           
         }
         console.log("taskmode.value",taskmode.value);
         var asignee = '';
@@ -1660,4 +1665,11 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         }));
     });
     // @formatter:on
+
+    $(document).on('change', '#taskmode_two', function(){
+        $('#sub_con').show();
+    });
+    $(document).on('change', '#taskmode_one', function(){
+        $('#sub_con').hide();
+    });
 </script>
