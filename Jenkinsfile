@@ -1,12 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage("Checkout"){
+        stage("workspace clean"){
             steps {
-                script{
-                 git branch: "develop", credentialsId:"github-cred" , url: "git@github.com:MustBuildAdmin/EnterpriseResourcePlanning.git"
-            }
-        }
+               cleanWs()
+             }
         }
         stage("Build") {
             steps {
