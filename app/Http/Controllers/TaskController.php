@@ -61,6 +61,34 @@ class TaskController extends Controller
             }
             $task->users = $implodeusers;
         }
+
+        if (isset($request->reported_to)) {
+            if (gettype($request->reported_to) == 'array') {
+                $implodereporter = implode(',', json_decode($request->reported_to));
+            } else {
+                $implodereporter = $request->reported_to;
+            }
+            $task->reported_to = $implodereporter;
+        }
+
+        if(isset($request->taskmode)){
+            if($request->taskmode==0){
+                $mode=0;
+            }else{
+                $mode=1;
+            }
+            $task->taskmode = $mode;
+        }
+
+        if (isset($request->subcontractor)) {
+            if (gettype($request->subcontractor) == 'array') {
+                $implodesubcontractor = implode(',', json_decode($request->subcontractor));
+            } else {
+                $implodesubcontractor = $request->subcontractor;
+            }
+            $task->subcontractor = $implodesubcontractor;
+        }
+
         // update  the type
         Con_task::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
             ->where('id', $request->parent)->update(['type' => 'project']);
@@ -143,6 +171,36 @@ class TaskController extends Controller
             $users='';
         }
 
+        if (isset($request->reported_to)) {
+            if (gettype($request->reported_to) == 'array') {
+                $implodereportedto = implode(',', json_decode($request->reported_to));
+            } else {
+                $implodereportedto = $request->reported_to;
+            }
+            $reportedto = $implodereportedto;
+        }else{
+            $reportedto='';
+        }
+        
+        if (isset($request->taskmode)) {
+            
+            if($request->taskmode==0){
+                $mode=0;
+            }else{
+                $mode=1;
+            }
+        }
+
+        if (isset($request->subcontractor)) {
+            if (gettype($request->subcontractor) == 'array') {
+                $implodesubcontractor = implode(',', json_decode($request->subcontractor));
+            } else {
+                $implodesubcontractor = $request->subcontractor;
+            }
+            $subcontractor = $implodesubcontractor;
+        }else{
+            $subcontractor='';
+        }
       
         if(isset($request->totalStack) && $request->totalStack!='undefined'){
             $float_val = $request->totalStack;
@@ -192,6 +250,9 @@ class TaskController extends Controller
             'dependency_critical'=>$dependency_critical,
             'type'=>$type,
             'float_val'=>$float_val,
+            'reported_to'=>$reportedto,
+            'subcontractor'=>$subcontractor,
+            'taskmode'=>$mode,
         );
         
 

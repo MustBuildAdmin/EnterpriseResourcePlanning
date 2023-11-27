@@ -7,6 +7,9 @@
 <link href="{{ asset('assets/js/css/demo.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/js/css/tabler-vendors.min.css') }}" rel="stylesheet" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
+<!-- token input css link starts -->
+<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}" />
+<!-- token input css link end -->
 <!-- css link ends -->
 
 <!-- css starts -->
@@ -106,6 +109,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <script src="{{ asset('assets/js/js/taskText.js') }}"></script>
 <script src="{{ asset('assets/js/js/highlight.js') }}"></script>
 <script src="{{ asset('assets/js/js/slackrow.js') }}"></script>
+<script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
 <!-- script js ends -->
 @php
     $holidays = [];
@@ -367,58 +371,62 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"id="task-title">{{ __('New Task') }}</h5>
-                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        name="close"></button>
+                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close" name="close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">{{ __('Task Name') }}</label>
+                        <input type="hidden" id="user_id" name="user_id">
+                        <input type="hidden" id="reporter_id" name="reporter_id">
+                        <input type="hidden" id="subcontractor_id" name="subcontractor_id">
+                        
                         <input type="text" class="form-control" name="description"
-                            placeholder="Type your Task Name">
+                            placeholder="{{ __('Type your Task Name') }}">
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Task Start Date') }}</label>
                             <input type="text" class="form-control" name="start_date" id="start-date"
-                                placeholder="Enter Your Task Start Date">
+                                placeholder="{{ __('Enter Your Task Start Date') }}">
                         </div>
                         <div class="col-md-6  col-12">
                             <label class="form-label">{{ __('Task End Date') }}</label>
                             <input type="text" class="form-control" name="end_date" id="end-date"
-                                placeholder="Enter Your Task End Date">
+                                placeholder="{{ __('Enter Your Task End Date') }}">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Assignee') }}</label>
-                            <input type="text" class="form-control" name="taskassignee" id="task-assignee"
-                                placeholder="Search your task assignee">
+                            <input type="text" id="taskassignee" name="users"
+                                value="{{ request()->get('q') }}" required>
                         </div>
                     </div>
 
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Reporting To') }}</label>
-                            <input type="text" class="form-control" name="taskassignee" id="task-reporting"
-                                placeholder="Search your Reporting to">
+                            <input type="text" class="form-control" name="reported_to" id="task-reporting"
+                                placeholder="{{ __('Search your Reporting to') }}">
                         </div>
                     </div>
                     <div class="row mt-4">
                         <div class="mb-3">
-                            <div class="form-label">Task Assignment Mode</div>
+                            <div class="form-label">{{ __('Task Assignment Mode') }}</div>
                             <div>
-                              <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Assignment" checked="">
-                                <span class="form-check-label">Self Task</span>
-                              </label>
-                              <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Assignment">
-                                <span class="form-check-label">Sub Contract Task</span>
-                              </label>
+                                <label class="form-check form-check-inline">
+                                    <input class="form-check-input" value="0" type="radio" name="taskmode" id="taskmode_one">
+                                    <span class="form-check-label">{{ __('Self Task') }}</span>
+                                </label>
+                                <label class="form-check form-check-inline">
+                                    <input class="form-check-input" value="1" type="radio" name="taskmode"  id="taskmode_two">
+                                    <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
+                                </label>
                             </div>
-                          </div>
+                        </div>
                     </div>
-                    <div class="row mt-4">
+                    <div class="row mt-4" id="sub_con">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('SubContractor') }}</label>
                             <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
@@ -534,7 +542,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 <script type="text/javascript">
     var tempcsrf = '{!! csrf_token() !!}';
-
+    $('#sub_con').hide();
     // check freeze status #############################
 
     var frezee_status_actual = $('#frezee_status').val();
@@ -1350,6 +1358,109 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         newsecond = year + '-' + mon + '-' + days;
         end_date.value = newsecond;
 
+        var users = form.querySelector("[name='users']");
+
+        var user_id = form.querySelector("[name='user_id']");
+        user_id.value = task.users;
+        var reported_to = form.querySelector("[name='reported_to']");
+        var reporter_id = form.querySelector("[name='reporter_id']");
+        reporter_id.value = task.reported_to;
+
+        var subcontractor = form.querySelector("[name='subcontractor']");
+        var subcontractor_id = form.querySelector("[name='subcontractor_id']");
+        subcontractor_id.value = task.subcontractor;
+
+        var taskmode = form.querySelector("[name='taskmode']");
+        taskmode.value = task.taskmode;
+        if(taskmode.value==1){
+            $('#sub_con').hide();
+            $("#taskmode_one").prop( "checked", true );
+          
+            
+        }else if(taskmode.value==0){
+            $('#sub_con').show();
+            $("#taskmode_two").prop( "checked", true );
+            
+        }else{
+            $('#sub_con').show();
+            $("#taskmode_one").prop( "checked", false );
+            $("#taskmode_two").prop( "checked", false );
+           
+        }
+        console.log("taskmode.value",taskmode.value);
+        var asignee = '';
+
+        $('#taskassignee').tokenInput("clear");
+        $('#task-reporting').tokenInput("clear");
+        $('#sub-contractor').tokenInput("clear");
+        
+
+        if (task.users != null) {
+
+            $.ajax({
+                url: "{{ route('project.get_assignee_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#user_id').val()
+                },
+                success: function(d) {
+                    asignee = {
+                        id: d.id,
+                        name: d.name
+                    };
+                    setTimeout(function() {
+                        $('#taskassignee').tokenInput("add", asignee);
+                    }, 200);
+                }
+            });
+
+        }
+        var reportedto = '';
+        if (task.reported_to != '') {
+
+            $.ajax({
+                url: "{{ route('project.get_reporter_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#reporter_id').val()
+                },
+                success: function(dd) {
+                console.log("gg",dd);
+                    reportedto = {
+                        id: dd.id,
+                        name: dd.name
+                    };
+                    setTimeout(function() {
+                        $('#task-reporting').tokenInput("add", reportedto);
+                    }, 200);
+                }
+            });
+
+        }
+
+        var subcontractorto = '';
+        if (task.subcontractor != '') {
+
+            $.ajax({
+                url: "{{ route('project.get_reporter_name') }}",
+                type: "GET",
+                data: {
+                    id: $('#subcontractor_id').val()
+                },
+                success: function(subcon) {
+                subcontractorto = {
+                        id: subcon.id,
+                        name: subcon.name
+                    };
+                    setTimeout(function() {
+                        $('#sub-contractor').tokenInput("add", subcontractorto);
+                    }, 200);
+                }
+            });
+
+        }
+
+
         form.style.display = "block";
         form.querySelector("#save").onclick = save;
         form.querySelector("#close").onclick = cancel;
@@ -1377,6 +1488,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         task.text = getForm().querySelector("[name='description']").value;
         get_start_date = getForm().querySelector("[name='start_date']").value;
         get_end_date = getForm().querySelector("[name='end_date']").value;
+        task.users = getForm().querySelector("[name='users']").value;
+        task.reported_to = getForm().querySelector("[name='reported_to']").value;
+        task.subcontractor = getForm().querySelector("[name='subcontractor']").value;
+        task.taskmode = getForm().querySelector("[name='taskmode']").value;
 
         task.start_date = new Date(get_start_date);
         task.end_date = new Date(get_end_date);
@@ -1469,10 +1584,60 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     }
     // gantt crud end
-</script>
 
+    $("#taskassignee").tokenInput("{{ route('project.user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Task Assignee...') }}",
+        noResultsText: "{{ __('Task Assignee not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
 
-<script>
+    $("#task-reporting").tokenInput("{{ route('project.user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Reporting To...') }}",
+        noResultsText: "{{ __('Reporting To not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
+
+    $("#sub-contractor").tokenInput("{{ route('project.subcon_user_search') }}", {
+        propertyToSearch: "name",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Subcontractor To...') }}",
+        noResultsText: "{{ __('Subcontractor To not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
     // @formatter:off
     document.addEventListener("DOMContentLoaded", function() {
         window.Litepicker && (new Litepicker({
@@ -1500,4 +1665,11 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         }));
     });
     // @formatter:on
+
+    $(document).on('change', '#taskmode_two', function(){
+        $('#sub_con').show();
+    });
+    $(document).on('change', '#taskmode_one', function(){
+        $('#sub_con').hide();
+    });
 </script>
