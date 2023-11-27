@@ -396,7 +396,7 @@
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Daily Task Reports') }}
                                     </a>
-                                    <a class="dropdown-item" href="./accordion.html">
+                                    <a class="dropdown-item" href="{{route('overall_report')}}">
                                         {{ __('OverAll Reports') }}
                                     </a>
                                     <a class="dropdown-item" href="./accordion.html">

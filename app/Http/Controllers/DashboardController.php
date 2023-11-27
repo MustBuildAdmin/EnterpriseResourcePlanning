@@ -698,7 +698,7 @@ class DashboardController extends Controller
             Session::forget('project_instance');
             Session::forget('latest_project_instance');
             Session::forget('current_revision_freeze');
-
+            
             $usr = Auth::user();
             if (\Auth::user()->type == 'client') {
                 $user_projects = Project::where('client_id', \Auth::user()->id)
