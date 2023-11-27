@@ -17,6 +17,7 @@
     .gantt_task_line {
         background-color: rgb(0 84 166 / 75%);
     }
+   
 
     .gantt_critical_task {
         background-color: #e63030 !important;
@@ -426,7 +427,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4" id="sub_con">
+                    <div class="row mt-4" id="sub_con" style="display: none;">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('SubContractor') }}</label>
                             <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
@@ -542,7 +543,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 <script type="text/javascript">
     var tempcsrf = '{!! csrf_token() !!}';
-    $('#sub_con').hide();
     // check freeze status #############################
 
     var frezee_status_actual = $('#frezee_status').val();
@@ -1370,24 +1370,22 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var subcontractor_id = form.querySelector("[name='subcontractor_id']");
         subcontractor_id.value = task.subcontractor;
 
-        var taskmode = form.querySelector("[name='taskmode']");
-        taskmode.value = task.taskmode;
-        if(taskmode.value==1){
+        var taskmode = $('input[name="taskmode"]:checked').val();
+        taskmode= task.taskmode;
+        console.log("taskmode",taskmode);
+        if(taskmode==1){
+            $('#sub_con').show();
+            $("#taskmode_two").prop( "checked", true);
+        }else if(taskmode==0){
             $('#sub_con').hide();
-            $("#taskmode_one").prop( "checked", true );
-          
-            
-        }else if(taskmode.value==0){
-            $('#sub_con').show();
-            $("#taskmode_two").prop( "checked", true );
-            
-        }else{
-            $('#sub_con').show();
-            $("#taskmode_one").prop( "checked", false );
-            $("#taskmode_two").prop( "checked", false );
-           
+            $("#taskmode_one").prop( "checked", true);
         }
-        console.log("taskmode.value",taskmode.value);
+        else{
+            $('#sub_con').hide();
+            $("#taskmode_one").prop( "checked", false);
+            $("#taskmode_two").prop( "checked", false);
+        }
+      
         var asignee = '';
 
         $('#taskassignee').tokenInput("clear");
@@ -1395,7 +1393,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         $('#sub-contractor').tokenInput("clear");
         
 
-        if (task.users != null) {
+        if (task.users != null || task.users !=undefined) {
 
             $.ajax({
                 url: "{{ route('project.get_assignee_name') }}",
@@ -1416,7 +1414,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         }
         var reportedto = '';
-        if (task.reported_to != '') {
+        if (task.reported_to != null || task.reported_to!=undefined) {
 
             $.ajax({
                 url: "{{ route('project.get_reporter_name') }}",
@@ -1439,7 +1437,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         }
 
         var subcontractorto = '';
-        if (task.subcontractor != '') {
+        if (task.subcontractor != null || task.subcontractor!=undefined) {
 
             $.ajax({
                 url: "{{ route('project.get_reporter_name') }}",
@@ -1491,7 +1489,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         task.users = getForm().querySelector("[name='users']").value;
         task.reported_to = getForm().querySelector("[name='reported_to']").value;
         task.subcontractor = getForm().querySelector("[name='subcontractor']").value;
-        task.taskmode = getForm().querySelector("[name='taskmode']").value;
+        task.taskmode = getForm().querySelector("[name='taskmode']:checked").value;
 
         task.start_date = new Date(get_start_date);
         task.end_date = new Date(get_end_date);
