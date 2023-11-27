@@ -861,14 +861,6 @@ Route::group(
     }
 );
 
-Route::resource('taxes', 'TaxController')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
-
 Route::resource('product-category', 'ProductServiceCategoryController')->middleware(
     [
         'auth',
@@ -3720,7 +3712,12 @@ Route::any('get_micro_freeze_status', 'MicroPorgramController@get_micro_freeze_s
         'XSS',
     ]
 );
-
+Route::get('projects/{id}/view', 'ProjectController@viewproject')->name('projects.view')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::resource('projects', 'ProjectController')->middleware(
     [
         'auth',

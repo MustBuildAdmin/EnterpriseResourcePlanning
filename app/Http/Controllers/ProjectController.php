@@ -56,17 +56,14 @@ class ProjectController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
+
     public function create()
     {
         if (\Auth::user()->can("create project")) {
             $setting = Utility::settings(\Auth::user()->creatorId());
             $users = User::where("created_by", "=", \Auth::user()->creatorId())
-                ->where("type", "!=", "client")
+                ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
                 ->get()
                 ->pluck("name", "id");
             $clients = User::where(
@@ -83,9 +80,10 @@ class ProjectController extends Controller
                 "=",
                 \Auth::user()->creatorId()
             )
-                ->where("type", "!=", "client")
+                ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
                 ->get()
                 ->pluck("name", "id");
+            $users->prepend("Select User", "");
             $users->prepend("Select User", "");
             $country = Utility::getcountry();
 
@@ -871,11 +869,11 @@ class ProjectController extends Controller
                         "project_id" => $project->id,
                         "instance_id" => Session::get("project_instance"),
                     ])->first();
-                    if (!$holidays) {
-                        return redirect()
-                            ->back()
-                            ->with("error", __("No holidays are listed."));
-                    }
+                    // if (!$holidays) {
+                    //     return redirect()
+                    //         ->back()
+                    //         ->with("error", __("No holidays are listed."));
+                    // }
                 }
 
                 // end
@@ -1512,11 +1510,11 @@ class ProjectController extends Controller
                         "project_id" => $project->id,
                         "instance_id" => Session::get("project_instance"),
                     ])->first();
-                    if (!$holidays) {
-                        return redirect()
-                            ->back()
-                            ->with("error", __("No holidays are listed."));
-                    }
+                    // if (!$holidays) {
+                    //     return redirect()
+                    //         ->back()
+                    //         ->with("error", __("No holidays are listed."));
+                    // }
                 }
 
                 // end
@@ -2042,7 +2040,7 @@ class ProjectController extends Controller
                     $request->non_working_days
                 );
             }
-
+          
             $project->budget = $request->budget;
             $project->client_id = $request->client;
             $project->description = $request->description;
@@ -2058,6 +2056,7 @@ class ProjectController extends Controller
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
             $project->micro_program = $microProgram;
+            $project->otheraddress = $request->otheraddress;
             $project->save();
             if (Session::has("project_instance")) {
                 $instanceId = Session::get("project_instance");
@@ -2098,38 +2097,6 @@ class ProjectController extends Controller
                         ->update($nonWorkingDaysUpdate);
                 }
             }
-
-            if ($setHolidays == 0) {
-                $holiday_date = $request->holiday_date;
-
-                foreach ($holiday_date as $holi_key => $holi_value) {
-                    Holiday::where(
-                        "created_by",
-                        "=",
-                        \Auth::user()->creatorId()
-                    )
-                        ->where("date", $holi_value)
-                        ->first();
-                    $project_holidays_list = Project_holiday::where([
-                        "project_id" => $project->id,
-                        "instance_id" => $instanceId,
-                    ])
-                        ->where("date", $holi_value)
-                        ->first();
-                    if ($project_holidays_list == null) {
-                        $insert = [
-                            "project_id" => $project->id,
-                            "date" => $holi_value,
-                            "description" =>
-                                $request->holiday_description[$holi_key],
-                            "created_by" => \Auth::user()->creatorId(),
-                            "instance_id" => $instanceId,
-                        ];
-                        Project_holiday::insert($insert);
-                    }
-                }
-            }
-
             return redirect()
                 ->route("construction_main")
                 ->with("success", __("Project Updated Successfully"));
@@ -2148,6 +2115,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+      
         if (\Auth::user()->can("delete project")) {
             $projectID = $project->id;
             if (Session::has("project_instance")) {
@@ -2169,14 +2137,76 @@ class ProjectController extends Controller
                 Utility::checkFileExistsnDelete([$project->project_image]);
             }
             $project->delete();
-
-            return redirect()
-                ->back()
+            return redirect()->route('construction_main')
                 ->with("success", __("Project Successfully Deleted."));
         } else {
             return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
+        }
+    }
+    public function viewproject(Request $request, $project_id){
+        $clients = User::where(
+            "created_by",
+            "=",
+            \Auth::user()->creatorId()
+        )
+            ->where("type", "=", "client")
+            ->get()
+            ->pluck("name", "id");
+        $users = User::where("created_by", "=", \Auth::user()->creatorId())
+            ->where("type", "!=", "client")
+            ->get()
+            ->pluck("name", "id");
+        $users->prepend("Select User", "");
+        $repoter = User::where(
+            "created_by",
+            "=",
+            \Auth::user()->creatorId()
+        )
+            ->where("type", "!=", "client")
+            ->get()
+            ->pluck("name", "id");
+        $project = Project::findOrfail($project_id);
+        $setting = Utility::settings(\Auth::user()->creatorId());
+        $country = Utility::getcountry();
+        if (Session::has("project_instance")) {
+            $instanceId = Session::get("project_instance");
+        } else {
+            $instanceId = $project->instance_id;
+        }
+        $project_holidays = Project_holiday::where([
+            "project_id" => $project->id,
+            "instance_id" => $instanceId,
+        ])
+            ->orderBy("date", "ASC")
+            ->get();
+
+        if ($project->country != null) {
+            $statelist = Utility::getstate($project->country);
+        } else {
+            $statelist = [];
+        }
+
+        if ($project->created_by == \Auth::user()->creatorId()) {
+            return view(
+                "projects.viewproject",
+                compact(
+                    "project",
+                    "clients",
+                    "users",
+                    "repoter",
+                    "setting",
+                    "country",
+                    "statelist",
+                    "project_holidays"
+                )
+            );
+        } else {
+            return response()->json(
+                ["error" => __("Permission Denied.")],
+                401
+            );
         }
     }
 
