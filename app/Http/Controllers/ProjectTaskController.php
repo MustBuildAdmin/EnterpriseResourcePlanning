@@ -202,7 +202,7 @@ class ProjectTaskController extends Controller
                                 ->where('con_tasks.instance_id', $instance_id)
                                 ->where('con_tasks.type', 'task');
 
-            if (\Auth::user()->type != 'company') {
+            if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
                 $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
             }
 
@@ -324,7 +324,7 @@ class ProjectTaskController extends Controller
                 ->where('con_tasks.instance_id', $instance_id)
                 ->where('con_tasks.type','project');
 
-            if(\Auth::user()->type != 'company'){
+            if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
                 $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
             }
 
@@ -677,6 +677,17 @@ class ProjectTaskController extends Controller
                     ->where('task_progress.instance_id', $instanceId)
                     ->groupBy('task_progress.id')
                     ->get();
+            }
+            else if(\Auth::user()->type != 'consultant'){
+                $get_task_progress = Task_progress::
+                select('task_progress.*', \DB::raw('group_concat(file.filename) as filename'))
+                ->leftjoin('task_progress_file as file',
+                    \DB::raw('FIND_IN_SET(file.id,task_progress.file_id)'), '>', \DB::raw("'0'"))
+                ->where('task_progress.task_id', $task_id)
+                ->where('task_progress.project_id', $get_popup_data_con->project_id)
+                ->where('task_progress.instance_id', $instanceId)
+                ->groupBy('task_progress.id')
+                ->get();
             }
             else {
                 $get_task_progress = Task_progress::

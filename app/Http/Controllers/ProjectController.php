@@ -11,20 +11,21 @@ use App\Models\Con_task;
 use App\Models\Holiday;
 use App\Models\Instance;
 use App\Models\Link;
+use App\Models\MicroTask;
 use App\Models\Milestone;
 use App\Models\NonWorkingDaysModal;
 use App\Models\Project;
-use App\Models\Project_holiday;
-use App\Models\ProjectTask;
-use App\Models\ProjectUser;
-use App\Models\Task_progress;
-use App\Models\TaskStage;
-use App\Models\TimeTracker;
 use App\Models\ProjectConsultant;
 use App\Models\ProjectSubcontractor;
+use App\Models\ProjectTask;
+use App\Models\ProjectUser;
+use App\Models\Project_holiday;
+use App\Models\TaskStage;
+use App\Models\Task_progress;
+use App\Models\TimeTracker;
 use App\Models\User;
 use App\Models\Utility;
-use App\Models\MicroTask;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Config;
 use DateInterval;
@@ -37,6 +38,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Session;
+use App\Models\EmailTemplate;
+use App\Models\UserEmailTemplate;
 
 class ProjectController extends Controller
 {
@@ -106,18 +109,16 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
 
-        if(\Auth::user()->can('create project'))
-        {
+        if (\Auth::user()->can('create project')) {
             $validator = \Validator::make(
                 $request->all(), [
-                                'project_name' => 'required',
-                                // 'project_image' => 'required',
-                                // 'non_working_days'=>'required'
-                                // 'status'=>'required'
-                            ]
+                    'project_name' => 'required',
+                    // 'project_image' => 'required',
+                    // 'non_working_days'=>'required'
+                    // 'status'=>'required'
+                ]
             );
-            if($validator->fails())
-            {
+            if ($validator->fails()) {
                 return redirect()->back()->with('error', Utility::errorFormat($validator->getMessageBag()));
             }
 
@@ -126,11 +127,10 @@ class ProjectController extends Controller
             $project->project_name = $request->project_name;
             $project->start_date = date("Y-m-d H:i:s", strtotime($request->start_date));
             $project->end_date = date("Y-m-d H:i:s", strtotime($request->end_date));
-            if($request->hasFile('project_image'))
-            {
+            if ($request->hasFile('project_image')) {
                 $filenameWithExt1 = $request->file("project_image")->getClientOriginalName();
-                $filename1        = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
-                $extension1       = $request->file("project_image")->getClientOriginalExtension();
+                $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
+                $extension1 = $request->file("project_image")->getClientOriginalExtension();
                 $fileNameToStore1 = $filename1 . "_" . time() . "." . $extension1;
 
                 $dir = Config::get('constants.Projects_image');
@@ -140,7 +140,7 @@ class ProjectController extends Controller
                     \File::delete($imagepath);
                 }
                 $url = "";
-                $path = Utility::upload_file($request,"project_image",$fileNameToStore1,$dir,[]);
+                $path = Utility::upload_file($request, "project_image", $fileNameToStore1, $dir, []);
 
                 if ($path["flag"] == 1) {
                     $url = $path["url"];
@@ -152,24 +152,24 @@ class ProjectController extends Controller
             $setHolidays = $request->holidays == "on" ? 1 : 0;
             $project->holidays = $setHolidays;
 
-            if(isset($request->non_working_days)){
-                $project->non_working_days=implode(',',$request->non_working_days);
+            if (isset($request->non_working_days)) {
+                $project->non_working_days = implode(',', $request->non_working_days);
             }
 
             $project->client_id = $request->client;
             $project->budget = !empty($request->budget) ? $request->budget : 0;
             $project->description = $request->description;
             $project->status = $request->status;
-            $project->report_to = implode(',',$request->reportto);
+            $project->report_to = implode(',', $request->reportto);
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->estimated_days = $request->estimated_days;
 
             $project->created_by = \Auth::user()->creatorId();
             // instance creation------------------------
-            $var=mt_rand(9, 999999999).date('dmyhisa').$request->client_id.$request->project_name;
-            $instance_id=Hash::make($var);
-            $project->instance_id=$instance_id;
+            $var = mt_rand(9, 999999999) . date('dmyhisa') . $request->client_id . $request->project_name;
+            $instance_id = Hash::make($var);
+            $project->instance_id = $instance_id;
             $project->country = $request->country;
             $project->state = $request->state;
             $project->otheraddress = $request->otheraddress;
@@ -179,42 +179,42 @@ class ProjectController extends Controller
             $project->longitude = $request->longitude;
             $project->micro_program = $microProgram;
             $project->status = "in_progress";
-            if($request->file_status!='M'){
+            if ($request->file_status != 'M') {
 
                 $project->critical_update = 0;
 
             }
-            ///---------end-----------------
-            $project->save();
+            // /---------end-----------------
+           $project->save();
 
-            if(isset($request->non_working_days)){
+            if (isset($request->non_working_days)) {
                 $nonWorkingDaysInsert = array(
-                    'project_id'       => $project->id,
-                    'non_working_days' => implode(',',$request->non_working_days),
-                    'instance_id'      => $instance_id,
-                    'created_by'       => \Auth::user()->creatorId()
+                    'project_id' => $project->id,
+                    'non_working_days' => implode(',', $request->non_working_days),
+                    'instance_id' => $instance_id,
+                    'created_by' => \Auth::user()->creatorId(),
                 );
                 DB::table('non_working_days')->insert($nonWorkingDaysInsert);
             }
 
-            $insert_data=array(
-                'instance'=>$instance_id,
-                'start_date'=>date("Y-m-d H:i:s", strtotime($request->start_date)),
-                'end_date'=>date("Y-m-d H:i:s", strtotime($request->end_date)),
-                'percentage'=>'0',
-                'achive'=>0,
-                'project_id'=>$project->id,
+            $insert_data = array(
+                'instance' => $instance_id,
+                'start_date' => date("Y-m-d H:i:s", strtotime($request->start_date)),
+                'end_date' => date("Y-m-d H:i:s", strtotime($request->end_date)),
+                'percentage' => '0',
+                'achive' => 0,
+                'project_id' => $project->id,
             );
             Instance::insert($insert_data);
-            if($setHolidays==0){
-                $holidays_list=Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
+            if ($setHolidays == 0) {
+                $holidays_list = Holiday::where('created_by', '=', \Auth::user()->creatorId())->get();
                 foreach ($holidays_list as $key => $value) {
-                    $insert=array(
-                        'project_id'=>$project->id,
-                        'date'=>$value->date,
-                        'description'=>$value->occasion,
-                        'created_by'=>\Auth::user()->creatorId(),
-                        'instance_id'=>$instance_id
+                    $insert = array(
+                        'project_id' => $project->id,
+                        'date' => $value->date,
+                        'description' => $value->occasion,
+                        'created_by' => \Auth::user()->creatorId(),
+                        'instance_id' => $instance_id,
                     );
                     Project_holiday::insert($insert);
                 }
@@ -232,30 +232,38 @@ class ProjectController extends Controller
                 }
 
                 $request->file->move(public_path($path), $name);
-
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                  //   CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST=> false,
-                    CURLOPT_SSL_VERIFYPEER=>false,
-                    CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
-                ));
-
-                $responseBody = curl_exec($curl);
-                curl_close($curl);
+                for ($i=0; $i <3 ; $i++) { 
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                      //   CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_SSL_VERIFYHOST=> false,
+                        CURLOPT_SSL_VERIFYPEER=>false,
+                        CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
+                    ));
+    
+                    $responseBody = curl_exec($curl);
+                    curl_close($curl);
+                    $responseBody = json_decode($responseBody, true);
+                    if(isset($responseBody['data'])){
+                        $i=3;
+                    }else{
+                        Project::where('id',$project->id)->update(['status'=>'on_hold']);
+                    }
+                }
+    
                 if (file_exists(public_path($pathname))){
                     unlink(public_path($pathname));
                 }
 
-                $responseBody = json_decode($responseBody, true);
+                
 
                 if(isset($responseBody['data']['data'])){
 
@@ -355,120 +363,128 @@ class ProjectController extends Controller
 
                     $request->file->move(public_path($path), $name);
 
-                    $curl = curl_init();
-                    curl_setopt_array($curl, array(
-                      CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
-                      CURLOPT_RETURNTRANSFER => true,
-                      CURLOPT_ENCODING => '',
-                      CURLOPT_MAXREDIRS => 10,
-                      CURLOPT_TIMEOUT => 0,
-                      CURLOPT_FOLLOWLOCATION => true,
-                      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                      CURLOPT_CUSTOMREQUEST => 'POST',
-                     //   CURLOPT_SSL_VERIFYPEER => false,
-                      CURLOPT_SSL_VERIFYHOST => false,
-                      CURLOPT_SSL_VERIFYPEER => false,
-                      CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
-                    ));
+                    for ($i=0; $i <3 ; $i++) { 
+                        $curl = curl_init();
+                        curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        //   CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_SSL_VERIFYHOST => false,
+                        CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'primaveraP6-parse'],
+                        ));
 
-                    $responseBody = curl_exec($curl);
-                    curl_close($curl);
+                        $responseBody = curl_exec($curl);
+                        $responseBody = json_decode($responseBody, true);
+                        if(isset($responseBody['data'])){
+                            $i=3;
+                        }else{
+                            Project::where('id',$project->id)->update(['status'=>'on_hold']);
+                        }
+                        curl_close($curl);
+                    }
+
                     if (file_exists(public_path($pathname))){
                         unlink(public_path($pathname));
                     }
-                    $responseBody = json_decode($responseBody, true);
+                   
                     if(isset($responseBody['data']['data'])){
 
-                        foreach($responseBody['data']['data'] as $key=>$value){
-                            $task= new Con_task();
-                            $task->project_id=$project->id;
-                            $task->instance_id=$instance_id;
-                            if(isset($value['text'])){
-                                $task->text=$value['text'];
+                        foreach ($responseBody['data']['data'] as $key => $value) {
+                            $task = new Con_task();
+                            $task->project_id = $project->id;
+                            $task->instance_id = $instance_id;
+                            if (isset($value['text'])) {
+                                $task->text = $value['text'];
                             }
-                            if(isset($value['id'])){
-                                $task->id=$value['id'];
+                            if (isset($value['id'])) {
+                                $task->id = $value['id'];
                             }
-                            if(isset($value['start_date'])){
-                                $task->start_date=$value['start_date'];
+                            if (isset($value['start_date'])) {
+                                $task->start_date = $value['start_date'];
                             }
-                            if(isset($value['duration'])){
-                                $task->duration=$value['duration'];
+                            if (isset($value['duration'])) {
+                                $task->duration = $value['duration'];
                             }
-                            if(isset($value['progress'])){
-                                $task->progress=$value['progress'];
+                            if (isset($value['progress'])) {
+                                $task->progress = $value['progress'];
                             }
-                            if(isset($value['parent'])){
-                                $task->parent=$value['parent'];
-                                $task->predecessors=$value['parent'];
+                            if (isset($value['parent'])) {
+                                $task->parent = $value['parent'];
+                                $task->predecessors = $value['parent'];
                             }
 
-
-                            if(isset($value['$raw'])){
-                                $raw=$value['$raw'];
-                                if(isset($raw['Finish'])){
-                                    $task->end_date=$raw['Finish'];
+                            if (isset($value['$raw'])) {
+                                $raw = $value['$raw'];
+                                if (isset($raw['Finish'])) {
+                                    $task->end_date = $raw['Finish'];
                                 }
-                                $task->custom=json_encode($value['$raw']);
+                                $task->custom = json_encode($value['$raw']);
                             }
 
                             $task->save();
 
                         }
 
-                        foreach($responseBody['data']['links'] as $key=>$value){
-                            $link= new Link();
-                            $link->project_id=$project->id;
-                            $link->instance_id=$instance_id;
-                            $old_predis=Con_task::where(['id'=>$value['target'],'project_id'=>$project->id,
-                            'instance_id'=>$instance_id])->pluck('predecessors')->first();
-                            if($old_predis!=''){
-                                $predis=$old_predis.','.$value['source'];
-                                if($value['lag']!=0){
+                        foreach ($responseBody['data']['links'] as $key => $value) {
+                            $link = new Link();
+                            $link->project_id = $project->id;
+                            $link->instance_id = $instance_id;
+                            $old_predis = Con_task::where(['id' => $value['target'], 'project_id' => $project->id,
+                                'instance_id' => $instance_id])->pluck('predecessors')->first();
+                            if ($old_predis != '') {
+                                $predis = $old_predis . ',' . $value['source'];
+                                if ($value['lag'] != 0) {
                                     if (str_contains($value['lag'], '-')) {
-                                        $predis=$predis.$value['lag'].' days';
+                                        $predis = $predis . $value['lag'] . ' days';
                                     } else {
-                                        $predis=$predis.' +'.$value['lag'].' days';
+                                        $predis = $predis . ' +' . $value['lag'] . ' days';
                                     }
 
                                 }
 
-                            }else{
-                                $predis=$value['source'];
-                                if($value['lag']!=0){
+                            } else {
+                                $predis = $value['source'];
+                                if ($value['lag'] != 0) {
                                     if (str_contains($value['lag'], '-')) {
-                                        $predis=$predis.$value['lag'].' days';
+                                        $predis = $predis . $value['lag'] . ' days';
                                     } else {
-                                        $predis=$predis.' +'.$value['lag'].' days';
+                                        $predis = $predis . ' +' . $value['lag'] . ' days';
                                     }
                                 }
                             }
-                            Con_task::where(['id'=>$value['target'],
-                            'project_id'=>$project->id,
-                            'instance_id'=>$instance_id])
-                            ->update(['predecessors'=>$predis]);
-                            $link->id=$value['id'];
-                            if(isset($value['type'])){
-                                $link->type=$value['type'];
+                            Con_task::where(['id' => $value['target'],
+                                'project_id' => $project->id,
+                                'instance_id' => $instance_id])
+                                ->update(['predecessors' => $predis]);
+                            $link->id = $value['id'];
+                            if (isset($value['type'])) {
+                                $link->type = $value['type'];
                             }
-                            if(isset($value['lag'])){
-                                $link->type=$value['lag'];
+                            if (isset($value['lag'])) {
+                                $link->type = $value['lag'];
                             }
-                            if(isset($value['source'])){
+                            if (isset($value['source'])) {
 
-                                $link->source=$value['source'];
+                                $link->source = $value['source'];
                             }
-                            if(isset($value['target'])){
-                                $link->target=$value['target'];
+                            if (isset($value['target'])) {
+                                $link->target = $value['target'];
                             }
                             $link->save();
                         }
                     }
-               }
+                }
 
             }
 
-            if(\Auth::user()->type=='company'){
+            if (\Auth::user()->type == 'company') {
 
                 ProjectUser::create(
                     [
@@ -477,8 +493,8 @@ class ProjectController extends Controller
                     ]
                 );
 
-                if($request->reportto){
-                    foreach($request->reportto as $key => $value) {
+                if ($request->reportto) {
+                    foreach ($request->reportto as $key => $value) {
                         ProjectUser::create(
                             [
                                 'project_id' => $project->id,
@@ -488,7 +504,7 @@ class ProjectController extends Controller
                     }
                 }
 
-            }else{
+            } else {
                 ProjectUser::create(
                     [
                         'project_id' => $project->id,
@@ -503,8 +519,8 @@ class ProjectController extends Controller
                     ]
                 );
 
-                if($request->reportto){
-                    foreach($request->reportto as $key => $value) {
+                if ($request->reportto) {
+                    foreach ($request->reportto as $key => $value) {
                         ProjectUser::create(
                             [
                                 'project_id' => $project->id,
@@ -515,7 +531,7 @@ class ProjectController extends Controller
                 }
 
             }
-             // type project or task
+            // type project or task
             Projecttypetask::dispatch($project->id);
             // $project_task=Con_task::where('project_id',$project->id)->get();
             // foreach ($project_task as $key => $value) {
@@ -528,30 +544,26 @@ class ProjectController extends Controller
             //     }
             // }
             //Slack Notification
-            $setting  = Utility::settings(\Auth::user()->creatorId());
-            if(isset($setting['project_notification']) && $setting['project_notification'] ==1){
-                $msg = $request->project_name.' '.__(" created by").' ' .\Auth::user()->name.'.';
+            $setting = Utility::settings(\Auth::user()->creatorId());
+            if (isset($setting['project_notification']) && $setting['project_notification'] == 1) {
+                $msg = $request->project_name . ' ' . __(" created by") . ' ' . \Auth::user()->name . '.';
                 Utility::send_slack_msg($msg);
             }
 
             //Telegram Notification
-            $setting  = Utility::settings(\Auth::user()->creatorId());
-            if(isset($setting['telegram_project_notification']) && $setting['telegram_project_notification'] ==1){
-                $msg = __("New").' '.$request->project_name.' '.__("project");
-                $msg=$msg.' '.__(" created by").' ' .\Auth::user()->name.'.';
+            $setting = Utility::settings(\Auth::user()->creatorId());
+            if (isset($setting['telegram_project_notification']) && $setting['telegram_project_notification'] == 1) {
+                $msg = __("New") . ' ' . $request->project_name . ' ' . __("project");
+                $msg = $msg . ' ' . __(" created by") . ' ' . \Auth::user()->name . '.';
                 Utility::send_telegram_msg($msg);
             }
 
             return redirect()->route('construction_main')->with('success', __('Project Add Successfully'));
 
-
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }
-
 
     public function boq_file(Request $request)
     {
@@ -714,32 +726,32 @@ class ProjectController extends Controller
         }
     }
 
-
     /**
      * Display the specified resource.
      *
      * @param  \App\Poject  $poject
      * @return \Illuminate\Http\Response
      */
-    public function getActivityLog(Request $request, $project_id){
+    public function getActivityLog(Request $request, $project_id)
+    {
 
         // Page Length
-        $pageNumber = ( $request->start / $request->length )+1;
+        $pageNumber = ($request->start / $request->length) + 1;
         $pageLength = $request->length;
-        $skip       = ($pageNumber-1) * $pageLength;
+        $skip = ($pageNumber - 1) * $pageLength;
 
         // get data from products table
-        $query = \DB::table('activity_logs')->select('*','activity_logs.id as activitylogID',
-        'activity_logs.created_at as activitylogcreatedAt')
-        ->join('users', 'users.id', '=', 'activity_logs.user_id');
+        $query = \DB::table('activity_logs')->select('*', 'activity_logs.id as activitylogID',
+            'activity_logs.created_at as activitylogcreatedAt')
+            ->join('users', 'users.id', '=', 'activity_logs.user_id');
 
         // Search
         $start_date = $request->start_date;
         $end_date = $request->end_date;
-        if($start_date!='' && $end_date!=''){
-            $query = $query->where(function($query) use ($start_date,$end_date){
-                $start_date = $start_date.' 00:00:00.000000';
-                $end_date = $end_date.' 23:59:59.000000';
+        if ($start_date != '' && $end_date != '') {
+            $query = $query->where(function ($query) use ($start_date, $end_date) {
+                $start_date = $start_date . ' 00:00:00.000000';
+                $end_date = $end_date . ' 23:59:59.000000';
                 $query->whereBetween(
                     'activity_logs.created_at', [
                         $start_date,
@@ -750,29 +762,28 @@ class ProjectController extends Controller
             });
         }
 
-        $task_status=array();
-        if(!empty($request->task_status)){
-            if(in_array("Create",$request->task_status)){
-                array_push($task_status,'Added New Task');
+        $task_status = array();
+        if (!empty($request->task_status)) {
+            if (in_array("Create", $request->task_status)) {
+                array_push($task_status, 'Added New Task');
             }
-            if(in_array("Update",$request->task_status)){
-                array_push($task_status,'Updated Task');
+            if (in_array("Update", $request->task_status)) {
+                array_push($task_status, 'Updated Task');
             }
-            if(in_array("Delete",$request->task_status)){
-                array_push($task_status,'Deleted Task');
+            if (in_array("Delete", $request->task_status)) {
+                array_push($task_status, 'Deleted Task');
             }
-            if(!empty($task_status)){
+            if (!empty($task_status)) {
                 $query->whereIn('log_type', $task_status);
             }
         }
-
 
         $query->where("project_id", $project_id);
         $recordsFiltered = $recordsTotal = $query->count();
         $users = $query->skip($skip)->take($pageLength)->get();
 
-        return response()->json(["draw"=> $request->draw, "recordsTotal"=> $recordsTotal,
-         "recordsFiltered" => $recordsFiltered, 'data' => $users,'end_date'=>$end_date,'start_date'=>$start_date], 200);
+        return response()->json(["draw" => $request->draw, "recordsTotal" => $recordsTotal,
+            "recordsFiltered" => $recordsFiltered, 'data' => $users, 'end_date' => $end_date, 'start_date' => $start_date], 200);
     }
     public function projectActivities(Request $request, $project_id)
     {
@@ -787,7 +798,7 @@ class ProjectController extends Controller
             $user_projects = $usr->projects->pluck("id")->toArray();
         }
         if (in_array($project->id, $user_projects)) {
-            return view("construction_project.activities", compact("project","project_id"));
+            return view("construction_project.activities", compact("project", "project_id"));
         } else {
             return redirect()
                 ->back()
@@ -806,7 +817,7 @@ class ProjectController extends Controller
             $user_projects = $usr->projects->pluck("id")->toArray();
         }
         if (in_array($project->id, $user_projects)) {
-            return view("construction_project.teammembers", compact("project","project_id"));
+            return view("construction_project.teammembers", compact("project", "project_id"));
         } else {
             return redirect()
                 ->back()
@@ -825,7 +836,7 @@ class ProjectController extends Controller
             $user_projects = $usr->projects->pluck("id")->toArray();
         }
         if (in_array($project->id, $user_projects)) {
-            return view("construction_project.consultant", compact("project","project_id"));
+            return view("construction_project.consultant", compact("project", "project_id"));
         } else {
             return redirect()
                 ->back()
@@ -844,7 +855,7 @@ class ProjectController extends Controller
             $user_projects = $usr->projects->pluck("id")->toArray();
         }
         if (in_array($project->id, $user_projects)) {
-            return view("construction_project.subcontractor", compact("project","project_id"));
+            return view("construction_project.subcontractor", compact("project", "project_id"));
         } else {
             return redirect()
                 ->back()
@@ -859,9 +870,21 @@ class ProjectController extends Controller
                 $user_projects = Project::where("client_id", \Auth::user()->id)
                     ->pluck("id", "id")
                     ->toArray();
-            } else {
+            } 
+            else if(Auth::user()->type == "consultant"){
+                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else if(\Auth::user()->type == 'sub_contractor'){
+                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else {
                 $user_projects = $usr->projects->pluck("id")->toArray();
             }
+
             if (in_array($project->id, $user_projects)) {
                 // test the holidays
                 if ($project->holidays == 0) {
@@ -926,9 +949,9 @@ class ProjectController extends Controller
 
                 $project_data["user_assigned"] = [
                     "total" =>
-                        number_format($total_users) .
-                        "/" .
-                        number_format($total_users),
+                    number_format($total_users) .
+                    "/" .
+                    number_format($total_users),
                     "percentage" => Utility::getPercentage(
                         $total_users,
                         $total_users
@@ -948,9 +971,9 @@ class ProjectController extends Controller
                 }
                 $project_data["day_left"] = [
                     "day" =>
-                        number_format($remaining_day) .
-                        "/" .
-                        number_format($total_day),
+                    number_format($remaining_day) .
+                    "/" .
+                    number_format($total_day),
                     "percentage" => Utility::getPercentage(
                         $remaining_day,
                         $total_day
@@ -971,9 +994,9 @@ class ProjectController extends Controller
 
                 $project_data["open_task"] = [
                     "tasks" =>
-                        number_format($remaining_task) .
-                        "/" .
-                        number_format($total_task),
+                    number_format($remaining_task) .
+                    "/" .
+                    number_format($total_task),
                     "percentage" => Utility::getPercentage(
                         $remaining_task,
                         $total_task
@@ -989,9 +1012,9 @@ class ProjectController extends Controller
                     ->count();
                 $project_data["milestone"] = [
                     "total" =>
-                        number_format($complete_milestone) .
-                        "/" .
-                        number_format($total_milestone),
+                    number_format($complete_milestone) .
+                    "/" .
+                    number_format($total_milestone),
                     "percentage" => Utility::getPercentage(
                         $complete_milestone,
                         $total_milestone
@@ -1009,9 +1032,9 @@ class ProjectController extends Controller
                 $totaltime = str_replace(":", ".", Utility::timeToHr($times));
                 $project_data["time_spent"] = [
                     "total" =>
-                        number_format($totaltime) .
-                        "/" .
-                        number_format($totaltime),
+                    number_format($totaltime) .
+                    "/" .
+                    number_format($totaltime),
                     "percentage" => Utility::getPercentage(
                         number_format($totaltime),
                         $totaltime
@@ -1023,9 +1046,9 @@ class ProjectController extends Controller
                 $hrs = Project::projectHrs($project->id);
                 $project_data["task_allocated_hrs"] = [
                     "hrs" =>
-                        number_format($hrs["allocated"]) .
-                        "/" .
-                        number_format($hrs["allocated"]),
+                    number_format($hrs["allocated"]) .
+                    "/" .
+                    number_format($hrs["allocated"]),
                     "percentage" => Utility::getPercentage(
                         $hrs["allocated"],
                         $hrs["allocated"]
@@ -1216,19 +1239,19 @@ class ProjectController extends Controller
 
                     $search_date = $startDate->format('Y-m-d');
                     // completed task count
-                    $completed[]=Task_progress::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
-                    ->where('record_date', 'like', $search_date.'%')
-                    ->where('percentage','100')->count();
+                    $completed[] = Task_progress::where('project_id', $project->id)
+                        ->where('instance_id', Session::get("project_instance"))
+                        ->where('record_date', 'like', $search_date . '%')
+                        ->where('percentage', '100')->count();
 
                     // pending task count
-                    $pending[]=Task_progress::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
-                    ->where('record_date', 'like', $search_date.'%')->where('percentage','>','100')->count();
+                    $pending[] = Task_progress::where('project_id', $project->id)
+                        ->where('instance_id', Session::get("project_instance"))
+                        ->where('record_date', 'like', $search_date . '%')->where('percentage', '>', '100')->count();
 
                     $startDate->addDay();
                 }
-                $alldates=$datesBetween;
+                $alldates = $datesBetween;
 
                 // Micro task Start
                 $microTaskCount = 0;
@@ -1236,7 +1259,7 @@ class ProjectController extends Controller
                 $holidayCount = 0;
                 $microWeekEndCount = 0;
                 $totalWorkingDays = 0;
-                $microProgram  = null;
+                $microProgram = null;
                 $taskDates = [];
                 $microallDate = [];
                 $microProgramName = [];
@@ -1245,51 +1268,51 @@ class ProjectController extends Controller
                 $micro_actual_percentage_set = [];
                 $micro_actual_percentage = 0;
 
-                $checkProject = Project::where('id',$project->id)->where('micro_program',1)->first();
-                if($checkProject != null){
+                $checkProject = Project::where('id', $project->id)->where('micro_program', 1)->first();
+                if ($checkProject != null) {
                     $microProgram = DB::table('microprogram_schedule')
-                        ->where('project_id',$project->id)
+                        ->where('project_id', $project->id)
                         ->where("instance_id", Session::get("project_instance"))
-                        ->where('active_status',1)
+                        ->where('active_status', 1)
                         ->first();
 
-                    if($microProgram != null){
-                        $microTaskCount = MicroTask::where('project_id',$project->id)
-                            ->where('instance_id',Session::get("project_instance"))
-                            ->where('schedule_id',$microProgram->id)
-                            ->where('type','task')->get()->count();
+                    if ($microProgram != null) {
+                        $microTaskCount = MicroTask::where('project_id', $project->id)
+                            ->where('instance_id', Session::get("project_instance"))
+                            ->where('schedule_id', $microProgram->id)
+                            ->where('type', 'task')->get()->count();
 
-                        $conTaskTaken = MicroTask::where('project_id',$project->id)
-                            ->where('instance_id',Session::get("project_instance"))
-                            ->where('schedule_id',$microProgram->id)
-                            ->where('type','project')
-                            ->where('micro_flag',1)->get()->count();
+                        $conTaskTaken = MicroTask::where('project_id', $project->id)
+                            ->where('instance_id', Session::get("project_instance"))
+                            ->where('schedule_id', $microProgram->id)
+                            ->where('type', 'project')
+                            ->where('micro_flag', 1)->get()->count();
 
                         $microallDate = MicroTask::select('micro_tasks.start_date',
-                         'micro_tasks.end_date','micro_tasks.id')
+                            'micro_tasks.end_date', 'micro_tasks.id')
                             ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                             ->whereNotNull('pros.instance_id')
-                            ->where('micro_tasks.micro_flag',1)
+                            ->where('micro_tasks.micro_flag', 1)
                             ->where('micro_tasks.project_id', $project->id)
                             ->where('micro_tasks.instance_id', Session::get("project_instance"))
-                            ->where('micro_tasks.schedule_id',$microProgram->id)
+                            ->where('micro_tasks.schedule_id', $microProgram->id)
                             ->get();
                     }
 
                     if (\Auth::user()->type == "company") {
-                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->id)
+                        $getHoliday = Project_holiday::where("created_by", \Auth::user()->id)
                             ->where("project_id", $project->id)
                             ->where("instance_id", Session::get("project_instance"))
                             ->get();
                     } else {
-                        $getHoliday = Project_holiday::where("created_by",\Auth::user()->creatorId())
-                        ->where("project_id", $project->id)
-                        ->where("instance_id", Session::get("project_instance"))
-                        ->get();
+                        $getHoliday = Project_holiday::where("created_by", \Auth::user()->creatorId())
+                            ->where("project_id", $project->id)
+                            ->where("instance_id", Session::get("project_instance"))
+                            ->get();
                     }
 
-                    if(count($microallDate) != 0){
-                        foreach($microallDate as $getDate){
+                    if (count($microallDate) != 0) {
+                        foreach ($microallDate as $getDate) {
                             $startDate = Carbon::createFromFormat('Y-m-d', $getDate->start_date);
                             $endDate = Carbon::createFromFormat('Y-m-d', $getDate->end_date);
 
@@ -1298,9 +1321,9 @@ class ProjectController extends Controller
                                 $startDate->addDay();
                             }
                         }
-                        if(count($getHoliday) != 0){
-                            foreach($getHoliday as $holidaydate){
-                                if(in_array($holidaydate->date,$taskDates)){
+                        if (count($getHoliday) != 0) {
+                            foreach ($getHoliday as $holidaydate) {
+                                if (in_array($holidaydate->date, $taskDates)) {
                                     $holidayCount++;
                                 }
 
@@ -1309,11 +1332,11 @@ class ProjectController extends Controller
 
                         $countDates = count($taskDates);
 
-                        $totalWorkingDays = ($countDates-$holidayCount);
+                        $totalWorkingDays = ($countDates - $holidayCount);
                     }
 
                     $micro_get_non_work_day = [];
-                    $nonWorkingDay = NonWorkingDaysModal::where("project_id",$project->id)
+                    $nonWorkingDay = NonWorkingDaysModal::where("project_id", $project->id)
                         ->where("instance_id", Session::get("project_instance"))
                         ->orderBy("id", "DESC")
                         ->first();
@@ -1342,35 +1365,35 @@ class ProjectController extends Controller
                         }
                     }
 
-                    foreach($taskDates as $split_dates){
+                    foreach ($taskDates as $split_dates) {
                         $getCurrentDay = date("l", strtotime($split_dates));
-                        if(in_array($getCurrentDay,$micro_get_non_work_day)){
+                        if (in_array($getCurrentDay, $micro_get_non_work_day)) {
                             $microWeekEndCount++;
                         }
                     }
 
                     $microProgramName = DB::table('microprogram_schedule')
-                        ->where('project_id',$project->id)
+                        ->where('project_id', $project->id)
                         ->where("instance_id", Session::get("project_instance"))
-                        ->orderBy('id','DESC')
+                        ->orderBy('id', 'DESC')
                         ->pluck('schedule_name');
 
                     $microProgramLoop = DB::table('microprogram_schedule')
-                        ->where('project_id',$project->id)
+                        ->where('project_id', $project->id)
                         ->where("instance_id", Session::get("project_instance"))
-                        ->orderBy('id','DESC')
+                        ->orderBy('id', 'DESC')
                         ->get();
 
-                    foreach($microProgramLoop as $micro_loop){
+                    foreach ($microProgramLoop as $micro_loop) {
                         $micro_no_working_days = $micro_loop->schedule_duration; // include the last day
-                        $micro_date2           = date_create($micro_loop->schedule_end_date);
+                        $micro_date2 = date_create($micro_loop->schedule_end_date);
                         $micro_remaining_working_days = Utility::remaining_duration_calculator(
                             $micro_date2,
                             $project->id
                         );
 
                         $micro_remaining_working_days = $micro_remaining_working_days - 1;
-                        $micro_completed_days         = $micro_no_working_days - $micro_remaining_working_days;
+                        $micro_completed_days = $micro_no_working_days - $micro_remaining_working_days;
 
                         if ($micro_no_working_days == 1) {
                             $micro_current_Planed_percentage = 100;
@@ -1396,17 +1419,16 @@ class ProjectController extends Controller
 
                         $micro_planned_set[] = $micro_current_Planed_percentage;
 
-                        $microProgramProgressSum = MicroTask::where('project_id',$project->id)
+                        $microProgramProgressSum = MicroTask::where('project_id', $project->id)
                             ->where("instance_id", Session::get("project_instance"))
-                            ->where('schedule_id',$micro_loop->id)
-                            ->where('type','project')
+                            ->where('schedule_id', $micro_loop->id)
+                            ->where('type', 'project')
                             ->sum('progress');
 
-                        if($microProgram != null){
+                        if ($microProgram != null) {
                             $micro_duration = $microProgram->schedule_duration;
                             $micro_actual_percentage = round($microProgramProgressSum / $micro_duration);
-                        }
-                        else{
+                        } else {
                             $micro_actual_percentage = 0;
                         }
 
@@ -1436,58 +1458,39 @@ class ProjectController extends Controller
                     ->whereDate('end_date', '>', date('Y-m-d'))
                     ->count();
 
-                $all_upcoming = Con_task::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
+                $all_upcoming = Con_task::where('project_id', $project->id)
+                    ->where('instance_id', Session::get("project_instance"))
                     ->where("type", "project")
-                    ->whereDate('start_date','>',date('Y-m-d'))
+                    ->whereDate('start_date', '>', date('Y-m-d'))
                     ->count();
 
-                // Micro task End
-                return view(
-                    "construction_project.construction_dashboard",
-                    compact(
-                        "project",
-                        "ongoing_task",
-                        "dependencycriticalcount",
-                        "entirecriticalcount",
-                        "project_data",
-                        "total_sub",
-                        "actual_percentage",
-                        "workdone_percentage",
-                        "current_Planed_percentage",
-                        "not_started",
-                        "notfinished",
-                        "remaining_working_days",
-                        "completed_task",
-                        'alldates',
-                        'completed',
-                        'pending',
-                        'microProgram',
-                        'microTaskCount',
-                        'conTaskTaken',
-                        'holidayCount',
-                        'microWeekEndCount',
-                        'totalWorkingDays',
-                        'checkProject',
-                        'all_completed',
-                        'all_upcoming',
-                        'all_inprogress',
-                        'all_pending',
-                        'microProgramName',
-                        'micro_planned_set',
-                        'micro_actual_percentage_set'
-                    )
-                );
+                
+                    // Micro task End
+                    return view("construction_project.construction_dashboard",
+                        compact(
+                            "project","ongoing_task","dependencycriticalcount","entirecriticalcount","project_data",
+                            "total_sub","actual_percentage","workdone_percentage","current_Planed_percentage",
+                            "not_started","notfinished","remaining_working_days","completed_task",'alldates',
+                            'completed','pending','microProgram','microTaskCount','conTaskTaken','holidayCount',
+                            'microWeekEndCount','totalWorkingDays','checkProject','all_completed','all_upcoming',
+                            'all_inprogress','all_pending','microProgramName','micro_planned_set',
+                            'micro_actual_percentage_set'
+                        )
+                    );
+                
             } else {
                 return redirect()
                     ->back()
                     ->with("error", __("Permission Denied."));
             }
-        } else {
+
+        }
+        else {
             return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
         }
+        
     }
 
     public function show_dairy($project_id)
@@ -1567,9 +1570,9 @@ class ProjectController extends Controller
 
                 $project_data["user_assigned"] = [
                     "total" =>
-                        number_format($total_users) .
-                        "/" .
-                        number_format($total_users),
+                    number_format($total_users) .
+                    "/" .
+                    number_format($total_users),
                     "percentage" => Utility::getPercentage(
                         $total_users,
                         $total_users
@@ -1589,9 +1592,9 @@ class ProjectController extends Controller
                 }
                 $project_data["day_left"] = [
                     "day" =>
-                        number_format($remaining_day) .
-                        "/" .
-                        number_format($total_day),
+                    number_format($remaining_day) .
+                    "/" .
+                    number_format($total_day),
                     "percentage" => Utility::getPercentage(
                         $remaining_day,
                         $total_day
@@ -1612,9 +1615,9 @@ class ProjectController extends Controller
 
                 $project_data["open_task"] = [
                     "tasks" =>
-                        number_format($remaining_task) .
-                        "/" .
-                        number_format($total_task),
+                    number_format($remaining_task) .
+                    "/" .
+                    number_format($total_task),
                     "percentage" => Utility::getPercentage(
                         $remaining_task,
                         $total_task
@@ -1630,9 +1633,9 @@ class ProjectController extends Controller
                     ->count();
                 $project_data["milestone"] = [
                     "total" =>
-                        number_format($complete_milestone) .
-                        "/" .
-                        number_format($total_milestone),
+                    number_format($complete_milestone) .
+                    "/" .
+                    number_format($total_milestone),
                     "percentage" => Utility::getPercentage(
                         $complete_milestone,
                         $total_milestone
@@ -1650,9 +1653,9 @@ class ProjectController extends Controller
                 $totaltime = str_replace(":", ".", Utility::timeToHr($times));
                 $project_data["time_spent"] = [
                     "total" =>
-                        number_format($totaltime) .
-                        "/" .
-                        number_format($totaltime),
+                    number_format($totaltime) .
+                    "/" .
+                    number_format($totaltime),
                     "percentage" => Utility::getPercentage(
                         number_format($totaltime),
                         $totaltime
@@ -1664,9 +1667,9 @@ class ProjectController extends Controller
                 $hrs = Project::projectHrs($project->id);
                 $project_data["task_allocated_hrs"] = [
                     "hrs" =>
-                        number_format($hrs["allocated"]) .
-                        "/" .
-                        number_format($hrs["allocated"]),
+                    number_format($hrs["allocated"]) .
+                    "/" .
+                    number_format($hrs["allocated"]),
                     "percentage" => Utility::getPercentage(
                         $hrs["allocated"],
                         $hrs["allocated"]
@@ -1832,7 +1835,6 @@ class ProjectController extends Controller
                     ->whereDate('end_date', '>', date('Y-m-d'))
                     ->count();
 
-
                 $startDate = Carbon::now()->subWeeks(3);
                 $endDate = Carbon::now();
                 $datesBetween = [];
@@ -1843,20 +1845,20 @@ class ProjectController extends Controller
 
                     $search_date = $startDate->format('Y-m-d');
                     // completed task count
-                    $completed[]=Task_progress::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
-                    ->where('record_date', 'like', $search_date.'%')
-                    ->where('percentage','100')->count();
+                    $completed[] = Task_progress::where('project_id', $project->id)
+                        ->where('instance_id', Session::get("project_instance"))
+                        ->where('record_date', 'like', $search_date . '%')
+                        ->where('percentage', '100')->count();
 
                     // pending task count
-                    $pending[]=Task_progress::where('project_id',$project->id)
-                    ->where('instance_id',Session::get("project_instance"))
-                    ->where('record_date', 'like', $search_date.'%')
-                    ->where('percentage','>','100')->count();
+                    $pending[] = Task_progress::where('project_id', $project->id)
+                        ->where('instance_id', Session::get("project_instance"))
+                        ->where('record_date', 'like', $search_date . '%')
+                        ->where('percentage', '>', '100')->count();
 
                     $startDate->addDay();
                 }
-                $alldates=$datesBetween;
+                $alldates = $datesBetween;
                 return view(
                     "construction_project.construction_dashboard_dairy",
                     compact(
@@ -2013,7 +2015,7 @@ class ProjectController extends Controller
                     ->file("project_image")
                     ->getClientOriginalExtension();
                 $fileNameToStore1 =
-                    $filename1 . "_" . time() . "." . $extension1;
+                $filename1 . "_" . time() . "." . $extension1;
                 $dir = Config::get("constants.Projects_image");
                 $url = "";
                 $path = Utility::upload_file(
@@ -2226,7 +2228,8 @@ class ProjectController extends Controller
 
         return view("projects.invite", compact("project_id", "users"));
     }
-    public function save_teammember(Request $request){
+    public function save_teammember(Request $request)
+    {
 
         try {
             $authuser = Auth::user();
@@ -2236,57 +2239,92 @@ class ProjectController extends Controller
             $type=$request->type;
             if(str_contains($type,'subcontractor')){
                 foreach($teammemberID as $id){
+                    $get_email = User::select('email','name')->where('id',$id)->first();
+
                     $createConnection =  ProjectSubcontractor::create([
                         "project_id" => $request->project_id,
                         "user_id" => $id,
                         "invited_by" => $authuser->id,
-                        'invite_status'=>'requested'
+                        'invite_status' => 'requested',
                     ]);
-                    $inviteUrl=url('').Config::get('constants.INVITATION_URL_subcontractor_proj').$createConnection->id;
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor_proj') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
+                        'user_name' => $get_email->emailname,
                         'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
+                        'email' => $get_email->email,
                     ];
+                   
+                    $template = EmailTemplate::where('name', 'LIKE', Config::get('constants.INSR_PROJ'))->first();
+                    if($template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$id)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $template->id)
+                            ->insert(['template_id'=>$template->id, 'user_id' => $id]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$creatorId)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $template->id)
+                            ->insert(['template_id'=>$template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+
                     Utility::sendEmailTemplate(Config::get('constants.INSR_PROJ'),
-                            [$id => \Auth::user()->email],$userArr);
+                        [$id => \Auth::user()->email], $userArr);
                 }
-                $msg=__('Sub Contractor Invitation to project sent successfully.');
-                $routing='project.subcontractor';
+                $msg = __('Sub Contractor Invitation to project sent successfully.');
+                $routing = 'project.subcontractor';
             }
             if(str_contains($type,'consultant')){
                 foreach($teammemberID as $id){
+                    $get_email = User::select('email','name')->where('id',$id)->first();
                     $createConnection =  ProjectConsultant::create([
                         "project_id" => $request->project_id,
                         "user_id" => $id,
                         "invited_by" => $authuser->id,
-                        'invite_status'=>'requested'
+                        'invite_status' => 'requested',
                     ]);
-                    $inviteUrl=url('').Config::get('constants.INVITATION_URL_consultant_proj').$createConnection->id;
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_consultant_proj') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
+                        'user_name' => $get_email->emailname,
                         'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
+                        'email' => $get_email->email,
                     ];
+
+                    $con_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_CONSULTANT_PROJ'))->first();
+                    if($con_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$id)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $con_template->id)
+                            ->insert(['template_id'=>$con_template->id, 'user_id' => $id]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$creatorId)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $con_template->id)
+                            ->insert(['template_id'=>$con_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+
                     Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT_PROJ'),
-                            [$id => \Auth::user()->email],$userArr);
+                            [$id => $get_email->email],$userArr);
                 }
-                $msg=__('Consultant Invitation to project sent successfully.');
-                $routing='project.consultant';
+                $msg = __('Consultant Invitation to project sent successfully.');
+                $routing = 'project.consultant';
 
             }
-            if(str_contains($type,'teammember')){
-                foreach($teammemberID as $id){
-                    $createConnection =  ProjectUser::create([
+            if (str_contains($type, 'teammember')) {
+                foreach ($teammemberID as $id) {
+                    $createConnection = ProjectUser::create([
                         "project_id" => $request->project_id,
                         "user_id" => $id,
                         "invited_by" => $authuser->id,
-                        'invite_status'=>'requested'
+                        'invite_status' => 'requested',
                     ]);
-            
-                    $inviteUrl=url('').Config::get('constants.INVITATION_URL_teammember').$createConnection->id;
+
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
@@ -2294,17 +2332,17 @@ class ProjectController extends Controller
                         'email' => \Auth::user()->email,
                     ];
                     Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
-                            [$id => \Auth::user()->email],$userArr);
+                        [$id => \Auth::user()->email], $userArr);
                 }
-                $msg=__('Team Member Invitation Sent Successfully.');
-                $routing='project.teammembers';
+                $msg = __('Team Member Invitation Sent Successfully.');
+                $routing = 'project.teammembers';
 
             }
             return redirect()->route($routing, $project_id)->with('success', $msg);
-    
+
         } catch (Exception $e) {
 
-               return $e->getMessage();
+            return $e->getMessage();
 
         }
     }
@@ -2315,18 +2353,18 @@ class ProjectController extends Controller
         $checkConnection = ProjectUser::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
         $msg = 'valid';
-        $type="team member";
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+        $type = "team member";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg', 'type'));
     }
 
     public function submitConnection(Request $request)
     {
         $msg = $request->status;
-        $type="team member";
+        $type = "team member";
         ProjectUser::where(['id' => $request->id])->update(['invite_status' => $msg]);
         $checkConnection = ProjectUser::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg', 'type'));
     }
     //    Team Member
     public function createConnectionConsultant(Request $request)
@@ -2335,8 +2373,8 @@ class ProjectController extends Controller
         $checkConnection = ProjectConsultant::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
         $msg = 'valid';
-        $type="consultant";
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+        $type = "consultant";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg', 'type'));
     }
 
     public function submitConnectionConsultant(Request $request)
@@ -2345,8 +2383,8 @@ class ProjectController extends Controller
         ProjectConsultant::where(['id' => $request->id])->update(['invite_status' => $msg]);
         $checkConnection = ProjectConsultant::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
-        $type="consultant";
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+        $type = "consultant";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg', 'type'));
     }
 
     //    Team Member
@@ -2356,8 +2394,8 @@ class ProjectController extends Controller
         $checkConnection = ProjectSubcontractor::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
         $msg = 'valid';
-        $type="sub contractor";
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+        $type = "sub contractor";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg', 'type'));
     }
 
     public function submitConnectionSubcontractor(Request $request)
@@ -2366,8 +2404,8 @@ class ProjectController extends Controller
         ProjectSubcontractor::where(['id' => $request->id])->update(['invite_status' => $msg]);
         $checkConnection = ProjectSubcontractor::where(['id' => $request->id])->first();
         $project = Project::find($checkConnection->project_id)->first();
-        $type="sub contractor";
-        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg','type'));
+        $type = "sub contractor";
+        return view('construction_project.invitation', compact('checkConnection', 'project', 'msg', 'type'));
     }
     public function inviteProjectUserMember(Request $request)
     {
@@ -2416,28 +2454,27 @@ class ProjectController extends Controller
     public function loadUser(Request $request)
     {
         if ($request->ajax()) {
-           
+
             $project = Project::find($request->project_id);
-            $type=$request->type;
-            if(str_contains($type,'subcontractor')){
-                $user_contact=ProjectSubcontractor::with('projectUsers')
-                ->where(['project_id'=>$request->project_id])->get();
+            $type = $request->type;
+            if (str_contains($type, 'subcontractor')) {
+                $user_contact = ProjectSubcontractor::with('projectUsers')
+                    ->where(['project_id' => $request->project_id])->get();
             }
-            if(str_contains($type,'consultant')){
-                $user_contact=ProjectConsultant::with('projectUsers')
-                ->where(['project_id'=>$request->project_id])->get();
+            if (str_contains($type, 'consultant')) {
+                $user_contact = ProjectConsultant::with('projectUsers')
+                    ->where(['project_id' => $request->project_id])->get();
 
             }
-            if(str_contains($type,'teammember')){
-                $user_contact=ProjectUser::with('projectUsers')->where(['project_id'=>$request->project_id])->get();
+            if (str_contains($type, 'teammember')) {
+                $user_contact = ProjectUser::with('projectUsers')->where(['project_id' => $request->project_id])->get();
             }
-            
-           
-            $returnHTML = view("projects.users", compact("project","type","user_contact"))->render();
+
+            $returnHTML = view("projects.users", compact("project", "type", "user_contact"))->render();
 
             return response()->json([
                 "success" => true,
-                "html" => $returnHTML
+                "html" => $returnHTML,
             ]);
         }
     }
@@ -2445,38 +2482,38 @@ class ProjectController extends Controller
     public function criticaltask_update(Request $request)
     {
         if ($request->ajax()) {
-            $project=Project::find(Session::get("project_id"));
+            $project = Project::find(Session::get("project_id"));
 
-            if($project->critical_update==0){
+            if ($project->critical_update == 0) {
 
                 foreach ($request->updatedTask as $value) {
-                    if(isset($value['totalStack'])){
+                    if (isset($value['totalStack'])) {
                         $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
                         $carbonDate = Carbon::parse($cleanedDateString);
                         $carbonDate->addDays($value['totalStack']);
                         $total_slack = $carbonDate->format('Y-m-d');
-                    }else{
+                    } else {
                         $total_slack = null;
                     }
-                    if(isset($value['freeSlack'])){
+                    if (isset($value['freeSlack'])) {
                         $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
                         $carbonDate = Carbon::parse($cleanedDateString);
                         $carbonDate->addDays($value['freeSlack']);
                         $freeSlack = $carbonDate->format('Y-m-d');
-                    }else{
+                    } else {
                         $freeSlack = null;
                     }
 
-                    Con_task::where('project_id',Session::get("project_id"))
-                            ->where('instance_id',Session::get("project_instance"))
-                            ->where('main_id',$value['main_id'])
-                            ->update(['dependency_critical'=>$freeSlack,
-                            'entire_critical'=>$total_slack,
-                            'float_val'=>$total_slack]);
+                    Con_task::where('project_id', Session::get("project_id"))
+                        ->where('instance_id', Session::get("project_instance"))
+                        ->where('main_id', $value['main_id'])
+                        ->update(['dependency_critical' => $freeSlack,
+                            'entire_critical' => $total_slack,
+                            'float_val' => $total_slack]);
 
                 }
 
-                Project::where('id',Session::get("project_id"))->update(['critical_update'=>1]);
+                Project::where('id', Session::get("project_id"))->update(['critical_update' => 1]);
             }
         }
     }
@@ -2730,9 +2767,9 @@ class ProjectController extends Controller
                         ->where("instance_id", $instanceId)
                         ->pluck("non_working_days")
                         ->first();
-                    // critical bulk update 
-                    $critical_update=Project::where("id", Session::get("project_id"))
-                    ->pluck('critical_update')->first();
+                    // critical bulk update
+                    $critical_update = Project::where("id", Session::get("project_id"))
+                        ->pluck('critical_update')->first();
 
                     return view(
                         "construction_project.gantt",
@@ -2757,8 +2794,8 @@ class ProjectController extends Controller
                         $tmp["end"] = $task->end_date;
                         $tmp["type"] = $task->type;
                         $tmp["custom_class"] = empty($task->priority_color)
-                            ? "#ecf0f1"
-                            : $task->priority_color;
+                        ? "#ecf0f1"
+                        : $task->priority_color;
                         $tmp["progress"] = str_replace(
                             "%",
                             "",
@@ -2768,9 +2805,9 @@ class ProjectController extends Controller
                             "priority" => ucfirst(__($task->priority)),
                             "comments" => count($task->comments),
                             "duration" =>
-                                Utility::getDateFormated($task->start_date) .
-                                " - " .
-                                Utility::getDateFormated($task->end_date),
+                            Utility::getDateFormated($task->start_date) .
+                            " - " .
+                            Utility::getDateFormated($task->end_date),
                         ];
                         $tasks[] = $tmp;
                     }
@@ -2865,14 +2902,14 @@ class ProjectController extends Controller
                         )
                         SELECT task_id,assign_to,percentage,date_status,description,user_id,project_id,
                         '" .
-                        $instanceId .
-                        "' as instance_id,file_id,record_date,created_at,updated_at
+                    $instanceId .
+                    "' as instance_id,file_id,record_date,created_at,updated_at
                         FROM task_progress WHERE project_id = " .
-                        $request->project_id .
-                        " AND
+                    $request->project_id .
+                    " AND
                         instance_id='" .
-                        $setPreviousInstance .
-                        "'"
+                    $setPreviousInstance .
+                    "'"
                 );
 
                 DB::select(
@@ -2880,15 +2917,15 @@ class ProjectController extends Controller
                             task_id,project_id,instance_id,filename,file_path,status
                         )
                         SELECT task_id,project_id,'" .
-                        $instanceId .
-                        "' as instance_id,
+                    $instanceId .
+                    "' as instance_id,
                         filename,file_path,status
                         FROM task_progress_file WHERE project_id = " .
-                        $request->project_id .
-                        " AND
+                    $request->project_id .
+                    " AND
                         instance_id='" .
-                        $setPreviousInstance .
-                        "'"
+                    $setPreviousInstance .
+                    "'"
                 );
 
                 $taskProgresskData = Task_progress::where(
@@ -3434,7 +3471,7 @@ class ProjectController extends Controller
     {
         $request->validate(["file" => "required"]);
         $fileName =
-            $bug_id . time() . "_" . $request->file->getClientOriginalName();
+        $bug_id . time() . "_" . $request->file->getClientOriginalName();
 
         $request->file->storeAs("bugs", $fileName);
         $post["bug_id"] = $bug_id;
@@ -3622,8 +3659,8 @@ class ProjectController extends Controller
             ->whereDate("created_at", $request->get_date)
             ->first();
         $checkPercentageGet = isset($checkPercentage->percentage)
-            ? $checkPercentage->percentage
-            : 0;
+        ? $checkPercentage->percentage
+        : 0;
 
         if (in_array($request->get_date, $holiday_merge)) {
             return redirect()
@@ -3632,7 +3669,7 @@ class ProjectController extends Controller
                     "error",
                     __(
                         $request->get_date .
-                            " You have chosen a non-working day; if you want to update the progress, please select a working day."
+                        " You have chosen a non-working day; if you want to update the progress, please select a working day."
                     )
                 );
         } elseif (in_array($getCurrentDay, $get_non_work_day)) {
@@ -3653,7 +3690,7 @@ class ProjectController extends Controller
                     $filename1 = pathinfo($filenameWithExt1, PATHINFO_FILENAME);
                     $extension1 = $file_req->getClientOriginalExtension();
                     $fileNameToStore1 =
-                        $filename1 . "_" . time() . "." . $extension1;
+                    $filename1 . "_" . time() . "." . $extension1;
                     $dir = "uploads/task_particular_list";
                     $image_path = $dir . $filenameWithExt1;
 
@@ -3689,13 +3726,13 @@ class ProjectController extends Controller
                     }
                 }
                 $implode_file_id =
-                    count($file_id_array) != 0
-                        ? implode(",", $file_id_array)
-                        : 0;
+                count($file_id_array) != 0
+                ? implode(",", $file_id_array)
+                : 0;
 
                 if ($request->existing_file_id != "") {
                     $implode_file_id =
-                        $request->existing_file_id . "," . $implode_file_id;
+                    $request->existing_file_id . "," . $implode_file_id;
                 }
             } else {
                 $get_file_id = Task_progress::where("task_id", $task_id)
@@ -3711,7 +3748,7 @@ class ProjectController extends Controller
             }
 
             $date_status =
-                strtotime($task->end_date) > time() ? "As Per Time" : "Overdue";
+            strtotime($task->end_date) > time() ? "As Per Time" : "Overdue";
 
             if (\Auth::user()->type == "company") {
                 $assign_to = $task->users != null ? $task->users : null;
@@ -3901,60 +3938,60 @@ class ProjectController extends Controller
 
         return $result;
     }
-    public function invite_teammember(Request $request, $project_id){
+    public function invite_teammember(Request $request, $project_id)
+    {
         try {
             return view('construction_project.invite')->with('project_id', $project_id);
         } catch (Exception $e) {
-              return $e->getMessage();
+            return $e->getMessage();
         }
     }
-    public function search_member(Request $request, $project_id){
+    public function search_member(Request $request, $project_id)
+    {
 
         try {
 
             $searchValue = $request['q'];
             $type = $request['type'];
 
-            if($request->filled('q')){
+            if ($request->filled('q')) {
 
-                if(str_contains($type,'subcontractor')){
+                if (str_contains($type, 'subcontractor')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                    ->whereIn("type", ["sub_contractor"])
-                    ->pluck("id")
-                    ->toArray();
+                        ->whereIn("type", ["sub_contractor"])
+                        ->pluck("id")
+                        ->toArray();
                 }
-                if(str_contains($type,'consultant')){
+                if (str_contains($type, 'consultant')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                    ->whereIn("type", ["consultant"])
-                    ->pluck("id")
-                    ->toArray();
+                        ->whereIn("type", ["consultant"])
+                        ->pluck("id")
+                        ->toArray();
                 }
-                if(str_contains($type,'teammembers')){
+                if (str_contains($type, 'teammembers')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                    ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
-                    ->pluck("id")
-                    ->toArray();
+                        ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                        ->pluck("id")
+                        ->toArray();
                 }
 
-                
                 $arrUser = array_unique($user_contact);
 
-                if($request->filled('q')){
+                if ($request->filled('q')) {
                     $userlist = User::search($searchValue)
-                                    ->whereIn("id", $arrUser)
-                                    ->orderBy('name','ASC')
-                                    ->get();
+                        ->whereIn("id", $arrUser)
+                        ->orderBy('name', 'ASC')
+                        ->get();
 
                 }
             }
 
-
             $userData = array();
-            if(count($userlist) > 0){
-                foreach($userlist as $task){
+            if (count($userlist) > 0) {
+                foreach ($userlist as $task) {
                     $setUser = [
                         'id' => $task->id,
-                        'name' => $task->name.' - '.$task->email,
+                        'name' => $task->name . ' - ' . $task->email,
                     ];
                     $userData[] = $setUser;
                 }
@@ -3962,13 +3999,500 @@ class ProjectController extends Controller
 
             echo json_encode($userData);
 
-
         } catch (Exception $e) {
 
-              return $e->getMessage();
+            return $e->getMessage();
 
         }
 
+    }
+
+    public function task_assignee_search(Request $request)
+    {
+
+        try {
+
+            $searchValue = $request['q'];
+
+            if ($request->filled('q')) {
+
+                if (\Auth::user()->type != 'company') {
+                    $userid = Auth::user()->creatorId();
+                } else {
+                    $userid = \Auth::user()->id;
+                }
+
+                $user_contact = User::where("created_by", $userid)
+                    ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                    ->pluck("id")
+                    ->toArray();
+
+                $arrUser = array_unique($user_contact);
+
+                if ($request->filled('q')) {
+                    $userlist = User::search($searchValue)
+                        ->whereIn("id", $arrUser)
+                        ->orderBy('name', 'ASC')
+                        ->get();
+
+                }
+            }
+
+            $userData = array();
+            if (count($userlist) > 0) {
+                foreach ($userlist as $task) {
+                    $setUser = [
+                        'id' => $task->id,
+                        'name' => $task->name . ' - ' . $task->email,
+                    ];
+                    $userData[] = $setUser;
+                }
+            }
+
+            echo json_encode($userData);
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
 
     }
+
+    public function overall_report(Request $request){
+        $project_id=Session::get("project_id");
+
+        $project = Project::where('id', $project_id)->first();
+        $instance_id = Session::get("project_instance");
+        $cur = date("Y-m-d");
+
+        $project_task = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
+           ->where('type', 'project')->get();
+
+        $user = User::find($project->client_id);
+        if ($user) {
+            $client_name = $user->name;
+        } else {
+            $client_name = '';
+        }
+
+        $all_pending = Con_task::where("project_id", $project->id)
+        ->where("instance_id", Session::get("project_instance"))
+        ->where("type", "project")
+        ->where("end_date", "<", $cur)
+        ->where("progress", "!=", "100")
+        ->count();
+
+        $all_completed = Con_task::where("project_id", $project->id)
+            ->where("instance_id", Session::get("project_instance"))
+            ->where("type", "project")
+            ->where("end_date", "<", $cur)
+            ->where("progress", "100")
+            ->count();
+
+        $all_inprogress = Con_task::where("project_id", $project->id)
+            ->where("instance_id", Session::get("project_instance"))
+            ->where("type", "project")
+            ->where("progress", "<", 100)
+            ->where("progress", ">", 0)
+            ->whereDate('end_date', '>', date('Y-m-d'))
+            ->count();
+
+        $all_upcoming = Con_task::where('project_id',$project->id)
+            ->where('instance_id',Session::get("project_instance"))
+            ->where("type", "project")
+            ->whereDate('start_date','>',date('Y-m-d'))
+            ->count();
+
+
+       ################ actual progress finding ############################
+
+       $total_task = Con_task::where("project_id", $project->id)
+        ->where("instance_id", Session::get("project_instance"))
+        ->count();
+
+        $first_task = Con_task::where("project_id", $project->id)
+        ->where("instance_id", Session::get("project_instance"))
+        ->orderBy("id", "ASC")
+        ->first();
+
+        if ($first_task) {
+
+            $workdone_percentage = $first_task->progress;
+            $actual_percentage = $first_task->progress;
+            $no_working_days = $first_task->duration; // include the last day
+            $date2 = date_create($first_task->end_date);
+            
+        } else {
+
+            $workdone_percentage = "0";
+            $actual_percentage = "0";
+            $no_working_days = $project->estimated_days; // include the last day
+            $date2 = date_create($project->end_date);
+
+        }
+        if ($actual_percentage > 100) {
+
+            $actual_percentage = 100;
+
+        }
+        if ($actual_percentage < 0) {
+
+            $actual_percentage = 0;
+
+        }
+
+               
+                //############## END ##############################
+                //############## Remaining days ###################
+                $remaining_working_days = Utility::remaining_duration_calculator(
+                    $date2,
+                    $project->id
+                );
+                $remaining_working_days = $remaining_working_days - 1; // include the last day
+                //############## Remaining days ##################
+                $completed_days = $no_working_days - $remaining_working_days;
+
+                if ($no_working_days == 1) {
+                    $current_Planed_percentage = 100;
+                } else {
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+
+                    $current_Planed_percentage = round(
+                        $completed_days * $perday
+                    );
+                }
+
+                if ($current_Planed_percentage > 100) {
+                    $current_Planed_percentage = 100;
+                }
+                if ($current_Planed_percentage < 0) {
+                    $current_Planed_percentage = 0;
+                }
+
+                if ($current_Planed_percentage > 0) {
+                    $workdone_percentage = $workdone_percentage =
+                        $workdone_percentage / $current_Planed_percentage;
+                } else {
+                    $workdone_percentage = 0;
+                }
+                $workdone_percentage = $workdone_percentage * 100;
+                if ($workdone_percentage > 100) {
+                    $workdone_percentage = 100;
+                }
+                $remaing_percenatge = round(100 - $current_Planed_percentage);
+
+
+
+
+
+        $actual_current_progress = Con_task::where(['project_id' => $project_id, 'instance_id' => $instance_id])
+            ->orderBy('id', 'ASC')->pluck('progress')->first();
+
+        $actual_current_progress = round($actual_current_progress);
+        $actual_remaining_progress = 100 - $actual_current_progress;
+        $actual_remaining_progress = round($actual_remaining_progress);
+        // current progress amount
+        $taskdata = [];
+        foreach ($project_task as $key => $value) {
+            $planned_start = date('d-m-Y', strtotime($value->start_date));
+            $planned_end = date('d-m-Y', strtotime($value->end_date));
+
+            $actual_start = DB::table('task_progress')->where('project_id', $project_id)
+                ->where('task_id', $value->main_id)->min('created_at');
+            $actual_end = DB::table('task_progress')->where('project_id', $project_id)
+                ->where('task_id', $value->main_id)->max('created_at');
+            $flag = 0;
+            if ($actual_start) {
+                $flag = 1;
+                $actual_start = date('d-m-Y', strtotime($actual_start));
+            } else {
+                $actual_start = 'Task Not Started';
+            }
+
+            if ($actual_end) {
+                $actual_end = date('d-m-Y', strtotime($actual_end));
+            } else {
+                $actual_end = 'Task Not Finish';
+            }
+
+            if ($actual_end < $planned_end) {
+                $actual_end = 'Task Not Finish';
+            }
+            //finding planned percentage
+            //############## days finding ####################################################
+            $date1 = date_create($value->start_date);
+            $date2 = date_create($value->end_date);
+            $cur = date('Y-m-d');
+
+            $diff = date_diff($date1, $date2);
+            $no_working_days = $diff->format('%a');
+            $no_working_days = $value->duration; // include the last day
+            //############## END ##############################
+
+            //############## Remaining days ###################
+
+            $date2 = date_create($value->end_date);
+            // update one report
+
+            $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
+            $remaining_working_days = $remaining_working_days - 1; // include the last day
+
+            $completed_days = $no_working_days - $remaining_working_days;
+
+            if ($no_working_days == 1) {
+                $current_percentage = 100;
+            } else {
+                // percentage calculator
+                if ($no_working_days > 0) {
+                    $perday = 100 / $no_working_days;
+                } else {
+                    $perday = 0;
+                }
+
+                $current_percentage = round($completed_days * $perday);
+            }
+
+            if ($current_percentage > 100) {
+                $current_percentage = 100;
+            }
+            if ($current_percentage < 0) {
+                $current_percentage = 0;
+            }
+            //
+            $status='';
+            ##### status of the task
+            if($value->progress!=100){
+                if($planned_end < date('d-m-Y')){
+                    $status='Pending';
+                }else{
+                    $status='Ongoing';
+                }
+            }else{
+                $status='Completed';
+            }
+           
+
+
+            $taskdata[] = [
+                'id' => $value->id,
+                'title' => $value->text,
+                'status'=>$status,
+                'planed_start' => $planned_start,
+                'planed_end' => $planned_end,
+                'duration' => $value->duration.' Days',
+                'percentage_as_today' => round($current_percentage),
+                'actual_start' => $actual_start,
+                'actual_end' => $actual_end,
+                'actual_duration' => $value->duration.' Days',
+                'remain_duration' => $value->duration.' Days',
+                'actual_percent' => round($value->progress),
+            ];
+        }
+        $taskdata2 = [];
+        $today_task_update = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
+        ->where('type', 'task')->get();
+        foreach ($today_task_update as $key => $value) {
+
+            $user = User::find($value->user_id);
+            if ($user) {
+                $user_name = $user->name;
+                $user_email = $user->email;
+            } else {
+                $user_name = '';
+                $user_email = '';
+            }
+
+            ##### status of the task
+            $status='';
+            if($value->progress!=100){
+                if($value->end_date < date('d-m-Y')){
+                    $status='Pending';
+                }else{
+                    $status='Ongoing';
+                }
+            }else{
+                $status='Completed';
+            }
+
+            $actual_start = DB::table('task_progress')->where('project_id', $project_id)
+            ->where('task_id', $value->main_id)->min('created_at');
+            $actual_end = DB::table('task_progress')->where('project_id', $project_id)
+                ->where('task_id', $value->main_id)->max('created_at');
+
+
+            if ($actual_start) {
+                $actual_start = date('d-m-Y', strtotime($actual_start));
+            } else {
+                $actual_start = 'Task Not Started';
+            }
+
+            if ($actual_end) {
+                $actual_end = date('d-m-Y', strtotime($actual_end));
+            } else {
+                $actual_end = 'Task Not Finish';
+            }
+
+            if ($actual_end < $planned_end) {
+                $actual_end = 'Task Not Finish';
+            }
+
+            ########################## Planed percentage calculator ####################################
+
+            $date2=$value->end_date;
+            $remaining_working_days = Utility::remaining_duration_calculator(
+                    $date2,
+                    $project_id
+                );
+                $remaining_working_days = $remaining_working_days - 1; // include the last day
+                //############## Remaining days ##################
+                $completed_days = $no_working_days - $remaining_working_days;
+
+                if ($no_working_days == 1) {
+                    $current_Planed_percentage = 100;
+                } else {
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+
+                    $current_Planed_percentage = round(
+                        $completed_days * $perday
+                    );
+                }
+
+                if ($current_Planed_percentage > 100) {
+                    $current_Planed_percentage = 100;
+                }
+                if ($current_Planed_percentage < 0) {
+                    $current_Planed_percentage = 0;
+                }
+
+                if($value->progress==''){
+                    $progress=0;
+                }else{
+                    $progress=$value->progress;
+                }
+            ########################## END ###################################################
+
+            $taskdata2[] = [
+                'id' => $value->id,
+                'title' => $value->text,
+                'status'=>$status,
+                'planed_start' => date('d-m-Y', strtotime($value->start_date)),
+                'planed_end' => date('d-m-Y', strtotime($value->end_date)),
+                'actual_start'=>$actual_start,
+                'actual_end'=>$actual_end,
+                'duration' => $value->duration.' Days',
+                'actual_percentage' => $progress.'%',
+                'planned_percentage'=>$current_Planed_percentage,
+          
+
+            ];
+        }
+
+        $setting  = Utility::settings(\Auth::user()->creatorId());
+        $pdf = Pdf::loadview('project_report.overal',
+                compact('taskdata', 'project', 'project_task', 'actual_current_progress',
+                    'actual_remaining_progress', 'taskdata2','client_name','current_Planed_percentage','all_upcoming','all_pending','all_completed','total_task','setting'))
+        ->setPaper('a4', 'landscape')->setWarnings(false);
+        // return $pdf->stream();
+
+        $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
+
+        return $pdf->download($pdf_name);
+
+    }
+
+    public function get_assignee_name(Request $request)
+    {
+        try {
+
+            $getval = User::where('id', $request->id)->first();
+            return json_decode($getval);
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+
+    }
+
+    public function get_reporter_name(Request $request)
+    {
+
+        try {
+
+            $getname = User::where('id', $request->id)->first();
+          
+            return json_decode($getname);
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+
+    }
+
+    public function subcon_user_search(Request $request)
+    {
+
+        try {
+
+            $searchValue = $request['q'];
+
+            if ($request->filled('q')) {
+
+                if (\Auth::user()->type != 'company') {
+                    $userid = Auth::user()->creatorId();
+                } else {
+                    $userid = \Auth::user()->id;
+                }
+
+                $user_contact = User::where("created_by", $userid)
+                    ->whereNotIn("type", ["company", "consultant", "admin", "client"])
+                    ->pluck("id")
+                    ->toArray();
+
+                $arrUser = array_unique($user_contact);
+
+                if ($request->filled('q')) {
+                    $userlist = User::search($searchValue)
+                        ->whereIn("id", $arrUser)
+                        ->orderBy('name', 'ASC')
+                        ->get();
+
+                }
+            }
+
+            $userData = array();
+            if (count($userlist) > 0) {
+                foreach ($userlist as $task) {
+                    $setUser = [
+                        'id' => $task->id,
+                        'name' => $task->name . ' - ' . $task->email,
+                    ];
+                    $userData[] = $setUser;
+                }
+            }
+
+            echo json_encode($userData);
+
+        } catch (Exception $e) {
+
+            return $e->getMessage();
+
+        }
+
+    }
+    
 }

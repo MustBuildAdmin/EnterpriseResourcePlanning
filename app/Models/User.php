@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\ProjectConsultant;
 
 class User extends Authenticatable
 {
@@ -912,6 +913,13 @@ class User extends Authenticatable
 
         return ! empty($user->plan) ? Plan::find($user->plan)->project : '';
 
+    }
+
+    public static function consultant_check()
+    {
+        $user_id = \Auth::user()->id;
+        $projectConsultant = ProjectConsultant::where('user_id',$user_id)->where('invite_status','accepted')->first();
+        return $projectConsultant != null ? 1 : 0;
     }
 
     public function clientProjects()

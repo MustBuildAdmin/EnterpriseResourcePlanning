@@ -10,6 +10,7 @@ class ProjectSubcontractor extends Model
         'project_id',
         'user_id',
         'invited_by',
+        'invite_status',
     ];
     protected $table = 'project_subcontractors';
 
