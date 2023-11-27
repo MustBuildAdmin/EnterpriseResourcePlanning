@@ -11,7 +11,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="mb-0">{{ __('Micro Planning Schedule') }}</h1>
-                            @if(Auth::user()->type != "consultant")
+                            @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                             <div class="card-actions">
                                 <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
                                     data-url="{{ route('microprogram_create') }}" data-ajax-popup="true"

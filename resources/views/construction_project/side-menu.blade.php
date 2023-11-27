@@ -171,7 +171,7 @@
                                             {{ __('Gantt') }}
                                         </a>
                                     @endcan
-                                    @if (Auth::user()->type != "consultant")
+                                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                                         @if (Session::get('current_revision_freeze') == 1)
                                             <a href="{{ url('revision') }}"
                                                 class="{{ Request::route()->getName() == 'revision' ?
@@ -288,7 +288,7 @@
                     @endif
                     <!--LookaHead Planning end-->
 
-                    @if (Auth::user()->type != "consultant")
+                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
                         <a href="{{ route('project.teammembers', $project_id) }}"

@@ -143,7 +143,7 @@
             </div>
 
             <div class="card">
-                @if(Auth::user()->type != "consultant")
+                @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     <div class="card-header">
                         <div class="card-actions">
                             @php $get_date = $data['get_date']; @endphp
@@ -169,7 +169,7 @@
                                     <th scope="col">{{ __('Actual Progress as per a Day') }}</th>
                                     <th scope="col">{{ __('FileName') }}</th>
                                     <th scope="col">{{ __('Description') }}</th>
-                                    @if(Auth::user()->type != "consultant")
+                                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                                         <th scope="col">{{ __('Action') }}</th>
                                     @endif
                                 </tr>
@@ -225,7 +225,7 @@
                                             @endforelse
                                         </td>
                                         <td>{!! $task_progress->description !!}</td>
-                                        @if(Auth::user()->type != "consultant")
+                                        @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                                             <td>
                                                 <div class="actions">
                                                     <a class="backgroundnone"

@@ -37,6 +37,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Session;
+use App\Models\EmailTemplate;
+use App\Models\UserEmailTemplate;
 
 class ProjectController extends Controller
 {
@@ -893,6 +895,11 @@ class ProjectController extends Controller
             } 
             else if(Auth::user()->type == "consultant"){
                 $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else if(\Auth::user()->type == 'sub_contractor'){
+                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
@@ -2223,6 +2230,8 @@ class ProjectController extends Controller
             $type=$request->type;
             if(str_contains($type,'subcontractor')){
                 foreach($teammemberID as $id){
+                    $get_email = User::select('email','name')->where('id',$id)->first();
+
                     $createConnection =  ProjectSubcontractor::create([
                         "project_id" => $request->project_id,
                         "user_id" => $id,
@@ -2232,10 +2241,26 @@ class ProjectController extends Controller
                     $inviteUrl=url('').Config::get('constants.INVITATION_URL_subcontractor_proj').$createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
+                        'user_name' => $get_email->emailname,
                         'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
+                        'email' => $get_email->email,
                     ];
+                   
+                    $template = EmailTemplate::where('name', 'LIKE', Config::get('constants.INSR_PROJ'))->first();
+                    if($template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$id)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $template->id)
+                            ->insert(['template_id'=>$template->id, 'user_id' => $id]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$creatorId)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $template->id)
+                            ->insert(['template_id'=>$template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+
                     Utility::sendEmailTemplate(Config::get('constants.INSR_PROJ'),
                             [$id => \Auth::user()->email],$userArr);
                 }
@@ -2258,6 +2283,22 @@ class ProjectController extends Controller
                         'project_name' => $project->project_name,
                         'email' => $get_email->email,
                     ];
+
+                    $con_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_CONSULTANT_PROJ'))->first();
+                    if($con_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$id)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $con_template->id)
+                            ->insert(['template_id'=>$con_template->id, 'user_id' => $id]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$creatorId)->doesntExist()){
+                            UserEmailTemplate::where('template_id', '=', $con_template->id)
+                            ->insert(['template_id'=>$con_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+
                     Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT_PROJ'),
                             [$id => $get_email->email],$userArr);
                 }

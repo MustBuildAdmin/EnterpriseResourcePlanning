@@ -32,6 +32,7 @@ use App\Models\Training;
 use App\Models\User;
 use App\Models\Utility;
 use App\Models\ProjectConsultant;
+use App\Models\ProjectSubcontractor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -705,6 +706,11 @@ class DashboardController extends Controller
             }
             else if(\Auth::user()->type == 'consultant'){
                 $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else if(\Auth::user()->type == 'sub_contractor'){
+                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
