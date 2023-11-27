@@ -173,8 +173,8 @@
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{ Form::label('Users', __('Users'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
-                                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
+                                {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
+                                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control get_reportto','required'=>'required')) !!}
                             </div>
                         </div>
                     </div>
@@ -300,14 +300,6 @@
                                             <span class="form-check-label">Import your project from Orcale's Primavera (XER)</span>
                                         </label>
                                     </div>
-                                    <!-- <span class="text-danger">*</span>
-                                    <select name="file_status" id="file_status"
-                                    class="form-control main-element" required>
-                                        <option value=''>Choose File Type</option>
-                                        <option value='M'>Manual</option>
-                                        <option value='MP'>Microsoft Project</option>
-                                        <option value='P'>Primavera</option>
-                                    </select> -->
                                 @endif
                         </div>
                         <div class="col-sm-6 col-md-6 outside_file" style="display:none;">
@@ -320,12 +312,6 @@
                        
                     </div>
                     <button class="btn btn-primary createProject" onclick="createProject()">Create</button>
-                    {{-- <div class="row">
-                        <div class="col-sm-6 col-md-6">
-                            {{ Form::label('boq', __('Upload a BOQ File Here'), ['class' => 'form-label boq_file']) }}
-                            <input type='file' name='boq_file' id='boq_file' accept=".xlsx, .xls, .csv">
-                        </div>
-                    </div> --}}
                 </section>
             </div>
         {{Form::close()}}
