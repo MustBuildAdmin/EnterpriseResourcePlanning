@@ -3612,6 +3612,53 @@ Route::any(
     ]
 );
 
+Route::any(
+    'task_assignee_search', [
+        'as' => 'project.user_search',
+        'uses' => 'ProjectController@task_assignee_search',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'subcon_user_search', [
+        'as' => 'project.subcon_user_search',
+        'uses' => 'ProjectController@subcon_user_search',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'get_assignee_name', [
+        'as' => 'project.get_assignee_name',
+        'uses' => 'ProjectController@get_assignee_name',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'get_reporter_name', [
+        'as' => 'project.get_reporter_name',
+        'uses' => 'ProjectController@get_reporter_name',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 Route::get(
     'projects/{id}/gantt/{duration?}', [
@@ -4460,8 +4507,8 @@ Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswor
 
 
 
-Route::get('get_company_details/{id}', 'ConsultantController@get_company_details')
-->name('consultant.get_company_details')->middleware(
+Route::get('consultant_get_company_details/{id}', 'ConsultantController@get_company_details')
+->name('consultant.consultant_get_company_details')->middleware(
     [
         'auth',
         'XSS',

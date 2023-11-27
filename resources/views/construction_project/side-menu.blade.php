@@ -171,12 +171,14 @@
                                             {{ __('Gantt') }}
                                         </a>
                                     @endcan
-                                    @if (Session::get('current_revision_freeze') == 1)
-                                        <a href="{{ url('revision') }}"
-                                            class="{{ Request::route()->getName() == 'revision' ?
-                                            'dropdown-item active' : 'dropdown-item' }}">
-                                            {{ __('Revision') }}
-                                        </a>
+                                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
+                                        @if (Session::get('current_revision_freeze') == 1)
+                                            <a href="{{ url('revision') }}"
+                                                class="{{ Request::route()->getName() == 'revision' ?
+                                                'dropdown-item active' : 'dropdown-item' }}">
+                                                {{ __('Revision') }}
+                                            </a>
+                                        @endif
                                     @endif
                                     @if (session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
@@ -286,6 +288,7 @@
                     @endif
                     <!--LookaHead Planning end-->
 
+                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
                         <a href="{{ route('project.teammembers', $project_id) }}"
@@ -425,6 +428,7 @@
                             </span>
                         </a>
                     </li>
+                    @endif
                      <!--Holidays ends-->
                      {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>

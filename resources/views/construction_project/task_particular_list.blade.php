@@ -143,18 +143,20 @@
             </div>
 
             <div class="card">
-                <div class="card-header">
-                    <div class="card-actions">
-                        @php $get_date = $data['get_date']; @endphp
-                        <a href="#" data-size="xl" data-url="{{ route('add_particular_task',
-                        ["task_id"=>$task_id, "get_date"=>$get_date]) }}" data-ajax-popup="true"
-                        data-title="{{$data['con_data']!=null ? $data['con_data']->text:'Task' }} Progress Update"
-                        data-bs-toggle="modal" title="{{__('Create')}}" class="btn btn-success float-end"
-                        data-bs-target="#modal-large">
-                            Progress Update
-                        </a>
+                @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
+                    <div class="card-header">
+                        <div class="card-actions">
+                            @php $get_date = $data['get_date']; @endphp
+                            <a href="#" data-size="xl" data-url="{{ route('add_particular_task',
+                            ["task_id"=>$task_id, "get_date"=>$get_date]) }}" data-ajax-popup="true"
+                            data-title="{{$data['con_data']!=null ? $data['con_data']->text:'Task' }} Progress Update"
+                            data-bs-toggle="modal" title="{{__('Create')}}" class="btn btn-success float-end"
+                            data-bs-target="#modal-large">
+                                Progress Update
+                            </a>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <div class="card-body">
                     <div class="table-responsive card p-4">
                         <table class="table table-vcenter card-table" id="task-progress"
@@ -167,7 +169,9 @@
                                     <th scope="col">{{ __('Actual Progress as per a Day') }}</th>
                                     <th scope="col">{{ __('FileName') }}</th>
                                     <th scope="col">{{ __('Description') }}</th>
-                                    <th scope="col">{{ __('Action') }}</th>
+                                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
+                                        <th scope="col">{{ __('Action') }}</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -221,19 +225,21 @@
                                             @endforelse
                                         </td>
                                         <td>{!! $task_progress->description !!}</td>
-                                        <td>
-                                            <div class="actions">
-                                                <a class="backgroundnone"
-                                                    data-url="{{route('edit_particular_task',
-                                                    ['task_progress_id' => $task_progress->id,'task_id' => $task_id])}}"
-                                                    data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
-                                                    title="{{ __('Edit') }}"
-                                                    data-title="{{ $data['con_data'] != null ?
-                                                    $data['con_data']->text : 'Task' }} Progress Update">
-                                                    <i class="ti ti-pencil text-white"></i>
-                                                </a>
-                                            </div>
-                                        </td>
+                                        @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
+                                            <td>
+                                                <div class="actions">
+                                                    <a class="backgroundnone"
+                                                        data-url="{{route('edit_particular_task',
+                                                        ['task_progress_id' => $task_progress->id,'task_id' => $task_id])}}"
+                                                        data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
+                                                        title="{{ __('Edit') }}"
+                                                        data-title="{{ $data['con_data'] != null ?
+                                                        $data['con_data']->text : 'Task' }} Progress Update">
+                                                        <i class="ti ti-pencil text-white"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @empty
                                 @endforelse

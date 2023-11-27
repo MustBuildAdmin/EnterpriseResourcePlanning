@@ -57,6 +57,7 @@ a.text-dark {
        @foreach ($projects as $key => $project)
          <div class="col-md-6 col-lg-3">
             <div class="card">
+               @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                <div class="ms-auto lh-1 p-4">
                    <div class="dropdown">
                       <a class="dropdown-toggle user-card-dropdown text-secondary" href="#"
@@ -110,6 +111,7 @@ a.text-dark {
                       </div>
                    </div>
                 </div>
+                @endif
                <div class="card-body p-4 py-5 text-center">
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
