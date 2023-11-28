@@ -4429,7 +4429,7 @@ class ProjectController extends Controller
                 }
 
                 $user_contact = User::where("created_by", $userid)
-                    ->whereNotIn("type", ["company", "consultant", "admin", "client"])
+                    ->where("type","sub_contractor")
                     ->pluck("id")
                     ->toArray();
 
