@@ -20,18 +20,18 @@
                 <li class="nav-item">
                     <a class="nav-link active" id="pills-staff-tab" data-bs-toggle="pill" href="#staff" role="tab" aria-controls="pills-home" aria-selected="true">{{__('Staff')}}</a>
                 </li>
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" id="pills-crm-tab" data-bs-toggle="pill" href="#crm" role="tab" aria-controls="pills-profile" aria-selected="false">{{__('CRM')}}</a>
-                </li> --}}
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-project-tab" data-bs-toggle="pill" href="#project1" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Construction')}}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-hrmpermission-tab" data-bs-toggle="pill" href="#hrmpermission" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('HRM')}}</a>
                 </li>
-                {{-- <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" id="pills-account-tab" data-bs-toggle="pill" href="#account" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Account')}}</a>
-                </li> --}}
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-consultant-tab" data-bs-toggle="pill" href="#consultant1" role="tab"
                      aria-controls="pills-contact" aria-selected="false">
