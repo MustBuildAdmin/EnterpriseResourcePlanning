@@ -271,15 +271,18 @@
                                         <div class="dropdown-menu-column">
                                             <a href="{{ route('microprogram.gantt', $project_id) }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Gantt') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">
+                                                {{ __('Lookahead Gantt') }}</a>
                                             
                                             <a href="{{ route('microprogram') }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Schedule') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">
+                                                {{ __('Lookahead Schedule') }}</a>
                                         
                                             <a href="{{ route('micro_taskboard') }}"
                                                 class="{{ (Request::route()->getName() == 'micro_taskboard')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Active Lookahead') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">
+                                                {{ __('Active Lookahead') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -407,29 +410,33 @@
                     </li>
                     <!--Reports ends-->
 
-                    <!--Holidays starts-->
                     <li class="nav-item">
                         <a href="{{ route('project_holiday.index', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project_holiday.index' ?
                             'nav-link active' : 'nav-link' }}">
-                            <span class="d-md-none d-lg-inline-block">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                            <span class=" d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-adjustments-check"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
-                                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
-                                    <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                    <path d="M4 10a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                    <path d="M6 4v4"></path>
+                                    <path d="M6 12v8"></path>
+                                    <path d="M13.823 15.176a2 2 0 1 0 -2.638 2.651"></path>
+                                    <path d="M12 4v10"></path>
+                                    <path d="M16 7a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                    <path d="M18 4v1"></path>
+                                    <path d="M18 9v5"></path>
+                                    <path d="M15 19l2 2l4 -4"></path>
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                {{ __('Holidays') }}
+                                {{ __('Project Setup') }}
                             </span>
                         </a>
                     </li>
-                    @endif
-                     <!--Holidays ends-->
+                    
                      {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                      <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>
