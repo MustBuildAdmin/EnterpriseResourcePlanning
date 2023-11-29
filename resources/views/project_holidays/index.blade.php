@@ -12,7 +12,7 @@
         <div class="card-actions">
             @if($project->freeze_status!=1)
                   <a href="#" class="btn btn-outline-primary  w-100" data-size="lg" style="
-                  float: right;" data-url="{{ route('project_holiday.create') }}" data-ajax-popup="true"
+                  float: right;" data-url="{{ route('project-holiday.create') }}" data-ajax-popup="true"
                       data-bs-toggle="tooltip" title="{{__('Create New holidays')}}">
                       {{__('Create New holidays')}}
                </a>
@@ -48,7 +48,7 @@
                                                 <span>
                                                     <div class="btn btn-outline-primary">
                                                         <a href="#" class=""
-                                                        data-url="{{ URL::to('project_holiday/'
+                                                        data-url="{{ URL::to('project-holiday/'
                                                             .$project_each->id.'/edit') }}"
                                                         data-ajax-popup="true" data-title="{{__('Edit Project')}}"
                                                         data-bs-toggle="tooltip" title="{{__('Edit')}}"
@@ -57,7 +57,7 @@
                                                     </div>
                                                     <div class="btn btn-outline-primary">
                                                     {!! Form::open(['method' => 'DELETE',
-                                                        'route' => ['project_holiday.destroy',
+                                                        'route' => ['project-holiday.destroy',
                                                         $project_each->id],'id'=>'delete-form-'.$project_each->id]) !!}
                                                         <a href="#" class="bs-pass-para" data-bs-toggle="tooltip"
                                                         title="{{__('Delete')}}" data-original-title="{{__('Delete')}}"
@@ -68,7 +68,7 @@
                                                         <i class="ti ti-trash text-white text-white"></i></a>
                                                     {!! Form::close() !!}
                                                     {{-- {!! Form::open(['method' => 'DELETE',
-                                                        'route' => ['project_holiday.destroy', $project->id],
+                                                        'route' => ['project-holiday.destroy', $project->id],
                                                         'id'=>'delete-form-'.$project->id]) !!}
 
                                                         <a href="#" class="" data-bs-toggle="tooltip"

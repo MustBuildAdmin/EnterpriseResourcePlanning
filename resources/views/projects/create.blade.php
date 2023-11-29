@@ -273,6 +273,25 @@
                             </div>
                             <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
                         </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                @php
+                                    $non_working_days = array(
+                                        '1' => 'Monday',
+                                        '2' => 'Tuesday',
+                                        '3' => 'Wednesday',
+                                        '4' => 'Thursday',
+                                        '5' => 'Friday',
+                                        '6' => 'Saturday',
+                                        '0' => 'Sunday'
+                                    );
+                                @endphp
+                                {!! Form::select('non_working_days[]', $non_working_days, null,
+                                    array('id' => 'non_working_days','class' => 'form-control
+                                    chosen-select get_non_working_days','multiple'=>'true'))
+                                !!}
+                            </div>
                         <!-- <div class="col-sm-6 col-md-6 new">
                             <div class="form-group checkbox_group">
                                 <input type="checkbox" id="micro_program" name="micro_program">
@@ -281,6 +300,7 @@
                         </div> -->
                     </div>
                 </section>
+                
                 <section>
                     <div class="row mb-3">
                             <div class="form-group">
@@ -563,27 +583,27 @@ aria-labelledby="exampleModalCenterTitle"
         location.reload();
     });
 
-    $(document).on("keyup", '.project_name', function () {
-        $(".show_duplicate_error").css('display','none');
-        $.ajax({
-            url : '{{ route("checkDuplicateProject") }}',
-            type : 'GET',
-            data : { 'project_name' : $(".project_name").val(),'form_name' : "ProjectCreate" },
-            success : function(data) {
-                console.log(data,typeof(data))
-                if(data == 1){
-                    $(".show_duplicate_error").css('display','none');
-                }
-                else{
-                    $(".show_duplicate_error").css('display','block');
-                }
-            },
-            error : function(request,error)
-            {
-                alert("Request: "+JSON.stringify(request));
-            }
-        });
-    });
+    // $(document).on("keyup", '.project_name', function () {
+    //     $(".show_duplicate_error").css('display','none');
+    //     $.ajax({
+    //         url : '{{ route("checkDuplicateProject") }}',
+    //         type : 'GET',
+    //         data : { 'project_name' : $(".project_name").val(),'form_name' : "ProjectCreate" },
+    //         success : function(data) {
+    //             console.log(data,typeof(data))
+    //             if(data == 1){
+    //                 $(".show_duplicate_error").css('display','none');
+    //             }
+    //             else{
+    //                 $(".show_duplicate_error").css('display','block');
+    //             }
+    //         },
+    //         error : function(request,error)
+    //         {
+    //             alert("Request: "+JSON.stringify(request));
+    //         }
+    //     });
+    // });
 
     function alphaOnly(input){
         let value = input.value;
