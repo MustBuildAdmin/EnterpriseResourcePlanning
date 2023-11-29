@@ -291,7 +291,6 @@
                     @endif
                     <!--LookaHead Planning end-->
 
-                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
