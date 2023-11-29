@@ -64,8 +64,8 @@ class Project_holiday_Controller extends Controller
             }
             $Project_holiday['instance_id'] = $instanceId;
             $Project_holiday->save();
-    
-            return redirect()->route('project_holiday.index');
+           
+            return redirect()->route('project-holiday.index');
         }
        
 
@@ -114,7 +114,7 @@ class Project_holiday_Controller extends Controller
             $Project_holiday['instance_id'] = $instanceId;
             $Project_holiday->save();
 
-            return redirect()->route('project_holiday.index');
+            return redirect()->route('project-holiday.index');
         }
 
     }
@@ -124,7 +124,7 @@ class Project_holiday_Controller extends Controller
 
         $project = Project_holiday::find($id)->delete();
 
-        return redirect()->route('project_holiday.index');
+        return redirect()->route('project-holiday.index');
 
     }
 }

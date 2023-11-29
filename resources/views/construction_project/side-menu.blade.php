@@ -238,7 +238,7 @@
                     <!--Main Planning end-->
 
                     <!--LookaHead Planning starts-->
-                    @if ($checMicroProgram == 1)
+                    @if($checMicroProgram == 1)
                         @if(Session::get('latest_project_instance') == Session::get('project_instance'))
                             <li class="nav-item dropdown">
                                 <a class="{{ Request::route()->getName() == 'microprogram' ||
@@ -291,7 +291,7 @@
                     @endif
                     <!--LookaHead Planning end-->
 
-                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
+                    
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
                         <a href="{{ route('project.teammembers', $project_id) }}"
@@ -411,8 +411,8 @@
                     <!--Reports ends-->
 
                     <li class="nav-item">
-                        <a href="{{ route('project_holiday.index', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project_holiday.index' ?
+                        <a href="{{ route('project-holiday.index', $project_id) }}"
+                            class="{{ Request::route()->getName() == 'project-holiday.index' ?
                             'nav-link active' : 'nav-link' }}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"

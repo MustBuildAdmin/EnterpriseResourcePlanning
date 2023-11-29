@@ -856,8 +856,8 @@
                                                             <a href="{{route('project-task-stages.index')}}">{{__('Project Task Stages')}}</a>
                                                         </li>
                                                     @endcan
-                                                    <li class=" {{ (Request::route()->getName() == 'project_holiday*') ? 'active' : '' }}">
-                                                        <a href="{{route('project_holiday.index')}}">{{__('Project_holiday')}}</a>
+                                                    <li class=" {{ (Request::route()->getName() == 'project-holiday*') ? 'active' : '' }}">
+                                                        <a href="{{route('project-holiday.index')}}">{{__('Project_holiday')}}</a>
                                                     </li>
                                                 </ul>
                                             </li>

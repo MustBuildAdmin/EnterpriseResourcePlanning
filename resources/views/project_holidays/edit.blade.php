@@ -2,22 +2,23 @@
 #project_id{
     display:none;
 }
+.mt-3.submitholiday {
+    margin-top: 1.2rem !important;
+}
 </style>
-{{Form::model($project_holiday,array('route' => array('project_holiday.update',
+{{Form::model($project_holiday,array('route' => array('project-holiday.update',
      $project_holiday->id), 'method' => 'PUT')) }}
         <div class="modal-body">
         
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
+        <div class="row row-cards">
                         <select class="form-control" required name='project_id' id="project_id">
                                 @foreach($projects as $key => $value)
                                     <option value="{{$value->id}}" @if($project_holiday->project_id==$value->id)
                                          selected  @endif>{{$value->project_name}}</option>
                                 @endforeach
                         </select>
-                        <br>
-                        {{Form::label('date',__('Date'),['class'=>'form-label'])}}
+                        <div class="col-md-4">
+                        {{Form::label('date',__('Holiday Date'),['class'=>'form-label'])}}
                         <div class="mb-3">
                     <div class="input-icon">
                         <span class="input-icon-addon">
@@ -34,10 +35,12 @@
                          id="datepicker-icon-prepend" name="date" value={{$project_holiday->date}} required/>
                         </div>
                 </div>
-                        <br>
-                        {{Form::label('description',__('Description'),['class'=>'form-label'])}}
-                        {{Form::textarea('description',null,array('class'=>'form-control','required' => 'required'))}}
-                
+                </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                        {{Form::label('description',__('Holiday Name'),['class'=>'form-label'])}}
+                        {{Form::text('description',null,array('class'=>'form-control','required' => 'required',
+                            'placeholder'=>"Enter Holiday Name"))}}
                     </div>
                 
                         @error('name')
@@ -46,12 +49,12 @@
                         </span>
                         @enderror
                     </div>
+        <div class="col-md-2">
+            <div class="mt-3 submitholiday">
+                <input type="submit" value="{{__('Update Holiday')}}" class="btn  btn-primary">
                 </div>
             </div>
         </div>
-        <div class="modal-footer">
-            <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-            <input type="submit" value="{{__('Update')}}" class="btn  btn-primary">
         </div>
         {{Form::close()}}
      
@@ -62,6 +65,7 @@
 
 <script>
     $( document ).ready(function() {
+        $('.modal-title').html("Edit Holiday")
         window.Litepicker && (new Litepicker({
             element: document.getElementById('datepicker-icon-prepend'),
             buttonText: {

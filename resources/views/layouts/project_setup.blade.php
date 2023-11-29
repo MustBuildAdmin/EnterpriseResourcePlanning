@@ -23,9 +23,9 @@
             </a>
             {!! Form::close() !!}
         @endcan
-        <a href="{{ route('project_holiday.index', $project_id) }}"
+        <a href="{{ route('project-holiday.index', $project_id) }}"
          class="list-group-item list-group-item-action border-0
-        {{ Request::route()->getName() == 'project_holiday.index' ? 'nav-link active' : 'nav-link' }}">
+        {{ Request::route()->getName() == 'project-holiday.index' ? 'nav-link active' : 'nav-link' }}">
             {{__('Holidays')}}<div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
 
 
