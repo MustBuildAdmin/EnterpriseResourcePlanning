@@ -345,7 +345,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             </a>
                         </li> --}}
                         <a href="#"  class="nav-link freeze_button" data-bs-toggle="modal"
-                         data-bs-target="#modal-danger">
+                         data-bs-target="#modal-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                stroke-linecap="round" stroke-linejoin="round">
