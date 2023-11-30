@@ -335,7 +335,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('project_holiday') }}" class="nav-link">
+                        <a href="{{ url('project-holiday') }}" class="nav-link">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-calendar-check" width="24" height="24"

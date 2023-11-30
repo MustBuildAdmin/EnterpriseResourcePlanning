@@ -10,7 +10,10 @@
 @section('action-btn')
     <div class="float-end">
         {{-- @can('create branch') --}}
-            <a href="#" data-url="{{ route('construction_project.create') }}" data-ajax-popup="true" data-title="{{__('Create New Project')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
+            <a href="#" data-url="{{ route('construction_project.create') }}"
+            data-ajax-popup="true" data-title="{{__('Create New Project')}}"
+            data-bs-toggle="tooltip" title="{{__('Create')}}"
+            class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
             </a>
         {{-- @endcan --}}
@@ -41,7 +44,7 @@
                                     <td>{{ $project->name }}</td>
                                     <td class="Action text-end">
                                         <span>
-                                           
+
                                             <div class="action-btn bg-primary ms-2">
 
                                                 <a href="#" class="mx-3 btn btn-sm align-items-center" data-url="{{ URL::to('construction_project/'.$project->id.'/edit') }}"  data-ajax-popup="true" data-title="{{__('Edit Project')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
@@ -50,14 +53,14 @@
 
                                                 <a href="#" class="mx-3 btn btn-sm align-items-center" data-url="{{ URL::to('construction_project/'.$project->id.'/show') }}"  data-ajax-popup="true" data-title="{{__('View Project')}}" data-bs-toggle="tooltip" title="{{__('view')}}" data-original-title="{{__('view')}}"><i class="ti ti-eye text-white"></i></a>
                                             </div>
-                                          
+
                                             <div class="action-btn bg-danger ms-2">
                                             {!! Form::open(['method' => 'DELETE', 'route' => ['construction_project.destroy', $project->id],'id'=>'delete-form-'.$project->id]) !!}
 
                                                 <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$project->id}}').submit();"><i class="ti ti-trash text-white text-white"></i></a>
                                                 {!! Form::close() !!}
                                             </div>
-                                            
+
                                         </span>
                                     </td>
                                 </tr>
