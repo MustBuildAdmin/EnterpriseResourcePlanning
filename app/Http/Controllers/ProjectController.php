@@ -187,6 +187,20 @@ class ProjectController extends Controller
             // /---------end-----------------
            $project->save();
 
+           if ($request->file_status == 'M') {
+                $conSummary = array(
+                    'id' => 1,
+                    'text' => $request->project_name,
+                    'project_id' => $project->id,
+                    'start_date' => date("Y-m-d", strtotime($request->start_date)),
+                    'end_date' => date("Y-m-d", strtotime($request->end_date)),
+                    'instance_id' => $instance_id,
+                    'type' => 'task',
+                    'taskmode' => 0
+                );
+                Con_task::insert($conSummary);
+           }
+
             if (isset($request->non_working_days)) {
                 $nonWorkingDaysInsert = array(
                     'project_id' => $project->id,
