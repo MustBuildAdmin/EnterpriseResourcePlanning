@@ -331,7 +331,7 @@
 
                        
                     </div>
-                    <button class="btn btn-primary createProject" onclick="createProject()">Create</button>
+                    <button type="button" class="btn btn-primary createProject"   onclick="createProject();">Create</button>
                 </section>
             </div>
         {{Form::close()}}
@@ -674,6 +674,7 @@ aria-labelledby="exampleModalCenterTitle"
                     var finishButton = form.find('a[href="#finish"]').removeAttr('href');
                     $(".loding_popup").modal('show');
                     form.submit();
+                    $(".createProject").prop('disabled',true);
                 }
                 else if (result.dismiss === Swal.DismissReason.cancel) {
                 }
@@ -681,4 +682,5 @@ aria-labelledby="exampleModalCenterTitle"
         }
        
     }
+  
 </script>
