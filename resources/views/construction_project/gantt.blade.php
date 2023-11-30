@@ -397,23 +397,22 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 placeholder="{{ __('Enter Your Task End Date') }}">
                         </div>
                     </div>
+
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Assignee') }}</label>
                             <input type="text" id="taskassignee" name="users"
                                 value="{{ request()->get('q') }}" required>
                         </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-6  col-12">
                             <label class="form-label">{{ __('Reporting To') }}</label>
                             <input type="text" class="form-control" name="reported_to" id="task-reporting"
                                 placeholder="{{ __('Search your Reporting to') }}">
                         </div>
                     </div>
+
                     <div class="row mt-4">
-                        <div class="mb-3">
+                        <div class="col-md-6 col-12">
                             <div class="form-label">{{ __('Task Assignment Mode') }}</div>
                             <div>
                                 <label class="form-check form-check-inline">
@@ -426,9 +425,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 </label>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-4" id="sub_con" style="display: none;">
-                        <div class="col-md-6 col-12">
+                        <div class="col-md-6  col-12">
                             <label class="form-label">{{ __('SubContractor') }}</label>
                             <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
                                 placeholder="Search your  subcontractor">
@@ -440,14 +437,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         {{ __('Cancel') }}
                     </a>
                     <a href="#" class="btn btn-primary ms-auto" id="save" data-bs-dismiss="modal">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                        {{-- <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M12 5l0 14"></path>
                             <path d="M5 12l14 0"></path>
-                        </svg>
+                        </svg> --}}
                         {{ __('Add new Task') }}
                     </a>
                 </div>
@@ -1372,17 +1368,17 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         var taskmode = $('input[name="taskmode"]:checked').val();
         taskmode= task.taskmode;
-        console.log("taskmode",taskmode);
+       
         if(taskmode==1){
             $('#sub_con').show();
             $("#taskmode_two").prop( "checked", true);
         }else if(taskmode==0){
             $('#sub_con').hide();
-            $("#taskmode_one").prop( "checked", true);
+            $("#taskmode_one").prop("checked", true);
         }
         else{
             $('#sub_con').hide();
-            $("#taskmode_one").prop( "checked", false);
+            $("#taskmode_one").prop("checked", true);
             $("#taskmode_two").prop( "checked", false);
         }
       
@@ -1406,9 +1402,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         id: d.id,
                         name: d.name
                     };
-                    setTimeout(function() {
-                        $('#taskassignee').tokenInput("add", asignee);
-                    }, 200);
+
+                    if(d.id != undefined){
+                        setTimeout(function() {
+                            $('#taskassignee').tokenInput("add", asignee);
+                        }, 200);
+                    }
+                    
                 }
             });
 
@@ -1423,14 +1423,17 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     id: $('#reporter_id').val()
                 },
                 success: function(dd) {
-                console.log("gg",dd);
                     reportedto = {
                         id: dd.id,
                         name: dd.name
                     };
-                    setTimeout(function() {
-                        $('#task-reporting').tokenInput("add", reportedto);
-                    }, 200);
+
+                    if(dd.id != undefined){
+                        setTimeout(function() {
+                            $('#task-reporting').tokenInput("add", reportedto);
+                        }, 200);
+                    }
+                    
                 }
             });
 
@@ -1446,13 +1449,17 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     id: $('#subcontractor_id').val()
                 },
                 success: function(subcon) {
-                subcontractorto = {
+                    subcontractorto = {
                         id: subcon.id,
                         name: subcon.name
                     };
-                    setTimeout(function() {
-                        $('#sub-contractor').tokenInput("add", subcontractorto);
-                    }, 200);
+
+                    if(subcon.id != undefined){
+                        setTimeout(function() {
+                            $('#sub-contractor').tokenInput("add", subcontractorto);
+                        }, 200);
+                    }
+                    
                 }
             });
 
@@ -1581,6 +1588,15 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             }
         });
     }
+
+    $(document).on("click", ".icon_edit", function () {
+        $("#save").html("Update Task");
+    });
+
+    $(document).on("click", ".gantt_add, .gantt_grid_head_add", function () {
+        $("#save").html("Add New Task");
+    });
+    
     // gantt crud end
 
     $("#taskassignee").tokenInput("{{ route('project.user_search') }}", {

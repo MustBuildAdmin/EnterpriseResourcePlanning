@@ -187,6 +187,20 @@ class ProjectController extends Controller
             // /---------end-----------------
            $project->save();
 
+           if ($request->file_status == 'M') {
+                $conSummary = array(
+                    'id' => 1,
+                    'text' => $request->project_name,
+                    'project_id' => $project->id,
+                    'start_date' => date("Y-m-d", strtotime($request->start_date)),
+                    'end_date' => date("Y-m-d", strtotime($request->end_date)),
+                    'instance_id' => $instance_id,
+                    'type' => 'task',
+                    'taskmode' => 0
+                );
+                Con_task::insert($conSummary);
+           }
+
             if (isset($request->non_working_days)) {
                 $nonWorkingDaysInsert = array(
                     'project_id' => $project->id,
@@ -4415,8 +4429,8 @@ class ProjectController extends Controller
     {
         try {
 
-            $getval = User::where('id', $request->id)->first();
-            return json_decode($getval);
+            $getval = DB::table('users')->select('id','name')->where('id', $request->id)->first();
+            return $getval;
 
         } catch (Exception $e) {
 
@@ -4431,9 +4445,8 @@ class ProjectController extends Controller
 
         try {
 
-            $getname = User::where('id', $request->id)->first();
-          
-            return json_decode($getname);
+            $getname = DB::table('users')->select('id','name')->where('id', $request->id)->first();
+            return $getname;
 
         } catch (Exception $e) {
 
@@ -4458,7 +4471,7 @@ class ProjectController extends Controller
                     $userid = \Auth::user()->id;
                 }
 
-                $user_contact = User::where("created_by", $userid)
+                $user_contact = User::select('id','name')->where("created_by", $userid)
                     ->where("type","sub_contractor")
                     ->pluck("id")
                     ->toArray();
