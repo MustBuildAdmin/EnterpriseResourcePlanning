@@ -101,8 +101,8 @@
     }
 
     /* micro program CSS */
-    .new {
-        padding: 50px;
+    .newmicro_program {
+        margin-top: 24px;
     }
     .checkbox_group {
         display: block !important;
@@ -165,7 +165,7 @@
                                 {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
                                 {{ Form::text('project_name', null, ['class' => 'form-control',
-                                    'required'=>'required']) }}
+                                    'required'=>'required','disabled'=>'true','readonly'=>true]) }}
                                 {{Form::hidden('freeze_statuss',$project->freeze_status,
                                     array('class'=>'form-control','id'=>'freeze_status'))}}
                             </div>
@@ -305,13 +305,38 @@
                         </div>
                         
                     </div>
-                    <div class="col-sm-4 col-md-4 new">
+                    </div>
+                    <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                @php
+                                    $non_working_days = array(
+                                        '1' => 'Monday',
+                                        '2' => 'Tuesday',
+                                        '3' => 'Wednesday',
+                                        '4' => 'Thursday',
+                                        '5' => 'Friday',
+                                        '6' => 'Saturday',
+                                        '0' => 'Sunday'
+                                    );
+                                @endphp
+                                @php $non_working_days_set=explode(',',$project->non_working_days); @endphp
+                                {!! Form::select('non_working_days[]', $non_working_days, $non_working_days_set,
+                                    array('id' => 'non_working_days','class' => 'form-control chosen-select
+                                    get_non_working_days','multiple'=>'true'))
+                                !!}
+                            </div>
+                        </div>
+                    <div class="col-sm-4 col-md-4 newmicro_program">
                         <div class="form-group checkbox_group">
                             <input type="checkbox" id="micro_program" name="micro_program"
                             {{ ($project->micro_program == 1) ? 'checked' : ''}}>
                             <label for="micro_program">Do you want Micro Program</label>
                         </div>
                     </div>
+                    </div>
+
                     <button class="btn btn-primary createProject" onclick="createProject()">Save</button>
                 </section>
             </div>

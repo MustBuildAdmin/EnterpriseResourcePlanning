@@ -517,7 +517,7 @@
                            Request::route()->getName() == 'project.subcontractor' ||
                            Request::route()->getName() == 'project.activities' ||
                            Request::route()->getName() == 'project_report.view_task_report' ||
-                           Request::route()->getName() == 'project_holiday.index' ||
+                           Request::route()->getName() == 'project-holiday.index' ||
                            Request::route()->getName() == 'construction_main'
                                ? 'nav-link active'
                                : 'nav-link' }}"

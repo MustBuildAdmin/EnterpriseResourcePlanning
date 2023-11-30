@@ -238,7 +238,7 @@
                     <!--Main Planning end-->
 
                     <!--LookaHead Planning starts-->
-                    @if ($checMicroProgram == 1)
+                    @if($checMicroProgram == 1)
                         @if(Session::get('latest_project_instance') == Session::get('project_instance'))
                             <li class="nav-item dropdown">
                                 <a class="{{ Request::route()->getName() == 'microprogram' ||
@@ -302,7 +302,7 @@
                                 : 'nav-link dropdown-toggle' }}"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
                             aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -342,6 +342,7 @@
                         </div>
                     </li>
                     <!--Team Members end-->
+                    @endif
 
                     <!--Activites starts-->
                     <li class="nav-item">
@@ -411,8 +412,8 @@
                     <!--Reports ends-->
 
                     <li class="nav-item">
-                        <a href="{{ route('project_holiday.index', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project_holiday.index' ?
+                        <a href="{{ route('project-holiday.index', $project_id) }}"
+                            class="{{ Request::route()->getName() == 'project-holiday.index' ?
                             'nav-link active' : 'nav-link' }}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"

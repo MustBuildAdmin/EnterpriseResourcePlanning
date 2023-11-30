@@ -766,7 +766,7 @@
                                                             </li>
                                                         @endcan
                                                         <li class="dash-item  {{ (Request::route()->getName() == 'project_holiday*') ? 'active' : '' }}">
-                                                            <a class="dash-link" href="{{route('project_holiday.index')}}">{{__('Project_holiday')}}</a>
+                                                            <a class="dash-link" href="{{route('project-holiday.index')}}">{{__('Project_holiday')}}</a>
                                                         </li>
                                                     </ul>
                                                 </li>
