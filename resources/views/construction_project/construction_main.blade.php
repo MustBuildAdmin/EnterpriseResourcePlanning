@@ -51,14 +51,14 @@ a.text-dark {
             </div>
          </div>
       </div>
-     
+
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
-      <div class="row row-cards">
+      <div class="row row-cards mt-4">
        @foreach ($projects as $key => $project)
          <div class="col-md-6 col-lg-3">
             <div class="card">
                <div class="card-body p-4 py-5 text-center">
-                  
+
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
                    ?>
@@ -77,7 +77,7 @@ a.text-dark {
                @php
                   $project_instances=\App\Models\Instance::where('project_id',$project->id)
                                     ->get();
-                
+
                @endphp
                @if(count($project_instances)>1)
                    <a class="text-dark text-capitalize"  data-size="lg"
@@ -122,7 +122,7 @@ a.text-dark {
                           @endphp
                               @if ($key < 3)
                                   @if ($name_r->avatar)
- 
+
                                       <a href="#" class="">
                                           <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$name_r->avatar :
                                                 asset(Storage::url("uploads/avatar/avatar.png"))}}"
