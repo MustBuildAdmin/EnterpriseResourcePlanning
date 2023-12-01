@@ -31,6 +31,8 @@ use App\Models\Trainer;
 use App\Models\Training;
 use App\Models\User;
 use App\Models\Utility;
+use App\Models\ProjectConsultant;
+use App\Models\ProjectSubcontractor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -696,12 +698,23 @@ class DashboardController extends Controller
             Session::forget('project_instance');
             Session::forget('latest_project_instance');
             Session::forget('current_revision_freeze');
-
+            
             $usr = Auth::user();
             if (\Auth::user()->type == 'client') {
                 $user_projects = Project::where('client_id', \Auth::user()->id)
                 ->where('created_by', \Auth::user()->creatorId())->pluck('id', 'id')->toArray();
-            } else {
+            }
+            else if(\Auth::user()->type == 'consultant'){
+                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else if(\Auth::user()->type == 'sub_contractor'){
+                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
+                    ->where('user_id',\Auth::user()->id)
+                    ->pluck('project_id', 'project_id')->toArray();
+            }
+            else {
                 $user_projects = $usr->projects()->pluck('project_id', 'project_id')->toArray();
             }
 
@@ -715,10 +728,15 @@ class DashboardController extends Controller
                 $projects->whereIn('status', $request->status);
             }
 
+            // if(Auth::user()->type == "consultant"){
+            //     $projects->Join('consultant_companies as consultant','consultant.company_id');
+            // }
+
             $projects = $projects->paginate(8);
 
             return view('construction_project.construction_main', compact('projects', 'user_projects'));
-        } else {
+        }
+        else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
     }

@@ -51,66 +51,14 @@ a.text-dark {
             </div>
          </div>
       </div>
-     
+
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
-      <div class="row row-cards">
+      <div class="row row-cards mt-4">
        @foreach ($projects as $key => $project)
          <div class="col-md-6 col-lg-3">
             <div class="card">
-               <div class="ms-auto lh-1 p-4">
-                   <div class="dropdown">
-                      <a class="dropdown-toggle user-card-dropdown text-secondary" href="#"
-                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-2"
-                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                            stroke="currentColor" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 6l16 0"></path>
-                            <path d="M4 12l16 0"></path>
-                            <path d="M4 18l16 0"></path>
-                         </svg>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                       @php
-                       $getInstance = DB::table('instance')
-                           ->where('instance',$project->instance_id)
-                           ->where('project_id',$project->id)
-                           ->where('freeze_status',0)->first();
-                       @endphp
-                      
-                        @if($getInstance != null)
-                           @can('edit project')
-                                 <a class="dropdown-item active" href="#!" data-size="xl"
-                                 data-url="{{ route('projects.edit', $project->id) }}"
-                                 data-ajax-popup="true"
-                                 data-bs-original-title="{{ __('Edit Project') }}">{{ __('Edit') }}
-                                 </a>
-                           @endcan
-                        @endif
-
-                           @can('delete project')
-                              {!! Form::open(['method' => 'DELETE',
-                                    'route' => ['projects.destroy', $project->id]]) !!}
-                              <a href="#!" class="dropdown-item bs-pass-para-deleteproject">
-                                    <span> {{ __('Delete') }}</span>
-                              </a>
-                              {!! Form::close() !!}
-                           @endcan
-
-                           @can('edit project')
-                              <a href="#!" data-size="xl"
-                              data-url="{{ route('invite.project.member.view',
-                                    $project->id) }}"
-                                    data-ajax-popup="true" class="dropdown-item"
-                                    data-bs-original-title="{{ __('Invite User') }}">
-                                    <span>{{ __('Invite User') }}</span>
-                              </a>
-                           @endcan
-                      </div>
-                   </div>
-                </div>
                <div class="card-body p-4 py-5 text-center">
+
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
                    ?>
@@ -129,7 +77,7 @@ a.text-dark {
                @php
                   $project_instances=\App\Models\Instance::where('project_id',$project->id)
                                     ->get();
-                
+
                @endphp
                @if(count($project_instances)>1)
                    <a class="text-dark text-capitalize"  data-size="lg"
@@ -174,7 +122,7 @@ a.text-dark {
                           @endphp
                               @if ($key < 3)
                                   @if ($name_r->avatar)
- 
+
                                       <a href="#" class="">
                                           <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$name_r->avatar :
                                                 asset(Storage::url("uploads/avatar/avatar.png"))}}"

@@ -861,14 +861,6 @@ Route::group(
     }
 );
 
-Route::resource('taxes', 'TaxController')->middleware(
-    [
-        'auth',
-        'XSS',
-        'revalidate',
-    ]
-);
-
 Route::resource('product-category', 'ProductServiceCategoryController')->middleware(
     [
         'auth',
@@ -2348,12 +2340,12 @@ Route::get('construction_name_presented', 'ConstructionprojectController@constru
     ]
 )->name('construction_name_presented');
 
-Route::resource('project_holiday', 'Project_holiday_Controller')->middleware(
+Route::resource('project-holiday', 'Project_holiday_Controller')->middleware(
     [
         'auth',
         'XSS',
     ]
-);
+    );
 Route::resource('construction_asign', 'Construction_asign_Controller')->middleware(
     [
         'auth',
@@ -3398,7 +3390,45 @@ Route::get(
     ]
 );
 // End Milestone
+Route::get(
+    'invite_teammember/{id}', [
+        'as' => 'invite.project.invite_teammember',
+        'uses' => 'ProjectController@invite_teammember',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::post(
+    '/project/{id}/activitieslog', [
+        'as' => 'project.activitieslog',
+        'uses' => 'ProjectController@getActivityLog',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+Route::any('search_teammember/{id}', 'ProjectController@search_member')
+->name('invite.search_teammember')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 
+Route::any('save_teammember', 'ProjectController@save_teammember')
+->name('save_teammember')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+    ]
+);
 // Project Module
 Route::get(
     'invite-project-member/{id}', [
@@ -3445,7 +3475,7 @@ Route::get(
     ]
 );
 Route::get(
-    'instance_project/{instance_id}/{project_id}', [
+    'instance_project/{instance_id}/{project_id}/{name}', [
         'as' => 'projects.instance_project',
         'uses' => 'RevisionController@instance_project',
     ]
@@ -3455,6 +3485,22 @@ Route::get(
         'XSS',
     ]
 );
+
+// Overall report download 
+Route::get(
+    'overall_report', [
+        'as' => 'overall_report',
+        'uses' => 'ProjectController@overall_report',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+// end
+
 
 Route::delete(
     'projects/{id}/users/{uid}', [
@@ -3530,29 +3576,21 @@ Route::get(
         'XSS',
     ]
 );
-Route::any(
-    'get_member', [
-        'as' => 'projects.criticaltask_update',
-        'uses' => 'ProjectController@criticaltask_update',
-    ]
-)->middleware(
-    [
-        'auth',
-        'XSS',
-    ]
-);
 
-Route::any(
-    'get_member', [
-        'as' => 'micro.criticaltask_update',
-        'uses' => 'MicroPorgramController@criticaltask_update',
-    ]
-)->middleware(
+Route::any('get_member', 'ProjectController@criticaltask_update')->middleware(
     [
         'auth',
         'XSS',
     ]
-);
+)->name('projects.criticaltask_update');
+
+Route::any('micro_get_member', 'MicroPorgramController@criticaltask_update')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+)->name('micro.criticaltask_update');
+
 
 Route::any(
     'get_validated_date', [
@@ -3566,6 +3604,53 @@ Route::any(
     ]
 );
 
+Route::any(
+    'task_assignee_search', [
+        'as' => 'project.user_search',
+        'uses' => 'ProjectController@task_assignee_search',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'subcon_user_search', [
+        'as' => 'project.subcon_user_search',
+        'uses' => 'ProjectController@subcon_user_search',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'get_assignee_name', [
+        'as' => 'project.get_assignee_name',
+        'uses' => 'ProjectController@get_assignee_name',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'get_reporter_name', [
+        'as' => 'project.get_reporter_name',
+        'uses' => 'ProjectController@get_reporter_name',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 
 Route::get(
     'projects/{id}/gantt/{duration?}', [
@@ -3690,7 +3775,12 @@ Route::any('get_micro_freeze_status', 'MicroPorgramController@get_micro_freeze_s
         'XSS',
     ]
 );
-
+Route::get('projects/{id}/view', 'ProjectController@viewproject')->name('projects.view')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
 Route::resource('projects', 'ProjectController')->middleware(
     [
         'auth',
@@ -4414,8 +4504,8 @@ Route::post('consultants-reset-password/{id}', 'ConsultantController@userPasswor
 
 
 
-Route::get('get_company_details/{id}', 'ConsultantController@get_company_details')
-->name('consultant.get_company_details')->middleware(
+Route::get('consultant_get_company_details/{id}', 'ConsultantController@get_company_details')
+->name('consultant.consultant_get_company_details')->middleware(
     [
         'auth',
         'XSS',

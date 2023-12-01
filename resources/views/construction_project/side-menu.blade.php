@@ -32,7 +32,7 @@
 }
  thead > tr, thead > tr > th {
      background-color: transparent !important;
-     color: #fff ;
+     color: #fff  !important;
      font-weight: normal;
      text-align: start;
 }
@@ -94,7 +94,15 @@
      border-radius: 50px !important;
      background-color: #000 !important;
      color: #fff !important;
-|}
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    cursor: default;
+    color: #fff !important;
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none;
+}
 </style>
 <div class="page">
     <!-- Sidebar  -->
@@ -132,8 +140,7 @@
                         <a class="{{ Request::route()->getName() == 'projects.gantt' ||
                         Request::route()->getName() == 'revision' ||
                         Request::route()->getName() == 'project_report.revsion_task_list' ||
-                        Request::route()->getName() == 'taskBoard.view' ||
-                        Request::route()->getName() == 'project_report.view_task_report'
+                        Request::route()->getName() == 'taskBoard.view'
                             ? 'nav-link active dropdown-toggle'
                             : 'nav-link dropdown-toggle' }}"
                             href="#planning" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
@@ -164,12 +171,14 @@
                                             {{ __('Gantt') }}
                                         </a>
                                     @endcan
-                                    @if (Session::get('current_revision_freeze') == 1)
-                                        <a href="{{ url('revision') }}"
-                                            class="{{ Request::route()->getName() == 'revision' ?
-                                            'dropdown-item active' : 'dropdown-item' }}">
-                                            {{ __('Revision') }}
-                                        </a>
+                                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
+                                        @if (Session::get('current_revision_freeze') == 1)
+                                            <a href="{{ url('revision') }}"
+                                                class="{{ Request::route()->getName() == 'revision' ?
+                                                'dropdown-item active' : 'dropdown-item' }}">
+                                                {{ __('Revision') }}
+                                            </a>
+                                        @endif
                                     @endif
                                     @if (session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
@@ -229,12 +238,18 @@
                     <!--Main Planning end-->
 
                     <!--LookaHead Planning starts-->
-                    @if ($checMicroProgram == 1)
+                    @if($checMicroProgram == 1)
                         @if(Session::get('latest_project_instance') == Session::get('project_instance'))
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                <a class="{{ Request::route()->getName() == 'microprogram' ||
+                                    Request::route()->getName() == 'micro_taskboard' ||
+                                    Request::route()->getName() == 'micro_task_particular' ||
+                                    Request::route()->getName() == 'microprogram.gantt'
+                                        ? 'nav-link active dropdown-toggle'
+                                        : 'nav-link dropdown-toggle' }}"
+                                    href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <span class="d-md-none d-lg-inline-block">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -256,15 +271,18 @@
                                         <div class="dropdown-menu-column">
                                             <a href="{{ route('microprogram.gantt', $project_id) }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Gantt') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">
+                                                {{ __('Lookahead Gantt') }}</a>
                                             
                                             <a href="{{ route('microprogram') }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Lookahead Schedule') }}</a>
+                                                ?'dropdown-item active' :'dropdown-item'}}">
+                                                {{ __('Lookahead Schedule') }}</a>
                                         
                                             <a href="{{ route('micro_taskboard') }}"
-                                                class="{{ (Request::route()->getName() == 'micro_taskboard.view')
-                                                ?'dropdown-item active' :'dropdown-item'}}">{{ __('Active Lookahead') }}</a>
+                                                class="{{ (Request::route()->getName() == 'micro_taskboard')
+                                                ?'dropdown-item active' :'dropdown-item'}}">
+                                                {{ __('Active Lookahead') }}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -273,15 +291,18 @@
                     @endif
                     <!--LookaHead Planning end-->
 
+                    @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
                         <a href="{{ route('project.teammembers', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project.teammembers'
+                            class="{{ Request::route()->getName() == 'project.teammembers' ||
+                            Request::route()->getName() == 'project.consultant' ||
+                            Request::route()->getName() == 'project.subcontractor'
                                 ? 'nav-link active dropdown-toggle'
                                 : 'nav-link dropdown-toggle' }}"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
                             aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -321,17 +342,17 @@
                         </div>
                     </li>
                     <!--Team Members end-->
+                    @endif
 
                     <!--Activites starts-->
                     <li class="nav-item">
                         <a href="{{ route('project.activities', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project.activities' ?
                             'nav-link active' : 'nav-link' }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                            <span class="d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-home"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                     <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
                                     <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
@@ -350,11 +371,11 @@
                     <li class="nav-item dropdown">
                         <a href="{{ route('project_report.view_task_report', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project_report.view_task_report'
-                                ? 'nav-link active dropdown-toggle'
-                                : 'nav-link dropdown-toggle' }}"
+                                ? 'nav-link active dropdown-item dropdown-toggle'
+                                : 'nav-link dropdown-item dropdown-toggle' }}"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
                             aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <span class="d-md-none d-lg-inline-block">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -376,13 +397,13 @@
                                 <div class="dropdown-menu-column">
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project_report.view_task_report' ?
-                                        'nav-link active' : 'nav-link' }}">
+                                        'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Daily Task Reports') }}
                                     </a>
-                                    <a class="nav-link" href="./accordion.html">
+                                    <a class="dropdown-item" href="{{route('overall_report')}}">
                                         {{ __('OverAll Reports') }}
                                     </a>
-                                    <a class="nav-link" href="./accordion.html">
+                                    <a class="dropdown-item" href="./accordion.html">
                                         {{ __('Lookahead Reports') }}
                                     </a>
                                 </div>
@@ -390,28 +411,33 @@
                     </li>
                     <!--Reports ends-->
 
-                    <!--Holidays starts-->
                     <li class="nav-item">
-                        <a href="{{ route('project_holiday.index', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project_holiday.index' ?
+                        <a href="{{ route('project-holiday.index', $project_id) }}"
+                            class="{{ Request::route()->getName() == 'project-holiday.index' ?
                             'nav-link active' : 'nav-link' }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                            <span class=" d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                class="icon icon-tabler icon-tabler-adjustments-check"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
-                                    <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
-                                    <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
+                                    <path d="M4 10a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                    <path d="M6 4v4"></path>
+                                    <path d="M6 12v8"></path>
+                                    <path d="M13.823 15.176a2 2 0 1 0 -2.638 2.651"></path>
+                                    <path d="M12 4v10"></path>
+                                    <path d="M16 7a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                                    <path d="M18 4v1"></path>
+                                    <path d="M18 9v5"></path>
+                                    <path d="M15 19l2 2l4 -4"></path>
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                {{ __('Holidays') }}
+                                {{ __('Project Setup') }}
                             </span>
                         </a>
                     </li>
-                     <!--Holidays ends-->
+                    
                      {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                      <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>

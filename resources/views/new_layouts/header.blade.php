@@ -353,8 +353,11 @@
                   <ul class="navbar-nav">
                      <!--Home starts-->
                      <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('new_home') }}">
-                           <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <a class="{{ Request::route()->getName() == 'new_home'
+                               ? 'nav-link active'
+                               : 'nav-link' }}"
+                           href="{{ route('new_home') }}">
+                           <span class="d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/star -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
                                  height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -375,9 +378,36 @@
 
                      <!--Users starts-->
                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                        <a class="{{ Request::route()->getName() == 'users.index' ||
+                           Request::route()->getName() == 'roles.index' ||
+                           Request::route()->getName() == 'clients.index' ||
+                           Request::route()->getName() == 'consultants.index' ||
+                           Request::route()->getName() == 'subcontractor.index' ||
+                           Request::segment(1) == 'clients' ||
+                           Request::route()->getName() == 'clients.edit' ||
+                           Request::route()->getName() == 'leads.list' ||
+                           Request::route()->getName() == 'leads.index' ||
+                           Request::route()->getName() == 'leads.show' ||
+                           Request::route()->getName() == 'deals.list' ||
+                           Request::route()->getName() == 'deals.index' ||
+                           Request::route()->getName() == 'deals.show' ||
+                           Request::segment(1) == 'form_builder' ||
+                           Request::segment(1) == 'form_response' ||
+                           Request::route()->getName() == 'contract.index' ||
+                           Request::route()->getName() == 'contract.show' ||
+                           Request::segment(1) == 'stages' ||Request::segment(1) == 'labels' ||
+                           Request::segment(1) == 'sources' || Request::segment(1) == 'lead_stages' ||
+                           Request::segment(1) == 'pipelines' ||
+                           Request::segment(1) == 'product-category' ||
+                           Request::segment(1) == 'product-unit' ||
+                           Request::segment(1) == 'payment-method' ||
+                           Request::segment(1) == 'custom-field' ||
+                           Request::segment(1) == 'chart-of-account-type'
+                               ? 'nav-link active dropdown-item dropdown-toggle'
+                               : 'nav-link dropdown-item dropdown-toggle' }}"
+                           href="#navbar-base" data-bs-toggle="dropdown"
                          data-bs-auto-close="outside" role="button" aria-expanded="false">
-                           <span class="nav-link-icon d-md-none d-lg-inline-block">
+                           <span class="d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -397,30 +427,68 @@
                         <div class="dropdown-menu">
                            <div class="dropdown-menu-columns">
                               <div class="dropdown-menu-column">
-                                 <a class="dropdown-item" href="{{ route('users.index') }}">
+                                 <a class="{{ Request::route()->getName() == 'users.index' ?
+                                    'active dropdown-item' : 'dropdown-item' }}"
+                                 href="{{ route('users.index') }}">
                                  {{ __('Employees') }}
                                  </a>
-                                 <a class="dropdown-item" href="{{ route('roles.index') }}">
+                                 <a class="{{ Request::route()->getName() == 'roles.index' ?
+                                    'active dropdown-item' : 'dropdown-item' }}"
+                                    href="{{ route('roles.index') }}">
                                  {{ __('Employee Roles') }}
                                  </a>
                                  <div class="dropend">
-                                    <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication"
-                                     data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
-                                      aria-expanded="false">
+                                    <a class="{{ Request::route()->getName() == 'clients.index' ||
+                                       Request::route()->getName() == 'consultants.index' ||
+                                       Request::route()->getName() == 'subcontractor.index'
+                                          ? 'active dropdown-item dropdown-toggle'
+                                          : 'dropdown-item dropdown-toggle' }}"
+                                    href="#sidebar-authentication"
+                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
+                                    aria-expanded="false">
                                     {{ __('Third party Users') }}
                                     </a>
                                     <div class="dropdown-menu">
-                                       <a href="{{ route('clients.index') }}" class="dropdown-item">
-                                       {{ __('Client') }}
+                                       <a href="{{ route('clients.index') }}"
+                                          class="{{ Request::route()->getName() == 'clients.index' ||
+                                          Request::segment(1) == 'clients' ||
+                                          Request::route()->getName() == 'clients.edit' ||
+                                          Request::route()->getName() == 'leads.list' ||
+                                          Request::route()->getName() == 'leads.index' ||
+                                          Request::route()->getName() == 'leads.show' ||
+                                          Request::route()->getName() == 'deals.list' ||
+                                          Request::route()->getName() == 'deals.index' ||
+                                          Request::route()->getName() == 'deals.show' ||
+                                          Request::segment(1) == 'form_builder' ||
+                                          Request::segment(1) == 'form_response' ||
+                                          Request::route()->getName() == 'contract.index' ||
+                                          Request::route()->getName() == 'contract.show' ||
+                                          Request::segment(1) == 'stages' ||Request::segment(1) == 'labels' ||
+                                          Request::segment(1) == 'sources' || Request::segment(1) == 'lead_stages' ||
+                                          Request::segment(1) == 'pipelines' ||
+                                          Request::segment(1) == 'product-category' ||
+                                          Request::segment(1) == 'product-unit' ||
+                                          Request::segment(1) == 'payment-method' ||
+                                          Request::segment(1) == 'custom-field' ||
+                                          Request::segment(1) == 'chart-of-account-type'
+                                             ? 'active dropdown-item'
+                                             : 'dropdown-item' }}">
+                                          {{ __('Client') }}
                                        </a>
                                        @if(Gate::check('manage consultant'))
-                                       <a href="{{route('consultants.index')}}" class="dropdown-item">
-                                       {{ __('Consultant') }}
+                                       <a href="{{route('consultants.index')}}"
+                                          class="{{ Request::route()->getName() == 'consultants.index'
+                                             ? 'active dropdown-item'
+                                             : 'dropdown-item' }}">
+                                          {{ __('Consultant') }}
                                        </a>
                                        @endif
                                        @if(Gate::check('manage sub contractor'))
-                                       <a href="{{ route('subcontractor.index') }}" class="dropdown-item">
-                                       {{ __('Sub Contractor') }}
+                                       <a href="{{ route('subcontractor.index') }}"
+                                          class="{{ Request::route()->getName() == 'subcontractor.index'
+                                             ? 'active dropdown-item'
+                                             : 'dropdown-item' }}">
+                                          {{ __('Sub Contractor') }}
                                        </a>
                                        @endif
                                     </div>
@@ -434,8 +502,27 @@
                      @if(\Auth::user()->show_project() == 1)
                      @if( Gate::check('manage project'))
                      <li class="nav-item">
-                        <a class="nav-link" href="{{route('construction_main')}}">
-                           <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <a class="{{ Request::route()->getName() == 'construction_main' ||
+                           Request::route()->getName() == 'projects.show' ||
+                           Request::route()->getName() == 'projects.gantt' ||
+                           Request::route()->getName() == 'revision' ||
+                           Request::route()->getName() == 'project_report.revsion_task_list' ||
+                           Request::route()->getName() == 'taskBoard.view' ||
+                           Request::route()->getName() == 'microprogram' ||
+                           Request::route()->getName() == 'micro_taskboard' ||
+                           Request::route()->getName() == 'micro_task_particular' ||
+                           Request::route()->getName() == 'microprogram.gantt' ||
+                           Request::route()->getName() == 'project.teammembers' ||
+                           Request::route()->getName() == 'project.consultant' ||
+                           Request::route()->getName() == 'project.subcontractor' ||
+                           Request::route()->getName() == 'project.activities' ||
+                           Request::route()->getName() == 'project_report.view_task_report' ||
+                           Request::route()->getName() == 'project-holiday.index' ||
+                           Request::route()->getName() == 'construction_main'
+                               ? 'nav-link active'
+                               : 'nav-link' }}"
+                           href="{{route('construction_main')}}">
+                           <span class="d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -458,8 +545,13 @@
                      @if(\Auth::user()->show_project() == 1)
                      @if( Gate::check('manage project'))
                      <li class="nav-item">
-                        <a class="nav-link" href="{{route('dairy_main')}}">
-                           <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <a class="{{ Request::route()->getName() == 'dairy_main' ||
+                           Request::route()->getName() == 'show_dairy' ||
+                           Request::route()->getName() == 'drawings.index'
+                               ? 'nav-link active'
+                               : 'nav-link' }}"
+                           href="{{route('dairy_main')}}">
+                           <span class="d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -482,8 +574,10 @@
                      @if(\Auth::user()->show_hrm() == 1)
                      @can('show hrm dashboard')
                      <li class="nav-item">
-                        <a class="nav-link" href="{{url('hrm_dashboard')}}">
-                           <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <a class="{{ Request::route()->getName() == 'hrm_dashboard'
+                           ?'nav-link active' :'nav-link'}}"
+                           href="{{url('hrm_dashboard')}}">
+                           <span class="d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -537,8 +631,29 @@
                      || Gate::check('manage product & service')
                      || Gate::check('manage vender'))
                      <li class="nav-item">
-                        <a class="nav-link" href="{{ route('productservice.index') }}">
-                           <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <a class="{{ Request::route()->getName() == 'productservice.index' ||
+                           Request::route()->getName() == 'productstock.index' ||
+                           Request::route()->getName() == 'vender.index' ||
+                           Request::route()->getName() == 'proposal.index' ||
+                           Request::route()->getName() == 'bank-account.index' ||
+                           Request::route()->getName() == 'bank-transfer.index' ||
+                           Request::route()->getName() == 'invoice.index' ||
+                           Request::route()->getName() == 'revenue.index' ||
+                           Request::route()->getName() == 'credit.note' ||
+                           Request::route()->getName() == 'bill.index' ||
+                           Request::route()->getName() == 'payment.index' ||
+                           Request::route()->getName() == 'debit.note' ||
+                           Request::route()->getName() == 'chart-of-account.index' ||
+                           Request::route()->getName() == 'journal-entry.index' ||
+                           Request::route()->getName() == 'report.ledger' ||
+                           Request::route()->getName() == 'report.balance.sheet' ||
+                           Request::route()->getName() == 'trial.balance' ||
+                           Request::segment(1) == 'budget' || Request::route()->getName() == 'goal.index' ||
+                           Request::route()->getName() == 'taxes.index' ||
+                           Request::route()->getName()=="print.setting"
+                           ?'nav-link active' :'nav-link'}}"
+                           href="{{ route('productservice.index') }}">
+                           <span class="d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -556,33 +671,6 @@
                      @endif
                      @endif
                      <!--Accounts ends-->
-
-                     <!--CRM starts-->
-                     @if(\Auth::user()->show_crm() == 1)
-                     @if( Gate::check('manage lead') || Gate::check('manage deal')
-                     || Gate::check('manage form builder')  || Gate::check('manage contract')
-                     || Gate::check('manage client'))
-                     <li class="nav-item">
-                        <a class="nav-link" @if(Auth::user()->type == 'client') href="{{ route('deals.index') }}"
-                        @else href="{{ route('clients.index') }}" @endif>
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                           <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                              <path d="M9 11l3 3l8 -8"></path>
-                              <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
-                           </svg>
-                        </span>
-                        <span class="nav-link-title">
-                        {{ __('CRM') }}
-                        </span>
-                        </a>
-                     </li>
-                     @endif
-                     @endif
-                     <!--CRM ends-->
 
                      <!--Feedback Starts-->
                      {{-- <li class="nav-item">
@@ -607,8 +695,10 @@
                      <!--Support Starts-->
                      @if(\Auth::user()->type!='super admin')
                      <li class="nav-item">
-                        <a class="nav-link" href="{{route('support.index')}}">
-                           <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        <a class="{{ Request::route()->getName() == 'support.index'
+                           ?'nav-link active' :'nav-link'}}"
+                           href="{{route('support.index')}}">
+                           <span class="d-md-none d-lg-inline-block">
                               <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"

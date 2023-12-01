@@ -2,6 +2,28 @@
 
 <link rel="stylesheet" href="{{ asset('WizardSteps/css/wizard.css') }}">
 <style>
+    .upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+.createProject {
+    display: flex;
+    margin-left: auto;
+    width: 200px;
+}
+.btn {
+  padding: 8px 20px;
+  cursor: pointer;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
     .chosen-container{
         width: 100%!important;
         height: fit-content;
@@ -23,7 +45,6 @@
         display: flex;
         padding: 24px;
         border-radius: 5px;
-        display: flex;
         align-items: center;
         justify-content: center;
     }
@@ -80,8 +101,8 @@
     }
 
     /* micro program CSS */
-    .new {
-        padding: 50px;
+    .newmicro_program {
+        margin-top: 24px;
     }
     .checkbox_group {
         display: block !important;
@@ -131,7 +152,9 @@
 </style>
 <div class="modal-body">
     <div class="container">
-        {{ Form::model($project, ['route' => ['projects.update', $project->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data', 'id' => 'create_project_form', 'class' => 'create_project_form']) }}
+        {{ Form::model($project, ['route' => ['projects.update', $project->id], 'method' => 'PUT',
+             'enctype' => 'multipart/form-data', 'id' => 'create_project_form',
+              'class' => 'create_project_form']) }}
             {{ csrf_field() }}
             <div>
                 <h3>{{ __('Project Details') }}</h3>
@@ -139,120 +162,123 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
                             <div class="form-group">
-                                {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                {{ Form::text('project_name', null, ['class' => 'form-control','required'=>'required']) }}
-                                {{Form::hidden('freeze_statuss',$project->freeze_status,array('class'=>'form-control','id'=>'freeze_status'))}}
+                                {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span>
+                                {{ Form::text('project_name', null, ['class' => 'form-control',
+                                    'required'=>'required','disabled'=>'true','readonly'=>true]) }}
+                                {{Form::hidden('freeze_statuss',$project->freeze_status,
+                                    array('class'=>'form-control','id'=>'freeze_status'))}}
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                <select class="form-control country" name="country" id='country' placeholder="Select Country" required>
+                                {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                <select class="form-control country" name="country" id='country'
+                                 placeholder="Select Country" required>
                                     <option value="">{{ __('Select Country ...') }}</option>
                                     @foreach($country as $key => $value)
-                                          <option value="{{$value->iso2}}" @if($project->country == $value->iso2) selected @endif>{{$value->name}}</option>
+                                          <option value="{{$value->iso2}}"
+                                           @if($project->country == $value->iso2)
+                                            selected @endif>{{$value->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                <select class="form-control" name="state" id='state' placeholder="Select State" required>
+                                {{Form::label('state',__('State'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                <select class="form-control" name="state" id='state'
+                                 placeholder="Select State" required>
                                     <option value="">{{ __('Select State ...') }}</option>
                                     @foreach ($statelist as $state_display)
-                                        <option value="{{$state_display->iso2}}" @if($project->state == $state_display->iso2) selected @endif>{{$state_display->name}}</option>
+                                        <option value="{{$state_display->iso2}}"
+                                         @if($project->state == $state_display->iso2) selected
+                                          @endif>{{$state_display->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                {{Form::label('city',__('City'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
                                 {{Form::text('city',null,array('class'=>'form-control','required'=>'required',
                                 'oninput'=>'alphaOnly(this)'))}}
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6">
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
                                 {{Form::text('zip',$project->zipcode,array('class'=>'form-control','id'=>'zip',
                                 'required'=>'required', 'minlength'=>5))}}
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('latitude',__('Latitude'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('latitude',null,array('class'=>'form-control','id'=>'latitude','required'=>'required'))}}
+                                {{Form::label('latitude',__('Latitude'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                {{Form::text('latitude',null,array('class'=>'form-control',
+                                    'id'=>'latitude','required'=>'required'))}}
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('longitude',__('Longitude'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('longitude',null,array('class'=>'form-control','id'=>'longitude','required'=>'required'))}}
+                                {{Form::label('longitude',__('Longitude'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                {{Form::text('longitude',null,array('class'=>'form-control',
+                                    'id'=>'longitude','required'=>'required'))}}
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mb-3">
+                        <label class="form-label">Other Address Details</label>
+                        <textarea class="form-control" name="otheraddress" rows="6"
+                            placeholder="Content.."></textarea>
                         </div>
                     </div>
                 </section>
-
-                <h3>{{ __('Project Members') }}</h3>
                 <section>
                     <div class="row">
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{ Form::label('client', __('Client'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                                {!! Form::select('client', $clients, $project->client_id,array('class' => 'form-control select2','id'=>'choices-multiple1','required'=>'required')) !!}
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                @php $reportto=explode(',',$project->report_to); @endphp
-                                {{ Form::label('Users', __('Users'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
-                                {!! Form::select('reportto[]', $repoter, $reportto ,array('class' => 'form-control chosen-select get_reportto','required'=>'required','multiple'=>'true','required'=>'required')) !!}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span>
                                 {{ Form::date('start_date', null, ['class' => 'form-control','required'=>'required']) }}
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span>
                                 {{ Form::date('end_date', null, ['class' => 'form-control','required'=>'required']) }}
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
                                 {{ Form::text('estimated_days', null, ['class' => 'form-control' ,'readonly'=>true]) }}
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                {{ Form::time('report_time', $project->report_time, ['class' => 'form-control', 'rows' => '4', 'cols' => '50']) }}
-                            </div>
                         </div>
-                    </div>
 
                     <div class="row">
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
+                                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control get_reportto','required'=>'required')) !!}
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
                                 <input type="file" class="form-control" id="project_image"  name="project_image">
@@ -264,15 +290,26 @@
                                 class="avatar avatar-xl" alt="">
                             @endif
                         </div>
-                    </div>
-                </section>
-
-                <h3>{{ __('Project Holidays') }}</h3>
-                <section>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
+                                {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span>
+                                <select name="status" id="status" class="form-control main-element select2" required>
+                                    <option value=''>Choose Status</option>
+                                    @foreach(\App\Models\Project::$project_status as $k => $v)
+                                        <option value="{{$k}}" {{ ($project->status == $k) ?
+                                             'selected' : ''}}>{{__($v)}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -291,101 +328,16 @@
                                 !!}
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                {{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}
-                                <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox"
-                                        name='holidays' id='holidays'
-                                        @if($project->holidays==1) checked @endif>
-                                        <label class="form-check-label" for="holidays">
-                                            {{__('holidays')}}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-sm-4 col-md-4 newmicro_program">
+                        <div class="form-group checkbox_group">
+                            <input type="checkbox" id="micro_program" name="micro_program"
+                            {{ ($project->micro_program == 1) ? 'checked' : ''}}>
+                            <label for="micro_program">Do you want Micro Program</label>
                         </div>
                     </div>
-
-                    <br>
-                    @php
-                        if($project->holidays==1){
-                            $holiday_show = 'display:none;';
-                        }
-                        else{
-                            $holiday_show = '';
-                        }
-                    @endphp
-                    <div class="card-body table-border-style holidays_show_hide" style="overflow: scroll; height: 80%;{{$holiday_show}}">
-                        {{Form::label('holiday',__('Add Project Holidays'),['class'=>'form-label'])}}
-                        <div class="table-responsive holiday_table" id="holiday_table">
-                            <table class="table" id="example2" style="width: 100%">
-                                <thead>
-                                    <tr>
-                                        <th><input class='check_all' type='checkbox' onclick="select_all_key()"/></th>
-                                        <th>{{__('Date')}}</th>
-                                        <th>{{__('Holiday Name')}}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php $set_key = 1; @endphp
-                                    @forelse ($project_holidays as $holiday_show)
-                                            <tr data-count_id="{{$set_key}}" id="{{$set_key}}" class="duplicate_tr">
-                                            <td><input type='checkbox' class='case'/></td>
-                                            <td style="width: 30%;">
-                                                <input value="{{$holiday_show->date}}" type="date" class="form-control holiday_date get_date" id="holiday_date{{$set_key}}" name="holiday_date[]">
-                                                <label style='display:none;color:red;' class='holiday_date_label{{$set_key}}'>This Field is Required </label>
-                                            </td>
-                                            <td style="width: 70%;">
-                                                <input value="{{$holiday_show->description}}" type="text" class="form-control holiday_description" id="holiday_description{{$set_key}}" name="holiday_description[]">
-                                                <label style='display:none;color:red;' class='holiday_description_label{{$set_key}}'>This Field is Required </label>
-                                            </td>
-                                        </tr>
-                                        @php $set_key++; @endphp
-                                    @empty
-                                        <td><input type='checkbox' disabled/></td>
-                                        <td style="width: 30%;">
-                                            <input type="date" data-date_id='1' class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]">
-                                            <label style='display:none;color:red;' class='holiday_date_label1'>This Field is Required </label>
-                                        </td>
-                                        <td style="width: 70%;">
-                                            <input type="text" data-desc_id='1' class="form-control holiday_description" id="holiday_description1" name="holiday_description[]">
-                                            <label style='display:none;color:red;' class='holiday_description_label1'>This Field is Required </label>
-                                        </td>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                        <br>
-                        <button type="button" class='btn btn-danger delete_key'><i class="fa fa-minus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete Table Row</button>
-                        <button type="button" class='btn btn-primary addmore'><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add More Table Row</button>
                     </div>
-                </section>
 
-                <h3>{{ __('Project Status') }}</h3>
-                <section>
-                    <div class="row">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                {{ Form::label('status', __('Status'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                <select name="status" id="status" class="form-control main-element select2" required>
-                                    <option value=''>Choose Status</option>
-                                    @foreach(\App\Models\Project::$project_status as $k => $v)
-                                        <option value="{{$k}}" {{ ($project->status == $k) ? 'selected' : ''}}>{{__($v)}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6 col-md-6 new">
-                            <div class="form-group checkbox_group">
-                                <input type="checkbox" id="micro_program" name="micro_program"
-                                {{ ($project->micro_program == 1) ? 'checked' : ''}}>
-                                <label for="micro_program">Do you want Micro Program</label>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="btn btn-primary createProject" onclick="createProject()">Save</button>
                 </section>
             </div>
         {{Form::close()}}
@@ -416,6 +368,36 @@ aria-hidden="true" data-toggle="modal">
 </div>
 
 <script>
+     function createProject(){
+        var form = $("#create_project_form");
+        if(form.valid()){
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: "Do you want to submit changes?",
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var finishButton = form.find('a[href="#finish"]').removeAttr('href');
+                    $(".loding_popup").modal('show');
+                    form.submit();
+                }
+                else if (result.dismiss === Swal.DismissReason.cancel) {
+                }
+            });
+        }
+       
+    }
     $('#loding_popup').modal({backdrop: 'static', keyboard: false});
     $('#commonModal').modal({backdrop: 'static', keyboard: false});
     disabled_all();
