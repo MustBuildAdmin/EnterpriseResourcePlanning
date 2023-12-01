@@ -2,28 +2,6 @@
 
 <link rel="stylesheet" href="{{ asset('WizardSteps/css/wizard.css') }}">
 <style>
-.upload-btn-wrapper {
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-}
-.createProject {
-    display: flex;
-    margin-left: auto;
-    width: 200px;
-}
-.btn {
-  padding: 8px 20px;
-  cursor: pointer;
-}
-
-.upload-btn-wrapper input[type=file] {
-  font-size: 100px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-}
     .chosen-container{
         width: 100%!important;
         height: fit-content;
@@ -104,13 +82,9 @@
     .new {
         padding: 50px;
     }
-    .nonworkingdays{
-        margin-top: 8px;
-    }
     .checkbox_group {
         display: block !important;
         margin-bottom: 15px;
-        margin-top:28px;
     }
 
     .checkbox_group input {
@@ -153,42 +127,27 @@
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
     }
-    span#non_working_days_error{
-        display:none;
-    }
 </style>
 <div class="modal-body">
     <div class="container">
         {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_project_form', 'class' => 'create_project_form']) }}
             <div>
+                <h3>{{ __('Project Details') }}</h3>
                 <section>
                     <div class="row">
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-12 col-md-12">
                             <div class="form-group">
                                 {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                {{ Form::text('project_name', null, ['class' => 'form-control project_name','id'=>'project_name','required'=>'required']) }}
+                                {{ Form::text('project_name', null, ['class' => 'form-control project_name','required'=>'required']) }}
                                 <span class="invalid-name show_duplicate_error" role="alert" style="display: none;">
                                     <strong class="text-danger">Project Name Already Exist!</strong>
                                 </span>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                                {{ Form::label('client', __('Client'),['class'=>'form-label']) }}<span class="text-danger">*</span>
-                                {!! Form::select('client', $clients, null,array('class' => 'form-control','required'=>'required')) !!}
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                                {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
-                                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control get_reportto','required'=>'required')) !!}
-                            </div>
-                        </div>
                     </div>
 
-
                     <div class="row">
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 <select class="form-control country" name="country" id='country_wizard'
@@ -200,7 +159,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 <select class="form-control" name="state" id='state' placeholder="Select State" required>
@@ -208,81 +167,105 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 {{Form::text('city',null,array('class'=>'form-control','required'=>'required',
                                 'oninput'=>'alphaOnly(this)'))}}
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                       
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip',
                                 'required'=>'required', 'minlength'=>5))}}
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('latitude',__('Latitude'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 {{Form::text('latitude',null,array('class'=>'form-control','id'=>'latitude','required'=>'required'))}}
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{Form::label('longitude',__('Longitude'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 {{Form::text('longitude',null,array('class'=>'form-control','id'=>'longitude','required'=>'required'))}}
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="mb-3">
-                        <label class="form-label">Other Address Details</label>
-                        <textarea class="form-control" name="otheraddress" rows="6"
-                            placeholder="Content.."></textarea>
+                </section>
+
+                <h3>{{ __('Project Members') }}</h3>
+                <section>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{ Form::label('client', __('Client'),['class'=>'form-label']) }}<span class="text-danger">*</span>
+                                {!! Form::select('client', $clients, null,array('class' => 'form-control','required'=>'required')) !!}
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{ Form::label('Users', __('Users'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
+                                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control chosen-select get_reportto','multiple'=>'true','required'=>'required')) !!}
+                            </div>
                         </div>
                     </div>
-                </section>
-                <section>
-                   
+
                     <div class="row">
-                    <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
-                                <span class="text-danger">*</span>
+                                {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
                                 {{ Form::date('start_date', null, ['class' => 'form-control','required'=>'required']) }}
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
-                                <span class="text-danger">*</span>
+                                {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
                                 {{ Form::date('end_date', null, ['class' => 'form-control','required'=>'required']) }}
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
                                 {{ Form::text('estimated_days', null,
                                 ['class' => 'form-control estimated_days' ,'readonly'=>true]) }}
                             </div>
                         </div>
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4', 'cols' => '50','required'=>'required']) }}
+                            </div>
+                        </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
                                 {{ Form::label('project_image', __('Project Image'), ['class' => 'form-label']) }}
                                 <input type="file" class="form-control" id="project_image"  name="project_image">
                             </div>
                             <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
                         </div>
-                        <div class="col-sm-4 col-md-4 nonworkingdays">
+                    </div>
+                </section>
+
+                <h3>{{ __('Project Holidays') }}</h3>
+                <section>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -296,51 +279,96 @@
                                 @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, null,
                                     array('id' => 'non_working_days','class' => 'form-control
-                                    chosen-select get_non_working_days','multiple'=>'true','required'=>'required'))
+                                    chosen-select get_non_working_days','multiple'=>'true'))
                                 !!}
                             </div>
-                            <span id="non_working_days_error" class="error" for="non_working_days">This field is required</span>
                         </div>
-                        <div class="col-sm-4 col-md-4">
-                            <div class="form-group checkbox_group">
-                                <input type="checkbox" id="micro_program" name="micro_program">
-                                <label for="micro_program">Do you want Look a Head</label>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <section>
-                    <div class="row mb-3">
+                        <div class="col-sm-6 col-md-6">
                             <div class="form-group">
-                                @if($setting['company_type']==2)
-                                    {{ Form::label('file_type', __('Select a Method'), ['class' => 'form-label']) }}
-                                    <div class="mt-3">
-                                        <label class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" value='M' name="file_status" checked="" id="file_status">
-                                            <span class="form-check-label">Manual Method</span>
-                                        </label>
-                                        <label class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" value='MP' name="file_status" id="file_status">
-                                            <span class="form-check-label">Import your project from Mircosoft's Project Management (MPP)</span>
-                                        </label>
-                                        <label class="form-check form-check-inline">
-                                            <input class="form-check-input" value='P' type="radio" name="file_status" id="file_status">
-                                            <span class="form-check-label">Import your project from Orcale's Primavera (XER)</span>
+                                {{Form::label('holidays',__('holiday_status'),['class'=>'form-label'])}}
+                                <div style='display:flex;flex-wrap: wrap;align-content: stretch;'>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name='holidays' id='holidays'>
+                                        <label class="form-check-label" for="holidays">
+                                            {{__('holidays')}}
                                         </label>
                                     </div>
-                                @endif
-                        </div>
-                        <div class="col-sm-6 col-md-6 outside_file" style="display:none;">
-                            <div class="upload-btn-wrapper">
-                                <button class="btn">Upload a file</button>
-                                <input type='file' name='file' id='file' accept=".mpp">
+                                </div>
                             </div>
                         </div>
-
-                       
                     </div>
-                    <button type="button" class="btn btn-primary createProject"   onclick="createProject();">Create</button>
+
+                    <br>
+                    <div class="card-body table-border-style holidays_show_hide" style="overflow: scroll; height: 80%;">
+                        {{Form::label('holiday',__('Add Project Holidays'),['class'=>'form-label'])}}
+                        <div class="table-responsive holiday_table" id="holiday_table">
+                            <table class="table" id="example2" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th><input class='check_all' type='checkbox' onclick="select_all_key()"/></th>
+                                        <th>{{__('Date')}}</th>
+                                        <th>{{__('Holiday Name')}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-count_id="1" id="1">
+                                        <td><input type='checkbox' class='case'/></td>
+                                        <td style="width: 30%;">
+                                            <input type="date" data-date_id='1' class="form-control holiday_date get_date" id="holiday_date1" name="holiday_date[]">
+                                            <label style='display:none;color:red;' class='holiday_date_label1'>This Field is Required </label>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <input type="text" data-desc_id='1' class="form-control holiday_description" id="holiday_description1" name="holiday_description[]">
+                                            <label style='display:none;color:red;' class='holiday_description_label1'>This Field is Required </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <br>
+                        <button type="button" class='btn btn-danger delete_key'><i class="fa fa-minus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete Table Row</button>
+                        <button type="button" class='btn btn-primary addmore'><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add More Table Row</button>
+                    </div>
+                </section>
+
+                <h3>{{ __('Project Import or Manual') }}</h3>
+                <section>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                @if($setting['company_type']==2)
+                                    {{ Form::label('file_type', __('Project File Type'), ['class' => 'form-label']) }}
+                                    <span class="text-danger">*</span>
+                                    <select name="file_status" id="file_status"
+                                    class="form-control main-element" required>
+                                        <option value=''>Choose File Type</option>
+                                        <option value='M'>Manual</option>
+                                        <option value='MP'>Microsoft Project</option>
+                                        <option value='P'>Primavera</option>
+                                    </select>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 outside_file" style="display:none;">
+                            {{ Form::label('file_type', __('Microsoft Project File Type'), ['class' => 'form-label mp_file_lable','style'=>'display:none;']) }}
+                            {{ Form::label('file_type', __('Primavera File Type'), ['class' => 'form-label prima_file_label','style'=>'display:none;']) }}
+                            <input type='file' name='file' id='file' accept=".mpp">
+                        </div>
+
+                        <div class="col-sm-6 col-md-6 new">
+                            <div class="form-group checkbox_group">
+                                <input type="checkbox" id="micro_program" name="micro_program">
+                                <label for="micro_program">Do you want Micro Program</label>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            {{ Form::label('boq', __('Upload a BOQ File Here'), ['class' => 'form-label boq_file']) }}
+                            <input type='file' name='boq_file' id='boq_file' accept=".xlsx, .xls, .csv">
+                        </div>
+                    </div> --}}
                 </section>
             </div>
         {{Form::close()}}
@@ -471,7 +499,139 @@ aria-labelledby="exampleModalCenterTitle"
         }
     });
 
-   
+    $(function ()
+    {
+        var form = $("#create_project_form");
+
+        form.validate({
+            rules: {
+                project_name: {
+                    required: true,
+                    remote: {
+                        url: '{{ route("checkDuplicateProject") }}',
+                        data: { 'form_name' : "ProjectCreate" },
+                        type: "GET"
+                    }
+                },
+                latitude: {
+                    required: true,
+                    latCoord: true
+                },
+                longitude: {
+                    required: true,
+                    longCoord: true
+                }
+            },
+            messages: {
+                project_name: {
+                    remote: "Sorry, that project name already exists!"
+                }
+            }
+        });
+
+        $.validator.addMethod('latCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((8[0-5]?)|([0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Latitude format has error.')
+
+        $.validator.addMethod('longCoord', function(value, element) {
+            return this.optional(element) ||
+            value.length >= 4 && /^(?=.)-?((0?[8-9][0-9])|180|([0-1]?[0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
+        }, 'Your Longitude format has error.')
+
+        form.children("div").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "slideLeft",
+            onStepChanging: function (event, currentIndex, newIndex)
+            {
+                get_reportto         = $(".get_reportto").val();
+                get_non_working_days = $(".get_non_working_days").val();
+               
+                if (newIndex < currentIndex) {
+                    return true;
+                }
+                else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
+                    form.validate().settings.ignore = ":disabled";
+                }
+                else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
+                    if ($("#holidays").prop('checked') == false) {
+                        holidayValidation();
+                        if(check_validation == 1){
+                            $(".current").attr('aria-disabled','true');
+                            return false;
+                        }
+                        else{
+                            $(".current").attr('aria-disabled','false');
+                            $(".current").removeClass('error');
+                        }
+                    }
+                    else{
+                        $(".current").attr('aria-disabled','false');
+                        $(".current").removeClass('error');
+                    }
+                }
+                else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
+                    if ($("#holidays").prop('checked') == false) {
+                        holidayValidation();
+                        if(check_validation == 1){
+                            $(".current").attr('aria-disabled','true');
+                            return false;
+                        }
+                        else{
+                            $(".current").attr('aria-disabled','false');
+                            $(".current").removeClass('error');
+                        }
+                    }
+                    else{
+                        $(".current").attr('aria-disabled','false');
+                        $(".current").removeClass('error');
+                    }
+                }
+                else{
+                    form.validate().settings.ignore = ":disabled,:hidden";
+                }
+                return form.valid();
+            },
+            labels: {
+                finish: 'Finish <i class="fa fa-chevron-right"></i>',
+                next: 'Next <i class="fa fa-chevron-right"></i>',
+                previous: '<i class="fa fa-chevron-left"></i> Previous'
+            },
+            onFinishing: function (event, currentIndex)
+            {
+                form.validate().settings.ignore = ":disabled,:hidden";
+                return form.valid();
+            },
+            onFinished: function (event, currentIndex)
+            {
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                })
+                swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "Do You Want Create Project?",
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'No',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var finishButton = form.find('a[href="#finish"]').removeAttr('href');
+                        $(".loding_popup").modal('show');
+                        form.submit();
+                    }
+                    else if (result.dismiss === Swal.DismissReason.cancel) {
+                    }
+                });
+            }
+        });
+    });
 
     $(document).on("change", '#file_status', function () {
         var status=$(this).val();
@@ -520,10 +680,10 @@ aria-labelledby="exampleModalCenterTitle"
         get_val = $(this).val();
 
         if(get_val != ""){
-            $("#non_working_days_error").hide();
+            $("#non_working_days-error").hide();
         }
         else{
-            $("#non_working_days_error").show();
+            $("#non_working_days-error").show();
         }
     });
 
@@ -592,111 +752,30 @@ aria-labelledby="exampleModalCenterTitle"
         location.reload();
     });
 
-    // $(document).on("keyup", '.project_name', function () {
-    //     $(".show_duplicate_error").css('display','none');
-    //     $.ajax({
-    //         url : '{{ route("checkDuplicateProject") }}',
-    //         type : 'GET',
-    //         data : { 'project_name' : $(".project_name").val(),'form_name' : "ProjectCreate" },
-    //         success : function(data) {
-    //             console.log(data,typeof(data))
-    //             if(data == 1){
-    //                 $(".show_duplicate_error").css('display','none');
-    //             }
-    //             else{
-    //                 $(".show_duplicate_error").css('display','block');
-    //             }
-    //         },
-    //         error : function(request,error)
-    //         {
-    //             alert("Request: "+JSON.stringify(request));
-    //         }
-    //     });
-    // });
+    $(document).on("keyup", '.project_name', function () {
+        $(".show_duplicate_error").css('display','none');
+        $.ajax({
+            url : '{{ route("checkDuplicateProject") }}',
+            type : 'GET',
+            data : { 'get_name' : $(".project_name").val(),'form_name' : "ProjectCreate" },
+            success : function(data) {
+                if(data == 1){
+                    $(".show_duplicate_error").css('display','none');
+                }
+                else{
+                    $(".show_duplicate_error").css('display','block');
+                }
+            },
+            error : function(request,error)
+            {
+                alert("Request: "+JSON.stringify(request));
+            }
+        });
+    });
 
     function alphaOnly(input){
         let value = input.value;
         let numbers = value.replace(/[^a-zA-Z]/g, "");
         input.value = numbers;
     }
-    $(function ()
-    {
-        var form = $("#create_project_form");
-
-        form.validate({
-            rules: {
-                project_name: {
-                    required: true,
-                    remote: {
-                        url: '{{ route("checkDuplicateProject") }}',
-                        data: { 'form_name' : "ProjectCreate" },
-                        type: "GET"
-                    }
-                },
-                latitude: {
-                    required: true,
-                    latCoord: true
-                },
-                longitude: {
-                    required: true,
-                    longCoord: true
-                },
-                non_working_days:{
-                    required:true
-                }
-            },
-            messages: {
-                project_name: {
-                    remote: "Sorry, that project name already exists!"
-                }
-            }
-        });
-
-        $.validator.addMethod('latCoord', function(value, element) {
-            return this.optional(element) ||
-            value.length >= 4 && /^(?=.)-?((8[0-5]?)|([0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
-        }, 'Your Latitude format has error.')
-
-        $.validator.addMethod('longCoord', function(value, element) {
-            return this.optional(element) ||
-            value.length >= 4 && /^(?=.)-?((0?[8-9][0-9])|180|([0-1]?[0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
-        }, 'Your Longitude format has error.')
-       
-    });
-    function createProject(){
-        let non_working=$('#non_working_days').val();
-        if(non_working.length<=0){
-            $("#non_working_days_error").show();
-        }
-            var form = $("#create_project_form");
-        if(form.valid()){
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-            })
-            swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: "Do You Want Create Project?",
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var finishButton = form.find('a[href="#finish"]').removeAttr('href');
-                    $(".loding_popup").modal('show');
-                    form.submit();
-                    $(".createProject").prop('disabled',true);
-                }
-                else if (result.dismiss === Swal.DismissReason.cancel) {
-                }
-            });
-        }
-       
-    }
-  
 </script>
