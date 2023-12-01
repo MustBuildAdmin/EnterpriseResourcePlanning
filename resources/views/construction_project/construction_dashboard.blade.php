@@ -61,9 +61,13 @@ if($delay>100){
                 </p>
                 <div>
                   <div class="avatar-list avatar-list-stacked">
-                  @foreach ($project->users as $user)
                     @php
-                      $avatar=substr($user->name, 0, 1);
+                      $projectmembers=\App\Models\Project::project_member($project->id);
+                    @endphp
+                  @foreach ($projectmembers as $user)
+                    @php
+                      $name_r=\App\Models\Project::get_user_name($user->user_id);
+                      $avatar=substr($name_r->name, 0, 1);
                     @endphp
                     <span class="avatar avatar-sm rounded">{{$avatar}}</span>
                   @endforeach
