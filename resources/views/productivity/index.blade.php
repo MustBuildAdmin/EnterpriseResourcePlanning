@@ -128,7 +128,7 @@
                                 @endforeach
                             @endif
                         </div>
-                        <div class="card mb-0 mt-3">
+                        <div class="card m-0">
                             <div class="card-body p-3">
                                 <div class="row">
                                     <div class="col-6">
