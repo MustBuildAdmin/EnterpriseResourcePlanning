@@ -425,7 +425,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-6  col-12">
+                        <div class="col-md-6  col-12" id="sub_con" style="display: none;">
                             <label class="form-label">{{ __('SubContractor') }}</label>
                             <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
                                 placeholder="Search your  subcontractor">
