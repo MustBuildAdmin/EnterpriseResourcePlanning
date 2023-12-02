@@ -8,7 +8,9 @@
     $setting = Utility::settings(\Auth::user()->creatorId());
     @endphp
     <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+         data-bs-target="#sidebar-menu" aria-controls="sidebar-menu"
+         aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="sidebar-menu">
@@ -16,7 +18,11 @@
                 <li class="nav-item">
                     <a href="{{ route('projects.show', $project_id) }}" class="nav-link">
                         <span class="d-md-none d-lg-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-analyze" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-analyze"
+                            width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M20 11a8.1 8.1 0 0 0 -6.986 -6.918a8.095 8.095 0 0 0 -8.019 3.918"></path>
                                 <path d="M4 13a8.1 8.1 0 0 0 15 3"></path>
@@ -29,10 +35,15 @@
 
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle"
+                    href="#navbar-base" data-bs-toggle="dropdown"
+                    data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class="d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
                                 <path d="M12 12l8 -4.5"></path>
@@ -54,7 +65,8 @@
                                 </a>
                                 @endcan
 
-                                <a href="{{ route('taskBoard.view',['list']) }}" class="dropdown-item">{{ __('Task') }}</a>
+                                <a href="{{ route('taskBoard.view',['list']) }}"
+                                class="dropdown-item">{{ __('Task') }}</a>
                                 @if ($setting['company_type'] != 2)
                                 @can('manage bug report')
                                 <a href="{{ route('task.bug', $project_id) }}" class="dropdown-item">
@@ -79,19 +91,27 @@
                                 @endcan
                                 @endif
                                 @endif
-                                <a class="dropdown-item" href="{{ route('project_report.view_task_report',$project_id) }}">
+                                <a class="dropdown-item"
+                                href="{{ route('project_report.view_task_report',$project_id) }}">
                                     {{ __('Task Report') }}
                                 </a>
 
                 </li>
                 {{-- Dairy --}}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle"
+                    href="#navbar-extra" data-bs-toggle="dropdown"
+                    data-bs-auto-close="false" role="button" aria-expanded="false">
                         <span class=" d-md-none d-lg-inline-block">
                             <!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                <path
+                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5
+                                -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
                                 </path>
                             </svg>
                         </span>
@@ -102,16 +122,21 @@
                     <div class="dropdown-menu">
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
-                                <a href="{{ route('drawing_list') }}" class="{{ (Request::segment(1) == 'drawing_list')?'active dropdown-item':'dropdown-item'}}">{{ __('Drawing') }}</a>
+                                <a href="{{ route('drawing_list') }}"
+                                class="{{ (Request::segment(1) == 'drawing_list')?'active dropdown-item':'dropdown-item'}}">
+                                {{ __('Drawing') }}</a>
 
                                 @can('manage project specification')
-                                <a href="{{ route('show_project_specification') }}" class="{{ (Request::segment(1) == 'show_project_specification')?'active dropdown-item':'dropdown-item'}}"> {{ __('Project Specifications Summary') }}
+                                <a href="{{ route('show_project_specification') }}"
+                                class="{{ (Request::segment(1) == 'show_project_specification')?'active dropdown-item':'dropdown-item'}}">
+                                {{ __('Project Specifications Summary') }}
                                     <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                                 </a>
                                 @endcan
 
                                 @can('manage vochange')
-                                <a class="{{ (Request::segment(1) == 'variation_scope_change')?'active dropdown-item':'dropdown-item'}}" href="{{ route('variation_scope_change') }}">
+                                <a class="{{ (Request::segment(1) == 'variation_scope_change')?'active dropdown-item':'dropdown-item'}}"
+                                 href="{{ route('variation_scope_change') }}">
                                     {{ __('VO/Change Order') }}
                                 </a>
                                 @endcan

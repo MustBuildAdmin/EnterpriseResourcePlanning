@@ -1992,7 +1992,7 @@ class ProjectController extends Controller
     {
         if (\Auth::user()->can("edit project")) {
             $validator = \Validator::make($request->all(), [
-                "project_name" => "required",
+                // "project_name" => "required",
                 "status" => "required",
             ]);
             if ($validator->fails()) {
@@ -2006,7 +2006,7 @@ class ProjectController extends Controller
 
             $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
-            $project->project_name = $request->project_name;
+            // $project->project_name = $request->project_name;
             $project->start_date = date(
                 "Y-m-d H:i:s",
                 strtotime($request->start_date)
@@ -2114,7 +2114,7 @@ class ProjectController extends Controller
                 }
             }
             return redirect()
-                ->route("construction_main")
+                ->back()
                 ->with("success", __("Project Updated Successfully"));
         } else {
             return redirect()

@@ -328,16 +328,17 @@
                                 !!}
                             </div>
                         </div>
-                    <div class="col-sm-4 col-md-4 newmicro_program">
-                        <div class="form-group checkbox_group">
-                            <input type="checkbox" id="micro_program" name="micro_program"
-                            {{ ($project->micro_program == 1) ? 'checked' : ''}}>
-                            <label for="micro_program">Do you want Micro Program</label>
+
+                        <div class="col-sm-4 col-md-4 newmicro_program">
+                            <div class="form-group checkbox_group">
+                                <input type="checkbox" id="micro_program" name="micro_program"
+                                {{ ($project->micro_program == 1) ? 'checked disabled' : 'display-none'}}>
+                                <label for="micro_program">Look a Head Enabled</label>
+                            </div>
                         </div>
                     </div>
-                    </div>
 
-                    <button class="btn btn-primary createProject" onclick="createProject()">Save</button>
+                    <button type="button" class="btn btn-primary createProject" onclick="createProject()">Save</button>
                 </section>
             </div>
         {{Form::close()}}
@@ -368,36 +369,7 @@ aria-hidden="true" data-toggle="modal">
 </div>
 
 <script>
-     function createProject(){
-        var form = $("#create_project_form");
-        if(form.valid()){
-            const swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
-                    confirmButton: 'btn btn-success',
-                    cancelButton: 'btn btn-danger'
-                },
-                buttonsStyling: false
-            })
-            swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: "Do you want to submit changes?",
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var finishButton = form.find('a[href="#finish"]').removeAttr('href');
-                    $(".loding_popup").modal('show');
-                    form.submit();
-                }
-                else if (result.dismiss === Swal.DismissReason.cancel) {
-                }
-            });
-        }
-       
-    }
+     
     $('#loding_popup').modal({backdrop: 'static', keyboard: false});
     $('#commonModal').modal({backdrop: 'static', keyboard: false});
     disabled_all();
@@ -548,106 +520,6 @@ aria-hidden="true" data-toggle="modal">
             return this.optional(element) ||
             value.length >= 4 && /^(?=.)-?((0?[8-9][0-9])|180|([0-1]?[0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
         }, 'Your Longitude format has error.')
-
-        form.children("div").steps({
-            headerTag: "h3",
-            bodyTag: "section",
-            transitionEffect: "slideLeft",
-            onStepChanging: function (event, currentIndex, newIndex)
-            {
-                get_reportto         = $(".get_reportto").val();
-                get_non_working_days = $(".get_non_working_days").val();
-
-                if (newIndex < currentIndex) {
-                    return true;
-                }
-                else if(currentIndex == 1 && newIndex == 2 && get_reportto == ""){
-                    form.validate().settings.ignore = ":disabled";
-                }
-                else if(currentIndex == 2 && newIndex == 3 && $("#holidays").prop('checked') == false){
-                    if ($("#holidays").prop('checked') == false) {
-                        holidayValidation();
-                        if(check_validation == 1){
-                            $(".current").attr('aria-disabled','true');
-                            return false;
-                        }
-                        else{
-                            $(".current").attr('aria-disabled','false');
-                            $(".current").removeClass('error');
-                        }
-                    }
-                    else{
-                        $(".current").attr('aria-disabled','false');
-                        $(".current").removeClass('error');
-                    }
-                }
-                else{
-                    form.validate().settings.ignore = ":disabled,:hidden";
-                }
-                
-                return form.valid();
-            },
-            labels: {
-                finish: 'Finish <i class="fa fa-chevron-right"></i>',
-                next: 'Next <i class="fa fa-chevron-right"></i>',
-                previous: '<i class="fa fa-chevron-left"></i> Previous'
-            },
-            onFinishing: function (event, currentIndex)
-            {
-                form.validate().settings.ignore = ":disabled,:hidden";
-                return form.valid();
-            },
-            onFinished: function (event, currentIndex)
-            {
-                freeze_status = $("#freeze_status").val();
-                if(freeze_status == 1){
-                    const swalWithBootstrapButtons = Swal.mixin({
-                        customClass: {
-                            confirmButton: 'btn btn-success',
-                            cancelButton: 'btn btn-danger'
-                        },
-                        buttonsStyling: false
-                    })
-                    swalWithBootstrapButtons.fire({
-                        title: 'Freezed',
-                        text: "This Project Was Freezed! Please Contact Your Company.",
-                        icon: 'warning',
-                        showCancelButton: false,
-                        confirmButtonText: 'Ok',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                        }
-                    });
-                }
-                else{
-                    const swalWithBootstrapButtons = Swal.mixin({
-                        customClass: {
-                            confirmButton: 'btn btn-success',
-                            cancelButton: 'btn btn-danger'
-                        },
-                        buttonsStyling: false
-                    })
-                    swalWithBootstrapButtons.fire({
-                        title: 'Are you sure?',
-                        text: "Do you want to submit changes?",
-                        icon: 'success',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes',
-                        cancelButtonText: 'No',
-                        reverseButtons: true
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var finishButton = form.find('a[href="#finish"]').removeAttr('href');
-                            $(".loding_popup").modal('show');
-                            form.submit();
-                        }
-                        else if (result.dismiss === Swal.DismissReason.cancel) {
-                        }
-                    });
-                }
-            }
-        });
     });
 
     $(document).on("change", '#holidays', function () {
@@ -756,5 +628,58 @@ aria-hidden="true" data-toggle="modal">
         let value = input.value;
         let numbers = value.replace(/[^a-zA-Z]/g, "");
         input.value = numbers;
+    }
+    function createProject(){
+        var form = $("#create_project_form");
+        if(form.valid()){
+            freeze_status = $("#freeze_status").val();
+                if(freeze_status == 1){
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+                    swalWithBootstrapButtons.fire({
+                        title: 'Freezed',
+                        text: "This Project Was Freezed! Please Contact Your Company.",
+                        icon: 'warning',
+                        showCancelButton: false,
+                        confirmButtonText: 'Ok',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        }
+                    });
+                }
+                else{
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                            cancelButton: 'btn btn-danger'
+                        },
+                        buttonsStyling: false
+                    })
+                    swalWithBootstrapButtons.fire({
+                        title: 'Are you sure?',
+                        text: "Do you want to submit changes?",
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var finishButton = form.find('a[href="#finish"]').removeAttr('href');
+                            $(".loding_popup").modal('show');
+                            form.submit();
+                        }
+                        else if (result.dismiss === Swal.DismissReason.cancel) {
+                        }
+                    });
+                }
+        }
+       
     }
 </script>

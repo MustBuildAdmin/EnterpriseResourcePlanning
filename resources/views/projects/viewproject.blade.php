@@ -5,7 +5,7 @@
     } else {
         $project_id = 0;
     }
-  
+
     $getInstance = DB::table('instance')
         ->where('instance',$project->instance_id)
         ->where('project_id',$project_id)
@@ -20,7 +20,7 @@
 <div class="card m-3" >
 
     <div class="card-header">
-        <h4 class="card-title">Project Holidays</h4>
+        <h4 class="card-title">Project Profile</h4>
         <div class="card-actions">
         @if($getInstance != null)
             @can('edit project')
@@ -46,13 +46,13 @@
                         <h3 class="card-title">{{__('Project Details')}}</h3>
                     </div>
                     <div class="card-body">
-                        <div class="datagrid">
+                        <div class="datagrid mb-3">
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Project Name')}}</div>
                                 <div class="datagrid-content">{{$project->project_name}}</div>
                             </div>
-                         
-                       
+
+
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Client')}}</div>
                                 @foreach($clients as $key => $value)
@@ -70,9 +70,7 @@
                                 @endforeach
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="datagrid">
+                        <div class="datagrid mb-3">
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Country')}}</div>
                                 @foreach($country as $key => $value)
@@ -81,7 +79,7 @@
                                     @endif
                                 @endforeach
                             </div>
-                       
+
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('State')}}</div>
                                 @foreach($statelist as $key => $value)
@@ -95,9 +93,7 @@
                                 <div class="datagrid-content">{{$project->city}}</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="datagrid">
+                        <div class="datagrid mb-3">
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Other Address Details')}}</div>
                                 <div class="datagrid-content">{{$project->otheraddress}}</div>
@@ -111,9 +107,7 @@
                                 <div class="datagrid-content">{{$project->longitude}}</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="datagrid">
+                        <div class="datagrid mb-3">
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Zip Code')}}</div>
                                 <div class="datagrid-content">{{$project->zip}}</div>
@@ -127,8 +121,6 @@
                                 <div class="datagrid-content">{{$project->end_date}}</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
                         <div class="datagrid">
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Estimated Days')}}</div>
