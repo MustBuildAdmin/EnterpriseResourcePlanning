@@ -49,7 +49,7 @@
                     <div class="mb-3">
                       <div class="form-label">Choose a Drawing type</div>
                         <select class="form-select" id="drawing_type" name="drawing_type">
-                            <option value="">Search by Overall Drawing Status</option>
+                            <option value="">Select a Drawing Type</option>
                             @foreach($drawingTypes as $drawingtype)
                               <option value="{{ $drawingtype->id }}">{{ $drawingtype->drawing_types }}</option>
                             @endforeach
@@ -74,7 +74,7 @@
                         Create a Drawing Record
                     </a>
                 </div>
-              
+
              </div>
              <div class="card-body">
                 <div class="mt-5 card">
@@ -83,7 +83,7 @@
                   </div>
                      <div class="card-body">
                       <div class="card-body">
-                                      
+
                         <div class="row">
                          <div class="col-md-2 border-end p-3">
                              <form class="drawing_search" >
@@ -145,7 +145,7 @@
                                         placeholder="Select a End date" id="end-date" name="end_date"/>
                                     </div>
                                 </div>
-                    
+
                             <div class="col-md-12">
                               <div class="mb-3">
                                 <label class="form-label">Search By Referrence Id</label>
@@ -256,13 +256,13 @@
       start_date    = $(".start_date").val();
       end_date      = $(".end_date").val();
       ref_id       = $('input#skill_input').tokenInput('get');
-    
+
       var myArray = [];
       ref_id.forEach(function(value) {
-        
+
         myArray.push(value.id);
       });
-      
+
       $.ajax({
             url : '{{route("drawings.search")}}',
             type : 'GET',
