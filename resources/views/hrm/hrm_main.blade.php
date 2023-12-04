@@ -57,8 +57,10 @@
                                 @php
                                     $employee = App\Models\Employee::where('user_id', \Auth::user()->id)->first();
                                 @endphp
-                                <a href="{{ route('employee.show', \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}"
-                                    class="{{ Request::route()->getName() == 'employee.*' ? 'nav-link active' : 'nav-link' }}">
+                                <a href="{{ route('employee.show',
+                                \Illuminate\Support\Facades\Crypt::encrypt($employee->id)) }}"
+                                    class="{{ Request::route()->getName() == 'employee.*' ?
+                                    'nav-link active' : 'nav-link' }}">
                                     <span class=" d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="icon icon-tabler icon-tabler-users" width="24" height="24"
@@ -124,7 +126,8 @@
                                     <div class="dropdown-menu-column">
                                         <!--Branch Starts-->
                                         @can('manage set salary')
-                                            <a class="{{ Request::segment(1) == 'setsalary' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) == 'setsalary' ?
+                                            'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ route('setsalary.index') }}">
                                                 {{ __('Set salary') }}
                                             </a>
@@ -133,7 +136,8 @@
 
                                         <!--Designation Starts-->
                                         @can('manage pay slip')
-                                            <a class="{{ Request::segment(1) == 'payslip' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) == 'payslip' ?
+                                            'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ route('payslip.index') }}">
                                                 {{ __('Payslip') }}
                                             </a>
@@ -177,14 +181,16 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
 
-                                    <a class="{{ Request::route()->getName() == 'leave.index' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                    <a class="{{ Request::route()->getName() ==
+                                    'leave.index' ? 'dropdown-item active' : 'dropdown-item' }}"
                                         href="{{ route('leave.index') }}">
                                         {{ __('Leave') }}
                                     </a>
 
                                     <!--Branch Starts-->
                                     @can('manage set salary')
-                                        <a class="{{ Request::route()->getName() == 'attendanceemployee.index' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::route()->getName() ==
+                                        'attendanceemployee.index' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('attendanceemployee.index') }}">
                                             {{ __('Mark Attendance') }}
                                         </a>
@@ -193,7 +199,9 @@
 
                                     <!--Designation Starts-->
                                     @can('manage pay slip')
-                                        <a class="{{ Request::route()->getName() == 'attendanceemployee.bulkattendance' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::route()->getName() ==
+                                        'attendanceemployee.bulkattendance' ?
+                                        'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('attendanceemployee.bulkattendance') }}">
                                             {{ __('Bulk Attendance') }}
                                         </a>
@@ -206,7 +214,9 @@
                     </li>
                     @endif
 
-                    @if( Gate::check('manage indicator') || Gate::check('manage appraisal') || Gate::check('manage goal tracking'))
+                    @if( Gate::check('manage indicator')
+                    || Gate::check('manage appraisal')
+                    || Gate::check('manage goal tracking'))
                     <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'indicator.index' ||
                         Request::route()->getName() == 'appraisal.index' ||
@@ -236,7 +246,8 @@
                                 <div class="dropdown-menu-column">
                                     <!--Branch Starts-->
                                     @can('manage set salary')
-                                        <a class="{{ Request::route()->getName() == 'indicator.index' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::route()->getName() ==
+                                        'indicator.index' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('indicator.index') }}">
                                             {{ __('Indicator') }}
                                         </a>
@@ -245,14 +256,16 @@
 
                                     <!--Designation Starts-->
                                     @can('manage pay slip')
-                                        <a class="{{ Request::route()->getName() == 'appraisal.index' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::route()->getName() ==
+                                        'appraisal.index' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('appraisal.index') }}">
                                             {{ __('Appraisal') }}
                                         </a>
                                     @endcan
 
                                     @can('manage pay slip')
-                                        <a class="{{ Request::route()->getName() == 'goaltracking.index' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::route()->getName() ==
+                                        'goaltracking.index' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('goaltracking.index') }}">
                                             {{ __('Goal Tracking') }}
                                         </a>
@@ -297,7 +310,8 @@
                                 <div class="dropdown-menu-column">
                                     <!--Training List Starts-->
                                     @can('manage training')
-                                        <a class="{{ Request::route()->getName() == 'training.index' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::route()->getName() ==
+                                        'training.index' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('training.index') }}">
                                             {{ __('Training List') }}
                                         </a>
@@ -306,7 +320,8 @@
 
                                     <!--Trainer Starts-->
                                     @can('manage trainer')
-                                        <a class="{{ Request::route()->getName() == 'trainer.index' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::route()->getName() ==
+                                        'trainer.index' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('trainer.index') }}">
                                             {{ __('Trainer') }}
                                         </a>
@@ -372,7 +387,8 @@
 
                                         <!--Award Starts-->
                                         @can('manage award')
-                                            <a class="{{ Request::segment(1) == 'award' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) == 'award'
+                                            ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('award') }}">
                                                 {{ __('Award') }}
                                             </a>
@@ -381,7 +397,8 @@
 
                                         <!--Transfer Starts-->
                                         @can('manage transfer')
-                                            <a class="{{ Request::segment(1) == 'transfer' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'transfer' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('transfer') }}">
                                                 {{ __('Transfer') }}
                                             </a>
@@ -390,7 +407,8 @@
 
                                         <!--Resignation Starts-->
                                         @can('manage resignation')
-                                            <a class="{{ Request::segment(1) == 'resignation' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'resignation' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('resignation') }}">
                                                 {{ __('Resignation') }}
                                             </a>
@@ -399,7 +417,8 @@
 
                                         <!--Travel Starts-->
                                         @can('manage travel')
-                                            <a class="{{ Request::segment(1) == 'travel' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'travel' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('travel') }}">
                                                 {{ __('Trip') }}
                                             </a>
@@ -408,7 +427,8 @@
 
                                         <!--Promotion Starts-->
                                         @can('manage promotion')
-                                            <a class="{{ Request::segment(1) == 'promotion' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'promotion' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('promotion') }}">
                                                 {{ __('Promotion') }}
                                             </a>
@@ -417,7 +437,7 @@
 
                                         <!--Complaint Starts-->
                                         @can('manage complaint')
-                                            <a class="{{ Request::segment(1) == 'complaint' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) =='complaint' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('complaint') }}">
                                                 {{ __('Complaints') }}
                                             </a>
@@ -426,7 +446,8 @@
 
                                         <!--Warning Starts-->
                                         @can('manage warning')
-                                            <a class="{{ Request::segment(1) == 'warning' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'warning' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('warning') }}">
                                                 {{ __('Warning') }}
                                             </a>
@@ -435,7 +456,8 @@
 
                                         <!--Termination Starts-->
                                         @can('manage termination')
-                                            <a class="{{ Request::segment(1) == 'termination' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'termination' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('termination') }}">
                                                 {{ __('Termination') }}
                                             </a>
@@ -444,7 +466,8 @@
 
                                         <!--Announcement Starts-->
                                         @can('manage announcement')
-                                            <a class="{{ Request::segment(1) == 'announcement' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'announcement' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('announcement') }}">
                                                 {{ __('Announcement') }}
                                             </a>
@@ -453,7 +476,8 @@
 
                                         <!--Holidays Starts-->
                                         @can('manage holiday')
-                                            <a class="{{ Request::segment(1) == 'holiday' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) ==
+                                            'holiday' ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('holiday') }}">
                                                 {{ __('Holidays') }}
                                             </a>
@@ -469,7 +493,9 @@
                     <!--HRM Setup ends-->
 
                     <!--Resource Settings Starts-->
-                    @if (Gate::check('manage invoice') || Gate::check('manage revenue') || Gate::check('manage credit note'))
+                    @if (Gate::check('manage invoice')
+                    || Gate::check('manage revenue')
+                    || Gate::check('manage credit note'))
                         <li class="nav-item dropdown">
                             <a class="{{ Request::segment(1) == 'branch' ||
                             Request::segment(1) == 'designation' ||
@@ -500,7 +526,7 @@
                                         <path d="M6 4l-3 3l3 3"></path>
                                         <path d="M18 4l3 3l-3 3"></path>
                                         <path d="M4 14m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v2a2 2 0 0 1
-                             -2 2h-12a2 2 0 0 1 -2 -2z"></path>
+                                        -2 2h-12a2 2 0 0 1 -2 -2z"></path>
                                         <path d="M10 7h-7"></path>
                                         <path d="M21 7h-7"></path>
                                     </svg>
@@ -511,14 +537,16 @@
                                 <div class="dropdown-menu-columns">
                                     <div class="dropdown-menu-column">
                                         <!--Branch Starts-->
-                                        <a class="{{ Request::segment(1) == 'branch' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'branch' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('branch.index') }}">
                                             {{ __('Branch') }}
                                         </a>
                                         <!--Branch Ends-->
 
                                         <!--Designation Starts-->
-                                        <a class="{{ Request::segment(1) == 'designation' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'designation' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('designation.index') }}">
                                             {{ __('Designation') }}
                                         </a>
@@ -532,91 +560,104 @@
                                         <!--Leave Type Ends-->
 
                                         <!--Document Typee Starts-->
-                                        <a class="{{ Request::segment(1) == 'document' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'document' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('document.index') }}">
                                             {{ __('Document Type') }}
                                         </a>
                                         <!--Document Typee Ends-->
 
                                         <!--Payslip Type Starts-->
-                                        <a class="{{ Request::segment(1) == 'paysliptype' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'paysliptype' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('paysliptype.index') }}">
                                             {{ __('Payslip Type') }}
                                         </a>
                                         <!--Payslip Type Ends-->
 
                                         <!--Allowance Option Starts-->
-                                        <a class="{{ Request::segment(1) == 'allowanceoption' ? 'dropdown-item active' : 'dropdown-item' }}"
-                                            href="{{ route('allowanceoption.index') }}">
+                                        <a class="{{ Request::segment(1) ==
+                                        'allowanceoption' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        href="{{ route('allowanceoption.index') }}">
                                             {{ __('Allowance Option') }}
                                         </a>
                                         <!--Allowance Option Ends-->
 
                                         <!--Loan Option Starts-->
-                                        <a class="{{ Request::segment(1) == 'loanoption' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) == 
+                                        'loanoption' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('loanoption.index') }}">
                                             {{ __('Loan Option') }}
                                         </a>
                                         <!--Loan Option Ends-->
 
                                         <!--Deduction Option Starts-->
-                                        <a class="{{ Request::segment(1) == 'deductionoption' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'deductionoption' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('deductionoption.index') }}">
                                             {{ __('Deduction Option') }}
                                         </a>
                                         <!--Deduction Option Ends-->
 
                                         <!--Goal Type Starts-->
-                                        <a class="{{ Request::segment(1) == 'goaltype' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'goaltype' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('goaltype.index') }}">
                                             {{ __('Goal Type') }}
                                         </a>
                                         <!--Goal Type Ends-->
 
                                         <!--Training Type Starts-->
-                                        <a class="{{ Request::segment(1) == 'trainingtype' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'trainingtype' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('trainingtype.index') }}">
                                             {{ __('Training Type') }}
                                         </a>
                                         <!--Training Type ends-->
 
                                         <!--awardtype Starts-->
-                                        <a class="{{ Request::segment(1) == 'awardtype' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'awardtype' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('awardtype.index') }}">
                                             {{ __('Award Type') }}
                                         </a>
                                         <!--awardtype ends-->
 
                                         <!--terminationtype Starts-->
-                                        <a class="{{ Request::segment(1) == 'terminationtype' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'terminationtype' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('terminationtype.index') }}">
                                             {{ __('Termination Type') }}
                                         </a>
                                         <!--terminationtype Ends-->
 
                                         <!--job-category Starts-->
-                                        <a class="{{ Request::segment(1) == 'job-category' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'job-category' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('job-category.index') }}">
                                             {{ __('Job Category') }}
                                         </a>
                                         <!--job-category Ends-->
 
                                         <!--job-stage Starts-->
-                                        <a class="{{ Request::segment(1) == 'job-stage' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'job-stage' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('job-stage.index') }}">
                                             {{ __('Job Stage') }}
                                         </a>
                                         <!--job-stage Ends-->
 
                                         <!--Performance Starts-->
-                                        <a class="{{ Request::segment(1) == 'performanceType' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'performanceType' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('performanceType.index') }}">
                                             {{ __('Performance Type') }}
                                         </a>
                                         <!--Performance ends-->
 
                                         <!--Competencies Starts-->
-                                        <a class="{{ Request::segment(1) == 'competencies' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) ==
+                                        'competencies' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('competencies.index') }}">
                                             {{ __('Competencies') }}
                                         </a>
