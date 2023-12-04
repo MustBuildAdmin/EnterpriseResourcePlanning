@@ -22,11 +22,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>
-        {{ !empty($companySettings['header_text']) ? $companySettings['header_text']->value : config('app.name', 'Must BuildApp SaaS') }}
+        {{ !empty($companySettings['header_text']) ? $companySettings['header_text']->value :
+        config('app.name', 'Must BuildApp SaaS') }}
         - {{ __('POS') }}</title>
 
     <link rel="icon"
-          href="{{ asset(Storage::url('uploads/logo/')) . '/' . (isset($companySettings['company_favicon']) && !empty($companySettings['company_favicon']) ? $companySettings['company_favicon']->value : 'favicon.png') }}"
+          href="{{ asset(Storage::url('uploads/logo/')) . '/' .
+          (isset($companySettings['company_favicon']) && !empty($companySettings['company_favicon']) ?
+          $companySettings['company_favicon']->value : 'favicon.png') }}"
           type="image" sizes="16x16">
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/site.css') }}" id="stylesheet">
@@ -58,7 +61,8 @@
 
         .bg-color{
             @if($color=='theme-1')
-                background :linear-gradient(141.55deg, rgba(81, 69, 157, 0) 3.46%, rgba(255, 58, 110, 0.6) 99.86%), #51459d;
+                background :linear-gradient(141.55deg,
+                rgba(81, 69, 157, 0) 3.46%, rgba(255, 58, 110, 0.6) 99.86%), #51459d;
             @elseif($color=='theme-2')
                 background : linear-gradient(141.55deg, rgba(81, 69, 157, 0) 3.46%, #4ebbd3 99.86%), #1f3996;
             @elseif($color=='theme-3')
@@ -81,7 +85,8 @@
         <div class="col-12">
             <div class="mt-2 pos-top-bar bg-color d-flex justify-content-between">
                 <span class="text-white">POS</span>
-                <a  href="{{ route('dashboard') }}" class="text-white"><i class="ti ti-home" style="font-size: 20px;"></i> </a>
+                <a  href="{{ route('dashboard') }}"
+                class="text-white"><i class="ti ti-home" style="font-size: 20px;"></i> </a>
             </div>
         </div>
     </div>
@@ -96,7 +101,9 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="ti ti-search"></i></span>
                                     </div>
-                                    <input id="searchproduct" type="text" data-url="{{ route('search.products') }}" placeholder="{{ __('Search Product') }}" class="form-control pr-4 rounded-right">
+                                    <input id="searchproduct"
+                                    type="text" data-url="{{ route('search.products') }}"
+                                    placeholder="{{ __('Search Product') }}" class="form-control pr-4 rounded-right">
                                 </div>
                             </form>
                         </div>
@@ -120,12 +127,16 @@
                     <div class="card-header p-2">
                         <div class="row">
                             <div class="col-md-6">
-                                {{ Form::select('customer_id', $customers,'', array('class' => 'form-select customer_select','id'=>'customer','required'=>'required')) }}
+                                {{ Form::select('customer_id', $customers,'',
+                                array('class' =>
+                                'form-select customer_select','id'=>'customer','required'=>'required')) }}
                                 {{ Form::hidden('vc_name_hidden', '',['id' => 'vc_name_hidden']) }}
 
                             </div>
                             <div class="col-md-6">
-                                {{ Form::select('warehouse_id', $warehouses,'', array('class' => 'form-select warehouse_select ','id'=>'warehouse','required'=>'required')) }}
+                                {{ Form::select('warehouse_id', $warehouses,'',
+                                array('class' =>
+                                'form-select warehouse_select ','id'=>'warehouse','required'=>'required')) }}
                                 {{ Form::hidden('warehouse_name_hidden', '',['id' => 'warehouse_name_hidden']) }}
 
                             </div>
@@ -148,41 +159,56 @@
                                         </tr>
                                         </thead>
                                         <tbody id="tbody">
-                                        @if(session($lastsegment) && !empty(session($lastsegment)) && count(session($lastsegment)) > 0)
+                                        @if(session($lastsegment) && !empty(session($lastsegment)) &&
+                                        count(session($lastsegment)) > 0)
                                         @foreach(session($lastsegment) as $id => $details)
                                             @php
                                                 $product = \App\Models\ProductService::find($details['id']);
-                                                $image_url = (  !empty($product) && isset($product->pro_image) && Storage::exists($product->pro_image)) ? $product->pro_image : 'uploads/pro_image/';
+                                                $image_url = (  !empty($product) && isset($product->pro_image) &&
+                                                Storage::exists($product->pro_image)) ? $product->pro_image :
+                                                'uploads/pro_image/';
                                                 $total += $details['subtotal'];
                                             @endphp
                                                 <tr data-product-id="{{$id}}" id="product-id-{{$id}}">
                                                     <td class="cart-images">
-                                                        <img alt="Image placeholder" src="{{ asset(Storage::url($image_url)) }}" class="card-image avatar rounded-circle-sale shadow hover-shadow-lg">
+                                                        <img alt="Image placeholder"
+                                                        src="{{ asset(Storage::url($image_url)) }}"
+                                                    class="card-image avatar rounded-circle-sale
+                                                    shadow hover-shadow-lg">
                                                     </td>
                                                     <td class="name">{{ $details['name'] }}</td>
                                                     <td>
                                                         <span class="quantity buttons_added">
                                                             <input type="button" value="-" class="minus">
                                                             <input type="number" step="1" min="1" max="" name="quantity"
-                                                                                       title="{{ __('Quantity') }}" class="input-number"
-                                                                                       data-url="{{ url('update-cart/') }}" data-id="{{ $id }}"
-                                                                                       size="4" value="{{ $details['quantity'] }}">
+                                                            title="{{ __('Quantity') }}" class="input-number"
+                                                            data-url="{{ url('update-cart/') }}" data-id="{{ $id }}"
+                                                            size="4" value="{{ $details['quantity'] }}">
                                                             <input type="button" value="+" class="plus">
                                                         </span>
                                                     </td>
                                                     <td class="tax">{{ $details['tax'] }}%</td>
-                                                    <td class="price text-right">{{ Auth::user()->priceFormat($details['price']) }}</td>
+                                                    <td class="price text-right">
+                                                        {{ Auth::user()->priceFormat($details['price']) }}</td>
                                                     <td class="col-sm-3 mt-2">
-                                                        <span class="subtotal">{{ Auth::user()->priceFormat($details['subtotal']) }}</span>
+                                                        <span class="subtotal">
+                                                            {{ Auth::user()->priceFormat($details['subtotal']) }}</span>
                                                     </td>
 
                                                     <td class="col-sm-2 mt-2">
-                                                        <a href="#" class="action-btn bg-danger bs-pass-para-pos" data-confirm="{{ __('Are You Sure?') }}" data-text="{{__('This action can not be undone. Do you want to continue?')}}"
-                                                           data-confirm-yes="delete-form-{{ $id }}" title="{{ __('Delete') }}" data-id="{{ $id }}">
-                                                            <i class="ti ti-trash text-white mx-3 btn btn-sm" title="{{ __('Delete') }}"></i>
+                                                        <a href="#" class="action-btn bg-danger bs-pass-para-pos"
+                                                        data-confirm="{{ __('Are You Sure?') }}"
+                                                        data-text="{{__('This action can not be undone.
+                                                        Do you want to continue?')}}"
+                                                           data-confirm-yes="delete-form-{{ $id }}"
+                                                           title="{{ __('Delete') }}" data-id="{{ $id }}">
+                                                            <i class="ti ti-trash text-white mx-3 btn btn-sm"
+                                                            title="{{ __('Delete') }}"></i>
                                                         </a>
-                                                        {!! Form::open(['method' => 'delete', 'url' => ['remove-from-cart'],'id' => 'delete-form-'.$id]) !!}
-                                                        <input type="hidden" name="session_key" value="{{ $lastsegment }}">
+                                                        {!! Form::open(['method' => 'delete',
+                                                        'url' => ['remove-from-cart'],'id' => 'delete-form-'.$id]) !!}
+                                                        <input type="hidden"
+                                                        name="session_key" value="{{ $lastsegment }}">
                                                         <input type="hidden" name="id" value="{{ $id }}">
                                                         {!! Form::close() !!}
                                                     </td>
@@ -200,21 +226,31 @@
                                     <div class="sub-total">
                                         <div class="d-flex align-items-center justify-content-between">
                                                 <h4 class="mb-0 text-gray-800">Total</h4>
-                                                <h4 class="mb-0 text-gray-800" id="displaytotal">{{ Auth::user()->priceFormat($total) }}</h4>
+                                                <h4 class="mb-0 text-gray-800" id="displaytotal">
+                                                    {{ Auth::user()->priceFormat($total) }}</h4>
                                             </div>
-                                        <div class="d-flex align-items-center justify-content-between pt-3" id="btn-pur">
-                                            <button type="button" class="btn btn-primary rounded"  data-ajax-popup="true" data-size="lg" data-align="centered" data-url="{{route('pos.create')}}" data-title="{{__('POS Invoice')}}"
-                                                    @if(session($lastsegment) && !empty(session($lastsegment)) && count(session($lastsegment)) > 0) @else disabled="disabled" @endif>
+                                        <div class="d-flex align-items-center justify-content-between pt-3"
+                                        id="btn-pur">
+                                            <button type="button" class="btn btn-primary rounded"
+                                            data-ajax-popup="true" data-size="lg" data-align="centered"
+                                            data-url="{{route('pos.create')}}" data-title="{{__('POS Invoice')}}"
+                                                    @if(session($lastsegment) && !empty(session($lastsegment)) &&
+                                                    count(session($lastsegment)) > 0) @else disabled="disabled" @endif>
                                                 {{ __('PAY') }}
                                             </button>
                                             <div class="tab-content btn-empty text-end">
-                                                <a href="#" class="btn btn-danger bs-pass-para-pos rounded m-0"  data-toggle="tooltip" data-original-title="{{ __('Empty Cart') }}"
-                                                           data-confirm="{{ __('Are You Sure?') }}" data-text="{{__('This action can not be undone. Do you want to continue?')}}"
+                                                <a href="#" class="btn btn-danger bs-pass-para-pos rounded m-0"
+                                                 data-toggle="tooltip" data-original-title="{{ __('Empty Cart') }}"
+                                                           data-confirm="{{ __('Are You Sure?') }}"
+                                                           data-text="{{__('This action can not be undone.
+                                                           Do you want to continue?')}}"
                                                            data-confirm-yes="delete-form-emptycart">
                                                             {{ __('Empty Cart') }}
                                                         </a>
-                                                {!! Form::open(['method' => 'post', 'url' => ['empty-cart'],'id' => 'delete-form-emptycart']) !!}
-                                                <input type="hidden" name="session_key" value="{{ $lastsegment }}" id="empty_cart">
+                                                {!! Form::open(['method' => 'post', 'url' =>
+                                                ['empty-cart'],'id' => 'delete-form-emptycart']) !!}
+                                                <input type="hidden"
+                                                name="session_key" value="{{ $lastsegment }}" id="empty_cart">
                                                 {!! Form::close() !!}
                                             </div>
                                         </div>
@@ -245,7 +281,8 @@
     <div id="liveToast" class="toast text-white  fade" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body"> </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button type="button"
+            class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
@@ -333,7 +370,8 @@
                 success: function (data) {
                     $( "#tbody" ).empty();
 
-                    $("#tbody").html('<tr class="text-center no-found"><td colspan="7">{{__('No Data Found.!')}}</td></tr>');
+                    $("#tbody").html('<tr class="text-center no-found"><td colspan="7">
+                        {{__('No Data Found.!')}}</td></tr>');
 
                 }
             });
@@ -357,7 +395,7 @@
             var url = $(this).data('url');
             var value = this.value;
             var cat = $('.cat-active').children().data('cat-id');
-          
+
             searchProducts(url, value,cat);
         });
 
@@ -373,7 +411,7 @@
                     'session_key': session_key
                 },
                 success: function (data) {
-                   
+
                     $('#product-listing').html(data);
                 }
             });
@@ -384,7 +422,7 @@
                 type: 'GET',
                 url: '{{ route('product.categories') }}',
                 success: function (data) {
-               
+
                     $('#categories-listing').html(data);
                 }
             });
@@ -412,7 +450,8 @@
 
                         $('#tbody').append(data.carthtml);
                         $('.no-found').addClass('d-none');
-                        $('.carttable #product-id-' + data.product.id + ' input[name="quantity"]').val(data.product.quantity);
+                        $('.carttable #product-id-' +
+                        data.product.id + ' input[name="quantity"]').val(data.product.quantity);
                         $('#btn-pur button').removeAttr('disabled');
                         $('.btn-empty button').addClass('btn-clear-cart');
                         // loadConfirm();
@@ -431,7 +470,7 @@
             var sum = 0;
             var quantity = ele.closest('span').find('input[name="quantity"]').val();
 
-           
+
 
             $.ajax({
                 url: ele.data('url'),
@@ -549,7 +588,7 @@
                     ele.remove();
                 },
                 success: function (data) {
-                  
+
                     // return false;
                     if (data.code == 200) {
                         show_toastr('Success', data.success, 'success')

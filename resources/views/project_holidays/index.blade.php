@@ -8,7 +8,7 @@
 <div class="card m-3" >
 
     <div class="card-header">
-        <h4 class="card-title">Project Profile</h4>
+        <h3>{{ __('Project Holidays') }}</h3>
         <div class="card-actions">
             @if($project->freeze_status!=1)
                   <a href="#" class="btn btn-outline-primary  w-100" data-size="lg" style="

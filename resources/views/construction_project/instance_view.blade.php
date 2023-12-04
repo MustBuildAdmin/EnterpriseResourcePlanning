@@ -3,8 +3,12 @@
         <div class="row">
             @php $row=0; @endphp
             @foreach ($get_project_instances as $key => $project)
+<<<<<<< HEAD
            
                 
+=======
+
+>>>>>>> 85b09d5fa9f7393a0000af2f5e26a5ec07f7a031
                 <div class="col-md-6 col-xxl-6 divstyle">
                     <div class="card">
                         <div class="card-body">
@@ -37,13 +41,13 @@
                                 
                             </div>
                         </div>
-                        <div class="card mb-0 mt-3">
+                        <div class="card m-0">
                             <div class="card-body p-3">
                                 <div class="row">
                                     <div class="col-6">
                                         <h6
-                                            class="mb-0 {{ strtotime($project->start_date) < time() ?
-                                                 'text-danger' : '' }}">
+                                            class="mb-0
+                                            {{ strtotime($project->start_date) < time() ? 'text-danger' : '' }}">
                                             {{ Utility::getDateFormated($project->start_date) }}</h6>
                                         <p class="text-muted text-sm mb-0">{{ __('Start Date') }}</p>
                                     </div>
@@ -60,4 +64,3 @@
             @endforeach
         </div>
     </div>
-    

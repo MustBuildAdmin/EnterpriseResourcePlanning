@@ -5,25 +5,27 @@
 @push('script-page')
 @endpush
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{route('productivity')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item">{{__('Projects')}}</li>
+<ul>
+    <li
+    class="breadcrumb-item"><a href="{{route('productivity')}}">{{__('Dashboard')}}</a></li>
+    <li
+    class="breadcrumb-item">{{__('Projects')}}</li>
+</ul>
 @endsection
 @section('action-btn')
     <div class="float-end">
-        {{-- @if($view == 'grid')
-            <a href="{{ route('projects.list','list') }}"  data-bs-toggle="tooltip" title="{{__('List View')}}" class="btn btn-sm btn-primary">
-                <i class="ti ti-list"></i>
-            </a>
-
-        @else --}}
-            <a href="{{ route('productivity') }}"  data-bs-toggle="tooltip" title="{{__('Grid View')}}" class="btn btn-sm btn-primary">
+            <a href="{{ route('productivity') }}"
+            data-bs-toggle="tooltip"
+            title="{{__('Grid View')}}" class="btn btn-sm btn-primary">
                 <i class="ti ti-layout-grid"></i>
             {{-- </a>
         @endif --}}
 
 
         {{------------ Start Filter ----------------}}
-                <a href="#" class="btn btn-sm btn-primary action-item" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="#" class="btn btn-sm btn-primary action-item"
+                role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
                     <i class="ti ti-filter"></i>
                 </a>
                 <div class="dropdown-menu  dropdown-steady" id="project_sort">
@@ -45,7 +47,8 @@
             {{------------ End Filter ----------------}}
 
             {{------------ Start Status Filter ----------------}}
-                <a href="#" class="btn btn-sm btn-primary action-item" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="#" class="btn btn-sm btn-primary action-item"
+                role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="btn-inner--icon">{{__('Status')}}</span>
                 </a>
                 <div class="dropdown-menu  project-filter-actions dropdown-steady" id="project_status">
@@ -56,12 +59,6 @@
                 </div>
             {{------------ End Status Filter ----------------}}
 
-
-        {{-- @can('create project')
-            <a href="#" data-size="lg" data-url="{{ route('construction_project.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Project')}}" class="btn btn-sm btn-primary">
-                <i class="ti ti-plus"></i>
-            </a>
-        @endcan --}}
     </div>
 @endsection
 @section('content')
@@ -73,23 +70,30 @@
                 <div class="card">
                     <div class="card-header border-0 pb-0">
                         <div class="d-flex align-items-center">
-                            {{-- <img {{ $project->logo }} class="img-fluid wid-30 me-2" alt=""> --}}
-                            <h5 class="mb-0"><a class="text-dark" href="{{ route('productivity_show',$project) }}">{{ $project->name }}</a></h5>
+                            <h5 class="mb-0"><a class="text-dark"
+                                href="{{ route('productivity_show',$project) }}">
+                                {{ $project->name }}</a></h5>
                         </div>
                         <div class="card-header-right">
                             <div class="btn-group card-option">
-                                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button type="button" class="btn dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
                                     <i class="ti ti-dots-vertical"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     @can('edit project')
-                                        <a href="#!" data-size="lg" data-url="{{ route('productivity_edit', $project->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
+                                        <a href="#!" data-size="lg"
+                                        data-url="{{ route('productivity_edit', $project->id) }}"
+                                        data-ajax-popup="true" class="dropdown-item"
+                                        data-bs-original-title="{{__('Edit User')}}">
                                             <i class="ti ti-pencil"></i>
                                             <span>{{__('Edit')}}</span>
                                         </a>
                                     @endcan
                                     @can('delete project')
-                                        {!! Form::open(['method' => 'DELETE', 'route' => ['productivity_destroy',$project->id]]) !!}
+                                        {!! Form::open(['method' => 'DELETE',
+                                        'route' => ['productivity_destroy',$project->id]]) !!}
                                         <a href="#!" class="dropdown-item bs-pass-para">
                                             <i class="ti ti-archive"></i>
                                             <span> {{__('Delete')}}</span>
@@ -98,7 +102,10 @@
                                         {!! Form::close() !!}
                                     @endcan
                                     @can('edit project')
-                                        <a href="#!" data-size="lg" data-url="{{ route('invite-cons_project-member', $project->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Invite User')}}">
+                                        <a href="#!" data-size="lg"
+                                        data-url="{{ route('invite-cons_project-member', $project->id) }}"
+                                        ata-ajax-popup="true" class="dropdown-item"
+                                        data-bs-original-title="{{__('Invite User')}}">
                                             <i class="ti ti-send"></i>
                                             <span>{{__('Invite User')}}</span>
                                         </a>
@@ -109,7 +116,10 @@
                     </div>
                     <div class="card-body">
                         <div class="row g-2 justify-content-between">
-                            <div class="col-auto"><span class="badge rounded-pill bg-{{\App\Models\Construction_project::$status_color[$project->status]}}">{{ __(\App\Models\Project::$project_status[$project->status]) }}</span>
+                            <div class="col-auto"><span
+                             class="badge rounded-pill
+                             bg-{{\App\Models\Construction_project::$status_color[$project->status]}}">
+                            {{ __(\App\Models\Project::$project_status[$project->status]) }}</span>
                             </div>
 
                         </div>
@@ -120,7 +130,10 @@
                                 @foreach($project->users as $key => $user)
                                     @if($key < 3)
                                         <a href="#" class="avatar rounded-circle avatar-sm">
-                                            <img @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif  alt="image" data-bs-toggle="tooltip" title="{{ $user->name }}">
+                                            <img alt="avatar" @if($user->avatar)
+                                            src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}"
+                                            @else src="{{asset('/storage/uploads/avatar/avatar.png')}}"
+                                            @endif  alt="image" data-bs-toggle="tooltip" title="{{ $user->name }}">
                                         </a>
                                     @else
                                         @break
@@ -128,11 +141,13 @@
                                 @endforeach
                             @endif
                         </div>
-                        <div class="card mb-0 mt-3">
+                        <div class="card m-0">
                             <div class="card-body p-3">
                                 <div class="row">
                                     <div class="col-6">
-                                        <h6 class="mb-0 {{ (strtotime($project->start_date) < time()) ? 'text-danger' : '' }}">{{ Utility::getDateFormated($project->start_date) }}</h6>
+                                        <h6 class="mb-0
+                                        {{ (strtotime($project->start_date) < time()) ? 'text-danger' : '' }}">
+                                        {{ Utility::getDateFormated($project->start_date) }}</h6>
                                         <p class="text-muted text-sm mb-0">{{__('Start Date')}}</p>
                                     </div>
                                     <div class="col-6 text-end">
