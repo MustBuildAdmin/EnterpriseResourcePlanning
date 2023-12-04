@@ -3,8 +3,7 @@
         <div class="row">
             @php $row=0; @endphp
             @foreach ($get_project_instances as $key => $project)
-           
-                
+
                 <div class="col-md-6 col-xxl-6 divstyle">
                     <div class="card">
                         <div class="card-body">
