@@ -4,7 +4,6 @@
 <script src="{{ asset('assets/js/plugins/apexcharts.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/jsvectormap.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/world-merc.js') }}"></script>
-<script src="{{ asset('assets/dist/js/tabler.min.js') }}"></script>
 <div>
     <!-- Page header -->
     <div class="page-header d-print-none">
