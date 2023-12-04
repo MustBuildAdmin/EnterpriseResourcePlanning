@@ -115,8 +115,9 @@
                     <div class="card-body">
                         <div class="datagrid">
                             <div class="datagrid-item">
+                               
                                 <div class="datagrid-title">{{__('Zip Code')}}</div>
-                                <div class="datagrid-content">{{$project->zip}}</div>
+                                <div class="datagrid-content">{{$project->zipcode}}</div>
                             </div>
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Start Date')}}</div>
@@ -134,6 +135,18 @@
                                 <div class="datagrid-title">{{__('Estimated Days')}}</div>
                                 <div class="datagrid-content">{{$project->estimated_days}}</div>
                             </div>
+                          
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{__('Non Working Days')}}</div>
+                                <div class="datagrid-content">{{implode(", ",$weekendVal)}}</div>
+                            </div>
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{__('Look-a-head')}}</div>
+                                <div class="datagrid-content">{{ $project->micro_program == 1 ? 'Enabled':'Disabled'}}
+                                </div>
+                            </div>
+
+                           
                         </div>
                     </div>
                 </div>
