@@ -437,7 +437,8 @@
 
                                         <!--Complaint Starts-->
                                         @can('manage complaint')
-                                            <a class="{{ Request::segment(1) =='complaint' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                            <a class="{{ Request::segment(1) =='complaint'
+                                            ? 'dropdown-item active' : 'dropdown-item' }}"
                                                 href="{{ url('complaint') }}">
                                                 {{ __('Complaints') }}
                                             </a>
@@ -553,7 +554,8 @@
                                         <!--Designation Ends-->
 
                                         <!--Leave Type Starts-->
-                                        <a class="{{ Request::segment(1) == 'leavetype' ? 'dropdown-item active' : 'dropdown-item' }}"
+                                        <a class="{{ Request::segment(1) == 'leavetype'
+                                        ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('leavetype.index') }}">
                                             {{ __('Leave Type') }}
                                         </a>
@@ -584,7 +586,7 @@
                                         <!--Allowance Option Ends-->
 
                                         <!--Loan Option Starts-->
-                                        <a class="{{ Request::segment(1) == 
+                                        <a class="{{ Request::segment(1) ==
                                         'loanoption' ? 'dropdown-item active' : 'dropdown-item' }}"
                                             href="{{ route('loanoption.index') }}">
                                             {{ __('Loan Option') }}
