@@ -2213,8 +2213,9 @@ class ProjectController extends Controller
         $non_working=explode(',',$project->non_working_days);
         $weekendVal=array();
         foreach($non_working as $weekends){
-            if(isset($weekends))
+            if(isset($weekends) && $weekends!=''){
                 array_push($weekendVal,$non_working_days[$weekends]);
+            }
 
         }
         if ($project->created_by == \Auth::user()->creatorId()) {
