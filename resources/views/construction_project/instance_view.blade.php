@@ -3,12 +3,7 @@
         <div class="row">
             @php $row=0; @endphp
             @foreach ($get_project_instances as $key => $project)
-<<<<<<< HEAD
-           
-                
-=======
 
->>>>>>> 85b09d5fa9f7393a0000af2f5e26a5ec07f7a031
                 <div class="col-md-6 col-xxl-6 divstyle">
                     <div class="card">
                         <div class="card-body">

@@ -16,7 +16,13 @@
   padding: 8px 20px;
   cursor: pointer;
 }
-
+ul.chosen-choices {
+    background-image: none !important;
+    height: 33.47px !important;
+    box-shadow: none !important;
+    border-radius: 3px;
+    border: var(--tblr-border-width) solid var(--tblr-border-color) !important;
+}
 .upload-btn-wrapper input[type=file] {
   font-size: 100px;
   position: absolute;
@@ -294,7 +300,8 @@
                         </div>
                         <div class="col-sm-4 col-md-4 nonworkingdays">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
+                                <span class="text-danger">*</span>
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -308,10 +315,13 @@
                                 @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, null,
                                     array('id' => 'non_working_days','class' => 'form-control
-                                    chosen-select get_non_working_days','multiple'=>'true','required'=>'required','placeholder'=>'Select non working days'))
+                                    chosen-select get_non_working_days','multiple'=>'true','required'=>'required',
+                                    'data-placeholder'=>'Select non working days'
+                                   ))
                                 !!}
                             </div>
-                            <span id="non_working_days_error" class="error" for="non_working_days">This field is required</span>
+                            <span id="non_working_days_error" class="error" for="non_working_days">
+                                This field is required</span>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group checkbox_group">
@@ -597,7 +607,9 @@ aria-labelledby="exampleModalCenterTitle"
     });
 
     $(document).ready(function() {
-        $('.chosen-select').chosen();
+        $('.chosen-select').chosen({
+            default_multiple_text:"Select Non working days"
+        });
     });
 
     $('#commonModal').on('hidden.bs.modal', function () {
