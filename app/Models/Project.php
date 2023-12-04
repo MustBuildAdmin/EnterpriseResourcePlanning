@@ -37,6 +37,10 @@ class Project extends Model
         'complete' => 'success',
         'canceled' => 'danger',
     ];
+    public static $freeze_status = [
+        'on_hold' => 'In-Active',
+        'complete' => 'Active',
+    ];
 
     public function milestones()
     {
