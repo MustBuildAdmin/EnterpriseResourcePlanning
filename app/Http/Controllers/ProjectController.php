@@ -86,7 +86,7 @@ class ProjectController extends Controller
                 ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
                 ->get()
                 ->pluck("name", "id");
-            $users->prepend("Select User", "");
+            $repoter->prepend("Select Manager", "");
             $users->prepend("Select User", "");
             $country = Utility::getcountry();
 
@@ -160,8 +160,9 @@ class ProjectController extends Controller
             $project->budget = !empty($request->budget) ? $request->budget : 0;
             $project->description = $request->description;
             $project->status = $request->status;
-            $project->report_to = implode(',', $request->reportto);
-            $project->report_time = $request->report_time;
+            $project->report_to = $request->reportto;
+            
+            $project->report_time = '8:00';
             $project->tags = $request->tag;
             $project->estimated_days = $request->estimated_days;
 
@@ -508,15 +509,15 @@ class ProjectController extends Controller
                 );
 
                 if ($request->reportto) {
-                    foreach ($request->reportto as $key => $value) {
+                //     foreach ($request->reportto as $key => $value) {
                         ProjectUser::create(
                             [
                                 'project_id' => $project->id,
-                                'user_id' => $value,
+                                'user_id' => $request->reportto,
                             ]
                         );
                     }
-                }
+                // }
 
             } else {
                 ProjectUser::create(
@@ -534,15 +535,15 @@ class ProjectController extends Controller
                 );
 
                 if ($request->reportto) {
-                    foreach ($request->reportto as $key => $value) {
+                    // foreach ($request->reportto as $key => $value) {
                         ProjectUser::create(
                             [
                                 'project_id' => $project->id,
-                                'user_id' => $value,
+                                'user_id' => $request->reportto,
                             ]
                         );
                     }
-                }
+                // }
 
             }
             // type project or task
@@ -1925,15 +1926,17 @@ class ProjectController extends Controller
                 ->where("type", "!=", "client")
                 ->get()
                 ->pluck("name", "id");
+
             $users->prepend("Select User", "");
             $repoter = User::where(
                 "created_by",
                 "=",
                 \Auth::user()->creatorId()
             )
-                ->where("type", "!=", "client")
+                ->whereNotIn("type", ["sub_contractor","consultant","admin", "client"])
                 ->get()
                 ->pluck("name", "id");
+            $repoter->prepend("Select Manager", "");
             $project = Project::findOrfail($project->id);
             $setting = Utility::settings(\Auth::user()->creatorId());
             $country = Utility::getcountry();
@@ -2004,7 +2007,7 @@ class ProjectController extends Controller
                     );
             }
 
-            $microProgram = $request->micro_program == "on" ? 1 : 0;
+            // $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
             // $project->project_name = $request->project_name;
             $project->start_date = date(
@@ -2047,8 +2050,8 @@ class ProjectController extends Controller
                 $project->project_image = $url;
             }
 
-            $setHolidays = $request->holidays == "on" ? 1 : 0;
-            $project->holidays = $setHolidays;
+            // $setHolidays = $request->holidays == "on" ? 1 : 0;
+            // $project->holidays = $setHolidays;
 
             if (isset($request->non_working_days)) {
                 $project->non_working_days = implode(
@@ -2058,12 +2061,12 @@ class ProjectController extends Controller
             }
           
             $project->budget = $request->budget;
-            $project->client_id = $request->client;
+            // $project->client_id = $request->client;
             $project->description = $request->description;
             $project->status = $request->status;
             $project->estimated_days = $request->estimated_days;
-            $project->report_to = implode(",", $request->reportto);
-            $project->report_time = $request->report_time;
+            // $project->report_to = implode(",", $request->reportto);
+            // $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->country = $request->country;
             $project->state = $request->state;
@@ -2071,7 +2074,7 @@ class ProjectController extends Controller
             $project->zipcode = $request->zip;
             $project->latitude = $request->latitude;
             $project->longitude = $request->longitude;
-            $project->micro_program = $microProgram;
+            // $project->micro_program = $microProgram;
             $project->otheraddress = $request->otheraddress;
             $project->save();
             if (Session::has("project_instance")) {
@@ -2197,13 +2200,22 @@ class ProjectController extends Controller
         ])
             ->orderBy("date", "ASC")
             ->get();
-
+        $non_working_days = array(
+                '1' => 'Monday','2' => 'Tuesday', '3' => 'Wednesday',
+                '4' => 'Thursday', '5' => 'Friday',
+                '6' => 'Saturday','0' => 'Sunday' );
         if ($project->country != null) {
             $statelist = Utility::getstate($project->country);
         } else {
             $statelist = [];
         }
+        // non working days
+        $non_working=explode(',',$project->non_working_days);
+        $weekendVal=array();
+        foreach($non_working as $weekends){
+            array_push($weekendVal,$non_working_days[$weekends]);
 
+        }
         if ($project->created_by == \Auth::user()->creatorId()) {
             return view(
                 "projects.viewproject",
@@ -2215,7 +2227,8 @@ class ProjectController extends Controller
                     "setting",
                     "country",
                     "statelist",
-                    "project_holidays"
+                    "project_holidays",
+                    "weekendVal"
                 )
             );
         } else {

@@ -1,27 +1,44 @@
 <div class="modal-body">
-    <?php //echo "<pre>"; print_r($get_project_instances); ?>
+    <?php //echo "<pre>"; print_r($get_project_instances); exit; ?>
         <div class="row">
             @php $row=0; @endphp
             @foreach ($get_project_instances as $key => $project)
+<<<<<<< HEAD
+           
+                
+=======
 
+>>>>>>> 85b09d5fa9f7393a0000af2f5e26a5ec07f7a031
                 <div class="col-md-6 col-xxl-6 divstyle">
                     <div class="card">
                         <div class="card-body">
                             <div class="card-header border-0 pb-0">
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex justify-content-between">
                                     @if($key==0)
                                          @php  $name='Main'; @endphp
                                         <h5 class="mb-0"><a class="text-dark"
                                         href="{{ route('projects.instance_project',
-                                        [$project->id,$project->project_id,$name]) }}">Main</a></h5>
+                                             [$project->id,$project->project_id,$name]) }}">Main</a></h5>
                                     @else
                                         @php $row=$row+1;
                                         $name='Revision'.$row; @endphp
                                         <h5 class="mb-0"><a class="text-dark"
-                                            href="{{ route('projects.instance_project',
-                                            [$project->id,$project->project_id,$name]) }}">Revision {{$row}}</a></h5>
+                                        href="{{ route('projects.instance_project',
+                                             [$project->id,$project->project_id,$name]) }}">Revision {{$row}}</a></h5>
                                     @endif
+                                @php
+                                if ($project->freeze_status == 1){
+                                    $status_set = 'on_hold';
+                                }
+                                else{
+                                    $status_set = 'complete';
+                                }
+                                @endphp
+                                    <span class="badge bg-{{ \App\Models\Project::$status_color[$status_set] }}-lt">
+                                    {{ __(\App\Models\Project::$freeze_status[$status_set]) }}
+                                    </span>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="card m-0">
