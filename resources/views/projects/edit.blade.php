@@ -322,9 +322,18 @@
                     </div>
                     </div>
                     <div class="row">
-                    <div class="col-sm-6 col-md-6">
+                        <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span>
+                                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4',
+                                     'cols' => '50','required'=>'required']) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
+                                <span class="text-danger">*</span>
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -342,7 +351,8 @@
                                     get_non_working_days','multiple'=>'true','placeholder'=>'Select non working days'))
                                 !!}
                             </div>
-                            <span id="non_working_days_error" class="error" for="non_working_days">This field is required</span>
+                            <span id="non_working_days_error" class="error" for="non_working_days">
+                                This field is required</span>
 
                         </div>
 
