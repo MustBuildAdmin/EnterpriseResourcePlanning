@@ -2279,7 +2279,7 @@ class ProjectController extends Controller
                     $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor_proj') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => $get_email->emailname,
+                        'user_name' => $get_email->name,
                         'project_name' => $project->project_name,
                         'email' => $get_email->email,
                     ];
@@ -2317,7 +2317,7 @@ class ProjectController extends Controller
                     $inviteUrl = url('') . Config::get('constants.INVITATION_URL_consultant_proj') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => $get_email->emailname,
+                        'user_name' => $get_email->name,
                         'project_name' => $project->project_name,
                         'email' => $get_email->email,
                     ];
@@ -2346,6 +2346,7 @@ class ProjectController extends Controller
             }
             if (str_contains($type, 'teammember')) {
                 foreach ($teammemberID as $id) {
+                    $get_email = User::select('email','name')->where('id',$id)->first();
                     $createConnection = ProjectUser::create([
                         "project_id" => $request->project_id,
                         "user_id" => $id,
@@ -2356,9 +2357,9 @@ class ProjectController extends Controller
                     $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
+                        'user_name' => $get_email->name,
                         'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
+                        'email' => $get_email->email,
                     ];
                     Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
                         [$id => \Auth::user()->email], $userArr);
