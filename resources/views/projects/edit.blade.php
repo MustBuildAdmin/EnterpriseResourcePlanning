@@ -149,6 +149,9 @@
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
     }
+    span#non_working_days_error{
+        display:none;
+    }
 </style>
 <div class="modal-body">
     <div class="container">
@@ -157,7 +160,6 @@
               'class' => 'create_project_form']) }}
             {{ csrf_field() }}
             <div>
-                <h3>{{ __('Project Details') }}</h3>
                 <section>
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
@@ -207,7 +209,8 @@
                             <div class="form-group">
                                 {{Form::label('city',__('City'),array('class'=>'form-label')) }}
                                 <span style='color:red;'>*</span>
-                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required',
+                                {{Form::text('city',null,array('class'=>'form-control', 'placeholder'=>'Enter city',
+                                    'required'=>'required',
                                 'oninput'=>'alphaOnly(this)'))}}
                             </div>
                         </div>
@@ -219,7 +222,7 @@
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}
                                 <span style='color:red;'>*</span>
                                 {{Form::text('zip',$project->zipcode,array('class'=>'form-control','id'=>'zip',
-                                'required'=>'required', 'minlength'=>5))}}
+                                'required'=>'required', 'minlength'=>5,'placeholder'=>'Enter zip code'))}}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
@@ -227,7 +230,7 @@
                                 {{Form::label('latitude',__('Latitude'),array('class'=>'form-label')) }}
                                 <span style='color:red;'>*</span>
                                 {{Form::text('latitude',null,array('class'=>'form-control',
-                                    'id'=>'latitude','required'=>'required'))}}
+                                    'id'=>'latitude','placeholder'=>'Enter latitude','required'=>'required'))}}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
@@ -235,15 +238,16 @@
                                 {{Form::label('longitude',__('Longitude'),array('class'=>'form-label')) }}
                                 <span style='color:red;'>*</span>
                                 {{Form::text('longitude',null,array('class'=>'form-control',
-                                    'id'=>'longitude','required'=>'required'))}}
+                                    'id'=>'longitude','placeholder'=>'Enter longitude','required'=>'required'))}}
                             </div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="mb-3">
                         <label class="form-label">Other Address Details</label>
-                        <textarea class="form-control" name="otheraddress" rows="6"
-                            placeholder="Content.."></textarea>
+                        {!! Form::textarea('otheraddress', null, ['class'=>'form-control','rows'=>'6',
+                            'placeholder'=>'Other Address Details']) !!}
+
                         </div>
                     </div>
                 </section>
@@ -253,29 +257,41 @@
                             <div class="form-group">
                                 {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
-                                {{ Form::date('start_date', null, ['class' => 'form-control','required'=>'required']) }}
+                                {{ Form::date('start_date', null, ['class' => 'form-control',
+                                    'placeholder'=>'Enter start date',
+                                    'required'=>'required']) }}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
-                                {{ Form::date('end_date', null, ['class' => 'form-control','required'=>'required']) }}
+                                {{ Form::date('end_date', null, ['class' => 'form-control',
+                                    'placeholder'=>'Enter end date','required'=>'required']) }}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
-                                {{ Form::text('estimated_days', null, ['class' => 'form-control' ,'readonly'=>true]) }}
+                                {{ Form::text('estimated_days', null, ['class' => 'form-control',
+                                    'placeholder'=>'Enter estimated days' ,'readonly'=>true]) }}
                             </div>
                         </div>
-                        </div>
+                    </div>
 
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
-                                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control get_reportto','required'=>'required')) !!}
+                            {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}
+                            <span class="text-danger">*</span>
+                                <select class="form-control" name="report_to" id='report_to'
+                                 placeholder="Select Manager" required>
+                                    @foreach ($repoter as $key=>$value)
+                                        <option value="{{$key}}"
+                                         @if($project->report_to == $key) selected
+                                          @endif>{{$value}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
@@ -303,7 +319,6 @@
                                 </select>
                             </div>
                         </div>
-                        
                     </div>
                     </div>
                     <div class="row">
@@ -324,16 +339,18 @@
                                 @php $non_working_days_set=explode(',',$project->non_working_days); @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, $non_working_days_set,
                                     array('id' => 'non_working_days','class' => 'form-control chosen-select
-                                    get_non_working_days','multiple'=>'true'))
+                                    get_non_working_days','multiple'=>'true','placeholder'=>'Select non working days'))
                                 !!}
                             </div>
+                            <span id="non_working_days_error" class="error" for="non_working_days">This field is required</span>
+
                         </div>
 
                         <div class="col-sm-4 col-md-4 newmicro_program">
                             <div class="form-group checkbox_group">
                                 <input type="checkbox" id="micro_program" name="micro_program"
                                 {{ ($project->micro_program == 1) ? 'checked disabled' : 'display-none'}}>
-                                <label for="micro_program">Look a Head Enabled</label>
+                                <label for="micro_program">Look-a-head Enabled</label>
                             </div>
                         </div>
                     </div>
@@ -543,19 +560,23 @@ aria-hidden="true" data-toggle="modal">
         const date1 = new Date(start);
         const date2 = new Date(End);
         const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         const estimated_days=diffDays+1;
-        $('#estimated_days').val(estimated_days);
+        if(!Number.isNaN(diffDays)){
+            $('#estimated_days').val(estimated_days);
+        }else{
+            $('#estimated_days').val('');
+        }
     });
 
     $('.get_non_working_days').on('change', function() {
         get_val = $(this).val();
 
         if(get_val != ""){
-            $("#non_working_days-error").hide();
+            $("#non_working_days_error").hide();
         }
         else{
-            $("#non_working_days-error").show();
+            $("#non_working_days_error").show();
         }
     });
 
@@ -630,8 +651,14 @@ aria-hidden="true" data-toggle="modal">
         input.value = numbers;
     }
     function createProject(){
+       
         var form = $("#create_project_form");
         if(form.valid()){
+            let non_working=$('#non_working_days').val();
+            if(non_working.length<=0){
+                $("#non_working_days_error").show();
+            }else{
+            
             freeze_status = $("#freeze_status").val();
                 if(freeze_status == 1){
                     const swalWithBootstrapButtons = Swal.mixin({
@@ -679,6 +706,7 @@ aria-hidden="true" data-toggle="modal">
                         }
                     });
                 }
+            }
         }
        
     }

@@ -764,13 +764,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     updatedTask.push(taskdetails);
 
                 };
-             
                 workflag = 1;
                 $.ajax({
-                    url: '{{ route('projects.criticaltask_update') }}',
-                    type: 'get',
+                    url: "{{ route('criticaltask_update') }}",
+                    type: 'POST',
                     data: {
-                        'updatedTask': updatedTask,
+                        "_token": "{{ csrf_token() }}",
+                        'updatedTask': JSON.stringify(updatedTask),
                     },
                     success: function(data) {
 

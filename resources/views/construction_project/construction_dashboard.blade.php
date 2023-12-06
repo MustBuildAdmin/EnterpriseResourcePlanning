@@ -74,12 +74,16 @@ if($delay>100){
                   </div>
                 </div>
               </div>
-              <div class="progress card-progress">
-                <div class="progress-bar" style="width: 38%" role="progressbar" aria-valuenow="38" aria-valuemin="0"
-                  aria-valuemax="100" aria-label="38% Complete">
-                  <span class="visually-hidden">38% Complete</span>
-                </div>
-              </div>
+              @php
+                  $progress=\App\Models\Project::actual_progress($project->id);
+               @endphp
+               <div class="progress card-progress">
+                  <div class="progress-bar" style="width: <?php echo $progress; ?>%" role="progressbar"
+                      aria-valuenow="<?php echo $progress; ?>" aria-valuemin="0" aria-valuemax="100"
+                       aria-label="<?php echo $progress; ?>% Complete">
+                     <span class="visually-hidden"><?php echo $progress; ?>% {{ __('Complete') }}</span>
+                  </div>
+               </div>
             </div>
           </div>
           <div class="col-lg-6 col-xl-3">
