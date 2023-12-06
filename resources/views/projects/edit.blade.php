@@ -102,7 +102,10 @@
 
     /* micro program CSS */
     .newmicro_program {
-        margin-top: 24px;
+        margin-top: 30px !important;
+    }
+    .col-sm-4.col-md-4.rowTop{
+        margin-top: 10px;
     }
     .checkbox_group {
         display: block !important;
@@ -322,15 +325,26 @@
                     </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-4 col-md-4 ">
                             <div class="form-group">
                                 {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
-                                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4',
-                                     'cols' => '50','required'=>'required']) }}
+                                <select class="form-control" name="report_time" id='report_time'
+                                 placeholder="Select Report Time" required>
+                                    <option value="">{{ __('Select Report Time ...') }}</option>
+                                    <?php
+                                    foreach($reportingtime as $key=>$value){
+                                        if($key.':00' == $project->report_time){
+                                            echo '<option value="'.$key.':00" selected>'.$value.'</option>';
+                                        }
+                                        else{
+                                            echo '<option value="'.$key.':00">'.$value.'</option>';
+                                        }
+                                    } ?>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-4 col-md-4 rowTop">
                             <div class="form-group">
                                 {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
                                 <span class="text-danger">*</span>
@@ -355,14 +369,13 @@
                                 This field is required</span>
 
                         </div>
-
-                        <div class="col-sm-4 col-md-4 newmicro_program">
-                            <div class="form-group checkbox_group">
-                                <input type="checkbox" id="micro_program" name="micro_program"
-                                {{ ($project->micro_program == 1) ? 'checked disabled' : 'display-none'}}>
-                                <label for="micro_program">Look-a-head Enabled</label>
+                        @if($project->micro_program == 1)
+                        <div class="col-sm-4 col-md-4 newmicro_program rowTop">
+                            <div class="form-group">
+                                <label>Look-a-head Enabled</label>
                             </div>
                         </div>
+                        @endif
                     </div>
 
                     <button type="button" class="btn btn-primary createProject" onclick="createProject()">Save</button>

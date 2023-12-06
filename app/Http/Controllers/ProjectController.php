@@ -89,10 +89,36 @@ class ProjectController extends Controller
             $repoter->prepend("Select Manager", "");
             $users->prepend("Select User", "");
             $country = Utility::getcountry();
-
+            $reportingtime=[
+               "00:00"=>"12:00 AM",
+               "01:00"=>"1:00 AM",
+               "02:00"=>"2:00 AM",
+               "03:00"=>"3:00 AM",
+               "04:00"=>"4:00 AM",
+               "05:00"=>"5:00 AM",
+               "06:00"=>"6:00 AM",
+               "07:00"=>"7:00 AM",
+               "08:00"=>"8:00 AM",
+               "09:00"=>"9:00 AM",
+               "10:00"=>"10:00 AM",
+               "11:00"=>"11:00 AM",
+               "12:00"=>"12:00 PM",
+               "13:00"=>"1:00 PM",
+               "14:00"=>"2:00 PM",
+               "15:00"=>"3:00 PM",
+               "16:00"=>"4:00 PM",
+               "17:00"=>"5:00 PM",
+               "18:00"=>"6:00 PM",
+               "19:00"=>"7:00 PM",
+               "20:00"=>"8:00 PM",
+               "21:00"=>"9:00 PM",
+               "22:00"=>"10:00 PM",
+               "23:00"=>"11:00 PM",
+               "24:00"=>"12:00 PM",
+            ];
             return view(
                 "projects.create",
-                compact("clients", "users", "setting", "repoter", "country")
+                compact("clients", "users", "setting", "repoter", "country","reportingtime")
             );
         } else {
             return redirect()
@@ -1961,7 +1987,34 @@ class ProjectController extends Controller
             } else {
                 $statelist = [];
             }
-
+            $reportingtime=[
+                strval("00:00")=>"12:00 AM",
+                "01:00"=>"1:00 AM",
+                "02:00"=>"2:00 AM",
+                "03:00"=>"3:00 AM",
+                "04:00"=>"4:00 AM",
+                "05:00"=>"5:00 AM",
+                "06:00"=>"6:00 AM",
+                "07:00"=>"7:00 AM",
+                "08:00"=>"8:00 AM",
+                "09:00"=>"9:00 AM",
+                "10:00"=>"10:00 AM",
+                "11:00"=>"11:00 AM",
+                "12:00"=>"12:00 PM",
+                "13:00"=>"1:00 PM",
+                "14:00"=>"2:00 PM",
+                "15:00"=>"3:00 PM",
+                "16:00"=>"4:00 PM",
+                "17:00"=>"5:00 PM",
+                "18:00"=>"6:00 PM",
+                "19:00"=>"7:00 PM",
+                "20:00"=>"8:00 PM",
+                "21:00"=>"9:00 PM",
+                "22:00"=>"10:00 PM",
+                "23:00"=>"11:00 PM",
+                "24:00"=>"12:00 PM",
+            ];
+         
             if ($project->created_by == \Auth::user()->creatorId()) {
                 return view(
                     "projects.edit",
@@ -1972,6 +2025,7 @@ class ProjectController extends Controller
                         "repoter",
                         "setting",
                         "country",
+                        "reportingtime",
                         "statelist",
                         "project_holidays"
                     )

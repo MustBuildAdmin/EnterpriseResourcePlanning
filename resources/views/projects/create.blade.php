@@ -185,14 +185,16 @@ ul.chosen-choices {
                             <div class="form-group">
                                 {{ Form::label('client', __('Client'),['class'=>'form-label']) }}
                                 <span class="text-danger">*</span>
-                                {!! Form::select('client', $clients, null,array('class' => 'form-control','required'=>'required')) !!}
+                                {!! Form::select('client', $clients, null,array('class' => 'form-control',
+                                    'required'=>'required')) !!}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span> <br>
-                                {!! Form::select('reportto', $repoter, null,array('id' => 'reportto','class' => 'form-control get_reportto','required'=>'required')) !!}
+                                {!! Form::select('reportto', $repoter, null,array('id' => 'reportto',
+                                    'class' => 'form-control get_reportto','required'=>'required')) !!}
                             </div>
                         </div>
                     </div>
@@ -201,7 +203,8 @@ ul.chosen-choices {
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('country',__('Country'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                {{Form::label('country',__('Country'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
                                 <select class="form-control country" name="country" id='country_wizard'
                                 placeholder="Select Country" required>
                                     <option value="">{{ __('Select Country ...') }}</option>
@@ -213,16 +216,20 @@ ul.chosen-choices {
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('state',__('State'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                <select class="form-control" name="state" id='state' placeholder="Select State" required>
+                                {{Form::label('state',__('State'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                <select class="form-control" name="state" id='state'
+                                 placeholder="Select State" required>
                                     <option value="">{{ __('Select State ...') }}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required','placeholder'=>'Enter City',
+                                {{Form::label('city',__('City'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                {{Form::text('city',null,array('class'=>'form-control',
+                                    'required'=>'required','placeholder'=>'Enter City',
                                 'oninput'=>'alphaOnly(this)'))}}
                             </div>
                         </div>
@@ -232,7 +239,8 @@ ul.chosen-choices {
                        
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                                {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
                                 {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip',
                                 'required'=>'required', 'minlength'=>5,'placeholder'=>'Enter zip code'))}}
                             </div>
@@ -323,18 +331,26 @@ ul.chosen-choices {
                             <span id="non_working_days_error" class="error" for="non_working_days">
                                 This field is required</span>
                         </div>
+                        
                         <div class="col-sm-4 col-md-4">
-                            <div class="form-group checkbox_group">
-                                <input type="checkbox" id="micro_program" name="micro_program">
-                                <label for="micro_program">Do you want Look-a-head</label>
+                            <div class="form-group">
+                                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span>
+                                <select class="form-control" name="report_time" id='report_time'
+                                 placeholder="Select Report Time" required>
+                                    <option value="">{{ __('Select Report Time ...') }}</option>
+                                    <?php foreach($reportingtime as $key=>$value){
+                                        echo '<option value="'.$key.':00">'.$value.'</option>';
+                                    } ?>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4', 'cols' => '50','required'=>'required']) }}
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group checkbox_group">
+                                <input type="checkbox" id="micro_program" name="micro_program">
+                                <label for="micro_program">Do you want Look-a-head</label>
                             </div>
                         </div>
                     </div>
@@ -347,16 +363,21 @@ ul.chosen-choices {
                                     {{ Form::label('file_type', __('Select a Method'), ['class' => 'form-label']) }}
                                     <div class="mt-3">
                                         <label class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" value='M' name="file_status" checked="" id="file_status">
+                                            <input class="form-check-input" type="radio" value='M'
+                                             name="file_status" checked="" id="file_status">
                                             <span class="form-check-label">Manual Method</span>
                                         </label>
                                         <label class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" value='MP' name="file_status" id="file_status">
-                                            <span class="form-check-label">Import your project from Mircosoft's Project Management (MPP)</span>
+                                            <input class="form-check-input" type="radio" value='MP'
+                                             name="file_status" id="file_status">
+                                            <span class="form-check-label">Import your project from Mircosoft's
+                                                 Project Management (MPP)</span>
                                         </label>
                                         <label class="form-check form-check-inline">
-                                            <input class="form-check-input" value='P' type="radio" name="file_status" id="file_status">
-                                            <span class="form-check-label">Import your project from Orcale's Primavera (XER)</span>
+                                            <input class="form-check-input" value='P' type="radio"
+                                             name="file_status" id="file_status">
+                                            <span class="form-check-label">Import your project from Orcale's
+                                                 Primavera (XER)</span>
                                         </label>
                                     </div>
                                 @endif
@@ -370,7 +391,8 @@ ul.chosen-choices {
 
                        
                     </div>
-                    <button type="button" class="btn btn-primary createProject"   onclick="createProject();">Create</button>
+                    <button type="button" class="btn btn-primary createProject"
+                       onclick="createProject();">Create</button>
                 </section>
             </div>
         {{Form::close()}}
