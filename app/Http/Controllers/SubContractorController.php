@@ -632,8 +632,8 @@ class SubContractorController extends Controller
                         'company_name' => \Auth::user()->company_name,
                         'email' => \Auth::user()->email,
                     ];
-    
-                    Utility::sendEmailTemplate('Invite Sub Contractor', [$cid => \Auth::user()->email], $userarr);
+                    $get_email=DB::table('users')->where('id',$cid)->select('email')->first();
+                    Utility::sendEmailTemplate('Invite Sub Contractor', [$cid => $get_email->email], $userarr);
     
                 }
     
