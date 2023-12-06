@@ -16,7 +16,13 @@
   padding: 8px 20px;
   cursor: pointer;
 }
-
+ul.chosen-choices {
+    background-image: none !important;
+    height: 33.47px !important;
+    box-shadow: none !important;
+    border-radius: 3px;
+    border: var(--tblr-border-width) solid var(--tblr-border-color) !important;
+}
 .upload-btn-wrapper input[type=file] {
   font-size: 100px;
   position: absolute;
@@ -159,14 +165,17 @@
 </style>
 <div class="modal-body">
     <div class="container">
-        {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data', 'id' => 'create_project_form', 'class' => 'create_project_form']) }}
+        {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data',
+             'id' => 'create_project_form', 'class' => 'create_project_form']) }}
             <div>
                 <section>
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
-                                {{ Form::text('project_name', null, ['class' => 'form-control project_name','id'=>'project_name','required'=>'required']) }}
+                                {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span>
+                                {{ Form::text('project_name', null, ['class' => 'form-control project_name',
+                                    'id'=>'project_name','required'=>'required','placeholder'=>'Enter Project Name']) }}
                                 <span class="invalid-name show_duplicate_error" role="alert" style="display: none;">
                                     <strong class="text-danger">Project Name Already Exist!</strong>
                                 </span>
@@ -174,14 +183,16 @@
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{ Form::label('client', __('Client'),['class'=>'form-label']) }}<span class="text-danger">*</span>
+                                {{ Form::label('client', __('Client'),['class'=>'form-label']) }}
+                                <span class="text-danger">*</span>
                                 {!! Form::select('client', $clients, null,array('class' => 'form-control','required'=>'required')) !!}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}<span class="text-danger">*</span> <br>
-                                {!! Form::select('reportto[]', $repoter, null,array('id' => 'reportto','class' => 'form-control get_reportto','required'=>'required')) !!}
+                                {{ Form::label('Users', __('Manager'), ['class' => 'form-label']) }}
+                                <span class="text-danger">*</span> <br>
+                                {!! Form::select('reportto', $repoter, null,array('id' => 'reportto','class' => 'form-control get_reportto','required'=>'required')) !!}
                             </div>
                         </div>
                     </div>
@@ -211,7 +222,7 @@
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{Form::label('city',__('City'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required',
+                                {{Form::text('city',null,array('class'=>'form-control','required'=>'required','placeholder'=>'Enter City',
                                 'oninput'=>'alphaOnly(this)'))}}
                             </div>
                         </div>
@@ -223,27 +234,31 @@
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
                                 {{Form::number('zip',null,array('class'=>'form-control','id'=>'zip',
-                                'required'=>'required', 'minlength'=>5))}}
+                                'required'=>'required', 'minlength'=>5,'placeholder'=>'Enter zip code'))}}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('latitude',__('Latitude'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('latitude',null,array('class'=>'form-control','id'=>'latitude','required'=>'required'))}}
+                                {{Form::label('latitude',__('Latitude'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                {{Form::text('latitude',null,array('class'=>'form-control','id'=>'latitude',
+                                    'required'=>'required','placeholder'=>'Enter latitude'))}}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
-                                {{Form::label('longitude',__('Longitude'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
-                                {{Form::text('longitude',null,array('class'=>'form-control','id'=>'longitude','required'=>'required'))}}
+                                {{Form::label('longitude',__('Longitude'),array('class'=>'form-label')) }}
+                                <span style='color:red;'>*</span>
+                                {{Form::text('longitude',null,array('class'=>'form-control',
+                                    'id'=>'longitude','required'=>'required','placeholder'=>'Enter longitude'))}}
                             </div>
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="mb-3">
                         <label class="form-label">Other Address Details</label>
-                        <textarea class="form-control" name="otheraddress" rows="6"
-                            placeholder="Content.."></textarea>
+                        {!! Form::textarea('otheraddress', null, ['class'=>'form-control','rows'=>'6',
+                            'placeholder'=>'Other Address Details']) !!}
                         </div>
                     </div>
                 </section>
@@ -254,21 +269,24 @@
                             <div class="form-group">
                                 {{ Form::label('start_date', __('Start Date'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
-                                {{ Form::date('start_date', null, ['class' => 'form-control','required'=>'required']) }}
+                                {{ Form::date('start_date', null, ['class' => 'form-control',
+                                    'required'=>'required','placeholder'=>'Enter start date']) }}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('end_date', __('End Date'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
-                                {{ Form::date('end_date', null, ['class' => 'form-control','required'=>'required']) }}
+                                {{ Form::date('end_date', null, ['class' => 'form-control',
+                                    'required'=>'required','placeholder'=>'Enter end date']) }}
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('estimated_days', __('Estimated Days'),['class' => 'form-label']) }}
                                 {{ Form::text('estimated_days', null,
-                                ['class' => 'form-control estimated_days' ,'readonly'=>true]) }}
+                                ['class' => 'form-control estimated_days' ,'readonly'=>true,
+                                'placeholder'=>'Enter estimated days']) }}
                             </div>
                         </div>
                     </div>
@@ -282,7 +300,8 @@
                         </div>
                         <div class="col-sm-4 col-md-4 nonworkingdays">
                             <div class="form-group">
-                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}<span class="text-danger">*</span>
+                                {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
+                                <span class="text-danger">*</span>
                                 @php
                                     $non_working_days = array(
                                         '1' => 'Monday',
@@ -296,15 +315,26 @@
                                 @endphp
                                 {!! Form::select('non_working_days[]', $non_working_days, null,
                                     array('id' => 'non_working_days','class' => 'form-control
-                                    chosen-select get_non_working_days','multiple'=>'true','required'=>'required'))
+                                    chosen-select get_non_working_days','multiple'=>'true','required'=>'required',
+                                    'data-placeholder'=>'Select non working days'
+                                   ))
                                 !!}
                             </div>
-                            <span id="non_working_days_error" class="error" for="non_working_days">This field is required</span>
+                            <span id="non_working_days_error" class="error" for="non_working_days">
+                                This field is required</span>
                         </div>
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group checkbox_group">
                                 <input type="checkbox" id="micro_program" name="micro_program">
-                                <label for="micro_program">Do you want Look a Head</label>
+                                <label for="micro_program">Do you want Look-a-head</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4', 'cols' => '50','required'=>'required']) }}
                             </div>
                         </div>
                     </div>
@@ -585,7 +615,9 @@ aria-labelledby="exampleModalCenterTitle"
     });
 
     $(document).ready(function() {
-        $('.chosen-select').chosen();
+        $('.chosen-select').chosen({
+            default_multiple_text:"Select Non working days"
+        });
     });
 
     $('#commonModal').on('hidden.bs.modal', function () {
@@ -664,12 +696,14 @@ aria-labelledby="exampleModalCenterTitle"
        
     });
     function createProject(){
-        let non_working=$('#non_working_days').val();
-        if(non_working.length<=0){
-            $("#non_working_days_error").show();
-        }
+       
             var form = $("#create_project_form");
         if(form.valid()){
+            let non_working=$('#non_working_days').val();
+        if(non_working.length<=0){
+            $("#non_working_days_error").show();
+        }else{
+
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -696,6 +730,7 @@ aria-labelledby="exampleModalCenterTitle"
                 }
             });
         }
+    }
        
     }
   

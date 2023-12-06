@@ -24,7 +24,8 @@
     <meta name="author" content="Rajodiya Infotech" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon icon -->
-    <link rel="icon" href="{{$logo.'/'.(isset($favicon) && !empty($favicon)?$favicon:'favicon.png')}}" type="image/x-icon" />
+    <link rel="icon" href="{{$logo.'/'.(isset($favicon) &&
+    !empty($favicon)?$favicon:'favicon.png')}}" type="image/x-icon" />
 @stack('head')
 <!-- for calender-->
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/main.css') }}">
@@ -69,10 +70,8 @@
                 </div>
             </div>
         </div>
-                <!-- <div class="row"> -->
     @yield('content')
 
-    <!-- </div> -->
             </div>
 </div>
 <script src="{{ asset('assets/js/plugins/choices.min.js') }}"></script>

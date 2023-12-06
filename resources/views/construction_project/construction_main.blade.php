@@ -117,11 +117,11 @@ a.text-dark {
                        && count($projectmembers) > 0)
                           @foreach ($projectmembers as $key => $user)
                           @php
-                          $name_r=\App\Models\Project::get_user_name($user->user_id);
-                          $short=substr($name_r->name, 0, 1);
+                           $name_r=\App\Models\Project::get_user_name($user->user_id);
+                           $short=substr($name_r->name ?? '', 0, 1);
                           @endphp
                               @if ($key < 3)
-                                  @if ($name_r->avatar)
+                                  @if ($name_r->avatar?? '')
 
                                       <a href="#" class="">
                                           <img  src="{{(!empty(\Auth::user()->avatar))? $profile.$name_r->avatar :
@@ -132,7 +132,7 @@ a.text-dark {
                                   @else
                                       {{-- <a href="#" class="avatar rounded-circle avatar-sm"> --}}
                                          <span class="avatar avatar-sm rounded" data-bs-toggle="tooltip"
-                                          title="{{ $name_r->name }}">{{strtoupper($short)}}</span>
+                                          title="{{ $name_r->name?? '' }}">{{strtoupper($short)}}</span>
                                       {{-- </a> --}}
                                   @endif
                               @else
