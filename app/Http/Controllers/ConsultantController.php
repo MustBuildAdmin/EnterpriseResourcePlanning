@@ -580,7 +580,7 @@ class ConsultantController extends Controller
     public function store_invitation_status(Request $request){
        
         try {
-
+            
             if(!is_null($request->consulant_id)){
                 $consulantid = explode(',', $request->consulant_id);
 
@@ -600,9 +600,12 @@ class ConsultantController extends Controller
                         'company_name' => \Auth::user()->company_name,
                         'email' => \Auth::user()->email,
                     ];
+                    
+                    $get_email=DB::table('users')->where('id',$cid)->select('email')->first();
+                  
         
                     Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT'),
-                            [$cid => \Auth::user()->email],$userArr);
+                            [$cid => $get_email->email],$userArr);
                 
                 }
     

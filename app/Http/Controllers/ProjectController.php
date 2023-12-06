@@ -2272,7 +2272,7 @@ class ProjectController extends Controller
             $type=$request->type;
             if(str_contains($type,'subcontractor')){
                 foreach($teammemberID as $id){
-                    $get_email = User::select('email','name')->where('id',$id)->first();
+                    $get_email = DB::table('users')->select('email','name')->where('id',$id)->first();
 
                     $createConnection =  ProjectSubcontractor::create([
                         "project_id" => $request->project_id,
@@ -2283,9 +2283,9 @@ class ProjectController extends Controller
                     $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor_proj') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => $get_email->name,
+                        'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
-                        'email' => $get_email->email,
+                        'email' => \Auth::user()->email,
                     ];
                    
                     $template = EmailTemplate::where('name', 'LIKE', Config::get('constants.INSR_PROJ'))->first();
@@ -2304,14 +2304,14 @@ class ProjectController extends Controller
                     }
 
                     Utility::sendEmailTemplate(Config::get('constants.INSR_PROJ'),
-                        [$id => \Auth::user()->email], $userArr);
+                        [$id => $get_email->email], $userArr);
                 }
                 $msg = __('Sub Contractor Invitation to project sent successfully.');
                 $routing = 'project.subcontractor';
             }
             if(str_contains($type,'consultant')){
                 foreach($teammemberID as $id){
-                    $get_email = User::select('email','name')->where('id',$id)->first();
+                    $get_email = DB::table('users')->select('email','name')->where('id',$id)->first();
                     $createConnection =  ProjectConsultant::create([
                         "project_id" => $request->project_id,
                         "user_id" => $id,
@@ -2321,9 +2321,9 @@ class ProjectController extends Controller
                     $inviteUrl = url('') . Config::get('constants.INVITATION_URL_consultant_proj') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => $get_email->name,
+                        'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
-                        'email' => $get_email->email,
+                        'email' => \Auth::user()->email,
                     ];
 
                     $con_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_CONSULTANT_PROJ'))->first();
