@@ -21,19 +21,19 @@
                                         href="{{ route('projects.instance_project',
                                              [$project->id,$project->project_id,$name]) }}">Revision {{$row}}</a></h5>
                                     @endif
-                                @php
-                                if ($project->freeze_status == 1){
-                                    $status_set = 'on_hold';
-                                }
-                                else{
-                                    $status_set = 'complete';
-                                }
-                                @endphp
+                                    @php
+                                        if ($lastInstance->id == $project->id){
+                                            $status_set = 'complete';
+                                        }
+                                        else{
+                                            $status_set = 'on_hold';
+                                        }
+                                    @endphp
                                     <span class="badge bg-{{ \App\Models\Project::$status_color[$status_set] }}-lt">
                                     {{ __(\App\Models\Project::$freeze_status[$status_set]) }}
                                     </span>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="card m-0">

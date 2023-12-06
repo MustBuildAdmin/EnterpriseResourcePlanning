@@ -192,6 +192,8 @@ class TaskController extends Controller
             }else{
                 $mode=1;
             }
+        }else{
+            $mode=0;
         }
 
         if (isset($request->subcontractor)) {
