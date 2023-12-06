@@ -383,17 +383,18 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         <input type="hidden" id="subcontractor_id" name="subcontractor_id">
                         
                         <input type="text" class="form-control" name="description"
+                            id="task_name"
                             placeholder="{{ __('Type your Task Name') }}">
                     </div>
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Task Start Date') }}</label>
-                            <input type="text" class="form-control" name="start_date" id="start-date"
+                            <input type="text" class="form-control" name="start_date" id="start-date" value=""
                                 placeholder="{{ __('Enter Your Task Start Date') }}">
                         </div>
                         <div class="col-md-6  col-12">
                             <label class="form-label">{{ __('Task End Date') }}</label>
-                            <input type="text" class="form-control" name="end_date" id="end-date"
+                            <input type="text" class="form-control" name="end_date" id="end-date" value=""
                                 placeholder="{{ __('Enter Your Task End Date') }}">
                         </div>
                     </div>
@@ -1338,36 +1339,40 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var start_date = form.querySelector("[name='start_date']");
         var end_date = form.querySelector("[name='end_date']");
 
-        var startdate = task.start_date;
-        var sdate = new Date(startdate),
-        yr = sdate.getFullYear(),
-        month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
-        day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
-        newone = yr + '-' + month + '-' + day;
+        // Start Date
+        var sdate        = new Date(task.start_date);
+        year             = sdate.getFullYear();
+        month            = sdate.getMonth() + 1;
+        day              = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate();
+        s_formattedMonth = (sdate.getMonth() < 10) ? "0" + month : month;
+        newone           = year + '-' + s_formattedMonth + '-' + day;
+
+        // End Date
+        var edate        = new Date(task.end_date);
+        yr               = edate.getFullYear();
+        mon              = edate.getMonth() + 1;
+        days             = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate();
+        e_formattedMonth = (edate.getMonth() < 10) ? "0" + mon : mon;
+        newsecond        = yr + '-' + e_formattedMonth + '-' + days;
+
+        // start and end date set into the ids
         start_date.value = newone;
+        end_date.value   = newsecond;
 
-        var enddate = task.end_date;
-        var edate = new Date(enddate),
-        year = edate.getFullYear(),
-        mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
-        days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
-        newsecond = year + '-' + mon + '-' + days;
-        end_date.value = newsecond;
+        var users              = form.querySelector("[name='users']");
+        var user_id            = form.querySelector("[name='user_id']");
+        user_id.value          = task.users;
 
-        var users = form.querySelector("[name='users']");
+        var reported_to        = form.querySelector("[name='reported_to']");
+        var reporter_id        = form.querySelector("[name='reporter_id']");
+        reporter_id.value      = task.reported_to;
 
-        var user_id = form.querySelector("[name='user_id']");
-        user_id.value = task.users;
-        var reported_to = form.querySelector("[name='reported_to']");
-        var reporter_id = form.querySelector("[name='reporter_id']");
-        reporter_id.value = task.reported_to;
-
-        var subcontractor = form.querySelector("[name='subcontractor']");
-        var subcontractor_id = form.querySelector("[name='subcontractor_id']");
+        var subcontractor      = form.querySelector("[name='subcontractor']");
+        var subcontractor_id   = form.querySelector("[name='subcontractor_id']");
         subcontractor_id.value = task.subcontractor;
 
-        var taskmode = $('input[name="taskmode"]:checked').val();
-        taskmode= task.taskmode;
+        var taskmode           = $('input[name="taskmode"]:checked').val();
+        taskmode               = task.taskmode;
        
         if(taskmode==1){
             $('#sub_con').show();

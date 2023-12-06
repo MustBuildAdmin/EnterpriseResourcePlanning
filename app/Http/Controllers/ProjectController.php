@@ -2785,8 +2785,17 @@ class ProjectController extends Controller
                     $critical_update = Project::where("id", Session::get("project_id"))
                         ->pluck('critical_update')->first();
 
-                    return view(
-                        "construction_project.gantt",
+                    $get_instance = Instance::where("project_id", Session::get("project_id"))->orderBy('id','DESC')->first();
+
+                    $set_current_instance = "noncurrent";
+
+                    if($get_instance != null){
+                        if($get_instance->instance == Session::get('project_instance')){
+                            $set_current_instance = "current";
+                        }
+                    }
+
+                    return view("construction_project.gantt",
                         compact(
                             "project",
                             "tasks",
@@ -2795,7 +2804,8 @@ class ProjectController extends Controller
                             "freezeCheck",
                             "nonWorkingDay",
                             "projectname",
-                            'critical_update'
+                            'critical_update',
+                            'set_current_instance'
                         )
                     );
                 } else {
