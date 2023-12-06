@@ -39,6 +39,7 @@ class TaskController extends Controller
         
 
         if(isset($request->totalStack)){
+            $task->total_slack = $request->totalStack;
             $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->totalStack);
@@ -47,6 +48,7 @@ class TaskController extends Controller
         }
 
         if(isset($request->freeSlack)){
+            $task->free_slack = $request->free_slack;
             $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->freeSlack);
@@ -212,6 +214,7 @@ class TaskController extends Controller
         }
 
         if(isset($request->totalStack) && $request->totalStack!='undefined'){
+            $n_total_slack = $request->totalStack;
             $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->totalStack);
@@ -219,9 +222,11 @@ class TaskController extends Controller
             $entire_critical = $total_slack;
         }else{
             $entire_critical=null;
+            $n_total_slack =null;
         }
 
         if(isset($request->freeSlack) && $request->freeSlack!='undefined'){
+            $free_slack = $request->freeSlack;
             $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
             $carbonDate = Carbon::parse($cleanedDateString);
             $carbonDate->addDays($request->freeSlack);
@@ -229,6 +234,7 @@ class TaskController extends Controller
             $dependency_critical = $freeSlack;
         }else{
             $dependency_critical=null;
+            $free_slack =null;
         }
 
         $checkparent = Con_task::where(['project_id' => Session::get('project_id'),
@@ -251,6 +257,8 @@ class TaskController extends Controller
             'users'=>$users,
             'entire_critical'=>$entire_critical,
             'dependency_critical'=>$dependency_critical,
+            'total_slack'=> $n_total_slack,
+            'free_slack'=> $free_slack,
             'type'=>$type,
             'float_val'=>$float_val,
             'reported_to'=>$reportedto,

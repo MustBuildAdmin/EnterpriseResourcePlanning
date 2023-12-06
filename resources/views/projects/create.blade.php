@@ -229,7 +229,7 @@ ul.chosen-choices {
                     </div>
 
                     <div class="row">
-                       
+
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{Form::label('zip',__('Zip Code'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
@@ -263,7 +263,7 @@ ul.chosen-choices {
                     </div>
                 </section>
                 <section>
-                   
+
                     <div class="row">
                     <div class="col-sm-4 col-md-4">
                             <div class="form-group">
@@ -339,7 +339,7 @@ ul.chosen-choices {
                         </div>
                     </div>
                 </section>
-                
+
                 <section>
                     <div class="row mb-3">
                             <div class="form-group">
@@ -368,7 +368,7 @@ ul.chosen-choices {
                             </div>
                         </div>
 
-                       
+
                     </div>
                     <button type="button" class="btn btn-primary createProject"   onclick="createProject();">Create</button>
                 </section>
@@ -472,12 +472,12 @@ aria-labelledby="exampleModalCenterTitle"
 	}
 
     function select_all_key() {
-        $('input[class=case]:checkbox').each(function(){ 
-            if($('input[class=check_all]:checkbox:checked').length == 0){ 
-                $(this).prop("checked", false); 
+        $('input[class=case]:checkbox').each(function(){
+            if($('input[class=check_all]:checkbox:checked').length == 0){
+                $(this).prop("checked", false);
             } else {
-                $(this).prop("checked", true); 
-            } 
+                $(this).prop("checked", true);
+            }
         });
     }
 
@@ -485,7 +485,7 @@ aria-labelledby="exampleModalCenterTitle"
         holiday_array   = [];
         holiday_date    = $(this).val();
         holiday_date_id = $(this).attr('id');
-       
+
         $('.holiday_table tr').each(function(){
             pre_holiday = $(this).find(".get_date").val();
             pre_holiday_id = $(this).find(".get_date").attr('id');
@@ -494,14 +494,14 @@ aria-labelledby="exampleModalCenterTitle"
             }
         });
 
-        if(holiday_array.indexOf(holiday_date) !== -1)  
+        if(holiday_array.indexOf(holiday_date) !== -1)
         {
             toastr.error("This Date Is Already Exist!");
             $(this).val("");
         }
     });
 
-   
+
 
     $(document).on("change", '#file_status', function () {
         var status=$(this).val();
@@ -541,7 +541,7 @@ aria-labelledby="exampleModalCenterTitle"
         const date1 = new Date(start);
         const date2 = new Date(End);
         const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         const estimated_days=diffDays+1;
         $('#estimated_days').val(estimated_days);
     });
@@ -693,10 +693,10 @@ aria-labelledby="exampleModalCenterTitle"
             return this.optional(element) ||
             value.length >= 4 && /^(?=.)-?((0?[8-9][0-9])|180|([0-1]?[0-7]?[0-9]))?(?:\.[0-9]{1,20})?$/.test(value);
         }, 'Your Longitude format has error.')
-       
+
     });
     function createProject(){
-       
+
             var form = $("#create_project_form");
         if(form.valid()){
             let non_working=$('#non_working_days').val();
@@ -731,7 +731,7 @@ aria-labelledby="exampleModalCenterTitle"
             });
         }
     }
-       
+
     }
-  
+
 </script>

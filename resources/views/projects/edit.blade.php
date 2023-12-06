@@ -215,7 +215,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
@@ -396,7 +396,7 @@ aria-hidden="true" data-toggle="modal">
 </div>
 
 <script>
-     
+
     $('#loding_popup').modal({backdrop: 'static', keyboard: false});
     $('#commonModal').modal({backdrop: 'static', keyboard: false});
     disabled_all();
@@ -420,13 +420,13 @@ aria-hidden="true" data-toggle="modal">
     function count_table_tr(){
         count_tr = $(".holiday_table tbody tr").length;
         row_count = parseInt(count_tr) + parseInt(1);
-        
+
         return row_count;
     }
     var key_i = count_table_tr();
     check_validation = 0;
     $(document).on("click", '.addmore', function () {
-       
+
         if ($("#holidays").prop('checked') == false) {
             holidayValidation();
         }
@@ -492,12 +492,12 @@ aria-hidden="true" data-toggle="modal">
 	}
 
     function select_all_key() {
-        $('input[class=case]:checkbox').each(function(){ 
-            if($('input[class=check_all]:checkbox:checked').length == 0){ 
-                $(this).prop("checked", false); 
+        $('input[class=case]:checkbox').each(function(){
+            if($('input[class=check_all]:checkbox:checked').length == 0){
+                $(this).prop("checked", false);
             } else {
-                $(this).prop("checked", true); 
-            } 
+                $(this).prop("checked", true);
+            }
         });
     }
 
@@ -505,7 +505,7 @@ aria-hidden="true" data-toggle="modal">
         holiday_array   = [];
         holiday_date    = $(this).val();
         holiday_date_id = $(this).attr('id');
-       
+
         $('.holiday_table tr').each(function(){
             pre_holiday = $(this).find(".get_date").val();
             pre_holiday_id = $(this).find(".get_date").attr('id');
@@ -514,7 +514,7 @@ aria-hidden="true" data-toggle="modal">
             }
         });
 
-        if(holiday_array.indexOf(holiday_date) !== -1)  
+        if(holiday_array.indexOf(holiday_date) !== -1)
         {
             toastr.error("This Date Is Already Exist!");
             $(this).val("");
@@ -661,14 +661,14 @@ aria-hidden="true" data-toggle="modal">
         input.value = numbers;
     }
     function createProject(){
-       
+
         var form = $("#create_project_form");
         if(form.valid()){
             let non_working=$('#non_working_days').val();
             if(non_working.length<=0){
                 $("#non_working_days_error").show();
             }else{
-            
+
             freeze_status = $("#freeze_status").val();
                 if(freeze_status == 1){
                     const swalWithBootstrapButtons = Swal.mixin({
@@ -718,6 +718,6 @@ aria-hidden="true" data-toggle="modal">
                 }
             }
         }
-       
+
     }
 </script>

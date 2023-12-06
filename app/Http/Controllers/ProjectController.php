@@ -59,7 +59,7 @@ class ProjectController extends Controller
         }
     }
 
-   
+
 
     public function create()
     {
@@ -161,7 +161,7 @@ class ProjectController extends Controller
             $project->description = $request->description;
             $project->status = $request->status;
             $project->report_to = $request->reportto;
-            
+
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->estimated_days = $request->estimated_days;
@@ -233,7 +233,7 @@ class ProjectController extends Controller
                     );
                     Project_holiday::insert($insert);
                 }
-                
+
             }
             if(isset($request->file)){
                if($request->file_status=='MP'){
@@ -247,7 +247,7 @@ class ProjectController extends Controller
                 }
 
                 $request->file->move(public_path($path), $name);
-                for ($i=0; $i <3 ; $i++) { 
+                for ($i=0; $i <3 ; $i++) {
                     $curl = curl_init();
                     curl_setopt_array($curl, array(
                         CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
@@ -263,7 +263,7 @@ class ProjectController extends Controller
                         CURLOPT_SSL_VERIFYPEER=>false,
                         CURLOPT_POSTFIELDS => ['file'=> new \CURLFILE($link),'type'=>'msproject-parse'],
                     ));
-    
+
                     $responseBody = curl_exec($curl);
                     curl_close($curl);
                     $responseBody = json_decode($responseBody, true);
@@ -273,12 +273,12 @@ class ProjectController extends Controller
                         Project::where('id',$project->id)->update(['status'=>'on_hold']);
                     }
                 }
-    
+
                 if (file_exists(public_path($pathname))){
                     unlink(public_path($pathname));
                 }
 
-                
+
 
                 if(isset($responseBody['data']['data'])){
 
@@ -286,6 +286,19 @@ class ProjectController extends Controller
                         $task= new Con_task();
                         $task->project_id=$project->id;
                         $task->instance_id=$instance_id;
+
+                        //########  checking the date is correct ########
+                        if($value['start_date'] > $raw['Finish']){
+                            Project::where('id',$project->id)->delete();
+                            Instance::where('project_id',$project->id)->delete();
+                            Con_task::where('project_id',$project->id)->delete();
+
+                            return redirect()->back()->with('error', __('Microproject data Mismatch'));
+
+                        }
+                        // ###############################
+
+
                         if(isset($value['text'])){
                             $task->text=$value['text'];
                         }
@@ -378,7 +391,7 @@ class ProjectController extends Controller
 
                     $request->file->move(public_path($path), $name);
 
-                    for ($i=0; $i <3 ; $i++) { 
+                    for ($i=0; $i <3 ; $i++) {
                         $curl = curl_init();
                         curl_setopt_array($curl, array(
                         CURLOPT_URL => 'https://export.dhtmlx.com/gantt',
@@ -408,13 +421,24 @@ class ProjectController extends Controller
                     if (file_exists(public_path($pathname))){
                         unlink(public_path($pathname));
                     }
-                   
+
                     if(isset($responseBody['data']['data'])){
 
                         foreach ($responseBody['data']['data'] as $key => $value) {
                             $task = new Con_task();
                             $task->project_id = $project->id;
                             $task->instance_id = $instance_id;
+
+                            //########  checking the date is correct ########
+                            if($value['start_date'] > $raw['Finish']){
+                                Project::where('id',$project->id)->delete();
+                                Instance::where('project_id',$project->id)->delete();
+                                Con_task::where('project_id',$project->id)->delete();
+
+                                return redirect()->back()->with('error', __(' primaverra data Mismatch'));
+
+                            }
+                            // ###############################
                             if (isset($value['text'])) {
                                 $task->text = $value['text'];
                             }
@@ -713,7 +737,7 @@ class ProjectController extends Controller
         $lastInstance = Instance::where("project_id", $id)
             ->orderBy("id", "DESC")
             ->first();
-       
+
         if (count($get_project_instances) > 1) {
             return view(
                 "construction_project.instance_view",
@@ -889,7 +913,7 @@ class ProjectController extends Controller
                 $user_projects = Project::where("client_id", \Auth::user()->id)
                     ->pluck("id", "id")
                     ->toArray();
-            } 
+            }
             else if(Auth::user()->type == "consultant"){
                 $user_projects = ProjectConsultant::where('invite_status','accepeted')
                     ->where('user_id',\Auth::user()->id)
@@ -1483,7 +1507,7 @@ class ProjectController extends Controller
                     ->whereDate('start_date', '>', date('Y-m-d'))
                     ->count();
 
-                
+
                     // Micro task End
                     return view("construction_project.construction_dashboard",
                         compact(
@@ -1496,7 +1520,7 @@ class ProjectController extends Controller
                             'micro_actual_percentage_set'
                         )
                     );
-                
+
             } else {
                 return redirect()
                     ->back()
@@ -1509,7 +1533,7 @@ class ProjectController extends Controller
                 ->back()
                 ->with("error", __("Permission Denied."));
         }
-        
+
     }
 
     public function show_dairy($project_id)
@@ -2063,7 +2087,7 @@ class ProjectController extends Controller
                     $request->non_working_days
                 );
             }
-          
+
             $project->budget = $request->budget;
             // $project->client_id = $request->client;
             $project->description = $request->description;
@@ -2138,7 +2162,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-      
+
         if (\Auth::user()->can("delete project")) {
             $projectID = $project->id;
             if (Session::has("project_instance")) {
@@ -2287,7 +2311,7 @@ class ProjectController extends Controller
                         'project_name' => $project->project_name,
                         'email' => \Auth::user()->email,
                     ];
-                   
+
                     $template = EmailTemplate::where('name', 'LIKE', Config::get('constants.INSR_PROJ'))->first();
                     if($template != null){
                         $creatorId = $authuser->creatorId();
@@ -2519,31 +2543,35 @@ class ProjectController extends Controller
             $project = Project::find(Session::get("project_id"));
 
             if ($project->critical_update == 0) {
-
-                foreach ($request->updatedTask as $value) {
-                    if (isset($value['totalStack'])) {
-                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                $data=json_decode($request->updatedTask);
+                foreach ($data as $value) {
+                    if (isset($value->totalStack)) {
+                        $n_total_slack = $value->totalStack;
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->start_date);
                         $carbonDate = Carbon::parse($cleanedDateString);
-                        $carbonDate->addDays($value['totalStack']);
+                        $carbonDate->addDays($value->totalStack);
                         $total_slack = $carbonDate->format('Y-m-d');
                     } else {
                         $total_slack = null;
+                        $n_total_slack=null;
                     }
-                    if (isset($value['freeSlack'])) {
-                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value['start_date']);
+                    if (isset($value->freeSlack)) {
+                        $free_slack = $value->freeSlack;
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->start_date);
                         $carbonDate = Carbon::parse($cleanedDateString);
-                        $carbonDate->addDays($value['freeSlack']);
+                        $carbonDate->addDays($value->freeSlack);
                         $freeSlack = $carbonDate->format('Y-m-d');
                     } else {
                         $freeSlack = null;
+                        $free_slack =null;
                     }
 
                     Con_task::where('project_id', Session::get("project_id"))
                         ->where('instance_id', Session::get("project_instance"))
-                        ->where('main_id', $value['main_id'])
+                        ->where('main_id', $value->main_id)
                         ->update(['dependency_critical' => $freeSlack,
                             'entire_critical' => $total_slack,
-                            'float_val' => $total_slack]);
+                            'float_val' => $total_slack,'free_slack'=>$free_slack,'total_slack'=>$n_total_slack]);
 
                 }
 
@@ -4156,7 +4184,7 @@ class ProjectController extends Controller
             $actual_percentage = $first_task->progress;
             $no_working_days = $first_task->duration; // include the last day
             $date2 = date_create($first_task->end_date);
-            
+
         } else {
 
             $workdone_percentage = "0";
@@ -4176,7 +4204,7 @@ class ProjectController extends Controller
 
         }
 
-               
+
                 //############## END ##############################
                 //############## Remaining days ###################
                 $remaining_working_days = Utility::remaining_duration_calculator(
@@ -4310,7 +4338,7 @@ class ProjectController extends Controller
             }else{
                 $status='Completed';
             }
-           
+
 
 
             $taskdata[] = [
@@ -4427,7 +4455,7 @@ class ProjectController extends Controller
                 'duration' => $value->duration.' Days',
                 'actual_percentage' => $progress.'%',
                 'planned_percentage'=>$current_Planed_percentage,
-          
+
 
             ];
         }
@@ -4527,5 +4555,5 @@ class ProjectController extends Controller
         }
 
     }
-    
+
 }
