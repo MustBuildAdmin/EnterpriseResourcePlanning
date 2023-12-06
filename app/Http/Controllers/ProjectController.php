@@ -162,7 +162,7 @@ class ProjectController extends Controller
             $project->status = $request->status;
             $project->report_to = $request->reportto;
             
-            $project->report_time = '8:00';
+            $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->estimated_days = $request->estimated_days;
 
@@ -710,10 +710,14 @@ class ProjectController extends Controller
         $get_project_instances = Instance::where("project_id", $id)
             ->orderBy("id", "ASC")
             ->get();
+        $lastInstance = Instance::where("project_id", $id)
+            ->orderBy("id", "DESC")
+            ->first();
+       
         if (count($get_project_instances) > 1) {
             return view(
                 "construction_project.instance_view",
-                compact("get_project_instances")
+                compact("get_project_instances","lastInstance")
             );
         } else {
             return redirect()->route("projects.instance_project", [
@@ -2066,7 +2070,7 @@ class ProjectController extends Controller
             $project->status = $request->status;
             $project->estimated_days = $request->estimated_days;
             // $project->report_to = implode(",", $request->reportto);
-            // $project->report_time = $request->report_time;
+            $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->country = $request->country;
             $project->state = $request->state;

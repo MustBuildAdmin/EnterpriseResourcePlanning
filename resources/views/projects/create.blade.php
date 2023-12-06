@@ -330,6 +330,14 @@ ul.chosen-choices {
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}<span class="text-danger">*</span>
+                                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4', 'cols' => '50','required'=>'required']) }}
+                            </div>
+                        </div>
+                    </div>
                 </section>
                 
                 <section>

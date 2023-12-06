@@ -137,8 +137,13 @@
                                 <div class="datagrid-content">{{ $project->micro_program == 1 ? 'Enabled':'Disabled'}}
                                 </div>
                             </div>
-
-                           
+                        </div>
+                        <div class="datagrid">
+                            <div class="datagrid-item">
+                                <div class="datagrid-title">{{__('Report Time')}}</div>
+                                <div class="datagrid-content">{{\App\Models\Utility::utc_to_originaltime
+                                    ($project->report_time,$setting)}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
