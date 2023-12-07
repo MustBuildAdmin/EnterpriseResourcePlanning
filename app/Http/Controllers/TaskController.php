@@ -27,8 +27,8 @@ class TaskController extends Controller
         $rowid = $maxid + 1;
         $task->project_id = Session::get('project_id');
         $task->instance_id = Session::get('project_instance');
-        $task->start_date = date('Y-m-d', strtotime($request->start_date));
-        $task->end_date = date('Y-m-d', strtotime($request->end_date));
+        $task->start_date = date('Y-m-d');
+        $task->end_date = date("Y-m-d", strtotime("+ 1 day"));
         $task->duration = $request->duration;
         $task->progress = $request->has('progress') ? $request->progress : 0;
         $task->parent = $request->parent;
