@@ -222,6 +222,7 @@ class ProjectController extends Controller
                     'start_date' => date("Y-m-d", strtotime($request->start_date)),
                     'end_date' => date("Y-m-d", strtotime($request->end_date)),
                     'instance_id' => $instance_id,
+                    'progress' => 0,
                     'type' => 'task',
                     'taskmode' => 0
                 );
@@ -1288,14 +1289,14 @@ class ProjectController extends Controller
                     ->where("instance_id", Session::get("project_instance"))
                     ->where("type", "task")
                     ->where("progress", "<", 100)
-                    ->whereDate('dependency_critical', '>', date('Y-m-d'))
+                    ->whereDate('dependency_critical', '<', date('Y-m-d'))
                     ->count();
 
                 $entirecriticalcount = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
                     ->where("type", "task")
                     ->where("progress", "<", 100)
-                    ->whereDate('entire_critical', '>', date('Y-m-d'))
+                    ->whereDate('entire_critical', '<', date('Y-m-d'))
                     ->count();
 
                 $startDate = Carbon::now()->subWeeks(3);
@@ -2439,12 +2440,32 @@ class ProjectController extends Controller
                     $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => $get_email->name,
+                        'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
-                        'email' => $get_email->email,
+                        'email' => \Auth::user()->email,
                     ];
+
+                    $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
+                                                    ->first();
+                    if($team_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$id)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $id]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$creatorId)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+                    
+
                     Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
-                        [$id => \Auth::user()->email], $userArr);
+                        [$id => $get_email->email], $userArr);
                 }
                 $msg = __('Team Member Invitation Sent Successfully.');
                 $routing = 'project.teammembers';
