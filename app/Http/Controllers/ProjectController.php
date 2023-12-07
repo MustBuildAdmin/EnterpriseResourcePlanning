@@ -197,6 +197,7 @@ class ProjectController extends Controller
                     'end_date' => date("Y-m-d", strtotime($request->end_date)),
                     'instance_id' => $instance_id,
                     'type' => 'task',
+                    'progress' => 0,
                     'taskmode' => 0
                 );
                 Con_task::insert($conSummary);

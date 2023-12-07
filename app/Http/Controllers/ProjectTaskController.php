@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Session;
+use Yajra\DataTables\DataTables;
 
 class ProjectTaskController extends Controller
 {
@@ -643,6 +644,391 @@ class ProjectTaskController extends Controller
                 ]
             );
         }
+    }
+
+    public function get_all_main_task_datatable(Request $request){
+        $project_id     = Session::get('project_id');
+        $instance_id    = Session::get('project_instance');
+        $get_start_date = $request->start_date;
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
+        $task_id_arr    = $request->task_id_arr;
+        $user_id_arr    = $request->user_id;
+
+        $setting  = Utility::settings(\Auth::user()->creatorId());
+        if($setting['company_type']==2){
+
+            $show_parent_task = Con_task::select('con_tasks.text','con_tasks.users','con_tasks.duration',
+                'con_tasks.progress','con_tasks.start_date','con_tasks.end_date','con_tasks.id',
+                'con_tasks.instance_id','con_tasks.main_id','pros.project_name',
+                'pros.id as project_id','pros.instance_id as pro_instance_id')
+                ->join('projects as pros','pros.id','con_tasks.project_id')
+                ->where('con_tasks.project_id', $project_id)
+                ->where('con_tasks.instance_id', $instance_id)
+                ->where('con_tasks.type','project');
+
+            if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
+                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
+            }
+
+            if($task_id_arr != null){
+                $show_parent_task->whereIn('con_tasks.id',$task_id_arr);
+            }
+
+            if($get_start_date != null && $get_end_date != null){
+                $show_parent_task->where(function ($query) use ($get_start_date, $get_end_date) {
+                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                    $query->whereDate('con_tasks.end_date', '<=', $get_end_date);
+                });
+            }
+
+            if($status_task != null){
+                if($status_task == "3"){
+                    $show_parent_task->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                }
+                elseif($status_task == "4"){
+                    $show_parent_task->where('progress','>=','100');
+                }
+            }
+
+            if($task_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
+                $show_parent_task->orderBy('con_tasks.end_date','DESC');
+            }
+
+            $show_parent_task = $show_parent_task->get();
+
+            return Datatables::of($show_parent_task)
+            ->addColumn('status', function ($row) {
+                if (strtotime($row->end_date) < time() && $row->progress < 100){
+                    $status_fetch = '<span class="badge bg-warning me-1"></span> '.__('Pending');
+                }
+                elseif(strtotime($row->end_date) < time() && $row->progress >= 100){
+                    $status_fetch = '<span class="badge bg-success me-1"></span> '.__('Completed');
+                }
+                else{
+                    $status_fetch = '<span class="badge bg-info me-1"></span> '.__('In-Progress');
+                }
+                return $status_fetch;
+            })
+            ->addColumn('actual_progress', function ($row) {
+                return '<div class="row align-items-center">
+                    <div class="col-12 col-lg-auto" style="width: 50px;">'.round($row->progress).'%</div>
+                    <div class="col">
+                        <div class="progress" style="width: 5rem">
+                            <div class="progress-bar" style="width: '.round($row->progress).'%"
+                                role="progressbar" aria-valuenow='.round($row->progress).'
+                                aria-valuemin="0" aria-valuemax="100"
+                                aria-label='.round($row->progress).'% '. __('Complete').'>
+                                <span class="visually-hidden">'.round($row->progress).'% '. __('Complete').'</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+            })
+            ->addColumn('planned_progress', function ($row) {
+                $remaining_working_days = Utility::remaining_duration_calculator($row->end_date,$row->project_id);
+                $remaining_working_days = $remaining_working_days != 0 ?
+                $remaining_working_days-1 : 0;// include the last day
+                $completed_days = $row->duration - $remaining_working_days;
+                if($row->duration == 1){
+                    $current_Planed_percentage=100;
+                }else{
+                    if($row->duration>0){
+                        $perday = 100/$row->duration;
+                    }else{
+                        $perday = 0;
+                    }
+                    $current_Planed_percentage = round($completed_days*$perday);
+                }
+
+                return '<div class="row align-items-center">
+                    <div class="col-12 col-lg-auto" style="width: 50px;">'.round($current_Planed_percentage).'%</div>
+                    <div class="col">
+                        <div class="progress" style="width: 5rem">
+                            <div class="progress-bar" style="width: '.round($current_Planed_percentage).'%"
+                                role="progressbar" aria-valuenow='.round($current_Planed_percentage).'
+                                aria-valuemin="0" aria-valuemax="100"
+                                aria-label='.round($current_Planed_percentage).'% '. __('Complete').'>
+                                <span class="visually-hidden">'.round($current_Planed_percentage).'% '. __('Complete').'</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+            })
+            ->addColumn('planned_start', function ($row) {
+                return Utility::site_date_format($row->start_date,\Auth::user()->id);
+            })
+            ->addColumn('planned_end', function ($row) {
+                return Utility::site_date_format_minus_day($row->end_date,\Auth::user()->id,1);
+            })
+            ->rawColumns(['status','actual_progress','planned_progress','planned_start','planned_end'])
+            ->make(true);
+        }
+    }
+
+    public function get_all_task_datatable(Request $request){
+        $project_id     = Session::get('project_id');
+        $instance_id    = Session::get('project_instance');
+        $get_start_date = $request->start_date;
+        $get_end_date   = $request->end_date;
+        $status_task    = $request->status_task;
+        $task_id_arr    = $request->task_id_arr;
+        $user_id_arr    = $request->user_id;
+
+        $setting = Utility::settings(\Auth::user()->creatorId());
+        if ($setting['company_type'] == 2) {
+
+            $tasks = Con_task::select('con_tasks.text','con_tasks.dependency_critical',
+                                      'con_tasks.float_val','con_tasks.entire_critical',
+                                      'con_tasks.users', 'con_tasks.duration',
+                                      'con_tasks.progress', 'con_tasks.start_date',
+                                      'con_tasks.end_date', 'con_tasks.id',
+                                      'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
+                                      'pros.id as project_id', 'pros.instance_id as pro_instance_id',
+                                      'con_tasks.iscritical')
+                                ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
+                                ->whereNotNull('pros.instance_id')
+                                ->where('con_tasks.project_id', $project_id)
+                                ->where('con_tasks.instance_id', $instance_id)
+                                ->where('con_tasks.type', 'task');
+
+            if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
+                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            }
+
+            if($task_id_arr != null){
+                $tasks->whereIn('con_tasks.id',$task_id_arr);
+            }
+
+            if($get_start_date != null && $get_end_date != null){
+                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
+                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                    $query->whereDate('con_tasks.end_date', '<=', $get_end_date);
+                });
+            }
+
+            if($user_id_arr != null){
+
+                $tasks->where(function ($query) use ($user_id_arr) {
+                    foreach($user_id_arr as $get_user_id){
+                        if($get_user_id != ""){
+                            $query->orwhereRaw("find_in_set('".$get_user_id."',con_tasks.users)");
+                            // $query->orwhereJsonContains('con_tasks.users', $get_user_id);
+                        }
+                    }
+                });
+            }
+
+            if($status_task != null){
+                if($status_task == "3"){
+                    $tasks->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                }
+                elseif($status_task == "4"){
+                    $tasks->where('progress','>=','100');
+                }
+            }
+
+            if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
+                $get_end_date == null && $status_task == null){
+
+                if(Session::get('task_filter')=='comp'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '=', '100');
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+
+                }
+                elseif(Session::get('task_filter')=='ongoing'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '>', '0')->where('progress', '!=', '100')
+                        ->whereDate('con_tasks.end_date', '>', date('Y-m-d'));
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }
+                elseif(Session::get('task_filter')=='remaning'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '!=', '100');
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }
+                elseif(Session::get('task_filter')=='pending'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '<', '100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }
+                elseif(Session::get('task_filter')=='dependency_critical'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '<', '100')
+                        ->whereDate('con_tasks.dependency_critical', '>', date('Y-m-d'));
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }
+                elseif(Session::get('task_filter')=='entire_critical'){
+                    $tasks->where(function($query) {
+                        $query->orwhere('progress', '<', '100')
+                        ->whereDate('con_tasks.entire_critical', '>', date('Y-m-d'));
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }
+                else{
+                    $tasks->where(function($query) {
+                        $query->whereRaw('"'.date('Y-m-d').'"
+                            between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                            ->orwhere('progress', '<', '100')
+                            ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                    })
+                        ->orderBy('con_tasks.end_date', 'DESC');
+                }
+            }
+
+            $tasks = $tasks->get();
+
+            $get_date   = $get_end_date == '' ? date('Y-m-d') : $get_end_date;
+
+            return Datatables::of($tasks)
+            ->addColumn('id', function ($row) use($get_date) {
+                if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance') &&
+                $checkLatestFreezeStatus == 1){
+                    $id_fetch = '<a style="text-decoration: none;">
+                        <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
+                    </a>';
+                }
+                else{
+                    $url = route("task_particular",["task_id" => "$row->main_id","get_date" => "$get_date"]);
+                    $id_fetch = '<a href="'.$url.'" style="text-decoration: none;">
+                        <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
+                    </a>';
+                }
+                return $id_fetch;
+            })
+            ->addColumn('status', function ($row) {
+                if (strtotime($row->end_date) < time() && $row->progress < 100){
+                    $status_fetch = '<span class="badge bg-warning me-1"></span> '.__('Pending');
+                }
+                elseif(strtotime($row->end_date) < time() && $row->progress >= 100){
+                    $status_fetch = '<span class="badge bg-success me-1"></span> '.__('Completed');
+                }
+                else{
+                    $status_fetch = '<span class="badge bg-info me-1"></span> '.__('In-Progress');
+                }
+                return $status_fetch;
+            })
+            ->addColumn('dependency_critical', function ($row) {
+
+                if(date('Y-m-d') < $row->dependency_critical &&
+                $row->progress < 100 && $row->entire_critical > date('Y-m-d') &&
+                $row->progress < 100){
+                    $dependency_fetch = '<span class="badge bg-warning me-1"></span> '.__('High');
+                }
+                elseif($row->dependency_critical > date('Y-m-d') && $row->progress < 100){
+                    $dependency_fetch = '<span class="badge bg-warning me-1"></span> '.__('Medium');
+                }
+                elseif($row->entire_critical > date('Y-m-d') && $row->progress < 100){
+                    $dependency_fetch = '<span class="badge bg-warning me-1"></span> '.__('High');
+                }
+                else{
+                    $dependency_fetch = '<span class="badge bg-info me-1"></span> '.__('Low');
+                }
+                
+                return $dependency_fetch;
+            })
+            ->addColumn('float_val', function ($row) {
+                $float_val = $row->float_val==null ? 0 : $row->float_val;
+                return $float_val;
+            })
+            ->addColumn('actual_progress', function ($row) {
+                return '<div class="row align-items-center">
+                    <div class="col-12 col-lg-auto" style="width: 50px;">'.round($row->progress).'%</div>
+                    <div class="col">
+                        <div class="progress" style="width: 5rem">
+                            <div class="progress-bar" style="width: '.round($row->progress).'%"
+                                role="progressbar" aria-valuenow='.round($row->progress).'
+                                aria-valuemin="0" aria-valuemax="100"
+                                aria-label='.round($row->progress).'% '. __('Complete').'>
+                                <span class="visually-hidden">'.round($row->progress).'% '. __('Complete').'</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+            })
+            ->addColumn('planned_progress', function ($row) {
+                $remaining_working_days = Utility::remaining_duration_calculator($row->end_date,$row->project_id);
+                $remaining_working_days = $remaining_working_days != 0 ?
+                $remaining_working_days-1 : 0;// include the last day
+                $completed_days = $row->duration - $remaining_working_days;
+                if($row->duration == 1){
+                    $current_Planed_percentage=100;
+                }else{
+                    if($row->duration>0){
+                        $perday = 100/$row->duration;
+                    }else{
+                        $perday = 0;
+                    }
+                    $current_Planed_percentage = round($completed_days*$perday);
+                }
+
+                return '<div class="row align-items-center">
+                    <div class="col-12 col-lg-auto" style="width: 50px;">'.round($current_Planed_percentage).'%</div>
+                    <div class="col">
+                        <div class="progress" style="width: 5rem">
+                            <div class="progress-bar" style="width: '.round($current_Planed_percentage).'%"
+                                role="progressbar" aria-valuenow='.round($current_Planed_percentage).'
+                                aria-valuemin="0" aria-valuemax="100"
+                                aria-label='.round($current_Planed_percentage).'% '. __('Complete').'>
+                                <span class="visually-hidden">'.round($current_Planed_percentage).'% '. __('Complete').'</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+            })
+            ->addColumn('planned_start', function ($row) {
+                return Utility::site_date_format($row->start_date,\Auth::user()->id);
+            })
+            ->addColumn('planned_end', function ($row) {
+                return Utility::site_date_format_minus_day($row->end_date,\Auth::user()->id,1);
+            })
+            ->addColumn('assigne', function ($row) {
+                $assigne_fetch = "";
+                $users_data = $row->users != "" ? explode(',',$row->users) : array();
+                $assigne_fetch = '<div class="avatar-group">';
+                    if(count($users_data) != 0){
+                        foreach($users_data as $key => $get_user){
+                            $user_db = DB::table('users')->where('id',$get_user)->first();
+                            if($key<3){
+                                if($user_db->avatar){
+                                    $user_db = $user_db != null ? $user_db->name : '';
+                                    $assigne_fetch .= '<a href="#" class="avatar rounded-circle avatar-sm"> <img data-original-title="'.$user_db.'"';
+
+                                    if($user_db->avatar){
+                                        $assigne_fetch .= 'src="asset("/storage/uploads/avatar/"'.$user_db->avatar.')';
+                                    }
+                                    else{
+                                        $assigne_fetch .= 'src="asset("/storage/uploads/avatar/avatar.png")';
+                                    }
+                                }
+                                else{
+                                    $short=substr($user_db->name, 0, 1);
+                                    $assigne_fetch .='<span class="user-initial">'.strtoupper($short).'</span>';
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        $assigne_fetch .=__('Not Assigned');
+                    }
+                $assigne_fetch .='</div>';
+
+                return $assigne_fetch;
+            })
+            ->rawColumns(['id','status','dependency_critical','float_val','actual_progress','planned_progress','planned_start','planned_end','assigne'])
+            ->make(true);
+        }
+        
     }
 
     public function task_particular(Request $request)

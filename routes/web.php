@@ -3041,8 +3041,10 @@ Route::get('user_autocomplete', 'ProjectTaskController@user_autocomplete')->name
 ->middleware(['auth','XSS',]);
 
 Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth','XSS',]);
+Route::post('get_all_task_datatable', 'ProjectTaskController@get_all_task_datatable')->name('get_all_task_datatable')->middleware(['auth','XSS',]);
 Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')
 ->middleware(['auth','XSS',]);
+Route::post('get_all_main_task_datatable', 'ProjectTaskController@get_all_main_task_datatable')->name('get_all_main_task_datatable')->middleware(['auth','XSS',]);
 
 Route::get('edit_assigned_to', 'ProjectTaskController@edit_assigned_to')->name('edit_assigned_to')
 ->middleware(['auth','XSS',]);

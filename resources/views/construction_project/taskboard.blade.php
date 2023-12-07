@@ -1,21 +1,20 @@
 @include('new_layouts.header')
-{{-- @extends('layouts.admin') --}}
+@push('css-page')
 <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
+<link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 <link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.css') }}">
-
 <link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
-
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
-
-    <div class="page-wrapper">
-        @include('construction_project.side-menu')
+@include('construction_project.side-menu')
+    <section>
+        <div class="page-wrapper">
             <div class="container-fluid" id="taskboard_view">
                 <div class="p-4">
                     <div class="card">
                         <div class="col-12">
                             <div class="card-header">
                                 <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
-                                    <li class="nav-item" role="presentation" onclick="alltask()">
+                                    <li class="nav-item" role="presentation">
                                         <a href="#tabs-home-7" class="nav-link active" data-bs-toggle="tab"
                                         aria-selected="true" role="tab">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +38,7 @@
                                             {{ __('Tasks') }}
                                         </a>
                                     </li>
-                                    <li class="nav-item" role="presentation" onclick="maintask()">
+                                    <li class="nav-item" role="presentation">
                                         <a href="#tabs-profile-7" class="nav-link" data-bs-toggle="tab"
                                         aria-selected="false" tabindex="-1" role="tab">
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -190,6 +189,22 @@
                                             
                                                         <div class="col-md-10">
                                                             <div class="table-responsive card p-4" id="all_task_append">
+                                                                <table class="table table-vcenter card-table" id="task-table" aria-describedby="Sub Task">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style="color: white;">{{__('TaskId')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Tasks')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Status')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Float')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Planned Start Date')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Planned End Date')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Assigned To')}}</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -304,9 +319,21 @@
                                                         </div>
 
                                                         <div class="col-md-10">
-                                                            <div class="table-responsive card p-4"
-                                                            id="main_task_append">
-                                                                
+                                                            <div class="table-responsive card p-4">
+                                                                <table class="table table-vcenter card-table" id="summary-table" aria-describedby="Main Task" 
+                                                                style="width: 100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col" style='color:white;'>{{__('SummaryId')}}</th>
+                                                                            <th scope="col" style='color:white;'>{{__('Tasks')}}</th>
+                                                                            <th scope="col" style='color:white;'>{{__('Status')}}</th>
+                                                                            <th scope="col" style='color:white;'>{{__('Actual Progress')}}</th>
+                                                                            <th scope="col" style='color:white;'>{{__('Planned Progress')}}</th>
+                                                                            <th scope="col" style='color:white;'>{{__('Planned Start Date')}}</th>
+                                                                            <th scope="col" style='color:white;'>{{__('Planned End Date')}}</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -320,7 +347,8 @@
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
+    </section>
 
 @include('new_layouts.footer')
 
@@ -330,7 +358,17 @@
 <script src="{{ asset('datatable/jquery.dataTables.min.js') }}"></script>
 
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $(document).ready(function() {
+        
+        task_datatable(null,null,null,null,null);
+        main_datatable(null,null,null,null);
+
         $("#skill_input").tokenInput("{{route('task_autocomplete')}}", {
             propertyToSearch:"text",
             tokenValue:"id",
@@ -473,35 +511,55 @@
             },
         }));
     });
-    
-    $(function () {
-        alltask();
-    });
 
-    function alltask(start_date,end_date,user_id,status_task,task_id_arr){
-        // $(".loader_show_hide").show();
-        $("#all_task_append").html("");
-        $.ajax({
-            url : '{{route("get_all_task")}}',
-            type : 'GET',
-            data : {
-                'start_date'  : start_date,
-                'end_date'    : end_date,
-                'user_id'     : user_id,
-                'status_task' : status_task,
-                'task_id_arr' : task_id_arr
+    function task_datatable(start_date,end_date,user_id_arr,status_task,task_id_arr){
+        $('#task-table').dataTable().fnDestroy();
+        $('#task-table').DataTable({
+            processing: true,
+            serverSide: true,
+            pagingType: 'full_numbers',
+            aaSorting: [],
+            "language": {
+                "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+                "sZeroRecords": "{{ __('No data available in table') }}",
+                "sEmptyTable": "{{ __('No data available in table') }}",
+                "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+                "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+                "sSearch": "{{ __('Search') }}:",
+                "oPaginate": {
+                    "sFirst": "{{ __('First') }}",
+                    "sLast": "{{ __('Last') }}",
+                    "sNext": "{{ __('Next') }}",
+                    "sPrevious": "{{ __('Previous') }}"
+                },
             },
-            cache:true,
-            success : function(data) {
-                if(data['success'] == true){
-                    $("#all_task_append").html(data['all_task']);
+            ajax: {
+                url: "{{ route('get_all_task_datatable') }}",
+                type: "POST",
+                data: function (data) {
+                    data.start_date = start_date;
+                    data.end_date = end_date;
+                    data.user_id = user_id_arr;
+                    data.status_task = status_task;
+                    data.task_id_arr = task_id_arr;
                 }
-                // $(".loader_show_hide").hide();
             },
-            error : function(request,error)
-            {
-                alert("Request: "+JSON.stringify(request));
-            }
+            order: [],
+            columnDefs: [ { orderable: true, targets: [0,1,2,3,4,5,6,7,8]}],
+            pageLength: 10,
+            searching: true,
+            aoColumns: [
+                {data: 'id'},
+                {data: 'text'},
+                {data: 'status'},
+                {data: 'dependency_critical'},
+                {data: 'float_val'},
+                {data: 'actual_progress'},
+                {data: 'planned_progress'},
+                {data: 'planned_start'},
+                {data: 'planned_end'},
+                {data: 'assigne'}
+            ]
         });
     }
 
@@ -522,39 +580,7 @@
             user_id_arr.push(obj.id);
         });
 
-
-        alltask(start_date,end_date,user_id_arr,status_task,task_id_arr);
-    }
-
-    function maintask(start_date,end_date,status_task,task_id_arr){
-        // $(".loader_show_hide").show();
-        $("#main_task_append").html("");
-
-        $(".start_date").val("");
-        $("#status_task").val("");
-        $('.chosen-select option').prop('selected', false).trigger('chosen:updated');
-
-        $.ajax({
-            url : '{{route("main_task_list")}}',
-            type : 'GET',
-            data : {
-                'start_date'  : start_date,
-                'end_date'    : end_date,
-                'status_task' : status_task,
-                'task_id_arr' : task_id_arr
-            },
-            cache:true,
-            success : function(data) {
-                if(data['success'] == true){
-                    $("#main_task_append").html(data['main_task']);
-                }
-                // $(".loader_show_hide").hide();
-            },
-            error : function(request,error)
-            {
-                alert("Request: "+JSON.stringify(request));
-            }
-        });
+        task_datatable(start_date,end_date,user_id_arr,status_task,task_id_arr);
     }
 
     function main_submit_button(){
@@ -563,12 +589,58 @@
         status_task = $(".main_task_status").val();
         task_id     = $('input#main_skill_input').tokenInput('get');
       
-
         var task_id_arr = [];
         $.each(task_id, function(i, obj){
             task_id_arr.push(obj.id);
         });
 
-        maintask(start_date,end_date,status_task,task_id_arr);
+        main_datatable(start_date,end_date,status_task,task_id_arr);
+    }
+
+    function main_datatable(start_date,end_date,status_task,task_id_arr){
+        $('#summary-table').dataTable().fnDestroy();
+        $('#summary-table').DataTable({
+            processing: true,
+            serverSide: true,
+            pagingType: 'full_numbers',
+            aaSorting: [],
+            "language": {
+                "sLengthMenu": "{{ __('Show _MENU_ Records') }}",
+                "sZeroRecords": "{{ __('No data available in table') }}",
+                "sEmptyTable": "{{ __('No data available in table') }}",
+                "sInfo": "{{ __('Showing records _START_ to _END_ of a total of _TOTAL_ records') }}",
+                "sInfoFiltered": "{{ __('filtering of a total of _MAX_ records') }}",
+                "sSearch": "{{ __('Search') }}:",
+                "oPaginate": {
+                    "sFirst": "{{ __('First') }}",
+                    "sLast": "{{ __('Last') }}",
+                    "sNext": "{{ __('Next') }}",
+                    "sPrevious": "{{ __('Previous') }}"
+                },
+            },
+            ajax: {
+                url: "{{ route('get_all_main_task_datatable') }}",
+                type: "POST",
+                data: function (data) {
+                    data.start_date = start_date;
+                    data.end_date = end_date;
+                    data.status_task = status_task;
+                    data.task_id_arr = task_id_arr;
+                }
+            },
+            order: [],
+            columnDefs: [ { orderable: true, targets: [0,1,2,3,4,5,6]}],
+            pageLength: 10,
+            searching: true,
+            aoColumns: [
+                {data: 'id'},
+                {data: 'text'},
+                {data: 'status'},
+                {data: 'actual_progress'},
+                {data: 'planned_progress'},
+                {data: 'planned_start'},
+                {data: 'planned_end'}
+            ]
+        });
     }
 </script>
