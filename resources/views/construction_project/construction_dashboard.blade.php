@@ -67,7 +67,7 @@ if($delay>100){
                   @foreach ($projectmembers as $user)
                     @php
                       $name_r=\App\Models\Project::get_user_name($user->user_id);
-                      $avatar=substr($name_r->name, 0, 1);
+                      $short=substr($name_r->name ?? '', 0, 1);
                     @endphp
                     <span class="avatar avatar-sm rounded">{{$avatar}}</span>
                   @endforeach
