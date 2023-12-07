@@ -1216,21 +1216,25 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var start_date = form.querySelector("[name='start_date']");
         var end_date = form.querySelector("[name='end_date']");
 
-        var startdate = task.start_date;
-        var sdate = new Date(startdate),
-            yr = sdate.getFullYear(),
-            month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
-            day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
-            newone = yr + '-' + month + '-' + day;
-        start_date.value = newone;
+        // Start Date
+        var sdate        = new Date(task.start_date);
+        year             = sdate.getFullYear();
+        month            = sdate.getMonth() + 1;
+        day              = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate();
+        s_formattedMonth = (sdate.getMonth() < 10) ? "0" + month : month;
+        newone           = year + '-' + s_formattedMonth + '-' + day;
 
-        var enddate = task.end_date;
-        var edate = new Date(enddate),
-            year = edate.getFullYear(),
-            mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
-            days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
-            newsecond = year + '-' + mon + '-' + days;
-        end_date.value = newsecond;
+        // End Date
+        var edate        = new Date(task.end_date);
+        yr               = edate.getFullYear();
+        mon              = edate.getMonth() + 1;
+        days             = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate();
+        e_formattedMonth = (edate.getMonth() < 10) ? "0" + mon : mon;
+        newsecond        = yr + '-' + e_formattedMonth + '-' + days;
+
+        // start and end date set into the ids
+        start_date.value = newone;
+        end_date.value   = newsecond;
 
         validatedate(id);
         setTimeout(function() {
