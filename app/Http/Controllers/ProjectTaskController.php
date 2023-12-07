@@ -909,39 +909,53 @@ class ProjectTaskController extends Controller
             })
             ->addColumn('status', function ($row) {
                 if (strtotime($row->end_date) < time() && $row->progress < 100){
-                    $status_fetch = '<span class="badge bg-warning me-1"></span> '.__('Pending');
+                    $status_fetch = '<div style="display:flex;gap:5px;">
+                        <span style="margin-top: 4px;" class="badge bg-warning me-1"></span> <span>'.__('Pending').'</span>
+                    </div>';
                 }
                 elseif(strtotime($row->end_date) < time() && $row->progress >= 100){
-                    $status_fetch = '<span class="badge bg-success me-1"></span> '.__('Completed');
+                    $status_fetch = '<div style="display:flex;gap:5px;">
+                        <span style="margin-top: 4px;" class="badge bg-success me-1"></span> <span>'.__('Completed').'</span>
+                    </div>';
                 }
                 else{
-                    $status_fetch = '<span class="badge bg-info me-1"></span> '.__('In-Progress');
+                    $status_fetch = '<div style="display:flex;gap:5px;">
+                        <span style="margin-top: 4px;" class="badge bg-info me-1"></span> <span>'.__('In-Progress').'</span>
+                    </div>';
                 }
                 return $status_fetch;
             })
             ->addColumn('dependency_critical', function ($row) {
-
-                if(date('Y-m-d') < $row->dependency_critical &&
-                $row->progress < 100 && $row->entire_critical > date('Y-m-d') &&
-                $row->progress < 100){
-                    $dependency_fetch = '<span class="badge bg-warning me-1"></span> '.__('High');
-                }
-                elseif($row->dependency_critical > date('Y-m-d') && $row->progress < 100){
-                    $dependency_fetch = '<span class="badge bg-warning me-1"></span> '.__('Medium');
-                }
-                elseif($row->entire_critical > date('Y-m-d') && $row->progress < 100){
-                    $dependency_fetch = '<span class="badge bg-warning me-1"></span> '.__('High');
+                if($row->progress < 100){
+                    if(date('Y-m-d') > $row->entire_critical){
+                        $dependency_fetch = '<span class="badge bg-warning me-1"></span> <span>'.__('High').'</span>';
+                    }
+                    else if(date('Y-m-d') > $row->dependency_critical){
+                        $dependency_fetch = '<span class="badge bg-warning me-1"></span> '.__('Medium').'</span>';
+                    }
+                    else{
+                        $dependency_fetch = '<span class="badge bg-info me-1"></span> '.__('Low').'</span>';
+                    }
                 }
                 else{
-                    $dependency_fetch = '<span class="badge bg-info me-1"></span> '.__('Low');
+                    $dependency_fetch = '<span class="badge bg-info me-1"></span> '.__('Low').'</span>';
                 }
-                
                 return $dependency_fetch;
             })
-            ->addColumn('float_val', function ($row) {
-                $float_val = $row->float_val==null ? 0 : $row->float_val;
-                return $float_val;
+            ->addColumn('free_slack', function ($row) {
+                
+                $free_slack = $row->free_slack == null ? 0 : $row->free_slack;
+                return $free_slack;
             })
+            ->addColumn('total_slack', function ($row) {
+                
+                $total_slack = $row->total_slack == null ? 0 : $row->total_slack;
+                return $total_slack;
+            })
+            // ->addColumn('float_val', function ($row) {
+            //     $float_val = $row->float_val==null ? 0 : $row->float_val;
+            //     return $float_val;
+            // })
             ->addColumn('actual_progress', function ($row) {
                 return '<div class="row align-items-center">
                     <div class="col-12 col-lg-auto" style="width: 50px;">'.round($row->progress).'%</div>

@@ -189,14 +189,17 @@
                                             
                                                         <div class="col-md-10">
                                                             <div class="table-responsive card p-4" id="all_task_append">
-                                                                <table class="table table-vcenter card-table" id="task-table" aria-describedby="Sub Task">
+                                                                <table class="table table-vcenter card-table" id="task-table" aria-describedby="Sub Task"
+                                                                style="width: 100%">
                                                                     <thead>
                                                                         <tr>
                                                                             <th scope="col" style="color: white;">{{__('TaskId')}}</th>
                                                                             <th scope="col" style="color: white;">{{__('Tasks')}}</th>
                                                                             <th scope="col" style="color: white;">{{__('Status')}}</th>
                                                                             <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Float')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Free Slack')}}</th>
+                                                                            <th scope="col" style="color: white;">{{__('Total Slack')}}</th>
+                                                                            {{-- <th scope="col" style="color: white;">{{__('Float')}}</th> --}}
                                                                             <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
                                                                             <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
                                                                             <th scope="col" style="color: white;">{{__('Planned Start Date')}}</th>
@@ -545,7 +548,7 @@
                 }
             },
             order: [],
-            columnDefs: [ { orderable: true, targets: [0,1,2,3,4,5,6,7,8]}],
+            columnDefs: [ { orderable: true, className: "text-center", targets: [0,1,2,3,4,5,6,7,8]}],
             pageLength: 10,
             searching: true,
             aoColumns: [
@@ -553,7 +556,9 @@
                 {data: 'text'},
                 {data: 'status'},
                 {data: 'dependency_critical'},
-                {data: 'float_val'},
+                {data: 'free_slack'},
+                {data: 'total_slack'},
+                // {data: 'float_val'},
                 {data: 'actual_progress'},
                 {data: 'planned_progress'},
                 {data: 'planned_start'},
