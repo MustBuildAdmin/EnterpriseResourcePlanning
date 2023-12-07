@@ -3608,6 +3608,18 @@ Route::any(
 );
 
 Route::any(
+    'gantt_get_validated_date', [
+        'as' => 'gantt_get_validated_date',
+        'uses' => 'ProjectTaskController@gantt_get_validated_date',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
     'task_assignee_search', [
         'as' => 'project.user_search',
         'uses' => 'ProjectController@task_assignee_search',

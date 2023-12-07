@@ -5,6 +5,18 @@
 <link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.css') }}">
 <link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
+<style>
+    .ellipsis_task {
+        width: auto;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        word-break: break-all;
+    }
+</style>
 @include('construction_project.side-menu')
     <section>
         <div class="page-wrapper">
@@ -189,8 +201,7 @@
                                             
                                                         <div class="col-md-10">
                                                             <div class="table-responsive card p-4" id="all_task_append">
-                                                                <table class="table table-vcenter card-table" id="task-table" aria-describedby="Sub Task"
-                                                                style="width: 100%">
+                                                                <table class="table table-vcenter card-table" id="task-table" aria-describedby="Sub Task">
                                                                     <thead>
                                                                         <tr>
                                                                             <th scope="col" style="color: white;">{{__('TaskId')}}</th>
@@ -548,7 +559,65 @@
                 }
             },
             order: [],
-            columnDefs: [ { orderable: true, className: "text-center", targets: [0,1,2,3,4,5,6,7,8]}],
+            columnDefs: [
+                {
+                    "targets": 0,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 1,
+                    "className": "text-right",
+                    "width": "20%",
+                    "orderable": true
+                },
+                {
+                    "targets": 2,
+                    "className": "text-center",
+                    "width": "20%",
+                    "orderable": true
+                },
+                {
+                    "targets": 3,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 4,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 5,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 6,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 7,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 8,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 9,
+                    "className": "text-center",
+                    "orderable": true
+                },
+                {
+                    "targets": 10,
+                    "className": "text-center",
+                    "orderable": false
+                }
+            ],
             pageLength: 10,
             searching: true,
             aoColumns: [

@@ -563,6 +563,10 @@ class ProjectTaskController extends Controller
                 }
                 return $id_fetch;
             })
+            ->addColumn('text', function ($row) use($get_date) {
+                $text_fetch = '<div class="ellipsis_task" title="'.$row->text.'">'.$row->text.'</div>';
+                return $text_fetch;
+            })
             ->addColumn('status', function ($row) {
                 if (strtotime($row->end_date) < time() && $row->progress < 100){
                     $status_fetch = '<div style="display:flex;gap:5px;">
@@ -696,7 +700,7 @@ class ProjectTaskController extends Controller
 
                 return $assigne_fetch;
             })
-            ->rawColumns(['id','status','dependency_critical','float_val','actual_progress','planned_progress','planned_start','planned_end','assigne'])
+            ->rawColumns(['id','text','status','dependency_critical','float_val','actual_progress','planned_progress','planned_start','planned_end','assigne'])
             ->make(true);
         }
 
@@ -1412,6 +1416,20 @@ class ProjectTaskController extends Controller
 
             return response()->json($user);
         } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function gantt_get_validated_date(Request $request){
+        try {
+            $id = $request->id;
+            return Con_task::select('start_date','end_date')
+                ->where('project_id',Session::get("project_id"))
+                ->where('instance_id',Session::get("project_instance"))
+                ->where('id',$id)
+                ->first();
+        }
+        catch (Exception $e) {
             return $e->getMessage();
         }
     }

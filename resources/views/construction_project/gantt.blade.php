@@ -388,12 +388,12 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     <div class="row mt-4">
                         <div class="col-md-6 col-12">
                             <label class="form-label">{{ __('Task Start Date') }}</label>
-                            <input type="text" class="form-control" name="start_date" id="start-date"
+                            <input type="text" class="form-control" name="start_date" id="start-date" value=""
                                 placeholder="{{ __('Enter Your Task Start Date') }}">
                         </div>
                         <div class="col-md-6  col-12">
                             <label class="form-label">{{ __('Task End Date') }}</label>
-                            <input type="text" class="form-control" name="end_date" id="end-date"
+                            <input type="text" class="form-control" name="end_date" id="end-date" value=""
                                 placeholder="{{ __('Enter Your Task End Date') }}">
                         </div>
                     </div>
@@ -535,6 +535,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <input type='hidden' id='holidays' value='{{ $holidays }}'>
 <input type='hidden' id='frezee_status' value='{{ $freezeCheck->freeze_status }}'>
 <input type='hidden' id='critical_update' value='{{ $critical_update }}'>
+<input type='hidden' id='start_date_input'>
+<input type='hidden' id='end_date_input'>
 
 
 
@@ -1341,21 +1343,30 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         var start_date = form.querySelector("[name='start_date']");
         var end_date = form.querySelector("[name='end_date']");
 
-        var startdate = task.start_date;
-        var sdate = new Date(startdate),
-        yr = sdate.getFullYear(),
-        month = sdate.getMonth() < 10 ? '0' + sdate.getMonth() : sdate.getMonth(),
-        day = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate(),
-        newone = yr + '-' + month + '-' + day;
-        start_date.value = newone;
+        // Start Date
+        var sdate        = new Date(task.start_date);
+        year             = sdate.getFullYear();
+        month            = sdate.getMonth() + 1;
+        day              = sdate.getDate() < 10 ? '0' + sdate.getDate() : sdate.getDate();
+        s_formattedMonth = (sdate.getMonth() < 10) ? "0" + month : month;
+        newone           = year + '-' + s_formattedMonth + '-' + day;
 
-        var enddate = task.end_date;
-        var edate = new Date(enddate),
-        year = edate.getFullYear(),
-        mon = edate.getMonth() < 10 ? '0' + edate.getMonth() : edate.getMonth(),
-        days = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate(),
-        newsecond = year + '-' + mon + '-' + days;
-        end_date.value = newsecond;
+        // End Date
+        var edate        = new Date(task.end_date);
+        yr               = edate.getFullYear();
+        mon              = edate.getMonth() + 1;
+        days             = edate.getDate() < 10 ? '0' + edate.getDate() : edate.getDate();
+        e_formattedMonth = (edate.getMonth() < 10) ? "0" + mon : mon;
+        newsecond        = yr + '-' + e_formattedMonth + '-' + days;
+
+        // start and end date set into the ids
+        start_date.value = newone;
+        end_date.value   = newsecond;
+
+        validatedate(id);
+        setTimeout(function() {
+            dateset();
+        }, 800);
 
         var users = form.querySelector("[name='users']");
 
@@ -1599,6 +1610,54 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     $(document).on("click", ".gantt_add, .gantt_grid_head_add", function () {
         $("#save").html("Add New Task");
     });
+
+    function validatedate(id) {
+        $.ajax({
+            type: 'GET',
+            url: "{{ route('gantt_get_validated_date') }}",
+            data: {
+                _token: tempcsrf,
+                id: id,
+            },
+            success: function(data) {
+
+                $('input#start-date').val(data.start_date);
+                $('input#end-date').val(data.end_date);
+                $('input#start_date_input').val(data.start_date);
+                $('input#end_date_input').val(data.end_date);
+            }
+        });
+    }
+
+    function dateset() {
+        var start_date_input = $('input#start_date_input').val();
+        var end_date_input = $('input#end_date_input').val();
+        window.Litepicker && (new Litepicker({
+            element: document.getElementById('start-date'),
+            elementEnd: document.getElementById('end-date'),
+            minDate: start_date_input,
+            maxDate: end_date_input,
+            singleMode: false,
+            allowRepick: true,
+            buttonText: {
+                previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon"
+                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round"><path stroke="none"
+                        d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M15 6l-6 6l6 6" />
+                    </svg>`,
+                nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"
+                        fill="none"/><path d="M9 6l6 6l-6 6" />
+                    </svg>`,
+            },
+        }));
+    }
     
     // gantt crud end
 
@@ -1688,5 +1747,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     });
     $(document).on('change', '#taskmode_one', function(){
         $('#sub_con').hide();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
     });
 </script>
