@@ -2362,12 +2362,32 @@ class ProjectController extends Controller
                     $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember') . $createConnection->id;
                     $userArr = [
                         'invite_link' => $inviteUrl,
-                        'user_name' => $get_email->name,
+                        'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
-                        'email' => $get_email->email,
+                        'email' => \Auth::user()->email,
                     ];
+
+                    $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
+                                                    ->first();
+                    if($team_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$id)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $id]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$creatorId)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+                    
+
                     Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
-                        [$id => \Auth::user()->email], $userArr);
+                        [$id => $get_email->email], $userArr);
                 }
                 $msg = __('Team Member Invitation Sent Successfully.');
                 $routing = 'project.teammembers';
