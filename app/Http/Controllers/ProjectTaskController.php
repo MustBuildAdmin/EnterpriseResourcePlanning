@@ -191,6 +191,7 @@ class ProjectTaskController extends Controller
 
             $tasks = Con_task::select('con_tasks.text','con_tasks.dependency_critical',
                                       'con_tasks.float_val','con_tasks.entire_critical',
+                                      'con_tasks.free_slack','con_tasks.total_slack',
                                       'con_tasks.users', 'con_tasks.duration',
                                       'con_tasks.progress', 'con_tasks.start_date',
                                       'con_tasks.end_date', 'con_tasks.id',

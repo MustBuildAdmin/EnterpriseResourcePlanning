@@ -109,7 +109,7 @@
                         </div>
                         <div class="datagrid mb-3">
                             <div class="datagrid-item">
-                               
+
                                 <div class="datagrid-title">{{__('Zip Code')}}</div>
                                 <div class="datagrid-content">{{$project->zipcode}}</div>
                             </div>
@@ -127,7 +127,7 @@
                                 <div class="datagrid-title">{{__('Estimated Days')}}</div>
                                 <div class="datagrid-content">{{$project->estimated_days}}</div>
                             </div>
-                          
+
                             <div class="datagrid-item">
                                 <div class="datagrid-title">{{__('Non Working Days')}}</div>
                                 <div class="datagrid-content">{{implode(", ",$weekendVal)}}</div>

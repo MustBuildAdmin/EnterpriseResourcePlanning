@@ -3579,12 +3579,12 @@ Route::get(
     ]
 );
 
-Route::any('get_member', 'ProjectController@criticaltask_update')->middleware(
+Route::any('criticaltask_update', 'ProjectController@criticaltask_update')->middleware(
     [
         'auth',
         'XSS',
     ]
-)->name('projects.criticaltask_update');
+)->name('criticaltask_update');
 
 Route::any('micro_get_member', 'MicroPorgramController@criticaltask_update')->middleware(
     [

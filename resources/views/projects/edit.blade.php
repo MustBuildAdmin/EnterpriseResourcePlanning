@@ -102,7 +102,10 @@
 
     /* micro program CSS */
     .newmicro_program {
-        margin-top: 24px;
+        margin-top: 30px !important;
+    }
+    .col-sm-4.col-md-4.rowTop{
+        margin-top: 10px;
     }
     .checkbox_group {
         display: block !important;
@@ -215,7 +218,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
@@ -322,15 +325,26 @@
                     </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-4 col-md-4 ">
                             <div class="form-group">
                                 {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
-                                {{ Form::time('report_time', null, ['class' => 'form-control', 'rows' => '4',
-                                     'cols' => '50','required'=>'required']) }}
+                                <select class="form-control" name="report_time" id='report_time'
+                                 placeholder="Select Report Time" required>
+                                    <option value="">{{ __('Select Report Time ...') }}</option>
+                                    <?php
+                                    foreach($reportingtime as $key=>$value){
+                                        if($key.':00' == $project->report_time){
+                                            echo '<option value="'.$key.':00" selected>'.$value.'</option>';
+                                        }
+                                        else{
+                                            echo '<option value="'.$key.':00">'.$value.'</option>';
+                                        }
+                                    } ?>
+                                </select>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-4 col-md-4 rowTop">
                             <div class="form-group">
                                 {{Form::label('non_working_days',__('non_working_days'),['class'=>'form-label'])}}
                                 <span class="text-danger">*</span>
@@ -355,14 +369,13 @@
                                 This field is required</span>
 
                         </div>
-
-                        <div class="col-sm-4 col-md-4 newmicro_program">
-                            <div class="form-group checkbox_group">
-                                <input type="checkbox" id="micro_program" name="micro_program"
-                                {{ ($project->micro_program == 1) ? 'checked disabled' : 'display-none'}}>
-                                <label for="micro_program">Look-a-head Enabled</label>
+                        @if($project->micro_program == 1)
+                        <div class="col-sm-4 col-md-4 newmicro_program rowTop">
+                            <div class="form-group">
+                                <label>Look-a-head Enabled</label>
                             </div>
                         </div>
+                        @endif
                     </div>
 
                     <button type="button" class="btn btn-primary createProject" onclick="createProject()">Save</button>
@@ -396,7 +409,7 @@ aria-hidden="true" data-toggle="modal">
 </div>
 
 <script>
-     
+
     $('#loding_popup').modal({backdrop: 'static', keyboard: false});
     $('#commonModal').modal({backdrop: 'static', keyboard: false});
     disabled_all();
@@ -420,13 +433,13 @@ aria-hidden="true" data-toggle="modal">
     function count_table_tr(){
         count_tr = $(".holiday_table tbody tr").length;
         row_count = parseInt(count_tr) + parseInt(1);
-        
+
         return row_count;
     }
     var key_i = count_table_tr();
     check_validation = 0;
     $(document).on("click", '.addmore', function () {
-       
+
         if ($("#holidays").prop('checked') == false) {
             holidayValidation();
         }
@@ -492,12 +505,12 @@ aria-hidden="true" data-toggle="modal">
 	}
 
     function select_all_key() {
-        $('input[class=case]:checkbox').each(function(){ 
-            if($('input[class=check_all]:checkbox:checked').length == 0){ 
-                $(this).prop("checked", false); 
+        $('input[class=case]:checkbox').each(function(){
+            if($('input[class=check_all]:checkbox:checked').length == 0){
+                $(this).prop("checked", false);
             } else {
-                $(this).prop("checked", true); 
-            } 
+                $(this).prop("checked", true);
+            }
         });
     }
 
@@ -505,7 +518,7 @@ aria-hidden="true" data-toggle="modal">
         holiday_array   = [];
         holiday_date    = $(this).val();
         holiday_date_id = $(this).attr('id');
-       
+
         $('.holiday_table tr').each(function(){
             pre_holiday = $(this).find(".get_date").val();
             pre_holiday_id = $(this).find(".get_date").attr('id');
@@ -514,7 +527,7 @@ aria-hidden="true" data-toggle="modal">
             }
         });
 
-        if(holiday_array.indexOf(holiday_date) !== -1)  
+        if(holiday_array.indexOf(holiday_date) !== -1)
         {
             toastr.error("This Date Is Already Exist!");
             $(this).val("");
@@ -661,14 +674,14 @@ aria-hidden="true" data-toggle="modal">
         input.value = numbers;
     }
     function createProject(){
-       
+
         var form = $("#create_project_form");
         if(form.valid()){
             let non_working=$('#non_working_days').val();
             if(non_working.length<=0){
                 $("#non_working_days_error").show();
             }else{
-            
+
             freeze_status = $("#freeze_status").val();
                 if(freeze_status == 1){
                     const swalWithBootstrapButtons = Swal.mixin({
@@ -718,6 +731,6 @@ aria-hidden="true" data-toggle="modal">
                 }
             }
         }
-       
+
     }
 </script>
