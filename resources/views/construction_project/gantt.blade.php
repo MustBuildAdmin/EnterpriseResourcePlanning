@@ -496,10 +496,11 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
  <!-- Delete Confirmation ends-->
  
  <!-- Suc alert starts-->
- <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
+ <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true"
+  data-bs-backdrop="static"  data-bs-keyboard="false" >
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
        <div class="modal-content">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close confirm_ok" data-bs-dismiss="modal" aria-label="Close"></button>
           <div class="modal-status bg-success"></div>
           <div class="modal-body text-center py-4">
              <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
@@ -517,7 +518,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
              <div class="w-100">
                 <div class="row">
                    <div class="col">
-                      <a href="#" id="confirm_ok" class="btn w-100" data-bs-dismiss="modal">
+                      <a href="#" id="confirm_ok" class="btn w-100 confirm_ok" data-bs-dismiss="modal">
                         {{ __('Ok') }}
                       </a>
                    </div>
@@ -586,7 +587,9 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             },
             type: 'POST',
             success: function(response) {
+                $(document).on("click", ".confirm_ok", function () {
                     location.reload();
+                });
             },
             error: function(response) {
                     show_toastr('error', response.error, 'error');
