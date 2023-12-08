@@ -365,9 +365,9 @@
 
         <div class="row row-cards">
             @forelse($users as $user)
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-2">
                     <div class="card">
-                        <div class="ms-auto lh-1  p-4">
+                        <div class="ms-auto lh-1  p-2">
                             @if ($user->color_code != null || $user->color_code != '')
                                 @php $color_co=$user->color_code; @endphp
                             @else
@@ -408,13 +408,13 @@
                         @php
                             $short_lname=substr($user->lname, 0, 1);
                         @endphp
-                        <div class="card-body p-4 text-center">
+                        <div class="card-body p-2 text-center">
                             @if (!empty($user->avatar))
                                 <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
                                 asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
-                                    class="avatar avatar-xl mb-3 rounded" alt="">
+                                    class="avatar avatar-xl mb-2 rounded" alt="">
                             @else
-                                <div class="avatar avatar-xl mb-3 user-initial"
+                                <div class="avatar avatar-xl mb-2 user-initial"
                                     style='background-color:{{ $color_co }}'>
                                     {{ strtoupper($short) }}{{ strtoupper($short_lname) }}
                                 </div>
@@ -427,7 +427,7 @@
                             @endphp
                             <h3 class="m-0 mb-1"><a href="#">{{ $name }} {{ $lname }}</a></h3>
                             {{-- <div class="text-secondary">UI Designer</div> --}}
-                            <div class="mt-3">
+                            <div class="mt-2">
                                 <span class="badge bg-purple-lt" id="text">{{ $user->type }}</span>
                             </div>
                         </div>
