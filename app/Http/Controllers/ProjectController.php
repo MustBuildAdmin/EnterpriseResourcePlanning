@@ -314,17 +314,7 @@ class ProjectController extends Controller
                         $task->project_id=$project->id;
                         $task->instance_id=$instance_id;
 
-                        //########  checking the date is correct ########
-                        if($value['start_date'] > $raw['Finish']){
-                            Project::where('id',$project->id)->delete();
-                            Instance::where('project_id',$project->id)->delete();
-                            Con_task::where('project_id',$project->id)->delete();
-
-                            return redirect()->back()->with('error', __('Microproject data Mismatch'));
-
-                        }
-                        // ###############################
-
+                      
 
                         if(isset($value['text'])){
                             $task->text=$value['text'];
@@ -351,12 +341,40 @@ class ProjectController extends Controller
                             $raw=$value['$raw'];
                             if(isset($raw['Finish'])){
                                 $task->end_date=$raw['Finish'];
+                                $end=$raw['Finish'];
+                            }else{
+                                $end="";
                             }
                             $task->custom=json_encode($value['$raw']);
                         }
 
+                        //########  checking the date is correct ########
+                          if($value['start_date'] > $end){
+                            Project::where('id',$project->id)->delete();
+                            Instance::where('project_id',$project->id)->delete();
+                            Con_task::where('project_id',$project->id)->delete();
+
+                            return redirect()->back()->with('error', __('Microproject data Mismatch'));
+
+                        }
+
+                        $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
+
+                        if($parent && $parent!=0){
+                            if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
+                                Project::where('id',$project->id)->delete();
+                                Instance::where('project_id',$project->id)->delete();
+                                Con_task::where('project_id',$project->id)->delete();
+
+                                return redirect()->back()->with('error', __('Microproject data Mismatch'));
+
+                            }
+                        }
+                        // ###############################
+
                         $task->save();
                     }
+    
 
                     foreach($responseBody['data']['links'] as $key=>$value){
                         $link= new Link();
@@ -465,6 +483,15 @@ class ProjectController extends Controller
                                 return redirect()->back()->with('error', __(' primaverra data Mismatch'));
 
                             }
+
+                            if($value['start_date'] < $parent->start_date || $raw['Finish'] > $parent->end_date){
+                                Project::where('id',$project->id)->delete();
+                                Instance::where('project_id',$project->id)->delete();
+                                Con_task::where('project_id',$project->id)->delete();
+    
+                                return redirect()->back()->with('error', __('Microproject data Mismatch'));
+    
+                            }
                             // ###############################
                             if (isset($value['text'])) {
                                 $task->text = $value['text'];
@@ -490,9 +517,35 @@ class ProjectController extends Controller
                                 $raw = $value['$raw'];
                                 if (isset($raw['Finish'])) {
                                     $task->end_date = $raw['Finish'];
+                                    $end=$raw['Finish'];
+                                }else{
+                                    $end='';
                                 }
                                 $task->custom = json_encode($value['$raw']);
                             }
+
+                            //########  checking the date is correct ########
+                            if($value['start_date'] > $end){
+                                Project::where('id',$project->id)->delete();
+                                Instance::where('project_id',$project->id)->delete();
+                                Con_task::where('project_id',$project->id)->delete();
+
+                                return redirect()->back()->with('error', __('Microproject data Mismatch'));
+
+                            }
+                            $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
+
+                            if($parent && $parent!=0){
+                                if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
+                                    Project::where('id',$project->id)->delete();
+                                    Instance::where('project_id',$project->id)->delete();
+                                    Con_task::where('project_id',$project->id)->delete();
+    
+                                    return redirect()->back()->with('error', __('Microproject data Mismatch'));
+    
+                                }
+                            }
+                        // ###############################
 
                             $task->save();
 
