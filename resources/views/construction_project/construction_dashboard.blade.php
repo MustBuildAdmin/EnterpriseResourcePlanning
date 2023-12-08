@@ -39,11 +39,11 @@ if($delay>100){
         <div class="row row-deck row-cards">
           <div class="col-lg-6 col-xl-3">
             <div class="card">
-              <div class="card-body p-4 py-5 text-center">
+              <div class="card-body p-2 text-center">
                 @php
                   $avatar=substr($project->project_name, 0, 1);
                 @endphp
-                <span class="avatar avatar-xl mb-4 rounded">{{ $avatar }}</span>
+                <span class="avatar avatar-xl mb-3 rounded">{{ $avatar }}</span>
                 <h3 class="mb-0">{{$project->project_name}}</h3>
                 <p class="text-secondary"><b>{{ __('Start from')}}:</b>
                 {{ Utility::getDateFormated($project->start_date) }} - <b>{{ __('Due to')}}:</b>
@@ -298,9 +298,9 @@ if($delay>100){
                       <div class="col-auto">
                         <span
                           class="bg-green text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-road" 
-                          width="24" height="24" viewBox="0 0 24 24" 
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-road"
+                          width="24" height="24" viewBox="0 0 24 24"
                           stroke-width="2" stroke="currentColor" fill="none"
                            stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -334,9 +334,9 @@ if($delay>100){
                       <div class="col-auto">
                         <span
                           class="bg-twitter text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-list-details" 
-                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-list-details"
+                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M13 5h8"></path>
@@ -370,9 +370,9 @@ if($delay>100){
                       <div class="col-auto">
                         <span
                           class="bg-facebook text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list" 
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list"
                           width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                           stroke="currentColor" fill="none" stroke-linecap="round" 
+                           stroke="currentColor" fill="none" stroke-linecap="round"
                                                     stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M9 6l11 0"></path>
@@ -408,9 +408,9 @@ if($delay>100){
                       <div class="col-auto">
                         <span
                           class="bg-orange text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-route-2" width="24" height="24" 
-                          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" 
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-route-2" width="24" height="24"
+                          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                           fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M3 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
@@ -444,8 +444,8 @@ if($delay>100){
                       <div class="col-auto">
                         <span
                           class="bg-red  text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-alert-triangle-filled" 
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-alert-triangle-filled"
                           width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
