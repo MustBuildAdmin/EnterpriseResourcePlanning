@@ -13,7 +13,7 @@
 @endsection
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{__('Language')}}</li>
+    <li class="breadcrumb-item active" aria-current=>{{__('Language')}}</li>
 @endsection
 @section('action-btn')
     <div class="float-end">

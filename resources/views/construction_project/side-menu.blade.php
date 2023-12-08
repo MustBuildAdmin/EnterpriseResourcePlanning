@@ -80,13 +80,13 @@
      background: none !important;
      border-radius: 50px;
      background-color: var(--theadColor) !important;
-     color:#fff !important 
+     color:#fff !important
 }
  .paginate_button.current:hover {
      background: none !important;
      border-radius: 50px;
      background-color: var(--theadColor) !important;
-     color:#fff !important 
+     color:#fff !important
 }
  .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
      border: 1px solid #979797;
@@ -104,7 +104,7 @@
     box-shadow: none;
 }
 </style>
-<div class="page">
+<div class=>
     <!-- Sidebar  -->
     <header id="sidebar" class="navbar navbar-expand-md subnav d-print-none" data-bs-theme="light"
         style="background: #e4e4e4;">
@@ -273,12 +273,12 @@
                                                 class="{{ (Request::route()->getName() == 'microprogram.gantt')
                                                 ?'dropdown-item active' :'dropdown-item'}}">
                                                 {{ __('Lookahead Gantt') }}</a>
-                                            
+
                                             <a href="{{ route('microprogram') }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram')
                                                 ?'dropdown-item active' :'dropdown-item'}}">
                                                 {{ __('Lookahead Schedule') }}</a>
-                                        
+
                                             <a href="{{ route('micro_taskboard') }}"
                                                 class="{{ (Request::route()->getName() == 'micro_taskboard')
                                                 ?'dropdown-item active' :'dropdown-item'}}">
@@ -437,7 +437,7 @@
                             </span>
                         </a>
                     </li>
-                    
+
                      {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                      <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>

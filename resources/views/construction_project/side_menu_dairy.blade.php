@@ -21,7 +21,7 @@
         color: black !important;
     }
 </style>
-<div class="page">
+<div class=>
     <!-- Sidebar  -->
     <header id="sidebar" class="navbar navbar-expand-md subnav d-print-none" data-bs-theme="light"
         style="background: #e4e4e4;">

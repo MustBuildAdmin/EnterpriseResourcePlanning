@@ -70,7 +70,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('project_report.index')}}">{{__('Project Report')}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{__('Project Details')}}</li>
+    <li class="breadcrumb-item active" aria-current=>{{__('Project Details')}}</li>
 @endsection
 
 @section('action-btn')
