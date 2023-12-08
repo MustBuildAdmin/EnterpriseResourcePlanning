@@ -190,10 +190,17 @@
                                                                 <div class="col-12 mt-4">
                                                                     <div class="mb-3">
                                                                         <button type="button"
-                                                                        class="btn btn-tabler w-100"
-                                                                        onclick="submit_button()">
-                                                                        {{ __('Search') }}
-                                                                    </button>
+                                                                            class="btn btn-tabler w-100"
+                                                                            onclick="submit_button()">
+                                                                            {{ __('Search') }}
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <button type="reset"
+                                                                            class="btn btn-tabler w-100"
+                                                                            onclick="reset_button()">
+                                                                            {{ __('Reset') }}
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </form>
@@ -326,6 +333,13 @@
                                                                         class="btn btn-tabler w-100"
                                                                         onclick="main_submit_button()">
                                                                         {{ __('Search') }}
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <button type="reset"
+                                                                            class="btn btn-tabler w-100"
+                                                                            onclick="main_reset_button()">
+                                                                            {{ __('Reset') }}
                                                                         </button>
                                                                     </div>
                                                                 </div>
@@ -636,6 +650,26 @@
             ]
         });
     }
+
+    function reset_button(){
+        $(".start_date").val("");
+        $(".end_date").val("");
+        $('input#skill_input').tokenInput('clear');
+        $('input#user_select').tokenInput('clear');
+        document.querySelector('select.task_status').tomselect.setValue("");
+
+        task_datatable(null,null,null,null,null);
+    }
+
+    function main_reset_button(){
+        $(".main_start_date").val("");
+        $(".main_end_date").val("");
+        $('input#main_skill_input').tokenInput('clear');
+        document.querySelector('select.main_task_status').tomselect.setValue("");
+
+        main_datatable(null,null,null,null);
+    }
+
 
     function submit_button(){
         start_date  = $(".start_date").val();
