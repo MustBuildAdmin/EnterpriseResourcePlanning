@@ -57,7 +57,7 @@ a.text-dark {
        @foreach ($projects as $key => $project)
          <div class="col-md-6 col-lg-3">
             <div class="card">
-               <div class="card-body p-4 py-5 text-center">
+               <div class="card-body p-2 text-center">
 
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
