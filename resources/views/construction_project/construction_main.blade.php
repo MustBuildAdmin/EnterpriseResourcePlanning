@@ -53,7 +53,7 @@ a.text-dark {
       </div>
 
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
-      <div class="row row-cards mt-4">
+      <div class="row row-cards mt-2">
        @foreach ($projects as $key => $project)
          <div class="col-md-6 col-lg-2">
             <div class="card">
@@ -69,7 +69,7 @@ a.text-dark {
                        <img id="image"  src="{{$image}}"
                         class="avatar avatar-xl mb-2 rounded" alt="">
                    @else
-                       <span class="avatar avatar-xl mb-4 rounded">
+                       <span class="avatar avatar-xl mb-2 rounded">
                            <?= substr($project->project_name,0,2) ?>
                        </span>
                    @endif
@@ -93,7 +93,7 @@ a.text-dark {
                   </a>
                @endif
                   </h3>
-                  <p class="text-secondary mb-0"><small>
+                  <p class="text-secondary mb-0"><small style="font-size:10px,font-weight: 600">
                     Start Date: {{ Utility::getDateFormated($project->start_date) }}
                     - End Date: {{ Utility::getDateFormated($project->end_date) }}</small></p>
                   <p class="mb-3">
