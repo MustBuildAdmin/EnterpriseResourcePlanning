@@ -93,7 +93,7 @@ a.text-dark {
                   </a>
                @endif
                   </h3>
-                  <p class="text-secondary mb-0"><small style="font-size:10px,font-weight: 600">
+                  <p class="text-secondary mb-0"><small style="font-size:10.5px;font-weight: 600">
                     Start Date: {{ Utility::getDateFormated($project->start_date) }}
                     - End Date: {{ Utility::getDateFormated($project->end_date) }}</small></p>
                   <p class="mb-3">
