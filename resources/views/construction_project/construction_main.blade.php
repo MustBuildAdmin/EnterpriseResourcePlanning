@@ -55,7 +55,7 @@ a.text-dark {
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
       <div class="row row-cards mt-4">
        @foreach ($projects as $key => $project)
-         <div class="col-md-6 col-lg-3">
+         <div class="col-md-6 col-lg-2">
             <div class="card">
                <div class="card-body p-2 text-center">
 
@@ -67,7 +67,7 @@ a.text-dark {
                         $image=\App\Models\Utility::get_file($project->project_image);
                         @endphp
                        <img id="image"  src="{{$image}}"
-                        class="avatar avatar-xl mb-4 rounded" alt="">
+                        class="avatar avatar-xl mb-2 rounded" alt="">
                    @else
                        <span class="avatar avatar-xl mb-4 rounded">
                            <?= substr($project->project_name,0,2) ?>
@@ -93,8 +93,9 @@ a.text-dark {
                   </a>
                @endif
                   </h3>
-                  <p class="text-secondary mb-0">Start Date: {{ Utility::getDateFormated($project->start_date) }}</p>
-                  <p class="text-secondary">End Date: {{ Utility::getDateFormated($project->end_date) }}</p>
+                  <p class="text-secondary mb-0"><small>
+                    Start Date: {{ Utility::getDateFormated($project->start_date) }}
+                    - End Date: {{ Utility::getDateFormated($project->end_date) }}</small></p>
                   <p class="mb-3">
                    @php
                    if ($project->status != ""){
