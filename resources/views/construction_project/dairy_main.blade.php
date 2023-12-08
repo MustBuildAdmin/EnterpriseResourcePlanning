@@ -39,7 +39,7 @@
             </div>
          </div>
       </div>
-     
+
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
       <div class="row row-cards">
        @foreach ($projects as $key => $project)
@@ -66,7 +66,7 @@
                            ->where('project_id',$project->id)
                            ->where('freeze_status',0)->first();
                        @endphp
-                      
+
                         @if($getInstance != null)
                            @can('edit project')
                                  <a class="dropdown-item active" href="#!" data-size="xl"
@@ -98,7 +98,7 @@
                       </div>
                    </div>
                 </div>
-               <div class="card-body p-4 py-5 text-center">
+               <div class="card-body p-text-center">
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
                    ?>
@@ -115,12 +115,12 @@
                   $project_instances=\App\Models\Instance::where('project_id',$project->id)
                                     ->get();
                @endphp
-               
+
                    <a class="text-dark"  data-size="lg"
                    href="{{ route('projects.instance_project_dairy',
                            [$project_instances[0]['id'],$project->id]) }}"
                    data-bs-toggle="tooltip">{{ $project->project_name }}</a>
-              
+
                   </h3>
                   <p class="text-secondary mb-0">Start Date: {{ Utility::getDateFormated($project->start_date) }}</p>
                   <p class="text-secondary">End Date: {{ Utility::getDateFormated($project->end_date) }}</p>

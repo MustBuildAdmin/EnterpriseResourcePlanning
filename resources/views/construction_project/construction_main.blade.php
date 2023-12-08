@@ -9,7 +9,7 @@ a.text-dark {
    $profile=\App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 <div class="container-fluid">
-   <div class="card mt-4 p-4">
+   <div class="card mt-4 p-3">
       <div class="card-header">
          <h3>{{ __('Projects of the Organisation') }}</h3>
          <div class="card-actions w-50">
