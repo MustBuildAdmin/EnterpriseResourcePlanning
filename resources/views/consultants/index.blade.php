@@ -363,7 +363,7 @@
             </div>
         </div>
 
-        <div class="row row-cards">
+        <div class="row row-cards mt-2">
             @forelse($users as $user)
                 <div class="col-md-6 col-lg-2">
                     <div class="card">
