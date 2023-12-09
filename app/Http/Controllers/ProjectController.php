@@ -314,7 +314,7 @@ class ProjectController extends Controller
                         $task->project_id=$project->id;
                         $task->instance_id=$instance_id;
 
-                      
+
 
                         if(isset($value['text'])){
                             $task->text=$value['text'];
@@ -360,7 +360,7 @@ class ProjectController extends Controller
 
                         $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
 
-                        if($parent && $parent!=0){
+                        if($parent && $parent->parent!=0){
                             if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
                                 Project::where('id',$project->id)->delete();
                                 Instance::where('project_id',$project->id)->delete();
@@ -374,7 +374,7 @@ class ProjectController extends Controller
 
                         $task->save();
                     }
-    
+
 
                     foreach($responseBody['data']['links'] as $key=>$value){
                         $link= new Link();
@@ -488,9 +488,9 @@ class ProjectController extends Controller
                                 Project::where('id',$project->id)->delete();
                                 Instance::where('project_id',$project->id)->delete();
                                 Con_task::where('project_id',$project->id)->delete();
-    
+
                                 return redirect()->back()->with('error', __('Microproject data Mismatch'));
-    
+
                             }
                             // ###############################
                             if (isset($value['text'])) {
@@ -535,14 +535,14 @@ class ProjectController extends Controller
                             }
                             $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
 
-                            if($parent && $parent!=0){
+                            if($parent && $parent->parent!=0){
                                 if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
                                     Project::where('id',$project->id)->delete();
                                     Instance::where('project_id',$project->id)->delete();
                                     Con_task::where('project_id',$project->id)->delete();
-    
+
                                     return redirect()->back()->with('error', __('Microproject data Mismatch'));
-    
+
                                 }
                             }
                         // ###############################
@@ -2092,7 +2092,7 @@ class ProjectController extends Controller
                 "23:00"=>"11:00 PM",
                 "24:00"=>"12:00 PM",
             ];
-         
+
             if ($project->created_by == \Auth::user()->creatorId()) {
                 return view(
                     "projects.edit",
