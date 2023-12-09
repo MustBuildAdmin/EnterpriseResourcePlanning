@@ -36,6 +36,14 @@
         </ul>
     </div>
 @endif
+@if (Session::has('smpterrors'))
+    <div class="alert alert-danger">
+        <ul>
+            <li style="text-align: center;list-style: none;font-weight:bold;">{{ Session::get('smpterrors') }}</li>
+        </ul>
+    </div>
+@endif
+
 @section('content')
 <div class="page page-center">
   <div class="container container-tight py-4">

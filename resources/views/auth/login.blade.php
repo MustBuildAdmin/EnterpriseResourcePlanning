@@ -66,7 +66,8 @@
 @if (Session::has('success_register'))
     <div class="alert alert-success">
         <ul>
-            <li style="text-align: center;list-style: none;font-weight:bold;">Registered Successfully. Check you email for verfication. Kindly click the button to set password <a href="{{ Session::get('success_register') }}">Set Password</a></li>
+            <li style="text-align: center;list-style: none;font-weight:bold;">Registered Successfully. Check you email for verfication.
+            </li>
         </ul>
     </div>
 @endif
