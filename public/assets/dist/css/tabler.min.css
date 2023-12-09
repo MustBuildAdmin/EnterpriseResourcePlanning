@@ -154,7 +154,7 @@
     --tblr-highlight-bg: #fdeccc;
     --tblr-border-width: 1px;
     --tblr-border-style: solid;
-  --tblr-border-color: #807f83;    --tblr-border-color-translucent: rgba(97, 104, 118, 0.16);
+  --tblr-border-color: #e6e7e9;    --tblr-border-color-translucent: rgba(97, 104, 118, 0.16);
     --tblr-border-radius: 4px;
     --tblr-border-radius-sm: 2px;
     --tblr-border-radius-lg: 8px;
@@ -15943,7 +15943,7 @@ fieldset:disabled .btn {
     --tblr-bg-surface-tertiary: var(--tblr-gray-50);
     --tblr-bg-surface-dark: var(--tblr-dark);
     --tblr-bg-forms: var(--tblr-bg-surface);
-  --tblr-border-color: #807f83;    --tblr-border-color-light: #f2f3f4;
+  --tblr-border-color: #e6e7e9;    --tblr-border-color-light: #f2f3f4;
     --tblr-border-color-active: #b3b7bd;
     --tblr-icon-color: var(--tblr-gray-500);
     --tblr-active-bg: rgba(var(--tblr-primary-rgb), 0.04);
