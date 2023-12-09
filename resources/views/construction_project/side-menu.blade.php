@@ -42,14 +42,21 @@
  .dataTables_wrapper > div {
      margin: 5px;
 }
- table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column.stripe tbody tr.even> .sorting_1, table.dataTable.display tbody tr.even, table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd > .sorting_1, table.dataTable.display tbody tr.odd {
+ table.dataTable.display tbody tr.even > .sorting_1,
+ table.dataTable.order-column.stripe tbody tr.even> .sorting_1,
+ table.dataTable.display tbody tr.even,
+ table.dataTable.display tbody tr.odd > .sorting_1,
+ table.dataTable.order-column.stripe tbody tr.odd > .sorting_1,
+ table.dataTable.display tbody tr.odd {
      background-color: #ffffff;
 }
  table.dataTable thead th {
      position: relative;
      background-image: none !important;
 }
- table.dataTable thead th.sorting:after, table.dataTable thead th.sorting_asc:after, table.dataTable thead th.sorting_desc:after {
+ table.dataTable thead th.sorting:after,
+ table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
      position: absolute;
      top: 12px;
      right: 8px;
@@ -76,7 +83,8 @@
      background-color: #f2f2f2 !important;
      color: #000;
 }
- .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
      background: none !important;
      border-radius: 50px;
      background-color: var(--theadColor) !important;
@@ -88,7 +96,8 @@
      background-color: var(--theadColor) !important;
      color:#fff !important
 }
- .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+ .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
      border: 1px solid #979797;
      background: none !important;
      border-radius: 50px !important;
@@ -96,7 +105,8 @@
      color: #fff !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
     cursor: default;
     color: #fff !important;
     border: 1px solid transparent;
