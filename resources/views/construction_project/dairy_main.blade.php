@@ -16,9 +16,7 @@
         }
     }
 </style>
-<img src=
-"https://www.icegif.com/wp-content/uploads/2023/07/icegif-1263.gif"
-        alt="GeeksforGeeks logo" />
+<div id="loader" class="center"></div>
 <div class="container-fluid">
    <div class="card mt-5 p-4">
       <div class="card-header">
