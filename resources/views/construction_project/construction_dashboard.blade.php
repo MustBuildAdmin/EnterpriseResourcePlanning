@@ -178,7 +178,7 @@ if($delay>100){
             </div>
           @endif
         </div>
-        <div class="row row-deck row-cards mt-5">
+        <div class="row row-deck row-cards">
             <div class="col-sm-6 col-lg-6">
               <div class="card">
                 <div class="card-body">
