@@ -134,7 +134,7 @@
     @section('auth-topbar')
 
     @endsection
-
+@php  $email = $request->query('email'); @endphp
     @section('content')
         <div class="mainDiv">
             <div class="cardStyle">
@@ -145,7 +145,7 @@
                 
                     <div class="inputDiv">
                         {{Form::label('email',__('E-Mail Address'),['class'=>'form-label inputLabel'])}}
-                        {{Form::text('email',null,array('required'=>'required'))}}
+                        {{Form::text('email',$email,array('required'=>'required'))}}
 
                         @error('email')
                             <span class="invalid-email text-danger" role="alert">
@@ -191,9 +191,9 @@
         </div>
     @endsection
 
-    <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="{{ asset('assets/js/js/jquery.validate.min.js') }}"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/dist/js/jquery-3.6.4.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.validate.js') }}"></script>
+
 
     <script>
         $.strength = function( element, password ) {
@@ -242,6 +242,8 @@
                 $('#strengthMessage').html('Strong');
                 $("#resetBtn").prop('disabled',false);
             }
+            var re = new RegExp('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/');
+           console.log( re.test(password));
 
             if ( password.length > 10 ) {
                 score++;
@@ -279,7 +281,8 @@ $('#loginForm').validate({
     rules: {
         password:{
                 required:true,
-                changepasss:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                // changepass:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                changepasss:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                 minlength: 8,
                 maxlength: 36,
             },
@@ -308,6 +311,8 @@ $('#loginForm').validate({
         form.submit();
     }
 });
+});
+
 $.validator.addMethod(
         "changepasss",
         function(value, element, regexp) {
@@ -316,7 +321,6 @@ $.validator.addMethod(
         },
         "The password must be Minimum eight characters, at least one uppercase letter, one lowercase letter and one number and one special character."
 );
-});
 
 </script>
 <style>

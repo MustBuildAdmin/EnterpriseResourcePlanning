@@ -47,20 +47,13 @@ class PasswordResetLinkController extends Controller
                 $request->only('email')
             );
 
-            return $status == Password::RESET_LINK_SENT ? redirect()->route('password.request')->with('success', __('Password reset link sent to you email successfully.')) : back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
+            return $status == Password::RESET_LINK_SENT ? redirect()->route('password.request')
+            ->with('success', __('Password reset link sent to you email successfully.')) :
+             back()->withInput($request->only('email'))->withErrors(['email' => __($status)]);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors('E-Mail has been not sent due to SMTP configuration');
+            return redirect()->back()->withInput($request->only('email'))
+            ->with('smpterrors', __('E-Mail has been not sent due to SMTP configuration'));
         }
     }
 
-    //        $status = Password::sendResetLink(
-    //            $request->only('email')
-    //        );
-    //
-    //
-    //        return $status == Password::RESET_LINK_SENT
-    //                    ? back()->with('status', __($status))
-    //                    : back()->withInput($request->only('email'))
-    //                            ->withErrors(['email' => __($status)]);
-    //    }
 }
