@@ -9,7 +9,7 @@ a.text-dark {
    $profile=\App\Models\Utility::get_file('uploads/avatar/');
 @endphp
 <div class="container-fluid">
-   <div class="card mt-5 p-4">
+   <div class="card mt-4 p-3">
       <div class="card-header">
          <h3>{{ __('Projects of the Organisation') }}</h3>
          <div class="card-actions w-50">
@@ -53,11 +53,11 @@ a.text-dark {
       </div>
 
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
-      <div class="row row-cards mt-4">
+      <div class="row row-cards mt-2">
        @foreach ($projects as $key => $project)
-         <div class="col-md-6 col-lg-3">
+         <div class="col-md-6 col-lg-2">
             <div class="card">
-               <div class="card-body p-4 py-5 text-center">
+               <div class="card-body p-2 text-center">
 
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
@@ -67,9 +67,9 @@ a.text-dark {
                         $image=\App\Models\Utility::get_file($project->project_image);
                         @endphp
                        <img id="image"  src="{{$image}}"
-                        class="avatar avatar-xl mb-4 rounded" alt="">
+                        class="avatar avatar-xl mb-2 rounded" alt="">
                    @else
-                       <span class="avatar avatar-xl mb-4 rounded">
+                       <span class="avatar avatar-xl mb-2 rounded">
                            <?= substr($project->project_name,0,2) ?>
                        </span>
                    @endif
@@ -93,8 +93,9 @@ a.text-dark {
                   </a>
                @endif
                   </h3>
-                  <p class="text-secondary mb-0">Start Date: {{ Utility::getDateFormated($project->start_date) }}</p>
-                  <p class="text-secondary">End Date: {{ Utility::getDateFormated($project->end_date) }}</p>
+                  <p class="text-secondary mb-0"><small style="font-size:10.5px;font-weight: 600">
+                    Start Date: {{ Utility::getDateFormated($project->start_date) }}
+                    - End Date: {{ Utility::getDateFormated($project->end_date) }}</small></p>
                   <p class="mb-3">
                    @php
                    if ($project->status != ""){

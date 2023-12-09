@@ -3041,7 +3041,10 @@ Route::get('user_autocomplete', 'ProjectTaskController@user_autocomplete')->name
 ->middleware(['auth','XSS',]);
 
 Route::get('get_all_task', 'ProjectTaskController@get_all_task')->name('get_all_task')->middleware(['auth','XSS',]);
+Route::post('get_all_task_datatable', 'ProjectTaskController@get_all_task_datatable')->name('get_all_task_datatable')->middleware(['auth','XSS',]);
 Route::get('main_task_list', 'ProjectTaskController@main_task_list')->name('main_task_list')
+->middleware(['auth','XSS',]);
+Route::post('get_all_main_task_datatable', 'ProjectTaskController@get_all_main_task_datatable')->name('get_all_main_task_datatable')
 ->middleware(['auth','XSS',]);
 
 Route::get('edit_assigned_to', 'ProjectTaskController@edit_assigned_to')->name('edit_assigned_to')
@@ -3577,12 +3580,12 @@ Route::get(
     ]
 );
 
-Route::any('get_member', 'ProjectController@criticaltask_update')->middleware(
+Route::any('criticaltask_update', 'ProjectController@criticaltask_update')->middleware(
     [
         'auth',
         'XSS',
     ]
-)->name('projects.criticaltask_update');
+)->name('criticaltask_update');
 
 Route::any('micro_get_member', 'MicroPorgramController@criticaltask_update')->middleware(
     [
@@ -3596,6 +3599,18 @@ Route::any(
     'get_validated_date', [
         'as' => 'get_validated_date',
         'uses' => 'MicroPorgramController@get_validated_date',
+    ]
+)->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any(
+    'gantt_get_validated_date', [
+        'as' => 'gantt_get_validated_date',
+        'uses' => 'ProjectTaskController@gantt_get_validated_date',
     ]
 )->middleware(
     [

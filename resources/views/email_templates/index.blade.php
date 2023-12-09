@@ -53,9 +53,9 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     @if(\Auth::user()->type=='company')
-        <li class="breadcrumb-item active" aria-current="page">{{__('Email Notification')}}</li>
+        <li class="breadcrumb-item active" aria-current=>{{__('Email Notification')}}</li>
     @else
-        <li class="breadcrumb-item active" aria-current="page">{{__('Email Template')}}</li>
+        <li class="breadcrumb-item active" aria-current=>{{__('Email Template')}}</li>
     @endif
 @endsection
 

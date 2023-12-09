@@ -31,6 +31,7 @@ class DrawingsController extends Controller
      */
     public function index(Request $request)
     {
+        $projectid = Session::get('project_id');
         $drawings = Drawing::select('reference_number', 'drawing_type', 'created_by',
         'drawings.created_at as created_on', 'drawings.updated_at as updated_on',
         'drawing_types.drawing_types','drawing_types.id as drawing_type_id')
@@ -46,7 +47,9 @@ class DrawingsController extends Controller
             $drawings = $drawings->whereDate('drawings.created_at', '>=', $request->start_date)
             ->whereDate('drawings.created_at', '<=', $request->end_date);
         }
-        $drawings = $drawings->where('drawings.created_by', \Auth::user()->creatorId())->get();
+        $drawings = $drawings->where('drawings.created_by', \Auth::user()->creatorId())
+        ->where('drawings.project_id', $projectid)
+        ->get();
         $drawingTypes = DrawingTypes::get();
 
         return view('drawings.index', compact('drawings', 'drawingTypes'));
@@ -55,9 +58,11 @@ class DrawingsController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('create product & service')) {
+            $projectid = Session::get('project_id');
             $drawing = new Drawing();
             $drawing->reference_number = $request->reference_number;
             $drawing->drawing_type = $request->input('drawing_type');
+            $drawing->project_id = $projectid;
             $drawing->created_by = \Auth::user()->creatorId();
             $drawing->save();
             return redirect()->route('drawings.index')->with('success', __('Drawing Space Created Successfully.'));

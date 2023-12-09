@@ -25,7 +25,9 @@ aria-describedby="Sub Task">
         <th scope="col" style="color: white;">{{__('Tasks')}}</th>
         <th scope="col" style="color: white;">{{__('Status')}}</th>
         <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
-        <th scope="col" style="color: white;">{{__('Float')}}</th>
+        <th scope="col" style="color: white;">{{__('Free Slack')}}</th>
+        <th scope="col" style="color: white;">{{__('Total Slack')}}</th>
+        {{-- <th scope="col" style="color: white;">{{__('Float')}}</th> --}}
         <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
         <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
         <th scope="col" style="color: white;">{{__('Planned Start Date')}}</th>
@@ -136,27 +138,46 @@ aria-describedby="Sub Task">
                   @endif --}}
                 <!--If the Task is Critical condition backup starts-->
                 <td style="width:20%;">
-                    @if(date('Y-m-d') < $task->dependency_critical &&
-                            $task->progress < 100 && $task->entire_critical > date('Y-m-d') &&
-                            $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span>  {{__('High')}}
-                    @elseif($task->dependency_critical > date('Y-m-d') && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> {{__('Medium')}}
-                    @elseif($task->entire_critical > date('Y-m-d') && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> {{__('High')}}
+                    @if($task->progress < 100)
+                        @if(date('Y-m-d') > $task->entire_critical)
+                            <span class="badge bg-warning me-1"></span>  {{__('High')}}
+                        @elseif(date('Y-m-d') > $task->dependency_critical)
+                            <span class="badge bg-warning me-1"></span> {{__('Medium')}}
+                        @else
+                            <span class="badge bg-info me-1"></span>{{__('Low')}}
+                        @endif
+
                     @else
                         <span class="badge bg-info me-1"></span>{{__('Low')}}
                     @endif
+
                 </td>
 
-                <td style="width:30%; font-size: 15px;">
+                {{-- <td style="width:30%; font-size: 15px;">
                     @if ($task->float_val==null)
                         @php $float_val=0; @endphp
                     @else
                         @php $float_val=$task->float_val; @endphp
                     @endif
                     {{$float_val}}
+                </td> --}}
+                <td style="width:30%; font-size: 15px;">
+                    @if ($task->free_slack==null)
+                        @php $free_slack=0; @endphp
+                    @else
+                        @php $free_slack=$task->free_slack; @endphp
+                    @endif
+                    {{$free_slack}}
                 </td>
+                <td style="width:30%; font-size: 15px;">
+                    @if ($task->total_slack==null)
+                        @php $total_slack=0; @endphp
+                    @else
+                        @php $total_slack=$task->total_slack; @endphp
+                    @endif
+                    {{$total_slack}}
+                </td>
+                
 
                 <td style="width:15%;" class="sort-progress"
                     data-progress="{{round($task->progress)}}">

@@ -13,8 +13,7 @@ File: style.css
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+ @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 :root {
     --bs-blue: #51459d;
     --bs-indigo: #6610f2;
@@ -58,11 +57,11 @@ File: style.css
     --bs-black-rgb: 0, 0, 0;
     --bs-body-color-rgb: 41, 50, 64;
     --bs-body-bg-rgb: 248, 249, 253;
-    --bs-font-sans-serif: 'Poppins', sans-serif;
+    --bs-font-sans-serif: 'Roboto', sans-serif;;
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
     --bs-body-font-family: var(--bs-font-sans-serif);
-    --bs-body-font-size: 0.875rem;
+    --bs-body-font-size: 0.799rem;
     --bs-body-font-weight: 400;
     --bs-body-line-height: 1.5;
     --bs-body-color: #293240;

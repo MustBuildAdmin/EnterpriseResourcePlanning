@@ -42,14 +42,21 @@
  .dataTables_wrapper > div {
      margin: 5px;
 }
- table.dataTable.display tbody tr.even > .sorting_1, table.dataTable.order-column.stripe tbody tr.even> .sorting_1, table.dataTable.display tbody tr.even, table.dataTable.display tbody tr.odd > .sorting_1, table.dataTable.order-column.stripe tbody tr.odd > .sorting_1, table.dataTable.display tbody tr.odd {
+ table.dataTable.display tbody tr.even > .sorting_1,
+ table.dataTable.order-column.stripe tbody tr.even> .sorting_1,
+ table.dataTable.display tbody tr.even,
+ table.dataTable.display tbody tr.odd > .sorting_1,
+ table.dataTable.order-column.stripe tbody tr.odd > .sorting_1,
+ table.dataTable.display tbody tr.odd {
      background-color: #ffffff;
 }
  table.dataTable thead th {
      position: relative;
      background-image: none !important;
 }
- table.dataTable thead th.sorting:after, table.dataTable thead th.sorting_asc:after, table.dataTable thead th.sorting_desc:after {
+ table.dataTable thead th.sorting:after,
+ table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
      position: absolute;
      top: 12px;
      right: 8px;
@@ -76,19 +83,21 @@
      background-color: #f2f2f2 !important;
      color: #000;
 }
- .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
      background: none !important;
      border-radius: 50px;
      background-color: var(--theadColor) !important;
-     color:#fff !important 
+     color:#fff !important
 }
  .paginate_button.current:hover {
      background: none !important;
      border-radius: 50px;
      background-color: var(--theadColor) !important;
-     color:#fff !important 
+     color:#fff !important
 }
- .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+ .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
      border: 1px solid #979797;
      background: none !important;
      border-radius: 50px !important;
@@ -96,7 +105,8 @@
      color: #fff !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
     cursor: default;
     color: #fff !important;
     border: 1px solid transparent;
@@ -104,10 +114,9 @@
     box-shadow: none;
 }
 </style>
-<div class="page">
+<div class=>
     <!-- Sidebar  -->
-    <header id="sidebar" class="navbar navbar-expand-md subnav d-print-none" data-bs-theme="light"
-        style="background: #e4e4e4;">
+    <header id="sidebar" class="navbar navbar-expand-md subnav d-print-none" data-bs-theme="light">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
                 aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -273,12 +282,12 @@
                                                 class="{{ (Request::route()->getName() == 'microprogram.gantt')
                                                 ?'dropdown-item active' :'dropdown-item'}}">
                                                 {{ __('Lookahead Gantt') }}</a>
-                                            
+
                                             <a href="{{ route('microprogram') }}"
                                                 class="{{ (Request::route()->getName() == 'microprogram')
                                                 ?'dropdown-item active' :'dropdown-item'}}">
                                                 {{ __('Lookahead Schedule') }}</a>
-                                        
+
                                             <a href="{{ route('micro_taskboard') }}"
                                                 class="{{ (Request::route()->getName() == 'micro_taskboard')
                                                 ?'dropdown-item active' :'dropdown-item'}}">
@@ -437,7 +446,7 @@
                             </span>
                         </a>
                     </li>
-                    
+
                      {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
                      <li class=""><a href="{{route('qaqc.cement')}}">{{__('Cement')}}</a></li>

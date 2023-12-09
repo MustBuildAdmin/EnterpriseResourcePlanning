@@ -16,6 +16,7 @@ if($delay>100){
 }
 ?>
     <!-- Page header -->
+    <div class="container-fluid py-5 px-5">
     <div class="page-header d-print-none">
       <div class="container-fluid">
         <div class="row g-2 align-items-center">
@@ -39,11 +40,11 @@ if($delay>100){
         <div class="row row-deck row-cards">
           <div class="col-lg-6 col-xl-3">
             <div class="card">
-              <div class="card-body p-4 py-5 text-center">
+              <div class="card-body p-2 text-center">
                 @php
                   $avatar=substr($project->project_name, 0, 1);
                 @endphp
-                <span class="avatar avatar-xl mb-4 rounded">{{ $avatar }}</span>
+                <span class="avatar avatar-xl mb-3 rounded">{{ $avatar }}</span>
                 <h3 class="mb-0">{{$project->project_name}}</h3>
                 <p class="text-secondary"><b>{{ __('Start from')}}:</b>
                 {{ Utility::getDateFormated($project->start_date) }} - <b>{{ __('Due to')}}:</b>
@@ -67,19 +68,23 @@ if($delay>100){
                   @foreach ($projectmembers as $user)
                     @php
                       $name_r=\App\Models\Project::get_user_name($user->user_id);
-                      $avatar=substr($name_r->name, 0, 1);
+                      $short=substr($name_r->name ?? '', 0, 1);
                     @endphp
                     <span class="avatar avatar-sm rounded">{{$avatar}}</span>
                   @endforeach
                   </div>
                 </div>
               </div>
-              <div class="progress card-progress">
-                <div class="progress-bar" style="width: 38%" role="progressbar" aria-valuenow="38" aria-valuemin="0"
-                  aria-valuemax="100" aria-label="38% Complete">
-                  <span class="visually-hidden">38% Complete</span>
-                </div>
-              </div>
+              @php
+                  $progress=\App\Models\Project::actual_progress($project->id);
+               @endphp
+               <div class="progress card-progress">
+                  <div class="progress-bar" style="width: <?php echo $progress; ?>%" role="progressbar"
+                      aria-valuenow="<?php echo $progress; ?>" aria-valuemin="0" aria-valuemax="100"
+                       aria-label="<?php echo $progress; ?>% Complete">
+                     <span class="visually-hidden"><?php echo $progress; ?>% {{ __('Complete') }}</span>
+                  </div>
+               </div>
             </div>
           </div>
           <div class="col-lg-6 col-xl-3">
@@ -173,6 +178,303 @@ if($delay>100){
             </div>
           @endif
         </div>
+        <div class="row row-deck row-cards">
+            <div class="col-sm-6 col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="subheader">{{ __('Total Task')}}</div>
+                  </div>
+                  <div class="h1 mb-3">{{$project_data['task']['total'] }} {{ __('Tasks')}}</div>
+                  <div class="d-flex mb-2">
+                    <div>{{ __('Planned Percentage')}}</div>
+                    <div class="ms-auto">
+                      <span class="text-blue d-inline-flex align-items-center lh-1">
+                      {{ round($current_Planed_percentage) }}%
+                      </span>
+                    </div>
+                  </div>
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage) }}%"
+                    role="progressbar" aria-valuenow="{{ round($current_Planed_percentage) }}"
+                      aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
+                      <span class="visually-hidden">75% Complete</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="subheader"> {{ __('Completed Task')}}</div>
+                    <div class="ms-auto lh-1">
+                      {{-- <div class="dropdown">
+                        <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                          aria-expanded="false">Last 7 days</a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                          <a class="dropdown-item active" href="#">Last 7 days</a>
+                          <a class="dropdown-item" href="#">Last 30 days</a>
+                          <a class="dropdown-item" href="#">Last 3 months</a>
+                        </div>
+                      </div> --}}
+                    </div>
+                  </div>
+                  <div class="h1 mb-3">
+                    <div class="h1 mb-0 me-2">{{$completed_task}} {{ __('Tasks')}}</div>
+                  </div>
+                  <div class="d-flex mb-2">
+                    <div>{{ __('Actual Percentage')}}</div>
+                    <div class="ms-auto">
+                      <span class="text-blue d-inline-flex align-items-center lh-1">
+                      {{round($actual_percentage)}}% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
+                      </span>
+                    </div>
+                  </div>
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-primary" style="width: {{round($actual_percentage)}}%"
+                    role="progressbar" aria-valuenow="{{round($actual_percentage)}}"
+                      aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
+                      <span class="visually-hidden">{{round($actual_percentage)}}% Complete</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-12">
+              <div class="row row-cards">
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span
+                            class="bg-primary text-white avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-checklist"
+                            width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8"></path>
+                              <path d="M14 19l2 2l4 -4"></path>
+                              <path d="M9 8h4"></path>
+                              <path d="M9 12h2"></path>
+                            </svg>
+                          </span>
+                        </div>
+
+                          <div class="col">
+                            <a @if( Session::get('current_revision_freeze')==1)
+                            href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
+                            <div class="font-weight-medium">
+                              {{ __('Total Completed Task')}}
+                            </div>
+                            </a>
+                            <div class="text-muted">
+                            {{  $completed_task }} {{ __('Tasks')}}
+                            </div>
+                          </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span
+                            class="bg-green text-white avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-road"
+                            width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M4 19l4 -14"></path>
+                              <path d="M16 5l4 14"></path>
+                              <path d="M12 8v-2"></path>
+                              <path d="M12 13v-2"></path>
+                              <path d="M12 18v-2"></path>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <a @if( Session::get('current_revision_freeze')==1)
+                          href='{{ route('taskBoard.view', ['list','status'=>'ongoing']) }}' @endif>
+                            <div class="font-weight-medium">
+                              {{ __('Total Ongoing Task')}}
+                            </div>
+                            <div class="text-muted">
+                            {{ $ongoing_task }} {{ __('Tasks')}}
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span
+                            class="bg-twitter text-white avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-list-details"
+                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M13 5h8"></path>
+                              <path d="M13 9h5"></path>
+                              <path d="M13 15h8"></path>
+                              <path d="M13 19h5"></path>
+                              <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                              <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <a @if( Session::get('current_revision_freeze')==1)
+                           href='{{ route('taskBoard.view', ['list','status'=>'remaning']) }}' @endif>
+                            <div class="font-weight-medium">
+                              {{ __('Total Remaining Task')}}
+                            </div>
+                            <div class="text-muted">
+                            {{ $total_sub- $completed_task-$ongoing_task }} {{ __('Tasks')}}
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span
+                            class="bg-facebook text-white avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list"
+                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                             stroke="currentColor" fill="none" stroke-linecap="round"
+                                                      stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M9 6l11 0"></path>
+                              <path d="M9 12l11 0"></path>
+                              <path d="M9 18l11 0"></path>
+                              <path d="M5 6l0 .01"></path>
+                              <path d="M5 12l0 .01"></path>
+                              <path d="M5 18l0 .01"></path>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <a @if( Session::get('current_revision_freeze')==1)
+                           href='{{ route('taskBoard.view', ['list','status'=>'pending']) }}' @endif>
+                            <div class="font-weight-medium">
+                              {{ __('Total Pending Task')}}
+                            </div>
+                            <div class="text-muted">
+                              {{ $notfinished }} {{ __('Tasks')}}
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                 <!--This is a Dependency Critical task count starts-->
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span
+                            class="bg-orange text-white avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-route-2" width="24" height="24"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M3 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
+                              <path d="M19 7a2 2 0 1 0 0 -4a2 2 0 0 0 0 4z"></path>
+                              <path d="M14 5a2 2 0 0 0 -2 2v10a2 2 0 0 1 -2 2"></path>
+                            </svg>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <a @if( Session::get('current_revision_freeze')==1)
+                           href='{{ route('taskBoard.view', ['list','status'=>'dependency_critical']) }}' @endif>
+                            <div class="font-weight-medium">
+                              {{ __('Total Dependency Critical Task') }}
+                            </div>
+                            <div class="text-muted">
+                              {{ $dependencycriticalcount }} {{ __('Tasks')}}
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--This is a Dependency Critical task count ends-->
+
+                <!--This is a Entire Critical task count starts-->
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span
+                            class="bg-red  text-white avatar">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                            class="icon icon-tabler icon-tabler-alert-triangle-filled"
+                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" stroke-width="0" fill="currentColor"></path>
+                                      </svg>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <a @if( Session::get('current_revision_freeze')==1)
+                           href='{{ route('taskBoard.view', ['list','status'=>'entire_critical']) }}' @endif>
+                            <div class="font-weight-medium">
+                              {{ __('Total Critical Task') }}
+                            </div>
+                            <div class="text-muted">
+                              {{ $entirecriticalcount }} {{ __('Tasks')}}
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--This is a Entire Critical task count ends-->
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title">{{ __('Task summary')}}</h3>
+                  <div id="chart-mentions" class="chart-lg"></div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
 
         @if($checkProject != null)
           <div class="col-lg-12">
@@ -185,302 +487,11 @@ if($delay>100){
           </div>
         @endif
 
-        <div class="row row-deck row-cards mt-5">
-          <div class="col-sm-6 col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">{{ __('Total Task')}}</div>
-                </div>
-                <div class="h1 mb-3">{{$project_data['task']['total'] }} {{ __('Tasks')}}</div>
-                <div class="d-flex mb-2">
-                  <div>{{ __('Planned Percentage')}}</div>
-                  <div class="ms-auto">
-                    <span class="text-blue d-inline-flex align-items-center lh-1">
-                    {{ round($current_Planed_percentage) }}%
-                    </span>
-                  </div>
-                </div>
-                <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: {{ round($current_Planed_percentage) }}%"
-                  role="progressbar" aria-valuenow="{{ round($current_Planed_percentage) }}"
-                    aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-                    <span class="visually-hidden">75% Complete</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader"> {{ __('Completed Task')}}</div>
-                  <div class="ms-auto lh-1">
-                    {{-- <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div> --}}
-                  </div>
-                </div>
-                <div class="h1 mb-3">
-                  <div class="h1 mb-0 me-2">{{$completed_task}} {{ __('Tasks')}}</div>
-                </div>
-                <div class="d-flex mb-2">
-                  <div>{{ __('Actual Percentage')}}</div>
-                  <div class="ms-auto">
-                    <span class="text-blue d-inline-flex align-items-center lh-1">
-                    {{round($actual_percentage)}}% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                    </span>
-                  </div>
-                </div>
-                <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: {{round($actual_percentage)}}%"
-                  role="progressbar" aria-valuenow="{{round($actual_percentage)}}"
-                    aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-                    <span class="visually-hidden">{{round($actual_percentage)}}% Complete</span>
-                  </div>
-                </div>
-              </div>
 
-            </div>
-
-          </div>
-
-          <div class="col-12">
-            <div class="row row-cards">
-              <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span
-                          class="bg-primary text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checklist" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8"></path>
-                            <path d="M14 19l2 2l4 -4"></path>
-                            <path d="M9 8h4"></path>
-                            <path d="M9 12h2"></path>
-                          </svg>
-                        </span>
-                      </div>
-
-                        <div class="col">
-                          <a @if( Session::get('current_revision_freeze')==1)
-                          href='{{ route('taskBoard.view', ['list','status'=>'comp']) }}' @endif>
-                          <div class="font-weight-medium">
-                            {{ __('Total Completed Task')}}
-                          </div>
-                          </a>
-                          <div class="text-muted">
-                          {{  $completed_task }} {{ __('Tasks')}}
-                          </div>
-                        </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span
-                          class="bg-green text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-road" 
-                          width="24" height="24" viewBox="0 0 24 24" 
-                          stroke-width="2" stroke="currentColor" fill="none"
-                           stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 19l4 -14"></path>
-                            <path d="M16 5l4 14"></path>
-                            <path d="M12 8v-2"></path>
-                            <path d="M12 13v-2"></path>
-                            <path d="M12 18v-2"></path>
-                          </svg>
-                        </span>
-                      </div>
-                      <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1)
-                        href='{{ route('taskBoard.view', ['list','status'=>'ongoing']) }}' @endif>
-                          <div class="font-weight-medium">
-                            {{ __('Total Ongoing Task')}}
-                          </div>
-                          <div class="text-muted">
-                          {{ $ongoing_task }} {{ __('Tasks')}}
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span
-                          class="bg-twitter text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-list-details" 
-                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
-                          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M13 5h8"></path>
-                            <path d="M13 9h5"></path>
-                            <path d="M13 15h8"></path>
-                            <path d="M13 19h5"></path>
-                            <path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                            <path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"></path>
-                          </svg>
-                        </span>
-                      </div>
-                      <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1)
-                         href='{{ route('taskBoard.view', ['list','status'=>'remaning']) }}' @endif>
-                          <div class="font-weight-medium">
-                            {{ __('Total Remaining Task')}}
-                          </div>
-                          <div class="text-muted">
-                          {{ $total_sub- $completed_task-$ongoing_task }} {{ __('Tasks')}}
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span
-                          class="bg-facebook text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-list" 
-                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                           stroke="currentColor" fill="none" stroke-linecap="round" 
-                                                    stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M9 6l11 0"></path>
-                            <path d="M9 12l11 0"></path>
-                            <path d="M9 18l11 0"></path>
-                            <path d="M5 6l0 .01"></path>
-                            <path d="M5 12l0 .01"></path>
-                            <path d="M5 18l0 .01"></path>
-                          </svg>
-                        </span>
-                      </div>
-                      <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1)
-                         href='{{ route('taskBoard.view', ['list','status'=>'pending']) }}' @endif>
-                          <div class="font-weight-medium">
-                            {{ __('Total Pending Task')}}
-                          </div>
-                          <div class="text-muted">
-                            {{ $notfinished }} {{ __('Tasks')}}
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-               <!--This is a Dependency Critical task count starts-->
-              <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span
-                          class="bg-orange text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-route-2" width="24" height="24" 
-                          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" 
-                          fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M3 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"></path>
-                            <path d="M19 7a2 2 0 1 0 0 -4a2 2 0 0 0 0 4z"></path>
-                            <path d="M14 5a2 2 0 0 0 -2 2v10a2 2 0 0 1 -2 2"></path>
-                          </svg>
-                        </span>
-                      </div>
-                      <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1)
-                         href='{{ route('taskBoard.view', ['list','status'=>'dependency_critical']) }}' @endif>
-                          <div class="font-weight-medium">
-                            {{ __('Total Dependency Critical Task') }}
-                          </div>
-                          <div class="text-muted">
-                            {{ $dependencycriticalcount }} {{ __('Tasks')}}
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--This is a Dependency Critical task count ends-->
-
-              <!--This is a Entire Critical task count starts-->
-              <div class="col-sm-6 col-lg-3">
-                <div class="card card-sm">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span
-                          class="bg-red  text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" 
-                          class="icon icon-tabler icon-tabler-alert-triangle-filled" 
-                          width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                      <path d="M12 1.67c.955 0 1.845 .467 2.39 1.247l.105 .16l8.114 13.548a2.914 2.914 0 0 1 -2.307 4.363l-.195 .008h-16.225a2.914 2.914 0 0 1 -2.582 -4.2l.099 -.185l8.11 -13.538a2.914 2.914 0 0 1 2.491 -1.403zm.01 13.33l-.127 .007a1 1 0 0 0 0 1.986l.117 .007l.127 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm-.01 -7a1 1 0 0 0 -.993 .883l-.007 .117v4l.007 .117a1 1 0 0 0 1.986 0l.007 -.117v-4l-.007 -.117a1 1 0 0 0 -.993 -.883z" stroke-width="0" fill="currentColor"></path>
-                                    </svg>
-                        </span>
-                      </div>
-                      <div class="col">
-                        <a @if( Session::get('current_revision_freeze')==1)
-                         href='{{ route('taskBoard.view', ['list','status'=>'entire_critical']) }}' @endif>
-                          <div class="font-weight-medium">
-                            {{ __('Total Critical Task') }}
-                          </div>
-                          <div class="text-muted">
-                            {{ $entirecriticalcount }} {{ __('Tasks')}}
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--This is a Entire Critical task count ends-->
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div class="card">
-              <div class="card-body">
-                <h3 class="card-title">{{ __('Task summary')}}</h3>
-                <div id="chart-mentions" class="chart-lg"></div>
-              </div>
-            </div>
-          </div>
-
-
-        </div>
       </div>
     </div>
   </div>
+</div>
   <script>
     // @formatter:off
     const all_completed  = <?php echo $all_completed ?>;

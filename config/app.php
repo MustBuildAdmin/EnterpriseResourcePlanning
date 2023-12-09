@@ -180,6 +180,7 @@ return [
         Milon\Barcode\BarcodeServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 

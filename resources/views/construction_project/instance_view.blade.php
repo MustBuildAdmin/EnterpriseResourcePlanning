@@ -33,7 +33,7 @@
                                     {{ __(\App\Models\Project::$freeze_status[$status_set]) }}
                                     </span>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="card m-0">

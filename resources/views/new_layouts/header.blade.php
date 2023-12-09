@@ -11,7 +11,7 @@
     $color = !empty($setting['color']) ? $setting['color'] : 'theme-3';
     $profile = \App\Models\Utility::get_file('uploads/avatar/');
     $SITE_RTL = Utility::getValByName('SITE_RTL');
-    
+
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ $SITE_RTL == 'on' ? 'rtl' : '' }}">
@@ -31,8 +31,8 @@
 
     <script src="{{ asset('assets/dist/js/jquery-3.6.4.min.js') }}"></script>
     <script src="{{ asset('assets/dist/js/select2.min.js') }}"></script>
-   
- 
+
+
     <!-- Meta -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
@@ -104,7 +104,7 @@
 </head>
 
 <body class=" d-flex flex-column">
-    <div class="page">
+    <div class=>
         <!-- Navbar -->
 
         <header class="navbar navbar-expand-md  d-print-none border-bottom">
@@ -306,7 +306,7 @@
                      aria-label="Open user menu">
                      <span class="avatar avatar-sm"
                         style="background-image: url('{{ !empty(\Auth::user()->avatar) ?
-                        $profile . \Auth::user()->avatar : 
+                        $profile . \Auth::user()->avatar :
                         asset(Storage::url('uploads/avatar/avatar.png')) }}')"></span>
                      <div class="d-none d-xl-block ps-2">
                         <div>{{ \Auth::user()->name }}</div>
