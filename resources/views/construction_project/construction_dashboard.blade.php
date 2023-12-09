@@ -16,6 +16,7 @@ if($delay>100){
 }
 ?>
     <!-- Page header -->
+    <div class="container-fluid py-5 px-5">
     <div class="page-header d-print-none">
       <div class="container-fluid">
         <div class="row g-2 align-items-center">
@@ -258,14 +259,18 @@ if($delay>100){
 
           <div class="col-12">
             <div class="row row-cards">
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-2">
                 <div class="card card-sm">
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-auto">
                         <span
                           class="bg-primary text-white avatar">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-checklist" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                          <svg xmlns="http://www.w3.org/2000/svg"
+                          class="icon icon-tabler icon-tabler-checklist"
+                          width="24" height="24" viewBox="0 0 24 24"
+                          stroke-width="2" stroke="currentColor" fill="none"
+                          stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8"></path>
                             <path d="M14 19l2 2l4 -4"></path>
@@ -291,7 +296,7 @@ if($delay>100){
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-2">
                 <div class="card card-sm">
                   <div class="card-body">
                     <div class="row align-items-center">
@@ -327,7 +332,7 @@ if($delay>100){
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-2">
                 <div class="card card-sm">
                   <div class="card-body">
                     <div class="row align-items-center">
@@ -363,7 +368,7 @@ if($delay>100){
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-2">
                 <div class="card card-sm">
                   <div class="card-body">
                     <div class="row align-items-center">
@@ -401,7 +406,7 @@ if($delay>100){
               </div>
 
                <!--This is a Dependency Critical task count starts-->
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-2">
                 <div class="card card-sm">
                   <div class="card-body">
                     <div class="row align-items-center">
@@ -437,7 +442,7 @@ if($delay>100){
               <!--This is a Dependency Critical task count ends-->
 
               <!--This is a Entire Critical task count starts-->
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-2">
                 <div class="card card-sm">
                   <div class="card-body">
                     <div class="row align-items-center">
@@ -485,6 +490,7 @@ if($delay>100){
       </div>
     </div>
   </div>
+</div>
   <script>
     // @formatter:off
     const all_completed  = <?php echo $all_completed ?>;
