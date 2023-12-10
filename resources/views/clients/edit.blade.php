@@ -216,7 +216,7 @@
                 <div class="form-group">
                     {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
                     <div class="form-icon-user">
-                        <input class="form-control" name="billing_phone" type="number" id="billing_phone" maxlength="16"
+                        <input class="form-control" name="phone" type="number" id="billing_phone" maxlength="16"
                          placeholder="+91 111 111 1111" value='{{$user->billing_phone}}'>
                         <span class="invalid-name edit_billing_duplicate" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
