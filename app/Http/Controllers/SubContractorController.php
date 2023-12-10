@@ -73,7 +73,7 @@ class SubContractorController extends Controller
         $subconsult['plan']             = 1;
         $subconsult['lang']             = ! empty($defaultlanguage) ? $defaultlanguage->value : '';
         $subconsult['created_by']       = \Auth::user()->creatorId();
-        $subconsult['phone']            = $request->contact;
+        $subconsult['phone']            = $request->phone;
         $subconsult['tax_number']       = $request->tax_number;
         $subconsult['color_code']       = $request->color_code;
         $subconsult['billing_name']     = $request->billing_name;
@@ -174,7 +174,7 @@ class SubContractorController extends Controller
                     'type'             => 'sub_contractor',
                     'lang'             => Utility::getValByName('default_language'),
                     'created_by'       => \Auth::user()->creatorId(),
-                    'phone'            => $request->contact,
+                    'phone'            => $request->phone,
                     'avatar'           => $avatar,
                     'color_code'       => $request->color_code,
                     'tax_number'       => $request->tax_number,
@@ -397,7 +397,7 @@ class SubContractorController extends Controller
             'type'             => 'sub_contractor',
             'lang'             => Utility::getValByName('default_language'),
             'created_by'       => \Auth::user()->creatorId(),
-            'phone'            => $request->contact,
+            'phone'            => $request->phone,
             'color_code'       => $request->color_code,
             'tax_number'       => $request->tax_number,
             'billing_name'     => $request->billing_name,
@@ -432,6 +432,8 @@ class SubContractorController extends Controller
         $validation = [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
+            'phone' => 'required|unique:users,phone',
+
         ];
 
         $validator = \Validator::make($request->all(), $validation);
@@ -448,6 +450,8 @@ class SubContractorController extends Controller
         $validation = [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
+            'phone' => 'required|unique:users,phone,'.$id,
+
         ];
 
         $validator = \Validator::make($request->all(), $validation);
@@ -475,7 +479,7 @@ class SubContractorController extends Controller
             'type'             => 'sub_contractor',
             'lang'             => Utility::getValByName('default_language'),
             'created_by'       => \Auth::user()->creatorId(),
-            'phone'            => $request->contact,
+            'phone'            => $request->phone,
             'color_code'       => $request->color_code,
             'tax_number'       => $request->tax_number,
             'billing_name'     => $request->billing_name,

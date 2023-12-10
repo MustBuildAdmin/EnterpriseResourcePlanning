@@ -56,6 +56,8 @@ class ConsultantController extends Controller
         $validation = [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
+            'phone' => 'required|unique:users,phone'
+
         ];
 
         $validator = \Validator::make($request->all(), $validation);
@@ -371,6 +373,8 @@ class ConsultantController extends Controller
         $validation = [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
+            'phone' => 'required|unique:users,phone,'.$id,
+
         ];
 
         $validator = \Validator::make($request->all(), $validation);

@@ -303,6 +303,8 @@ class CustomerController extends Controller
                 'name' => 'required|max:120',
                 'contact' => 'required',
                 'email' => 'required|email|unique:users,email,'.$userDetail['id'],
+                'phone' => 'required|unique:users,phone,'.$userDetail['id'],
+
             ]
         );
 
