@@ -118,6 +118,7 @@
             </div>
         </div>
     </div>
+
     <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="form-group">
             {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
@@ -207,8 +208,10 @@
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <input class="form-control" name="phone" type="number" id="billing_phone"
+                    <input class="form-control" name="phone" type="tel" id="billing_phone"
                      maxlength="16" placeholder="+91 111 111 1111"  required>
+                     <!-- <input id="phone1" name="phone" type="tel" /> -->
+
                     {{-- {{Form::text('billing_phone',null,array('class'=>'form-control'))}} --}}
                     <span class="invalid-name billing_duplicate" role="alert" style="display: none;">
                         <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
@@ -245,6 +248,7 @@
         </label>
     </div>
    <hr>
+
     @if(App\Models\Utility::getValByName('shipping_display')=='on')
         <div class="col-md-12 text-end">
             {{-- <input type="button" id="billing_data"
@@ -490,6 +494,14 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
     }
 });
 
+var phone_number = window.intlTelInput(document.querySelector("#billing_phone"), {
+  separateDialCode: true,
+  preferredCountries:["in"],
+  hiddenInput: "billing_phone_country",
+  utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+
+
     $(document).ready(function(){
         $(document).on("keyup", '#email', function () {
             $.ajax({
@@ -513,6 +525,8 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
             });
         });
         $(document).on("keyup", '#billing_phone', function () {
+            var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[name='billing_phone_country'").val(full_number);
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
@@ -532,6 +546,11 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
                     // alert("Request: "+JSON.stringify(request));
                 }
             });
+        });
+        $("#billing_phone").keypress(function(){
+            var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[name='billing_phone_country'").val(full_number);
+
         });
         $(document).on("keyup", '#shipping_phone', function () {
             $.ajax({

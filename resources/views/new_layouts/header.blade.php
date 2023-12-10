@@ -49,6 +49,10 @@
     <link href="{{ asset('assets/dist/css/tabler-vendors.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/js/chosenjquery/chosen.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/phonepicker/css/intlTelInput.css') }}" />
+    <script src="{{ asset('assets/phonepicker/js/intlTelInput.js') }}"></script>
+
+
     <!-- font css -->
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
