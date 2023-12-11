@@ -32,6 +32,7 @@ class TaskController extends Controller
         $task->duration = $request->duration;
         $task->progress = $request->has('progress') ? $request->progress : 0;
         $task->parent = $request->parent;
+        $task->created_by = Auth::user()->id;
         $task->taskmode = 0;
         if($request->totalStack!='undefined'){
             $task->float_val = $request->totalStack;
@@ -264,6 +265,7 @@ class TaskController extends Controller
             'reported_to'=>$reportedto,
             'subcontractor'=>$subcontractor,
             'taskmode'=>$mode,
+            'created_by' => Auth::user()->id,
         );
         
 
