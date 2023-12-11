@@ -342,7 +342,7 @@ class ProjectController extends Controller
                                 $task->end_date=$raw['Finish'];
                                 $end=$raw['Finish'];
                             }else{
-                                $end="";
+                                $end=1;
                             }
                             $task->custom=json_encode($value['$raw']);
                         }
@@ -473,25 +473,7 @@ class ProjectController extends Controller
                             $task->project_id = $project->id;
                             $task->instance_id = $instance_id;
 
-                            //########  checking the date is correct ########
-                            if($value['start_date'] > $raw['Finish']){
-                                Project::where('id',$project->id)->delete();
-                                Instance::where('project_id',$project->id)->delete();
-                                Con_task::where('project_id',$project->id)->delete();
 
-                                return redirect()->back()->with('error', __(' primaverra data Mismatch'));
-
-                            }
-
-                            if($value['start_date'] < $parent->start_date || $raw['Finish'] > $parent->end_date){
-                                Project::where('id',$project->id)->delete();
-                                Instance::where('project_id',$project->id)->delete();
-                                Con_task::where('project_id',$project->id)->delete();
-
-                                return redirect()->back()->with('error', __('Microproject data Mismatch'));
-
-                            }
-                            // ###############################
                             if (isset($value['text'])) {
                                 $task->text = $value['text'];
                             }
@@ -518,7 +500,7 @@ class ProjectController extends Controller
                                     $task->end_date = $raw['Finish'];
                                     $end=$raw['Finish'];
                                 }else{
-                                    $end='';
+                                    $end=1;
                                 }
                                 $task->custom = json_encode($value['$raw']);
                             }

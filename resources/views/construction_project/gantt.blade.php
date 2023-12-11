@@ -17,7 +17,7 @@
     .gantt_task_line {
         background-color: rgb(0 84 166 / 75%);
     }
-   
+
 
     .gantt_critical_task {
         background-color: #e63030 !important;
@@ -381,7 +381,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         <input type="hidden" id="user_id" name="user_id">
                         <input type="hidden" id="reporter_id" name="reporter_id">
                         <input type="hidden" id="subcontractor_id" name="subcontractor_id">
-                        
+
                         <input type="text" class="form-control" name="description"
                             placeholder="{{ __('Type your Task Name') }}">
                     </div>
@@ -494,7 +494,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     </div>
  </div>
  <!-- Delete Confirmation ends-->
- 
+
  <!-- Suc alert starts-->
  <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
@@ -574,7 +574,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     // end ###############################################
 
-        
+
     // delete confirmation show  #############################
     $(document).on("click", "#confirm_del_yes", function () {
         $("#modal-success").modal('show');
@@ -802,6 +802,38 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             $('.loader_show').hide();
             $('#additional_elements').removeClass("d-none");
         }, 3000);
+
+
+// weekdays appending
+var weekend_list=$('#weekends').val();
+    var result=[0,1,2,3,4,5,6];
+    console.log(weekend_list);
+    result.forEach(element => {
+    if(weekend_list.includes(element)){
+        gantt.setWorkTime({ day:element, hours:false });
+    }else{
+        gantt.setWorkTime({ day:element, hours: ["8:00-17:00"] });
+    }
+    });
+
+// weekdays appending ends
+
+// ## holidays  ######
+    var holidays = [];
+    var holidays_list=$('#holidays').val();
+        if(holidays_list!=''){
+            var result2 =holidays_list.split(':');
+            result2.forEach(element => {
+            holidays.push(new Date(element));
+        });
+        for (var i = 0; i < holidays.length; i++) {
+            gantt.setWorkTime({
+                                date: holidays[i],
+                                hours: false
+            });
+        }
+    }
+// ## holidays  end ######
 </script>
 
 
@@ -1211,7 +1243,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     })
 
 
-  
+
 
 
 
@@ -1368,7 +1400,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         var taskmode = $('input[name="taskmode"]:checked').val();
         taskmode= task.taskmode;
-       
+
         if(taskmode==1){
             $('#sub_con').show();
             $("#taskmode_two").prop( "checked", true);
@@ -1381,13 +1413,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             $("#taskmode_one").prop("checked", true);
             $("#taskmode_two").prop( "checked", false);
         }
-      
+
         var asignee = '';
 
         $('#taskassignee').tokenInput("clear");
         $('#task-reporting').tokenInput("clear");
         $('#sub-contractor').tokenInput("clear");
-        
+
 
         if (task.users != null || task.users !=undefined) {
 
@@ -1408,7 +1440,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             $('#taskassignee').tokenInput("add", asignee);
                         }, 200);
                     }
-                    
+
                 }
             });
 
@@ -1433,7 +1465,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             $('#task-reporting').tokenInput("add", reportedto);
                         }, 200);
                     }
-                    
+
                 }
             });
 
@@ -1459,7 +1491,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             $('#sub-contractor').tokenInput("add", subcontractorto);
                         }, 200);
                     }
-                    
+
                 }
             });
 
@@ -1470,7 +1502,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         form.querySelector("#save").onclick = save;
         form.querySelector("#close").onclick = cancel;
         form.querySelector("#cancel").onclick = cancel;
-      
+
     }
 
 
@@ -1596,7 +1628,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     $(document).on("click", ".gantt_add, .gantt_grid_head_add", function () {
         $("#save").html("Add New Task");
     });
-    
+
     // gantt crud end
 
     $("#taskassignee").tokenInput("{{ route('project.user_search') }}", {
