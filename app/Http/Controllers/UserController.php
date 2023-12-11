@@ -57,8 +57,13 @@ class UserController extends Controller
                 ])->where('created_by', '=', $user->creatorId())
                     ->where('type', '!=', 'client')
                     ->where('type', '!=', 'consultant')
+                    ->where('type', '!=', 'sub_contractor')
                     ->paginate(8);
-                $user_count = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get()->count();
+                    $user_count = User::where('created_by', '=', $user->creatorId())
+                    ->where('type', '!=', 'client')->where('type', '!=', 'consultant')
+                    ->where('type', '!=', 'sub_contractor')
+                    ->get()
+                    ->count();
             }
 
             // return view('user.index')->with('users', $users);
@@ -125,6 +130,7 @@ class UserController extends Controller
                     $request->all(), [
                         'name' => 'required|max:120',
                         'email' => 'required|email|unique:users',
+                        'phone' => 'required|unique:users',
                         'password' => 'required|min:6',
                         'gender' => 'required',
                     ]
@@ -205,6 +211,7 @@ class UserController extends Controller
                     $request->all(), [
                         'name' => 'required|max:120',
                         'email' => 'required|email|unique:users',
+                        'phone' => 'required|unique:users',
                         'password' => 'required|min:6',
                         'role' => 'required',
                         'gender' => 'required',
@@ -360,6 +367,7 @@ class UserController extends Controller
                     $request->all(), [
                         'name' => 'required|max:120',
                         'email' => 'required|email|unique:users,email,'.$id,
+                        'phone' => 'required|unique:users,phone,'.$id,
                         'gender' => 'required',
                     ]
                 );
@@ -416,6 +424,8 @@ class UserController extends Controller
                     $request->all(), [
                         'name' => 'required|max:120',
                         'email' => 'required|email|unique:users,email,'.$id,
+                        'phone' => 'required|unique:users,phone,'.$id,
+
                         'role' => 'required',
                         'gender' => 'required',
                     ]
@@ -542,6 +552,8 @@ class UserController extends Controller
                 $request->all(), [
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users,email,'.$userDetail->id,
+                    'phone' => 'required|unique:users,phone,'.$userDetail->id,
+
                 ]
             );
 
@@ -632,6 +644,8 @@ class UserController extends Controller
                 $request->all(), [
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users,email,'.$userDetail->id,
+                    'phone' => 'required|unique:users,phone,'.$userDetail->id,
+
                 ]
             );
 
@@ -994,7 +1008,12 @@ class UserController extends Controller
             $formname = $request->formname;
             $checkname = $request->getname;
             $getid = $request->getid;
-
+            if(isset($request->getid)){
+                $getid = $request->getid;
+            }elseif(isset($request->get_id)){
+                $getid =  $request->get_id;
+            }
+          
             if ($formname == 'Users') {
                 if ($getid == null) {
                     $getcheckval = User::where('phone', $checkname)->first();
@@ -1004,7 +1023,7 @@ class UserController extends Controller
             } else {
                 $getcheckval = 'Not Empty';
             }
-
+            
             if ($getcheckval == null) {
                 return 1; //Success
             } else {

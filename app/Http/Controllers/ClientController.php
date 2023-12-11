@@ -90,10 +90,12 @@ class ClientController extends Controller
 
         if (\Auth::user()->can('create client')) {
             $user = \Auth::user();
+           
             $validator = \Validator::make(
                 $request->all(), [
                     'name' => 'required',
                     'email' => 'required|email|unique:users',
+                    'phone' => 'required|unique:users',
                     'password' => 'required',
                 ]
             );
@@ -142,7 +144,7 @@ class ClientController extends Controller
                 $shipping_country = $request->billing_country;
                 $shipping_state = $request->billing_state;
                 $shipping_city = $request->billing_city;
-                $shipping_phone = $request->billing_phone;
+                $shipping_phone = $request->phone;
                 $shipping_zip = $request->billing_zip;
                 $shipping_address = $request->billing_address;
             } else {
@@ -172,7 +174,7 @@ class ClientController extends Controller
                         'country' => $request->billing_country,
                         'state' => $request->billing_state,
                         'city' => $request->billing_city,
-                        'phone' => $request->billing_phone,
+                        'phone' => $request->phone,
                         'zip' => $request->billing_zip,
                         'avatar' => $avatar,
                         'address' => $request->billing_address,
@@ -182,7 +184,7 @@ class ClientController extends Controller
                         'billing_country' => $request->billing_country,
                         'billing_state' => $request->billing_state,
                         'billing_city' => $request->billing_city,
-                        'billing_phone' => $request->billing_phone,
+                        'billing_phone' => $request->phone,
                         'billing_zip' => $request->billing_zip,
                         'billing_address' => $request->billing_address,
                         'shipping_name' => $shipping_name,
@@ -311,6 +313,8 @@ class ClientController extends Controller
                 $validation = [
                     'name' => 'required',
                     'email' => 'required|email|unique:users,email,'.$client->id,
+                    'phone' => 'required|unique:users,phone,'.$client->id,
+
                 ];
 
                 $post = [];
@@ -350,7 +354,7 @@ class ClientController extends Controller
                     $shipping_country = $request->billing_country;
                     $shipping_state = $request->billing_state;
                     $shipping_city = $request->billing_city;
-                    $shipping_phone = $request->billing_phone;
+                    $shipping_phone = $request->phone;
                     $shipping_zip = $request->billing_zip;
                     $shipping_address = $request->billing_address;
                 } else {
@@ -381,7 +385,7 @@ class ClientController extends Controller
                 $post['billing_country'] = $request->billing_country;
                 $post['billing_state'] = $request->billing_state;
                 $post['billing_city'] = $request->billing_city;
-                $post['billing_phone'] = $request->billing_phone;
+                $post['billing_phone'] = $request->phone;
                 $post['billing_zip'] = $request->billing_zip;
                 $post['billing_address'] = $request->billing_address;
                 $post['shipping_name'] = $shipping_name;

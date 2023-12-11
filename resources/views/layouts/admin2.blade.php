@@ -53,7 +53,7 @@
 </head>
 
 <body class=" d-flex flex-column">
-    <div class="page">
+    <div class=>
         <!-- Navbar -->
         <header class="navbar navbar-expand-md navbar-light d-print-none">
             <div class="container-xl">
@@ -71,7 +71,7 @@
 				<div class="navbar navbar-light">
 					<div class="container-fluid">
 						<ul class="navbar-nav">
-							
+
 
        <li class="nav-item">
 								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -152,7 +152,7 @@
                                     </span> <span class="nav-link-title">Construction Management System</span> </a>
 							</li>
 
-    						
+
     <li class="nav-item">
 								<a class="nav-link" href="http://localhost:8000/new_home"> <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -165,7 +165,7 @@
                                     </span> <span class="nav-link-title">Support System</span> </a>
 							</li>
 						</ul>
-						
+
 						<div class="dropdown dash-h-item drp-language order-md-last">
 							<a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
 								<i class="fas fa-globe"></i>

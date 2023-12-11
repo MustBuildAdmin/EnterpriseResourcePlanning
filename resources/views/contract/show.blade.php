@@ -43,7 +43,7 @@
                 data: {_token: $('meta[name="csrf-token"]').attr('content'), contract_description: $(this).val()},
                 type: 'POST',
                 success: function (response) {
-                  
+
                     if (response.is_success) {
                         show_toastr('success', response.success,'success');
                     } else {
@@ -160,7 +160,7 @@
                             location.reload();
                         }, 500)
                         data = JSON.parse(data);
-                       
+
                         var html = "<div class='list-group-item px-0'>" +
                             "                    <div class='row align-items-center'>" +
                             "                        <div class='col-auto'>" +
@@ -234,7 +234,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></li>
     <li class="breadcrumb-item"><a href="{{ route('contract.index') }}">{{ __('contract') }}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{\Auth::user()->contractNumberFormat($contract->id)}}</li>
+    <li class="breadcrumb-item active" aria-current=>{{\Auth::user()->contractNumberFormat($contract->id)}}</li>
 @endsection
 
 @section('action-btn')

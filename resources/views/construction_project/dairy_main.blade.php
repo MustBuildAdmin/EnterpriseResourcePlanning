@@ -1,4 +1,22 @@
 @include('new_layouts.header')
+
+<style>
+    #loader {
+        border: 12px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 12px solid #444444;
+        width: 70px;
+        height: 70px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<div id="loader" class="center"></div>
 <div class="container-fluid">
    <div class="card mt-5 p-4">
       <div class="card-header">
@@ -39,11 +57,11 @@
             </div>
          </div>
       </div>
-     
+
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
-      <div class="row row-cards">
+      <div class="row row-cards mt-3">
        @foreach ($projects as $key => $project)
-         <div class="col-md-6 col-lg-3">
+         <div class="col-md-6 col-lg-2">
             <div class="card">
                <div class="ms-auto lh-1 p-4">
                    <div class="dropdown">
@@ -66,7 +84,7 @@
                            ->where('project_id',$project->id)
                            ->where('freeze_status',0)->first();
                        @endphp
-                      
+
                         @if($getInstance != null)
                            @can('edit project')
                                  <a class="dropdown-item active" href="#!" data-size="xl"
@@ -98,7 +116,7 @@
                       </div>
                    </div>
                 </div>
-               <div class="card-body p-4 py-5 text-center">
+               <div class="card-body p-2 text-center">
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
                    ?>
@@ -115,15 +133,16 @@
                   $project_instances=\App\Models\Instance::where('project_id',$project->id)
                                     ->get();
                @endphp
-               
+
                    <a class="text-dark"  data-size="lg"
                    href="{{ route('projects.instance_project_dairy',
                            [$project_instances[0]['id'],$project->id]) }}"
                    data-bs-toggle="tooltip">{{ $project->project_name }}</a>
-              
+
                   </h3>
-                  <p class="text-secondary mb-0">Start Date: {{ Utility::getDateFormated($project->start_date) }}</p>
-                  <p class="text-secondary">End Date: {{ Utility::getDateFormated($project->end_date) }}</p>
+                  <p class="text-secondary mb-0"><small style="font-size:10.5px;font-weight: 600">
+                    Start Date: {{ Utility::getDateFormated($project->start_date) }}
+                    - End Date: {{ Utility::getDateFormated($project->end_date) }}</small></p>
                   <p class="mb-3">
                    @php
                    if ($project->status != ""){
@@ -238,4 +257,19 @@
             });
       });
    });
+</script>
+<script>
+    document.onreadystatechange = function () {
+        if (document.readyState !== "complete") {
+            document.querySelector(
+                "body").style.visibility = "hidden";
+            document.querySelector(
+                "#loader").style.visibility = "visible";
+        } else {
+            document.querySelector(
+                "#loader").style.display = "none";
+            document.querySelector(
+                "body").style.visibility = "visible";
+        }
+    };
 </script>
