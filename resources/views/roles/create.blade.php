@@ -27,6 +27,9 @@
                         <a class="nav-link" id="pills-project-tab" data-bs-toggle="pill" href="#project1" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Construction')}}</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" id="pills-diary-tab" data-bs-toggle="pill" href="#diary" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('Diary')}}</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" id="pills-hrmpermission-tab" data-bs-toggle="pill" href="#hrmpermission" role="tab" aria-controls="pills-contact" aria-selected="false">{{__('HRM')}}</a>
                     </li>
                     <li class="nav-item">
@@ -492,7 +495,8 @@
                     <div class="tab-pane fade" id="project1" role="tabpanel" aria-labelledby="pills-contact-tab">
                         @php
                             // $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','bug report','bug status'];
-                            $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','project specification','procurement material','vochange','RFI','concrete','site reports'];
+                            $modules=['project dashboard','project','milestone','grant chart','project stage','project task','Revision','Lookahead','Lookahead grant chart','activity','project task stage','Engineers project invitation','consultant project invitation','sub contractor project invitation'];
+                            // $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage'];
                         @endphp
                         <div class="col-md-12">
                             <div class="form-group">
@@ -699,6 +703,115 @@
                                                                 </div>
                                                             @endif
                                                         @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="diary" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        @php
+                            $modules=['directions','project specification','procurement material','vochange','RFI','concrete','site reports'];
+                        @endphp
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @if(!empty($permissions))
+                                    <h6 class="my-3">{{__('Assign Diary related Permission to Roles')}}</h6>
+                                    <table class="table table-striped mb-0" id="dataTable-1">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" class="form-check-input custom_align_middle" name="diary_checkall"  id="diary_checkall" >
+                                            </th>
+                                            <th>{{__('Module')}} </th>
+                                            <th>{{__('Permissions')}} </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+    
+                                        @foreach($modules as $module)
+                                            <tr>
+                                                <td><input type="checkbox" class="form-check-input ischeck diary_checkall"  data-id="{{str_replace(' ', '', $module)}}" id="{{str_replace(' ', '', $module)}}" ></td>
+                                                <td><label class="ischeck diary_checkall" data-id="{{str_replace(' ', '', $module)}}" for="{{str_replace(' ', '', $module)}}">{{ ucfirst($module) }}</label></td>
+                                                <td>
+                                                    <div class="row ">
+                                                        @if(in_array('view '.$module,(array) $permissions))
+                                                            @if($key = array_search('view '.$module,$permissions))
+                                                                <div class="col-md-3 custom-control custom-checkbox">
+                                                                    {{Form::checkbox('permissions[]',$key,false, ['class'=>'form-check-input isscheck diary_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'View',['class'=>'custom-control-label'])}}<br>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+    
+                                                        @if(in_array('add '.$module,(array) $permissions))
+                                                            @if($key = array_search('add '.$module,$permissions))
+                                                                <div class="col-md-3 custom-control custom-checkbox">
+                                                                    {{Form::checkbox('permissions[]',$key,false, ['class'=>'form-check-input isscheck diary_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'Add',['class'=>'custom-control-label'])}}<br>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+    
+                                            
+                                                        @if(in_array('manage '.$module,(array) $permissions))
+                                                            @if($key = array_search('manage '.$module,$permissions))
+                                                                <div class="col-md-3 custom-control custom-checkbox">
+                                                                    {{Form::checkbox('permissions[]',$key,false,
+                                                                    ['class'=>'form-check-input isscheck
+                                                                     diary_checkall isscheck_'
+                                                                     .str_replace(' ', '', $module),
+                                                                     'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'View',
+                                                                    ['class'=>'custom-control-label'])}}
+                                                                    <br>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+                                                        @if(in_array('create '.$module,(array) $permissions))
+                                                            @if($key = array_search('create '.$module,$permissions))
+                                                                <div class="col-md-3 custom-control custom-checkbox">
+                                                                    {{Form::checkbox('permissions[]',$key,false, ['class'=>'form-check-input isscheck diary_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'Create',['class'=>'custom-control-label'])}}<br>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+                                                        @if(in_array('edit '.$module,(array) $permissions))
+                                                            @if($key = array_search('edit '.$module,$permissions))
+                                                                <div class="col-md-3 custom-control custom-checkbox">
+                                                                    {{Form::checkbox('permissions[]',$key,false, ['class'=>'form-check-input isscheck diary_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'Edit',['class'=>'custom-control-label'])}}<br>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+                                                        @if(in_array('invite '.$module,(array) $permissions))
+                                                            @if($key = array_search('invite '.$module,$permissions))
+                                                                <div class="col-md-3 custom-control custom-checkbox">
+                                                                    {{Form::checkbox('permissions[]',$key,false,
+                                                                    ['class'=>'form-check-input isscheck
+                                                                    diary_checkall isscheck_'
+                                                                    .str_replace(' ', '', $module),
+                                                                    'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'Invite',
+                                                                    ['class'=>'custom-control-label'])}}
+                                                                    <br>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+                                                        @if(in_array('show '.$module,(array) $permissions))
+                                                            @if($key = array_search('show '.$module,$permissions))
+                                                                <div class="col-md-3 custom-control custom-checkbox">
+                                                                    {{Form::checkbox('permissions[]',$key,false, ['class'=>'form-check-input isscheck diary_checkall isscheck_'.str_replace(' ', '', $module),'id' =>'permission'.$key])}}
+                                                                    {{Form::label('permission'.$key,'Show',['class'=>'custom-control-label'])}}<br>
+                                                                </div>
+                                                            @endif
+                                                        @endif
+    
+    
                                                     </div>
                                                 </td>
                                             </tr>
