@@ -1762,7 +1762,7 @@ class Utility extends Model
         foreach ($obj as $key => $val) {
             $arrValue[$key] = $val;
         }
-       
+
         $settings = Utility::settings();
         $company_name = $settings['company_name'];
         $colorcode =Utility::rndRGBColorCode();
@@ -1777,25 +1777,25 @@ class Utility extends Model
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
         $arrValue['inviteconsultantHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
         <tr><td class="w-50p"></td>
-        <td><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
+        <td><img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
          class="avatar avatar-rounded" width="56" height="56" alt=""></td><td>
          <table class="icon icon-md bg-none" cellspacing="0" cellpadding="0"><tr>
          <td align="center">
-         <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
+         <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
           class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td>
           <div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'
           .$short_lname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
         $arrValue['inviteteamMemberHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
           <tr><td class="w-50p"></td>
-          <td><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
+          <td><img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
            class="avatar avatar-rounded" width="56" height="56" alt=""></td><td>
            <table class="icon icon-md bg-none" cellspacing="0" cellpadding="0"><tr>
            <td align="center">
-           <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
+           <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
             class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td>
             <div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'
             .$short_projname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
-        
+
         if(isset($obj['invite_link'])){
             $arrValue['invite_link']=' <td class="content pt-0"> You can <a href="'.$obj['invite_link'].
             '">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'
@@ -1806,7 +1806,7 @@ class Utility extends Model
              class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span>
              </a></td></tr></table></td></tr></table></td></tr>';
         }
-       
+
 
         $arrValue['set_password_url']='<tr><td class="content text-center pt-0 pb-xl">
         <table cellspacing="0" cellpadding="0"><tbody><tr><td align="center">
@@ -2756,7 +2756,7 @@ class Utility extends Model
     {
         try {
             $settings = Utility::getStorageSetting();
-            
+
             if (! empty($settings['storage_setting'])) {
 
                 if ($settings['storage_setting'] == 'wasabi') {

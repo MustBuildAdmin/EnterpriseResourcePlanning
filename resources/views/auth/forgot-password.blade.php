@@ -72,11 +72,15 @@
         <div class="card-body">
      <h2 class="card-title text-center mb-4">{{__('Reset Password')}}</h2>
      <p class="text-muted">{{__('Reset Password Subheader')}}</p>
-     <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="36"  class="backgroundimge" alt=""></a>
+     <a href="/" class="navbar-brand navbar-brand-autodark">
+        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png"
+         height="36"  class="backgroundimge" alt=""></a>
 
             <div class="form-group mb-3">
                 <label for="email" class="form-label">{{ __('E-Mail') }}</label>
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input id="email" type="email" class="form-control
+                @error('email') is-invalid @enderror" name="email"
+                value="{{ old('email') }}" required autocomplete="email" autofocus>
                 @error('email')
                 <span class="invalid-feedback" role="alert">
                     <small>{{ $message }}</small>
