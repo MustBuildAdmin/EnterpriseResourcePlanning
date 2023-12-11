@@ -1783,4 +1783,22 @@ var weekend_list=$('#weekends').val();
 
     document.addEventListener("DOMContentLoaded", function() {
     });
+
+    function collapseAll() {
+          gantt.batchUpdate(function () {
+              gantt.eachTask(function (task) {
+                  gantt.close(task.id)
+              })
+          })
+      }
+
+
+      function expandAll() {
+          gantt.batchUpdate(function () {
+              gantt.eachTask(function (task) {
+                  gantt.open(task.id)
+              })
+          })
+      }
+
 </script>
