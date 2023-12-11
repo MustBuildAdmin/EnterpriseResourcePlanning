@@ -69,6 +69,8 @@
                                                 <?php  $short=substr($user_db->name, 0, 1);?>
                                                 <span class="avatar avatar-l rounded">+{{strtoupper($short)}}</span>
                                             @endif
+                                        @else
+                                            <span class="status status-red">{{ __('Not Assigned') }}</span>
                                         @endif
                                     @empty
                                         {{ __('Not Assigned') }}
@@ -88,6 +90,8 @@
                                     <span class="avatar avatar-l rounded" title="{{$user_creater_db->name}}">
                                         {{ substr($user_creater_db->name, 0, 1) }}
                                     </span>
+                                @else
+                                    <span class="status status-red"> - </span>
                                 @endif
                             </div>
                         </div>
