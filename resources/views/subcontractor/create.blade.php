@@ -46,7 +46,7 @@
             <div class="form-group">
                 {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    {{Form::text('contact',null,array('id'=>'phone','class'=>'form-control',
+                    {{Form::text('contact',null,array('id'=>'phone','name'=>'phone','class'=>'form-control',
                     'Placeholder'=>'(00) 0000-0000','required'=>'required','maxlength' => 16,
                     'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
 

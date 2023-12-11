@@ -52,7 +52,7 @@
                 {{ Form::label('contact', __('Contact'), ['class' => 'form-label']) }}
                 <div class="form-icon-user">
                     <span><i class="ti ti-mobile-alt"></i></span>
-                    {{Form::text('contact',$vender->phone,array('id'=>'phone','class'=>'form-control',
+                    {{Form::text('contact',$vender->phone,array('id'=>'phone','name'=>'phone','class'=>'form-control',
                     'Placeholder'=>'(00) 0000-0000','required'=>'required','maxlength' => 16,
                     'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
                 </div>
