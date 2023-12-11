@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Validator;
 use Session;
 use App\Models\EmailTemplate;
 use App\Models\UserEmailTemplate;
+use Yajra\DataTables\DataTables;
 
 class ProjectController extends Controller
 {
@@ -858,19 +859,16 @@ class ProjectController extends Controller
     public function getActivityLog(Request $request, $project_id)
     {
 
-        // Page Length
-        $pageNumber = ($request->start / $request->length) + 1;
-        $pageLength = $request->length;
-        $skip = ($pageNumber - 1) * $pageLength;
+        $task_status = array();
+        $start_date  = $request->start_date;
+        $end_date    = $request->end_date;
 
         // get data from products table
-        $query = \DB::table('activity_logs')->select('*', 'activity_logs.id as activitylogID',
-            'activity_logs.created_at as activitylogcreatedAt')
+        $query = DB::table('activity_logs')
+            ->select('*', 'activity_logs.id as activitylogID','activity_logs.created_at as activitylogcreatedAt')
             ->join('users', 'users.id', '=', 'activity_logs.user_id');
 
         // Search
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
         if ($start_date != '' && $end_date != '') {
             $query = $query->where(function ($query) use ($start_date, $end_date) {
                 $start_date = $start_date . ' 00:00:00.000000';
@@ -881,11 +879,9 @@ class ProjectController extends Controller
                         $end_date,
                     ]
                 );
-
             });
         }
-
-        $task_status = array();
+        
         if (!empty($request->task_status)) {
             if (in_array("Create", $request->task_status)) {
                 array_push($task_status, 'Added New Task');
@@ -901,9 +897,159 @@ class ProjectController extends Controller
             }
         }
 
-        $query->where("project_id", $project_id);
-        $recordsFiltered = $recordsTotal = $query->count();
-        $users = $query->skip($skip)->take($pageLength)->get();
+        $users = $query->where("project_id", $project_id)->get();
+
+        return Datatables::of($users)
+        ->addColumn('log_type', function ($row) {
+            if($row->log_type == 'Added New Task'){
+                $log_type_fetch = __('Create');
+            }
+            else if($row->log_type == 'Updated Task'){
+                $log_type_fetch = __('Update');
+            }
+            else if($row->log_type == 'Deleted Task'){
+                $log_type_fetch = __('Delete');
+            }
+            else{
+                $log_type_fetch = $row->log_type;
+            }
+            return $log_type_fetch;
+        })
+        ->addColumn('activity', function ($row) {
+            if($row->remark != null && $row->remark != ""){
+                $activity_decode = json_decode($row->remark);
+                $title = $activity_decode->title;
+
+                if ($row->log_type == 'Invite User') {
+                    $activity_fetch = __('has invited').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New Task') {
+                    $activity_fetch = __('Added New Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'User Assigned to the Task') {
+                    $activity_fetch = __('has assigned task').'- <b>'.$row->task_name.'</b>'.__('to').' - <b>'.$row->member_name.'</b>';
+                }
+                else if ($row->log_type == 'User Removed from the Task') {
+                    $activity_fetch = __('has removed').'- <b>'.$row->member_name.'</b>'.__('from task').' - <b>'.$row->task_name.'</b>';
+                }
+                else if ($row->log_type == 'Upload File') {
+                    $activity_fetch = __('Upload new file').'- <b>'.$row->file_name.'</b>';
+                }
+                else if ($row->log_type == 'Create Bug') {
+                    $activity_fetch = __('Created new bug').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Create Milestone') {
+                    $activity_fetch = __('Create new milestone').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Create Task') {
+                    $activity_fetch = __('Create new Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Create Expense') {
+                    $activity_fetch = __('Create new Expense').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Add Product') {
+                    $activity_fetch = __('Add new Products').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Update Sources') {
+                    $activity_fetch = __('Update Sources');
+                }
+                else if ($row->log_type == 'Create Deal Call') {
+                    $activity_fetch = __('Create new Deal Call');
+                }
+                else if ($row->log_type == 'Create Deal Email') {
+                    $activity_fetch = __('Create new Deal Email');
+                }
+                else if ($row->log_type == 'Added New Consultant') {
+                    $activity_fetch = __('Added new Consultant').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated Consultant') {
+                    $activity_fetch = __('Updated Consultant').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted Consultant') {
+                    $activity_fetch = __('Deleted Consultant').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New RFIStatus') {
+                    $activity_fetch = __('Added New RFIStatus').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated RFIStatus') {
+                    $activity_fetch = __('Updated RFIStatus').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted RFIStatus') {
+                    $activity_fetch = __('Deleted RFIStatus').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New ProjectSpecification') {
+                    $activity_fetch = __('Added New ProjectSpecification').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated ProjectSpecification') {
+                    $activity_fetch = __('Updated ProjectSpecification').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New Variation Scope') {
+                    $activity_fetch = __('Added New Variation Scope').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated Variation Scope') {
+                    $activity_fetch = __('Updated Variation Scope').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted Variation Scope') {
+                    $activity_fetch = __('Deleted Variation Scope').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New ProcurementMaterial') {
+                    $activity_fetch = __('Added New ProcurementMaterial').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated ProcurementMaterial') {
+                    $activity_fetch = __('Updated ProcurementMaterial').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted ProcurementMaterial') {
+                    $activity_fetch = __('Deleted ProcurementMaterial').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New SiteReport') {
+                    $activity_fetch = __('Added New SiteReport').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated SiteReport') {
+                    $activity_fetch = __('Updated SiteReport').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted SiteReport') {
+                    $activity_fetch = __('Deleted SiteReport').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New ConcretePouring') {
+                    $activity_fetch = __('Added New ConcretePouring').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated ConcretePouring') {
+                    $activity_fetch = __('Updated ConcretePouring').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted ConcretePouring') {
+                    $activity_fetch = __('Deleted ConcretePouring').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated Task') {
+                    $activity_fetch = __('Updated Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted Task') {
+                    $activity_fetch = __('Deleted Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Move Task') {
+                    $activity_fetch = __('Moved the Task').'- <b>'.$title.'</b>'.__('from').' - <b>'.
+                    $row->old_stage.'</b>'.__('to').' - <b>'.$row->new_stage.'</b>';
+                }
+                else if ($row->log_type == 'Move') {
+                    $activity_fetch = __('Moved the deal').'- <b>'.$title.'</b>'.__('from').' - <b>'.
+                    $row->old_status.'</b>'.__('to').' - <b>'.$row->new_status.'</b>';;
+                }
+                else{
+                    $activity_fetch = '<b>'.$title.'</b>';
+                }
+
+                return $activity_fetch;
+            }
+            else{
+                return '<b>'.__('Some Activity').'</b>';
+            }
+        })
+        ->addColumn('activity_date', function ($user) {
+            $date = date_create($user->activitylogcreatedAt);
+            return date_format($date, "M j, Y h:i:s");
+            // return $user->activitylogcreatedAt;
+        })
+        ->rawColumns(['log_type','activity','activity_date'])
+        ->make(true);
 
         return response()->json(["draw" => $request->draw, "recordsTotal" => $recordsTotal,
             "recordsFiltered" => $recordsFiltered, 'data' => $users, 'end_date' => $end_date, 'start_date' => $start_date], 200);
