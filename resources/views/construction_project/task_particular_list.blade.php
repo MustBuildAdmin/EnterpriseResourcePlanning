@@ -60,13 +60,17 @@
                                         @php
                                             $user_db = DB::table('users')->where('id',$get_user)->first();
                                         @endphp
-                                        @if($key<3)
-                                            <span class="avatar avatar-l rounded" title="{{$user_db->name}}">
-                                                {{ substr($user_db->name, 0, 1) }}
-                                            </span>
+                                        @if($user_db != null)
+                                            @if($key<3)
+                                                <span class="avatar avatar-l rounded" title="{{$user_db->name}}">
+                                                    {{ substr($user_db->name, 0, 1) }}
+                                                </span>
+                                            @else
+                                                <?php  $short=substr($user_db->name, 0, 1);?>
+                                                <span class="avatar avatar-l rounded">+{{strtoupper($short)}}</span>
+                                            @endif
                                         @else
-                                            <?php  $short=substr($user_db->name, 0, 1);?>
-                                            <span class="avatar avatar-l rounded">+{{strtoupper($short)}}</span>
+                                            <span class="status status-red">{{ __('Not Assigned') }}</span>
                                         @endif
                                     @empty
                                         {{ __('Not Assigned') }}
@@ -86,6 +90,8 @@
                                     <span class="avatar avatar-l rounded" title="{{$user_creater_db->name}}">
                                         {{ substr($user_creater_db->name, 0, 1) }}
                                     </span>
+                                @else
+                                    <span class="status status-red"> - </span>
                                 @endif
                             </div>
                         </div>
