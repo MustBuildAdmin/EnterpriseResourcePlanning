@@ -97,7 +97,7 @@ $holidays=implode(':',$holidays);
                                         Freeze
                                     </a>
                                 {!! Form::close() !!}
-                                <button class="btn btn-outline-primary w-20" name="undo" aria-current="page" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
+                                <button class="btn btn-outline-primary w-20" name="undo" aria-current= style='height: 38px;margin-top: 4px;margin-right: 6px;'>Undo</button>
                                 <button class="btn btn-outline-primary w-20" name="redo" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Redo</button>
                                 <button class="btn btn-outline-primary w-20" name="indent" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Indent</button>
                                 <button class="btn btn-outline-primary w-20" name="outdent" style='height: 38px;margin-top: 4px;margin-right: 6px;'>Outdent</button>
@@ -221,7 +221,7 @@ $holidays=implode(':',$holidays);
 		var els = document.getElementsByClassName("action");
 		for (var i = 0; i < els.length; i++) {
 			els[i].onclick = function () {
-			
+
 				gantt.performAction(this.name)
 			}
 		}

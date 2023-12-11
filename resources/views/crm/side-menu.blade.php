@@ -3,7 +3,7 @@
         top: 4.8em !important;
     }
 </style>
-<div class="page">
+<div class=>
     <!-- Sidebar  -->
     <header class="navbar navbar-expand-md  d-print-none border-bottom">
         <div class="container-fluid">

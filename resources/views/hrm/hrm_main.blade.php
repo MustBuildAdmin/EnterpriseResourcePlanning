@@ -14,7 +14,7 @@
         color: #fff !important;
     }
 </style>
-<div class="page">
+<div class=>
     <header class="navbar navbar-expand-md  d-print-none border-bottom" data-bs-theme="light">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"

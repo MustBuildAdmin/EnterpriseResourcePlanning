@@ -12,7 +12,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('support.index')}}">{{__('Support')}}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{__('Support Reply')}}</li>
+    <li class="breadcrumb-item active" aria-current=>{{__('Support Reply')}}</li>
 @endsection
 @section('action-btn')
 @endsection
@@ -119,7 +119,7 @@
                     <div class="scrollbar-inner">
                         <div class="list-group list-group-flush support-reply-box">
                             @foreach($replyes as $reply)
-                              
+
 
 
                                  <div class="list-group-item px-0">

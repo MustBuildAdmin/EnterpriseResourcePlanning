@@ -11,7 +11,7 @@
 @endpush
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></li>
-    <li class="breadcrumb-item active" aria-current="page">{{ __('Email Template') }}</li>
+    <li class="breadcrumb-item active" aria-current=>{{ __('Email Template') }}</li>
 @endsection
 @section('action-btn')
 {{--    <div class="float-end">--}}
@@ -79,7 +79,7 @@
             <div class="card">
                 <div class="card-body ">
                     {{-- <div class="card"> --}}
-                        
+
                     {{Form::model($currEmailTempLang, array('route' => array('email_template.update', $currEmailTempLang->parent_id), 'method' => 'PUT')) }}
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -153,7 +153,7 @@
                                                 <p class="col-4">{{__('Award Name')}} : <span class="pull-right text-primary">{award_name}</span></p>
                                                 <p class="col-4">{{__('Award Email')}} : <span class="pull-right text-primary">{award_email}</span></p>
                                             </div>
-                                            
+
                                         @elseif($emailTemplate->slug=='customer_invoice_send')
                                             <div class="row">
                                                 <p class="col-4">{{__('App Name')}} : <span class="pull-end text-primary">{app_name}</span></p>

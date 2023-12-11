@@ -207,7 +207,7 @@
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    <input class="form-control" name="billing_phone" type="number" id="billing_phone"
+                    <input class="form-control" name="phone" type="number" id="billing_phone"
                      maxlength="16" placeholder="+91 111 111 1111"  required>
                     {{-- {{Form::text('billing_phone',null,array('class'=>'form-control'))}} --}}
                     <span class="invalid-name billing_duplicate" role="alert" style="display: none;">

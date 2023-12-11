@@ -1,6 +1,6 @@
 @include('new_layouts.header')
 <style>
-   
+
 
     .dropdown-toggle::after {
         display: none;
@@ -348,11 +348,11 @@
               </div>
            </div>
         </div>
-        <div class="row row-cards">
+        <div class="row row-cards mt-2">
            @forelse($users as $user)
-           <div class="col-md-6 col-lg-3">
+           <div class="col-md-6 col-lg-2">
               <div class="card">
-                 <div class="ms-auto lh-1 p-4">
+                 <div class="ms-auto lh-1 p-2">
                     @if ($user->color_code != null || $user->color_code != '')
                     @php $color_co=$user->color_code; @endphp
                     @else
@@ -389,7 +389,7 @@
                  </div>
                  @php $short=substr($user->name, 0, 1); @endphp
                  @php $short_lname=substr($user->lname, 0, 1); @endphp
-                 <div class="card-body p-4 text-center">
+                 <div class="card-body p-2 text-center">
                     @if (!empty($user->avatar))
                     <img src="{{ !empty($user->avatar) ? $profile . $user->avatar :
                        asset(Storage::url(' uploads/avatar/avatar.png ')) }}"
