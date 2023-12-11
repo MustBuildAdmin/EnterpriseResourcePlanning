@@ -96,7 +96,10 @@ th.sorting_disabled{
                                             <div class="mb-3">
                                                 <button class="btn btn-tabler w-100"
                                                 onclick="searchResult()">Search</button>
-                                              </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <button class="btn btn-tabler w-100">Reset</button>
+                                            </div>
                                            </div>
                                         </div>
                                         <div class="col-md-10">
@@ -203,6 +206,12 @@ th.sorting_disabled{
             activity_datatable(start_date, end_date, task_status);
         }
 
+        function resetActivity(){
+            $("#start-date").val("");
+            $("#end-date").val("");
+            document.querySelector('select#task-status').tomselect.setValue("");
+            activity_datatable(null,null,null);
+        }
 
     </script>
 <script>

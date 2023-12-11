@@ -51,10 +51,9 @@
 
                         <div class="datagrid-item">
                             @php
-                                $users_data = $data['con_data']->users != "" ?
-                                json_decode($data['con_data']->users) : array();
+                                $users_data[] = $data['con_data']->users != "" ? json_decode($data['con_data']->users) : array();
                             @endphp
-                            <div class="datagrid-title">Avatars list</div>
+                            <div class="datagrid-title">Assigned To</div>
                             <div class="datagrid-content">
                                 <div class="avatar-list avatar-list-stacked">
                                     @forelse ($users_data as $key => $get_user)
@@ -62,12 +61,12 @@
                                             $user_db = DB::table('users')->where('id',$get_user)->first();
                                         @endphp
                                         @if($key<3)
-                                            <span class="avatar avatar-xs rounded" title="{{$user_db->name}}">
+                                            <span class="avatar avatar-l rounded" title="{{$user_db->name}}">
                                                 {{ substr($user_db->name, 0, 1) }}
                                             </span>
                                         @else
                                             <?php  $short=substr($user_db->name, 0, 1);?>
-                                            <span class="avatar avatar-xs rounded">+{{strtoupper($short)}}</span>
+                                            <span class="avatar avatar-l rounded">+{{strtoupper($short)}}</span>
                                         @endif
                                     @empty
                                         {{ __('Not Assigned') }}
@@ -77,9 +76,38 @@
                         </div>
 
                         <div class="datagrid-item">
+                            @php
+                                $users_creater = $data['con_data']->created_by != "" ? $data['con_data']->created_by : null;
+                                $user_creater_db = DB::table('users')->where('id',$users_data)->first();
+                            @endphp
                             <div class="datagrid-title">Task Creator</div>
-                            <div class="datagrid-content">Third Party</div>
+                            <div class="datagrid-content">
+                                @if ($user_creater_db != null)
+                                    <span class="avatar avatar-l rounded" title="{{$user_creater_db->name}}">
+                                        {{ substr($user_creater_db->name, 0, 1) }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
+
+                        @if ($data['con_data']->subcontractor != 0)
+                            @php
+                                $users_subcon = $data['con_data']->subcontractor != "" ? $data['con_data']->created_by : null;
+                                $user_subcon_db = DB::table('users')->where('id',$users_data)->first();
+                            @endphp
+                            @if ($user_subcon_db != null)
+                                <div class="datagrid-item">
+                                    <div class="datagrid-title">SubContractor</div>
+                                    <div class="datagrid-content">
+                                        @if ($user_subcon_db != null)
+                                            <span class="avatar avatar-l rounded" title="{{$user_subcon_db->name}}">
+                                                {{ substr($user_subcon_db->name, 0, 1) }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                        @endif
 
                         <div class="datagrid-item">
                             <div class="datagrid-title">Planned Start Date</div>
@@ -129,7 +157,7 @@
 
                         <div class="datagrid-item">
                             <div class="datagrid-title">Actual Duration</div>
-                            <span class="status {{$spanClass}}">{{ $total_count_of_task }} days</span>
+                            <span class="status {{$spanClass}}">{{ $data['con_data']->duration - $total_count_of_task }} days</span>
                         </div>
 
                         <div class="datagrid-item">

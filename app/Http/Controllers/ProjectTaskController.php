@@ -1140,6 +1140,8 @@ class ProjectTaskController extends Controller
             }
         }
 
+        $con_task_end_date = $get_con_task->end_date;
+
         $total_count_of_task = Task_progress::where('task_id', $task_id)
             ->where('instance_id', $instanceId)
             ->groupBy('created_at')
@@ -1151,6 +1153,7 @@ class ProjectTaskController extends Controller
             ->first();
 
         $actualEndDate = Task_progress::where('task_id', $task_id)
+            ->whereDate('created_at',$con_task_end_date)
             ->where('instance_id', $instanceId)
             ->orderBy('record_date','DESC')
             ->first();
