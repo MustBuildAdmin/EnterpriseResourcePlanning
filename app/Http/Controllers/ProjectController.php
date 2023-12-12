@@ -4347,6 +4347,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::where("created_by", $userid)
                     ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 
@@ -4782,6 +4783,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::select('id','name')->where("created_by", $userid)
                     ->where("type","sub_contractor")
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 
