@@ -377,21 +377,25 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     </div>
 
                     <div class="row mt-4">
+                        <div class="form-label">{{ __('Task Assignment Mode') }}</div>
                         <div class="col-md-6 col-12">
-                            <div class="form-label">{{ __('Task Assignment Mode') }}</div>
-                            <div>
-                                <label class="form-check form-check-inline"></label>
-                                    <input class="form-check-input" value="0" type="radio"
-                                    name="taskmode" id="taskmode_one">
-                                    <span class="form-check-label">{{ __('Self Task') }}</span>
-                                </label>
-                                <label class="form-check form-check-inline">
-                                    <input class="form-check-input" value="1" type="radio"
-                                    name="taskmode"  id="taskmode_two">
-                                    <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
-                                </label>
-                            </div>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" value="0" type="radio"
+                                name="taskmode" id="taskmode_one">
+                                <span class="form-check-label">{{ __('Self Task') }}</span>
+                            </label>
                         </div>
+
+                        <div class="col-md-6 col-12">
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" value="1" type="radio"
+                                name="taskmode"  id="taskmode_two">
+                                <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
                         <div class="col-md-6  col-12" id="sub_con" style="display: none;">
                             <label class="form-label">{{ __('SubContractor') }}</label>
                             <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
@@ -1647,8 +1651,6 @@ var weekend_list=$('#weekends').val();
         window.Litepicker && (new Litepicker({
             element: document.getElementById('start-date'),
             elementEnd: document.getElementById('end-date'),
-            minDate: start_date_input,
-            maxDate: end_date_input,
             singleMode: false,
             allowRepick: true,
             buttonText: {
