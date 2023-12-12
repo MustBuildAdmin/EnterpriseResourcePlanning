@@ -4271,24 +4271,29 @@ class ProjectController extends Controller
 
             $searchValue = $request['q'];
             $type = $request['type'];
+            $project_users=ProjectUser::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
 
             if ($request->filled('q')) {
 
                 if (str_contains($type, 'subcontractor')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["sub_contractor"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'consultant')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["consultant"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'teammembers')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
