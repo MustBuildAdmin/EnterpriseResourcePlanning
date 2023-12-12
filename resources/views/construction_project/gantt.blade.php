@@ -988,7 +988,7 @@ var weekend_list=$('#weekends').val();
             name: "totalSlack",
             align: "center",
             resize: true,
-            hide: false,
+            hide: true,
             width: 70,
             label: "{{ __('Total slack') }}",
             template: function(task) {
@@ -1000,7 +1000,7 @@ var weekend_list=$('#weekends').val();
             name: "freeSlack",
             align: "center",
             resize: true,
-            hide: false,
+            hide: true,
             width: 70,
             label: "{{ __('Free slack') }}",
             template: function(task) {
