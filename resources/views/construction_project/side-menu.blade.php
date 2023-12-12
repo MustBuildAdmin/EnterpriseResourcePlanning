@@ -124,6 +124,8 @@ table.dataTable thead th.sorting_desc:after {
             </button>
             <div class="collapse navbar-collapse" id="sidebar-menu">
                 <ul class="navbar-nav pt-lg-1">
+
+                   @if(Gate::check('show project dashboard'))
                     <!--Dashboard start-->
                     <li class="nav-item">
                         <a href="{{ route('projects.show', $project_id) }}"
@@ -142,8 +144,9 @@ table.dataTable thead th.sorting_desc:after {
                             <span class="nav-link-title"> {{ __('Dashboard') }} </span>
                         </a>
                     </li>
+                    @endif
                     <!--Dashboard end-->
-
+                    @if(Gate::check('manage project') || Gate::check('create revision') || Gate::check('view grant chart'))
                     <!--Main Planning start-->
                     <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'projects.gantt' ||
@@ -180,6 +183,8 @@ table.dataTable thead th.sorting_desc:after {
                                             {{ __('Gantt') }}
                                         </a>
                                     @endcan
+                                   
+                                    @can('create revision')
                                     @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                                         @if (Session::get('current_revision_freeze') == 1)
                                             <a href="{{ url('revision') }}"
@@ -189,6 +194,8 @@ table.dataTable thead th.sorting_desc:after {
                                             </a>
                                         @endif
                                     @endif
+                                    @endcan
+
                                     @if (session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
                                             class="{{ Request::route()->getName() == 'project_report.revsion_task_list'
@@ -244,62 +251,77 @@ table.dataTable thead th.sorting_desc:after {
                             </div>
                         </div>
                     </li>
+                    @endif
                     <!--Main Planning end-->
 
                     <!--LookaHead Planning starts-->
-                    @if($checMicroProgram == 1)
-                        @if(Session::get('latest_project_instance') == Session::get('project_instance'))
-                            <li class="nav-item dropdown">
-                                <a class="{{ Request::route()->getName() == 'microprogram' ||
-                                    Request::route()->getName() == 'micro_taskboard' ||
-                                    Request::route()->getName() == 'micro_task_particular' ||
-                                    Request::route()->getName() == 'microprogram.gantt'
-                                        ? 'nav-link active dropdown-toggle'
-                                        : 'nav-link dropdown-toggle' }}"
-                                    href="#navbar-base" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="d-md-none d-lg-inline-block">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
-                                            <path d="M12 12l8 -4.5"></path>
-                                            <path d="M12 12l0 9"></path>
-                                            <path d="M12 12l-8 -4.5"></path>
-                                            <path d="M16 5.25l-8 4.5"></path>
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title">
-                                        {{ __('Lookahead Planning') }}
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-menu-columns">
-                                        <div class="dropdown-menu-column">
-                                            <a href="{{ route('microprogram.gantt', $project_id) }}"
-                                                class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                                ?'dropdown-item active' :'dropdown-item'}}">
-                                                {{ __('Lookahead Gantt') }}</a>
+                    @if(Gate::check('lookahead lookahead grant chart') || Gate::check('view lookahead schedule') || Gate::check('view active lookahead'))
+                        @if($checMicroProgram == 1)
+                            @if(Session::get('latest_project_instance') == Session::get('project_instance'))
+                                <li class="nav-item dropdown">
+                                    <a class="{{ Request::route()->getName() == 'microprogram' ||
+                                        Request::route()->getName() == 'micro_taskboard' ||
+                                        Request::route()->getName() == 'micro_task_particular' ||
+                                        Request::route()->getName() == 'microprogram.gantt'
+                                            ? 'nav-link active dropdown-toggle'
+                                            : 'nav-link dropdown-toggle' }}"
+                                        href="#navbar-base" data-bs-toggle="dropdown"
+                                        data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                        <span class="d-md-none d-lg-inline-block">
+                                            <!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                                                <path d="M12 12l8 -4.5"></path>
+                                                <path d="M12 12l0 9"></path>
+                                                <path d="M12 12l-8 -4.5"></path>
+                                                <path d="M16 5.25l-8 4.5"></path>
+                                            </svg>
+                                        </span>
+                                        <span class="nav-link-title">
+                                            {{ __('Lookahead Planning') }}
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-menu-columns">
+                                            <div class="dropdown-menu-column">
 
-                                            <a href="{{ route('microprogram') }}"
-                                                class="{{ (Request::route()->getName() == 'microprogram')
-                                                ?'dropdown-item active' :'dropdown-item'}}">
-                                                {{ __('Lookahead Schedule') }}</a>
+                                                @can('lookahead lookahead grant chart')
+                                                <a href="{{ route('microprogram.gantt', $project_id) }}"
+                                                    class="{{ (Request::route()->getName() == 'microprogram.gantt')
+                                                    ?'dropdown-item active' :'dropdown-item'}}">
+                                                    {{ __('Lookahead Gantt') }}
+                                                </a>
+                                                @endcan
 
-                                            <a href="{{ route('micro_taskboard') }}"
-                                                class="{{ (Request::route()->getName() == 'micro_taskboard')
-                                                ?'dropdown-item active' :'dropdown-item'}}">
-                                                {{ __('Active Lookahead') }}</a>
+                                                @can('view lookahead schedule')
+                                                <a href="{{ route('microprogram') }}"
+                                                    class="{{ (Request::route()->getName() == 'microprogram')
+                                                    ?'dropdown-item active' :'dropdown-item'}}">
+                                                    {{ __('Lookahead Schedule') }}
+                                                </a>
+                                                @endcan
+
+                                                @can('view active lookahead')
+                                                <a href="{{ route('micro_taskboard') }}"
+                                                    class="{{ (Request::route()->getName() == 'micro_taskboard')
+                                                    ?'dropdown-item active' :'dropdown-item'}}">
+                                                    {{ __('Active Lookahead') }}
+                                                </a>
+                                                @endcan
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            @endif
                         @endif
                     @endif
                     <!--LookaHead Planning end-->
-
+                    @if(Gate::check('invite engineers') 
+                        || Gate::check('invite consultant project invitation')
+                        || Gate::check('invite sub contractor project invitation'))
                     @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
@@ -331,29 +353,42 @@ table.dataTable thead th.sorting_desc:after {
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
+                                   
+                                    @can('invite engineers')
                                     <a href="{{ route('project.teammembers', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.teammembers' ?
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Engineers') }}
                                     </a>
+                                    @endcan
+
+                                    
+                                    @can('invite consultant project invitation')
                                     <a href="{{ route('project.consultant', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.consultant' ?
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Consultant') }}
                                     </a>
+                                    @endcan
+
+                                   
+                                    @can('invite sub contractor project invitation')
                                     <a href="{{ route('project.subcontractor', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.subcontractor' ?
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Sub Contractor') }}
                                     </a>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
                     </li>
                     <!--Team Members end-->
                     @endif
+                    @endif
 
                     <!--Activites starts-->
+                    @can('view activity')
                     <li class="nav-item">
                         <a href="{{ route('project.activities', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project.activities' ?
@@ -373,6 +408,7 @@ table.dataTable thead th.sorting_desc:after {
                             </span>
                         </a>
                     </li>
+                    @endcan
                     <!--Activites end-->
 
 
@@ -419,7 +455,7 @@ table.dataTable thead th.sorting_desc:after {
                             </div>
                     </li>
                     <!--Reports ends-->
-
+                    @if(Gate::check('view project') || Gate::check('edit project') || Gate::check('delete project'))
                     <li class="nav-item">
                         <a href="{{ route('project-holiday.index', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project-holiday.index' ?
@@ -446,6 +482,7 @@ table.dataTable thead th.sorting_desc:after {
                             </span>
                         </a>
                     </li>
+                    @endif
 
                      {{--
                      <li class=""><a href="{{route('qaqc.bricks')}}">{{__('Bricks')}}</a></li>
