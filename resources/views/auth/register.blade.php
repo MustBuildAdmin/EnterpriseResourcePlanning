@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 <style>
     .error {
-        color: #b72222 ;
+        color: #bc4949  !important ;
     }
     .page {
         min-height: auto !important;
@@ -78,7 +78,7 @@
         </li>
       </div>
       <a href="/" class="navbar-brand navbar-brand-autodark">
-        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png"
+        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png"
         height="60" class="backgroundimge" alt="">
       </a>
       <form class="card card-md" id="registration" method="POST" action="{{ route('register') }}">

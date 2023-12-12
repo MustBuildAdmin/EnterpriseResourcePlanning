@@ -16,7 +16,7 @@ return [
     'PROJECT_EXPIRED' => '__("Project Session Expired..")',
     'ONE_ROW' => 'Alteast you must select one row',
     'Projects_image' => 'projects',
-    'IMG' => 'https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/avatar/samproavatar_1690293218.png',
+    'IMG' => 'https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/avatar/samproavatar_1690293218.png',
     'CONSULTANT_MAIL' => 'Consultant created Successfully! Please Check Your Mail Inbox.',
     'INVITATION_URL' =>'/company-invitation-consultant/',
     'TIMESTUMP'=>date('Y-m-d H:i:s'),

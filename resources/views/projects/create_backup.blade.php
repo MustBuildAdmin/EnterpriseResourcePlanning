@@ -102,30 +102,30 @@
     }
 
     .checkbox_group label:before {
-        content:'';
-        -webkit-appearance: none;
-        background-color: transparent;
-        border: 2px solid #0079bf;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-        padding: 10px;
-        display: inline-block;
-        position: relative;
-        vertical-align: middle;
-        cursor: pointer;
-        margin-right: 5px;
+        content: '';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px solid #b3b3b3;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 5px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 5px;
     }
 
     .checkbox_group input:checked + label:after {
         content: '';
-        display: block;
-        position: absolute;
-        top: 2px;
-        left: 9px;
-        width: 6px;
-        height: 14px;
-        border: solid #0079bf;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 4px;
+    height: 9px;
+    border: solid #0079bf;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
     }
 </style>
 <div class="modal-body">
@@ -470,12 +470,12 @@ aria-labelledby="exampleModalCenterTitle"
 	}
 
     function select_all_key() {
-        $('input[class=case]:checkbox').each(function(){ 
-            if($('input[class=check_all]:checkbox:checked').length == 0){ 
-                $(this).prop("checked", false); 
+        $('input[class=case]:checkbox').each(function(){
+            if($('input[class=check_all]:checkbox:checked').length == 0){
+                $(this).prop("checked", false);
             } else {
-                $(this).prop("checked", true); 
-            } 
+                $(this).prop("checked", true);
+            }
         });
     }
 
@@ -483,7 +483,7 @@ aria-labelledby="exampleModalCenterTitle"
         holiday_array   = [];
         holiday_date    = $(this).val();
         holiday_date_id = $(this).attr('id');
-       
+
         $('.holiday_table tr').each(function(){
             pre_holiday = $(this).find(".get_date").val();
             pre_holiday_id = $(this).find(".get_date").attr('id');
@@ -492,7 +492,7 @@ aria-labelledby="exampleModalCenterTitle"
             }
         });
 
-        if(holiday_array.indexOf(holiday_date) !== -1)  
+        if(holiday_array.indexOf(holiday_date) !== -1)
         {
             toastr.error("This Date Is Already Exist!");
             $(this).val("");
@@ -547,7 +547,7 @@ aria-labelledby="exampleModalCenterTitle"
             {
                 get_reportto         = $(".get_reportto").val();
                 get_non_working_days = $(".get_non_working_days").val();
-               
+
                 if (newIndex < currentIndex) {
                     return true;
                 }
@@ -671,7 +671,7 @@ aria-labelledby="exampleModalCenterTitle"
         const date1 = new Date(start);
         const date2 = new Date(End);
         const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         const estimated_days=diffDays+1;
         $('#estimated_days').val(estimated_days);
     });

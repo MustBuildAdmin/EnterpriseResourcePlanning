@@ -107,7 +107,7 @@
         }
 
         .error {
-            color: red !important;
+            color: #bc4949  !important ;
         }
     </style>
 

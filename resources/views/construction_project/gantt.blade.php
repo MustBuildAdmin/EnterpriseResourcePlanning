@@ -17,7 +17,7 @@
     .gantt_task_line {
         background-color: rgb(0 84 166 / 75%);
     }
-   
+
 
     .gantt_critical_task {
         background-color: #e63030 !important;
@@ -77,10 +77,6 @@
         margin-bottom: 7px;
     }
 
-    .gantt_task_link .gantt_link_arrow {
-        margin-top: -10px
-    }
-
     .gantt_side_content.gantt_right {
         bottom: 0;
     }
@@ -123,7 +119,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     $holidays = implode(':', $holidays);
 @endphp
 @include('construction_project.side-menu')
-<div class="text-center container container-slim py-4 loader_show">
+<div class="text-center container container-slim py-4 loader_show" id="gantt-loader">
     <div class="mb-3">
         <a href="." class="navbar-brand navbar-brand-autodark">
             <img src="./static/logo-small.svg" height="36" alt="">
@@ -185,7 +181,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             <a class="nav-link dropdown-toggle" href="#edit-base" data-bs-toggle="dropdown"
                                 data-bs-auto-close="outside" role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -316,34 +311,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     </div>
                                 </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            {{-- {{ Form::open(['route' => ['projects.freeze_status'], 'method' => 'POST',
-                            'id' => 'gantt_chart_submit']) }}
 
-                            {{ Form::hidden('project_id', $project->id, ['class' => 'form-control']) }}
-                            <a href="#" class="nav-link freeze_button" style='width: 100%;'
-                                data-bs-toggle="tooltip" title="{{ __('Click to save') }}"
-                                data-original-title="{{ __('Delete') }}"
-                                data-confirm="{{ __('Are You Sure?') . '|'
-                                . __('This action can not be undone. Do you want to continue?') }}"
-                                data-confirm-yes="document.getElementById('delete-form-{{ $project->id }}').submit();">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
-                                    <path d="M12 12l8 -4.5"></path>
-                                    <path d="M12 12l0 9"></path>
-                                    <path d="M12 12l-8 -4.5"></path>
-                                    <path d="M16 5.25l-8 4.5"></path>
-                                </svg>
-                                <span class="nav-link-title">
-                                    {{ __('Save') }}
-                                    {!! Form::close() !!}
-                                </span>
-
-                            </a>
-                        </li> --}}
                         <a href="#"  class="nav-link freeze_button" data-bs-toggle="modal"
                          data-bs-target="#modal-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -359,13 +327,10 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             {{ __('Save') }}
                          </a>
                     </ul>
-                    <!-- top nav menu list ends-->
                 </div>
         </header>
         <div class="h-100 w-100" id="gantt_here"></div>
     </div>
-
-    <!-- custom lightbox starts-->
     <div class="modal modal-blur fade" id="modal-task" tabindex="-1" style="display: none;" aria-hidden="true"
         role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -381,7 +346,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         <input type="hidden" id="user_id" name="user_id">
                         <input type="hidden" id="reporter_id" name="reporter_id">
                         <input type="hidden" id="subcontractor_id" name="subcontractor_id">
-                        
+
                         <input type="text" class="form-control" name="description"
                             placeholder="{{ __('Type your Task Name') }}">
                     </div>
@@ -412,19 +377,25 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     </div>
 
                     <div class="row mt-4">
+                        <div class="form-label">{{ __('Task Assignment Mode') }}</div>
                         <div class="col-md-6 col-12">
-                            <div class="form-label">{{ __('Task Assignment Mode') }}</div>
-                            <div>
-                                <label class="form-check form-check-inline">
-                                    <input class="form-check-input" value="0" type="radio" name="taskmode" id="taskmode_one">
-                                    <span class="form-check-label">{{ __('Self Task') }}</span>
-                                </label>
-                                <label class="form-check form-check-inline">
-                                    <input class="form-check-input" value="1" type="radio" name="taskmode"  id="taskmode_two">
-                                    <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
-                                </label>
-                            </div>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" value="0" type="radio"
+                                name="taskmode" id="taskmode_one">
+                                <span class="form-check-label">{{ __('Self Task') }}</span>
+                            </label>
                         </div>
+
+                        <div class="col-md-6 col-12">
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" value="1" type="radio"
+                                name="taskmode"  id="taskmode_two">
+                                <span class="form-check-label">{{ __('Sub Contract Task') }}</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
                         <div class="col-md-6  col-12" id="sub_con" style="display: none;">
                             <label class="form-label">{{ __('SubContractor') }}</label>
                             <input type="text" class="form-control" name="subcontractor" id="sub-contractor"
@@ -437,13 +408,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         {{ __('Cancel') }}
                     </a>
                     <a href="#" class="btn btn-primary ms-auto" id="save" data-bs-dismiss="modal">
-                        {{-- <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M12 5l0 14"></path>
                             <path d="M5 12l14 0"></path>
-                        </svg> --}}
+                        </svg>
                         {{ __('Add new Task') }}
                     </a>
                 </div>
@@ -494,7 +465,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     </div>
  </div>
  <!-- Delete Confirmation ends-->
- 
+
  <!-- Suc alert starts-->
  <div class="modal modal-blur fade" id="modal-success" tabindex="-1" role="dialog" aria-hidden="true"
   data-bs-backdrop="static"  data-bs-keyboard="false" >
@@ -541,6 +512,24 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 
 <script type="text/javascript">
+
+
+   function collapseAll() {
+          gantt.batchUpdate(function () {
+              gantt.eachTask(function (task) {
+                  gantt.close(task.id)
+              })
+          })
+      }
+
+
+      function expandAll() {
+          gantt.batchUpdate(function () {
+              gantt.eachTask(function (task) {
+                  gantt.open(task.id)
+              })
+          })
+      }
     var tempcsrf = '{!! csrf_token() !!}';
     // check freeze status #############################
 
@@ -577,7 +566,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         });
     // end ###############################################
 
-        
+
     // delete confirmation show  #############################
     $(document).on("click", "#confirm_del_yes", function () {
         $("#modal-success").modal('show');
@@ -791,10 +780,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
     });
 
-    // end autoschedule before ##########################################################################
-
-
-
 
     gantt.ext.fullscreen.getFullscreenElement = function() {
         return document.getElementById("gantt-block");
@@ -807,6 +792,38 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             $('.loader_show').hide();
             $('#additional_elements').removeClass("d-none");
         }, 3000);
+
+
+// weekdays appending
+var weekend_list=$('#weekends').val();
+    var result=[0,1,2,3,4,5,6];
+    console.log(weekend_list);
+    result.forEach(element => {
+    if(weekend_list.includes(element)){
+        gantt.setWorkTime({ day:element, hours:false });
+    }else{
+        gantt.setWorkTime({ day:element, hours: ["8:00-17:00"] });
+    }
+    });
+
+// weekdays appending ends
+
+// ## holidays  ######
+    var holidays = [];
+    var holidays_list=$('#holidays').val();
+        if(holidays_list!=''){
+            var result2 =holidays_list.split(':');
+            result2.forEach(element => {
+            holidays.push(new Date(element));
+        });
+        for (var i = 0; i < holidays.length; i++) {
+            gantt.setWorkTime({
+                                date: holidays[i],
+                                hours: false
+            });
+        }
+    }
+// ## holidays  end ######
 </script>
 
 
@@ -879,6 +896,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         gantt.performAction = function(actionName) {
             var action = actions[actionName];
+
+            console.log(action)
             if (!action)
                 return;
 
@@ -961,9 +980,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         }
         gantt.render();
     }
-    // function columnHideandShow() {
-    //    console.log("bhi")
-    // }
+
 
     /* show slack */
     (function() {
@@ -1216,7 +1233,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     })
 
 
-  
+
 
 
 
@@ -1329,6 +1346,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     };
 </script>
 <script>
+    $( document ).ready(function() {
     gantt.showLightbox = function(id) {
 
         document.body.classList.add("modal-open");
@@ -1382,7 +1400,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
         var taskmode = $('input[name="taskmode"]:checked').val();
         taskmode= task.taskmode;
-       
+
         if(taskmode==1){
             $('#sub_con').show();
             $("#taskmode_two").prop( "checked", true);
@@ -1395,13 +1413,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             $("#taskmode_one").prop("checked", true);
             $("#taskmode_two").prop( "checked", false);
         }
-      
+
         var asignee = '';
 
         $('#taskassignee').tokenInput("clear");
         $('#task-reporting').tokenInput("clear");
         $('#sub-contractor').tokenInput("clear");
-        
+
 
         if (task.users != null || task.users !=undefined) {
 
@@ -1422,7 +1440,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             $('#taskassignee').tokenInput("add", asignee);
                         }, 200);
                     }
-                    
+
                 }
             });
 
@@ -1447,7 +1465,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             $('#task-reporting').tokenInput("add", reportedto);
                         }, 200);
                     }
-                    
+
                 }
             });
 
@@ -1473,7 +1491,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             $('#sub-contractor').tokenInput("add", subcontractorto);
                         }, 200);
                     }
-                    
+
                 }
             });
 
@@ -1484,7 +1502,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         form.querySelector("#save").onclick = save;
         form.querySelector("#close").onclick = cancel;
         form.querySelector("#cancel").onclick = cancel;
-      
+
     }
 
 
@@ -1555,8 +1573,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 
         dp.attachEvent("onBeforeDataSending", function(id, state, data) {
-
-
 
             return true;
         });
@@ -1635,8 +1651,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         window.Litepicker && (new Litepicker({
             element: document.getElementById('start-date'),
             elementEnd: document.getElementById('end-date'),
-            minDate: start_date_input,
-            maxDate: end_date_input,
             singleMode: false,
             allowRepick: true,
             buttonText: {
@@ -1658,7 +1672,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             },
         }));
     }
-    
+
     // gantt crud end
 
     $("#taskassignee").tokenInput("{{ route('project.user_search') }}", {
@@ -1751,4 +1765,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
     document.addEventListener("DOMContentLoaded", function() {
     });
+
+});
+
 </script>

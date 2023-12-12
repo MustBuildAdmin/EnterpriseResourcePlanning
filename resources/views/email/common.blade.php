@@ -3067,7 +3067,7 @@ Margins, paddings
                     <table class="wrap" cellspacing="0" cellpadding="0">
                         <tr>
                             <td class="p-sm">
-                               
+
                                 <div class="main-content">
                                     <table class="box" cellpadding="0" cellspacing="0">
                                         <tr>
@@ -3079,7 +3079,7 @@ Margins, paddings
                                                                 cellpadding="0">
                                                                 <tr>
                                                                     <td valign="middle" align="center">
-                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-white-check.png"
+                                                                        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-white-check.png"
                                                                             class=" va-middle" width="40" height="40"
                                                                             alt="check" />
                                                                     </td>
@@ -3101,7 +3101,7 @@ Margins, paddings
                                                                     class="text-default">MustBuild</a>
                                                             </p>
                                                             <p>
-                                                                <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
+                                                                <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
                                                                      alt="" />
                                                             </p>
                                                         </td>
@@ -3122,42 +3122,42 @@ Margins, paddings
                                                             <tr>
                                                                 <td class="px-sm">
                                                                     <a href="https://erp.mustbuildapp.com/">
-                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-facebook-square.png"
+                                                                        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-facebook-square.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-facebook-square" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
                                                                     <a href="https://erp.mustbuildapp.com/">
-                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-twitter.png"
+                                                                        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-twitter.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-twitter" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
                                                                     <a href="https://erp.mustbuildapp.com/">
-                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-github.png"
+                                                                        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-github.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-github" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
                                                                     <a href="https://erp.mustbuildapp.com/">
-                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-youtube.png"
+                                                                        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-youtube.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-youtube" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
                                                                     <a href="https://erp.mustbuildapp.com/">
-                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-pinterest.png"
+                                                                        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-pinterest.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-pinterest" />
                                                                     </a>
                                                                 </td>
                                                                 <td class="px-sm">
                                                                     <a href="https://erp.mustbuildapp.com/">
-                                                                        <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-instagram.png"
+                                                                        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-gray-social-instagram.png"
                                                                             class=" va-middle" width="24" height="24"
                                                                             alt="social-instagram" />
                                                                     </a>
@@ -3173,7 +3173,7 @@ Margins, paddings
                                                             class="text-muted">support@tabler.io</a>.
                                                     </td>
                                                 </tr>
-                                               
+
                                             </table>
                                         </td>
                                     </tr>

@@ -21,11 +21,12 @@
     <section>
         <div class="page-wrapper">
             <div class="container-fluid" id="taskboard_view">
-                <div class="p-4">
+                <div class="p-2">
                     <div class="card">
                         <div class="col-12">
                             <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
+                                <ul class="nav nav-tabs card-header-tabs nav-fill p-0"
+                                data-bs-toggle="tabs" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <a href="#tabs-home-7" class="nav-link active" data-bs-toggle="tab"
                                         aria-selected="true" role="tab">
@@ -83,9 +84,9 @@
                                         </div>
                                     </div>
                                 </section>
-            
 
-                            <div class="card-body">
+
+                            <div class="">
                                 <div class="tab-content">
                                     <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
                                         <div class="col-12">
@@ -95,7 +96,7 @@
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
-                                                        <div class="col-md-2 border-end p-3">
+                                                        <div class="col-md-2 border-end ">
                                                             <form>
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
@@ -197,7 +198,7 @@
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <button type="reset"
-                                                                            class="btn btn-tabler w-100"
+                                                                            class="btn btn-default w-100"
                                                                             onclick="reset_button()">
                                                                             {{ __('Reset') }}
                                                                         </button>
@@ -205,25 +206,25 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-                                            
+
                                                         <div class="col-md-10">
-                                                            <div class="table-responsive card p-4" id="all_task_append">
+                                                            <div class="table-responsive card p-1" id="all_task_append">
                                                                 <table class="table table-vcenter card-table" id="task-table" aria-describedby="Sub Task">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col" style="color: white;">{{__('TaskId')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Tasks')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Status')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Free Slack')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Total Slack')}}</th>
-                                                                            {{-- <th scope="col" style="color: white;">{{__('Float')}}</th> --}}
-                                                                            <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Planned Start Date')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Planned End Date')}}</th>
-                                                                            <th scope="col" style="color: white;">{{__('Assigned To')}}</th>
-                                                                        </tr>
+                                                                    <th scope="col" style="color: white;">{{__('TaskId')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Tasks')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Status')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Free Slack')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Total Slack')}}</th>
+                                                                    {{-- <th scope="col" style="color: white;">{{__('Float')}}</th> --}}
+                                                                    <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Planned Start Date')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Planned End Date')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Assigned To')}}</th>
+                                                                </tr>
                                                                     </thead>
                                                                 </table>
                                                             </div>
@@ -337,7 +338,7 @@
                                                                     </div>
                                                                     <div class="mb-3">
                                                                         <button type="reset"
-                                                                            class="btn btn-tabler w-100"
+                                                                            class="btn btn-default w-100"
                                                                             onclick="main_reset_button()">
                                                                             {{ __('Reset') }}
                                                                         </button>
@@ -348,7 +349,7 @@
 
                                                         <div class="col-md-10">
                                                             <div class="table-responsive card p-4">
-                                                                <table class="table table-vcenter card-table" id="summary-table" aria-describedby="Main Task" 
+                                                                <table class="table table-vcenter card-table" id="summary-table" aria-describedby="Main Task"
                                                                 style="width: 100%">
                                                                     <thead>
                                                                         <tr>
@@ -393,7 +394,7 @@
     });
 
     $(document).ready(function() {
-        
+
         task_datatable(null,null,null,null,null);
         main_datatable(null,null,null,null);
 
@@ -696,7 +697,7 @@
         end_date    = $(".main_end_date").val();
         status_task = $(".main_task_status").val();
         task_id     = $('input#main_skill_input').tokenInput('get');
-      
+
         var task_id_arr = [];
         $.each(task_id, function(i, obj){
             task_id_arr.push(obj.id);

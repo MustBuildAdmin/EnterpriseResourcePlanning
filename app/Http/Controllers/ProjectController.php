@@ -344,7 +344,7 @@ class ProjectController extends Controller
                                 $task->end_date=$raw['Finish'];
                                 $end=$raw['Finish'];
                             }else{
-                                $end="";
+                                $end=1;
                             }
                             $task->custom=json_encode($value['$raw']);
                         }
@@ -475,25 +475,7 @@ class ProjectController extends Controller
                             $task->project_id = $project->id;
                             $task->instance_id = $instance_id;
 
-                            //########  checking the date is correct ########
-                            if($value['start_date'] > $raw['Finish']){
-                                Project::where('id',$project->id)->delete();
-                                Instance::where('project_id',$project->id)->delete();
-                                Con_task::where('project_id',$project->id)->delete();
 
-                                return redirect()->back()->with('error', __(' primaverra data Mismatch'));
-
-                            }
-
-                            if($value['start_date'] < $parent->start_date || $raw['Finish'] > $parent->end_date){
-                                Project::where('id',$project->id)->delete();
-                                Instance::where('project_id',$project->id)->delete();
-                                Con_task::where('project_id',$project->id)->delete();
-
-                                return redirect()->back()->with('error', __('Microproject data Mismatch'));
-
-                            }
-                            // ###############################
                             if (isset($value['text'])) {
                                 $task->text = $value['text'];
                             }
@@ -520,7 +502,7 @@ class ProjectController extends Controller
                                     $task->end_date = $raw['Finish'];
                                     $end=$raw['Finish'];
                                 }else{
-                                    $end='';
+                                    $end=1;
                                 }
                                 $task->custom = json_encode($value['$raw']);
                             }
@@ -4289,24 +4271,29 @@ class ProjectController extends Controller
 
             $searchValue = $request['q'];
             $type = $request['type'];
+            $project_users=ProjectUser::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
 
             if ($request->filled('q')) {
 
                 if (str_contains($type, 'subcontractor')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["sub_contractor"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'consultant')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["consultant"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'teammembers')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
@@ -4360,6 +4347,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::where("created_by", $userid)
                     ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 
@@ -4795,6 +4783,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::select('id','name')->where("created_by", $userid)
                     ->where("type","sub_contractor")
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 

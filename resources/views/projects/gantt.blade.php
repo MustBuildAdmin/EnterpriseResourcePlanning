@@ -3,11 +3,20 @@
 @section('page-title') {{__('Gantt Chart')}} @endsection
 
 @section('breadcrumb')
+  <ul>
+    <li class="breadcrumb-item">
+    </li><a href="{{route('dashboard')}}">
+        {{__('Dashboard')}}</a></li>
+    <li class="breadcrumb-item">
+        <a href="{{route('projects.index')}}">
+        {{__('Project')}}</a></li>
+    <li class="breadcrumb-item">
+        <a href="{{route('projects.show',$project->id)}}">
+            {{ucwords($project->project_name)}}</a></li>
+    <li class="breadcrumb-item">
 
-    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('projects.index')}}">{{__('Project')}}</a></li>
-    <li class="breadcrumb-item"><a href="{{route('projects.show',$project->id)}}">    {{ucwords($project->project_name)}}</a></li>
-    <li class="breadcrumb-item">{{__('Gantt Chart')}}</li>
+{{__('Gantt Chart')}}</li>
+</ul>
 
 @endsection
 
@@ -15,15 +24,27 @@
 @section('action-btn')
 <div class="float-end">
     <div class="btn-group mr-2" id="change_view" role="group">
-        <a href="{{route('projects.gantt',[$project->id,'Quarter Day'])}}" class="btn btn-primary @if($duration == 'Quarter Day')active @endif" data-value="Quarter Day">{{__('Quarter Day')}}</a>
-        <a href="{{route('projects.gantt',[$project->id,'Half Day'])}}" class="btn btn-primary @if($duration == 'Half Day')active @endif" data-value="Half Day">{{__('Half Day')}}</a>
-        <a href="{{route('projects.gantt',[$project->id,'Day'])}}" class="btn btn-primary @if($duration == 'Day')active @endif" data-value="Day">{{__('Day')}}</a>
-        <a href="{{route('projects.gantt',[$project->id,'Week'])}}" class="btn btn-primary @if($duration == 'Week')active @endif" data-value="Week">{{__('Week')}}</a>
-        <a href="{{route('projects.gantt',[$project->id,'Month'])}}" class="btn btn-primary @if($duration == 'Month')active @endif" data-value="Month">{{__('Month')}}</a>
+        <a href="{{route('projects.gantt',[$project->id,'Quarter Day'])}}"
+        class="btn btn-primary @if($duration == 'Quarter Day')active @endif"
+        data-value="Quarter Day">{{__('Quarter Day')}}</a>
+        <a href="{{route('projects.gantt',[$project->id,'Half Day'])}}"
+            class="btn btn-primary @if($duration == 'Half Day')active @endif"
+            data-value="Half Day">{{__('Half Day')}}</a>
+        <a href="{{route('projects.gantt',[$project->id,'Day'])}}"
+            class="btn btn-primary @if($duration == 'Day')active @endif"
+            data-value="Day">{{__('Day')}}</a>
+        <a href="{{route('projects.gantt',[$project->id,'Week'])}}"
+            class="btn btn-primary @if($duration == 'Week')active @endif"
+            data-value="Week">{{__('Week')}}</a>
+        <a href="{{route('projects.gantt',[$project->id,'Month'])}}"
+            class="btn btn-primary @if($duration == 'Month')active @endif"
+            data-value="Month">{{__('Month')}}</a>
     </div>
     @can('manage project')
 
-        <a href="{{ route('projects.show',$project->id) }}" class="btn btn-primary " data-bs-toggle="tooltip" title="{{__('Back')}}">
+        <a href="{{ route('projects.show',$project->id) }}"
+            class="btn btn-primary " data-bs-toggle="tooltip"
+            title="{{__('Back')}}">
             <span class="btn-inner--icon"><i class="ti ti-arrow-left"></i></span>
         </a>
 
@@ -45,9 +66,12 @@
                         {{ __('Page Not Found') }}
                     </div>
                     <div class="page-search">
-                        <p class="text-muted mt-3">{{ __("It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
+                        <p class="text-muted mt-3">
+ {{ ("It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. Here's a little tip that might help you get back on track.")}}</p>
                         <div class="mt-3">
-                            <a class="btn-return-home badge-blue" href="{{route('home')}}"><i class="ti ti-reply"></i> {{ __('Return Home')}}</a>
+                            <a class="btn-return-home badge-blue"
+                            href="{{route('home')}}">
+                            <i class="ti ti-reply"></i> {{ __('Return Home')}}</a>
                         </div>
                     </div>
                 @endif
@@ -107,7 +131,9 @@
                         status_class = 'danger'
                     }
                     return `<div class="details-container">
-                                <div class="title">${task.name} <span class="badge badge-${status_class} float-right">${task.extra.priority}</span></div>
+                                <div class="title">${task.name}
+                                     <span class="badge badge-${status_class}
+                                     float-right">${task.extra.priority}</span></div>
                                 <div class="subtitle">
                                     <b>${task.progress}%</b> {{ __('Progress')}} <br>
                                     <b>${task.extra.comments}</b> {{ __('Comments')}} <br>
@@ -117,7 +143,7 @@
                           `;
                 },
                 on_click: function (task) {
-              
+
                 },
                 on_date_change: function(task, start, end) {
                     task_id = task.id;

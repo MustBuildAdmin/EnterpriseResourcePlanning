@@ -14,13 +14,13 @@
 <?php   $email = $request->query('email');?>
 <div class="page page-center">
   <div class="container container-tight py-4">
-   
+
     {{Form::open(array('route'=>'passwordupdate','method'=>'post','id'=>'loginForm','class'=>"card card-md"))}}
     <div class="card-body">
     <input type="hidden" name="token" value="{{ $request->route('token') }}">
     <h2 class="card-title text-center mb-4">{{__('Set Password')}}</h2>
-        <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
-    
+        <a href="/" class="navbar-brand navbar-brand-autodark"><img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+
         <div class="form-group mb-3">
             {{Form::label('email',__('E-Mail Address'),['class'=>'form-label'])}}
             <input class="form-control" name="email" type="text" id="email" value="<?php echo $email; ?>" readonly>
