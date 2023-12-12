@@ -13,7 +13,8 @@
         <div class="form-group  col-md-6">
             {{ Form::label('amount', __('Amount'),['class'=>'form-label']) }}<span class="text-danger">*</span>
 
-                {{ Form::number('amount', null, array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+                {{ Form::number('amount', null,
+                array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
 
         </div>
         <div class="form-group  col-md-6">

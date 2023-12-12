@@ -28095,7 +28095,7 @@ a.btn.btn-md.bg-primary {
     font-size: .875rem;
     font-weight: var(--tblr-font-weight-medium);
     margin-top: 0.5rem;
-    display: inline;
+    display: inline-block;
 }
 
 input {
@@ -28518,6 +28518,7 @@ table.dataTable>tbody>tr {
 .dataTables_wrapper div.dataTables_filter {
     text-align: right;
     float: right;
+    margin-bottom: 3%;
 }
 
 .form-check-input:checked {
