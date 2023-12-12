@@ -359,7 +359,8 @@ class ProjectController extends Controller
 
                         }
 
-                        $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
+                        $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)
+                        ->where('project_id',$project->id)->first();
 
                         if($parent && $parent->parent!=0){
                             if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
@@ -516,7 +517,8 @@ class ProjectController extends Controller
                                 return redirect()->back()->with('error', __('Microproject data Mismatch'));
 
                             }
-                            $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
+                            $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)
+                            ->where('project_id',$project->id)->first();
 
                             if($parent && $parent->parent!=0){
                                 if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
@@ -585,6 +587,7 @@ class ProjectController extends Controller
                 }
 
             }
+           
 
             if (\Auth::user()->type == 'company') {
 
@@ -594,19 +597,56 @@ class ProjectController extends Controller
                         'user_id' => Auth::user()->id,
                     ]
                 );
-
                 if ($request->reportto) {
-                //     foreach ($request->reportto as $key => $value) {
-                        ProjectUser::create(
-                            [
-                                'project_id' => $project->id,
-                                'user_id' => $request->reportto,
-                            ]
-                        );
-                    }
-                // }
+                    // Invite Team Member while creating project
+                    $authuser = Auth::user();
+                    $project_id=$project->id;
+                    $project = Project::find($project_id)->first();
+                    $get_email = User::select('email','name')->where('id',$request->reportto)->first();
+                    $createConnection = ProjectUser::create([
+                        "project_id" => $project_id,
+                        "user_id" => $request->reportto,
+                        "invited_by" => $authuser->id,
+                        'invite_status' => 'requested',
+                    ]);
 
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember')
+                        . $createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'project_name' => $project->project_name,
+                        'email' => \Auth::user()->email,
+                    ];
+                    
+                    $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
+                    
+                                                    
+                    if($team_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$request->reportto)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $request->reportto]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$creatorId)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+                    
+
+                    Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                        [$request->reportto => $get_email->email], $userArr);
+                    // Invite Team Member while creating project
+                }
             } else {
+
                 ProjectUser::create(
                     [
                         'project_id' => $project->id,
@@ -622,16 +662,55 @@ class ProjectController extends Controller
                 );
 
                 if ($request->reportto) {
-                    // foreach ($request->reportto as $key => $value) {
-                        ProjectUser::create(
-                            [
-                                'project_id' => $project->id,
-                                'user_id' => $request->reportto,
-                            ]
-                        );
-                    }
-                // }
+                   
+                    // Invite Team Member while creating project
+                    $authuser = Auth::user();
+                    $project_id=$project->id;
+                    $project = Project::find($project_id)->first();
+                    $get_email = User::select('email','name')->where('id',$request->reportto)->first();
+                    $createConnection = ProjectUser::create([
+                        "project_id" => $project_id,
+                        "user_id" => $request->reportto,
+                        "invited_by" => $authuser->id,
+                        'invite_status' => 'requested',
+                    ]);
 
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember')
+                        . $createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'project_name' => $project->project_name,
+                        'email' => \Auth::user()->email,
+                    ];
+                    
+                    $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
+                    
+                                                    
+                    if($team_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$request->reportto)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $request->reportto]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$creatorId)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+                    
+
+                    Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                        [$request->reportto => $get_email->email], $userArr);
+                    // Invite Team Member while creating project
+                }
+                
             }
             // type project or task
             Projecttypetask::dispatch($project->id);
@@ -4818,5 +4897,4 @@ class ProjectController extends Controller
         }
 
     }
-
 }
