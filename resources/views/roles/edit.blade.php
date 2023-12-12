@@ -522,7 +522,7 @@
                     @endphp --}}
                     @php
                         //  $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','project specification','procurement material','vochange','RFI','concrete','site reports'];
-                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity', 'project task stage', 'engineers', 'consultant project invitation', 'sub contractor project invitation'];
+                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity', 'project task stage', 'engineers', 'consultant project invitation', 'sub contractor project invitation','revised program','overall report'];
                     @endphp
                     <div class="col-md-12">
                         <div class="form-group">
@@ -590,6 +590,15 @@
                                                                 </div>
                                                             @endif
                                                         @endif
+
+                                                        @if (in_array('export ' . $module, (array) $permissions))
+                                                        @if ($key = array_search('export ' . $module, $permissions))
+                                                            <div class="col-md-3 custom-control custom-checkbox">
+                                                                {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
+                                                                {{ Form::label('permission' . $key, 'Export', ['class' => 'custom-control-label']) }}<br>
+                                                            </div>
+                                                        @endif
+                                                    @endif
 
                                                         @if (in_array('invite ' . $module, (array) $permissions))
                                                             @if ($key = array_search('invite ' . $module, $permissions))

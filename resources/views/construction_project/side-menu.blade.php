@@ -196,6 +196,7 @@ table.dataTable thead th.sorting_desc:after {
                                     @endif
                                     @endcan
 
+                                    @can('view revised program')
                                     @if (session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"
                                             class="{{ Request::route()->getName() == 'project_report.revsion_task_list'
@@ -203,6 +204,7 @@ table.dataTable thead th.sorting_desc:after {
                                           {{ __('Revised Program') }}
                                         </a>
                                     @endif
+                                    @endcan
                                     {{-- @if ($checMicroProgram == 1)
                                     <a href="{{ route('microprogram') }}"
                                        class="dropdown-item">{{ __('Micro Program') }}</a>
@@ -445,9 +447,11 @@ table.dataTable thead th.sorting_desc:after {
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Daily Task Reports') }}
                                     </a>
+                                    @can('export overall report')
                                     <a class="dropdown-item" href="{{route('overall_report')}}">
                                         {{ __('OverAll Reports') }}
                                     </a>
+                                    @endcan
                                     <a class="dropdown-item" href="./accordion.html">
                                         {{ __('Lookahead Reports') }}
                                     </a>
