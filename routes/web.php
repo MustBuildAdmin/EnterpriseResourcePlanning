@@ -4454,6 +4454,13 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
         ]
     );
 
+Route::resource('rfi', 'RFIController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('drawing_list', 'DrawingsController@index')
 ->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
 Route::get('drawing_reference_add/{reference_id}/{drawing_type}/{projectid}/{reference_number}',
