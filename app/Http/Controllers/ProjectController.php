@@ -350,7 +350,7 @@ class ProjectController extends Controller
                         }
 
                         //########  checking the date is correct ########
-                          if($value['start_date'] > $end){
+                        if($value['start_date'] > $end){
                             Project::where('id',$project->id)->delete();
                             Instance::where('project_id',$project->id)->delete();
                             Con_task::where('project_id',$project->id)->delete();
