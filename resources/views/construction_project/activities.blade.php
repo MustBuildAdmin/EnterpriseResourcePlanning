@@ -38,10 +38,7 @@ th.sorting_disabled{
                         <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
                             <div class="col-12">
                                 <div class="card">
-                                  <div class="card-header">
-                                      <h4 class="card-title">{{__('Activity Log of this project')}}</h4>
-                                    </div>
-                                    <div class="card-body">
+                                    <div class="card-body p-0">
                                        <div class="row">
                                         <div class="col-md-2 border-end p-3">
                                             <div class="col-12 mb-3">
@@ -98,12 +95,12 @@ th.sorting_disabled{
                                                 onclick="searchResult()">Search</button>
                                             </div>
                                             <div class="mb-3">
-                                                <button class="btn btn-tabler w-100">Reset</button>
+                                                <button class="btn btn-default w-100">Reset</button>
                                             </div>
                                            </div>
                                         </div>
                                         <div class="col-md-10">
-                                            <div class="table-responsive card p-4">
+                                            <div class="table-responsive card p-2">
                                               <table class="table table-vcenter card-table"
                                                id="activity-table">
                                                 <thead>
@@ -322,5 +319,5 @@ th.sorting_disabled{
                     },
                 }));
             });
-       
+
       </script>

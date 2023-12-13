@@ -149,16 +149,16 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     <div class="gantt-container" id="gantt-block">
         <header class="navbar navbar-expand-md  d-print-none" data-bs-theme="light">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
-                    aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#gantt-menu"
+                    aria-controls="gantt-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-                    {{ $projectname }} - {{session::get('current_revision_name')}}
+                    {{ $projectname }} - {{session::get('current_revision_name')}} Plan
                 </h1>
                 <div class="d-flex flex-column flex-md-row flex-fill
                             align-items-stretch align-items-md-center"
-                    id="sidebar-menu">
+                    id="gantt-menu">
                     <!-- top nav menu list  starts-->
                     <ul class="navbar-nav">
                         <li class="nav-item">
