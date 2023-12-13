@@ -66,7 +66,7 @@ if($drawing_type == 3 & count($uploadedDrawings))
               <div class="mt-5 card">
               
               <form class="upload_form" id="upload_form"
-              action="{{ route('add.drawings',[$drawing_type,$ref_number]) }}"
+              action="{{ route('add.drawings',[$drawing_type, $projectid, $ref_number]) }}"
               enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="card-header">
@@ -129,7 +129,7 @@ if($drawing_type == 3 & count($uploadedDrawings))
                                            @if($drawing_type == 3)
                                            <td>
                                            {!! Form::open(['method' => 'DELETE', 'route' => ['uploaded.drawing.destroy',
-                                            [$drawing->id, $drawing_type, $ref_number, $drawing->created_by]],
+                                        [$drawing->id, $drawing_type, $projectid, $ref_number, $drawing->created_by]],
                                             'id'=>'delete-form-'.$drawing->id]) !!}
                                                 <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para"
                                                 data-bs-toggle="tooltip" title="{{__('Delete')}}" >

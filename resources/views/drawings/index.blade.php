@@ -177,7 +177,7 @@
                                          <tr>
                                              <td style="width: 100px; font-size: 15px;">
                                              <a href="{{route('drawing.reference.add',[$drawing->drawing_type_id,
-                                              $drawing->reference_number])}}">
+                                              $projectid, $drawing->reference_number])}}">
                                              {{ $drawing->reference_number }}
                                                </a></td>
                                              <td style="width:400px; font-size: 14px;">
