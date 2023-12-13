@@ -9,7 +9,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:regular,medium,thin,bold">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js?v=7.0.11"
 integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
-<script src="https://export.dhtmlx.com/gantt/api.js" 
+<script src="https://export.dhtmlx.com/gantt/api.js"
 integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"></script>
 <script src="{{ asset('assets/js/js/zoomingConfig.js') }}"></script>
 <script src="{{ asset('assets/js/js/criticalPath.js') }}"></script>
@@ -26,7 +26,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 {{-- <style>
     .gantt_task_line.gantt_critical_task .gantt_task_content {
-        color: red !important;
+        color: #bc4949  !important ;
     }
         html,
         body,
@@ -105,12 +105,12 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 @php
     $holidays = [];
-    
+
     foreach ($project_holidays as $key => $value) {
         // $time = strtotime($value->date);
         $holidays[] = date('Y,m,d', strtotime($value->date));
     }
-    
+
     $holidays = implode(':', $holidays);
 @endphp
 @include('construction_project.side-menu')
@@ -441,7 +441,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     </div>
 </div>
 
-          
+
 </div>
 <input type='hidden' id='weekends' value='{{ $nonWorkingDay }}'>
 <input type='hidden' id='holidays' value='{{ $holidays }}'>
@@ -489,7 +489,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         project_id: {{ $project->id }}
                     },
                     function(resp, textStatus, jqXHR) {
-                      
+
                         if (resp == 0) {
                             $('.freeze_button').addClass('disabled');
                             $('.undo_action').addClass('disabled');
@@ -529,7 +529,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 var els = document.getElementsByClassName("action");
                 for (var i = 0; i < els.length; i++) {
                     els[i].onclick = function() {
-                     
+
                         gantt.performAction(this.id)
                     }
                 }
@@ -950,14 +950,14 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                         constraintType:gantt.getConstraintType(task),
                                  }
 
-                                 
+
                                  updatedTask.push(taskdetails);
 
                                 if(tt){
                                     critical_task.push(tasks[i].id);
                                 }
                             };
-                         
+
 
                             workflag=1;
                             $.ajax({
@@ -968,18 +968,18 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                     'critical_task':critical_task
                                 },
                                 success: function(data) {
-            
+
                                 }
                             });
 
                         }
                     }
-                    
-                   
+
+
                     return true;
                 });
                 gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
-                   
+
                 });
 
 
@@ -1023,7 +1023,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         return html;
                     },
                     set_value: function(node, value, ev, sns) {
-                      
+
                         node.style.overflow = "visible";
                         node.parentNode.style.overflow = "visible";
                         node.style.display = "inline-block";
@@ -1152,12 +1152,12 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                         var dp = new gantt.dataProcessor("/erp/public/");
                         var critical=0;
                         dp.init(gantt);
-                        
-                      
+
+
                         dp.attachEvent("onBeforeUpdate", function(id, state, data) {
                             gantt.config.readonly = true;
                             let tt=gantt.isCriticalTask(gantt.getTask(id));
-                            
+
                             if(tt){
                                 critical=1;
                             }else{

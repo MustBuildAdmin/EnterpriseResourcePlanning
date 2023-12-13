@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 <style>
     .error {
-        color: #b72222 ;
+        color: #bc4949  !important ;
     }
     .page {
         min-height: auto !important;

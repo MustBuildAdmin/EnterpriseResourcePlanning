@@ -350,7 +350,7 @@ class ProjectController extends Controller
                         }
 
                         //########  checking the date is correct ########
-                          if($value['start_date'] > $end){
+                        if($value['start_date'] > $end){
                             Project::where('id',$project->id)->delete();
                             Instance::where('project_id',$project->id)->delete();
                             Con_task::where('project_id',$project->id)->delete();
@@ -4271,24 +4271,29 @@ class ProjectController extends Controller
 
             $searchValue = $request['q'];
             $type = $request['type'];
+            $project_users=ProjectUser::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
 
             if ($request->filled('q')) {
 
                 if (str_contains($type, 'subcontractor')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["sub_contractor"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'consultant')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["consultant"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'teammembers')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
@@ -4342,6 +4347,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::where("created_by", $userid)
                     ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 
@@ -4777,6 +4783,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::select('id','name')->where("created_by", $userid)
                     ->where("type","sub_contractor")
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 

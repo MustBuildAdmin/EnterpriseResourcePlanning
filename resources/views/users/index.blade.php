@@ -6,7 +6,7 @@
 }
 
 #reset{
-	
+
 	width: 12% !important;
 }
 
@@ -29,7 +29,7 @@
     color: #FFF;
     font-size: 42px;
     text-align: center;
-  
+
 }
 .avatar-xl {
     --tblr-avatar-size: 6.2rem;
@@ -38,15 +38,15 @@
 @php
    // $profile=asset(Storage::url('uploads/avatar/'));
     $profile=\App\Models\Utility::get_file('uploads/avatar/');
-	
+
 @endphp
-<div class="page-wrapper">
+<div class="page-wrapper m-3">
 	<!-- Page header -->
 
-
-
+ <div class="card p-3">
 	<div class="page-header d-print-none">
-		<div class="container-xl">
+		<div class="container-fluid">
+
 			<div class="row g-2 align-items-center">
 				<div class="col">
 				<h2 class="page-title">
@@ -75,7 +75,7 @@
 							   id="create" class="btn btn-primary" id="create">
 								<span class="btn-inner--icon"><i class="fa fa-plus"></i></span>
 							</a>
-							
+
 					</div>
 					</div>
 				</div>
@@ -84,16 +84,16 @@
 	</div>
 	<!-- Page body -->
 	<div class="page-body">
-		<div class="container-xl">
+		<div class="container-fluid">
 			<div class="row row-cards">
 				@forelse($users as $user)
-				<div class="col-md-6 col-lg-3">
+				<div class="col-md-6 col-lg-2">
 					<div class="card">
 						@if(Gate::check('edit user') || Gate::check('delete user'))
 							<div class="card-header-right">
 								<div class="btn-group card-option float-end">
 									@if($user->is_active==1)
-										<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+										<button type="button" class="btn dropdown-toggle border-0" data-bs-toggle="dropdown"
 										aria-haspopup="true" aria-expanded="false">
 											<i class="ti ti-dots-vertical"></i>
 										</button>
@@ -134,7 +134,7 @@
 								</div>
 							</div>
 						@endif
-						<div class="card-body p-4 text-center">
+						<div class="card-body p-2 text-center">
 							<?php  $short=substr($user->name, 0, 1);?>
 							<?php  $short_lname=substr($user->lname, 0, 1);?>
 							 @if(!empty($user->avatar))
@@ -142,7 +142,7 @@
 								 asset(Storage::url("uploads/avatar/avatar.png "))}}"
 								 class="avatar avatar-xl mb-3 rounded" alt="">
 							 @else
-							
+
 							 	<div class="avatar avatar-xl mb-3 user-initial" style="background-color:{{$color_co}};">
 									{{strtoupper($short)}}{{strtoupper($short_lname)}}
 								</div>
@@ -156,14 +156,14 @@
 										<br>
 									@endif
 								</div>
-								<div class="mt-3">
+								<div class="mt-2">
 									<span class="badge bg-purple-lt"> {{ $user->type }}</span>
 								</div>
 						</div>
-						
+
 						@if(\Auth::user()->type != 'super admin')
 							<div class="d-flex">
-								
+
 								<a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}"
 									href="#" class="card-btn" onclick="copyToClipboard(this)">
 									<!-- Download SVG icon from http://tabler-icons.io/i/mail -->
@@ -176,7 +176,7 @@
 									</svg>
 									{{__('Email')}}
 								</a>
-								
+
 								<a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
 									class="card-btn" onclick="copyToClipboardphone(this)">
 									<!-- Download SVG icon from http://tabler-icons.io/i/phone -->
@@ -250,6 +250,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </div>
 
 @include('new_layouts.footer')

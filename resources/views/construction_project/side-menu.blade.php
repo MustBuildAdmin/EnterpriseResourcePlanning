@@ -181,13 +181,17 @@ table.dataTable thead th.sorting_desc:after {
                                         </a>
                                     @endcan
                                     @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
-                                        @if (Session::get('current_revision_freeze') == 1)
+                                        {{-- To check the current revision is latest and is frezee --}}
+                                        @if(Session::get('project_instance')==Session::get('latest_project_instance') &&  Session::get('latest_project_instance_frezee')==1)
                                             <a href="{{ url('revision') }}"
                                                 class="{{ Request::route()->getName() == 'revision' ?
                                                 'dropdown-item active' : 'dropdown-item' }}">
                                                 {{ __('Revision') }}
                                             </a>
                                         @endif
+                                        {{-- @if (Session::get('current_revision_freeze') == 1)
+                                           
+                                        @endif --}}
                                     @endif
                                     @if (session::has('revision_started'))
                                         <a href="{{ route('project_report.revsion_task_list', $project_id) }}"

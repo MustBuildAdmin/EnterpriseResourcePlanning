@@ -102,30 +102,30 @@
             background: #080;
         }
 
-        .Short {  
-            width: 100%;   
+        .Short {
+            width: 100%;
             color: #dc3545;
             font-weight: 500;
             font-size: 15px;
-        }  
-        .Weak {  
+        }
+        .Weak {
             width: 100%;
             color: #ffc107;
             font-weight: 500;
             font-size: 15px;
-        }  
-        .Good {  
+        }
+        .Good {
             width: 100%;
             color: #28a745;
             font-weight: 500;
             font-size: 15px;
-        }  
-        .Strong {  
+        }
+        .Strong {
             width: 100%;
             color: #d39e00;
             font-weight: 500;
             font-size: 15px;
-        } 
+        }
     </style>
 
     @section('page-title')
@@ -142,7 +142,7 @@
                     <h2 class="formTitle">
                         {{__('Reset Password')}}
                     </h2>
-                
+
                     <div class="inputDiv">
                         {{Form::label('email',__('E-Mail Address'),['class'=>'form-label inputLabel'])}}
                         {{Form::text('email',$email,array('required'=>'required'))}}
@@ -162,7 +162,7 @@
                             <div id="progress"><div id="progress-bar"></div></div>
                             <div id="strengthMessage"></div>
                         </div>
-                        
+
 
                         @error('password')
                             <span class="invalid-password text-danger" role="alert">
@@ -170,7 +170,7 @@
                             </span>
                         @enderror
                     </div>
-                
+
                     <div class="inputDiv">
                         {{Form::label('email',__('Confirm Password'),['class'=>'form-label inputLabel'])}}
                         {{Form::password('password_confirmation',array('required'=>'required','id'=>'password_confirmations'))}}
@@ -182,7 +182,7 @@
                             </span>
                         @enderror
                     </div>
-            
+
                     <div class="buttonWrapper">
                         {{Form::submit(__('Reset'),array('class'=>'submitButton pure-button pure-button-primary','id'=>'resetBtn'))}}
                     </div>
@@ -229,7 +229,7 @@
 
             if ( password.match(/\d+/) ) {
                 score++;
-                $('#strengthMessage').removeClass(); 
+                $('#strengthMessage').removeClass();
                 $('#strengthMessage').addClass('Good');
                 $('#strengthMessage').html('Good');
                 $("#resetBtn").prop('disabled',false);
@@ -262,7 +262,7 @@
             $("#password_confirmations").keyup(function() {
                 var password     = $("#password").val();
                 confirm_password = $(this).val();
-                
+
                 if(password != confirm_password) {
                     $("#not_match").css('display','block');
                     $("#resetBtn").prop('disabled',true);
@@ -325,6 +325,6 @@ $.validator.addMethod(
 </script>
 <style>
 .error {
-    color: #b72222 ;
+    color: #bc4949  !important ;
 }
 </style>

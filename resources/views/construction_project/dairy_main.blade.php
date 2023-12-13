@@ -63,7 +63,7 @@
        @foreach ($projects as $key => $project)
          <div class="col-md-6 col-lg-2">
             <div class="card">
-               <div class="ms-auto lh-1 p-4">
+               {{-- <div class="ms-auto lh-1 p-4">
                    <div class="dropdown">
                       <a class="dropdown-toggle user-card-dropdown text-secondary" href="#"
                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -115,7 +115,7 @@
                            @endcan
                       </div>
                    </div>
-                </div>
+                </div> --}}
                <div class="card-body p-2 text-center">
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;

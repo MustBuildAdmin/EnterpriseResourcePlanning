@@ -11,19 +11,26 @@
 @section('action-btn')
     <div class="float-end">
         @if($view == 'grid')
-            <a href="{{ route('projects.list','list') }}"  data-bs-toggle="tooltip" title="{{__('List View')}}" class="btn btn-sm btn-primary">
+            <a href="{{ route('projects.list','list') }}"
+            data-bs-toggle="tooltip" title="{{__('List View')}}"
+
+            class="btn btn-sm btn-primary">
                 <i class="ti ti-list"></i>
             </a>
 
         @else
-            <a href="{{ route('projects.index') }}"  data-bs-toggle="tooltip" title="{{__('Grid View')}}" class="btn btn-sm btn-primary">
+            <a href="{{ route('projects.index') }}"
+            data-bs-toggle="tooltip" title="{{__('Grid View')}}"
+            class="btn btn-sm btn-primary">
                 <i class="ti ti-layout-grid"></i>
             </a>
         @endif
 
 
         {{------------ Start Filter ----------------}}
-                <a href="#" class="btn btn-sm btn-primary action-item" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="#" class="btn btn-sm btn-primary action-item"
+                role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
                     <i class="ti ti-filter"></i>
                 </a>
                 <div class="dropdown-menu  dropdown-steady" id="project_sort">
@@ -45,7 +52,8 @@
             {{------------ End Filter ----------------}}
 
             {{------------ Start Status Filter ----------------}}
-                <a href="#" class="btn btn-sm btn-primary action-item" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="#" class="btn btn-sm btn-primary action-item" role="button"
+                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="btn-inner--icon">{{__('Status')}}</span>
                 </a>
                 <div class="dropdown-menu  project-filter-actions dropdown-steady" id="project_status">
@@ -58,7 +66,9 @@
 
 
         @can('create project')
-            <a href="#" data-size="xl" data-url="{{ route('projects.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Project')}}" class="btn btn-sm btn-primary">
+            <a href="#" data-size="xl" data-url="{{ route('projects.create') }}"
+             data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Project')}}"
+              class="btn btn-sm btn-primary">
                 <i class="ti ti-plus"></i>
             </a>
         @endcan

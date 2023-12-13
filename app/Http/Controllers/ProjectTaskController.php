@@ -451,9 +451,9 @@ class ProjectTaskController extends Controller
                                 ->where('con_tasks.instance_id', $instance_id)
                                 ->where('con_tasks.type', 'task');
 
-            if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
-            }
+            // if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
+            //     $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            // }
 
             if($task_id_arr != null){
                 $tasks->whereIn('con_tasks.id',$task_id_arr);
@@ -549,10 +549,11 @@ class ProjectTaskController extends Controller
 
             return Datatables::of($tasks)
             ->addColumn('id', function ($row) use($get_date) {
-                if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance') &&
-                $checkLatestFreezeStatus == 1){
+                // if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance') &&
+                // $checkLatestFreezeStatus == 1){
+                if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance')){
                     $id_fetch = '<a style="text-decoration: none;">
-                        <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
+                        <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
                     </a>';
                 }
                 else{
@@ -568,20 +569,26 @@ class ProjectTaskController extends Controller
                 return $text_fetch;
             })
             ->addColumn('status', function ($row) {
-                if (strtotime($row->end_date) < time() && $row->progress < 100){
-                    $status_fetch = '<div style="display:flex;gap:5px;">
-                        <span style="margin-top: 4px;" class="badge bg-warning me-1"></span> <span>'.__('Pending').'</span>
-                    </div>';
-                }
-                elseif(strtotime($row->end_date) < time() && $row->progress >= 100){
-                    $status_fetch = '<div style="display:flex;gap:5px;">
+                if($row->progress >=100){
+                        $status_fetch = '<div style="display:flex;gap:5px;">
                         <span style="margin-top: 4px;" class="badge bg-success me-1"></span> <span>'.__('Completed').'</span>
                     </div>';
-                }
-                else{
-                    $status_fetch = '<div style="display:flex;gap:5px;">
-                        <span style="margin-top: 4px;" class="badge bg-info me-1"></span> <span>'.__('In-Progress').'</span>
-                    </div>';
+                }else{
+                    if (strtotime($row->end_date) < time() && $row->progress < 100){
+                        $status_fetch = '<div style="display:flex;gap:5px;">
+                            <span style="margin-top: 4px;" class="badge bg-warning me-1"></span> <span>'.__('Pending').'</span>
+                        </div>';
+                    }
+                    elseif(strtotime($row->end_date) < time() && $row->progress >= 100){
+                        $status_fetch = '<div style="display:flex;gap:5px;">
+                            <span style="margin-top: 4px;" class="badge bg-success me-1"></span> <span>'.__('Completed').'</span>
+                        </div>';
+                    }
+                    else{
+                        $status_fetch = '<div style="display:flex;gap:5px;">
+                            <span style="margin-top: 4px;" class="badge bg-info me-1"></span> <span>'.__('In-Progress').'</span>
+                        </div>';
+                    }
                 }
                 return $status_fetch;
             })
@@ -2487,9 +2494,9 @@ class ProjectTaskController extends Controller
                 ->where('con_tasks.project_id', $project_id)
                 ->where('con_tasks.instance_id', $instance_id);
 
-            if (\Auth::user()->type != 'company') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
-            }
+            // if (\Auth::user()->type != 'company') {
+            //     $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            // }
 
             if($task_id_arr != null){
                 $tasks->whereIn('con_tasks.id',$task_id_arr);
