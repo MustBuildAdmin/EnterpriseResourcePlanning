@@ -52,7 +52,7 @@ class DrawingsController extends Controller
         ->get();
         $drawingTypes = DrawingTypes::get();
 
-        return view('drawings.index', compact('drawings', 'drawingTypes'));
+        return view('drawings.index', compact('drawings', 'drawingTypes', 'projectid'));
     }
 
     public function store(Request $request)
@@ -72,21 +72,23 @@ class DrawingsController extends Controller
         
     }
 
-    public function addReference($drawing_type, $ref_number)
+    public function addReference($drawing_type, $projectid, $ref_number)
     {
         $uploadedDrawings = UploadDrawingsToTypes::select('upload_drawings_to_types.id',
         'drawing_type', 'revisions', 'status', 'file_name', 'drawing_path', 'upload_drawings_to_types.created_at',
         'upload_drawings_to_types.created_by', 'users.name as creator')
         ->join('users', 'users.id', '=', 'upload_drawings_to_types.created_by')
         ->where('drawing_type', $drawing_type)
+        ->where('project_id', $projectid)
         ->orderBy('upload_drawings_to_types.revisions', 'DESC')->get();
-        return view('drawings.add_drawings',compact('uploadedDrawings', 'drawing_type', 'ref_number'));
+        return view('drawings.add_drawings',compact('uploadedDrawings', 'drawing_type', 'projectid', 'ref_number'));
     }
 
-    public function addDrawings(Request $request, $drawing_type_id, $reference_number)
+    public function addDrawings(Request $request, $drawing_type_id, $project_id, $reference_number)
     {
         if (\Auth::user()->can('create product & service')) {
             $latest_upload = UploadDrawingsToTypes::where('drawing_type', $drawing_type_id)
+            ->where('project_id', $project_id)
             ->latest('created_at')
             ->first();
             if($latest_upload != null) {
@@ -111,21 +113,22 @@ class DrawingsController extends Controller
                 
             }
             $uploadDrawing->created_by = \Auth::user()->creatorId();
+            $uploadDrawing->project_id = $project_id;
             $uploadDrawing->save();
-            return redirect()->route('drawing.reference.add', [$drawing_type_id, $reference_number])
+            return redirect()->route('drawing.reference.add', [$drawing_type_id, $project_id, $reference_number])
             ->with('success', __('Drawings Uploaded Successfully.'));
         } else {
             return redirect()->back()->with('error', __(DENIED));
         }
     }
 
-    public function drawingDestroy($id, $drawing_type, $reference_number, $creator)
+    public function drawingDestroy($id, $drawing_type, $project_id, $reference_number, $creator)
     {
         if ($creator == \Auth::user()->creatorId()) {
             $drawing = UploadDrawingsToTypes::find($id);
             $drawing->delete();
 
-            return redirect()->route('drawing.reference.add', [$drawing_type, $reference_number])
+            return redirect()->route('drawing.reference.add', [$drawing_type, $project_id, $reference_number])
             ->with('success', __('Drawing successfully deleted.'));
         } else {
             return redirect()->back()->with('error', __(DENIED));
