@@ -688,6 +688,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     };
 </script>
 <script>
+
+    console.log(frezee_status_actual,"frezee_status_actual")
     gantt.plugins({
         click_drag: true,
         auto_scheduling: true,
@@ -698,8 +700,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         fullscreen: true,
         grouping: true,
         keyboard_navigation: true,
-        multiselect: true,
-        quick_info: true,
+        multiselect:frezee_status_actual === "0" ? true: false,
+        quick_info: frezee_status_actual === "0" ? true: false,
         tooltip: true,
         undo: true,
         marker: true
@@ -988,7 +990,7 @@ var weekend_list=$('#weekends').val();
             name: "totalSlack",
             align: "center",
             resize: true,
-            hide: false,
+            hide: true,
             width: 70,
             label: "{{ __('Total slack') }}",
             template: function(task) {
@@ -1000,7 +1002,7 @@ var weekend_list=$('#weekends').val();
             name: "freeSlack",
             align: "center",
             resize: true,
-            hide: false,
+            hide: true,
             width: 70,
             label: "{{ __('Free slack') }}",
             template: function(task) {
@@ -1156,9 +1158,11 @@ var weekend_list=$('#weekends').val();
                 width: 44,
                 min_width: 44,
                 max_width: 44,
-                hide: false
+                hide:frezee_status_actual === "1" ? true : false
             }
         ];
+
+
         const columns = gantt.config.columns;
         for (let i = 0; i < columns.length; i++) {
             const template = `<label class='dropdown-item form-switch'>
