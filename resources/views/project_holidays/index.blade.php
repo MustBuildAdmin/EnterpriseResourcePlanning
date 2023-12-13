@@ -9,6 +9,7 @@
 
     <div class="card-header">
         <h3>{{ __('Project Holidays') }}</h3>
+        @can('create project holiday')
         <div class="card-actions">
             @if($project->freeze_status!=1)
                   <a href="#" class="btn btn-outline-primary  w-100" data-size="lg" style="
@@ -18,6 +19,7 @@
                </a>
                @endif
         </div>
+        @endcan
     </div>
     <div class="card-body">
         <div class="row">
@@ -38,6 +40,7 @@
                                     @endif
                                 </tr>
                                 </thead>
+                                @can('manage project holiday')
                                 <tbody class="font-style">
                                 @foreach ($holidays as $project_each)
                                     <tr>
@@ -46,6 +49,7 @@
                                         @if($project->freeze_status!=1)
                                             <td class="Action text-end">
                                                 <span>
+                                                    @can('edit project holiday')
                                                     <div class="btn btn-outline-primary">
                                                         <a href="#" class=""
                                                         data-url="{{ URL::to('project-holiday/'
@@ -55,6 +59,9 @@
                                                             data-original-title="{{__('Edit')}}">
                                                             <i class="ti ti-pencil text-white"></i></a>
                                                     </div>
+                                                    @endcan
+
+                                                    @can('delete project holiday')
                                                     <div class="btn btn-outline-primary">
                                                     {!! Form::open(['method' => 'DELETE',
                                                         'route' => ['project-holiday.destroy',
@@ -81,6 +88,7 @@
                                                         <i class="ti ti-trash text-white text-white"></i></a>
                                                         {!! Form::close() !!} --}}
                                                     </div>
+                                                    @endcan
 
                                                 </span>
                                             </td>
@@ -88,6 +96,7 @@
                                     </tr>
                                 @endforeach
                                 </tbody>
+                                @endcan
                             </table>
                         </div>
                     </div>
