@@ -21,11 +21,11 @@
 <div class="container-fluid">
       <div class="card mt-5 p-4">
         <div class="card-header">
-          <h3>{{ __('Sub Contractor of the Project') }}</h3>
+          <h3>Sub Contractor of the Project</h3>
           <div class="card-actions">
             <div class="row">
               <div class="col-12">
-                @can('invite sub contractor project invitation')
+                @can('edit project')
                   <div class="col-3">
                       <a class="btn btn-primary" data-bs-toggle="modal" data-size="lg"
                           data-url="{{ route('invite.project.invite_teammember', $project->id) }}"

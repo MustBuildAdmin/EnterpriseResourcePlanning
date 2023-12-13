@@ -51,9 +51,7 @@ a.text-dark {
             </div>
          </div>
       </div>
-      
-         
-      @can('manage project')
+
       @if (isset($projects) && !empty($projects) && count($projects) > 0)
       <div class="row row-cards mt-2">
        @foreach ($projects as $key => $project)
@@ -177,7 +175,6 @@ a.text-dark {
          </div>
       </div>
       @endif
-      @endcan
    </div>
 </div>
 </div>

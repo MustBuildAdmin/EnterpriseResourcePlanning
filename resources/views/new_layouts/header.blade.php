@@ -386,9 +386,6 @@
                      </li>
                      <!--Home starts-->
 
-                     @if(Gate::check('manage user') || Gate::check('manage role')
-                        || Gate::check('manage consultant') || Gate::check('manage client')
-                        || Gate::check('manage sub contractor'))
                      <!--Users starts-->
                      <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'users.index' ||
@@ -440,22 +437,16 @@
                         <div class="dropdown-menu">
                            <div class="dropdown-menu-columns">
                               <div class="dropdown-menu-column">
-                                 @if(Gate::check('manage user') || Gate::check('manage role'))
                                  <a class="{{ Request::route()->getName() == 'users.index' ?
                                     'active dropdown-item' : 'dropdown-item' }}"
                                  href="{{ route('users.index') }}">
                                  {{ __('Employees') }}
                                  </a>
-                                 @endif
-
-                                 @if(Gate::check('manage role'))
                                  <a class="{{ Request::route()->getName() == 'roles.index' ?
                                     'active dropdown-item' : 'dropdown-item' }}"
                                     href="{{ route('roles.index') }}">
                                  {{ __('Employee Roles') }}
                                  </a>
-                                 @endif
-                                 @if(Gate::check('manage consultant') || Gate::check('manage client') || Gate::check('manage sub contractor'))
                                  <div class="dropend">
                                     <a class="{{ Request::route()->getName() == 'clients.index' ||
                                        Request::route()->getName() == 'consultants.index' ||
@@ -468,7 +459,6 @@
                                     {{ __('Third party Users') }}
                                     </a>
                                     <div class="dropdown-menu">
-                                       @can('manage client')
                                        <a href="{{ route('clients.index') }}"
                                           class="{{ Request::route()->getName() == 'clients.index' ||
                                           Request::segment(1) == 'clients' ||
@@ -495,7 +485,6 @@
                                              : 'dropdown-item' }}">
                                           {{ __('Client') }}
                                        </a>
-                                       @endcan
                                        @if(Gate::check('manage consultant'))
                                        <a href="{{route('consultants.index')}}"
                                           class="{{ Request::route()->getName() == 'consultants.index'
@@ -514,11 +503,9 @@
                                        @endif
                                     </div>
                                  </div>
-                                 @endif
                               </div>
                            </div>
                      </li>
-                     @endif
                      <!--Users ends-->
 
                      <!--Planning starts-->
@@ -565,14 +552,8 @@
                      <!--Planning ends-->
 
                      <!--Dairy starts-->
-                    
-                     @if(Gate::check('manage directions')
-                        || Gate::check('manage vochange')
-                        || Gate::check('manage RFI')
-                        || Gate::check('manage concrete') 
-                        || Gate::check('manage project specification')
-                        ||  Gate::check('manage procurement material')
-                        || Gate::check('manage site reports'))
+                     @if(\Auth::user()->show_project() == 1)
+                     @if( Gate::check('manage project'))
                      <li class="nav-item">
                         <a class="{{ Request::route()->getName() == 'dairy_main' ||
                            Request::route()->getName() == 'show_dairy' ||
@@ -596,7 +577,7 @@
                         </a>
                      </li>
                      @endif
-                  
+                     @endif
                      <!--Dairy ends-->
 
                      <!--HRM starts-->

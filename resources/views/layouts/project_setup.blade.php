@@ -23,14 +23,11 @@
             </a>
             {!! Form::close() !!}
         @endcan
-        @can('manage project holiday')
         <a href="{{ route('project-holiday.index', $project_id) }}"
          class="list-group-item list-group-item-action border-0
         {{ Request::route()->getName() == 'project-holiday.index' ? 'nav-link active' : 'nav-link' }}">
-            {{__('Holidays')}}
-            <div class="float-end"><i class="ti ti-chevron-right"></i></div>
-        </a>
-        @endcan
+            {{__('Holidays')}}<div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
+
 
     </div>
 </div>

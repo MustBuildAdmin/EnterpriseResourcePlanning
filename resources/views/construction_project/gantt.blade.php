@@ -17,8 +17,6 @@
     .gantt_task_line {
         background-color: rgb(0 84 166 / 75%);
     }
-
-
     .gantt_critical_task {
         background-color: #e63030 !important;
     }
@@ -80,6 +78,20 @@
     .gantt_side_content.gantt_right {
         bottom: 0;
     }
+
+div#gantt-loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 1;
+    flex-direction: column;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
 </style>
 <!-- css ends -->
 
@@ -119,6 +131,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     $holidays = implode(':', $holidays);
 @endphp
 @include('construction_project.side-menu')
+
+
 <div class="text-center container container-slim py-4 loader_show" id="gantt-loader">
     <div class="mb-3">
         <a href="." class="navbar-brand navbar-brand-autodark">
@@ -688,8 +702,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     };
 </script>
 <script>
-
-    console.log(frezee_status_actual,"frezee_status_actual")
     gantt.plugins({
         click_drag: true,
         auto_scheduling: true,
@@ -700,8 +712,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         fullscreen: true,
         grouping: true,
         keyboard_navigation: true,
-        multiselect:frezee_status_actual === "0" ? true: false,
-        quick_info: frezee_status_actual === "0" ? true: false,
+        multiselect: true,
+        quick_info: true,
         tooltip: true,
         undo: true,
         marker: true
@@ -990,7 +1002,7 @@ var weekend_list=$('#weekends').val();
             name: "totalSlack",
             align: "center",
             resize: true,
-            hide: true,
+            hide: false,
             width: 70,
             label: "{{ __('Total slack') }}",
             template: function(task) {
@@ -1002,7 +1014,7 @@ var weekend_list=$('#weekends').val();
             name: "freeSlack",
             align: "center",
             resize: true,
-            hide: true,
+            hide: false,
             width: 70,
             label: "{{ __('Free slack') }}",
             template: function(task) {
@@ -1158,11 +1170,9 @@ var weekend_list=$('#weekends').val();
                 width: 44,
                 min_width: 44,
                 max_width: 44,
-                hide:frezee_status_actual === "1" ? true : false
+                hide: false
             }
         ];
-
-
         const columns = gantt.config.columns;
         for (let i = 0; i < columns.length; i++) {
             const template = `<label class='dropdown-item form-switch'>
@@ -1584,6 +1594,7 @@ var weekend_list=$('#weekends').val();
         dp.attachEvent("onBeforeUpdate", function(id, state, data) {
 
             gantt.config.readonly = true;
+            $('.loader_show').show();
             if (gantt.isTaskExists(id)) {
 
                 let task = gantt.getTask(id);
@@ -1615,6 +1626,7 @@ var weekend_list=$('#weekends').val();
         dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
 
             gantt.config.readonly = false;
+            $('.loader_show').hide();
             if (action == "inserted") {
 
                 gantt.showLightbox(tid);

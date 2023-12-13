@@ -11,7 +11,6 @@
                     <div class="card">
                         <div class="card-header">
                             <h1 class="mb-0">{{ __('Micro Planning Schedule') }}</h1>
-                            @can('create active lookahead')
                             @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                             <div class="card-actions">
                                 <a class="btn btn-primary w-100" data-bs-toggle="modal" data-size="xl"
@@ -22,9 +21,7 @@
                                 </a>
                             </div>
                             @endif
-                            @endcan
                         </div>
-                        @can('view active lookahead')
                         <div class="card-body">
                             <table class="table table-vcenter card-table" id="schedule_table"
                                 aria-describedby="Sub Task">
@@ -76,7 +73,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        @endcan
                     </div>
                 </div>
             </div>

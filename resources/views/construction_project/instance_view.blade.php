@@ -10,7 +10,7 @@
                             <div class="card-header border-0 p-0">
                                 <div class="d-flex justify-content-between">
                                     @if($key==0)
-                                         @php  $name='Main'; @endphp
+                                         @php  $name='Base'; @endphp
                                         <h5 class="m-0"><a class="text-dark"
                                         href="{{ route('projects.instance_project',
                                              [$project->id,$project->project_id,$name]) }}">Base Plan</a></h5>
