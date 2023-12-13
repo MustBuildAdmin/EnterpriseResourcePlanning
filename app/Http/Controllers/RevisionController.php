@@ -127,6 +127,8 @@ class RevisionController extends Controller
         Session::forget('latest_project_instance');
         Session::forget('current_revision_freeze');
         Session::forget('current_revision_name');
+        Session::forget('latest_project_instance_frezee');
+        
       
         ////
             Session::put('project_id',$project_id);
@@ -135,6 +137,9 @@ class RevisionController extends Controller
             
             $checkInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
             Session::put('latest_project_instance',$checkInstanceFreeze->instance);
+            Session::put('latest_project_instance_frezee',$checkInstanceFreeze->freeze_status);
+
+
 
             if($getInstance->freeze_status == 1){
                 Session::put('current_revision_freeze', 1); //Freezed
