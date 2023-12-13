@@ -386,6 +386,9 @@
                      </li>
                      <!--Home starts-->
 
+                     @if(Gate::check('manage user') || Gate::check('manage role')
+                        || Gate::check('manage consultant') || Gate::check('manage client')
+                        || Gate::check('manage sub contractor'))
                      <!--Users starts-->
                      <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'users.index' ||
@@ -452,7 +455,7 @@
                                  {{ __('Employee Roles') }}
                                  </a>
                                  @endif
-                                 @if(Gate::check('manage consultant') || Gate::check('manage client') || Gate::check('manage consultant') || Gate::check('manage sub contractor'))
+                                 @if(Gate::check('manage consultant') || Gate::check('manage client') || Gate::check('manage sub contractor'))
                                  <div class="dropend">
                                     <a class="{{ Request::route()->getName() == 'clients.index' ||
                                        Request::route()->getName() == 'consultants.index' ||
@@ -515,6 +518,7 @@
                               </div>
                            </div>
                      </li>
+                     @endif
                      <!--Users ends-->
 
                      <!--Planning starts-->

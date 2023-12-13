@@ -27,7 +27,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-project-tab" data-bs-toggle="pill" href="#project1" role="tab"
-                        aria-controls="pills-contact" aria-selected="false">{{ __('Construction') }}</a>
+                        aria-controls="pills-contact" aria-selected="false">{{ __('Planning') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-diary-tab" data-bs-toggle="pill" href="#diary" role="tab"
@@ -522,7 +522,7 @@
                     @endphp --}}
                     @php
                         //  $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','project specification','procurement material','vochange','RFI','concrete','site reports'];
-                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity', 'project task stage', 'engineers', 'consultant project invitation', 'sub contractor project invitation','revised program','overall report'];
+                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity','engineers', 'consultant project invitation', 'sub contractor project invitation','revised program','overall report','project holiday'];
                     @endphp
                     <div class="col-md-12">
                         <div class="form-group">

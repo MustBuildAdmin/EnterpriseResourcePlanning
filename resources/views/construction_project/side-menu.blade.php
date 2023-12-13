@@ -214,9 +214,13 @@ table.dataTable thead th.sorting_desc:after {
                                        class="{{ (Request::route()->getName() == 'project_report.revsion_task_list')
                                        ?'dropdown-item active' :'dropdown-item'}}">{{ __('Revised Program') }}</a>
                                     @endif --}}
+                                    @can('manage project task')
                                     <a href="{{ route('taskBoard.view', ['list']) }}"
                                         class="{{ Request::route()->getName() == 'taskBoard.view' ?
-                                        'dropdown-item active' :'dropdown-item' }}">{{ __('Task') }}</a>
+                                        'dropdown-item active' :'dropdown-item' }}">
+                                        {{ __('Task') }}
+                                    </a>
+                                    @endcan
                                     {{-- <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                     class="{{ (Request::route()->getName() == 'project_report.view_task_report')
                                     ?'dropdown-item active' :'dropdown-item'}}">{{ __('Task Reports') }}</a> --}}
@@ -459,7 +463,10 @@ table.dataTable thead th.sorting_desc:after {
                             </div>
                     </li>
                     <!--Reports ends-->
-                    @if(Gate::check('view project') || Gate::check('edit project') || Gate::check('delete project'))
+                    @if(Gate::check('view project')
+                        || Gate::check('edit project')
+                        || Gate::check('delete project')
+                        || Gate::check('manage project holiday'))
                     <li class="nav-item">
                         <a href="{{ route('project-holiday.index', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project-holiday.index' ?
