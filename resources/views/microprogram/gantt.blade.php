@@ -256,7 +256,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                             <div class="dropdown-menu">
                                 <div class="dropdown-menu-columns">
                                     <div class="dropdown-menu-column">
-                                        <a href="#" class="dropdown-item" onclick="collapseAll()">
+                                        <a href="#" class="dropdown-item" onclick="expandAll(); ">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon"
                                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -267,7 +267,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                                             </svg>
                                             {{ __('Expand All') }}
                                         </a>
-                                        <a href="#" class="dropdown-item" onclick="expandAll();">
+                                        <a href="#" class="dropdown-item" onclick="collapseAll()">
                                             <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon"
                                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -624,7 +624,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     updatedTask.push(taskdetails);
 
                 };
-              
+
 
                 workflag = 1;
                 $.ajax({
@@ -1072,19 +1072,19 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
 
     gantt.attachEvent("onAfterTaskUpdate", function(id, item) {
-       
+
     });
 
     gantt.attachEvent("onAfterLinkAdd", function(id, item) {
-       
+
     });
 
     gantt.attachEvent("onAfterLinkUpdate", function(id, item) {
-       
+
     });
 
     gantt.attachEvent("onAfterLinkDelete", function(id, item) {
-        
+
     });
 
 
