@@ -2408,7 +2408,63 @@ class ProjectController extends Controller
             $project->description = $request->description;
             $project->status = $request->status;
             $project->estimated_days = $request->estimated_days;
-            // $project->report_to = implode(",", $request->reportto);
+            $project->report_to = $request->report_to;
+            // Check reporting to user already exits or not
+            $project_id=$project->id;
+            $existingorNot=ProjectUser::where([
+                "project_id" => $project_id,
+                "user_id" => $request->report_to,
+            ])->get();
+            
+            if(count($existingorNot)<=0){
+                $authuser = Auth::user();
+                $project_id=$project->id;
+                $project = Project::find($project_id)->first();
+                $get_email = User::select('email','name')->where('id',$request->report_to)->first();
+                $createConnection = ProjectUser::create([
+                    "project_id" => $project_id,
+                    "user_id" => $request->report_to,
+                    "invited_by" => $authuser->id,
+                    'invite_status' => 'requested',
+                ]);
+
+                $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember')
+                    . $createConnection->id;
+                $userArr = [
+                    'invite_link' => $inviteUrl,
+                    'user_name' => \Auth::user()->name,
+                    'project_name' => $project->project_name,
+                    'email' => \Auth::user()->email,
+                ];
+                
+                $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
+                
+                                                
+                if($team_template != null){
+                    $creatorId = $authuser->creatorId();
+
+                    if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                    ->where('user_id',$request->report_to)
+                                        ->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                ->insert(['template_id'=>$team_template->id, 'user_id' => $request->report_to]);
+                    }
+
+                    if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                    ->where('user_id',$creatorId)
+                                        ->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                    }
+                }
+                
+
+                Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                    [$request->report_to => $get_email->email], $userArr);
+                // Invite Team Member while creating project
+
+            }
+           
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->country = $request->country;
