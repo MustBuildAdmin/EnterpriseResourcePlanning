@@ -1115,7 +1115,7 @@ class ProjectController extends Controller
     }
     public function show(Project $project)
     {
-        if (\Auth::user()->can("view project")) {
+        if (\Auth::user()->can("show project dashboard")) {
             $usr = Auth::user();
             if (\Auth::user()->type == "client") {
                 $user_projects = Project::where("client_id", \Auth::user()->id)

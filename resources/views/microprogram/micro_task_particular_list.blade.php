@@ -145,6 +145,7 @@
             <div class="card">
                 @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                 <div class="card-header">
+                    @can('create active lookahead')
                     <div class="card-actions">
                         @php $get_date = $data['get_date']; @endphp
                         <a href="#" data-size="xl" data-url="{{ route('micro_add_particular_task',
@@ -155,6 +156,7 @@
                             Progress Update
                         </a>
                     </div>
+                    @endcan
                 </div>
                 @endif
                 <div class="card-body">
@@ -174,6 +176,7 @@
                                     @endif
                                 </tr>
                             </thead>
+                            @can('edit active lookahead')
                             <tbody>
                                 @php
                                     $documentPath = \App\Models\Utility::get_file('uploads/task_particular_list');
@@ -244,7 +247,7 @@
                                 @empty
                                 @endforelse
                             </tbody>
-
+                            @endcan
                         </table>
                     </div>
                 </div>

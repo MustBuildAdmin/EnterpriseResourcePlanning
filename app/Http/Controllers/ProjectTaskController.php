@@ -135,42 +135,49 @@ class ProjectTaskController extends Controller
     // For Taskboard View
     public function taskBoard($view, Request $request)
     {
-        if (Session::has('project_id')) {
-            $project_id = Session::get('project_id');
-            Session::put('task_filter',$request->status);
-
-            $user_id = $request->users;
-            $start_date = $request->start_date;
-            $end_date = $request->end_date;
-
-            $setting = Utility::settings(\Auth::user()->creatorId());
-
-            $user_data = User::select('users.name', 'users.id')
-                ->leftjoin('project_users as project', 'project.user_id', '=', 'users.id')
-                ->where('project.project_id', $project_id)
-                ->groupBy('users.id')
-                ->get();
-            $result = Instance::where('project_id', $project_id)
-                ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
-
-            if ($result == 1) {
-                if ($view == 'list') {
-                    $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
-
-                    return view('construction_project.taskboard',
-                        compact('view', 'tasks', 'project_id', 'user_id', 'start_date', 'end_date', 'setting', 'user_data'));
+        if(\Auth::user()->can("manage project task")){
+            if (Session::has('project_id')) {
+                $project_id = Session::get('project_id');
+                Session::put('task_filter',$request->status);
+    
+                $user_id = $request->users;
+                $start_date = $request->start_date;
+                $end_date = $request->end_date;
+    
+                $setting = Utility::settings(\Auth::user()->creatorId());
+    
+                $user_data = User::select('users.name', 'users.id')
+                    ->leftjoin('project_users as project', 'project.user_id', '=', 'users.id')
+                    ->where('project.project_id', $project_id)
+                    ->groupBy('users.id')
+                    ->get();
+                $result = Instance::where('project_id', $project_id)
+                    ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
+    
+                if ($result == 1) {
+                    if ($view == 'list') {
+                        $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
+    
+                        return view('construction_project.taskboard',
+                            compact('view', 'tasks', 'project_id', 'user_id', 'start_date', 'end_date', 'setting', 'user_data'));
+                    } else {
+                        $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
+    
+                        return view('project_task.grid',
+                            compact('tasks', 'view', 'project_id', 'user_id', 'start_date', 'end_date', 'setting'));
+                    }
                 } else {
-                    $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
-
-                    return view('project_task.grid',
-                        compact('tasks', 'view', 'project_id', 'user_id', 'start_date', 'end_date', 'setting'));
+                    return redirect()->back()->with('error', __('Project Not Freezed.'));
                 }
             } else {
-                return redirect()->back()->with('error', __('Project Not Freezed.'));
+                return redirect()->route('construction_main')->with('error', __('Session Expired'));
             }
-        } else {
-            return redirect()->route('construction_main')->with('error', __('Session Expired'));
+        }else{
+            return redirect()
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
+       
 
     }
 
@@ -1178,7 +1185,7 @@ class ProjectTaskController extends Controller
                 100 / $get_con_task->duration : 0;
 
             $current_Planed_percentage = round($completed_days * $perday);
-        }
+    }
 
 
         return view('construction_project.task_particular_list',
@@ -1188,17 +1195,23 @@ class ProjectTaskController extends Controller
 
     public function revsion_task_list(Request $request)
     {
-        $data = Instance::where('project_id', Session::get('project_id'))->where('instance', '!=', Session::get('project_instance'))->orderBy('id', 'DESC')->get();
+        if(\Auth::user()->can("view revised program")) {
+            $data = Instance::where('project_id', Session::get('project_id'))->where('instance', '!=', Session::get('project_instance'))->orderBy('id', 'DESC')->get();
 
-        if (count($data) >= 1) {
-            $previous = $data[0]->instance;
-            $result = DB::table('revision_task_progress')->where('project_id', Session::get('project_id'))->where('instance_id', $previous)->get();
-        } else {
-            $result = [];
-        }
+            if (count($data) >= 1) {
+                $previous = $data[0]->instance;
+                $result = DB::table('revision_task_progress')->where('project_id', Session::get('project_id'))->where('instance_id', $previous)->get();
+            } else {
+                $result = [];
+            }
 
-        return view('construction_project.revision_taskprogress',
+            return view('construction_project.revision_taskprogress',
             compact('result'));
+        }else {
+            return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+        }
     }
 
     public function add_particular_task(Request $request)
