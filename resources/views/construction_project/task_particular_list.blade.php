@@ -51,7 +51,8 @@
 
                         <div class="datagrid-item">
                             @php
-                                $users_data[] = $data['con_data']->users != "" ? json_decode($data['con_data']->users) : array();
+                                $users_data[] = $data['con_data']->users != "" ?
+                                 json_decode($data['con_data']->users) : array();
                             @endphp
                             <div class="datagrid-title">Assigned To</div>
                             <div class="datagrid-content">
@@ -81,7 +82,8 @@
 
                         <div class="datagrid-item">
                             @php
-                                $users_creater = $data['con_data']->created_by != "" ? $data['con_data']->created_by : null;
+                                $users_creater = $data['con_data']->created_by != "" ?
+                                $data['con_data']->created_by : null;
                                 $user_creater_db = DB::table('users')->where('id',$users_data)->first();
                             @endphp
                             <div class="datagrid-title">Task Creator</div>
@@ -98,7 +100,8 @@
 
                         @if ($data['con_data']->subcontractor != 0)
                             @php
-                                $users_subcon = $data['con_data']->subcontractor != "" ? $data['con_data']->created_by : null;
+                                $users_subcon = $data['con_data']->subcontractor != "" ?
+                                $data['con_data']->created_by : null;
                                 $user_subcon_db = DB::table('users')->where('id',$users_data)->first();
                             @endphp
                             @if ($user_subcon_db != null)
@@ -163,7 +166,8 @@
 
                         <div class="datagrid-item">
                             <div class="datagrid-title">Actual Duration</div>
-                            <span class="status {{$spanClass}}">{{ $data['con_data']->duration - $total_count_of_task }} days</span>
+                            <span class="status {{$spanClass}}">
+                            {{ $data['con_data']->duration - $total_count_of_task }} days</span>
                         </div>
 
                         <div class="datagrid-item">
@@ -259,12 +263,14 @@
                                             @endforelse
                                         </td>
                                         <td>{!! $task_progress->description !!}</td>
-                                        @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
+                                        @if (Auth::user()->type != "consultant" &&
+                                        Auth::user()->type != "sub_contractor")
                                             <td>
                                                 <div class="actions">
                                                     <a class="backgroundnone"
                                                         data-url="{{route('edit_particular_task',
-                                                        ['task_progress_id' => $task_progress->id,'task_id' => $task_id])}}"
+                                                        ['task_progress_id' => $task_progress->id,
+                                                        'task_id' => $task_id])}}"
                                                         data-ajax-popup="true" data-size="xl" data-bs-toggle="tooltip"
                                                         title="{{ __('Edit') }}"
                                                         data-title="{{ $data['con_data'] != null ?

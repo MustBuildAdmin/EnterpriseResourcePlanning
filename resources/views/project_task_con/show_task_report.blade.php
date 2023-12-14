@@ -96,12 +96,16 @@
                 </td>
 
                 <td style="width:20%;">
-                    @if (strtotime($task->end_date) < time() && $task->progress < 100)
-                        <span class="badge bg-warning me-1"></span> Pending
-                    @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
-                        <span class="badge bg-success me-1"></span> Completed
+                    @if($task->progress >= 100)
+                         <span class="badge bg-success me-1"></span> Completed
                     @else
-                        <span class="badge bg-info me-1"></span> In-Progress
+                        @if (strtotime($task->end_date) < time() && $task->progress < 100)
+                            <span class="badge bg-warning me-1"></span> Pending
+                        @elseif(strtotime($task->end_date) < time() && $task->progress >= 100)
+                            <span class="badge bg-success me-1"></span> Completed
+                        @else
+                            <span class="badge bg-info me-1"></span> In-Progress
+                        @endif
                     @endif
                 </td>
 
