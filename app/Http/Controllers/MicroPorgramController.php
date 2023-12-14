@@ -126,6 +126,7 @@ class MicroPorgramController extends Controller
         $schedule->schedule_end_date   = $request->schedule_end_date;
         $schedule->schedule_goals      = $request->schedule_goals;
         $schedule->insert_date         = date('Y-m-d');
+        $schedule->created_by          = Auth::user()->id;
         $schedule->save();
 
         return redirect()->back()->with('success', __('Schedule Created.'));
@@ -1273,6 +1274,28 @@ class MicroPorgramController extends Controller
         return array(
             '1', 'Schedule Completed'
         );
+    }
+
+    public function checkschedulename(Request $request){
+        $form_name = $request->form_name;
+        $schedule_name = $request->schedule_name;
+
+        if($form_name == "scheduleCreate"){
+            $getCheckVal = DB::table('microprogram_schedule')
+                ->where("project_id",session::get('project_id'))
+                ->where('schedule_name',$schedule_name)->first();
+        }
+        else {
+            $getCheckVal = "Not Empty";
+        }
+
+        if ($getCheckVal == null) {
+            echo "true";
+            // return 1; //Success
+        } else {
+            echo "false";
+            // return 0; //Error
+        }
     }
 
     public function mainschedule_store(Request $request){
