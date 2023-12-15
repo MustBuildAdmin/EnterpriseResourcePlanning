@@ -445,7 +445,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
           <div class="modal-status btn-warning"></div>
           <div class="modal-body text-center py-4">
              <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-             <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg"
+             <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-warning icon-lg"
                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                 fill="none" stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -468,7 +468,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                       </a>
                    </div>
                    <div class="col">
-                      <a href="#" id="confirm_del_yes" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                      <a href="#" id="confirm_del_yes" class="btn btn-warning w-100" data-bs-dismiss="modal">
                       {{ __('Yes') }}
                       </a>
                    </div>
@@ -606,7 +606,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             error: function(response) {
                     show_toastr('error', response.error, 'error');
             }
-        })
+        });
     });
     // delete confirmation show  #############################
 
@@ -1173,15 +1173,11 @@ var weekend_list=$('#weekends').val();
             freeSlackColumn,
             totalSlackColumn,
             {
-                name: "Actions",
-                width: 52,
-                label: "{{ __('Actions') }}",
-                min_width: 52,
-                max_width: 52,
-                hide: false,
-                onrender: (item, node) => {
-                    return <div>name</div>
-                }
+                name: "add",
+                width: 44,
+                min_width: 44,
+                max_width: 44,
+                hide: false
             }
         ];
         const columns = gantt.config.columns;
