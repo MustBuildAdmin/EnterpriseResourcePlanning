@@ -713,7 +713,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         grouping: true,
         keyboard_navigation: true,
         multiselect: true,
-        quick_info: true,
+        quick_info:frezee_status_actual === "1" ? false :true,
         tooltip: true,
         undo: true,
         marker: true
@@ -1166,11 +1166,15 @@ var weekend_list=$('#weekends').val();
             freeSlackColumn,
             totalSlackColumn,
             {
-                name: "add",
-                width: 44,
-                min_width: 44,
-                max_width: 44,
-                hide: false
+                name: "Actions",
+                width: 52,
+                label: "{{ __('Actions') }}",
+                min_width: 52,
+                max_width: 52,
+                hide: false,
+                onrender: (item, node) => {
+                    return <div>name</div>
+                }
             }
         ];
         const columns = gantt.config.columns;
