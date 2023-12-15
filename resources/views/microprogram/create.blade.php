@@ -10,7 +10,7 @@
     <div class="mb-3">
         <label class="form-label required">{{__('Schedule Name')}}</label>
         <input type="hidden" id="setScheduleDate" class="setScheduleDate" value="{{$all_dates}}">
-        <input type="text" class="form-control" name="schedule_name" required
+        <input type="text" class="form-control" name="schedule_name" required id="schedule_name"
             placeholder="{{__('Enter your Schedule Name')}}">
     </div>
     {{-- <div class="mb-3">
@@ -36,7 +36,7 @@
                 </svg>
             </span>
             <input name="schedule_start_date" class="form-control"
-             placeholder="{{__('Select a start date')}}" id="schedule_start_date" />
+             placeholder="{{__('Select a start date')}}" id="schedule_start_date" required />
         </div>
     </div>
     <div class="mb-3">
@@ -56,13 +56,13 @@
                 </svg>
             </span>
             <input name="schedule_end_date" class="form-control"
-            placeholder="{{__('Select a End date')}}" id="schedule_end_date" />
+            placeholder="{{__('Select a End date')}}" id="schedule_end_date" required />
         </div>
     </div>
 
     <div class="mb-3">
         <label class="form-label">{{ __('Schedule Goals') }}<span class="form-label-description">56/100</span></label>
-        <textarea class="form-control" name="schedule_goals" rows="6" placeholder="{{ __('Content..') }}"></textarea>
+        <textarea class="form-control" name="schedule_goals" rows="6" placeholder="{{ __('Content..') }}" required></textarea>
     </div>
 </div>
 <div class="modal-footer">
@@ -98,6 +98,26 @@
                 });
 
             },
+        });
+
+        var form = $("#subcontractorCreate");
+
+        form.validate({
+            rules: {
+                schedule_name: {
+                    required: true,
+                    remote: {
+                        url: '{{ route("checkschedulename") }}',
+                        data: { 'form_name' : "scheduleCreate" },
+                        type: "GET"
+                    }
+                }
+            },
+            messages: {
+                schedule_name: {
+                    remote: "Sorry, Schedule name already exists!"
+                }
+            }
         });
     });
 </script>
