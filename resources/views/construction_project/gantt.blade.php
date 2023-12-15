@@ -606,7 +606,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             error: function(response) {
                     show_toastr('error', response.error, 'error');
             }
-        })
+        });
     });
     // delete confirmation show  #############################
 
@@ -1180,7 +1180,7 @@ var weekend_list=$('#weekends').val();
                 max_width: 52,
                 hide: false,
                 onrender: (item, node) => {
-                    return <div>name</div>
+                    return name
                 }
             }
         ];
