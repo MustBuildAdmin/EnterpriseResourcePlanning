@@ -1039,18 +1039,24 @@ class ProjectController extends Controller
     public function projectActivities(Request $request, $project_id)
     {
 
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.activities", compact("project", "project_id"));
-        } else {
+        if (\Auth::user()->can('view activity')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.activities", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
             return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
@@ -2525,7 +2531,9 @@ class ProjectController extends Controller
     {
 
         try {
-            if (\Auth::user()->can('invite engineers') || Auth::user()->can('invite consultant project invitation') || Auth::user()->can('invite sub contractor project invitation')) {
+            if (\Auth::user()->can('invite engineers')
+            || Auth::user()->can('invite consultant project invitation')
+            || Auth::user()->can('invite sub contractor project invitation')) {
                 $authuser = Auth::user();
                 $teammemberID = explode(',', $request->teammember_id);
                 $project_id = explode(',', $request->project_id);

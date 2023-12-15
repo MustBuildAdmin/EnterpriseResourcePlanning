@@ -300,7 +300,15 @@
   </div>
 </div>
 @endif
-<script type = "text/javascript" >
+<script type ="text/javascript">
+//delete swal validation starts
+  $(document).on('keypress', function (e) {
+          if (e.which == 13) {
+              swal.closeModal();
+          }
+  });
+//delete swal validation ends
+
   $(document).ready(function() {
   	$('#checkboxesMain').on('click', function(e) {
   		if ($(this).is(':checked', true)) {
