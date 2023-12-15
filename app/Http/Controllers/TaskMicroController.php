@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Session;
 use Carbon\Carbon;
 use App\Models\Instance;
+use App\Models\Con_task;
 use Exception;
 use DB;
 use Config;
@@ -89,7 +90,7 @@ class TaskMicroController extends Controller
         }
 
         ActivityController::activity_store(Auth::user()->id,
-            Session::get('project_id'), 'Added New Task', $request->text);
+            Session::get('project_id'), 'Lookhead Added New Task', $request->text);
 
         return response()->json([
             'action' => 'inserted',
@@ -104,7 +105,7 @@ class TaskMicroController extends Controller
             'instance_id' => Session::get('project_instance'), 'task_id' => $id])->first();
         if ($row != null) {
             ActivityController::activity_store(Auth::user()->id,
-                Session::get('project_id'), 'Deleted Task', $row->text);
+                Session::get('project_id'), 'Lookhead Deleted Task', $row->text);
         }
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
@@ -135,109 +136,136 @@ class TaskMicroController extends Controller
 
     public function update($id, Request $request)
     {
-        
-       
-            $task = MicroTask::where('task_id',$id)
-                ->where(['project_id' => Session::get('project_id'),
-                'instance_id' => Session::get('project_instance')])
-                ->first();
+        $con_check = null;
+        $task = MicroTask::where('task_id',$id)
+            ->where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])
+            ->first();
 
-            if($task->parent == 0){
-                $setstartdate = date('Y-m-d',strtotime($task->start_date));
-                $setenddate   = date('Y-m-d',strtotime($task->end_date));
+        if (isset($request->users)) {
+            if (gettype($request->users) == 'array') {
+                $implodeusers = implode(',', json_decode($request->users));
+            } else {
+                $implodeusers = $request->users;
+            }
+            $users = $implodeusers;
+        }else{
+            $users='';
+        }
+
+        if(isset($request->totalStack) && $request->totalStack!='undefined'){
+            $float_val = $request->totalStack;
+        }else{
+            $float_val = null;
+        }
+
+        if(isset($request->totalStack) && $request->totalStack!='undefined'){
+            $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
+            $carbonDate = Carbon::parse($cleanedDateString);
+            $carbonDate->addDays($request->totalStack);
+            $total_slack = $carbonDate->format('Y-m-d');
+            $entire_critical = $total_slack;
+        }else{
+            $entire_critical = null;
+        }
+
+        if(isset($request->freeSlack) && $request->freeSlack!='undefined'){
+            $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
+            $carbonDate = Carbon::parse($cleanedDateString);
+            $carbonDate->addDays($request->freeSlack);
+            $freeSlack = $carbonDate->format('Y-m-d');
+            $dependency_critical = $freeSlack;
+        }else{
+            $dependency_critical=null;
+        }
+
+        $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
+
+        $checkparent_first = MicroTask::select('id','task_id','con_main_id')->where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->first();
+
+        $checktask_first = MicroTask::select('id','task_id','con_main_id')->where(['project_id' => Session::get('project_id'),
+            'instance_id' => Session::get('project_instance')])->where(['task_id' => $task->task_id])->first();
+
+        if($checkparent_first != null){
+            if($checkparent_first->con_main_id != null){
+                $con_check = Con_task::where(['project_id' => Session::get('project_id'),
+                    'instance_id' => Session::get('project_instance')])
+                    ->where('main_id',$checkparent_first->con_main_id)
+                    ->first();
             }
             else{
-                $parentId = $task->task_id;
-
-                $parenttask = MicroTask::where('task_id',$parentId)
-                    ->where(['project_id' => Session::get('project_id'),
-                    'instance_id' => Session::get('project_instance')])
-                    ->first();
-
-                $setstartdate = date('Y-m-d',strtotime($parenttask->start_date));
-                $setenddate   = date('Y-m-d',strtotime($parenttask->end_date));
-            }
-
-            // dd($setstartdate, date('Y-m-d',strtotime($request->start_date)), $setenddate, date('Y-m-d',strtotime($request->end_date)));
-
-            if($setstartdate < date('Y-m-d',strtotime($request->start_date))  || $setenddate > date('Y-m-d',strtotime($request->end_date))){
-                return response()->json(['success'=>false,'action' => 'Date restriction']);
-            }
-       
-            if (isset($request->users)) {
-                if (gettype($request->users) == 'array') {
-                    $implodeusers = implode(',', json_decode($request->users));
-                } else {
-                    $implodeusers = $request->users;
+                if($checktask_first != null){
+                    $con_check = Con_task::select('id','main_id','start_date','end_date')
+                        ->where(
+                            ['project_id' => Session::get('project_id'),
+                            'instance_id' => Session::get('project_instance'),
+                            'main_id'     => $checktask_first->con_main_id]
+                        )
+                        ->first();
                 }
-                $users = $implodeusers;
-            }else{
-                $users='';
             }
-
-      
-            if(isset($request->totalStack) && $request->totalStack!='undefined'){
-                $float_val = $request->totalStack;
-            }else{
-                $float_val=null;
+        }
+        else{
+            if($checktask_first != null){
+                $con_check = Con_task::select('id','main_id','start_date','end_date')
+                    ->where(
+                        ['project_id' => Session::get('project_id'),
+                        'instance_id' => Session::get('project_instance'),
+                        'main_id'     => $checktask_first->con_main_id]
+                    )
+                    ->first();
             }
+        }
 
-            if(isset($request->totalStack) && $request->totalStack!='undefined'){
-                $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
-                $carbonDate = Carbon::parse($cleanedDateString);
-                $carbonDate->addDays($request->totalStack);
-                $total_slack = $carbonDate->format('Y-m-d');
-                $entire_critical = $total_slack;
-            }else{
-                $entire_critical=null;
+        if($con_check != null){
+            if($con_check->start_date < date('Y-m-d',strtotime($request->start_date))){
+                return response()->json(['success'=>false,'action' => 'Date is to low compared to previous date.']);
             }
-
-            if(isset($request->freeSlack) && $request->freeSlack!='undefined'){
-                $cleanedDateString = preg_replace(Config::get('constants.pregreplace'), '', $request->start_date);
-                $carbonDate = Carbon::parse($cleanedDateString);
-                $carbonDate->addDays($request->freeSlack);
-                $freeSlack = $carbonDate->format('Y-m-d');
-                $dependency_critical = $freeSlack;
-            }else{
-                $dependency_critical=null;
+            elseif($con_check->end_date > date('Y-m-d',strtotime($request->end_date))){
+                return response()->json(['success'=>false,'action' => 'Date is to high compared to previous date.']);
             }
+        }
+        
+        // update  the type
+        MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
+            ->where('task_id', $request->parent)->update(['type' => 'project']);
 
-            $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
-                'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
-            // update  the type
-            MicroTask::where(['project_id' => Session::get('project_id'),
-                            'instance_id' => Session::get('project_instance')])
-                ->where('task_id', $request->parent)->update(['type' => 'project']);
-            if (count($checkparent) > 0) {
-                $type = 'project';
-            } else {
-                $type = 'task';
-            }
-            // new update functionality
-            $update_data=array(
-                'text'=>$request->text,
-                'start_date'=>date('Y-m-d', strtotime($request->start_date)),
-                'end_date'=>date('Y-m-d', strtotime($request->end_date)),
-                'duration'=>$request->duration,
-                'parent'=>$request->parent,
-                'users'=>$users,
-                'entire_critical'=>$entire_critical,
-                'dependency_critical'=>$dependency_critical,
-                'type'=>$type,
-                'float_val'=>$float_val,
-            );
-            
+        if (count($checkparent) > 0) {
+            $type = 'project';
+        } else {
+            $type = 'task';
+        }
 
-            MicroTask::where('task_id',$id)
-                    ->where(['project_id' => Session::get('project_id'),
-                    'instance_id' => Session::get('project_instance')])
-                    ->update($update_data);
+        // new update functionality
+        $update_data = array(
+            'text'                => $request->text,
+            'parent'              => $request->parent,
+            'users'               => $users,
+            'type'                => $type,
+            'float_val'           => $float_val,
+            'entire_critical'     => $entire_critical,
+            'dependency_critical' => $dependency_critical,
+            'created_by'          => Auth::user()->id,
+        );
 
-            ActivityController::activity_store(Auth::user()->id,
-            Session::get('project_id'), 'Updated Task', $request->text);
+        if($con_check == null){
+            $update_data['start_date'] = date('Y-m-d', strtotime($request->start_date));
+            $update_data['end_date']   = date('Y-m-d', strtotime($request->end_date));
+            $update_data['duration']   = $request->duration;
+        }
 
-            return response()->json([
-                'action' => 'updated',
-            ]);
+        MicroTask::where('task_id',$id)
+                ->where(['project_id' => Session::get('project_id'),
+                'instance_id' => Session::get('project_instance')])
+                ->update($update_data);
+
+        ActivityController::activity_store(Auth::user()->id,
+        Session::get('project_id'), 'Lookhead Updated Task', $request->text);
+
+        return response()->json([
+            'action' => 'updated',
+        ]);
     }
 }

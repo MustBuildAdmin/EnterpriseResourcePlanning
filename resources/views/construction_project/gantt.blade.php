@@ -583,7 +583,6 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
 
     // delete confirmation show  #############################
     $(document).on("click", "#confirm_del_yes", function () {
-        $("#modal-success").modal('show');
         var project_id = {{ $project->id }};
         $.ajax({
             url: "{{route('projects.freeze_status')}}",
@@ -592,9 +591,17 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
             },
             type: 'POST',
             success: function(response) {
-                $(document).on("click", ".confirm_ok", function () {
-                    location.reload();
-                });
+                console.log("micro",response);
+                if(response == "micro is active"){
+                    gantt.message({text:"Lookhead is active please complete first",type:"warning",icon:"dxi-clock",css:"dhx_message--error"});
+                }
+                else{
+                    $("#modal-success").modal('show');
+                    $(document).on("click", ".confirm_ok", function () {
+                        location.reload();
+                    });
+                }
+                
             },
             error: function(response) {
                     show_toastr('error', response.error, 'error');

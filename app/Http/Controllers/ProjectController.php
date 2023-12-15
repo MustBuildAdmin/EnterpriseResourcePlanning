@@ -3171,6 +3171,14 @@ class ProjectController extends Controller
     public function freeze_status_change(Request $request)
     {
         try {
+
+            $get_instance = Instance::where('project_id',Session::get('project_id'))->get()->count();
+            if($get_instance > 1){
+                if(DB::table('microprogram_schedule')->where('project_id',Session::get('project_id'))->where('active_status',1)->exists()){
+                    return "micro is active";
+                }
+            }
+            
             $instanceId = Session::get("project_instance");
             $conTask = Con_task::where([
                 "project_id" => $request->project_id,
