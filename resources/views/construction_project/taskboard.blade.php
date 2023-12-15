@@ -349,17 +349,27 @@
 
                                                         <div class="col-md-10">
                                                             <div class="table-responsive card p-4">
-                                                                <table class="table table-vcenter card-table" id="summary-table" aria-describedby="Main Task"
+                                                                <table class="table table-vcenter card-table"
+                                                                id="summary-table" aria-describedby="Main Task"
                                                                 style="width: 100%">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col" style='color:white;'>{{__('SummaryId')}}</th>
-                                                                            <th scope="col" style='color:white;'>{{__('Tasks')}}</th>
-                                                                            <th scope="col" style='color:white;'>{{__('Status')}}</th>
-                                                                            <th scope="col" style='color:white;'>{{__('Actual Progress')}}</th>
-                                                                            <th scope="col" style='color:white;'>{{__('Planned Progress')}}</th>
-                                                                            <th scope="col" style='color:white;'>{{__('Planned Start Date')}}</th>
-                                                                            <th scope="col" style='color:white;'>{{__('Planned End Date')}}</th>
+                                                                            <th scope="col"
+                                                                            style='color:white;'>
+                                                                            {{__('SummaryId')}}</th>
+                                                                            <th scope="col"
+                                                                            style='color:white;'>{{__('Tasks')}}</th>
+                                                                            <th scope="col"
+                                                                            style='color:white;'>{{__('Status')}}</th>
+                                                                            <th scope="col"
+                                                                            style='color:white;'>
+                                                                            {{__('Actual Progress')}}</th>
+                                                                            <th scope="col" style='color:white;'>
+                                                                                {{__('Planned Progress')}}</th>
+                                                                            <th scope="col" style='color:white;'>
+                                                                                {{__('Planned Start Date')}}</th>
+                                                                            <th scope="col" style='color:white;'>
+                                                                                {{__('Planned End Date')}}</th>
                                                                         </tr>
                                                                     </thead>
                                                                 </table>
