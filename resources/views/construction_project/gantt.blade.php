@@ -1173,15 +1173,11 @@ var weekend_list=$('#weekends').val();
             freeSlackColumn,
             totalSlackColumn,
             {
-                name: "Actions",
-                width: 52,
-                label: "{{ __('Actions') }}",
-                min_width: 52,
-                max_width: 52,
-                hide: false,
-                onrender: (item, node) => {
-                    return name
-                }
+                name: "add",
+                width: 44,
+                min_width: 44,
+                max_width: 44,
+                hide: false
             }
         ];
         const columns = gantt.config.columns;
