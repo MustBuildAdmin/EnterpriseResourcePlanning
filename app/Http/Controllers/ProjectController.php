@@ -215,6 +215,21 @@ class ProjectController extends Controller
             // /---------end-----------------
            $project->save();
 
+            //    Send Project Creation Email to the logged in user 
+            $user = \Auth::user();
+
+            $clientArr = [
+                'user_name' => $user->name,
+                'projectname' => $request->project_name,
+                'start_date' =>date("Y-m-d", strtotime($request->start_date)),
+                'end_date' => date("Y-m-d", strtotime($request->end_date)),
+            ];
+
+            Utility::sendEmailTemplate('create_project', [$user->email], $clientArr);
+            //    Send Project Creation Email to the logged in user 
+
+
+
            if ($request->file_status == 'M') {
                 $conSummary = array(
                     'id' => 1,
