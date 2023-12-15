@@ -1227,9 +1227,11 @@ class Utility extends Model
         $usr = Auth::user();
         if ($usr != null && ! empty($usr)) {
             //Remove Current Login user Email don't send mail to them
-            unset($mailTo[$usr->id]);
-
+            if($emailTemplate!='Create Project'){
+                unset($mailTo[$usr->id]);
+            }
             $mailTo = array_values($mailTo);
+           
 
             if ($usr->type != 'Super Admin') {
 
@@ -1647,8 +1649,8 @@ class Utility extends Model
         ];
         $arrValue = [
             'app_name' => '-',
-            'company_name' => '-',
             'project_name'=>'-',
+            'company_name' => '-',
             'user_name'=>'-',
             'app_url' => '-',
             'email' => '-',
@@ -1799,9 +1801,9 @@ class Utility extends Model
             .$short_projname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
 
         if(isset($obj['invite_link'])){
-            $arrValue['invite_link']=' <td class="content pt-0"> You can <a href="'.$obj['invite_link'].
+            $arrValue['invite_link']='<tr> <td class="content pt-0"> You can <a href="'.$obj['invite_link'].
             '">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'
-            .env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td>';
+            .env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td></tr>';
             $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr>
             <td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto">
             <tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'"

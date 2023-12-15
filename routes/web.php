@@ -62,9 +62,8 @@ Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@
 Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
 Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
 ->middleware('guest');
-Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection')->middleware('guest');
-Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection')
-->middleware('guest');
+Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection');
+Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection');
 Route::get('/company-invitation-consultant-project/{id}','ProjectController@createConnectionConsultant')
 ->middleware('guest');
 Route::get('/company-invitation-consultant-project/{id}/{status}','ProjectController@submitConnectionConsultant')

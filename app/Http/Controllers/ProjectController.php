@@ -226,13 +226,11 @@ class ProjectController extends Controller
             ];
 
             $template = EmailTemplate::where('name', 'LIKE', 'Create Project')->first();
-            if (isset($template) && ! empty($template)) {
-                if ($user->type != 'super admin') {
-                    $is_active = UserEmailTemplate::where('template_id', '=', $template->id)
-                    ->where('user_id', '=', $user->creatorId())->first();
-                    if (isset($is_active) && ! empty($is_active)) {
-                        Utility::sendEmailTemplate('Create Project', [$user->id => $user->email], $clientArr);
-                    }else{
+           
+
+            if (isset($template) && ! empty($template) && $user->type != 'super admin') {
+                    if (UserEmailTemplate::where('template_id', '=', $template->id)
+                    ->where('user_id',$user->creatorId())->doesntExist()) {
                         UserEmailTemplate::create(
                             [
                                 'template_id' => $template->id,
@@ -240,11 +238,10 @@ class ProjectController extends Controller
                                 'is_active' => 1,
                             ]
                         );
-                        Utility::sendEmailTemplate('Create Project', [$user->id => $user->email], $clientArr);
-
                     }
-                } 
             }
+            $emailResponse =Utility::sendEmailTemplate('Create Project', [$user->id => $user->email], $clientArr);
+          
 
             //    Send Project Creation Email to the logged in user 
 
@@ -654,7 +651,8 @@ class ProjectController extends Controller
                         'email' => \Auth::user()->email,
                     ];
                     
-                    $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
+                    $team_template = EmailTemplate::where('name', 'LIKE',
+                     Config::get('constants.IN_TEAMMEMBER'))->first();
                     
                                                     
                     if($team_template != null){
