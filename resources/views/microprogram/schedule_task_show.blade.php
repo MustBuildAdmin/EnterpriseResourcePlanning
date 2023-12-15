@@ -79,8 +79,8 @@
                                     <div class="group__goals sortable_microschedule">
                                        @forelse ($microSchedule as $key_sort => $microschedule)
                                        @php $key_sort++; @endphp
-                                       <div class="card" data-task_id="{{ $microschedule->main_id }}"
-                                          data-sortnumber="{{$key_sort}}">
+                                       <div class="card" data-task_id="{{ $microschedule->task_id }}"
+                                          data-sortnumber="{{$key_sort}}" data-con_main_id="{{ $microschedule->con_main_id }}">
                                           <div class="row">
                                              <div
                                                 class="col-md-1 py-3  border-end bg-primary text-white">
@@ -88,7 +88,7 @@
                                                    {{ __('Micro Id') }}
                                                 </div>
                                                 <div class="datagrid-content">
-                                                   {{ $microschedule->id }}
+                                                   {{ $microschedule->task_id }}
                                                 </div>
                                              </div>
                                              <div class="col-md-5 p-3">
@@ -122,11 +122,11 @@
                                                    {{ __('Assignees') }}
                                                 </div>
                                                 @php
-                                                if ($microschedule->users != '') {
-                                                $users_data_micro = json_decode($microschedule->users);
-                                                } else {
-                                                $users_data_micro = [];
-                                                }
+                                                   $users_data_micro = array();
+                                                   if ($microschedule->users != '') {
+                                                      $users_data_micro[] = $microschedule->users;
+                                                      // $users_data_micro = json_decode($microschedule->users);
+                                                   }
                                                 @endphp
                                                 <div class="datagrid-content">
                                                    <div
@@ -208,8 +208,8 @@
                                  <div class="pt-3 group__goals sortable_task">
                                     @forelse ($weekSchedule as $key_sort => $schedule)
                                     @php $key_sort++; @endphp
-                                    <div class="card" data-task_id="{{ $schedule->main_id }}"
-                                         data-sortnumber="{{$key_sort}}">
+                                    <div class="card" data-task_id="{{ $schedule->id }}"
+                                         data-sortnumber="{{$key_sort}}" data-con_main_id="{{ $schedule->main_id }}">
                                        <div class="row">
                                           <div
                                              class="col-md-1 py-3  border-end bg-primary text-white">
@@ -252,37 +252,36 @@
                                                 <div
                                                    class="avatar-list avatar-list-stacked">
                                                    @forelse ($users_data as $key => $get_user)
-                                                   @php
-                                                   $user_db = DB::table('users')
-                                                   ->where('id', $get_user)
-                                                   ->first();
-                                                   @endphp
-                                                   @if ($key < 3)
-                                                   @if ($user_db->avatar)
-                                                   <a href="#"
-                                                      class="avatar rounded-circle avatar-sm">
-                                                   @if ($user_db->avatar)
-                                                   <span
-                                                      class="avatar avatar-xs rounded"
-                                                      style="background-image:
-                                                      url({{ asset('/storage/uploads/avatar/' . $user_db->avatar) }})">
-                                                   </span>
-                                                   @else
-                                                   <span
-                                                      class="avatar avatar-xs rounded"
-                                                      style="background-image:
-                                                      url({{ asset('/storage/uploads/avatar/avatar.png') }})">
-                                                   </span>
-                                                   @endif
-                                                   </a>
-                                                   @else
-                                                   <?php $short = substr($user_db->name, 0, 1); ?>
-                                                   <span
-                                                      class="avatar avatar-xs rounded">{{ strtoupper($short) }}</span>
-                                                   @endif
-                                                   @endif
+                                                      @php
+                                                         $user_db = DB::table('users')
+                                                            ->where('id', $get_user)
+                                                            ->first();
+                                                      @endphp
+                                                      @if ($key < 3)
+                                                         @if ($user_db->avatar)
+                                                            <a href="#" class="avatar rounded-circle avatar-sm">
+                                                               @if ($user_db->avatar)
+                                                                  <span
+                                                                     class="avatar avatar-xs rounded"
+                                                                     style="background-image:
+                                                                     url({{ asset('/storage/uploads/avatar/' . $user_db->avatar) }})">
+                                                                  </span>
+                                                               @else
+                                                                  <span
+                                                                     class="avatar avatar-xs rounded"
+                                                                     style="background-image:
+                                                                     url({{ asset('/storage/uploads/avatar/avatar.png') }})">
+                                                                  </span>
+                                                               @endif
+                                                            </a>
+                                                         @else
+                                                            <?php $short = substr($user_db->name, 0, 1); ?>
+                                                            <span
+                                                               class="avatar avatar-xs rounded">{{ strtoupper($short) }}</span>
+                                                         @endif
+                                                      @endif
                                                    @empty
-                                                   {{ __('Not Assigned') }}
+                                                      {{ __('Not Assigned') }}
                                                    @endforelse
                                                 </div>
                                              </div>
@@ -494,10 +493,11 @@
        $(".sortable_microschedule .card").each(function(index) {
            order_number = $(this).data('sortnumber');
            task_id      = $(this).data('task_id');
+           con_main_id  = $(this).data('con_main_id');
+
+           console.log("con_main_id",con_main_id);
    
-         
-   
-           innerarray = {'sort_number':order_number,'task_id':task_id};
+           innerarray = {'sort_number':order_number,'task_id':task_id, 'con_main_id':con_main_id};
            schedulearray.push(innerarray);
        });
    

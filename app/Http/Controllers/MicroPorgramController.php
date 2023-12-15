@@ -134,6 +134,7 @@ class MicroPorgramController extends Controller
         $schedule->schedule_end_date   = $request->schedule_end_date;
         $schedule->schedule_goals      = $request->schedule_goals;
         $schedule->insert_date         = date('Y-m-d');
+        $schedule->created_by          = Auth::user()->id;
         $schedule->save();
 
         return redirect()->back()->with('success', __('Schedule Created.'));
@@ -157,10 +158,10 @@ class MicroPorgramController extends Controller
                     ->where('status',1)
                     ->first();
 
-                $microSchedule = MicroTask::select('micro_tasks.text', 'micro_tasks.users', 'micro_tasks.duration',
-                    'micro_tasks.progress', 'micro_tasks.start_date', 'micro_tasks.end_date', 'micro_tasks.id',
-                    'micro_tasks.instance_id', 'micro_tasks.task_id as main_id', 'pros.project_name',
-                    'pros.id as project_id', 'pros.instance_id as pro_instance_id')
+                $microSchedule = MicroTask::select('micro_tasks.text', 'micro_tasks.users',
+                    'micro_tasks.start_date', 'micro_tasks.end_date', 'micro_tasks.id',
+                    'micro_tasks.instance_id', 'micro_tasks.task_id','micro_tasks.con_main_id',
+                    'pros.id as project_id', 'pros.instance_id as pro_instance_id', 'pros.project_name')
                     ->join('projects as pros', 'pros.id', 'micro_tasks.project_id')
                     ->whereNotNull('pros.instance_id')
                     ->where('micro_tasks.micro_flag',1)
@@ -184,6 +185,7 @@ class MicroPorgramController extends Controller
                     ->where('con_tasks.project_id', $project_id)
                     ->where('con_tasks.instance_id', $instance_id)
                     ->where('con_tasks.type','task')
+                    ->where('con_tasks.micro_flag',0)
                     ->where(function ($query) use ($weekStartDate, $weekEndDate) {
                         $query->whereDate('con_tasks.end_date', '>=', $weekStartDate);
                         $query->whereDate('con_tasks.end_date', '<=', $weekEndDate);
@@ -1176,13 +1178,13 @@ class MicroPorgramController extends Controller
                 ->where('project_id',$project_id)
                 ->where('instance_id',$instance_id)
                 ->where('type','project')->get();
-            
+        
             foreach($microTask as $micro){
                 $microSubask = MicroTask::where('schedule_id',$schedule_id)
                     ->where('project_id',$project_id)->where('instance_id',$instance_id)
                     ->where('parent',$micro->task_id)->where('type','task')->get();
 
-                $conTask = Con_task::where('main_id',$micro->task_id)
+                $conTask = Con_task::where('id',$micro->task_id)
                     ->where('project_id',$project_id)->where('instance_id',$instance_id)
                     ->first();
                 
@@ -1206,7 +1208,7 @@ class MicroPorgramController extends Controller
                     ->get();
 
                     if(count($microSubask) != 0) {
-                        Con_task::where('main_id',$micro->task_id)
+                        Con_task::where('id',$micro->task_id)
                             ->where('project_id',$project_id)->where('instance_id',$instance_id)
                             ->update(['progress'=>$micro->progress,'duration'=>$micro->duration,'type'=>'project']);
 
@@ -1227,6 +1229,8 @@ class MicroPorgramController extends Controller
                             $conTaskInsert->parent      = $conTask->id;
                             $conTaskInsert->id          = $inc_id;
                             $conTaskInsert->save();
+
+                            $inc_id++;
                         }
 
                         foreach ($alltask as $key => $value) {
@@ -1250,7 +1254,7 @@ class MicroPorgramController extends Controller
                         }
                     }
                     else{
-                        Con_task::where('main_id',$micro->task_id)
+                        Con_task::where('id',$micro->task_id)
                             ->where('project_id',$project_id)->where('instance_id',$instance_id)
                             ->where('type','project')->update(['progress'=>$micro->progress,'duration'=>$micro->duration]);
 
@@ -1286,11 +1290,33 @@ class MicroPorgramController extends Controller
             return array(
                 '1', 'Schedule Completed'
             );
-        }else{
+        }
+        else{
             return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
+    public function checkschedulename(Request $request){
+        $form_name = $request->form_name;
+        $schedule_name = $request->schedule_name;
+
+        if($form_name == "scheduleCreate"){
+            $getCheckVal = DB::table('microprogram_schedule')
+                ->where("project_id",session::get('project_id'))
+                ->where('schedule_name',$schedule_name)->first();
+        }
+        else {
+            $getCheckVal = "Not Empty";
+        }
+
+        if ($getCheckVal == null) {
+            echo "true";
+            // return 1; //Success
+        } else {
+            echo "false";
+            // return 0; //Error
+        }
+    }
     public function mainschedule_store(Request $request){
         if (\Auth::user()->can('schedule lookahead schedule')) {
             $schedulearray = $request->schedulearray;
@@ -1299,10 +1325,10 @@ class MicroPorgramController extends Controller
             $instance_id   = Session::get('project_instance');
 
             $checkActive = MicroProgramScheduleModal::where('project_id',$project_id)
-            ->where('instance_id',$instance_id)
-            ->where('active_status',1)
-            ->where('status',1)
-            ->first();
+                ->where('instance_id',$instance_id)
+                ->where('active_status',1)
+                ->where('status',1)
+                ->first();
 
             $checkActiveGet = $checkActive != null ? 1 : 0;
 
@@ -1319,25 +1345,27 @@ class MicroPorgramController extends Controller
 
                 if($schedulearray != null){
                     foreach($schedulearray as $schedule){
-                        $main_id     = $schedule['task_id'];
+                        $task_id     = $schedule['task_id'];
+                        $con_main_id = $schedule['con_main_id'];
                         $sort_number = $schedule['sort_number'];
 
                         if(MicroTask::where('project_id',$project_id)->where('instance_id',$instance_id)
                         ->where('schedule_id',$schedule_id)
-                        ->where('task_id',$main_id)->exists())
+                        ->where('task_id',$task_id)->exists())
                         {
                             MicroTask::where('project_id',$project_id)->where('instance_id',$instance_id)
-                                ->where('schedule_id',$schedule_id)->where('task_id',$main_id)
+                                ->where('schedule_id',$schedule_id)->where('task_id',$task_id)
                                 ->update(['schedule_order' => $sort_number]);
                         }
                         else{
                             MicroProgramScheduleModal::where('id',$schedule_id)->update(['active_status'=>1]);
                             $conTask = Con_task::where('project_id',$project_id)
                                 ->where('instance_id',$instance_id)
-                                ->where('main_id',$main_id)->first();
+                                ->where('main_id',$con_main_id)->first();
 
                             $store_array = array(
-                                'task_id'        => $conTask->main_id,
+                                'task_id'        => $conTask->id,
+                                'con_main_id'    => $conTask->main_id,
                                 'text'           => $conTask->text,
                                 'project_id'     => $project_id,
                                 'users'          => $conTask->users,
@@ -1358,6 +1386,10 @@ class MicroPorgramController extends Controller
                             );
 
                             MicroTask::insert($store_array);
+
+                            Con_task::where('project_id',$project_id)
+                                ->where('instance_id',$instance_id)
+                                ->where('main_id',$con_main_id)->update(['micro_flag'=>1]);
                         }
                     }
                     return array(
@@ -1375,12 +1407,12 @@ class MicroPorgramController extends Controller
                     '0', 'OOPS! Your schedule is start runing, So cannot be modify'
                 );
             }
-        }else{
+        }
+        else{
             return redirect()->back()->with('error', __('Permission denied.'));
         }
-        
     }
-
+    
     public function array_flatten($array)
     {
         if (!is_array($array)) {
@@ -1793,22 +1825,28 @@ class MicroPorgramController extends Controller
     public function get_validated_date(Request $request){
 
         try {
+            $id = $request->id;
 
+            $get_micro_parent = MicroTask::select('id','task_id','parent')->where('project_id',Session::get("project_id"))
+                ->where('instance_id',Session::get("project_instance"))
+                ->where('task_id',$id)
+                ->first();
 
-            $id=$request->id;
-    
-            return MicroTask::select('start_date','end_date')->where('project_id',Session::get("project_id"))
-            ->where('instance_id',Session::get("project_instance"))
-            ->where('task_id',$id)
-            ->first();
-        
-          
-          } catch (Exception $e) {
-          
-        
-              return $e->getMessage();
-          
-          }
+            if($get_micro_parent != null){
+                $date_array = MicroTask::select('start_date','end_date')->where('project_id',Session::get("project_id"))
+                    ->where('instance_id',Session::get("project_instance"))
+                    ->where('task_id',$get_micro_parent->parent)
+                    ->first();
+                return $date_array;
+            }
+            else{
+                $date_array = array('start_date' => date('Y-m-d'),'end_date' => date("Y-m-d", strtotime("+ 1 day")));
+                return (object) $date_array;
+            }
+        }
+        catch (Exception $e) {
+            return $e->getMessage();
+        }
       
     }
 

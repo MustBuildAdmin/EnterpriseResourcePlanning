@@ -211,9 +211,9 @@ class ProjectTaskController extends Controller
                                 ->where('con_tasks.instance_id', $instance_id)
                                 ->where('con_tasks.type', 'task');
 
-            if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
-            }
+            // if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
+            //     $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            // }
 
             if($task_id_arr != null){
                 $tasks->whereIn('con_tasks.id',$task_id_arr);
@@ -331,9 +331,9 @@ class ProjectTaskController extends Controller
                 ->where('con_tasks.instance_id', $instance_id)
                 ->where('con_tasks.type','project');
 
-            if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
-                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
-            }
+            // if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
+            //     $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
+            // }
 
             if($task_id_arr != null){
                 $show_parent_task->whereIn('con_tasks.id',$task_id_arr);
@@ -743,9 +743,9 @@ class ProjectTaskController extends Controller
                 ->where('con_tasks.instance_id', $instance_id)
                 ->where('con_tasks.type','project');
 
-            if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
-                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
-            }
+            // if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
+            //     $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
+            // }
 
             if($task_id_arr != null){
                 $show_parent_task->whereIn('con_tasks.id',$task_id_arr);

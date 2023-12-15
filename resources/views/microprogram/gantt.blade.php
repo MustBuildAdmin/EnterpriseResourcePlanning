@@ -1353,8 +1353,8 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
         }
         else{
             if(response.action == "Date restriction"){
-                toastr.error("Date restriction");
-                gantt.load("{{ route('projects.micro_gantt_data', [$project->id]) }}");
+                // toastr.error("Date restriction");
+                // gantt.load("{{ route('projects.micro_gantt_data', [$project->id]) }}");
             }
         }
     });
@@ -1374,11 +1374,13 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 id: id,
             },
             success: function(data) {
-
-                $('input#start-date').val(data.start_date);
-                $('input#end-date').val(data.end_date);
-                $('input#start_date_input').val(data.start_date);
-                $('input#end_date_input').val(data.end_date);
+                console.log("data",data);
+                if(data != null){
+                    $('input#start-date').val(data.start_date);
+                    $('input#end-date').val(data.end_date);
+                    $('input#start_date_input').val(data.start_date);
+                    $('input#end_date_input').val(data.end_date);
+                }
             }
         });
     }
@@ -1387,6 +1389,9 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
     function dateset() {
         var start_date_input = $('input#start_date_input').val();
         var end_date_input = $('input#end_date_input').val();
+
+        console.log("start_date_input",start_date_input);
+        console.log("end_date_input",end_date_input);
         window.Litepicker && (new Litepicker({
             element: document.getElementById('start-date'),
             elementEnd: document.getElementById('end-date'),
