@@ -17,6 +17,7 @@
                   </h1>
                   @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                   <div class="card-actions">
+                     @can('schedule lookahead schedule')
                      @if($scheduleGet->active_status == 1)
                      <button class="btn btn-primary pull-right" type="button" onclick="scheduleComplete()">
                      {{ __('Complete the Schedule') }}
@@ -30,6 +31,7 @@
                      {{ __('Active the Schedule') }}
                      </button>
                      @endif
+                     @endcan
                   </div>
                   @endif
                </div>
