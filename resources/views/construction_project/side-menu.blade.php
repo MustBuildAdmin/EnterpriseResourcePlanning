@@ -147,8 +147,7 @@ table.dataTable thead th.sorting_desc:after {
                     <!--Dashboard end-->
 
                     <!--Main Planning start-->
-                    @if(Gate::check('manage project')
-                    || Gate::check('create revision') 
+                    @if(Gate::check('create revision')
                     || Gate::check('view grant chart'))
                     <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'projects.gantt' ||
@@ -395,7 +394,8 @@ table.dataTable thead th.sorting_desc:after {
                     @endif
 
                     <!--Activites starts-->
-                    @can('view activity')
+                    
+                    @if(Gate::check('view activity'))
                     <li class="nav-item">
                         <a href="{{ route('project.activities', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project.activities' ?
@@ -415,11 +415,12 @@ table.dataTable thead th.sorting_desc:after {
                             </span>
                         </a>
                     </li>
-                    @endcan
+                   @endif
                     <!--Activites end-->
 
 
                     <!--Reports starts-->
+                    @if(Gate::check('export overall report'))
                     <li class="nav-item dropdown">
                         <a href="{{ route('project_report.view_task_report', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project_report.view_task_report'
@@ -463,6 +464,7 @@ table.dataTable thead th.sorting_desc:after {
                                 </div>
                             </div>
                     </li>
+                    @endif
                     <!--Reports ends-->
 
                     @if(Gate::check('view project')

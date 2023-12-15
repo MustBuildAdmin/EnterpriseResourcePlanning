@@ -12,7 +12,7 @@ class Project_holiday_Controller extends Controller
 {
     public function index()
     {
-        if(\Auth::user()->can('manage project holiday'))
+        if(\Auth::user()->can('manage project') || \Auth::user()->can('manage project holiday'))
         {
             $project = Instance::where('project_id', Session::get('project_id'))
                 ->where('instance', Session::get('project_instance'))->first();
