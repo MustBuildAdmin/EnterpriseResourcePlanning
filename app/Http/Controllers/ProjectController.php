@@ -225,7 +225,27 @@ class ProjectController extends Controller
                 'end_date' => date("Y-m-d", strtotime($request->end_date)),
             ];
 
-            Utility::sendEmailTemplate('create_project', [$user->email], $clientArr);
+            $template = EmailTemplate::where('name', 'LIKE', 'Create Project')->first();
+            if (isset($template) && ! empty($template)) {
+                if ($user->type != 'super admin') {
+                    $is_active = UserEmailTemplate::where('template_id', '=', $template->id)
+                    ->where('user_id', '=', $user->creatorId())->first();
+                    if (isset($is_active) && ! empty($is_active)) {
+                        Utility::sendEmailTemplate('Create Project', [$user->id => $user->email], $clientArr);
+                    }else{
+                        UserEmailTemplate::create(
+                            [
+                                'template_id' => $template->id,
+                                'user_id' => $user->creatorId(),
+                                'is_active' => 1,
+                            ]
+                        );
+                        Utility::sendEmailTemplate('Create Project', [$user->id => $user->email], $clientArr);
+
+                    }
+                } 
+            }
+
             //    Send Project Creation Email to the logged in user 
 
 
