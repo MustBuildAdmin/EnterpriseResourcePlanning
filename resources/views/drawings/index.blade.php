@@ -48,7 +48,7 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <div class="form-label">Choose a Drawing type</div>
-                        <select class="form-select" id="drawing_type" name="drawing_type">
+                        <select class="form-select" id="drawing_type" name="drawing_type" required>
                             <option value="">Select a Drawing Type</option>
                             @foreach($drawingTypes as $drawingtype)
                               <option value="{{ $drawingtype->id }}">{{ $drawingtype->drawing_types }}</option>
@@ -176,8 +176,8 @@
                                        <tbody>
                                          <tr>
                                              <td style="width: 100px; font-size: 15px;">
-                                             <a href="{{route('drawing.reference.add',[$drawing->drawing_type_id,
-                                              $projectid, $drawing->reference_number])}}">
+                                             <a href="{{route('drawing.reference.add',[$drawing->ref_id,
+                                              $drawing->drawing_type_id,$projectid, $drawing->reference_number])}}">
                                              {{ $drawing->reference_number }}
                                                </a></td>
                                              <td style="width:400px; font-size: 14px;">

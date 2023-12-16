@@ -4457,14 +4457,14 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
 
 Route::get('drawing_list', 'DrawingsController@index')
 ->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
-Route::get('drawing_reference_add/{drawing_type}/{projectid}/{reference_number}',
+Route::get('drawing_reference_add/{reference_id}/{drawing_type}/{projectid}/{reference_number}',
 'DrawingsController@addReference')->name('drawing.reference.add')->middleware(
     ['auth','XSS']
 );
-Route::post('add_drawings/{drawing_type_id}/{project_id}/{reference_number}',
+Route::post('add_drawings/{ref_id}/{drawing_type_id}/{project_id}/{reference_number}',
 'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
 Route::resource('drawings', 'DrawingsController')->middleware(['auth','XSS','revalidate',]);
-Route::delete('drawing_del/{id}/{projectid}/{drawing_type}/{ref_number}/{user}',
+Route::delete('drawing_del/{id}/{ref_id}/{drawing_type}/{projectid}/{ref_number}/{user}',
 'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
     ['auth','XSS',]
 );
