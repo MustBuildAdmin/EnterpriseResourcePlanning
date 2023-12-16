@@ -15,7 +15,10 @@
 @endsection
 @section('action-btn')
     <div class="float-end">
-        <a href="#" data-size="lg" data-url="{{ route('users.create') }}" data-ajax-popup="true"  data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
+        <a href="#" data-size="lg"
+        data-url="{{ route('users.create') }}"
+        data-ajax-popup="true"
+        data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">
             <i class="ti ti-plus"></i>
         </a>
     </div>
@@ -51,7 +54,11 @@
                                                 <div class="dropdown-menu dropdown-menu-end">
 
                                                     @can('edit user')
-                                                        <a href="#!" data-size="lg" data-url="{{ route('users.edit',$user->id) }}" data-ajax-popup="true" class="dropdown-item" data-bs-original-title="{{__('Edit User')}}">
+                                                        <a href="#!"
+                                                        data-size="lg"
+                                                        data-url="{{ route('users.edit',$user->id) }}"
+                                                        data-ajax-popup="true" class="dropdown-item"
+                                                        data-bs-original-title="{{__('Edit User')}}">
                                                             <i class="ti ti-pencil"></i>
                                                             <span>{{__('Edit')}}</span>
                                                         </a>
@@ -61,13 +68,18 @@
                                                         {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user['id']],'id'=>'delete-form-'.$user['id']]) !!}
                                                         <a href="#!"  class="dropdown-item bs-pass-para">
                                                             <i class="ti ti-archive"></i>
-                                                            <span> @if($user->delete_status!=0){{__('Delete')}} @else {{__('Restore')}}@endif</span>
+                                                            <span>
+                                                                @if($user->delete_status!=0){{__('Delete')}} @else {{__('Restore')}}@endif</span>
                                                         </a>
 
                                                         {!! Form::close() !!}
                                                     @endcan
 
-                                                    <a href="#!" data-url="{{route('users.reset',\Crypt::encrypt($user->id))}}" data-ajax-popup="true" data-size="md" class="dropdown-item" data-bs-original-title="{{__('Reset Password')}}">
+                                                    <a href="#!"
+                                                    data-url="{{route('users.reset',\Crypt::encrypt($user->id))}}"
+                                                    data-ajax-popup="true" data-size="md"
+                                                    class="dropdown-item"
+                                                    data-bs-original-title="{{__('Reset Password')}}">
                                                         <i class="ti ti-adjustments"></i>
                                                         <span>  {{__('Reset Password')}}</span>
                                                     </a>
@@ -83,9 +95,15 @@
                             <div class="card-body full-card">
                                 <div class="img-fluid rounded-circle card-avatar">
                                     @if($user->gender !='female')
-                                    <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatar.png"))}}" class="img-user wid-80 round-img rounded-circle">
+                                    <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar :
+                                    asset(Storage::url("uploads/avatar/avatar.png"))}}"
+                                    class="img-user wid-80 round-img rounded-circle">
                                     @else
-                                    <img src="{{(!empty($user->avatar))? $profile.\Auth::user()->avatar : asset(Storage::url("uploads/avatar/avatarfemale.png"))}}" class="img-user wid-80 round-img rounded-circle">
+                                    <img src="{{(!empty($user->avatar))?
+                                    $profile.\Auth::user()->avatar :
+                                    asset(Storage::url("uploads/avatar/avatarfemale.png"))}}"
+                                    alt="profile-image"
+                                    class="img-user wid-80 round-img rounded-circle">
                                     @endif
                                 </div>
                                 <?php $name = strlen($user->name) > 20 ? substr($user->name,0,19)."..." : $user->name;?>
@@ -105,17 +123,24 @@
                                     <div class="mt-4">
                                         <div class="row justify-content-between align-items-center">
                                             <div class="col-6 text-center">
-                                                <span class="d-block font-bold mb-0">{{!empty($user->currentPlan)?$user->currentPlan->name:''}}</span>
+                                                <span class="d-block font-bold mb-0">
+                                                    {{!empty($user->currentPlan)?$user->currentPlan->name:''}}</span>
                                             </div>
                                             <div class="col-6 text-center Id ">
-                                                <a href="#" data-url="{{ route('plan.upgrade',$user->id) }}" data-size="lg" data-ajax-popup="true" class="btn btn-outline-primary"
-                                                   data-title="{{__('Upgrade Plan')}}">{{__('Upgrade Plan')}}</a>
+                                                <a href="#"
+                                                data-url="{{ route('plan.upgrade',$user->id) }}"
+                                                data-size="lg"
+                                                data-ajax-popup="true" class="btn btn-outline-primary"
+                                                data-title="{{__('Upgrade Plan')}}">{{__('Upgrade Plan')}}</a>
                                             </div>
                                             <div class="col-12">
                                                 <hr class="my-3">
                                             </div>
                                             <div class="col-12 text-center pb-2">
-                                                <span class="text-dark text-xs">{{__('Plan Expired : ') }} {{!empty($user->plan_expire_date) ? \Auth::user()->dateFormat($user->plan_expire_date): __('Unlimited')}}</span>
+                                                <span class="text-dark text-xs">{{__('Plan Expired : ') }}
+                                                    {{!empty($user->plan_expire_date) ?
+                                                    \Auth::user()->dateFormat($user->plan_expire_date):
+                                                    ('Unlimited')}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -127,13 +152,23 @@
                                                     <div class="row">
 
                                                         <div class="col-4">
-                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Users')}}"><i class="ti ti-users card-icon-text-space"></i>{{$user->totalCompanyUser($user->id)}}</p>
+                                                            <p class="text-muted text-sm mb-0"
+                                                            data-bs-toggle="tooltip"
+                                                            title="{{__('Users')}}">
+                                                            <i class="ti ti-users card-icon-text-space"></i>
+                                                            {{$user->totalCompanyUser($user->id)}}</p>
                                                         </div>
                                                         <div class="col-4">
-                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Customers')}}"><i class="ti ti-users card-icon-text-space"></i>{{$user->totalCompanyCustomer($user->id)}}</p>
+                                                            <p class="text-muted text-sm mb-0"
+                                                            data-bs-toggle="tooltip" title="{{__('Customers')}}">
+                                                            <i class="ti ti-users card-icon-text-space"></i>
+                                                            {{$user->totalCompanyCustomer($user->id)}}</p>
                                                         </div>
                                                         <div class="col-4">
-                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip" title="{{__('Vendors')}}"><i class="ti ti-users card-icon-text-space"></i>{{$user->totalCompanyVender($user->id)}}</p>
+                                                            <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip"
+                                                            title="{{__('Vendors')}}">
+                                                            <i class="ti ti-users card-icon-text-space"></i>
+                                                            {{$user->totalCompanyVender($user->id)}}</p>
                                                         </div>
 
                                                     </div>

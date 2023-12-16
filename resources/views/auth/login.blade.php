@@ -66,7 +66,8 @@
 @if (Session::has('success_register'))
     <div class="alert alert-success">
         <ul>
-            <li style="text-align: center;list-style: none;font-weight:bold;">Registered Successfully. Check you email for verfication. Kindly click the button to set password <a href="{{ Session::get('success_register') }}">Set Password</a></li>
+            <li style="text-align: center;list-style: none;font-weight:bold;">Registered Successfully. Check you email for verfication.
+            </li>
         </ul>
     </div>
 @endif
@@ -85,14 +86,14 @@
     </li>
     </div>
     <div class="text-center mb-4">
-        <a href="." class="navbar-brand navbar-brand-autodark"><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+        <a href="." class="navbar-brand navbar-brand-autodark"><img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
     </div>
     {{Form::open(array('route'=>'login','method'=>'post',"class"=>"card card-md",'id'=>'loginForm' ))}}
     @csrf
-  
+
     <div class="card-body">
         <h2 class="h2 text-center mb-4">{{__('Login to your account')}}</h2>
-   
+
 
 
         <div class="form-group mb-3">

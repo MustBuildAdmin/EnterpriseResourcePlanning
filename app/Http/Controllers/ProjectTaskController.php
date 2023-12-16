@@ -135,42 +135,49 @@ class ProjectTaskController extends Controller
     // For Taskboard View
     public function taskBoard($view, Request $request)
     {
-        if (Session::has('project_id')) {
-            $project_id = Session::get('project_id');
-            Session::put('task_filter',$request->status);
-
-            $user_id = $request->users;
-            $start_date = $request->start_date;
-            $end_date = $request->end_date;
-
-            $setting = Utility::settings(\Auth::user()->creatorId());
-
-            $user_data = User::select('users.name', 'users.id')
-                ->leftjoin('project_users as project', 'project.user_id', '=', 'users.id')
-                ->where('project.project_id', $project_id)
-                ->groupBy('users.id')
-                ->get();
-            $result = Instance::where('project_id', $project_id)
-                ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
-
-            if ($result == 1) {
-                if ($view == 'list') {
-                    $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
-
-                    return view('construction_project.taskboard',
-                        compact('view', 'tasks', 'project_id', 'user_id', 'start_date', 'end_date', 'setting', 'user_data'));
+        if(\Auth::user()->can("manage project task")){
+            if (Session::has('project_id')) {
+                $project_id = Session::get('project_id');
+                Session::put('task_filter',$request->status);
+    
+                $user_id = $request->users;
+                $start_date = $request->start_date;
+                $end_date = $request->end_date;
+    
+                $setting = Utility::settings(\Auth::user()->creatorId());
+    
+                $user_data = User::select('users.name', 'users.id')
+                    ->leftjoin('project_users as project', 'project.user_id', '=', 'users.id')
+                    ->where('project.project_id', $project_id)
+                    ->groupBy('users.id')
+                    ->get();
+                $result = Instance::where('project_id', $project_id)
+                    ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
+    
+                if ($result == 1) {
+                    if ($view == 'list') {
+                        $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
+    
+                        return view('construction_project.taskboard',
+                            compact('view', 'tasks', 'project_id', 'user_id', 'start_date', 'end_date', 'setting', 'user_data'));
+                    } else {
+                        $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
+    
+                        return view('project_task.grid',
+                            compact('tasks', 'view', 'project_id', 'user_id', 'start_date', 'end_date', 'setting'));
+                    }
                 } else {
-                    $tasks = ProjectTask::where('created_by', \Auth::user()->creatorId())->get();
-
-                    return view('project_task.grid',
-                        compact('tasks', 'view', 'project_id', 'user_id', 'start_date', 'end_date', 'setting'));
+                    return redirect()->back()->with('error', __('Project Not Freezed.'));
                 }
             } else {
-                return redirect()->back()->with('error', __('Project Not Freezed.'));
+                return redirect()->route('construction_main')->with('error', __('Session Expired'));
             }
-        } else {
-            return redirect()->route('construction_main')->with('error', __('Session Expired'));
+        }else{
+            return redirect()
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
+       
 
     }
 
@@ -204,9 +211,9 @@ class ProjectTaskController extends Controller
                                 ->where('con_tasks.instance_id', $instance_id)
                                 ->where('con_tasks.type', 'task');
 
-            if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
-            }
+            // if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
+            //     $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            // }
 
             if($task_id_arr != null){
                 $tasks->whereIn('con_tasks.id',$task_id_arr);
@@ -324,9 +331,9 @@ class ProjectTaskController extends Controller
                 ->where('con_tasks.instance_id', $instance_id)
                 ->where('con_tasks.type','project');
 
-            if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
-                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
-            }
+            // if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
+            //     $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
+            // }
 
             if($task_id_arr != null){
                 $show_parent_task->whereIn('con_tasks.id',$task_id_arr);
@@ -451,9 +458,9 @@ class ProjectTaskController extends Controller
                                 ->where('con_tasks.instance_id', $instance_id)
                                 ->where('con_tasks.type', 'task');
 
-            if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
-            }
+            // if (\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant') {
+            //     $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            // }
 
             if($task_id_arr != null){
                 $tasks->whereIn('con_tasks.id',$task_id_arr);
@@ -549,10 +556,11 @@ class ProjectTaskController extends Controller
 
             return Datatables::of($tasks)
             ->addColumn('id', function ($row) use($get_date) {
-                if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance') &&
-                $checkLatestFreezeStatus == 1){
+                // if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance') &&
+                // $checkLatestFreezeStatus == 1){
+                if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance')){
                     $id_fetch = '<a style="text-decoration: none;">
-                        <span class="h6 text-sm font-weight-bold mb-0">{{ $task->id }}</span>
+                        <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
                     </a>';
                 }
                 else{
@@ -568,20 +576,26 @@ class ProjectTaskController extends Controller
                 return $text_fetch;
             })
             ->addColumn('status', function ($row) {
-                if (strtotime($row->end_date) < time() && $row->progress < 100){
-                    $status_fetch = '<div style="display:flex;gap:5px;">
-                        <span style="margin-top: 4px;" class="badge bg-warning me-1"></span> <span>'.__('Pending').'</span>
-                    </div>';
-                }
-                elseif(strtotime($row->end_date) < time() && $row->progress >= 100){
-                    $status_fetch = '<div style="display:flex;gap:5px;">
+                if($row->progress >=100){
+                        $status_fetch = '<div style="display:flex;gap:5px;">
                         <span style="margin-top: 4px;" class="badge bg-success me-1"></span> <span>'.__('Completed').'</span>
                     </div>';
-                }
-                else{
-                    $status_fetch = '<div style="display:flex;gap:5px;">
-                        <span style="margin-top: 4px;" class="badge bg-info me-1"></span> <span>'.__('In-Progress').'</span>
-                    </div>';
+                }else{
+                    if (strtotime($row->end_date) < time() && $row->progress < 100){
+                        $status_fetch = '<div style="display:flex;gap:5px;">
+                            <span style="margin-top: 4px;" class="badge bg-warning me-1"></span> <span>'.__('Pending').'</span>
+                        </div>';
+                    }
+                    elseif(strtotime($row->end_date) < time() && $row->progress >= 100){
+                        $status_fetch = '<div style="display:flex;gap:5px;">
+                            <span style="margin-top: 4px;" class="badge bg-success me-1"></span> <span>'.__('Completed').'</span>
+                        </div>';
+                    }
+                    else{
+                        $status_fetch = '<div style="display:flex;gap:5px;">
+                            <span style="margin-top: 4px;" class="badge bg-info me-1"></span> <span>'.__('In-Progress').'</span>
+                        </div>';
+                    }
                 }
                 return $status_fetch;
             })
@@ -729,9 +743,9 @@ class ProjectTaskController extends Controller
                 ->where('con_tasks.instance_id', $instance_id)
                 ->where('con_tasks.type','project');
 
-            if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
-                $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
-            }
+            // if(\Auth::user()->type != 'company' && \Auth::user()->type != 'consultant'){
+            //     $show_parent_task->whereRaw("find_in_set('" . \Auth::user()->id . "',users)");
+            // }
 
             if($task_id_arr != null){
                 $show_parent_task->whereIn('con_tasks.id',$task_id_arr);
@@ -1140,6 +1154,8 @@ class ProjectTaskController extends Controller
             }
         }
 
+        $con_task_end_date = $get_con_task->end_date;
+
         $total_count_of_task = Task_progress::where('task_id', $task_id)
             ->where('instance_id', $instanceId)
             ->groupBy('created_at')
@@ -1151,6 +1167,7 @@ class ProjectTaskController extends Controller
             ->first();
 
         $actualEndDate = Task_progress::where('task_id', $task_id)
+            ->whereDate('created_at',$con_task_end_date)
             ->where('instance_id', $instanceId)
             ->orderBy('record_date','DESC')
             ->first();
@@ -1168,7 +1185,7 @@ class ProjectTaskController extends Controller
                 100 / $get_con_task->duration : 0;
 
             $current_Planed_percentage = round($completed_days * $perday);
-        }
+    }
 
 
         return view('construction_project.task_particular_list',
@@ -1178,17 +1195,23 @@ class ProjectTaskController extends Controller
 
     public function revsion_task_list(Request $request)
     {
-        $data = Instance::where('project_id', Session::get('project_id'))->where('instance', '!=', Session::get('project_instance'))->orderBy('id', 'DESC')->get();
+        if(\Auth::user()->can("view revised program")) {
+            $data = Instance::where('project_id', Session::get('project_id'))->where('instance', '!=', Session::get('project_instance'))->orderBy('id', 'DESC')->get();
 
-        if (count($data) >= 1) {
-            $previous = $data[0]->instance;
-            $result = DB::table('revision_task_progress')->where('project_id', Session::get('project_id'))->where('instance_id', $previous)->get();
-        } else {
-            $result = [];
-        }
+            if (count($data) >= 1) {
+                $previous = $data[0]->instance;
+                $result = DB::table('revision_task_progress')->where('project_id', Session::get('project_id'))->where('instance_id', $previous)->get();
+            } else {
+                $result = [];
+            }
 
-        return view('construction_project.revision_taskprogress',
+            return view('construction_project.revision_taskprogress',
             compact('result'));
+        }else {
+            return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+        }
     }
 
     public function add_particular_task(Request $request)
@@ -2484,9 +2507,9 @@ class ProjectTaskController extends Controller
                 ->where('con_tasks.project_id', $project_id)
                 ->where('con_tasks.instance_id', $instance_id);
 
-            if (\Auth::user()->type != 'company') {
-                $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
-            }
+            // if (\Auth::user()->type != 'company') {
+            //     $tasks->whereRaw("find_in_set('".\Auth::user()->id."',users)");
+            // }
 
             if($task_id_arr != null){
                 $tasks->whereIn('con_tasks.id',$task_id_arr);

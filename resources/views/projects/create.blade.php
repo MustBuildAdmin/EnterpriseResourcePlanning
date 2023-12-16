@@ -139,7 +139,7 @@ ul.chosen-choices {
         background-color: transparent;
         border: 2px solid #0079bf;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-        padding: 10px;
+        padding: 5px;
         display: inline-block;
         position: relative;
         vertical-align: middle;
@@ -152,7 +152,7 @@ ul.chosen-choices {
         display: block;
         position: absolute;
         top: 2px;
-        left: 9px;
+        left: 4px;
         width: 6px;
         height: 14px;
         border: solid #0079bf;
@@ -166,7 +166,7 @@ ul.chosen-choices {
 <div class="modal-body">
     <div class="container">
         {{ Form::open(['url' => 'projects', 'method' => 'post','enctype' => 'multipart/form-data',
-             'id' => 'create_project_form', 'class' => 'create_project_form']) }}
+             'id' => 'create_project_forms', 'class' => 'create_project_forms']) }}
             <div>
                 <section>
                     <div class="row">
@@ -331,7 +331,7 @@ ul.chosen-choices {
                             <span id="non_working_days_error" class="error" for="non_working_days">
                                 This field is required</span>
                         </div>
-                        
+
                         <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 {{ Form::label('report_time', __('Report Time'), ['class' => 'form-label']) }}
@@ -675,7 +675,7 @@ aria-labelledby="exampleModalCenterTitle"
     }
     $(function ()
     {
-        var form = $("#create_project_form");
+        var form = $("#create_project_forms");
 
         form.validate({
             rules: {
@@ -719,7 +719,7 @@ aria-labelledby="exampleModalCenterTitle"
     });
     function createProject(){
 
-            var form = $("#create_project_form");
+            var form = $("#create_project_forms");
         if(form.valid()){
             let non_working=$('#non_working_days').val();
         if(non_working.length<=0){

@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Validator;
 use Session;
 use App\Models\EmailTemplate;
 use App\Models\UserEmailTemplate;
+use Yajra\DataTables\DataTables;
 
 class ProjectController extends Controller
 {
@@ -214,6 +215,38 @@ class ProjectController extends Controller
             // /---------end-----------------
            $project->save();
 
+            //    Send Project Creation Email to the logged in user 
+            $user = \Auth::user();
+
+            $clientArr = [
+                'user_name' => $user->name,
+                'projectname' => $request->project_name,
+                'start_date' =>date("Y-m-d", strtotime($request->start_date)),
+                'end_date' => date("Y-m-d", strtotime($request->end_date)),
+            ];
+
+            $template = EmailTemplate::where('name', 'LIKE', 'Create Project')->first();
+           
+
+            if (isset($template) && ! empty($template) && $user->type != 'super admin') {
+                    if (UserEmailTemplate::where('template_id', '=', $template->id)
+                    ->where('user_id',$user->creatorId())->doesntExist()) {
+                        UserEmailTemplate::create(
+                            [
+                                'template_id' => $template->id,
+                                'user_id' => $user->creatorId(),
+                                'is_active' => 1,
+                            ]
+                        );
+                    }
+            }
+            $emailResponse =Utility::sendEmailTemplate('Create Project', [$user->id => $user->email], $clientArr);
+          
+
+            //    Send Project Creation Email to the logged in user 
+
+
+
            if ($request->file_status == 'M') {
                 $conSummary = array(
                     'id' => 1,
@@ -343,13 +376,13 @@ class ProjectController extends Controller
                                 $task->end_date=$raw['Finish'];
                                 $end=$raw['Finish'];
                             }else{
-                                $end="";
+                                $end=1;
                             }
                             $task->custom=json_encode($value['$raw']);
                         }
 
                         //########  checking the date is correct ########
-                          if($value['start_date'] > $end){
+                        if($value['start_date'] > $end){
                             Project::where('id',$project->id)->delete();
                             Instance::where('project_id',$project->id)->delete();
                             Con_task::where('project_id',$project->id)->delete();
@@ -358,7 +391,8 @@ class ProjectController extends Controller
 
                         }
 
-                        $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
+                        $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)
+                        ->where('project_id',$project->id)->first();
 
                         if($parent && $parent->parent!=0){
                             if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
@@ -474,25 +508,7 @@ class ProjectController extends Controller
                             $task->project_id = $project->id;
                             $task->instance_id = $instance_id;
 
-                            //########  checking the date is correct ########
-                            if($value['start_date'] > $raw['Finish']){
-                                Project::where('id',$project->id)->delete();
-                                Instance::where('project_id',$project->id)->delete();
-                                Con_task::where('project_id',$project->id)->delete();
 
-                                return redirect()->back()->with('error', __(' primaverra data Mismatch'));
-
-                            }
-
-                            if($value['start_date'] < $parent->start_date || $raw['Finish'] > $parent->end_date){
-                                Project::where('id',$project->id)->delete();
-                                Instance::where('project_id',$project->id)->delete();
-                                Con_task::where('project_id',$project->id)->delete();
-
-                                return redirect()->back()->with('error', __('Microproject data Mismatch'));
-
-                            }
-                            // ###############################
                             if (isset($value['text'])) {
                                 $task->text = $value['text'];
                             }
@@ -519,7 +535,7 @@ class ProjectController extends Controller
                                     $task->end_date = $raw['Finish'];
                                     $end=$raw['Finish'];
                                 }else{
-                                    $end='';
+                                    $end=1;
                                 }
                                 $task->custom = json_encode($value['$raw']);
                             }
@@ -533,7 +549,8 @@ class ProjectController extends Controller
                                 return redirect()->back()->with('error', __('Microproject data Mismatch'));
 
                             }
-                            $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)->where('project_id',$project->id)->first();
+                            $parent=Con_task::where('id',$value['parent'])->where('instance_id',$instance_id)
+                            ->where('project_id',$project->id)->first();
 
                             if($parent && $parent->parent!=0){
                                 if($value['start_date'] < $parent->start_date || $end > $parent->end_date){
@@ -602,6 +619,7 @@ class ProjectController extends Controller
                 }
 
             }
+           
 
             if (\Auth::user()->type == 'company') {
 
@@ -611,19 +629,57 @@ class ProjectController extends Controller
                         'user_id' => Auth::user()->id,
                     ]
                 );
-
                 if ($request->reportto) {
-                //     foreach ($request->reportto as $key => $value) {
-                        ProjectUser::create(
-                            [
-                                'project_id' => $project->id,
-                                'user_id' => $request->reportto,
-                            ]
-                        );
-                    }
-                // }
+                    // Invite Team Member while creating project
+                    $authuser = Auth::user();
+                    $project_id=$project->id;
+                    $project = Project::find($project_id)->first();
+                    $get_email = User::select('email','name')->where('id',$request->reportto)->first();
+                    $createConnection = ProjectUser::create([
+                        "project_id" => $project_id,
+                        "user_id" => $request->reportto,
+                        "invited_by" => $authuser->id,
+                        'invite_status' => 'requested',
+                    ]);
 
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember')
+                        . $createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'project_name' => $project->project_name,
+                        'email' => \Auth::user()->email,
+                    ];
+                    
+                    $team_template = EmailTemplate::where('name', 'LIKE',
+                     Config::get('constants.IN_TEAMMEMBER'))->first();
+                    
+                                                    
+                    if($team_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$request->reportto)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $request->reportto]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$creatorId)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+                    
+
+                    Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                        [$request->reportto => $get_email->email], $userArr);
+                    // Invite Team Member while creating project
+                }
             } else {
+
                 ProjectUser::create(
                     [
                         'project_id' => $project->id,
@@ -639,16 +695,55 @@ class ProjectController extends Controller
                 );
 
                 if ($request->reportto) {
-                    // foreach ($request->reportto as $key => $value) {
-                        ProjectUser::create(
-                            [
-                                'project_id' => $project->id,
-                                'user_id' => $request->reportto,
-                            ]
-                        );
-                    }
-                // }
+                   
+                    // Invite Team Member while creating project
+                    $authuser = Auth::user();
+                    $project_id=$project->id;
+                    $project = Project::find($project_id)->first();
+                    $get_email = User::select('email','name')->where('id',$request->reportto)->first();
+                    $createConnection = ProjectUser::create([
+                        "project_id" => $project_id,
+                        "user_id" => $request->reportto,
+                        "invited_by" => $authuser->id,
+                        'invite_status' => 'requested',
+                    ]);
 
+                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember')
+                        . $createConnection->id;
+                    $userArr = [
+                        'invite_link' => $inviteUrl,
+                        'user_name' => \Auth::user()->name,
+                        'project_name' => $project->project_name,
+                        'email' => \Auth::user()->email,
+                    ];
+                    
+                    $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
+                    
+                                                    
+                    if($team_template != null){
+                        $creatorId = $authuser->creatorId();
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$request->reportto)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $request->reportto]);
+                        }
+
+                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                        ->where('user_id',$creatorId)
+                                            ->doesntExist()){
+                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                        }
+                    }
+                    
+
+                    Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                        [$request->reportto => $get_email->email], $userArr);
+                    // Invite Team Member while creating project
+                }
+                
             }
             // type project or task
             Projecttypetask::dispatch($project->id);
@@ -858,19 +953,16 @@ class ProjectController extends Controller
     public function getActivityLog(Request $request, $project_id)
     {
 
-        // Page Length
-        $pageNumber = ($request->start / $request->length) + 1;
-        $pageLength = $request->length;
-        $skip = ($pageNumber - 1) * $pageLength;
+        $task_status = array();
+        $start_date  = $request->start_date;
+        $end_date    = $request->end_date;
 
         // get data from products table
-        $query = \DB::table('activity_logs')->select('*', 'activity_logs.id as activitylogID',
-            'activity_logs.created_at as activitylogcreatedAt')
+        $query = DB::table('activity_logs')
+            ->select('*', 'activity_logs.id as activitylogID','activity_logs.created_at as activitylogcreatedAt')
             ->join('users', 'users.id', '=', 'activity_logs.user_id');
 
         // Search
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
         if ($start_date != '' && $end_date != '') {
             $query = $query->where(function ($query) use ($start_date, $end_date) {
                 $start_date = $start_date . ' 00:00:00.000000';
@@ -881,11 +973,9 @@ class ProjectController extends Controller
                         $end_date,
                     ]
                 );
-
             });
         }
-
-        $task_status = array();
+        
         if (!empty($request->task_status)) {
             if (in_array("Create", $request->task_status)) {
                 array_push($task_status, 'Added New Task');
@@ -901,9 +991,159 @@ class ProjectController extends Controller
             }
         }
 
-        $query->where("project_id", $project_id);
-        $recordsFiltered = $recordsTotal = $query->count();
-        $users = $query->skip($skip)->take($pageLength)->get();
+        $users = $query->where("project_id", $project_id)->get();
+
+        return Datatables::of($users)
+        ->addColumn('log_type', function ($row) {
+            if($row->log_type == 'Added New Task'){
+                $log_type_fetch = __('Create');
+            }
+            else if($row->log_type == 'Updated Task'){
+                $log_type_fetch = __('Update');
+            }
+            else if($row->log_type == 'Deleted Task'){
+                $log_type_fetch = __('Delete');
+            }
+            else{
+                $log_type_fetch = $row->log_type;
+            }
+            return $log_type_fetch;
+        })
+        ->addColumn('activity', function ($row) {
+            if($row->remark != null && $row->remark != ""){
+                $activity_decode = json_decode($row->remark);
+                $title = $activity_decode->title;
+
+                if ($row->log_type == 'Invite User') {
+                    $activity_fetch = __('has invited').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New Task') {
+                    $activity_fetch = __('Added New Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'User Assigned to the Task') {
+                    $activity_fetch = __('has assigned task').'- <b>'.$row->task_name.'</b>'.__('to').' - <b>'.$row->member_name.'</b>';
+                }
+                else if ($row->log_type == 'User Removed from the Task') {
+                    $activity_fetch = __('has removed').'- <b>'.$row->member_name.'</b>'.__('from task').' - <b>'.$row->task_name.'</b>';
+                }
+                else if ($row->log_type == 'Upload File') {
+                    $activity_fetch = __('Upload new file').'- <b>'.$row->file_name.'</b>';
+                }
+                else if ($row->log_type == 'Create Bug') {
+                    $activity_fetch = __('Created new bug').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Create Milestone') {
+                    $activity_fetch = __('Create new milestone').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Create Task') {
+                    $activity_fetch = __('Create new Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Create Expense') {
+                    $activity_fetch = __('Create new Expense').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Add Product') {
+                    $activity_fetch = __('Add new Products').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Update Sources') {
+                    $activity_fetch = __('Update Sources');
+                }
+                else if ($row->log_type == 'Create Deal Call') {
+                    $activity_fetch = __('Create new Deal Call');
+                }
+                else if ($row->log_type == 'Create Deal Email') {
+                    $activity_fetch = __('Create new Deal Email');
+                }
+                else if ($row->log_type == 'Added New Consultant') {
+                    $activity_fetch = __('Added new Consultant').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated Consultant') {
+                    $activity_fetch = __('Updated Consultant').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted Consultant') {
+                    $activity_fetch = __('Deleted Consultant').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New RFIStatus') {
+                    $activity_fetch = __('Added New RFIStatus').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated RFIStatus') {
+                    $activity_fetch = __('Updated RFIStatus').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted RFIStatus') {
+                    $activity_fetch = __('Deleted RFIStatus').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New ProjectSpecification') {
+                    $activity_fetch = __('Added New ProjectSpecification').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated ProjectSpecification') {
+                    $activity_fetch = __('Updated ProjectSpecification').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New Variation Scope') {
+                    $activity_fetch = __('Added New Variation Scope').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated Variation Scope') {
+                    $activity_fetch = __('Updated Variation Scope').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted Variation Scope') {
+                    $activity_fetch = __('Deleted Variation Scope').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New ProcurementMaterial') {
+                    $activity_fetch = __('Added New ProcurementMaterial').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated ProcurementMaterial') {
+                    $activity_fetch = __('Updated ProcurementMaterial').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted ProcurementMaterial') {
+                    $activity_fetch = __('Deleted ProcurementMaterial').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New SiteReport') {
+                    $activity_fetch = __('Added New SiteReport').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated SiteReport') {
+                    $activity_fetch = __('Updated SiteReport').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted SiteReport') {
+                    $activity_fetch = __('Deleted SiteReport').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Added New ConcretePouring') {
+                    $activity_fetch = __('Added New ConcretePouring').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated ConcretePouring') {
+                    $activity_fetch = __('Updated ConcretePouring').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted ConcretePouring') {
+                    $activity_fetch = __('Deleted ConcretePouring').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Updated Task') {
+                    $activity_fetch = __('Updated Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Deleted Task') {
+                    $activity_fetch = __('Deleted Task').'- <b>'.$title.'</b>';
+                }
+                else if ($row->log_type == 'Move Task') {
+                    $activity_fetch = __('Moved the Task').'- <b>'.$title.'</b>'.__('from').' - <b>'.
+                    $row->old_stage.'</b>'.__('to').' - <b>'.$row->new_stage.'</b>';
+                }
+                else if ($row->log_type == 'Move') {
+                    $activity_fetch = __('Moved the deal').'- <b>'.$title.'</b>'.__('from').' - <b>'.
+                    $row->old_status.'</b>'.__('to').' - <b>'.$row->new_status.'</b>';;
+                }
+                else{
+                    $activity_fetch = '<b>'.$title.'</b>';
+                }
+
+                return $activity_fetch;
+            }
+            else{
+                return '<b>'.__('Some Activity').'</b>';
+            }
+        })
+        ->addColumn('activity_date', function ($user) {
+            $date = date_create($user->activitylogcreatedAt);
+            return date_format($date, "M j, Y h:i:s");
+            // return $user->activitylogcreatedAt;
+        })
+        ->rawColumns(['log_type','activity','activity_date'])
+        ->make(true);
 
         return response()->json(["draw" => $request->draw, "recordsTotal" => $recordsTotal,
             "recordsFiltered" => $recordsFiltered, 'data' => $users, 'end_date' => $end_date, 'start_date' => $start_date], 200);
@@ -911,18 +1151,24 @@ class ProjectController extends Controller
     public function projectActivities(Request $request, $project_id)
     {
 
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.activities", compact("project", "project_id"));
-        } else {
+        if (\Auth::user()->can('view activity')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.activities", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
             return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
@@ -987,7 +1233,7 @@ class ProjectController extends Controller
     }
     public function show(Project $project)
     {
-        if (\Auth::user()->can("view project")) {
+        if (\Auth::user()->can("show project dashboard")) {
             $usr = Auth::user();
             if (\Auth::user()->type == "client") {
                 $user_projects = Project::where("client_id", \Auth::user()->id)
@@ -2201,7 +2447,63 @@ class ProjectController extends Controller
             $project->description = $request->description;
             $project->status = $request->status;
             $project->estimated_days = $request->estimated_days;
-            // $project->report_to = implode(",", $request->reportto);
+            $project->report_to = $request->report_to;
+            // Check reporting to user already exits or not
+            $project_id=$project->id;
+            $existingorNot=ProjectUser::where([
+                "project_id" => $project_id,
+                "user_id" => $request->report_to,
+            ])->get();
+            
+            if(count($existingorNot)<=0){
+                $authuser = Auth::user();
+                $project_id=$project->id;
+                $project = Project::find($project_id)->first();
+                $get_email = User::select('email','name')->where('id',$request->report_to)->first();
+                $createConnection = ProjectUser::create([
+                    "project_id" => $project_id,
+                    "user_id" => $request->report_to,
+                    "invited_by" => $authuser->id,
+                    'invite_status' => 'requested',
+                ]);
+
+                $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember')
+                    . $createConnection->id;
+                $userArr = [
+                    'invite_link' => $inviteUrl,
+                    'user_name' => \Auth::user()->name,
+                    'project_name' => $project->project_name,
+                    'email' => \Auth::user()->email,
+                ];
+                
+                $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
+                
+                                                
+                if($team_template != null){
+                    $creatorId = $authuser->creatorId();
+
+                    if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                    ->where('user_id',$request->report_to)
+                                        ->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                ->insert(['template_id'=>$team_template->id, 'user_id' => $request->report_to]);
+                    }
+
+                    if(UserEmailTemplate::where('template_id', '=', $team_template->id)
+                    ->where('user_id',$creatorId)
+                                        ->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                    }
+                }
+                
+
+                Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                    [$request->report_to => $get_email->email], $userArr);
+                // Invite Team Member while creating project
+
+            }
+           
             $project->report_time = $request->report_time;
             $project->tags = $request->tag;
             $project->country = $request->country;
@@ -2397,134 +2699,140 @@ class ProjectController extends Controller
     {
 
         try {
-            $authuser = Auth::user();
-            $teammemberID = explode(',', $request->teammember_id);
-            $project_id = explode(',', $request->project_id);
-            $project = Project::find($project_id)->first();
-            $type=$request->type;
-            if(str_contains($type,'subcontractor')){
-                foreach($teammemberID as $id){
-                    $get_email = DB::table('users')->select('email','name')->where('id',$id)->first();
+            if (\Auth::user()->can('invite engineers')
+            || Auth::user()->can('invite consultant project invitation')
+            || Auth::user()->can('invite sub contractor project invitation')) {
+                $authuser = Auth::user();
+                $teammemberID = explode(',', $request->teammember_id);
+                $project_id = explode(',', $request->project_id);
+                $project = Project::find($project_id)->first();
+                $type=$request->type;
+                if(str_contains($type,'subcontractor')){
+                    foreach($teammemberID as $id){
+                        $get_email = DB::table('users')->select('email','name')->where('id',$id)->first();
 
-                    $createConnection =  ProjectSubcontractor::create([
-                        "project_id" => $request->project_id,
-                        "user_id" => $id,
-                        "invited_by" => $authuser->id,
-                        'invite_status' => 'requested',
-                    ]);
-                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor_proj') . $createConnection->id;
-                    $userArr = [
-                        'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
-                        'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
-                    ];
+                        $createConnection =  ProjectSubcontractor::create([
+                            "project_id" => $request->project_id,
+                            "user_id" => $id,
+                            "invited_by" => $authuser->id,
+                            'invite_status' => 'requested',
+                        ]);
+                        $inviteUrl = url('') . Config::get('constants.INVITATION_URL_subcontractor_proj') . $createConnection->id;
+                        $userArr = [
+                            'invite_link' => $inviteUrl,
+                            'user_name' => \Auth::user()->name,
+                            'project_name' => $project->project_name,
+                            'email' => \Auth::user()->email,
+                        ];
 
-                    $template = EmailTemplate::where('name', 'LIKE', Config::get('constants.INSR_PROJ'))->first();
-                    if($template != null){
-                        $creatorId = $authuser->creatorId();
+                        $template = EmailTemplate::where('name', 'LIKE', Config::get('constants.INSR_PROJ'))->first();
+                        if($template != null){
+                            $creatorId = $authuser->creatorId();
 
-                        if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$id)->doesntExist()){
-                            UserEmailTemplate::where('template_id', '=', $template->id)
-                            ->insert(['template_id'=>$template->id, 'user_id' => $id]);
+                            if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$id)->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $template->id)
+                                ->insert(['template_id'=>$template->id, 'user_id' => $id]);
+                            }
+
+                            if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$creatorId)->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $template->id)
+                                ->insert(['template_id'=>$template->id, 'user_id' => $creatorId]);
+                            }
                         }
 
-                        if(UserEmailTemplate::where('template_id', '=', $template->id)->where('user_id',$creatorId)->doesntExist()){
-                            UserEmailTemplate::where('template_id', '=', $template->id)
-                            ->insert(['template_id'=>$template->id, 'user_id' => $creatorId]);
-                        }
+                        Utility::sendEmailTemplate(Config::get('constants.INSR_PROJ'),
+                            [$id => $get_email->email], $userArr);
                     }
-
-                    Utility::sendEmailTemplate(Config::get('constants.INSR_PROJ'),
-                        [$id => $get_email->email], $userArr);
+                    $msg = __('Sub Contractor Invitation to project sent successfully.');
+                    $routing = 'project.subcontractor';
                 }
-                $msg = __('Sub Contractor Invitation to project sent successfully.');
-                $routing = 'project.subcontractor';
-            }
-            if(str_contains($type,'consultant')){
-                foreach($teammemberID as $id){
-                    $get_email = DB::table('users')->select('email','name')->where('id',$id)->first();
-                    $createConnection =  ProjectConsultant::create([
-                        "project_id" => $request->project_id,
-                        "user_id" => $id,
-                        "invited_by" => $authuser->id,
-                        'invite_status' => 'requested',
-                    ]);
-                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_consultant_proj') . $createConnection->id;
-                    $userArr = [
-                        'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
-                        'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
-                    ];
+                if(str_contains($type,'consultant')){
+                    foreach($teammemberID as $id){
+                        $get_email = DB::table('users')->select('email','name')->where('id',$id)->first();
+                        $createConnection =  ProjectConsultant::create([
+                            "project_id" => $request->project_id,
+                            "user_id" => $id,
+                            "invited_by" => $authuser->id,
+                            'invite_status' => 'requested',
+                        ]);
+                        $inviteUrl = url('') . Config::get('constants.INVITATION_URL_consultant_proj') . $createConnection->id;
+                        $userArr = [
+                            'invite_link' => $inviteUrl,
+                            'user_name' => \Auth::user()->name,
+                            'project_name' => $project->project_name,
+                            'email' => \Auth::user()->email,
+                        ];
 
-                    $con_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_CONSULTANT_PROJ'))->first();
-                    if($con_template != null){
-                        $creatorId = $authuser->creatorId();
+                        $con_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_CONSULTANT_PROJ'))->first();
+                        if($con_template != null){
+                            $creatorId = $authuser->creatorId();
 
-                        if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$id)->doesntExist()){
-                            UserEmailTemplate::where('template_id', '=', $con_template->id)
-                            ->insert(['template_id'=>$con_template->id, 'user_id' => $id]);
+                            if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$id)->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $con_template->id)
+                                ->insert(['template_id'=>$con_template->id, 'user_id' => $id]);
+                            }
+
+                            if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$creatorId)->doesntExist()){
+                                UserEmailTemplate::where('template_id', '=', $con_template->id)
+                                ->insert(['template_id'=>$con_template->id, 'user_id' => $creatorId]);
+                            }
                         }
 
-                        if(UserEmailTemplate::where('template_id', '=', $con_template->id)->where('user_id',$creatorId)->doesntExist()){
-                            UserEmailTemplate::where('template_id', '=', $con_template->id)
-                            ->insert(['template_id'=>$con_template->id, 'user_id' => $creatorId]);
-                        }
+                        Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT_PROJ'),
+                                [$id => $get_email->email],$userArr);
                     }
+                    $msg = __('Consultant Invitation to project sent successfully.');
+                    $routing = 'project.consultant';
 
-                    Utility::sendEmailTemplate(Config::get('constants.IN_CONSULTANT_PROJ'),
-                            [$id => $get_email->email],$userArr);
                 }
-                $msg = __('Consultant Invitation to project sent successfully.');
-                $routing = 'project.consultant';
+                if (str_contains($type, 'teammember')) {
+                    foreach ($teammemberID as $id) {
+                        $get_email = User::select('email','name')->where('id',$id)->first();
+                        $createConnection = ProjectUser::create([
+                            "project_id" => $request->project_id,
+                            "user_id" => $id,
+                            "invited_by" => $authuser->id,
+                            'invite_status' => 'requested',
+                        ]);
 
-            }
-            if (str_contains($type, 'teammember')) {
-                foreach ($teammemberID as $id) {
-                    $get_email = User::select('email','name')->where('id',$id)->first();
-                    $createConnection = ProjectUser::create([
-                        "project_id" => $request->project_id,
-                        "user_id" => $id,
-                        "invited_by" => $authuser->id,
-                        'invite_status' => 'requested',
-                    ]);
+                        $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember') . $createConnection->id;
+                        $userArr = [
+                            'invite_link' => $inviteUrl,
+                            'user_name' => \Auth::user()->name,
+                            'project_name' => $project->project_name,
+                            'email' => \Auth::user()->email,
+                        ];
 
-                    $inviteUrl = url('') . Config::get('constants.INVITATION_URL_teammember') . $createConnection->id;
-                    $userArr = [
-                        'invite_link' => $inviteUrl,
-                        'user_name' => \Auth::user()->name,
-                        'project_name' => $project->project_name,
-                        'email' => \Auth::user()->email,
-                    ];
+                        $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
+                                                        ->first();
+                        if($team_template != null){
+                            $creatorId = $authuser->creatorId();
 
-                    $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
-                                                    ->first();
-                    if($team_template != null){
-                        $creatorId = $authuser->creatorId();
+                            if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$id)
+                                                ->doesntExist()){
+                                        UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                        ->insert(['template_id'=>$team_template->id, 'user_id' => $id]);
+                            }
 
-                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$id)
-                                            ->doesntExist()){
-                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
-                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $id]);
+                            if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$creatorId)
+                                                ->doesntExist()){
+                                        UserEmailTemplate::where('template_id', '=', $team_template->id)
+                                        ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
+                            }
                         }
+                        
 
-                        if(UserEmailTemplate::where('template_id', '=', $team_template->id)->where('user_id',$creatorId)
-                                            ->doesntExist()){
-                                    UserEmailTemplate::where('template_id', '=', $team_template->id)
-                                    ->insert(['template_id'=>$team_template->id, 'user_id' => $creatorId]);
-                        }
+                        Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
+                            [$id => $get_email->email], $userArr);
                     }
-                    
+                    $msg = __('Team Member Invitation Sent Successfully.');
+                    $routing = 'project.teammembers';
 
-                    Utility::sendEmailTemplate(Config::get('constants.IN_TEAMMEMBER'),
-                        [$id => $get_email->email], $userArr);
                 }
-                $msg = __('Team Member Invitation Sent Successfully.');
-                $routing = 'project.teammembers';
-
+                return redirect()->route($routing, $project_id)->with('success', $msg);
+            }else{
+                return redirect()->back()->with('error', __('Permission Denied.'));
             }
-            return redirect()->route($routing, $project_id)->with('success', $msg);
 
         } catch (Exception $e) {
 
@@ -3043,6 +3351,14 @@ class ProjectController extends Controller
     public function freeze_status_change(Request $request)
     {
         try {
+
+            $get_instance = Instance::where('project_id',Session::get('project_id'))->get()->count();
+            if($get_instance > 1){
+                if(DB::table('microprogram_schedule')->where('project_id',Session::get('project_id'))->where('active_status',1)->exists()){
+                    return "micro is active";
+                }
+            }
+            
             $instanceId = Session::get("project_instance");
             $conTask = Con_task::where([
                 "project_id" => $request->project_id,
@@ -4143,24 +4459,29 @@ class ProjectController extends Controller
 
             $searchValue = $request['q'];
             $type = $request['type'];
+            $project_users=ProjectUser::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
 
             if ($request->filled('q')) {
 
                 if (str_contains($type, 'subcontractor')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["sub_contractor"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'consultant')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereIn("type", ["consultant"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'teammembers')) {
                     $user_contact = User::where("created_by", \Auth::user()->creatorId())
                         ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                        ->whereNotIn("id",array_unique($project_users))
                         ->pluck("id")
                         ->toArray();
                 }
@@ -4214,6 +4535,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::where("created_by", $userid)
                     ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 
@@ -4250,101 +4572,195 @@ class ProjectController extends Controller
     }
 
     public function overall_report(Request $request){
-        $project_id=Session::get("project_id");
 
-        $project = Project::where('id', $project_id)->first();
-        $instance_id = Session::get("project_instance");
-        $cur = date("Y-m-d");
+        if (\Auth::user()->can('export overall report')) {
+            $project_id=Session::get("project_id");
 
-        $project_task = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
-           ->where('type', 'project')->get();
+            $project = Project::where('id', $project_id)->first();
+            $instance_id = Session::get("project_instance");
+            $cur = date("Y-m-d");
 
-        $user = User::find($project->client_id);
-        if ($user) {
-            $client_name = $user->name;
-        } else {
-            $client_name = '';
-        }
+            $project_task = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
+            ->where('type', 'project')->get();
 
-        $all_pending = Con_task::where("project_id", $project->id)
-        ->where("instance_id", Session::get("project_instance"))
-        ->where("type", "project")
-        ->where("end_date", "<", $cur)
-        ->where("progress", "!=", "100")
-        ->count();
+            $user = User::find($project->client_id);
+            if ($user) {
+                $client_name = $user->name;
+            } else {
+                $client_name = '';
+            }
 
-        $all_completed = Con_task::where("project_id", $project->id)
+            $all_pending = Con_task::where("project_id", $project->id)
             ->where("instance_id", Session::get("project_instance"))
             ->where("type", "project")
             ->where("end_date", "<", $cur)
-            ->where("progress", "100")
+            ->where("progress", "!=", "100")
             ->count();
 
-        $all_inprogress = Con_task::where("project_id", $project->id)
+            $all_completed = Con_task::where("project_id", $project->id)
+                ->where("instance_id", Session::get("project_instance"))
+                ->where("type", "project")
+                ->where("end_date", "<", $cur)
+                ->where("progress", "100")
+                ->count();
+
+            $all_inprogress = Con_task::where("project_id", $project->id)
+                ->where("instance_id", Session::get("project_instance"))
+                ->where("type", "project")
+                ->where("progress", "<", 100)
+                ->where("progress", ">", 0)
+                ->whereDate('end_date', '>', date('Y-m-d'))
+                ->count();
+
+            $all_upcoming = Con_task::where('project_id',$project->id)
+                ->where('instance_id',Session::get("project_instance"))
+                ->where("type", "project")
+                ->whereDate('start_date','>',date('Y-m-d'))
+                ->count();
+
+
+        ################ actual progress finding ############################
+
+        $total_task = Con_task::where("project_id", $project->id)
             ->where("instance_id", Session::get("project_instance"))
-            ->where("type", "project")
-            ->where("progress", "<", 100)
-            ->where("progress", ">", 0)
-            ->whereDate('end_date', '>', date('Y-m-d'))
             ->count();
 
-        $all_upcoming = Con_task::where('project_id',$project->id)
-            ->where('instance_id',Session::get("project_instance"))
-            ->where("type", "project")
-            ->whereDate('start_date','>',date('Y-m-d'))
-            ->count();
+            $first_task = Con_task::where("project_id", $project->id)
+            ->where("instance_id", Session::get("project_instance"))
+            ->orderBy("id", "ASC")
+            ->first();
+
+            if ($first_task) {
+
+                $workdone_percentage = $first_task->progress;
+                $actual_percentage = $first_task->progress;
+                $no_working_days = $first_task->duration; // include the last day
+                $date2 = date_create($first_task->end_date);
+
+            } else {
+
+                $workdone_percentage = "0";
+                $actual_percentage = "0";
+                $no_working_days = $project->estimated_days; // include the last day
+                $date2 = date_create($project->end_date);
+
+            }
+            if ($actual_percentage > 100) {
+
+                $actual_percentage = 100;
+
+            }
+            if ($actual_percentage < 0) {
+
+                $actual_percentage = 0;
+
+            }
 
 
-       ################ actual progress finding ############################
+                    //############## END ##############################
+                    //############## Remaining days ###################
+                    $remaining_working_days = Utility::remaining_duration_calculator(
+                        $date2,
+                        $project->id
+                    );
+                    $remaining_working_days = $remaining_working_days - 1; // include the last day
+                    //############## Remaining days ##################
+                    $completed_days = $no_working_days - $remaining_working_days;
 
-       $total_task = Con_task::where("project_id", $project->id)
-        ->where("instance_id", Session::get("project_instance"))
-        ->count();
+                    if ($no_working_days == 1) {
+                        $current_Planed_percentage = 100;
+                    } else {
+                        // percentage calculator
+                        if ($no_working_days > 0) {
+                            $perday = 100 / $no_working_days;
+                        } else {
+                            $perday = 0;
+                        }
 
-        $first_task = Con_task::where("project_id", $project->id)
-        ->where("instance_id", Session::get("project_instance"))
-        ->orderBy("id", "ASC")
-        ->first();
+                        $current_Planed_percentage = round(
+                            $completed_days * $perday
+                        );
+                    }
 
-        if ($first_task) {
+                    if ($current_Planed_percentage > 100) {
+                        $current_Planed_percentage = 100;
+                    }
+                    if ($current_Planed_percentage < 0) {
+                        $current_Planed_percentage = 0;
+                    }
 
-            $workdone_percentage = $first_task->progress;
-            $actual_percentage = $first_task->progress;
-            $no_working_days = $first_task->duration; // include the last day
-            $date2 = date_create($first_task->end_date);
-
-        } else {
-
-            $workdone_percentage = "0";
-            $actual_percentage = "0";
-            $no_working_days = $project->estimated_days; // include the last day
-            $date2 = date_create($project->end_date);
-
-        }
-        if ($actual_percentage > 100) {
-
-            $actual_percentage = 100;
-
-        }
-        if ($actual_percentage < 0) {
-
-            $actual_percentage = 0;
-
-        }
+                    if ($current_Planed_percentage > 0) {
+                        $workdone_percentage = $workdone_percentage =
+                            $workdone_percentage / $current_Planed_percentage;
+                    } else {
+                        $workdone_percentage = 0;
+                    }
+                    $workdone_percentage = $workdone_percentage * 100;
+                    if ($workdone_percentage > 100) {
+                        $workdone_percentage = 100;
+                    }
+                    $remaing_percenatge = round(100 - $current_Planed_percentage);
 
 
+
+
+
+            $actual_current_progress = Con_task::where(['project_id' => $project_id, 'instance_id' => $instance_id])
+                ->orderBy('id', 'ASC')->pluck('progress')->first();
+
+            $actual_current_progress = round($actual_current_progress);
+            $actual_remaining_progress = 100 - $actual_current_progress;
+            $actual_remaining_progress = round($actual_remaining_progress);
+            // current progress amount
+            $taskdata = [];
+            foreach ($project_task as $key => $value) {
+                $planned_start = date('d-m-Y', strtotime($value->start_date));
+                $planned_end = date('d-m-Y', strtotime($value->end_date));
+
+                $actual_start = DB::table('task_progress')->where('project_id', $project_id)
+                    ->where('task_id', $value->main_id)->min('created_at');
+                $actual_end = DB::table('task_progress')->where('project_id', $project_id)
+                    ->where('task_id', $value->main_id)->max('created_at');
+                $flag = 0;
+                if ($actual_start) {
+                    $flag = 1;
+                    $actual_start = date('d-m-Y', strtotime($actual_start));
+                } else {
+                    $actual_start = 'Task Not Started';
+                }
+
+                if ($actual_end) {
+                    $actual_end = date('d-m-Y', strtotime($actual_end));
+                } else {
+                    $actual_end = 'Task Not Finish';
+                }
+
+                if ($actual_end < $planned_end) {
+                    $actual_end = 'Task Not Finish';
+                }
+                //finding planned percentage
+                //############## days finding ####################################################
+                $date1 = date_create($value->start_date);
+                $date2 = date_create($value->end_date);
+                $cur = date('Y-m-d');
+
+                $diff = date_diff($date1, $date2);
+                $no_working_days = $diff->format('%a');
+                $no_working_days = $value->duration; // include the last day
                 //############## END ##############################
+
                 //############## Remaining days ###################
-                $remaining_working_days = Utility::remaining_duration_calculator(
-                    $date2,
-                    $project->id
-                );
+
+                $date2 = date_create($value->end_date);
+                // update one report
+
+                $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
                 $remaining_working_days = $remaining_working_days - 1; // include the last day
-                //############## Remaining days ##################
+
                 $completed_days = $no_working_days - $remaining_working_days;
 
                 if ($no_working_days == 1) {
-                    $current_Planed_percentage = 100;
+                    $current_percentage = 100;
                 } else {
                     // percentage calculator
                     if ($no_working_days > 0) {
@@ -4353,251 +4769,162 @@ class ProjectController extends Controller
                         $perday = 0;
                     }
 
-                    $current_Planed_percentage = round(
-                        $completed_days * $perday
-                    );
+                    $current_percentage = round($completed_days * $perday);
                 }
 
-                if ($current_Planed_percentage > 100) {
-                    $current_Planed_percentage = 100;
+                if ($current_percentage > 100) {
+                    $current_percentage = 100;
                 }
-                if ($current_Planed_percentage < 0) {
-                    $current_Planed_percentage = 0;
+                if ($current_percentage < 0) {
+                    $current_percentage = 0;
+                }
+                //
+                $status='';
+                ##### status of the task
+                if($value->progress!=100){
+                    if($planned_end < date('d-m-Y')){
+                        $status='Pending';
+                    }else{
+                        $status='Ongoing';
+                    }
+                }else{
+                    $status='Completed';
                 }
 
-                if ($current_Planed_percentage > 0) {
-                    $workdone_percentage = $workdone_percentage =
-                        $workdone_percentage / $current_Planed_percentage;
+
+
+                $taskdata[] = [
+                    'id' => $value->id,
+                    'title' => $value->text,
+                    'status'=>$status,
+                    'planed_start' => $planned_start,
+                    'planed_end' => $planned_end,
+                    'duration' => $value->duration.' Days',
+                    'percentage_as_today' => round($current_percentage),
+                    'actual_start' => $actual_start,
+                    'actual_end' => $actual_end,
+                    'actual_duration' => $value->duration.' Days',
+                    'remain_duration' => $value->duration.' Days',
+                    'actual_percent' => round($value->progress),
+                ];
+            }
+            $taskdata2 = [];
+            $today_task_update = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
+            ->where('type', 'task')->get();
+            foreach ($today_task_update as $key => $value) {
+
+                $user = User::find($value->user_id);
+                if ($user) {
+                    $user_name = $user->name;
+                    $user_email = $user->email;
                 } else {
-                    $workdone_percentage = 0;
+                    $user_name = '';
+                    $user_email = '';
                 }
-                $workdone_percentage = $workdone_percentage * 100;
-                if ($workdone_percentage > 100) {
-                    $workdone_percentage = 100;
+
+                ##### status of the task
+                $status='';
+                if($value->progress!=100){
+                    if($value->end_date < date('d-m-Y')){
+                        $status='Pending';
+                    }else{
+                        $status='Ongoing';
+                    }
+                }else{
+                    $status='Completed';
                 }
-                $remaing_percenatge = round(100 - $current_Planed_percentage);
 
-
-
-
-
-        $actual_current_progress = Con_task::where(['project_id' => $project_id, 'instance_id' => $instance_id])
-            ->orderBy('id', 'ASC')->pluck('progress')->first();
-
-        $actual_current_progress = round($actual_current_progress);
-        $actual_remaining_progress = 100 - $actual_current_progress;
-        $actual_remaining_progress = round($actual_remaining_progress);
-        // current progress amount
-        $taskdata = [];
-        foreach ($project_task as $key => $value) {
-            $planned_start = date('d-m-Y', strtotime($value->start_date));
-            $planned_end = date('d-m-Y', strtotime($value->end_date));
-
-            $actual_start = DB::table('task_progress')->where('project_id', $project_id)
+                $actual_start = DB::table('task_progress')->where('project_id', $project_id)
                 ->where('task_id', $value->main_id)->min('created_at');
-            $actual_end = DB::table('task_progress')->where('project_id', $project_id)
-                ->where('task_id', $value->main_id)->max('created_at');
-            $flag = 0;
-            if ($actual_start) {
-                $flag = 1;
-                $actual_start = date('d-m-Y', strtotime($actual_start));
-            } else {
-                $actual_start = 'Task Not Started';
-            }
+                $actual_end = DB::table('task_progress')->where('project_id', $project_id)
+                    ->where('task_id', $value->main_id)->max('created_at');
 
-            if ($actual_end) {
-                $actual_end = date('d-m-Y', strtotime($actual_end));
-            } else {
-                $actual_end = 'Task Not Finish';
-            }
 
-            if ($actual_end < $planned_end) {
-                $actual_end = 'Task Not Finish';
-            }
-            //finding planned percentage
-            //############## days finding ####################################################
-            $date1 = date_create($value->start_date);
-            $date2 = date_create($value->end_date);
-            $cur = date('Y-m-d');
-
-            $diff = date_diff($date1, $date2);
-            $no_working_days = $diff->format('%a');
-            $no_working_days = $value->duration; // include the last day
-            //############## END ##############################
-
-            //############## Remaining days ###################
-
-            $date2 = date_create($value->end_date);
-            // update one report
-
-            $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
-            $remaining_working_days = $remaining_working_days - 1; // include the last day
-
-            $completed_days = $no_working_days - $remaining_working_days;
-
-            if ($no_working_days == 1) {
-                $current_percentage = 100;
-            } else {
-                // percentage calculator
-                if ($no_working_days > 0) {
-                    $perday = 100 / $no_working_days;
+                if ($actual_start) {
+                    $actual_start = date('d-m-Y', strtotime($actual_start));
                 } else {
-                    $perday = 0;
+                    $actual_start = 'Task Not Started';
                 }
 
-                $current_percentage = round($completed_days * $perday);
-            }
-
-            if ($current_percentage > 100) {
-                $current_percentage = 100;
-            }
-            if ($current_percentage < 0) {
-                $current_percentage = 0;
-            }
-            //
-            $status='';
-            ##### status of the task
-            if($value->progress!=100){
-                if($planned_end < date('d-m-Y')){
-                    $status='Pending';
-                }else{
-                    $status='Ongoing';
-                }
-            }else{
-                $status='Completed';
-            }
-
-
-
-            $taskdata[] = [
-                'id' => $value->id,
-                'title' => $value->text,
-                'status'=>$status,
-                'planed_start' => $planned_start,
-                'planed_end' => $planned_end,
-                'duration' => $value->duration.' Days',
-                'percentage_as_today' => round($current_percentage),
-                'actual_start' => $actual_start,
-                'actual_end' => $actual_end,
-                'actual_duration' => $value->duration.' Days',
-                'remain_duration' => $value->duration.' Days',
-                'actual_percent' => round($value->progress),
-            ];
-        }
-        $taskdata2 = [];
-        $today_task_update = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
-        ->where('type', 'task')->get();
-        foreach ($today_task_update as $key => $value) {
-
-            $user = User::find($value->user_id);
-            if ($user) {
-                $user_name = $user->name;
-                $user_email = $user->email;
-            } else {
-                $user_name = '';
-                $user_email = '';
-            }
-
-            ##### status of the task
-            $status='';
-            if($value->progress!=100){
-                if($value->end_date < date('d-m-Y')){
-                    $status='Pending';
-                }else{
-                    $status='Ongoing';
-                }
-            }else{
-                $status='Completed';
-            }
-
-            $actual_start = DB::table('task_progress')->where('project_id', $project_id)
-            ->where('task_id', $value->main_id)->min('created_at');
-            $actual_end = DB::table('task_progress')->where('project_id', $project_id)
-                ->where('task_id', $value->main_id)->max('created_at');
-
-
-            if ($actual_start) {
-                $actual_start = date('d-m-Y', strtotime($actual_start));
-            } else {
-                $actual_start = 'Task Not Started';
-            }
-
-            if ($actual_end) {
-                $actual_end = date('d-m-Y', strtotime($actual_end));
-            } else {
-                $actual_end = 'Task Not Finish';
-            }
-
-            if ($actual_end < $planned_end) {
-                $actual_end = 'Task Not Finish';
-            }
-
-            ########################## Planed percentage calculator ####################################
-
-            $date2=$value->end_date;
-            $remaining_working_days = Utility::remaining_duration_calculator(
-                    $date2,
-                    $project_id
-                );
-                $remaining_working_days = $remaining_working_days - 1; // include the last day
-                //############## Remaining days ##################
-                $completed_days = $no_working_days - $remaining_working_days;
-
-                if ($no_working_days == 1) {
-                    $current_Planed_percentage = 100;
+                if ($actual_end) {
+                    $actual_end = date('d-m-Y', strtotime($actual_end));
                 } else {
-                    // percentage calculator
-                    if ($no_working_days > 0) {
-                        $perday = 100 / $no_working_days;
+                    $actual_end = 'Task Not Finish';
+                }
+
+                if ($actual_end < $planned_end) {
+                    $actual_end = 'Task Not Finish';
+                }
+
+                ########################## Planed percentage calculator ####################################
+
+                $date2=$value->end_date;
+                $remaining_working_days = Utility::remaining_duration_calculator(
+                        $date2,
+                        $project_id
+                    );
+                    $remaining_working_days = $remaining_working_days - 1; // include the last day
+                    //############## Remaining days ##################
+                    $completed_days = $no_working_days - $remaining_working_days;
+
+                    if ($no_working_days == 1) {
+                        $current_Planed_percentage = 100;
                     } else {
-                        $perday = 0;
+                        // percentage calculator
+                        if ($no_working_days > 0) {
+                            $perday = 100 / $no_working_days;
+                        } else {
+                            $perday = 0;
+                        }
+
+                        $current_Planed_percentage = round(
+                            $completed_days * $perday
+                        );
                     }
 
-                    $current_Planed_percentage = round(
-                        $completed_days * $perday
-                    );
-                }
+                    if ($current_Planed_percentage > 100) {
+                        $current_Planed_percentage = 100;
+                    }
+                    if ($current_Planed_percentage < 0) {
+                        $current_Planed_percentage = 0;
+                    }
 
-                if ($current_Planed_percentage > 100) {
-                    $current_Planed_percentage = 100;
-                }
-                if ($current_Planed_percentage < 0) {
-                    $current_Planed_percentage = 0;
-                }
+                    if($value->progress==''){
+                        $progress=0;
+                    }else{
+                        $progress=$value->progress;
+                    }
+                ########################## END ###################################################
 
-                if($value->progress==''){
-                    $progress=0;
-                }else{
-                    $progress=$value->progress;
-                }
-            ########################## END ###################################################
-
-            $taskdata2[] = [
-                'id' => $value->id,
-                'title' => $value->text,
-                'status'=>$status,
-                'planed_start' => date('d-m-Y', strtotime($value->start_date)),
-                'planed_end' => date('d-m-Y', strtotime($value->end_date)),
-                'actual_start'=>$actual_start,
-                'actual_end'=>$actual_end,
-                'duration' => $value->duration.' Days',
-                'actual_percentage' => $progress.'%',
-                'planned_percentage'=>$current_Planed_percentage,
+                $taskdata2[] = [
+                    'id' => $value->id,
+                    'title' => $value->text,
+                    'status'=>$status,
+                    'planed_start' => date('d-m-Y', strtotime($value->start_date)),
+                    'planed_end' => date('d-m-Y', strtotime($value->end_date)),
+                    'actual_start'=>$actual_start,
+                    'actual_end'=>$actual_end,
+                    'duration' => $value->duration.' Days',
+                    'actual_percentage' => $progress.'%',
+                    'planned_percentage'=>$current_Planed_percentage,
 
 
-            ];
+                ];
+            }
+
+            $setting  = Utility::settings(\Auth::user()->creatorId());
+            $pdf = Pdf::loadview('project_report.overal',
+                    compact('taskdata', 'project', 'project_task', 'actual_current_progress',
+                        'actual_remaining_progress', 'taskdata2','client_name','current_Planed_percentage','all_upcoming','all_pending','all_completed','total_task','setting'))
+            ->setPaper('a4', 'landscape')->setWarnings(false);
+            // return $pdf->stream();
+
+            $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
+
+            return $pdf->download($pdf_name);
+        }else{
+            return redirect()->back()->with('error', __('Permission Denied.'));
         }
-
-        $setting  = Utility::settings(\Auth::user()->creatorId());
-        $pdf = Pdf::loadview('project_report.overal',
-                compact('taskdata', 'project', 'project_task', 'actual_current_progress',
-                    'actual_remaining_progress', 'taskdata2','client_name','current_Planed_percentage','all_upcoming','all_pending','all_completed','total_task','setting'))
-        ->setPaper('a4', 'landscape')->setWarnings(false);
-        // return $pdf->stream();
-
-        $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
-
-        return $pdf->download($pdf_name);
 
     }
 
@@ -4649,6 +4976,7 @@ class ProjectController extends Controller
 
                 $user_contact = User::select('id','name')->where("created_by", $userid)
                     ->where("type","sub_contractor")
+                    ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
 
@@ -4683,5 +5011,4 @@ class ProjectController extends Controller
         }
 
     }
-
 }

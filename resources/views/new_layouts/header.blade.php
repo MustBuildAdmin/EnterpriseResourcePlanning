@@ -49,6 +49,10 @@
     <link href="{{ asset('assets/dist/css/tabler-vendors.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/dist/css/demo.min.css?1674944402') }}" rel="stylesheet" />
     <link href="{{ asset('assets/js/chosenjquery/chosen.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/phonepicker/css/intlTelInput.css') }}" />
+    <script src="{{ asset('assets/phonepicker/js/intlTelInput.js') }}"></script>
+
+
     <!-- font css -->
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/fonts/tabler-icons.min.css') }}">
@@ -74,6 +78,12 @@
 
     <script src="{{ asset('assets/dist/js/chosen.jquery.js') }}"></script>
     <style>
+      .iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags{
+         width:100%;
+      }
+      .country_code{
+         margin-top:5px !important;
+      }
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
         :root {
@@ -97,7 +107,7 @@
         }
 
         .error {
-            color: red !important;
+            color: #bc4949  !important ;
         }
     </style>
 
@@ -376,6 +386,9 @@
                      </li>
                      <!--Home starts-->
 
+                     @if(Gate::check('manage user') || Gate::check('manage role')
+                        || Gate::check('manage consultant') || Gate::check('manage client')
+                        || Gate::check('manage sub contractor'))
                      <!--Users starts-->
                      <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'users.index' ||
@@ -427,16 +440,22 @@
                         <div class="dropdown-menu">
                            <div class="dropdown-menu-columns">
                               <div class="dropdown-menu-column">
+                                 @if(Gate::check('manage user') || Gate::check('manage role'))
                                  <a class="{{ Request::route()->getName() == 'users.index' ?
                                     'active dropdown-item' : 'dropdown-item' }}"
                                  href="{{ route('users.index') }}">
                                  {{ __('Employees') }}
                                  </a>
+                                 @endif
+
+                                 @if(Gate::check('manage role'))
                                  <a class="{{ Request::route()->getName() == 'roles.index' ?
                                     'active dropdown-item' : 'dropdown-item' }}"
                                     href="{{ route('roles.index') }}">
                                  {{ __('Employee Roles') }}
                                  </a>
+                                 @endif
+                                 @if(Gate::check('manage consultant') || Gate::check('manage client') || Gate::check('manage sub contractor'))
                                  <div class="dropend">
                                     <a class="{{ Request::route()->getName() == 'clients.index' ||
                                        Request::route()->getName() == 'consultants.index' ||
@@ -449,6 +468,7 @@
                                     {{ __('Third party Users') }}
                                     </a>
                                     <div class="dropdown-menu">
+                                       @can('manage client')
                                        <a href="{{ route('clients.index') }}"
                                           class="{{ Request::route()->getName() == 'clients.index' ||
                                           Request::segment(1) == 'clients' ||
@@ -475,6 +495,7 @@
                                              : 'dropdown-item' }}">
                                           {{ __('Client') }}
                                        </a>
+                                       @endcan
                                        @if(Gate::check('manage consultant'))
                                        <a href="{{route('consultants.index')}}"
                                           class="{{ Request::route()->getName() == 'consultants.index'
@@ -493,9 +514,11 @@
                                        @endif
                                     </div>
                                  </div>
+                                 @endif
                               </div>
                            </div>
                      </li>
+                     @endif
                      <!--Users ends-->
 
                      <!--Planning starts-->
@@ -542,8 +565,14 @@
                      <!--Planning ends-->
 
                      <!--Dairy starts-->
-                     @if(\Auth::user()->show_project() == 1)
-                     @if( Gate::check('manage project'))
+                    
+                     @if(Gate::check('manage directions')
+                        || Gate::check('manage vochange')
+                        || Gate::check('manage RFI')
+                        || Gate::check('manage concrete') 
+                        || Gate::check('manage project specification')
+                        ||  Gate::check('manage procurement material')
+                        || Gate::check('manage site reports'))
                      <li class="nav-item">
                         <a class="{{ Request::route()->getName() == 'dairy_main' ||
                            Request::route()->getName() == 'show_dairy' ||
@@ -567,7 +596,7 @@
                         </a>
                      </li>
                      @endif
-                     @endif
+                  
                      <!--Dairy ends-->
 
                      <!--HRM starts-->

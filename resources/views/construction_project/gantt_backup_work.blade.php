@@ -194,7 +194,7 @@ $holidays = implode(':', $holidays);
                   <a href="#" class="dropdown-item action outdent_action"  id="outdent"  onclick="expandAll();">
                      <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
                      <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon"
-                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" 
+                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -227,7 +227,7 @@ $holidays = implode(':', $holidays);
       <div class="dropdown-menu">
       <div class="dropdown-menu-columns">
       <div class="dropdown-menu-column">
-      <a href="#" class="dropdown-item"   onclick="collapseAll()">
+      <a href="#" class="dropdown-item"   onclick="expandAll();">
       <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
       <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
          height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -236,7 +236,7 @@ $holidays = implode(':', $holidays);
       <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
       </svg>
       Expand All</a>
-      <a href="#" class="dropdown-item" onclick="expandAll();">
+      <a href="#" class="dropdown-item" onclick="collapseAll()">
       <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
       <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24"
          height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -361,9 +361,9 @@ Add new Task
 <input type='hidden' id='critical_update' value='{{ $critical_update }}'>
 <script type="text/javascript">
    var tempcsrf = '{!! csrf_token() !!}';
-   
+
    // check freeze status #############################
-   
+
    var frezee_status_actual = $('#frezee_status').val();
    if (frezee_status_actual == '1') {
        gantt.config.readonly = true;
@@ -380,7 +380,7 @@ Add new Task
        $('.indent_action').removeClass('disabled');
        $('.outdent_action').removeClass('disabled');
    }
-   
+
    // check the data is empty #############################
    $.post("{{ route('projects.get_gantt_task_count') }}", {
                _token: tempcsrf,
@@ -396,10 +396,10 @@ Add new Task
        }
    });
    // end ###############################################
-   
-   
-   
-   
+
+
+
+
    function setScaleConfig(level) {
        switch (level) {
            case "day":
@@ -444,7 +444,7 @@ Add new Task
                gantt.config.scale_height = 50;
                break;
            case "quarter":
-   
+
                gantt.config.scales = [{
                        unit: "month",
                        step: 1,
@@ -524,7 +524,7 @@ Add new Task
           return "week_end";
       return "";
    };
-   
+
    // auto schedule before
    // progress end
    gantt.config.auto_scheduling = true;
@@ -540,7 +540,7 @@ Add new Task
           const updatedTask = new Array();
           if (workflag == 0) {
               for (var i = 0; i < tasks.length; i++) {
-   
+
                   const task = gantt.getTask(tasks[i].id);
                   const tt = gantt.isCriticalTask(task);
                   // const totalStack = gantt.getTotalSlack(task);
@@ -552,13 +552,13 @@ Add new Task
                       freeSlack: gantt.getFreeSlack(task),
                       constraintType: gantt.getConstraintType(task),
                   }
-   
-   
+
+
                   updatedTask.push(taskdetails);
-   
+
               };
-            
-   
+
+
               workflag = 1;
               $.ajax({
                   url: '{{ route('projects.criticaltask_update') }}',
@@ -567,44 +567,44 @@ Add new Task
                       'updatedTask': updatedTask,
                   },
                   success: function(data) {
-   
+
                   }
               });
-   
+
           }
       }
-   
+
       return true;
    });
    gantt.attachEvent("onAfterTaskAutoSchedule", function(task, new_date, constraint, predecessor) {
-   
+
    });
-   
+
    // end autoschedule before ##########################################################################
-   
-   
-   
-   
+
+
+
+
    gantt.ext.fullscreen.getFullscreenElement = function() {
       return document.getElementById("gantt-block");
    }
    gantt.init("gantt_here");
-   
-  
-   
+
+
+
 </script>
 <script>
    (function () {
-   
+
    function shiftTask(task_id, direction) {
        var task = gantt.getTask(task_id);
        task.start_date = gantt.date.add(task.start_date, direction, "day");
        task.end_date = gantt.calculateEndDate(task.start_date, task.duration);
        gantt.updateTask(task.id);
    }
-   
+
    var actions = {
-   
+
        indent: function indent(task_id) {
            var prev_id = gantt.getPrevSibling(task_id);
            while (gantt.isSelectedTask(prev_id)) {
@@ -629,7 +629,7 @@ Add new Task
            if (gantt.isTaskExists(old_parent) && old_parent != gantt.config.root_id) {
                var index = gantt.getTaskIndex(old_parent) + 1;
                var prevSibling = initialSiblings[task_id].first;
-   
+
                if(gantt.isSelectedTask(prevSibling)){
                    index += (initialIndexes[task_id] - initialIndexes[prevSibling]);
                }
@@ -654,24 +654,24 @@ Add new Task
        outdent: true,
        del: true
    };
-   
+
    var singularAction = {
        undo: true,
        redo: true
    };
-   
+
    gantt.performAction = function (actionName) {
        var action = actions[actionName];
        if (!action)
            return;
-   
+
        if(singularAction[actionName]){
            action();
            return;
        }
-   
+
        gantt.batchUpdate(function () {
-   
+
            // need to preserve order of items on indent/outdent,
            // remember order before changing anything:
            var indexes = {};
@@ -682,7 +682,7 @@ Add new Task
                siblings[task_id] = {
                    first: null
                };
-   
+
                var currentId = task_id;
                while(gantt.isTaskExists(gantt.getPrevSibling(currentId))
                && gantt.isSelectedTask(gantt.getPrevSibling(currentId))){
@@ -690,14 +690,14 @@ Add new Task
                }
                siblings[task_id].first = currentId;
            });
-   
+
            var updated = {};
            gantt.eachSelectedTask(function (task_id) {
-   
+
                if (cascadeAction[actionName]) {
                    if (!updated[gantt.getParent(task_id)]) {
                        var updated_id = action(task_id, indexes, siblings);
-   
+
                        updated[updated_id] = true;
                    } else {
                        updated[task_id] = true;
@@ -708,24 +708,24 @@ Add new Task
            });
        });
    };
-   
-   
+
+
    })();
-   
-   
-   
-   
-   
+
+
+
+
+
    function today_scroll(){
        var today = new Date();
      var additional_width = (gantt.$container.offsetWidth - gantt.config.grid_width) / 2
      var position = gantt.posFromDate(today) - additional_width;
-   
+
      gantt.scrollTo(position)
    }
-   
-   
-   
+
+
+
    function zoomIn(){
            gantt.ext.zoom.zoomIn();
        }
@@ -746,7 +746,7 @@ Add new Task
        // function columnHideandShow() {
        //
        // }
-   
+
       /* show slack */
       (function () {
       		var totalSlackColumn = {
@@ -774,7 +774,7 @@ Add new Task
       				return gantt.getFreeSlack(task);
       			}
       		};
-      
+
       		const showWbsColumn = {
       			name: "WBS",
       			align: "center",
@@ -787,8 +787,8 @@ Add new Task
       				return gantt.getWBSCode(task);
       			}
       		}
-      		
-    
+
+
       		const showAssignees = {
       			name: "Assignee",
       			align: "center",
@@ -801,31 +801,31 @@ Add new Task
       						return "";
       				}
       				var result = "";
-      				
+
       				task.assigness.forEach(function(assignee) {
       				if (!assignee)
       					return;
       				result += "<div class='owner-label' title='" + assignee.firstName + "'>"
                         + assignee.firstName.substr(0, 1) + "</div>";
-      
+
       			  });
-      
+
       			return result;
       			}
       		}
-      		
+
       		Element.prototype.appendTemplate = function (html) {
       				this.insertAdjacentHTML('beforeend', html);
       				return this.lastChild;
       			};
-      			
+
       			const formatter = gantt.ext.formatters.durationFormatter({
       			enter: "day",
       			store: "day",
       			format: "auto"
       			});
       			const linksFormatter = gantt.ext.formatters.linkFormatter({durationFormatter: formatter});
-      
+
       		gantt.config.columns = [
       	     	showWbsColumn,
       	    	{ name: "id",  width:50,label:"Task Id", resize: true ,hide:false,},
@@ -858,7 +858,7 @@ Add new Task
             }
             return labels.join(", ")
         }
-			
+
 			},
       			{ name: "duration", align: "center", resize: true, width: 78 ,hide:false},
       			// showAssignees,
@@ -867,7 +867,7 @@ Add new Task
       			{ name: "add", width: 44, min_width: 44, max_width: 44 ,hide:false}
       		];
       	   const columns = gantt.config.columns;
-      	   for(let i= 0 ; i < columns.length; i++) {	
+      	   for(let i= 0 ; i < columns.length; i++) {
       		const template = `<label class='dropdown-item form-switch'>
                 <input class='form-check-input m-0 me-2' id=${columns[i].name} name="columns"
                 ${columns[i].hide ? "": "checked"} type='checkbox'>${columns[i].name}
@@ -884,43 +884,43 @@ Add new Task
       			}
       		  }
       	   }
-      
-      	   
-      	  
+
+
+
       		gantt.config.show_slack = false;
       		gantt.addTaskLayer(function addSlack(task) {
       			if (!gantt.config.show_slack) {
       				return null;
       			}
-      
+
       			var slack = gantt.getFreeSlack(task);
-      
+
       			if (!slack) {
       				return null;
       			}
-      
+
       			var state = gantt.getState().drag_mode;
-      
+
       			if (state == 'resize' || state == 'move') {
       				return null;
       			}
-      
+
       			var slackStart = new Date(task.end_date);
       			var slackEnd = gantt.calculateEndDate(slackStart, slack);
       			var sizes = gantt.getTaskPosition(task, slackStart, slackEnd);
       			var el = document.createElement('div');
-      
+
       			el.className = 'slack';
       			el.style.left = sizes.left + 'px';
       			el.style.top = sizes.top + 2 + 'px';
       			el.style.width = sizes.width + 'px';
       			el.style.height = sizes.height + 'px';
-      
+
       			return el;
       		});
       	})();
        const new_gantt = [];
-   
+
        const calculatingCriticalandFloatValue = function(task){
            const updatedTask = {...task, isCriticalTask: gantt.isCriticalTask(task),
                totalSlack: gantt.getTotalSlack(task),freeSlack: gantt.getFreeSlack(task),
@@ -928,29 +928,29 @@ Add new Task
            }
            new_gantt.push(updatedTask);
        }
-   
-   
+
+
        gantt.eachTask(function(task) {calculatingCriticalandFloatValue(task)})
-   
-   
+
+
        gantt.attachEvent("onAfterTaskUpdate", function(id,item){
-           
+
       });
-   
+
       gantt.attachEvent("onAfterLinkAdd", function(id,item){
-          
+
       });
-   
+
       gantt.attachEvent("onAfterLinkUpdate", function(id,item){
-          
+
       });
-   
+
       gantt.attachEvent("onAfterLinkDelete", function(id,item){
-          
+
       });
-   
-   
-   
+
+
+
        gantt.config.lightbox.sections = [
            {name: "description", height: 70, map_to: "text", type: "textarea", focus: true},
            {name: "time", map_to: "auto", type: "duration"},
@@ -969,10 +969,10 @@ Add new Task
            {name: "baseline", single_date:true,map_to: { start_date: "planned_start",
            end_date: "planned_end"}, button: true, type: "duration_optional"}
        ];
-   
+
       gantt.locale.labels.section_baseline = "Planned";
-   
-   
+
+
        // adding baseline display
        gantt.addTaskLayer(function draw_planned(task) {
            if (task.planned_start && task.planned_end) {
@@ -986,7 +986,7 @@ Add new Task
            }
            return false;
        });
-   
+
        gantt.templates.task_class = function (start, end, task) {
            if (task.planned_end) {
                var classes = ['has-baseline'];
@@ -996,7 +996,7 @@ Add new Task
                return classes.join(' ');
            }
        };
-   
+
        gantt.templates.rightside_text = function (start, end, task) {
            if (task.planned_end) {
                if (end.getTime() > task.planned_end.getTime()) {
@@ -1007,12 +1007,12 @@ Add new Task
                }
            }
        };
-   
-   
+
+
 </script>
 <script>
    gantt.showLightbox = function(id){
-   
+
           document.body.classList.add("modal-open");
            taskId = id;
            var task = gantt.getTask(id);
@@ -1024,66 +1024,66 @@ Add new Task
            input.value = task.text;
          const start_date = form.querySelector("[name='start_date']");
          const end_date = form.querySelector("[name='end_date']");
-   
+
          start_date.value = task.start_date;
-   
+
          form.style.display = "block";
            form.querySelector("[name='save']").onclick = save;
            form.querySelector("[name='close']").onclick = cancel;
            form.querySelector("[name='cancel']").onclick = cancel;
            form.querySelector("[name='delete']").onclick = remove;
        }
-   
-   
+
+
    gantt.hideLightbox = function(){
        getForm().style.display = "";
        taskId = null;
        }
-   
-   
+
+
    function getForm() {
         const domEl = document.getElementById("modal-task");
         domEl.classList.add("show");
-   
+
        return document.getElementById("modal-task");
        };
-   
+
    function save() {
        var task = gantt.getTask(taskId);
-   
+
        task.text = getForm().querySelector("[name='description']").value;
-   
+
        if(task.$new){
            delete task.$new;
            gantt.addTask(task,task.parent);
        }else{
            gantt.updateTask(task.id);
        }
-   
+
        gantt.hideLightbox();
    }
-   
+
    function cancel() {
        var task = gantt.getTask(taskId);
-   
+
        if(task.$new)
        gantt.deleteTask(task.id);
        gantt.hideLightbox();
    }
-   
+
    function remove() {
        gantt.deleteTask(taskId);
        gantt.hideLightbox();
    }
-   
-   
+
+
    gantt.attachEvent("onBeforeLightbox", function(id) {
-   
-   
+
+
    })
-   
+
    // gantt create edit functionality
-   
+
    if (frezee_status_actual != 1) {
    // Configuring app url
    const app_url="{{env('APP_URL')}}";
@@ -1093,8 +1093,8 @@ Add new Task
      dp.init(gantt);
     }).then(function(){
         var critical = 0;
- 
-       
+
+
         $('.loader_show').hide();
         $('#additional_elements').removeClass("d-none");
     }).catch((err) => {
@@ -1103,38 +1103,38 @@ Add new Task
 
    // var dp = new gantt.dataProcessor("/erp/public/");
 
-   
-   
+
+
    dp.attachEvent("onBeforeDataSending", function(id, state, data){
    let task=gantt.getTask(id);
    if(typeof task!='undefined' ){
        let  totalStack = gantt.getTotalSlack(task);
        let  freeSlack = gantt.getFreeSlack(task);
-   
+
        if (typeof totalStack != 'undefined') {
                data.totalStack = totalStack;
        }
-   
-   
+
+
        if (typeof freeSlack != 'undefined') {
                data.freeSlack = freeSlack;
        }
    }
-   
+
     return true;
    });
    dp.attachEvent("onBeforeUpdate", function(id, state, data) {
    gantt.config.readonly = true;
    return true;
    });
-   
+
    dp.setTransactionMode({
    mode: "REST",
    payload: {
    "_token": tempcsrf,
    }
    });
-   
+
    dp.attachEvent("onAfterUpdate", function(id, action, tid, response) {
    gantt.config.readonly = false;
    if (action == "inserted") {
@@ -1144,8 +1144,8 @@ Add new Task
    });
    }
    // gantt crud end
-   
-   
+
+
 </script>
 <script>
    // @formatter:off

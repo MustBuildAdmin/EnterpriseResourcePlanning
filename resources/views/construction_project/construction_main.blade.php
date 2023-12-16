@@ -82,7 +82,7 @@ a.text-dark {
                @if(count($project_instances)>1)
                    <a class="text-dark text-capitalize"  data-size="lg"
                    data-url="{{ route('projects.check_instance',$project->id) }}"
-                   data-title="Choose Your Revision" data-ajax-popup="true"
+                   data-title="Choose Your Revision Planning" data-ajax-popup="true"
                    data-bs-toggle="tooltip">{{ $project->project_name }}{{$project->project_id}}
                   </a>
                @else

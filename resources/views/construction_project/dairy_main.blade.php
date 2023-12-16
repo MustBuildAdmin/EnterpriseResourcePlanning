@@ -1,4 +1,22 @@
 @include('new_layouts.header')
+
+<style>
+    #loader {
+        border: 12px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 12px solid #444444;
+        width: 70px;
+        height: 70px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<div id="loader" class="center"></div>
 <div class="container-fluid">
    <div class="card mt-5 p-4">
       <div class="card-header">
@@ -45,7 +63,7 @@
        @foreach ($projects as $key => $project)
          <div class="col-md-6 col-lg-2">
             <div class="card">
-               <div class="ms-auto lh-1 p-4">
+               {{-- <div class="ms-auto lh-1 p-4">
                    <div class="dropdown">
                       <a class="dropdown-toggle user-card-dropdown text-secondary" href="#"
                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,7 +115,7 @@
                            @endcan
                       </div>
                    </div>
-                </div>
+                </div> --}}
                <div class="card-body p-2 text-center">
                    <?php $color = sprintf("#%06x",random_int(0,16777215));
                    $project_image=$project->project_image;
@@ -239,4 +257,19 @@
             });
       });
    });
+</script>
+<script>
+    document.onreadystatechange = function () {
+        if (document.readyState !== "complete") {
+            document.querySelector(
+                "body").style.visibility = "hidden";
+            document.querySelector(
+                "#loader").style.visibility = "visible";
+        } else {
+            document.querySelector(
+                "#loader").style.display = "none";
+            document.querySelector(
+                "body").style.visibility = "visible";
+        }
+    };
 </script>

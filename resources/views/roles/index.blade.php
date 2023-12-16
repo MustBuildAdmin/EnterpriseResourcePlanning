@@ -156,18 +156,22 @@
           <div class="container-xl d-flex flex-column justify-content-center">
             <div class="empty">
               <div class="empty-img">
-                <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}" height="128" alt=""> 
+                <img src="{{ asset('assets/images/undraw_printing_invoices_5r4r.svg') }}" height="128" alt="">
               </div>
               <p class="empty-title">{{__('No results found')}}
               </p>
               <div class="empty-action">
-                <a href="#" data-size="lg" data-url="{{ route('roles.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Role')}}" class="btn btn-primary">
+                <a href="#" data-size="lg"
+                data-url="{{ route('roles.create') }}" data-ajax-popup="true"
+                data-bs-toggle="tooltip" title="{{__('Create New Role')}}" class="btn btn-primary">
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                   class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M12 5l0 14" />
-                    <path d="M5 12l14 0" /> 
-                  </svg> {{__('Create New Role')}} 
+                    <path d="M5 12l14 0" />
+                  </svg> {{__('Create New Role')}}
                 </a>
               </div>
             </div>
@@ -188,18 +192,25 @@
             </h2>
             <div class="col-auto ms-auto d-print-none">
               <div class="float-end">
-                <a href="#" data-size="lg" data-url="{{ route('roles.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create New Role')}}" class="btn btn-primary">
+                <a href="#" data-size="lg" data-url="{{ route('roles.create') }}"
+                data-ajax-popup="true" data-bs-toggle="tooltip"
+                title="{{__('Create New Role')}}" class="btn btn-primary">
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon"
+                  width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                  stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M12 5l0 14" />
                     <path d="M5 12l14 0" />
                   </svg>
                   {{__('Create New Role')}}
                 </a>
-                <a href="#" data-bs-toggle="tooltip" title="{{__('Delete All')}}" class="btn btn-danger" id="checkdelete">
+                <a href="#" data-bs-toggle="tooltip" title="{{__('Delete All')}}"
+                class="btn btn-danger" id="checkdelete">
                   <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24"
+                  height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                  fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none">
                     </path>
                     <path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z">
@@ -221,18 +232,19 @@
                 <thead>
                   <tr>
                     <th class="w-1">
-                      <input class="form-check-input m-0 align-middle" type="checkbox" id="checkboxesMain" aria-label="Select all invoices">
+                      <input class="form-check-input m-0 align-middle"
+                      type="checkbox" id="checkboxesMain" aria-label="Select all invoices">
                     </th>
-                    <th>{{__('Role')}} 
+                    <th>{{__('Role')}}
                     </th>
-                    <th data-orderable="false">{{__('Permissions')}} 
+                    <th data-orderable="false">{{__('Permissions')}}
                     </th>
-                    <th width="150" data-orderable="false">{{__('Action')}} 
+                    <th width="150" data-orderable="false">{{__('Action')}}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($roles as $role) 
+                  @foreach ($roles as $role)
                   @if($role->name != 'client')
                   <tr class="font-style">
                     <th class="w-1">
@@ -241,7 +253,7 @@
                     <td class="Role">{{ $role->name }}
                     </td>
                     <td class="Permission" data-orderable="false">
-                      @for($j=0;$j 
+                      @for($j=0;$j
                       <count($role->permissions()->pluck('name'));$j++)
                         <span class="badge rounded-pill bg-primary m-2">{{$role->permissions()->pluck('name')[$j]}}
                         </span>
@@ -249,23 +261,29 @@
                         </td>
                     <td class="Action" data-orderable="false">
                       <span>
-                        @can('edit role') 
-                        <div class="ms-2">
-                          <a href="#" class="btn btn-md bg-primary" style="background:unset !important;" data-url="{{ route('roles.edit',$role->id) }}" data-ajax-popup="true" data-size="lg" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Role Edit')}}">
+                        @can('edit role')
+                        <a href="#" class="btn btn-md bg-primary"
+                        style="background:unset !important;"
+                        data-url="{{ route('roles.edit',$role->id) }}"
+                        data-ajax-popup="true" data-size="lg"
+                        data-bs-toggle="tooltip" title="{{__('Edit')}}" data-title="{{__('Role Edit')}}">
                             <i class="ti ti-pencil text-white">
                             </i>
                           </a>
-                        </div>
+
                         @endcan
+                    </span>
+                    <span>
                         @can('delete role')
-                        <div class="ms-2">
-                          {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id],'id'=>'delete-form-'.$role->id]) !!} 
-                          <a href="#" class="btn btn-md btn-danger bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete')}}">
-                            <i class="ti ti-trash text-white">
-                            </i>
-                          </a>
-                          {!! Form::close() !!}
-                        </div>
+                        {!! Form::open(['method' => 'DELETE',
+                        'route' => ['roles.destroy', $role->id],'id'=>'delete-form-'.$role->id]) !!}
+                        <a href="#" class="btn btn-md btn-danger bs-pass-para"
+                        data-bs-toggle="tooltip" title="{{__('Delete')}}">
+                          <i class="ti ti-trash text-white">
+                          </i>
+                        </a>
+                        {!! Form::close() !!}
+
                         @endcan
                       </span>
                     </td>
@@ -282,7 +300,15 @@
   </div>
 </div>
 @endif
-<script type = "text/javascript" >
+<script type ="text/javascript">
+//delete swal validation starts
+  $(document).on('keypress', function (e) {
+          if (e.which == 13) {
+              swal.closeModal();
+          }
+  });
+//delete swal validation ends
+
   $(document).ready(function() {
   	$('#checkboxesMain').on('click', function(e) {
   		if ($(this).is(':checked', true)) {

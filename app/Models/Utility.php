@@ -1227,9 +1227,11 @@ class Utility extends Model
         $usr = Auth::user();
         if ($usr != null && ! empty($usr)) {
             //Remove Current Login user Email don't send mail to them
-            unset($mailTo[$usr->id]);
-
+            if($emailTemplate!='Create Project'){
+                unset($mailTo[$usr->id]);
+            }
             $mailTo = array_values($mailTo);
+           
 
             if ($usr->type != 'Super Admin') {
 
@@ -1623,6 +1625,7 @@ class Utility extends Model
             '{transfer_description}',
             '{trip_name}',
             '{purpose_of_visit}',
+            '{projectname}',
             '{start_date}',
             '{end_date}',
             '{place_of_visit}',
@@ -1646,8 +1649,8 @@ class Utility extends Model
         ];
         $arrValue = [
             'app_name' => '-',
-            'company_name' => '-',
             'project_name'=>'-',
+            'company_name' => '-',
             'user_name'=>'-',
             'app_url' => '-',
             'email' => '-',
@@ -1735,6 +1738,7 @@ class Utility extends Model
             'transfer_description' => '-',
             'trip_name' => '-',
             'purpose_of_visit' => '-',
+            'projectname'=>'-',
             'start_date' => '-',
             'end_date' => '-',
             'place_of_visit' => '-',
@@ -1762,7 +1766,7 @@ class Utility extends Model
         foreach ($obj as $key => $val) {
             $arrValue[$key] = $val;
         }
-       
+
         $settings = Utility::settings();
         $company_name = $settings['company_name'];
         $colorcode =Utility::rndRGBColorCode();
@@ -1777,36 +1781,36 @@ class Utility extends Model
         $arrValue['app_url']      = '<a href="' . env('APP_URL') . '" target="_blank">' . env('APP_URL') . '</a>';
         $arrValue['inviteconsultantHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
         <tr><td class="w-50p"></td>
-        <td><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
+        <td><img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
          class="avatar avatar-rounded" width="56" height="56" alt=""></td><td>
          <table class="icon icon-md bg-none" cellspacing="0" cellpadding="0"><tr>
          <td align="center">
-         <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
+         <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
           class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td>
           <div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'
           .$short_lname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
         $arrValue['inviteteamMemberHeader']='<table class="mb-lg" cellspacing="0" cellpadding="0">
           <tr><td class="w-50p"></td>
-          <td><img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
+          <td><img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-light.png"
            class="avatar avatar-rounded" width="56" height="56" alt=""></td><td>
            <table class="icon icon-md bg-none" cellspacing="0" cellpadding="0"><tr>
            <td align="center">
-           <img src="https://mustbuilderp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
+           <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/email_images/icons-black-plus.png"
             class="va-middle" width="32" height="32" alt="plus"></td></tr></table></td><td>
             <div class="avatar avatar-xl mb-3 user-initial" style="background-color:'.$colorcode.'">'
             .$short_projname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
-        
+
         if(isset($obj['invite_link'])){
-            $arrValue['invite_link']=' <td class="content pt-0"> You can <a href="'.$obj['invite_link'].
+            $arrValue['invite_link']='<tr> <td class="content pt-0"> You can <a href="'.$obj['invite_link'].
             '">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'
-            .env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td>';
+            .env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td></tr>';
             $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr>
             <td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto">
             <tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'"
              class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span>
              </a></td></tr></table></td></tr></table></td></tr>';
         }
-       
+
 
         $arrValue['set_password_url']='<tr><td class="content text-center pt-0 pb-xl">
         <table cellspacing="0" cellpadding="0"><tbody><tr><td align="center">
@@ -2756,7 +2760,7 @@ class Utility extends Model
     {
         try {
             $settings = Utility::getStorageSetting();
-            
+
             if (! empty($settings['storage_setting'])) {
 
                 if ($settings['storage_setting'] == 'wasabi') {

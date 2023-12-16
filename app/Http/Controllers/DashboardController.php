@@ -152,7 +152,7 @@ class DashboardController extends Controller
                      })
                     ->where('t1.type','company')
                     ->paginate(4);
-            
+
 
         return view('consultants.dashboard.index',compact('users'));
     }
@@ -698,7 +698,7 @@ class DashboardController extends Controller
             Session::forget('project_instance');
             Session::forget('latest_project_instance');
             Session::forget('current_revision_freeze');
-            
+
             $usr = Auth::user();
             if (\Auth::user()->type == 'client') {
                 $user_projects = Project::where('client_id', \Auth::user()->id)
@@ -732,7 +732,7 @@ class DashboardController extends Controller
             //     $projects->Join('consultant_companies as consultant','consultant.company_id');
             // }
 
-            $projects = $projects->paginate(8);
+            $projects = $projects->paginate(12);
 
             return view('construction_project.construction_main', compact('projects', 'user_projects'));
         }
@@ -771,7 +771,7 @@ class DashboardController extends Controller
                 $projects->whereIn('status', $request->status);
             }
 
-            $projects = $projects->paginate(8);
+            $projects = $projects->paginate(12);
 
             return view('construction_project.dairy_main', compact('projects', 'user_projects'));
         } else {

@@ -102,30 +102,30 @@
             background: #080;
         }
 
-        .Short {  
-            width: 100%;   
+        .Short {
+            width: 100%;
             color: #dc3545;
             font-weight: 500;
             font-size: 15px;
-        }  
-        .Weak {  
+        }
+        .Weak {
             width: 100%;
             color: #ffc107;
             font-weight: 500;
             font-size: 15px;
-        }  
-        .Good {  
+        }
+        .Good {
             width: 100%;
             color: #28a745;
             font-weight: 500;
             font-size: 15px;
-        }  
-        .Strong {  
+        }
+        .Strong {
             width: 100%;
             color: #d39e00;
             font-weight: 500;
             font-size: 15px;
-        } 
+        }
     </style>
 
     @section('page-title')
@@ -134,7 +134,7 @@
     @section('auth-topbar')
 
     @endsection
-
+@php  $email = $request->query('email'); @endphp
     @section('content')
         <div class="mainDiv">
             <div class="cardStyle">
@@ -142,10 +142,10 @@
                     <h2 class="formTitle">
                         {{__('Reset Password')}}
                     </h2>
-                
+
                     <div class="inputDiv">
                         {{Form::label('email',__('E-Mail Address'),['class'=>'form-label inputLabel'])}}
-                        {{Form::text('email',null,array('required'=>'required'))}}
+                        {{Form::text('email',$email,array('required'=>'required'))}}
 
                         @error('email')
                             <span class="invalid-email text-danger" role="alert">
@@ -162,7 +162,7 @@
                             <div id="progress"><div id="progress-bar"></div></div>
                             <div id="strengthMessage"></div>
                         </div>
-                        
+
 
                         @error('password')
                             <span class="invalid-password text-danger" role="alert">
@@ -170,7 +170,7 @@
                             </span>
                         @enderror
                     </div>
-                
+
                     <div class="inputDiv">
                         {{Form::label('email',__('Confirm Password'),['class'=>'form-label inputLabel'])}}
                         {{Form::password('password_confirmation',array('required'=>'required','id'=>'password_confirmations'))}}
@@ -182,7 +182,7 @@
                             </span>
                         @enderror
                     </div>
-            
+
                     <div class="buttonWrapper">
                         {{Form::submit(__('Reset'),array('class'=>'submitButton pure-button pure-button-primary','id'=>'resetBtn'))}}
                     </div>
@@ -191,9 +191,9 @@
         </div>
     @endsection
 
-    <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="{{ asset('assets/js/js/jquery.validate.min.js') }}"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/dist/js/jquery-3.6.4.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.validate.js') }}"></script>
+
 
     <script>
         $.strength = function( element, password ) {
@@ -229,7 +229,7 @@
 
             if ( password.match(/\d+/) ) {
                 score++;
-                $('#strengthMessage').removeClass(); 
+                $('#strengthMessage').removeClass();
                 $('#strengthMessage').addClass('Good');
                 $('#strengthMessage').html('Good');
                 $("#resetBtn").prop('disabled',false);
@@ -242,6 +242,8 @@
                 $('#strengthMessage').html('Strong');
                 $("#resetBtn").prop('disabled',false);
             }
+            var re = new RegExp('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/');
+           console.log( re.test(password));
 
             if ( password.length > 10 ) {
                 score++;
@@ -260,7 +262,7 @@
             $("#password_confirmations").keyup(function() {
                 var password     = $("#password").val();
                 confirm_password = $(this).val();
-                
+
                 if(password != confirm_password) {
                     $("#not_match").css('display','block');
                     $("#resetBtn").prop('disabled',true);
@@ -279,7 +281,8 @@ $('#loginForm').validate({
     rules: {
         password:{
                 required:true,
-                changepasss:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                // changepass:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+                changepasss:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
                 minlength: 8,
                 maxlength: 36,
             },
@@ -308,6 +311,8 @@ $('#loginForm').validate({
         form.submit();
     }
 });
+});
+
 $.validator.addMethod(
         "changepasss",
         function(value, element, regexp) {
@@ -316,11 +321,10 @@ $.validator.addMethod(
         },
         "The password must be Minimum eight characters, at least one uppercase letter, one lowercase letter and one number and one special character."
 );
-});
 
 </script>
 <style>
 .error {
-    color: #b72222 ;
+    color: #bc4949  !important ;
 }
 </style>

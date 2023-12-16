@@ -127,17 +127,17 @@
     }
 
     .checkbox_group label:before {
-        content:'';
-        -webkit-appearance: none;
-        background-color: transparent;
-        border: 2px solid #0079bf;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
-        padding: 10px;
-        display: inline-block;
-        position: relative;
-        vertical-align: middle;
-        cursor: pointer;
-        margin-right: 5px;
+        content: '';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px solid #b3b3b3;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 5px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 5px;
     }
 
     .checkbox_group input:checked + label:after {
@@ -145,7 +145,7 @@
         display: block;
         position: absolute;
         top: 2px;
-        left: 9px;
+        left: 4px;
         width: 6px;
         height: 14px;
         border: solid #0079bf;
@@ -159,8 +159,8 @@
 <div class="modal-body">
     <div class="container">
         {{ Form::model($project, ['route' => ['projects.update', $project->id], 'method' => 'PUT',
-             'enctype' => 'multipart/form-data', 'id' => 'create_project_form',
-              'class' => 'create_project_form']) }}
+             'enctype' => 'multipart/form-data', 'id' => 'create_project_forms',
+              'class' => 'create_project_forms']) }}
             {{ csrf_field() }}
             <div>
                 <section>
@@ -536,7 +536,7 @@ aria-hidden="true" data-toggle="modal">
 
     $(function ()
     {
-        var form = $("#create_project_form");
+        var form = $("#create_project_forms");
 
         form.validate({
             rules: {
@@ -675,7 +675,7 @@ aria-hidden="true" data-toggle="modal">
     }
     function createProject(){
 
-        var form = $("#create_project_form");
+        var form = $("#create_project_forms");
         if(form.valid()){
             let non_working=$('#non_working_days').val();
             if(non_working.length<=0){
