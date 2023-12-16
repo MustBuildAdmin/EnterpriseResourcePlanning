@@ -472,8 +472,8 @@ table.dataTable thead th.sorting_desc:after {
                     || Gate::check('delete project')
                     || Gate::check('manage project holiday'))
                     <li class="nav-item">
-                        <a href="{{ route('project-holiday.index', $project_id) }}"
-                            class="{{ Request::route()->getName() == 'project-holiday.index' ?
+                        <a href="{{ route('projects.view', $project_id) }}"
+                            class="{{ Request::route()->getName() == 'projects.view' ?
                             'nav-link active' : 'nav-link' }}">
                             <span class=" d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg"
