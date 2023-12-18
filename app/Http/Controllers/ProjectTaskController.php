@@ -2275,9 +2275,53 @@ class ProjectTaskController extends Controller
                     $status = Con_task::$priority;
 
                 } else {
-                    $projects = ProjectTask::select('project_tasks.*')
-                        ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
-                        ->where('project_users.user_id', '=', $user->id);
+                    // $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
+                    // $projects = ProjectTask::select('project_tasks.*')
+                    //     ->leftjoin('project_users', 'project_users.project_id', 'projects.id')
+                    //     ->where('project_users.user_id', '=', $user->id);
+                    
+
+                    if (isset($request->project_list) && ! empty($request->project_list)) {
+                        $projects = Con_task::select('con_tasks.*')
+                            ->leftjoin('project_users', 'project_users.project_id', 'con_tasks.project_id')
+                            ->where('instance_id', '=', $instanceId)
+                            ->groupBy('con_tasks.id');
+
+                        $projects->whereIn('main_id', function ($query) {
+                            $query->select('task_id')
+                                ->from('task_progress')
+                                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
+                        });
+
+                    } else {
+                        $projects = Con_task::where('project_id', $request->id)
+                            ->where('instance_id', '=', $instanceId)
+                            ->whereIn('main_id', function ($query) {
+                                $query->select('task_id')
+                                    ->from('task_progress')
+                                    ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
+                            });
+                    }
+
+                    if (isset($request->all_users) && ! empty($request->all_users)) {
+                        $projects->whereRaw("find_in_set('$request->all_users',users)");
+                    }
+
+                    if (isset($request->start_date) && ! empty($request->start_date)) {
+                        $projects->where('con_tasks.start_date', '>=', $request->start_date);
+                    }
+
+                    if (isset($request->end_date) && ! empty($request->end_date)) {
+                        $projects->where('con_tasks.end_date', '<=', $request->end_date);
+                    }
+                    $projects = $projects->orderBy('id', 'desc')->get();
+
+                    $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->get();
+                    $task_name = Con_task::select('main_id as id', 'text as name')
+                        ->where('con_tasks.project_id', '=', $request->id)
+                        ->where('instance_id', '=', $instanceId)
+                        ->get();
+                    $status = Con_task::$priority;
 
                 }
                 $usr = Auth::user();
