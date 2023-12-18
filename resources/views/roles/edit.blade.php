@@ -3,7 +3,7 @@
         width: 907px !important;
     }
 </style>
-{{ Form::model($role, ['route' => ['roles.update', $role->id], 'method' => 'PUT']) }}
+{{ Form::model($role, ['route' => ['roles.update', $role->id], 'method' => 'PUT','id'=>'roleedit']) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -3154,6 +3154,27 @@
           $('#edit_role').attr('disabled', 'disabled');
         });
         //form submit after button disable ends
+
+        var form = $("#roleedit");
+
+        form.validate({
+            rules: {
+                name: {
+                    required: true,
+                    remote: {
+                        url: '{{ route("check_role_name") }}',
+                        data: { 'form_name' : "roleedit",'id':'{{ $role->id }}'},
+                        type: "GET"
+                    }
+                }
+            },
+            messages: {
+                name: {
+                    remote: "{{__('Role Name already exists!')}}"
+                }
+            }
+        });
+
 
     });
 </script>

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-
+use DB;
 class RoleController extends Controller
 {
     public function index()
@@ -183,5 +183,34 @@ class RoleController extends Controller
             return redirect()->back()->with('error', 'Permission denied.');
         }
 
+    }
+
+    public function check_role_name(Request $request){
+        $form_name = $request->form_name;
+        $name = $request->name;
+        if($request->id==null){
+            if($form_name == "rolecreate"){
+                $getCheckVal = DB::table('roles')
+                    ->where('name',$request->name)
+                    ->where('guard_name','web')->first();
+            }
+            else {
+                $getCheckVal = "Not Empty";
+            }
+        }else{
+            $getCheckVal = DB::table('roles')
+            ->where('name',$request->name)
+            ->whereNot('id', $request->id)
+            ->where('guard_name','web')->first();
+        }
+        
+
+        if ($getCheckVal == null) {
+            echo "true";
+            // return 1; //Success
+        } else {
+            echo "false";
+            // return 0; //Error
+        }
     }
 }

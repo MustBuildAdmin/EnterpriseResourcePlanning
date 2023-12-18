@@ -3,7 +3,7 @@
         width: 907px !important;
     }
 </style>
-{{ Form::open(['url' => 'roles', 'method' => 'post']) }}
+{{ Form::open(['url' => 'roles', 'method' => 'post','id'=>'rolesave']) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -1701,7 +1701,27 @@
         });
         //form submit after button disable ends
 
+        var form = $("#rolesave");
+
+        form.validate({
+            rules: {
+                name: {
+                    required: true,
+                    remote: {
+                        url: '{{ route("check_role_name") }}',
+                        data: { 'form_name' : "rolecreate" },
+                        type: "GET"
+                    }
+                }
+            },
+            messages: {
+                name: {
+                    remote: "{{__('Role Name already exists!')}}"
+                }
+            }
+        });
+
     });
 
-    
+   
 </script>
