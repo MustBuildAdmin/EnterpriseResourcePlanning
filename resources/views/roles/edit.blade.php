@@ -522,7 +522,7 @@
                     @endphp --}}
                     @php
                         //  $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','directions','project specification','procurement material','vochange','RFI','concrete','site reports'];
-                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity','engineers', 'consultant project invitation', 'sub contractor project invitation','revised program','overall report','project holiday'];
+                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity','engineers', 'consultant project invitation', 'sub contractor project invitation','revised program','overall report','project holiday','daily report'];
                     @endphp
                     <div class="col-md-12">
                         <div class="form-group">
@@ -598,6 +598,24 @@
                                                                 {{ Form::label('permission' . $key, 'Export', ['class' => 'custom-control-label']) }}<br>
                                                             </div>
                                                         @endif
+                                                    @endif
+
+                                                    @if (in_array('email ' . $module, (array) $permissions))
+                                                    @if ($key = array_search('email ' . $module, $permissions))
+                                                        <div class="col-md-3 custom-control custom-checkbox">
+                                                            {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
+                                                            {{ Form::label('permission' . $key, 'Email', ['class' => 'custom-control-label']) }}<br>
+                                                        </div>
+                                                    @endif
+                                                    @endif
+
+                                                    @if (in_array('download ' . $module, (array) $permissions))
+                                                    @if ($key = array_search('download ' . $module, $permissions))
+                                                        <div class="col-md-3 custom-control custom-checkbox">
+                                                            {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
+                                                            {{ Form::label('permission' . $key, 'Export', ['class' => 'custom-control-label']) }}<br>
+                                                        </div>
+                                                    @endif
                                                     @endif
 
                                                         @if (in_array('invite ' . $module, (array) $permissions))
@@ -2142,6 +2160,118 @@
         if (count_projecttask == 1) {
             $("#projecttask").prop('checked', true);
         }
+        var revision = $(".isscheck_projecttask");
+        var count_revision = 1;
+        revision.filter((e) => {
+            if (!revision[e].checked) {
+                count_revision--;
+            }
+        });
+        if (count_revision == 1) {
+            $("#revision").prop('checked', true);
+        }
+        var lookaheadschedule = $(".isscheck_projecttask");
+        var count_lookaheadschedule = 1;
+        lookaheadschedule.filter((e) => {
+            if (!lookaheadschedule[e].checked) {
+                count_lookaheadschedule--;
+            }
+        });
+        if (count_lookaheadschedule == 1) {
+            $("#lookaheadschedule").prop('checked', true);
+        }
+        var lookaheadgrantchart = $(".isscheck_projecttask");
+        var count_lookaheadgrantchart = 1;
+        lookaheadgrantchart.filter((e) => {
+            if (!lookaheadgrantchart[e].checked) {
+                count_lookaheadgrantchart--;
+            }
+        });
+        if (count_lookaheadgrantchart == 1) {
+            $("#lookaheadgrantchart").prop('checked', true);
+        }
+        var activelookahead = $(".isscheck_projecttask");
+        var count_activelookahead = 1;
+        activelookahead.filter((e) => {
+            if (!activelookahead[e].checked) {
+                count_activelookahead--;
+            }
+        });
+        if (count_activelookahead == 1) {
+            $("#activelookahead").prop('checked', true);
+        }
+        var engineers = $(".isscheck_projecttask");
+        var count_engineers = 1;
+        engineers.filter((e) => {
+            if (!engineers[e].checked) {
+                count_engineers--;
+            }
+        });
+        if (count_engineers == 1) {
+            $("#engineers").prop('checked', true);
+        }
+        
+        var consultantprojectinvitation = $(".isscheck_projecttask");
+        var count_consultantprojectinvitation = 1;
+        consultantprojectinvitation.filter((e) => {
+            if (!consultantprojectinvitation[e].checked) {
+                count_consultantprojectinvitation--;
+            }
+        });
+        if (count_consultantprojectinvitation == 1) {
+            $("#consultantprojectinvitation").prop('checked', true);
+        }
+        var subcontractorprojectinvitation = $(".isscheck_projecttask");
+        var count_subcontractorprojectinvitation = 1;
+        subcontractorprojectinvitation.filter((e) => {
+            if (!subcontractorprojectinvitation[e].checked) {
+                count_subcontractorprojectinvitation--;
+            }
+        });
+        if (count_subcontractorprojectinvitation == 1) {
+            $("#subcontractorprojectinvitation").prop('checked', true);
+        }
+        var revisedprogram = $(".isscheck_projecttask");
+        var count_revisedprogram = 1;
+        revisedprogram.filter((e) => {
+            if (!revisedprogram[e].checked) {
+                count_revisedprogram--;
+            }
+        });
+        if (count_revisedprogram == 1) {
+            $("#revisedprogram").prop('checked', true);
+        }
+        var overallreport = $(".isscheck_projecttask");
+        var count_overallreport = 1;
+        overallreport.filter((e) => {
+            if (!overallreport[e].checked) {
+                count_overallreport--;
+            }
+        });
+        if (count_overallreport == 1) {
+            $("#overallreport").prop('checked', true);
+        }
+        var projectholiday = $(".isscheck_projecttask");
+        var count_projectholiday = 1;
+        projectholiday.filter((e) => {
+            if (!projectholiday[e].checked) {
+                count_projectholiday--;
+            }
+        });
+        if (count_projectholiday == 1) {
+            $("#projectholiday").prop('checked', true);
+        }
+        var dailyreport = $(".isscheck_projecttask");
+        var count_dailyreport = 1;
+        dailyreport.filter((e) => {
+            if (!dailyreport[e].checked) {
+                count_dailyreport--;
+            }
+        });
+        if (count_dailyreport == 1) {
+            $("#dailyreport").prop('checked', true);
+        }
+        
         var activity = $(".isscheck_activity");
         var count_activity = 1;
         activity.filter((e) => {
