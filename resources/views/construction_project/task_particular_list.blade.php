@@ -181,6 +181,7 @@
             </div>
 
             <div class="card">
+                @can('create project task')
                 @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     <div class="card-header">
                         <div class="card-actions">
@@ -195,6 +196,7 @@
                         </div>
                     </div>
                 @endif
+                @endcan
                 <div class="card-body">
                     <div class="table-responsive card p-4">
                         <table class="table table-vcenter card-table" id="task-progress"
@@ -212,6 +214,7 @@
                                     @endif
                                 </tr>
                             </thead>
+                            @can('manage project task')
                             <tbody>
                                 @php
                                     $documentPath = \App\Models\Utility::get_file('uploads/task_particular_list');
@@ -263,6 +266,7 @@
                                             @endforelse
                                         </td>
                                         <td>{!! $task_progress->description !!}</td>
+                                        @can('edit project task')
                                         @if (Auth::user()->type != "consultant" &&
                                         Auth::user()->type != "sub_contractor")
                                             <td>
@@ -280,11 +284,12 @@
                                                 </div>
                                             </td>
                                         @endif
+                                        @endcan
                                     </tr>
                                 @empty
                                 @endforelse
                             </tbody>
-
+                            @endcan
                         </table>
                     </div>
                 </div>

@@ -1767,7 +1767,7 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{ __('Cancel') }}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{ __('Update') }}" class="btn  btn-primary">
+    <input type="submit" value="{{ __('Update') }}" class="btn  btn-primary" id="edit_role">
 </div>
 
 {{ Form::close() }}
@@ -3021,5 +3021,12 @@
             var ischeck = $(this).data('id');
             $('.isscheck_' + ischeck).prop('checked', this.checked);
         });
+
+          //form submit after button disable starts
+        $(document).on('submit', 'form', function() {
+          $('#edit_role').attr('disabled', 'disabled');
+        });
+        //form submit after button disable ends
+
     });
 </script>

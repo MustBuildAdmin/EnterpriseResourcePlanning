@@ -62,9 +62,8 @@ Route::get('/company-invitation-consultant/{id}/{status}','ConsultantController@
 Route::get('/company-invitation-subcontractor/{id}','SubContractorController@createConnection')->middleware('guest');
 Route::get('/company-invitation-subcontractor/{id}/{status}','SubContractorController@submitConnection')
 ->middleware('guest');
-Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection')->middleware('guest');
-Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection')
-->middleware('guest');
+Route::get('/company-invitation-teammember/{id}','ProjectController@createConnection');
+Route::get('/company-invitation-teammember/{id}/{status}','ProjectController@submitConnection');
 Route::get('/company-invitation-consultant-project/{id}','ProjectController@createConnectionConsultant')
 ->middleware('guest');
 Route::get('/company-invitation-consultant-project/{id}/{status}','ProjectController@submitConnectionConsultant')
@@ -4457,14 +4456,14 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
 
 Route::get('drawing_list', 'DrawingsController@index')
 ->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
-Route::get('drawing_reference_add/{drawing_type}/{projectid}/{reference_number}',
+Route::get('drawing_reference_add/{reference_id}/{drawing_type}/{projectid}/{reference_number}',
 'DrawingsController@addReference')->name('drawing.reference.add')->middleware(
     ['auth','XSS']
 );
-Route::post('add_drawings/{drawing_type_id}/{project_id}/{reference_number}',
+Route::post('add_drawings/{ref_id}/{drawing_type_id}/{project_id}/{reference_number}',
 'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
 Route::resource('drawings', 'DrawingsController')->middleware(['auth','XSS','revalidate',]);
-Route::delete('drawing_del/{id}/{projectid}/{drawing_type}/{ref_number}/{user}',
+Route::delete('drawing_del/{id}/{ref_id}/{drawing_type}/{projectid}/{ref_number}/{user}',
 'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
     ['auth','XSS',]
 );
