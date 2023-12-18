@@ -600,32 +600,29 @@
                                                         @endif
                                                     @endif
 
-                                                    @if (in_array('email ' . $module, (array) $permissions))
-                                                    @if ($key = array_search('email ' . $module, $permissions))
-                                                        <div class="col-md-3 custom-control custom-checkbox">
-                                                            {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
-                                                            {{ Form::label('permission' . $key, 'Email', ['class' => 'custom-control-label']) }}<br>
-                                                        </div>
-                                                    @endif
-                                                    @endif
+                                                        @if (in_array('email ' . $module, (array) $permissions))
+                                                        @if ($key = array_search('email ' . $module, $permissions))
+                                                            <div class="col-md-3 custom-control custom-checkbox">
+                                                                {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
+                                                                {{ Form::label('permission' . $key, 'Email', ['class' => 'custom-control-label']) }}<br>
+                                                            </div>
+                                                        @endif
+                                                        @endif
 
-                                                    @if (in_array('download ' . $module, (array) $permissions))
-                                                    @if ($key = array_search('download ' . $module, $permissions))
-                                                        <div class="col-md-3 custom-control custom-checkbox">
-                                                            {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
-                                                            {{ Form::label('permission' . $key, 'Export', ['class' => 'custom-control-label']) }}<br>
-                                                        </div>
-                                                    @endif
-                                                    @endif
+                                                        @if (in_array('download ' . $module, (array) $permissions))
+                                                        @if ($key = array_search('download ' . $module, $permissions))
+                                                            <div class="col-md-3 custom-control custom-checkbox">
+                                                                {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
+                                                                {{ Form::label('permission' . $key, 'Export', ['class' => 'custom-control-label']) }}<br>
+                                                            </div>
+                                                        @endif
+                                                        @endif
 
                                                         @if (in_array('invite ' . $module, (array) $permissions))
                                                             @if ($key = array_search('invite ' . $module, $permissions))
                                                                 <div class="col-md-3 custom-control custom-checkbox">
                                                                     {{ Form::checkbox('permissions[]', $key, $role->permission, [
-                                                                        'class' =>
-                                                                            'form-check-input isscheck
-                                                                                                                            project_checkall isscheck_' . str_replace(' ', '', $module),
-                                                                        'id' => 'permission' . $key,
+                                                                        'class' =>'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module),'id' => 'permission' . $key,
                                                                     ]) }}
                                                                     {{ Form::label('permission' . $key, 'Invite', ['class' => 'custom-control-label']) }}
                                                                     <br>
@@ -648,7 +645,7 @@
                                                             @if ($key = array_search('lookahead ' . $module, $permissions))
                                                                 <div class="col-md-3 custom-control custom-checkbox">
                                                                     {{ Form::checkbox('permissions[]', $key, $role->permission, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
-                                                                    {{ Form::label('permission' . $key, 'view', ['class' => 'custom-control-label']) }}<br>
+                                                                    {{ Form::label('permission' . $key, 'View', ['class' => 'custom-control-label']) }}<br>
                                                                 </div>
                                                             @endif
                                                         @endif

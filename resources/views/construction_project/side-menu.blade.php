@@ -148,7 +148,10 @@ table.dataTable thead th.sorting_desc:after {
 
                     <!--Main Planning start-->
                     @if(Gate::check('create revision')
-                    || Gate::check('view grant chart'))
+                    || Gate::check('view grant chart')
+                    || Gate::check('manage project task')
+                    || Gate::check('view revised program')
+                    )
                     <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'projects.gantt' ||
                         Request::route()->getName() == 'revision' ||
