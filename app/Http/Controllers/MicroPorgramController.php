@@ -140,6 +140,12 @@ class MicroPorgramController extends Controller
             $weekEndDate   = $now->endOfWeek()->format('Y-m-d');
             $project_id    = Session::get('project_id');
             $instance_id   = Session::get('project_instance');
+ 
+            $start_date  = $request->start_date;
+            $end_date    = $request->end_date;
+            $task_status = $request->task_status;
+
+            $page = $request->page != null ? $request->page : 1;
             
             $freezeCheck = Instance::where('project_id', $project_id)
                 ->where('instance', Session::get('project_instance'))->pluck('freeze_status')->first();
@@ -165,7 +171,7 @@ class MicroPorgramController extends Controller
                         $microSchedule->whereRaw("find_in_set('".\Auth::user()->id."',users)");
                     }
 
-                    $microSchedule = $microSchedule->orderBy('micro_tasks.schedule_order','ASC')->get();
+                $microSchedule = $microSchedule->orderBy('micro_tasks.schedule_order','ASC')->get();
 
                 // DB::connection()->enableQueryLog();
                 $weekSchedule = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
@@ -176,19 +182,38 @@ class MicroPorgramController extends Controller
                     ->whereNotNull('pros.instance_id')
                     ->where('con_tasks.project_id', $project_id)
                     ->where('con_tasks.instance_id', $instance_id)
-                    ->where('con_tasks.type','task')
-                    ->where('con_tasks.micro_flag',0)
-                    ->where(function ($query) use ($weekStartDate, $weekEndDate) {
-                        $query->whereDate('con_tasks.end_date', '>=', $weekStartDate);
-                        $query->whereDate('con_tasks.end_date', '<=', $weekEndDate);
+                    ->where('con_tasks.type', 'task')
+                    ->where('con_tasks.micro_flag',0);
+
+                if($start_date != null && $end_date != null){
+                    $weekSchedule->where(function ($query) use ($start_date, $end_date) {
+                        $query->whereDate('con_tasks.start_date', '>=', $start_date);
+                        $query->whereDate('con_tasks.end_date', '<', $end_date);
                     });
+                }
 
-                    if (\Auth::user()->type != 'company') {
-                        $weekSchedule->whereRaw("find_in_set('".\Auth::user()->id."',users)");
-                    }
+                if($task_status != null && $task_status == "3"){
+                    $weekSchedule->where('progress','<','100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                }
 
-                    $weekSchedule = $weekSchedule->orderBy('con_tasks.start_date','ASC')->get();
-                    // $queries = \DB::getQueryLog();
+                if($start_date == null && $end_date == null && $task_status == null){
+                    $weekSchedule->where(function($query) use ($weekStartDate, $weekEndDate) {
+                        $query->whereRaw('"'.date('Y-m-d').'"
+                            between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                            ->orwhere('progress', '<', '100')
+                            ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                    });
+                }
+
+                $weekSchedule->orderBy('con_tasks.end_date', 'ASC');
+
+                $weekSchedule = $weekSchedule->paginate(6)->appends([
+                    'start_date' => $start_date,
+                    'end_date'   => $end_date,
+                    'task_status' => $task_status,
+                ]);
+                // $queries = \DB::getQueryLog();
 
                     $remaining_working_days = Utility::remaining_duration_calculator($scheduleGet->schedule_end_date,$project_id);
                     $remaining_working_days = $remaining_working_days != 0 ?
@@ -310,7 +335,11 @@ class MicroPorgramController extends Controller
                         ->with('microSchedule',$microSchedule)
                         ->with('current_Planed_percentage',$current_Planed_percentage)
                         ->with('intervalDays',$intervalDays)
-                        ->with('holidayCount',$holidayCount);
+                        ->with('holidayCount',$holidayCount)
+                        ->with('secheduleId',$secheduleId)
+                        ->with('start_date',$start_date)
+                        ->with('end_date',$end_date)
+                        ->with('task_status',$task_status);
             // }
             // else{
             //     return redirect()->back()->with('error', __('Project Not Freezed.'));

@@ -192,7 +192,7 @@
                         data-bs-parent="#accordion-example">
                         <div class="accordion-body pt-0">
                            <div class="card p-3 mb-3 ">
-                              <div class="row w-100">
+                              {{-- <div class="row w-100">
                                  <div class="col-5 p-4">
                                     <span><b>{{ __('Week Start Date') }}:</b>
                                     {{ Utility::site_date_format($weekStartDate, \Auth::user()->id) }}
@@ -201,6 +201,62 @@
                                     {{ Utility::site_date_format($weekEndDate, \Auth::user()->id) }}
                                     </span>
                                  </div>
+                              </div> --}}
+                              <div class="card p-4">
+                                 <form action="{{ route('schedule_task_show',['id' => $secheduleId])}}" method="POST">
+                                    @csrf
+                                    <div class="row px-5">
+                                       <div class="col-3">
+                                          <div class="mb-3">
+                                             <label class="form-label required">Task Planned Start Date</label>
+                                             <div class="input-icon">
+                                                <span class="input-icon-addon">
+                                                   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                </span>
+                                                <input name="start_date" class="form-control start_date" placeholder="Select a Start date" id="start-date" value="{{$start_date}}">
+                                             </div>
+                                          </div>
+                                       </div>
+
+                                       <div class="col-3">
+                                          <div class="mb-3">
+                                             <label class="form-label required">Task Planned End Date</label>
+                                             <div class="input-icon">
+                                                <span class="input-icon-addon">
+                                                   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
+                                                </span>
+                                                <input name="end_date" class="form-control end_date" placeholder="Select a End date" id="end-date" value="{{$end_date}}">
+                                             </div>
+                                          </div>
+                                       </div>
+
+                                       <div class="col-3">
+                                          <div class="mb-3">
+                                             <label class="form-label">{{ __('Task Status') }}</label>
+                                             <select name="task_status" type="text" class="form-select task_status" placeholder="Task Status" id="task-status" value="">
+                                                <option value="">{{ __('Select Status') }}</option>
+                                                <option value="3" @if($task_status == 3) selected @endif>{{ __('Pending') }}</option>
+                                             </select>
+                                          </div>
+                                       </div>
+
+                                       <div class="col-1">
+                                          <div class="mb-3">
+                                             <div class="input-icon" style="margin-top: 40px;">
+                                                <button type="submit" class="btn btn-primary" id="search_task">Search</button>
+                                             </div>
+                                          </div>
+                                       </div>
+
+                                       <div class="col-2">
+                                          <div class="mb-3">
+                                             <div class="input-icon" style="margin-top: 40px;">
+                                                <button type="button" class="btn btn-warning" id="reset_task">Reset</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </form>
                               </div>
                               <div class="card-body">
                                  <div class="pt-3 group__goals sortable_task">
@@ -287,14 +343,14 @@
                                        </div>
                                     </div>
                                     @empty
-                                    <div
-                                       class="col-md-4 py-3  border-end bg-primary text-white">
-                                       <div class="datagrid-title text-white">
-                                        {{ __('No Schedule Found') }}
-                                       </div>
-                                    </div>
+                                    
                                     @endforelse
                                  </div>
+                              </div>
+                              <div class="d-flex mt-4">
+                                 <ul class="pagination ms-auto">
+                                    {!! $weekSchedule->links() !!}
+                                 </ul>
                               </div>
                            </div>
                         </div>
@@ -312,6 +368,15 @@
 <script src="{{ asset('assets/js/js/Sortable.min.js') }}">
 </script>
 <script>
+   var tempcsrf = '{!! csrf_token() !!}';
+
+   $("#reset_task").click(function(){
+      $(".start_date").val("");
+      $(".end_date").val("");
+      $(".task_status").val("");
+      location.replace(window.location.href);
+   });
+
    document.addEventListener("DOMContentLoaded", function() {
        window.Litepicker && (new Litepicker({
            element: document.getElementById('start-date'),
