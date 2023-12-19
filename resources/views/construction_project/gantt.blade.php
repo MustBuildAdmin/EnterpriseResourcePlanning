@@ -598,7 +598,7 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                 else{
                     $("#modal-success").modal('show');
                     $(document).on("click", ".confirm_ok", function () {
-                        location.reload();
+                        window.location.href="{{ route('construction_main') }}";
                     });
                 }
                 
