@@ -128,6 +128,7 @@ class RevisionController extends Controller
         Session::forget('current_revision_freeze');
         Session::forget('current_revision_name');
         Session::forget('latest_project_instance_frezee');
+        Session::forget('second_latest_project_instance');
         
       
         ////
@@ -138,6 +139,14 @@ class RevisionController extends Controller
             $checkInstanceFreeze = Instance::where('project_id',$project_id)->orderBy('id','DESC')->first();
             Session::put('latest_project_instance',$checkInstanceFreeze->instance);
             Session::put('latest_project_instance_frezee',$checkInstanceFreeze->freeze_status);
+
+            //# second latest instance which for task update
+            $secondInstance= Instance::where('project_id',$project_id)->orderBy('id','DESC')->skip(1)->take(1)->first();
+            if($secondInstance){
+                Session::put('second_latest_project_instance',$secondInstance->instance);
+            }else{
+                Session::put('second_latest_project_instance',0);
+            }
 
 
 

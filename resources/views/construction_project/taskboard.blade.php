@@ -216,8 +216,8 @@
                                                                     <th scope="col" style="color: white;">{{__('Tasks')}}</th>
                                                                     <th scope="col" style="color: white;">{{__('Status')}}</th>
                                                                     <th scope="col" style="color: white;">{{__('Is critical Task')}}</th>
-                                                                    <th scope="col" style="color: white;">{{__('Free Slack')}}</th>
-                                                                    <th scope="col" style="color: white;">{{__('Total Slack')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Dependency Critical Date')}}</th>
+                                                                    <th scope="col" style="color: white;">{{__('Entire Critical Date')}}</th>
                                                                     {{-- <th scope="col" style="color: white;">{{__('Float')}}</th> --}}
                                                                     <th scope="col" style="color: white;">{{__('Actual Progress')}}</th>
                                                                     <th scope="col" style="color: white;">{{__('Planned Progress')}}</th>
@@ -640,8 +640,8 @@
                 {data: 'text'},
                 {data: 'status'},
                 {data: 'dependency_critical'},
-                {data: 'free_slack'},
-                {data: 'total_slack'},
+                {data: 'dependency_critical_date'},
+                {data: 'entire_critical_date'},
                 // {data: 'float_val'},
                 {data: 'actual_progress'},
                 {data: 'planned_progress'},
