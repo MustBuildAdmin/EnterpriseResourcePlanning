@@ -3,7 +3,7 @@
         width: 907px !important;
     }
 </style>
-{{ Form::open(['url' => 'roles', 'method' => 'post']) }}
+{{ Form::open(['url' => 'roles', 'method' => 'post','id'=>'rolesave']) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -517,7 +517,7 @@
                 <div class="tab-pane fade" id="project1" role="tabpanel" aria-labelledby="pills-contact-tab">
                     @php
                         // $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage','bug report','bug status'];
-                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity','engineers', 'consultant project invitation', 'sub contractor project invitation','revised program','overall report','project holiday'];
+                        $modules = ['project dashboard', 'project', 'grant chart', 'project task', 'revision', 'lookahead schedule', 'lookahead grant chart', 'active lookahead', 'activity','engineers', 'consultant project invitation', 'sub contractor project invitation','revised program','overall report','project holiday','daily report'];
                         // $modules=['project dashboard','project','milestone','grant chart','project stage','timesheet','expense','project task','activity','CRM activity','project task stage'];
                     @endphp
                     <div class="col-md-12">
@@ -608,7 +608,7 @@
                                                             @if ($key = array_search('lookahead ' . $module, $permissions))
                                                                 <div class="col-md-3 custom-control custom-checkbox">
                                                                     {{ Form::checkbox('permissions[]', $key, false, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
-                                                                    {{ Form::label('permission' . $key, 'view', ['class' => 'custom-control-label']) }}<br>
+                                                                    {{ Form::label('permission' . $key, 'View', ['class' => 'custom-control-label']) }}<br>
                                                                 </div>
                                                             @endif
                                                         @endif
@@ -626,9 +626,7 @@
                                                             @if ($key = array_search('invite ' . $module, $permissions))
                                                                 <div class="col-md-3 custom-control custom-checkbox">
                                                                     {{ Form::checkbox('permissions[]', $key, false, [
-                                                                        'class' =>
-                                                                            'form-check-input isscheck
-                                                                                                                                    project_checkall isscheck_' .
+                                                                        'class' =>'form-check-input isscheck project_checkall isscheck_' .
                                                                             str_replace(' ', '', $module),
                                                                         'id' => 'permission' . $key,
                                                                     ]) }}
@@ -636,6 +634,24 @@
                                                                     <br>
                                                                 </div>
                                                             @endif
+                                                        @endif
+
+                                                        @if (in_array('email ' . $module, (array) $permissions))
+                                                        @if ($key = array_search('email ' . $module, $permissions))
+                                                            <div class="col-md-3 custom-control custom-checkbox">
+                                                                {{ Form::checkbox('permissions[]', $key, false, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
+                                                                {{ Form::label('permission' . $key, 'Email', ['class' => 'custom-control-label']) }}<br>
+                                                            </div>
+                                                        @endif
+                                                        @endif
+
+                                                        @if (in_array('download ' . $module, (array) $permissions))
+                                                        @if ($key = array_search('download ' . $module, $permissions))
+                                                            <div class="col-md-3 custom-control custom-checkbox">
+                                                                {{ Form::checkbox('permissions[]', $key, false, ['class' => 'form-check-input isscheck project_checkall isscheck_' . str_replace(' ', '', $module), 'id' => 'permission' . $key]) }}
+                                                                {{ Form::label('permission' . $key, 'Export', ['class' => 'custom-control-label']) }}<br>
+                                                            </div>
+                                                        @endif
                                                         @endif
 
                                                         @if (in_array('edit ' . $module, (array) $permissions))
@@ -1685,7 +1701,27 @@
         });
         //form submit after button disable ends
 
+        var form = $("#rolesave");
+
+        form.validate({
+            rules: {
+                name: {
+                    required: true,
+                    remote: {
+                        url: '{{ route("check_role_name") }}',
+                        data: { 'form_name' : "rolecreate" },
+                        type: "GET"
+                    }
+                }
+            },
+            messages: {
+                name: {
+                    remote: "{{__('Role Name already exists!')}}"
+                }
+            }
+        });
+
     });
 
-    
+   
 </script>

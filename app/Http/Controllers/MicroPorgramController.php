@@ -54,7 +54,7 @@ class MicroPorgramController extends Controller
                 return redirect()->route('construction_main')->with('error', __('Session Expired'));
             }
         }else{
-
+            return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
