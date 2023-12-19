@@ -10,6 +10,7 @@ use Session;
 use Carbon\Carbon;
 use App\Models\Instance;
 use App\Models\Con_task;
+use App\Models\MicroProgramScheduleModal;
 use Exception;
 use DB;
 use Config;
@@ -17,7 +18,9 @@ class TaskMicroController extends Controller
 {
     public function store(Request $request)
     {
-
+        $get_active_schedule = MicroProgramScheduleModal::where('project_id',Session::get('project_id'))
+            ->where('instance_id',Session::get('project_instance'))
+            ->where('active_status',1)->first();
         $maxid = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])->max('task_id');
         if ($maxid == null) {
@@ -75,10 +78,13 @@ class TaskMicroController extends Controller
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'),
                           'instance_id' => Session::get('project_instance')])
-            ->where('task_id', $request->parent)->update(['type' => 'project']);
+            ->where('task_id', $request->parent)
+            ->where('schedule_id',$get_active_schedule->id)->update(['type' => 'project']);
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
-            ->where(['parent' => $task->task_id])->get();
+            ->where(['parent' => $task->task_id])
+            ->where('schedule_id',$get_active_schedule->id)
+            ->get();
         if (count($checkparent) > 0) {
             $task->type = 'project';
         } else {
@@ -100,9 +106,12 @@ class TaskMicroController extends Controller
 
     public function destroy($id , Request $request)
     {
-       
+        $get_active_schedule = MicroProgramScheduleModal::where('project_id',Session::get('project_id'))
+            ->where('instance_id',Session::get('project_instance'))
+            ->where('active_status',1)->first();
         $row = MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance'), 'task_id' => $id])->first();
+            'instance_id' => Session::get('project_instance'), 'task_id' => $id])
+            ->where('schedule_id',$get_active_schedule->id)->first();
         if ($row != null) {
             ActivityController::activity_store(Auth::user()->id,
                 Session::get('project_id'), 'Lookhead Deleted Task', $row->text);
@@ -110,23 +119,29 @@ class TaskMicroController extends Controller
         $frezee = Project::where('id', Session::get('project_id'))->first();
         if ($frezee->freeze_status != 1) {
             MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance'), 'task_id' => $id])->delete();
+            'instance_id' => Session::get('project_instance'), 'task_id' => $id])
+            ->where('schedule_id',$get_active_schedule->id)->delete();
         }
 
         // checking whether its having parent or not
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
-            ->where(['parent' => $row->parent])->first();
+            ->where(['parent' => $row->parent])
+            ->where('schedule_id',$get_active_schedule->id)->first();
         if ($checkparent) {
             // update  the type
             MicroTask::where(['project_id' => Session::get('project_id'),
                 'instance_id' => Session::get('project_instance')])
-                ->where('task_id', $row->parent)->update(['type' => 'project']);
+                ->where('task_id', $row->parent)
+                ->where('schedule_id',$get_active_schedule->id)
+                ->update(['type' => 'project']);
         } else {
             // update  the type
             MicroTask::where(['project_id' => Session::get('project_id'),
                 'instance_id' => Session::get('project_instance')])
-                ->where('task_id', $row->parent)->update(['type' => 'task']);
+                ->where('task_id', $row->parent)
+                ->where('schedule_id',$get_active_schedule->id)
+                ->update(['type' => 'task']);
         }
 
         return response()->json([
@@ -137,6 +152,9 @@ class TaskMicroController extends Controller
     public function update($id, Request $request)
     {
         $con_check = null;
+        $get_active_schedule = MicroProgramScheduleModal::where('project_id',Session::get('project_id'))
+            ->where('instance_id',Session::get('project_instance'))
+            ->where('active_status',1)->first();
         $task = MicroTask::where('task_id',$id)
             ->where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
@@ -180,13 +198,16 @@ class TaskMicroController extends Controller
         }
 
         $checkparent = MicroTask::where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->get();
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])
+            ->where('schedule_id',$get_active_schedule->id)->get();
 
         $checkparent_first = MicroTask::select('id','task_id','con_main_id')->where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])->first();
+            'instance_id' => Session::get('project_instance')])->where(['parent' => $task->task_id])
+            ->where('schedule_id',$get_active_schedule->id)->first();
 
         $checktask_first = MicroTask::select('id','task_id','con_main_id')->where(['project_id' => Session::get('project_id'),
-            'instance_id' => Session::get('project_instance')])->where(['task_id' => $task->task_id])->first();
+            'instance_id' => Session::get('project_instance')])->where(['task_id' => $task->task_id])
+            ->where('schedule_id',$get_active_schedule->id)->first();
 
         if($checkparent_first != null){
             if($checkparent_first->con_main_id != null){
@@ -230,6 +251,7 @@ class TaskMicroController extends Controller
         
         // update  the type
         MicroTask::where(['project_id' => Session::get('project_id'), 'instance_id' => Session::get('project_instance')])
+            ->where('schedule_id',$get_active_schedule->id)
             ->where('task_id', $request->parent)->update(['type' => 'project']);
 
         if (count($checkparent) > 0) {
@@ -257,6 +279,7 @@ class TaskMicroController extends Controller
         }
 
         MicroTask::where('task_id',$id)
+                ->where('schedule_id',$get_active_schedule->id)
                 ->where(['project_id' => Session::get('project_id'),
                 'instance_id' => Session::get('project_instance')])
                 ->update($update_data);
