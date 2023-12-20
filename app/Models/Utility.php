@@ -2843,6 +2843,23 @@ class Utility extends Model
 
                     // $path = $path.$name;
 
+                }elseif($settings['storage_setting'] == 's3'){
+                    // print_r($name);
+                    // dd($path);
+                    
+                    if (! $path=Storage::disk('s3')->putFileAs($path, $file , $name)) {
+                        echo 'no';
+                    }else{
+                        echo 'uploaded';
+                    }
+                    // $path = \Storage::disk('s3')->putFileAs(
+                    //         $path,
+                    //         $file,
+                    //         $name
+                    // );
+
+                    // $path = $path.$name;
+                    // dd($path);
                 }
                 return [
                     'flag' => 1,
