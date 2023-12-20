@@ -1807,21 +1807,21 @@ class ProjectController extends Controller
 
                 $all_pending = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->where("end_date", "<", $cur)
                     ->where("progress", "!=", "100")
                     ->count();
 
                 $all_completed = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->where("end_date", "<", $cur)
                     ->where("progress", "100")
                     ->count();
 
                 $all_inprogress = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->where("progress", "<", 100)
                     ->where("progress", ">", 0)
                     ->whereDate('end_date', '>', date('Y-m-d'))
@@ -1829,7 +1829,7 @@ class ProjectController extends Controller
 
                 $all_upcoming = Con_task::where('project_id', $project->id)
                     ->where('instance_id', Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->whereDate('start_date', '>', date('Y-m-d'))
                     ->count();
 
