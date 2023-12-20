@@ -99,15 +99,17 @@ class RevisionController extends Controller
 
             if ($getConInstance != null) {
                 $conInstanceGet = $getConInstance->instance_id;
-
+                $user_id = Auth::user()->id;
                 DB::select(
                     "INSERT INTO con_tasks(
                         id,text,project_id,users,duration,progress,start_date,end_date,predecessors,instance_id,achive,
-                        parent,sortorder,custom,created_at,updated_at,float_val,type
+                        parent,sortorder,custom,reported_to,created_by,created_at,updated_at,float_val,type,iscritical,dependency_critical,entire_critical,free_slack,
+                        total_slack,subcontractor,taskmode,micro_flag
                     )
                     SELECT id,text,project_id,users,duration,progress,start_date,end_date,predecessors,
-                    '".$instanceIdSet."' as instance_id,achive,parent,sortorder,custom,created_at,updated_at,
-                    float_val,type FROM con_tasks WHERE project_id = ".$projectId." AND
+                    '".$instanceIdSet."' as instance_id,achive,parent,sortorder,custom,reported_to,".$user_id.",created_at,updated_at,
+                    float_val,type,iscritical,dependency_critical,entire_critical,free_slack,
+                    total_slack,subcontractor,taskmode,micro_flag FROM con_tasks WHERE project_id = ".$projectId." AND
                     instance_id='".$conInstanceGet."'"
                 );
             }
