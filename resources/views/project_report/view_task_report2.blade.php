@@ -31,30 +31,38 @@
                                                 <div class="card-actions">
                                                     <div class="row">
                                                         <div class="col-3">
+                                                            @can('email daily report')
                                                             <a href="{{ route('download_excel_report') }}" 
                                                             class="btn btn-lime w-100 downloadbtn disabled">
                                                             Daily Report Excel
                                                             </a>
+                                                            @endcan
                                                         </div>
                                                         <div class="col-3">
+                                                            @can('email daily report')
                                                             <a href="{{ route('send_report_con') }}"
                                                             class="btn btn-primary w-100 downloadbtn disabled">
                                                             Daily Report PDF
                                                             </a>
+                                                            @endcan
                                                         </div>
                                                         <div class="col-3">
+                                                            @can('download daily report')
                                                             <a
                                                             id="downloadexcel"  target="_blank"
                                                             class="btn btn-lime w-100 downloadbtn disabled">
                                                                 Download as Excel
                                                             </a>
+                                                            @endcan
                                                         </div>
                                                         <div class="col-3">
+                                                            @can('download daily report')
                                                             <a href="" target="_blank"
                                                             id="downloadpdf"
                                                             class="btn btn-lime w-100 downloadbtn disabled">
                                                                 Download as PDF
                                                             </a>
+                                                            @endcan
                                                         </div>
                                                         <div class="col-4" style="display: none;">
                                                             <a href="#" class="btn btn-purple w-100">

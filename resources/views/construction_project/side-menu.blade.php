@@ -148,7 +148,10 @@ table.dataTable thead th.sorting_desc:after {
 
                     <!--Main Planning start-->
                     @if(Gate::check('create revision')
-                    || Gate::check('view grant chart'))
+                    || Gate::check('view grant chart')
+                    || Gate::check('manage project task')
+                    || Gate::check('view revised program')
+                    )
                     <li class="nav-item dropdown">
                         <a class="{{ Request::route()->getName() == 'projects.gantt' ||
                         Request::route()->getName() == 'revision' ||
@@ -420,7 +423,9 @@ table.dataTable thead th.sorting_desc:after {
 
 
                     <!--Reports starts-->
-                    @if(Gate::check('export overall report'))
+                    @if(Gate::check('manage daily report')
+                    || Gate::check('export overall report')
+                    || Gate::check('manage lookahead reports'))
                     <li class="nav-item dropdown">
                         <a href="{{ route('project_report.view_task_report', $project_id) }}"
                             class="{{ Request::route()->getName() == 'project_report.view_task_report'
@@ -448,19 +453,23 @@ table.dataTable thead th.sorting_desc:after {
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
+                                    @can('manage daily report')
                                     <a href="{{ route('project_report.view_task_report', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project_report.view_task_report' ?
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Daily Task Reports') }}
                                     </a>
+                                    @endcan
                                     @can('export overall report')
                                     <a class="dropdown-item" href="{{route('overall_report')}}">
                                         {{ __('OverAll Reports') }}
                                     </a>
                                     @endcan
+                                    @can('manage lookahead reports')
                                     <a class="dropdown-item" href="./accordion.html">
                                         {{ __('Lookahead Reports') }}
                                     </a>
+                                    @endcan
                                 </div>
                             </div>
                     </li>

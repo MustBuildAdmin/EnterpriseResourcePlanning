@@ -250,507 +250,527 @@ class ProjectReportController extends Controller
 
     public function send_report_con(Request $request)
     {
-
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
-            $project      = Project::where('id', Session::get('project_id'))->first();
-            $project_task = Con_task::where('project_id', Session::get('project_id'))
-                ->where('instance_id', Session::get('project_instance'))
-                ->whereIn('main_id', function ($query) {
-                    $query->select('task_id')
-                        ->from('task_progress')
+        if(\Auth::user()->can("email daily report")){
+            if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
+                $project      = Project::where('id', Session::get('project_id'))->first();
+                $project_task = Con_task::where('project_id', Session::get('project_id'))
+                    ->where('instance_id', Session::get('project_instance'))
+                    ->whereIn('main_id', function ($query) {
+                        $query->select('task_id')
+                            ->from('task_progress')
+                            ->where('instance_id', Session::get('project_instance'))
+                            ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
+                    })->get();
+                $actual_current_progress = Con_task::where('project_id', Session::get('project_id'))
+                    ->where('instance_id', Session::get('project_instance'))
+                    ->orderBy('id', 'ASC')
+                    ->pluck('progress')->first();
+                $actual_current_progress   = round($actual_current_progress);
+                $actual_remaining_progress = 100 - $actual_current_progress;
+                $actual_remaining_progress = round($actual_remaining_progress);
+                // current progress amount
+                $taskdata = [];
+                foreach ($project_task as $value) {
+                    $planned_start = date('d-m-Y', strtotime($value->start_date));
+                    $planned_end = date('d-m-Y', strtotime($value->end_date));
+    
+                    $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                         ->where('instance_id', Session::get('project_instance'))
-                        ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
-                })->get();
-            $actual_current_progress = Con_task::where('project_id', Session::get('project_id'))
-                ->where('instance_id', Session::get('project_instance'))
-                ->orderBy('id', 'ASC')
-                ->pluck('progress')->first();
-            $actual_current_progress   = round($actual_current_progress);
-            $actual_remaining_progress = 100 - $actual_current_progress;
-            $actual_remaining_progress = round($actual_remaining_progress);
-            // current progress amount
-            $taskdata = [];
-            foreach ($project_task as $value) {
-                $planned_start = date('d-m-Y', strtotime($value->start_date));
-                $planned_end = date('d-m-Y', strtotime($value->end_date));
-
-                $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('task_id', $value->main_id)->max('created_at');
+                    $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('task_id', $value->main_id)->min('created_at');
+                    if ($actual_start) {
+                        $actual_start = date('d-m-Y', strtotime($actual_start));
+                    } else {
+                        $actual_start = $this->taskNotStarted;
+                    }
+    
+                    if ($actual_end) {
+                        $actual_end = date('d-m-Y', strtotime($actual_end));
+                    } else {
+                        $actual_end = $this->notFinish;
+                    }
+    
+                    if ($actual_end < $planned_end) {
+                        $actual_end = $this->notFinish;
+                    }
+                    //finding planned percentage
+                    //############## days finding ####################################################
+                    $date2 = date_create($value->end_date);
+                    // $diff=date_diff($date1,$date2);
+                    // $no_working_days=$diff->format("%a");
+                    $no_working_days = $value->duration; // include the last day
+                    //############## END ##############################
+    
+                    //############## Remaining days ###################
+    
+                    $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
+                    $remaining_working_days = $remaining_working_days - 1; // include the last day
+    
+                    // $diff=date_diff($date1,$date2);
+                    // $remaining_working_days=$diff->format("%a");
+                    // $remaining_working_days=$remaining_working_days-1;// include the last day
+                    //############## Remaining days ##################
+    
+                    $completed_days = $no_working_days - $remaining_working_days;
+    
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+    
+                    $current_percentage = round($completed_days * $perday);
+                    if ($current_percentage > 100) {
+                        $current_percentage = 100;
+                    }
+    
+    
+                    //####################################___END____#######################################
+                    //  // actual duration finding
+                    $taskdata[] = [
+                        'title' => $value->text,
+                        'planed_start' => $planned_start,
+                        'planed_end' => $planned_end,
+                        'duration' => $value->duration.$this->daysString,
+                        'percentage_as_today' => round($current_percentage),
+                        'actual_start' => $actual_start,
+                        'actual_end' => $actual_end,
+                        'actual_duration' => $value->duration.$this->daysString,
+                        'remain_duration' => $value->duration.$this->daysString,
+                        'actual_percent' => round($value->progress),
+                    ];
+                }
+                $taskdata2 = [];
+                $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->max('created_at');
-                $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
-                    ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->min('created_at');
-                if ($actual_start) {
-                    $actual_start = date('d-m-Y', strtotime($actual_start));
-                } else {
-                    $actual_start = $this->taskNotStarted;
+                    ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
+                $instance_id = Session::get('project_instance');
+    
+                foreach ($today_task_update as $value) {
+                    $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
+                    $user = User::find($value->user_id);
+                    if ($user) {
+                        $user_name = $user->name;
+                        $user_email = $user->email;
+                    } else {
+                        $user_name = '';
+                        $user_email = '';
+                    }
+    
+                    $taskdata2[] = [
+                        'title' => $main_task->text,
+                        'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'duration' => $main_task->duration.$this->daysString,
+                        'percentage' => $value->percentage.'%',
+                        'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
+                        'description' => $value->description,
+                        'user' => $user_name,
+                        'email' => $user_email,
+    
+                    ];
                 }
-
-                if ($actual_end) {
-                    $actual_end = date('d-m-Y', strtotime($actual_end));
-                } else {
-                    $actual_end = $this->notFinish;
+                $to = [];
+                $to_array = explode(',', $project->report_to);
+                foreach ($to_array as  $value) {
+                    $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
                 }
-
-                if ($actual_end < $planned_end) {
-                    $actual_end = $this->notFinish;
+    
+                if (! $to) {
+                    return redirect()->back()->with('error', __($this->notAssign));
                 }
-                //finding planned percentage
-                //############## days finding ####################################################
-                $date2 = date_create($value->end_date);
-                // $diff=date_diff($date1,$date2);
-                // $no_working_days=$diff->format("%a");
-                $no_working_days = $value->duration; // include the last day
-                //############## END ##############################
-
-                //############## Remaining days ###################
-
-                $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
-                $remaining_working_days = $remaining_working_days - 1; // include the last day
-
-                // $diff=date_diff($date1,$date2);
-                // $remaining_working_days=$diff->format("%a");
-                // $remaining_working_days=$remaining_working_days-1;// include the last day
-                //############## Remaining days ##################
-
-                $completed_days = $no_working_days - $remaining_working_days;
-
-                // percentage calculator
-                if ($no_working_days > 0) {
-                    $perday = 100 / $no_working_days;
-                } else {
-                    $perday = 0;
-                }
-
-                $current_percentage = round($completed_days * $perday);
-                if ($current_percentage > 100) {
-                    $current_percentage = 100;
-                }
-
-
-                //####################################___END____#######################################
-                //  // actual duration finding
-                $taskdata[] = [
-                    'title' => $value->text,
-                    'planed_start' => $planned_start,
-                    'planed_end' => $planned_end,
-                    'duration' => $value->duration.$this->daysString,
-                    'percentage_as_today' => round($current_percentage),
-                    'actual_start' => $actual_start,
-                    'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.$this->daysString,
-                    'remain_duration' => $value->duration.$this->daysString,
-                    'actual_percent' => round($value->progress),
-                ];
+                $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task',
+                 'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))
+                 ->setPaper('a4', 'landscape')->setWarnings(false);
+                $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
+    
+                return $pdf->download($pdf_name);
             }
-            $taskdata2 = [];
-            $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
-                ->where('instance_id', Session::get('project_instance'))
-                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
-            $instance_id = Session::get('project_instance');
-
-            foreach ($today_task_update as $value) {
-                $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
-                $user = User::find($value->user_id);
-                if ($user) {
-                    $user_name = $user->name;
-                    $user_email = $user->email;
-                } else {
-                    $user_name = '';
-                    $user_email = '';
-                }
-
-                $taskdata2[] = [
-                    'title' => $main_task->text,
-                    'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.$this->daysString,
-                    'percentage' => $value->percentage.'%',
-                    'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
-                    'description' => $value->description,
-                    'user' => $user_name,
-                    'email' => $user_email,
-
-                ];
-            }
-            $to = [];
-            $to_array = explode(',', $project->report_to);
-            foreach ($to_array as  $value) {
-                $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
-            }
-
-            if (! $to) {
-                return redirect()->back()->with('error', __($this->notAssign));
-            }
-            $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task',
-             'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))
-             ->setPaper('a4', 'landscape')->setWarnings(false);
-            $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
-
-            return $pdf->download($pdf_name);
+        }else{
+            return redirect()
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
+        
     }
     public function pdf_report_onsearch(Request $request)
     {
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
-            $project      = Project::where('id', Session::get('project_id'))->first();
-            $project_id     = Session::get('project_id');
-            $instance_id    = Session::get('project_instance');
-            $get_start_date = $request->start_date;
-            $get_end_date   = $request->end_date;
-            $status_task    = $request->status_task;
-            $task_id_arr    = $request->task_id_arr;
-            $user_id_arr    = $request->user_id;
-            // 3 > Pending Task
-            // 4 > Completed Task
-            $tasks = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
-                'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
-                'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
-                'pros.id as project_id', 'pros.instance_id as pro_instance_id')
-                ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
-                ->whereNotNull('pros.instance_id')
-                ->where('con_tasks.project_id', $project_id)
-                ->where('con_tasks.instance_id', $instance_id);
-
-            if (\Auth::user()->type != 'company') {
-                $tasks->whereRaw($this->findinSet.\Auth::user()->id.$this->usersSet);
-            }
-
-            if($task_id_arr != null){
-                $tasks->whereIn('con_tasks.id',$task_id_arr);
-            }
-
-            if($get_start_date != null && $get_end_date != null){
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-            }
-
-            if($user_id_arr != null){
-                $tasks->where(function ($query) use ($user_id_arr) {
-                    foreach($user_id_arr as $get_user_id){
-                        if($get_user_id != ""){
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
+        if(\Auth::user()->can("download daily report")){
+            if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
+                $project      = Project::where('id', Session::get('project_id'))->first();
+                $project_id     = Session::get('project_id');
+                $instance_id    = Session::get('project_instance');
+                $get_start_date = $request->start_date;
+                $get_end_date   = $request->end_date;
+                $status_task    = $request->status_task;
+                $task_id_arr    = $request->task_id_arr;
+                $user_id_arr    = $request->user_id;
+                // 3 > Pending Task
+                // 4 > Completed Task
+                $tasks = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
+                    'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
+                    'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
+                    'pros.id as project_id', 'pros.instance_id as pro_instance_id')
+                    ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
+                    ->whereNotNull('pros.instance_id')
+                    ->where('con_tasks.project_id', $project_id)
+                    ->where('con_tasks.instance_id', $instance_id);
+    
+                if (\Auth::user()->type != 'company') {
+                    $tasks->whereRaw($this->findinSet.\Auth::user()->id.$this->usersSet);
+                }
+    
+                if($task_id_arr != null){
+                    $tasks->whereIn('con_tasks.id',$task_id_arr);
+                }
+    
+                if($get_start_date != null && $get_end_date != null){
+                    $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                        $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                    });
+                }
+    
+                if($user_id_arr != null){
+                    $tasks->where(function ($query) use ($user_id_arr) {
+                        foreach($user_id_arr as $get_user_id){
+                            if($get_user_id != ""){
+                                $query->orwhereJsonContains('con_tasks.users', $get_user_id);
+                            }
                         }
-                    }
-                });
-            }
-            if($status_task != null && $status_task == "3"){
-                $tasks->where('progress','<','100')
-                    ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-            }
-            elseif($status_task != null && $status_task == "4"){
-                $tasks->where('progress','>=','100');
-            }
-
-            if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
-                $get_end_date == null && $status_task == null){
-
-                        $tasks->whereIn('main_id', function ($query) {
-                            $query->select('task_id')
-                                ->from('task_progress')
-                                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
-                        });
-
-                $tasks->where(function($query) {
-                    $query->whereRaw('"'.date('Y-m-d').'"
-                        between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
-                        ->orwhere('progress', '<', '100')
+                    });
+                }
+                if($status_task != null && $status_task == "3"){
+                    $tasks->where('progress','<','100')
                         ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-                })
-                ->orderBy('con_tasks.end_date', 'DESC');
-            }
-
-            $project_task = $tasks->get();
-            $actual_current_progress = Con_task::where('project_id', Session::get('project_id'))
-            ->where('instance_id', Session::get('project_instance'))
-            ->orderBy('id', 'ASC')
-            ->pluck('progress')->first();
-            $actual_current_progress   = round($actual_current_progress);
-            $actual_remaining_progress = 100 - $actual_current_progress;
-            $actual_remaining_progress = round($actual_remaining_progress);
-            // current progress amount
-            $taskdata = [];
-            foreach ($project_task as  $value) {
-                $planned_start = date('d-m-Y', strtotime($value->start_date));
-                $planned_end = date('d-m-Y', strtotime($value->end_date));
-
-                $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
-                    ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->max('created_at');
-                $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
-                    ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->min('created_at');
-                if ($actual_start) {
-                    $actual_start = date('d-m-Y', strtotime($actual_start));
-                } else {
-                    $actual_start = $this->taskNotStarted;
                 }
-                if ($actual_end) {
-                    $actual_end = date('d-m-Y', strtotime($actual_end));
-                } else {
-                    $actual_end = $this->notFinish;
+                elseif($status_task != null && $status_task == "4"){
+                    $tasks->where('progress','>=','100');
                 }
-
-                if ($actual_end < $planned_end) {
-                    $actual_end = $this->notFinish;
+    
+                if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
+                    $get_end_date == null && $status_task == null){
+    
+                            $tasks->whereIn('main_id', function ($query) {
+                                $query->select('task_id')
+                                    ->from('task_progress')
+                                    ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
+                            });
+    
+                    $tasks->where(function($query) {
+                        $query->whereRaw('"'.date('Y-m-d').'"
+                            between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                            ->orwhere('progress', '<', '100')
+                            ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                    })
+                    ->orderBy('con_tasks.end_date', 'DESC');
                 }
-                $date2 = date_create($value->end_date);
-                $no_working_days = $value->duration; // include the last day
-                $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
-                $remaining_working_days = $remaining_working_days - 1; // include the last day
-
-
-                $completed_days = $no_working_days - $remaining_working_days;
-
-                // percentage calculator
-                if ($no_working_days > 0) {
-                    $perday = 100 / $no_working_days;
-                } else {
-                    $perday = 0;
-                }
-
-                $current_percentage = round($completed_days * $perday);
-                if ($current_percentage > 100) {
-                    $current_percentage = 100;
-                }
-                //####################################___END____#######################################
-                //  // actual duration finding
-                $taskdata[] = [
-                    'title' => $value->text,
-                    'planed_start' => $planned_start,
-                    'planed_end' => $planned_end,
-                    'duration' => $value->duration.$this->daysString,
-                    'percentage_as_today' => round($current_percentage),
-                    'actual_start' => $actual_start,
-                    'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.$this->daysString,
-                    'remain_duration' => $value->duration.$this->daysString,
-                    'actual_percent' => round($value->progress),
-                ];
-            }
-            $taskdata2 = [];
-            $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+    
+                $project_task = $tasks->get();
+                $actual_current_progress = Con_task::where('project_id', Session::get('project_id'))
                 ->where('instance_id', Session::get('project_instance'))
-                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
-            $instance_id = Session::get('project_instance');
-
-            foreach ($today_task_update as  $value) {
-                $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
-                $user = User::find($value->user_id);
-                if ($user) {
-                    $user_name = $user->name;
-                    $user_email = $user->email;
-                } else {
-                    $user_name = '';
-                    $user_email = '';
+                ->orderBy('id', 'ASC')
+                ->pluck('progress')->first();
+                $actual_current_progress   = round($actual_current_progress);
+                $actual_remaining_progress = 100 - $actual_current_progress;
+                $actual_remaining_progress = round($actual_remaining_progress);
+                // current progress amount
+                $taskdata = [];
+                foreach ($project_task as  $value) {
+                    $planned_start = date('d-m-Y', strtotime($value->start_date));
+                    $planned_end = date('d-m-Y', strtotime($value->end_date));
+    
+                    $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('task_id', $value->main_id)->max('created_at');
+                    $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('task_id', $value->main_id)->min('created_at');
+                    if ($actual_start) {
+                        $actual_start = date('d-m-Y', strtotime($actual_start));
+                    } else {
+                        $actual_start = $this->taskNotStarted;
+                    }
+                    if ($actual_end) {
+                        $actual_end = date('d-m-Y', strtotime($actual_end));
+                    } else {
+                        $actual_end = $this->notFinish;
+                    }
+    
+                    if ($actual_end < $planned_end) {
+                        $actual_end = $this->notFinish;
+                    }
+                    $date2 = date_create($value->end_date);
+                    $no_working_days = $value->duration; // include the last day
+                    $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
+                    $remaining_working_days = $remaining_working_days - 1; // include the last day
+    
+    
+                    $completed_days = $no_working_days - $remaining_working_days;
+    
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+    
+                    $current_percentage = round($completed_days * $perday);
+                    if ($current_percentage > 100) {
+                        $current_percentage = 100;
+                    }
+                    //####################################___END____#######################################
+                    //  // actual duration finding
+                    $taskdata[] = [
+                        'title' => $value->text,
+                        'planed_start' => $planned_start,
+                        'planed_end' => $planned_end,
+                        'duration' => $value->duration.$this->daysString,
+                        'percentage_as_today' => round($current_percentage),
+                        'actual_start' => $actual_start,
+                        'actual_end' => $actual_end,
+                        'actual_duration' => $value->duration.$this->daysString,
+                        'remain_duration' => $value->duration.$this->daysString,
+                        'actual_percent' => round($value->progress),
+                    ];
                 }
-
-                $taskdata2[] = [
-                    'title' => $main_task->text,
-                    'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.$this->daysString,
-                    'percentage' => $value->percentage.'%',
-                    'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
-                    'description' => $value->description,
-                    'user' => $user_name,
-                    'email' => $user_email,
-
-                ];
+                $taskdata2 = [];
+                $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                    ->where('instance_id', Session::get('project_instance'))
+                    ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
+                $instance_id = Session::get('project_instance');
+    
+                foreach ($today_task_update as  $value) {
+                    $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
+                    $user = User::find($value->user_id);
+                    if ($user) {
+                        $user_name = $user->name;
+                        $user_email = $user->email;
+                    } else {
+                        $user_name = '';
+                        $user_email = '';
+                    }
+    
+                    $taskdata2[] = [
+                        'title' => $main_task->text,
+                        'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'duration' => $main_task->duration.$this->daysString,
+                        'percentage' => $value->percentage.'%',
+                        'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
+                        'description' => $value->description,
+                        'user' => $user_name,
+                        'email' => $user_email,
+    
+                    ];
+                }
+                $to = [];
+                $to_array = explode(',', $project->report_to);
+                foreach ($to_array as  $value) {
+                    $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
+                }
+    
+                if (! $to) {
+                    return redirect()->back()->with('error', __($this->notAssign));
+                }
+                $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task',
+                'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))
+                ->setPaper('a4', 'landscape')->setWarnings(false);
+                $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
+    
+                return $pdf->download($pdf_name);
+                
+    
             }
-            $to = [];
-            $to_array = explode(',', $project->report_to);
-            foreach ($to_array as  $value) {
-                $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
-            }
-
-            if (! $to) {
-                return redirect()->back()->with('error', __($this->notAssign));
-            }
-            $pdf = Pdf::loadView('project_report.email', compact('taskdata', 'project', 'project_task',
-            'actual_current_progress', 'actual_remaining_progress', 'taskdata2'))
-            ->setPaper('a4', 'landscape')->setWarnings(false);
-            $pdf_name = $project->project_name.date('Y-m-d').'.pdf';
-
-            return $pdf->download($pdf_name);
-            
-
+        }else{
+            return redirect()
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
+       
     }
 
     public function excel_report_onsearch(Request $request)
     {
 
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
-            $project      = Project::where('id', Session::get('project_id'))->first();
-            $project_id     = Session::get('project_id');
-            $instance_id    = Session::get('project_instance');
-            $get_start_date = $request->start_date;
-            $get_end_date   = $request->end_date;
-            $status_task    = $request->status_task;
-            $task_id_arr    = $request->task_id_arr;
-            $user_id_arr    = $request->user_id;
+        if(\Auth::user()->can("download daily report")){
+            if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
+                $project      = Project::where('id', Session::get('project_id'))->first();
+                $project_id     = Session::get('project_id');
+                $instance_id    = Session::get('project_instance');
+                $get_start_date = $request->start_date;
+                $get_end_date   = $request->end_date;
+                $status_task    = $request->status_task;
+                $task_id_arr    = $request->task_id_arr;
+                $user_id_arr    = $request->user_id;
+        
+                $tasks = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
+                    'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
+                    'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
+                    'pros.id as project_id', 'pros.instance_id as pro_instance_id')
+                    ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
+                    ->whereNotNull('pros.instance_id')
+                    ->where('con_tasks.project_id', $project_id)
+                    ->where('con_tasks.instance_id', $instance_id);
     
-            $tasks = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
-                'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
-                'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
-                'pros.id as project_id', 'pros.instance_id as pro_instance_id')
-                ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
-                ->whereNotNull('pros.instance_id')
-                ->where('con_tasks.project_id', $project_id)
-                ->where('con_tasks.instance_id', $instance_id);
-
-            if (\Auth::user()->type != 'company') {
-                $tasks->whereRaw($this->findinSet.\Auth::user()->id.$this->usersSet);
-            }
-
-            if($task_id_arr != null){
-                $tasks->whereIn('con_tasks.id',$task_id_arr);
-            }
-
-            if($get_start_date != null && $get_end_date != null){
-                $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
-                    $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
-                    $query->whereDate('con_tasks.end_date', '<', $get_end_date);
-                });
-            }
-
-            if($user_id_arr != null){
-                $tasks->where(function ($query) use ($user_id_arr) {
-                    foreach($user_id_arr as $get_user_id){
-                        if($get_user_id != ""){
-                            $query->orwhereJsonContains('con_tasks.users', $get_user_id);
+                if (\Auth::user()->type != 'company') {
+                    $tasks->whereRaw($this->findinSet.\Auth::user()->id.$this->usersSet);
+                }
+    
+                if($task_id_arr != null){
+                    $tasks->whereIn('con_tasks.id',$task_id_arr);
+                }
+    
+                if($get_start_date != null && $get_end_date != null){
+                    $tasks->where(function ($query) use ($get_start_date, $get_end_date) {
+                        $query->whereDate('con_tasks.start_date', '>=', $get_start_date);
+                        $query->whereDate('con_tasks.end_date', '<', $get_end_date);
+                    });
+                }
+    
+                if($user_id_arr != null){
+                    $tasks->where(function ($query) use ($user_id_arr) {
+                        foreach($user_id_arr as $get_user_id){
+                            if($get_user_id != ""){
+                                $query->orwhereJsonContains('con_tasks.users', $get_user_id);
+                            }
                         }
-                    }
-                });
-            }
-
-            if($status_task != null && $status_task == "3"){
-                $tasks->where('progress','<','100')
-                    ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-            }
-            elseif($status_task != null && $status_task == "4"){
-                $tasks->where('progress','>=','100');
-            }
-
-            if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
-                $get_end_date == null && $status_task == null){
-                        $tasks->whereIn('main_id', function ($query) {
-                            $query->select('task_id')
-                                ->from('task_progress')
-                                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
-                        });
-                $tasks->where(function($query) {
-                    $query->whereRaw('"'.date('Y-m-d').'"
-                        between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
-                        ->orwhere('progress', '<', '100')
+                    });
+                }
+    
+                if($status_task != null && $status_task == "3"){
+                    $tasks->where('progress','<','100')
                         ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
-                })
-                ->orderBy('con_tasks.end_date', 'DESC');
-            }
-
-            $project_task = $tasks->get();
-            // current progress amount
-            $taskdata = [];
-            foreach ($project_task as $value) {
-                $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                }
+                elseif($status_task != null && $status_task == "4"){
+                    $tasks->where('progress','>=','100');
+                }
+    
+                if($task_id_arr == null && $user_id_arr == null && $get_start_date == null &&
+                    $get_end_date == null && $status_task == null){
+                            $tasks->whereIn('main_id', function ($query) {
+                                $query->select('task_id')
+                                    ->from('task_progress')
+                                    ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
+                            });
+                    $tasks->where(function($query) {
+                        $query->whereRaw('"'.date('Y-m-d').'"
+                            between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                            ->orwhere('progress', '<', '100')
+                            ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                    })
+                    ->orderBy('con_tasks.end_date', 'DESC');
+                }
+    
+                $project_task = $tasks->get();
+                // current progress amount
+                $taskdata = [];
+                foreach ($project_task as $value) {
+                    $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('task_id', $value->main_id)->max('created_at');
+                    $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('task_id', $value->main_id)->min('created_at');
+                    if ($actual_start) {
+                        $actual_start = date('d-m-Y', strtotime($actual_start));
+                    } else {
+                        $actual_start = $this->taskNotStarted;
+                    }
+    
+                    if ($actual_end) {
+                        $actual_end = date('d-m-Y', strtotime($actual_end));
+                    } else {
+                        $actual_end = $this->notFinish;
+                    }
+    
+                    if ($actual_end < date('d-m-Y', strtotime($value->end_date))) {
+                        $actual_end = $this->notFinish;
+                    }
+                    $date2 = date_create($value->end_date);
+                    $no_working_days = $value->duration; // include the last day
+                    $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
+                    $remaining_working_days = $remaining_working_days - 1; // include the last day
+                    $completed_days = $no_working_days - $remaining_working_days;
+    
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+    
+                    $current_percentage = round($completed_days * $perday);
+                    if ($current_percentage > 100) {
+                        $current_percentage = 100;
+                    }
+                    //  // actual duration finding
+                    $taskdata[] = [
+                        'title' => $value->text,
+                        'planed_start' => date('d-m-Y', strtotime($value->start_date)),
+                        'planed_end' => date('d-m-Y', strtotime($value->end_date)),
+                        'duration' => $value->duration.$this->daysString,
+                        'percentage_as_today' => round($current_percentage),
+                        'actual_start' => $actual_start,
+                        'actual_end' => $actual_end,
+                        'actual_duration' => $value->duration.$this->daysString,
+                        'remain_duration' => $value->duration.$this->daysString,
+                        'actual_percent' => round($value->progress),
+                    ];
+                }
+                $taskdata2 = [];
+                $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->max('created_at');
-                $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
-                    ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->min('created_at');
-                if ($actual_start) {
-                    $actual_start = date('d-m-Y', strtotime($actual_start));
-                } else {
-                    $actual_start = $this->taskNotStarted;
+                    ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
+                $instance_id = Session::get('project_instance');
+    
+                foreach ($today_task_update as  $value) {
+                    $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
+                    $user = User::find($value->user_id);
+                    if ($user) {
+                        $user_name = $user->name;
+                        $user_email = $user->email;
+                    } else {
+                        $user_name = '';
+                        $user_email = '';
+                    }
+    
+                    $taskdata2[] = [
+                        'title' => $main_task->text,
+                        'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'duration' => $main_task->duration.$this->daysString,
+                        'percentage' => $value->percentage.'%',
+                        'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
+                        'description' => $value->description,
+                        'user' => $user_name,
+                        'email' => $user_email,
+    
+                    ];
                 }
-
-                if ($actual_end) {
-                    $actual_end = date('d-m-Y', strtotime($actual_end));
-                } else {
-                    $actual_end = $this->notFinish;
+                
+                $to = [];
+                $to_array = explode(',', $project->report_to);
+                foreach ($to_array as  $value) {
+                    $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
                 }
-
-                if ($actual_end < date('d-m-Y', strtotime($value->end_date))) {
-                    $actual_end = $this->notFinish;
+    
+                if (! $to) {
+                    return redirect()->back()->with('error', __($this->notAssign));
                 }
-                $date2 = date_create($value->end_date);
-                $no_working_days = $value->duration; // include the last day
-                $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
-                $remaining_working_days = $remaining_working_days - 1; // include the last day
-                $completed_days = $no_working_days - $remaining_working_days;
-
-                // percentage calculator
-                if ($no_working_days > 0) {
-                    $perday = 100 / $no_working_days;
-                } else {
-                    $perday = 0;
-                }
-
-                $current_percentage = round($completed_days * $perday);
-                if ($current_percentage > 100) {
-                    $current_percentage = 100;
-                }
-                //  // actual duration finding
-                $taskdata[] = [
-                    'title' => $value->text,
-                    'planed_start' => date('d-m-Y', strtotime($value->start_date)),
-                    'planed_end' => date('d-m-Y', strtotime($value->end_date)),
-                    'duration' => $value->duration.$this->daysString,
-                    'percentage_as_today' => round($current_percentage),
-                    'actual_start' => $actual_start,
-                    'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.$this->daysString,
-                    'remain_duration' => $value->duration.$this->daysString,
-                    'actual_percent' => round($value->progress),
-                ];
+    
+                $this->generateReport($taskdata,$taskdata2,$project);
+                 
             }
-            $taskdata2 = [];
-            $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
-                ->where('instance_id', Session::get('project_instance'))
-                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
-            $instance_id = Session::get('project_instance');
-
-            foreach ($today_task_update as  $value) {
-                $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
-                $user = User::find($value->user_id);
-                if ($user) {
-                    $user_name = $user->name;
-                    $user_email = $user->email;
-                } else {
-                    $user_name = '';
-                    $user_email = '';
-                }
-
-                $taskdata2[] = [
-                    'title' => $main_task->text,
-                    'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.$this->daysString,
-                    'percentage' => $value->percentage.'%',
-                    'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
-                    'description' => $value->description,
-                    'user' => $user_name,
-                    'email' => $user_email,
-
-                ];
-            }
-            
-            $to = [];
-            $to_array = explode(',', $project->report_to);
-            foreach ($to_array as  $value) {
-                $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
-            }
-
-            if (! $to) {
-                return redirect()->back()->with('error', __($this->notAssign));
-            }
-
-            $this->generateReport($taskdata,$taskdata2,$project);
-             
+        }else{
+            return redirect()
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
+       
     }
     public function generateReport($taskdata,$taskdata2,$project){
         $spreadsheet = new Spreadsheet();
@@ -889,255 +909,261 @@ class ProjectReportController extends Controller
     }
     public function download_excel_report(Request $request)
     {
-
-        if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
-            $project      = Project::where('id', Session::get('project_id'))->first();
-            $project_task = Con_task::where('project_id', Session::get('project_id'))
-                ->where('instance_id', Session::get('project_instance'))
-                ->whereIn('main_id', function ($query) {
-                    $query->select('task_id')
-                        ->from('task_progress')
-                        ->where('instance_id', Session::get('project_instance'))
-                        ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
-                })->get();
-            $actual_current_progress = Con_task::where('project_id', Session::get('project_id'))
-                ->where('instance_id', Session::get('project_instance'))
-                ->orderBy('id', 'ASC')
-                ->pluck('progress')->first();
-            $actual_current_progress   = round($actual_current_progress);
-            $actual_remaining_progress = 100 - $actual_current_progress;
-            $actual_remaining_progress = round($actual_remaining_progress);
-            // current progress amount
-            $taskdata = [];
-            foreach ($project_task as $value) {
-                $planned_start = date('d-m-Y', strtotime($value->start_date));
-                $planned_end = date('d-m-Y', strtotime($value->end_date));
-
-                $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+        if (\Auth::user()->can("email daily report")) {
+            if (\Auth::user()->type == 'company' || \Auth::user()->type == $this->typeSuperAdmin) {
+                $project      = Project::where('id', Session::get('project_id'))->first();
+                $project_task = Con_task::where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->max('created_at');
-                $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                    ->whereIn('main_id', function ($query) {
+                        $query->select('task_id')
+                            ->from('task_progress')
+                            ->where('instance_id', Session::get('project_instance'))
+                            ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%');
+                    })->get();
+                $actual_current_progress = Con_task::where('project_id', Session::get('project_id'))
                     ->where('instance_id', Session::get('project_instance'))
-                    ->where('task_id', $value->main_id)->min('created_at');
-                if ($actual_start) {
-                    $actual_start = date('d-m-Y', strtotime($actual_start));
-                } else {
-                    $actual_start = $this->taskNotStarted;
-                }
-
-                if ($actual_end) {
-                    $actual_end = date('d-m-Y', strtotime($actual_end));
-                } else {
-                    $actual_end = $this->notFinish;
-                }
-
-                if ($actual_end < $planned_end) {
-                    $actual_end = $this->notFinish;
-                }
-                $date2 = date_create($value->end_date);
-                $no_working_days = $value->duration; // include the last day
-                $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
-                $remaining_working_days = $remaining_working_days - 1; // include the last day
-                $completed_days = $no_working_days - $remaining_working_days;
-                // percentage calculator
-                if ($no_working_days > 0) {
-                    $perday = 100 / $no_working_days;
-                } else {
-                    $perday = 0;
-                }
-                $current_percentage = round($completed_days * $perday);
-                if ($current_percentage > 100) {
-                    $current_percentage = 100;
-                }
-                $taskdata[] = [
-                    'title' => $value->text,
-                    'planed_start' => $planned_start,
-                    'planed_end' => $planned_end,
-                    'duration' => $value->duration.$this->daysString,
-                    'percentage_as_today' => round($current_percentage),
-                    'actual_start' => $actual_start,
-                    'actual_end' => $actual_end,
-                    'actual_duration' => $value->duration.$this->daysString,
-                    'remain_duration' => $value->duration.$this->daysString,
-                    'actual_percent' => round($value->progress),
-                ];
-            }
-            $taskdata2 = [];
-            $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
-                ->where('instance_id', Session::get('project_instance'))
-                ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
-            $instance_id = Session::get('project_instance');
-
-            foreach ($today_task_update as  $value) {
-                $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
-                $user = User::find($value->user_id);
-                if ($user) {
-                    $user_name = $user->name;
-                    $user_email = $user->email;
-                } else {
-                    $user_name = '';
-                    $user_email = '';
-                }
-
-                $taskdata2[] = [
-                    'title' => $main_task->text,
-                    'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
-                    'duration' => $main_task->duration.$this->daysString,
-                    'percentage' => $value->percentage.'%',
-                    'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
-                    'description' => $value->description,
-                    'user' => $user_name,
-                    'email' => $user_email,
-
-                ];
-            }
-            $to = [];
-            $to_array = explode(',', $project->report_to);
-            foreach ($to_array as  $value) {
-                $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
-            }
-
-            if (! $to) {
-                return redirect()->back()->with('error', __($this->notAssign));
-            }
-
-            $spreadsheet = new Spreadsheet();
-            $sheet=$spreadsheet;
-            $spreadsheet->getProperties()->setCreator('PhpOffice')
-                        ->setLastModifiedBy('PhpOffice')
-                        ->setTitle('Schedule')
-                        ->setSubject('Office 2007 XLSX Test Document')
-                        ->setDescription('PhpOffice')
-                        ->setKeywords('PhpOffice')
-                        ->setCategory('PhpOffice');
+                    ->orderBy('id', 'ASC')
+                    ->pluck('progress')->first();
+                $actual_current_progress   = round($actual_current_progress);
+                $actual_remaining_progress = 100 - $actual_current_progress;
+                $actual_remaining_progress = round($actual_remaining_progress);
+                // current progress amount
+                $taskdata = [];
+                foreach ($project_task as $value) {
+                    $planned_start = date('d-m-Y', strtotime($value->start_date));
+                    $planned_end = date('d-m-Y', strtotime($value->end_date));
     
-                        $styleArray = array(            // font color
-                            'font'  => array(
-                                'bold'  => true,
-                                'color' => array('rgb' => 'ffffff')
-                            ));
-            // Rename worksheet
-            $sheet->getActiveSheet()->setTitle('Main Task List');
-            $sheet->getActiveSheet()->getColumnDimension('A')->setWidth(30);
-            $sheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
-            $sheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
-            $sheet->getActiveSheet()->getColumnDimension('D')->setWidth(30);
-            $sheet->getActiveSheet()->getColumnDimension('E')->setWidth(50);
-            $sheet->getActiveSheet()->getColumnDimension('F')->setWidth(50);
-            $sheet->getActiveSheet()->getColumnDimension('G')->setWidth(50);
-            $sheet->getActiveSheet()->getColumnDimension('H')->setWidth(50);
-            $sheet->getActiveSheet()->getColumnDimension('I')->setWidth(50);
-            $sheet->getActiveSheet()->getColumnDimension('J')->setWidth(50);
-            $sheet->getActiveSheet()->getColumnDimension('K')->setWidth(50);
-            $sheet->getActiveSheet()->setCellValue('A1','Title');
-            $sheet->getActiveSheet()->setCellValue('B1',$this->plannedStartDate);
-            $sheet->getActiveSheet()->setCellValue('C1',$this->plannedFinish);
-            $sheet->getActiveSheet()->setCellValue('D1','Duration');
-            $sheet->getActiveSheet()->setCellValue('E1','Planned % as of today');
-            $sheet->getActiveSheet()->setCellValue('F1','Planned Value');
-            $sheet->getActiveSheet()->setCellValue('G1','Actual Start Date');
-            $sheet->getActiveSheet()->setCellValue('H1','Actual Finish');
-            $sheet->getActiveSheet()->setCellValue('I1','Actual Duration');
-            $sheet->getActiveSheet()->setCellValue('J1','Actual % as of Today');
-            $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
-            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()->setARGB($this->sheetbgColor); // cell color
-            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray);
-            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center');
-            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center');
-            
-            if(count($taskdata)>0){
-                foreach ($taskdata as  $value) {
-                    $row=2;
-                    $sheet->getActiveSheet()->setCellValue('A'.$row,$value['title']);
-                    $sheet->getActiveSheet()->setCellValue('B'.$row,$value['planed_start']);
-                    $sheet->getActiveSheet()->setCellValue('C'.$row,$value['planed_end']);
-                    $sheet->getActiveSheet()->setCellValue('D'.$row,$value['duration']);
-                    $sheet->getActiveSheet()->setCellValue('E'.$row,$value['percentage_as_today']);
-                    $sheet->getActiveSheet()->setCellValue('F'.$row,'');
-                    $sheet->getActiveSheet()->setCellValue('G'.$row,$value['actual_start']);
-                    $sheet->getActiveSheet()->setCellValue('H'.$row,$value['actual_end']);
-                    $sheet->getActiveSheet()->setCellValue('I'.$row,$value['actual_duration']);
-                    $sheet->getActiveSheet()->setCellValue('J'.$row,$value['actual_percent']);
-                    $sheet->getActiveSheet()->setCellValue('K'.$row,'');
-                    $row++;
-                    if($value['percentage_as_today'] != $value['actual_percent']){
-                        $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
-                        ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                        ->getStartColor()->setARGB('ffbfbd'); // cell color
+                    $actual_start = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('task_id', $value->main_id)->max('created_at');
+                    $actual_end = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                        ->where('instance_id', Session::get('project_instance'))
+                        ->where('task_id', $value->main_id)->min('created_at');
+                    if ($actual_start) {
+                        $actual_start = date('d-m-Y', strtotime($actual_start));
+                    } else {
+                        $actual_start = $this->taskNotStarted;
                     }
+    
+                    if ($actual_end) {
+                        $actual_end = date('d-m-Y', strtotime($actual_end));
+                    } else {
+                        $actual_end = $this->notFinish;
+                    }
+    
+                    if ($actual_end < $planned_end) {
+                        $actual_end = $this->notFinish;
+                    }
+                    $date2 = date_create($value->end_date);
+                    $no_working_days = $value->duration; // include the last day
+                    $remaining_working_days = Utility::remaining_duration_calculator($date2, $project->id);
+                    $remaining_working_days = $remaining_working_days - 1; // include the last day
+                    $completed_days = $no_working_days - $remaining_working_days;
+                    // percentage calculator
+                    if ($no_working_days > 0) {
+                        $perday = 100 / $no_working_days;
+                    } else {
+                        $perday = 0;
+                    }
+                    $current_percentage = round($completed_days * $perday);
+                    if ($current_percentage > 100) {
+                        $current_percentage = 100;
+                    }
+                    $taskdata[] = [
+                        'title' => $value->text,
+                        'planed_start' => $planned_start,
+                        'planed_end' => $planned_end,
+                        'duration' => $value->duration.$this->daysString,
+                        'percentage_as_today' => round($current_percentage),
+                        'actual_start' => $actual_start,
+                        'actual_end' => $actual_end,
+                        'actual_duration' => $value->duration.$this->daysString,
+                        'remain_duration' => $value->duration.$this->daysString,
+                        'actual_percent' => round($value->progress),
+                    ];
                 }
-            }else{
-                $sheet->getActiveSheet()->mergeCells($this->sheetRows);
-                $sheet->getActiveSheet()->setCellValue('A2',$this->norecord);
-                $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setHorizontal('center');
-                $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setVertical('center');
-            }
-
-            $worksheet2 = $spreadsheet->createSheet();
-            $worksheet2->setTitle('Today Updated Task List'); 
-            $worksheet2->getColumnDimension('A')->setWidth(30);
-            $worksheet2->getColumnDimension('B')->setWidth(30);
-            $worksheet2->getColumnDimension('C')->setWidth(30);
-            $worksheet2->getColumnDimension('D')->setWidth(30);
-            $worksheet2->getColumnDimension('E')->setWidth(50);
-            $worksheet2->getColumnDimension('F')->setWidth(50);
-            $worksheet2->getColumnDimension('G')->setWidth(50);
-            $worksheet2->getColumnDimension('H')->setWidth(50);
-            $worksheet2->getColumnDimension('I')->setWidth(50);
-            $worksheet2->getColumnDimension('J')->setWidth(50);
-            $worksheet2->getColumnDimension('K')->setWidth(50);
-            $worksheet2->setCellValue('A1','Title');
-            $worksheet2->setCellValue('B1',$this->plannedStartDate);
-            $worksheet2->setCellValue('C1',$this->plannedFinish);
-            $worksheet2->setCellValue('D1','Duration');
-            $worksheet2->setCellValue('E1','Percentage');
-            $worksheet2->setCellValue('F1','Progress Updated Date');
-            $worksheet2->setCellValue('G1','Description');
-            $worksheet2->setCellValue('H1','User Name');
-            $worksheet2->setCellValue('I1','User Email');
-            $worksheet2->getStyle($this->sheetCol1)->getFill()
-            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-            ->getStartColor()->setARGB($this->sheetbgColor); // cell color
-            $worksheet2->getStyle($this->sheetCol1)->applyFromArray($styleArray);
-            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setHorizontal('center');
-            $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setVertical('center');
-
-            if(count($taskdata2)>0){
-                foreach ($taskdata2 as  $value) {
-                    $row=2;
-                    $worksheet2->setCellValue('A'.$row,$value['title']);
-                    $worksheet2->setCellValue('B'.$row,$value['planed_start']);
-                    $worksheet2->setCellValue('C'.$row,$value['planed_end']);
-                    $worksheet2->setCellValue('D'.$row,$value['duration']);
-                    $worksheet2->setCellValue('E'.$row,$value['percentage']);
-                    $worksheet2->setCellValue('F'.$row,$value['progress_updated_date']);
-                    $worksheet2->setCellValue('G'.$row,$value['description']);
-                    $worksheet2->setCellValue('H'.$row,$value['user']);
-                    $worksheet2->setCellValue('I'.$row,$value['email']);
-                    $row++;
-
+                $taskdata2 = [];
+                $today_task_update = DB::table('task_progress')->where('project_id', Session::get('project_id'))
+                    ->where('instance_id', Session::get('project_instance'))
+                    ->where('record_date', 'like', Carbon::now()->format('Y-m-d').'%')->get();
+                $instance_id = Session::get('project_instance');
+    
+                foreach ($today_task_update as  $value) {
+                    $main_task = Con_task::where(['main_id' => $value->task_id, 'instance_id' => $instance_id])->first();
+                    $user = User::find($value->user_id);
+                    if ($user) {
+                        $user_name = $user->name;
+                        $user_email = $user->email;
+                    } else {
+                        $user_name = '';
+                        $user_email = '';
+                    }
+    
+                    $taskdata2[] = [
+                        'title' => $main_task->text,
+                        'planed_start' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'planed_end' => date('d-m-Y', strtotime($main_task->start_date)),
+                        'duration' => $main_task->duration.$this->daysString,
+                        'percentage' => $value->percentage.'%',
+                        'progress_updated_date' => date('d-m-Y', strtotime($value->record_date)),
+                        'description' => $value->description,
+                        'user' => $user_name,
+                        'email' => $user_email,
+    
+                    ];
                 }
-            }else{
-                $worksheet2->mergeCells($this->sheetCol2);
-                $worksheet2->setCellValue('A2',$this->norecord);
-                $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setHorizontal('center');
-                $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setVertical('center');
+                $to = [];
+                $to_array = explode(',', $project->report_to);
+                foreach ($to_array as  $value) {
+                    $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
+                }
+    
+                if (! $to) {
+                    return redirect()->back()->with('error', __($this->notAssign));
+                }
+    
+                $spreadsheet = new Spreadsheet();
+                $sheet=$spreadsheet;
+                $spreadsheet->getProperties()->setCreator('PhpOffice')
+                            ->setLastModifiedBy('PhpOffice')
+                            ->setTitle('Schedule')
+                            ->setSubject('Office 2007 XLSX Test Document')
+                            ->setDescription('PhpOffice')
+                            ->setKeywords('PhpOffice')
+                            ->setCategory('PhpOffice');
+        
+                            $styleArray = array(            // font color
+                                'font'  => array(
+                                    'bold'  => true,
+                                    'color' => array('rgb' => 'ffffff')
+                                ));
+                // Rename worksheet
+                $sheet->getActiveSheet()->setTitle('Main Task List');
+                $sheet->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+                $sheet->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+                $sheet->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+                $sheet->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+                $sheet->getActiveSheet()->getColumnDimension('E')->setWidth(50);
+                $sheet->getActiveSheet()->getColumnDimension('F')->setWidth(50);
+                $sheet->getActiveSheet()->getColumnDimension('G')->setWidth(50);
+                $sheet->getActiveSheet()->getColumnDimension('H')->setWidth(50);
+                $sheet->getActiveSheet()->getColumnDimension('I')->setWidth(50);
+                $sheet->getActiveSheet()->getColumnDimension('J')->setWidth(50);
+                $sheet->getActiveSheet()->getColumnDimension('K')->setWidth(50);
+                $sheet->getActiveSheet()->setCellValue('A1','Title');
+                $sheet->getActiveSheet()->setCellValue('B1',$this->plannedStartDate);
+                $sheet->getActiveSheet()->setCellValue('C1',$this->plannedFinish);
+                $sheet->getActiveSheet()->setCellValue('D1','Duration');
+                $sheet->getActiveSheet()->setCellValue('E1','Planned % as of today');
+                $sheet->getActiveSheet()->setCellValue('F1','Planned Value');
+                $sheet->getActiveSheet()->setCellValue('G1','Actual Start Date');
+                $sheet->getActiveSheet()->setCellValue('H1','Actual Finish');
+                $sheet->getActiveSheet()->setCellValue('I1','Actual Duration');
+                $sheet->getActiveSheet()->setCellValue('J1','Actual % as of Today');
+                $sheet->getActiveSheet()->setCellValue('K1','Earned Value');
+                $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB($this->sheetbgColor); // cell color
+                $sheet->getActiveSheet()->getStyle($this->sheetRows1)->applyFromArray($styleArray);
+                $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setHorizontal('center');
+                $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getAlignment()->setVertical('center');
+                
+                if(count($taskdata)>0){
+                    foreach ($taskdata as  $value) {
+                        $row=2;
+                        $sheet->getActiveSheet()->setCellValue('A'.$row,$value['title']);
+                        $sheet->getActiveSheet()->setCellValue('B'.$row,$value['planed_start']);
+                        $sheet->getActiveSheet()->setCellValue('C'.$row,$value['planed_end']);
+                        $sheet->getActiveSheet()->setCellValue('D'.$row,$value['duration']);
+                        $sheet->getActiveSheet()->setCellValue('E'.$row,$value['percentage_as_today']);
+                        $sheet->getActiveSheet()->setCellValue('F'.$row,'');
+                        $sheet->getActiveSheet()->setCellValue('G'.$row,$value['actual_start']);
+                        $sheet->getActiveSheet()->setCellValue('H'.$row,$value['actual_end']);
+                        $sheet->getActiveSheet()->setCellValue('I'.$row,$value['actual_duration']);
+                        $sheet->getActiveSheet()->setCellValue('J'.$row,$value['actual_percent']);
+                        $sheet->getActiveSheet()->setCellValue('K'.$row,'');
+                        $row++;
+                        if($value['percentage_as_today'] != $value['actual_percent']){
+                            $sheet->getActiveSheet()->getStyle($this->sheetRows1)->getFill()
+                            ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                            ->getStartColor()->setARGB('ffbfbd'); // cell color
+                        }
+                    }
+                }else{
+                    $sheet->getActiveSheet()->mergeCells($this->sheetRows);
+                    $sheet->getActiveSheet()->setCellValue('A2',$this->norecord);
+                    $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setHorizontal('center');
+                    $sheet->getActiveSheet()->getStyle($this->sheetRows)->getAlignment()->setVertical('center');
+                }
+    
+                $worksheet2 = $spreadsheet->createSheet();
+                $worksheet2->setTitle('Today Updated Task List'); 
+                $worksheet2->getColumnDimension('A')->setWidth(30);
+                $worksheet2->getColumnDimension('B')->setWidth(30);
+                $worksheet2->getColumnDimension('C')->setWidth(30);
+                $worksheet2->getColumnDimension('D')->setWidth(30);
+                $worksheet2->getColumnDimension('E')->setWidth(50);
+                $worksheet2->getColumnDimension('F')->setWidth(50);
+                $worksheet2->getColumnDimension('G')->setWidth(50);
+                $worksheet2->getColumnDimension('H')->setWidth(50);
+                $worksheet2->getColumnDimension('I')->setWidth(50);
+                $worksheet2->getColumnDimension('J')->setWidth(50);
+                $worksheet2->getColumnDimension('K')->setWidth(50);
+                $worksheet2->setCellValue('A1','Title');
+                $worksheet2->setCellValue('B1',$this->plannedStartDate);
+                $worksheet2->setCellValue('C1',$this->plannedFinish);
+                $worksheet2->setCellValue('D1','Duration');
+                $worksheet2->setCellValue('E1','Percentage');
+                $worksheet2->setCellValue('F1','Progress Updated Date');
+                $worksheet2->setCellValue('G1','Description');
+                $worksheet2->setCellValue('H1','User Name');
+                $worksheet2->setCellValue('I1','User Email');
+                $worksheet2->getStyle($this->sheetCol1)->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()->setARGB($this->sheetbgColor); // cell color
+                $worksheet2->getStyle($this->sheetCol1)->applyFromArray($styleArray);
+                $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setHorizontal('center');
+                $worksheet2->getStyle($this->sheetCol1)->getAlignment()->setVertical('center');
+    
+                if(count($taskdata2)>0){
+                    foreach ($taskdata2 as  $value) {
+                        $row=2;
+                        $worksheet2->setCellValue('A'.$row,$value['title']);
+                        $worksheet2->setCellValue('B'.$row,$value['planed_start']);
+                        $worksheet2->setCellValue('C'.$row,$value['planed_end']);
+                        $worksheet2->setCellValue('D'.$row,$value['duration']);
+                        $worksheet2->setCellValue('E'.$row,$value['percentage']);
+                        $worksheet2->setCellValue('F'.$row,$value['progress_updated_date']);
+                        $worksheet2->setCellValue('G'.$row,$value['description']);
+                        $worksheet2->setCellValue('H'.$row,$value['user']);
+                        $worksheet2->setCellValue('I'.$row,$value['email']);
+                        $row++;
+    
+                    }
+                }else{
+                    $worksheet2->mergeCells($this->sheetCol2);
+                    $worksheet2->setCellValue('A2',$this->norecord);
+                    $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setHorizontal('center');
+                    $sheet->getActiveSheet()->getStyle($this->sheetCol2)->getAlignment()->setVertical('center');
+                }
+    
+                $download_directory = './Report_list.xlsx';
+                $writer = IOFactory::createWriter($sheet, 'Xlsx');
+                $writer->save($download_directory);
+                $content = file_get_contents($download_directory);
+                $filename= $project->project_name.'_Daily Site Workdone Producivity Report_'
+                .date('Y-m-d H:i:s').$this->xslxExtension;
+                header("Content-Disposition: attachment; filename=".$filename);
+                unlink($download_directory);
+                exit($content);
+                 
             }
-
-            $download_directory = './Report_list.xlsx';
-            $writer = IOFactory::createWriter($sheet, 'Xlsx');
-			$writer->save($download_directory);
-			$content = file_get_contents($download_directory);
-			$filename= $project->project_name.'_Daily Site Workdone Producivity Report_'
-            .date('Y-m-d H:i:s').$this->xslxExtension;
-			header("Content-Disposition: attachment; filename=".$filename);
-			unlink($download_directory);
-            exit($content);
-             
+        }else{
+            return redirect()
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
+    
     }
     // cron email
     public function cronmail(Request $request)
