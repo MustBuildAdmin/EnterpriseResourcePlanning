@@ -185,7 +185,7 @@ if($delay>100){
                   <div class="d-flex align-items-center">
                     <div class="subheader">{{ __('Total Task')}}</div>
                   </div>
-                  <div class="h1 mb-3">{{$total_sub }} {{ __('Tasks')}}</div>
+                  <div class="h1 mb-3">{{$project_data['task']['total'] }} {{ __('Tasks')}}</div>
                   <div class="d-flex mb-2">
                     <div>{{ __('Planned Percentage')}}</div>
                     <div class="ms-auto">
