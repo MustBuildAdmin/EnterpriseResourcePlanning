@@ -38,9 +38,10 @@ class Reportemail implements ShouldQueue
         $project_id = $this->podcast;
         ///   sending report  ############################################
         $project = Project::where('id', $project_id)->first();
-        $instance_id = $project->instance_id;
+        $instance=DB::table('instance')->where(['project_id' => $project_id,'freeze_status'=>1])->orderBy('id','DESC')->pluck('instance')->first();
+        $instance_id = $instance;
 
-        $project_task = Con_task::where('project_id', $project_id)->where('instance_id', $project->instance_id)
+        $project_task = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
             ->where('updated_at', 'like', Carbon::now()->format('Y-m-d').'%')->where('type', 'project')->get();
 
         //    $project_task=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])
@@ -166,9 +167,10 @@ class Reportemail implements ShouldQueue
             ];
         }
         $to = [];
-        $to_array = explode(',', $project->report_to);
+        $to_array=DB::table('project_users')->where('project_id', $project_id)->get();
+        // $to_array = explode(',', $project->report_to);
         foreach ($to_array as $key => $value) {
-            $to[] = DB::table('users')->where('id', $value)->pluck('email')->first();
+            $to[] = DB::table('users')->where('id', $value->user_id)->pluck('email')->first();
         }
 
         if ($to) {

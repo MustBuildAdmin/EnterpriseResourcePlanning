@@ -3510,7 +3510,78 @@ class Utility extends Model
         }
 
     }
+    public static function time_to_utc($time)
+    {
+        $carbon = \Carbon\Carbon::parse($time);
+        $utcTime = $carbon->utc()->format('H:i');
+        return $utcTime;
+    }
 
+    public static function exclude_date_calculator($end,$add, $id)
+    {
+        $project = DB::table('projects')->where('id', $id)->first();
+        if (Session::has('project_instance')) {
+            $instance_id = Session::get('project_instance');
+        } else {
+            $checkInstanceFre = Instance::where('project_id',$id)->orderBy('id','DESC')->first();
+            $instance_id = $checkInstanceFre->instance_id;
+        }
+
+        $holidays = DB::table('project_holidays')->where(['project_id' => $id, 'instance_id' => $instance_id])->get();
+      
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $id)
+            ->where('instance_id', $instance_id)->first();
+        if ($project) {
+            if ($nonWorkingDay != null) {
+                $weekarray = explode(',', $nonWorkingDay->non_working_days);
+            } else {
+                $weekarray = [];
+            }
+
+            $excluded_dates = [];
+ 
+            if (count($holidays) > 0) {
+                foreach ($holidays as $key => $value) {
+                    $excluded_dates[] = Carbon::create($value->date);
+                }
+            }
+           
+            $final_count = 0;
+  
+            $start_date = Carbon::create($end);
+            $end_date = Carbon::create($end)->addDay($add);
+            $date_range = CarbonPeriod::create($start_date, $end_date);
+            $n=1;
+            $extra_da=0;
+            for ($i=0; $i < $n ; $i++) { 
+                if($final_count!=0){
+                    $change_end = Carbon::create($end_date)->addDay($extra_da);
+                    $date_range = CarbonPeriod::create($start_date, $change_end);
+                }else{
+                    $change_end=$end_date;
+                }
+                $extra_da=0;
+               foreach ($date_range as $date) {
+                    if ( in_array($date->dayOfWeek, $weekarray) || in_array($date, $excluded_dates)) {
+                        $extra_da++;
+                    }
+                }
+                $final_count++;
+                if($extra_da >0){
+                    $n=$extra_da;
+                    
+                }
+            }
+            
+
+            return $change_end ;
+
+        } else {
+            return '0';
+        }
+
+    }
+    
     public static function rndRGBColorCode()
     {
         //using the inbuilt random function

@@ -1172,15 +1172,22 @@ class ProjectReportController extends Controller
         $array = ['date' => date('d-m-Y H:i:s')];
         DB::table('cron_attempts')->insert($array);
         // recordend
-        $time = Carbon::now()->format('H:i');
+        $time = Carbon::now()->utc()->format('H:i');
         $project = Project::where('end_date', '>=', Carbon::now()->format('Y-m-d'))->where('report_time', $time)->get();
+       
         foreach ($project as  $value3) {
-            $holidays = DB::table('project_holidays')->where(['project_id' => $value3->id,
-                'instance_id' => $value3->instance_id])->where('date', Carbon::now()->format('Y-m-d'))->first();
-                if(!$holidays && !str_contains($value3->non_working_days, Carbon::now()->format('w'))
-                && $value3->freeze_status == 1) {
-                    Reportemail::dispatch($value3->id);
-                }
+            $instance=DB::table('instance')->where(['project_id' => $value3->id,'freeze_status'=>1])->orderBy('id','DESC')->pluck('instance')->first();
+            if($instance){
+                $non_working_days=DB::table('non_working_days')->where(['project_id' => $value3->id,
+                'instance_id' =>  $instance])->pluck('non_working_days');
+            
+                $holidays = DB::table('project_holidays')->where(['project_id' => $value3->id,
+                    'instance_id' =>  $instance])->where('date', Carbon::now()->format('Y-m-d'))->first();
+                    if(!$holidays && !str_contains($non_working_days, Carbon::now()->format('w'))) {
+                        Reportemail::dispatch($value3->id);
+                    }
+            }
+           
         }
     }
 

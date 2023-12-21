@@ -553,22 +553,41 @@ class ProjectTaskController extends Controller
             $tasks = $tasks->get();
 
             $get_date   = $get_end_date == '' ? date('Y-m-d') : $get_end_date;
-
             return Datatables::of($tasks)
             ->addColumn('id', function ($row) use($get_date) {
                 // if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance') &&
                 // $checkLatestFreezeStatus == 1){
-                if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance')){
-                    $id_fetch = '<a style="text-decoration: none;">
-                        <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
-                    </a>';
-                }
-                else{
+                if(Session::get('current_revision_freeze')==1 && Session::get('project_instance') == Session::get('latest_project_instance')){
                     $url = route("task_particular",["task_id" => "$row->main_id","get_date" => "$get_date"]);
                     $id_fetch = '<a href="'.$url.'" style="text-decoration: none;">
                         <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
                     </a>';
+
+                }elseif(Session::get('second_latest_project_instance') == Session::get('project_instance') && Session::get('latest_project_instance_frezee') != 1){
+                    $url = route("task_particular",["task_id" => "$row->main_id","get_date" => "$get_date"]);
+                    $id_fetch = '<a href="'.$url.'" style="text-decoration: none;">
+                        <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
+                    </a>';
+                }else{
+                    $id_fetch = '<a style="text-decoration: none;">
+                    <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
+                </a>';
                 }
+                // if(Session::get('current_revision_freeze') != 1 && Session::get('project_instance') != Session::get('latest_project_instance'))
+
+                // if(Session::get('current_revision_freeze') == 1 && Session::get('project_instance') != Session::get('latest_project_instance') && Session::get('project_instance') != Session::get('second_latest_project_instance')
+                // && Session::get('latest_project_instance_frezee') == 1
+                // ){
+                //     $id_fetch = '<a style="text-decoration: none;">
+                //         <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
+                //     </a>';
+                // }
+                // else{
+                //     $url = route("task_particular",["task_id" => "$row->main_id","get_date" => "$get_date"]);
+                //     $id_fetch = '<a href="'.$url.'" style="text-decoration: none;">
+                //         <span class="h6 text-sm font-weight-bold mb-0">'.$row->id.'</span>
+                //     </a>';
+                // }
                 return $id_fetch;
             })
             ->addColumn('text', function ($row) use($get_date) {
@@ -616,15 +635,23 @@ class ProjectTaskController extends Controller
                 }
                 return $dependency_fetch;
             })
-            ->addColumn('free_slack', function ($row) {
-
-                $free_slack = $row->free_slack == null ? 0 : $row->free_slack;
-                return $free_slack;
+            ->addColumn('dependency_critical_date', function ($row) {
+                
+                if($row->dependency_critical){
+                    return Utility::site_date_format($row->dependency_critical,\Auth::user()->id);
+                }else{
+                    return '-';
+                }
+                
             })
-            ->addColumn('total_slack', function ($row) {
+            ->addColumn('entire_critical_date', function ($row) {
 
-                $total_slack = $row->total_slack == null ? 0 : $row->total_slack;
-                return $total_slack;
+                if($row->dependency_critical){
+                    return Utility::site_date_format($row->entire_critical,\Auth::user()->id);
+                }else{
+                    return '-';
+                }
+               
             })
             // ->addColumn('float_val', function ($row) {
             //     $float_val = $row->float_val==null ? 0 : $row->float_val;
@@ -714,7 +741,7 @@ class ProjectTaskController extends Controller
 
                 return $assigne_fetch;
             })
-            ->rawColumns(['id','text','status','dependency_critical','float_val','actual_progress','planned_progress','planned_start','planned_end','assigne'])
+            ->rawColumns(['id','text','status','dependency_critical','dependency_critical_date','entire_critical_date','actual_progress','planned_progress','planned_start','planned_end','assigne'])
             ->make(true);
         }
 
