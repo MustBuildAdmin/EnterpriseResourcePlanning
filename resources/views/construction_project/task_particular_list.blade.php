@@ -191,7 +191,7 @@
                             data-title="{{$data['con_data']!=null ? $data['con_data']->text:'Task' }} Progress Update"
                             data-bs-toggle="modal" title="{{__('Create')}}" class="btn btn-success float-end"
                             data-bs-target="#modal-large">
-                                Progress Update
+                            {{ __('Progress Update') }}
                             </a>
                         </div>
                     </div>

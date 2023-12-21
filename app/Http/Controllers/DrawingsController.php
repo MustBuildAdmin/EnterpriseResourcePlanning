@@ -32,7 +32,7 @@ class DrawingsController extends Controller
     public function index(Request $request)
     {
         $projectid = Session::get('project_id');
-        $drawings = Drawing::select('reference_number', 'drawing_type', 'created_by',
+        $drawings = Drawing::select('drawings.id as ref_id','reference_number', 'drawing_type', 'created_by',
         'drawings.created_at as created_on', 'drawings.updated_at as updated_on',
         'drawing_types.drawing_types','drawing_types.id as drawing_type_id')
             ->join('drawing_types', 'drawing_types.id' ,'=', 'drawings.drawing_type');
@@ -72,23 +72,26 @@ class DrawingsController extends Controller
         
     }
 
-    public function addReference($drawing_type, $projectid, $ref_number)
+    public function addReference($ref_id, $drawing_type, $projectid, $ref_number)
     {
         $uploadedDrawings = UploadDrawingsToTypes::select('upload_drawings_to_types.id',
         'drawing_type', 'revisions', 'status', 'file_name', 'drawing_path', 'upload_drawings_to_types.created_at',
         'upload_drawings_to_types.created_by', 'users.name as creator')
         ->join('users', 'users.id', '=', 'upload_drawings_to_types.created_by')
+        ->where('reference_id', $ref_id)
         ->where('drawing_type', $drawing_type)
         ->where('project_id', $projectid)
         ->orderBy('upload_drawings_to_types.revisions', 'DESC')->get();
-        return view('drawings.add_drawings',compact('uploadedDrawings', 'drawing_type', 'projectid', 'ref_number'));
+        return view('drawings.add_drawings',compact('uploadedDrawings','ref_id','drawing_type','projectid',
+        'ref_number'));
     }
 
-    public function addDrawings(Request $request, $drawing_type_id, $project_id, $reference_number)
+    public function addDrawings(Request $request, $ref_id, $drawing_type_id, $project_id, $reference_number)
     {
         if (\Auth::user()->can('create product & service')) {
             $latest_upload = UploadDrawingsToTypes::where('drawing_type', $drawing_type_id)
             ->where('project_id', $project_id)
+            ->where('reference_id', $ref_id)
             ->latest('created_at')
             ->first();
             if($latest_upload != null) {
@@ -97,6 +100,7 @@ class DrawingsController extends Controller
                 $latest_drawing->save();
             }
             $uploadDrawing = new UploadDrawingsToTypes();
+            $uploadDrawing->reference_id = $ref_id;
             $uploadDrawing->drawing_type = $drawing_type_id;
             $uploadDrawing->revisions = $latest_upload == null ? 0 : $latest_upload->revisions+1;
             $uploadDrawing->status = 'Active';
@@ -115,20 +119,21 @@ class DrawingsController extends Controller
             $uploadDrawing->created_by = \Auth::user()->creatorId();
             $uploadDrawing->project_id = $project_id;
             $uploadDrawing->save();
-            return redirect()->route('drawing.reference.add', [$drawing_type_id, $project_id, $reference_number])
+            return redirect()->route('drawing.reference.add', [$ref_id, $drawing_type_id, $project_id,
+            $reference_number])
             ->with('success', __('Drawings Uploaded Successfully.'));
         } else {
             return redirect()->back()->with('error', __(DENIED));
         }
     }
 
-    public function drawingDestroy($id, $drawing_type, $project_id, $reference_number, $creator)
+    public function drawingDestroy($id, $ref_id, $drawing_type, $project_id, $reference_number, $creator)
     {
         if ($creator == \Auth::user()->creatorId()) {
             $drawing = UploadDrawingsToTypes::find($id);
             $drawing->delete();
 
-            return redirect()->route('drawing.reference.add', [$drawing_type, $project_id, $reference_number])
+            return redirect()->route('drawing.reference.add', [$ref_id, $drawing_type, $project_id, $reference_number])
             ->with('success', __('Drawing successfully deleted.'));
         } else {
             return redirect()->back()->with('error', __(DENIED));
