@@ -14,7 +14,8 @@ use Session;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Twilio\Rest\Client;
-
+use Aws\S3\S3Client;
+use Aws\S3\Exception\S3Exception;
 class Utility extends Model
 {
     public static function settings()
@@ -2845,13 +2846,39 @@ class Utility extends Model
 
                 }elseif($settings['storage_setting'] == 's3'){
                     // print_r($name);
-                    // dd($path);
-                    
-                    if (! $path=Storage::disk('s3')->putFileAs($path, $file , $name)) {
-                        echo 'no';
-                    }else{
-                        echo 'uploaded';
+                 
+                    $file = $request->file($key_name);
+                    $credentials = array('key' => env('AWS_ACCESS_KEY_ID'), 'secret' => env('AWS_SECRET_ACCESS_KEY'));
+                    $s3client = S3Client::factory([
+                        'signature' => 'v4',
+                        'version' => 'latest',
+                        'ACL' => 'public',
+                        'region' => env('AWS_DEFAULT_REGION'),
+                        'credentials' => $credentials,
+                        'Statement' => [
+                            'Action ' => "*"
+                        ]
+                    ]);
+
+                    try {
+                        $result = $s3client->putObject(
+                            array(
+                                'Bucket' => env('AWS_BUCKET'),
+                                'Key' => $path."/".$name,
+                                'SourceFile' => $file,
+                                'StorageClass' => 'REDUCED_REDUNDANCY'
+                            )
+                        );
+                    } catch (S3Exception $e) {
+                        dd($e->getMessage());
+                        return Response::json(['success' => false]);
                     }
+                    
+                    // if (! $path=Storage::disk('s3')->putFileAs($path, $file , $name)) {
+                    //     echo 'no';
+                    // }else{
+                    //     echo 'uploaded';
+                    // }
                     // $path = \Storage::disk('s3')->putFileAs(
                     //         $path,
                     //         $file,
