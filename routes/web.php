@@ -4469,14 +4469,21 @@ Route::get('drawing_reference_add/{reference_id}/{drawing_type}/{projectid}/{ref
 );
 Route::post('add_drawings/{ref_id}/{drawing_type_id}/{project_id}/{reference_number}',
 'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
+Route::post('add_rfi/{projectid}','RFIController@store')->name('add.rfi')->middleware(['auth','XSS']);
 Route::resource('drawings', 'DrawingsController')->middleware(['auth','XSS','revalidate',]);
 Route::delete('drawing_del/{id}/{ref_id}/{drawing_type}/{projectid}/{ref_number}/{user}',
 'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
     ['auth','XSS',]
 );
 Route::get('drawings_search', 'DrawingsController@index')->name('drawings.search')->middleware(['auth','XSS']);
+Route::get('get_responding_party', 'RFIController@getRespondingParty')->name('get.responding.party')
+->middleware(['auth','XSS']);
+Route::get('get_dependency_details', 'RFIController@getDependencyDetails')->name('get.dependency.details')
+->middleware(['auth','XSS']);
 Route::get('drawing_autocomplete', 'DrawingsController@drawing_autocomplete')
 ->name('drawing_autocomplete')->middleware(['auth','XSS',]);
+Route::get('rfi_autocomplete', 'RFIController@rfi_autocomplete')
+->name('rfi_autocomplete')->middleware(['auth','XSS',]);
 
 Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_consultant')
     ->middleware(
