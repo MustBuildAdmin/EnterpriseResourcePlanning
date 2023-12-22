@@ -1176,57 +1176,75 @@ class ProjectController extends Controller
     }
     public function projectTeamMembers(Request $request, $project_id)
     {
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.teammembers", compact("project", "project_id"));
-        } else {
+        if (\Auth::user()->can('view engineers')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.teammembers", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
             return redirect()
-                ->back()
-                ->with("error", __("Permission Denied."));
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
     }
     public function projectConsultant(Request $request, $project_id)
     {
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.consultant", compact("project", "project_id"));
-        } else {
-            return redirect()
+        if (\Auth::user()->can('view consultant project invitation')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.consultant", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
+                return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
         }
     }
     public function projectSubcontractor(Request $request, $project_id)
     {
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.subcontractor", compact("project", "project_id"));
-        } else {
-            return redirect()
+        if (\Auth::user()->can('view consultant project invitation')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.subcontractor", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
+                return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
         }
@@ -4539,11 +4557,15 @@ class ProjectController extends Controller
                     $userid = \Auth::user()->id;
                 }
 
-                $user_contact = User::where("created_by", $userid)
-                    ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
-                    ->whereNot('id',Auth::user()->id)
-                    ->pluck("id")
-                    ->toArray();
+                $user_contact=User::leftJoin('project_users', function($join) {
+                    $join->on('users.id', '=', 'project_users.user_id')
+                    ->where('project_users.invite_status', '=', 'accepted');
+                  })
+                  ->whereNotIn("users.type", ["sub_contractor", "consultant", "admin", "client"])
+                  ->whereNot('users.id',Auth::user()->id)
+                  ->pluck("users.id","users.name")
+                  ->toArray();
+
 
                 $arrUser = array_unique($user_contact);
 
