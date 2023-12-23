@@ -15,7 +15,7 @@
 @push('css-page')
 <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/libs/fullcalendar/dist/fullcalendar.min.css') }}">
-<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
+<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}" />
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
     <link rel='stylesheet' href='https://unicons.iconscout.com/release/v3.0.6/css/line.css'>
 
@@ -67,13 +67,13 @@
                       <div class="form-label required">Select a RFI Dependency</div>
                       <div>
                         <label class="form-check form-check-inline">
-                          <input class="form-check-input" type="radio" name="dependency_type"
+                          <input class="form-check-input" type="radio" name="dependency_type" 
                           onclick="get_dependency()" value="tasks"  required>
                           <span class="form-check-label">Tasks</span>
                         </label>
                         <label class="form-check form-check-inline">
                           <input class="form-check-input" type="radio" name="dependency_type" value="drawings"
-                          onclick="get_dependency()" required>
+                          checked="" onclick="get_dependency()" required>
                           <span class="form-check-label">Drawings</span>
                         </label>
                         <label class="form-check form-check-inline">
@@ -85,8 +85,12 @@
                       <div class="col-md-6 mb-3">
                       <div class="col-md-12">
                               <div class="mb-3">
-                                
-                                  <input type="text" id="skill_input_drawing" name="ref_id" value="{{ request()->get('q') }}" >
+                              <input type="text" class="form-control" id="drawingsdependency"
+                              name="dependency_value" value="{{ request()->get('q') }}" placeholder="Drawings" required>
+                              </div>
+                              <div class="mb-3">
+                              <input type="text" class="form-control" id="othersdependency"
+                              name="dependency_value" placeholder="Others" required>
                               </div>
                      </div>
                     </div>
@@ -262,40 +266,43 @@
  integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
 
 <script>
-
+$('#drawingsdependency').prop('disabled', false);
+$('#othersdependency').prop('disabled', true);
 $(document).ready(function() {
-        $("#skill_input_drawing").tokenInput("{{route('drawing_autocomplete')}}", {
-            propertyToSearch:"text",
-            tokenValue:"id",
-            tokenDelimiter:",",
-            hintText: "Search Id...",
-            noResultsText: "Reference Id not found.",
-            searchingText: "Searching...",
-            deleteText:"&#215;",
-            minChars: 2,
-            tokenLimit: 4,
-            animateDropdown: false,
-            resultsLimit:10,
-            deleteText: "&times;",
-            preventDuplicates: true,
-            theme: "bootstrap"
-        });
+    $("#drawingsdependency").tokenInput("{{ route('drawing_autocomplete') }}", {
+        propertyToSearch: "text",
+        tokenValue: "id",
+        tokenDelimiter: ",",
+        hintText: "{{ __('Search Drawings...') }}",
+        noResultsText: "{{ __('Drawings not found.') }}",
+        searchingText: "{{ __('Searching...') }}",
+        deleteText: "&#215;",
+        minChars: 2,
+        tokenLimit: 1,
+        zindex: 9999,
+        animateDropdown: false,
+        resultsLimit: 10,
+        deleteText: "&times;",
+        preventDuplicates: true,
+        theme: "bootstrap"
+    });
   });
     
     function get_dependency() {
         var dependency_type  = $("input[name='dependency_type']:checked").val();
         if(dependency_type == 'tasks') {
-            document.getElementByClass('tasks').classList.remove('hidden');
-            document.getElementByClass('skill_input_drawing').classList.add('hidden');
-            document.getElementByClass('others').classList.add('hidden');
+            // document.getElementById('tasksdependency').removeAttr("disabled");
+            $('#drawingsdependency').prop('disabled', true);
+            $('#othersdependency').prop('disabled', true);
         } else if (dependency_type == 'drawings') {
-            document.getElementByClass('skill_input_drawing').classList.remove('hidden');
-            document.getElementByClass('tasks').classList.add('hidden');
-            document.getElementByClass('others').classList.add('hidden');
+            $('#drawingsdependency').prop('disbaled', false);
+            // document.getElementById('tasksdependency').attr('disabled');
+            $('#othersdependency').prop('disabled', true);
         } else{
-            document.getElementByClass('others').classList.remove('hidden');
-            document.getElementByClass('tasks').classList.add('hidden');
-            document.getElementByClass('skill_input_drawing').classList.add('hidden');
+            alert("io")
+            $('#othersdependency').prop('disabled', false);
+            // document.getElementById('tasksdependency').attr('disabled');
+            $('#drawingsdependency').prop('disabled', true);
         }
 
     }

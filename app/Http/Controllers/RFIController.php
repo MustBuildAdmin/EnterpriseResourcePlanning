@@ -32,7 +32,6 @@ class RFIController extends Controller
     public function store(Request $request)
     {
         if (\Auth::user()->can('create product & service')) {
-            dd($request->dependency_value);
             $projectid = Session::get('project_id');
             $rfi_record = new RFIRecord();
             $rfi_record->project_id = $projectid;
