@@ -1,4 +1,9 @@
 
+<style>
+input#edit_client1 {
+    display: none;
+}
+</style>
 {{ Form::model($client, array('route' => array('clients.update', $client->id),
 'method' => 'PUT' ,'enctype'=>"multipart/form-data",'id'=>'edit_client')) }}
 <div class="modal-body">
@@ -548,6 +553,8 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
     });
     $(document).on("keyup", '#billing_phone', function () {
         var full_number = billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+        $("input[name='billing_phone_country'").val(full_number);
+
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
@@ -571,6 +578,7 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
 
         $(document).on("keyup", '#shipping_phone', function () {
             var full_number = shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[name='shipping_phone_country'").val(full_number);
 
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
