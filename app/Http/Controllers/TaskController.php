@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Con_task;
 use App\Models\Project;
+use App\Models\Utility;
 use Auth;
 use Illuminate\Http\Request;
 use Session;
@@ -39,24 +40,32 @@ class TaskController extends Controller
         }
         
 
-        if(isset($request->totalStack)){
-            $task->total_slack = $request->totalStack;
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+        if(isset($request->totalStack) && $request->totalStack!='undefined'){
+            $n_total_slack = $request->totalStack;
+            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->end_date);
             $carbonDate = Carbon::parse($cleanedDateString);
-            $carbonDate->addDays($request->totalStack);
-            $total_slack = $carbonDate->format('Y-m-d');
-            $task->entire_critical = $total_slack;
+            // $carbonDate->addDays($request->totalStack);
+            $endate = $carbonDate->format('Y-m-d');
+            $date=Utility::exclude_date_calculator($endate,$n_total_slack,Session::get('project_id'));
+            $entire_critical = $date;
+        }else{
+            $entire_critical=null;
+            $n_total_slack =null;
         }
 
-        if(isset($request->freeSlack)){
-            $task->free_slack = $request->free_slack;
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+        if(isset($request->freeSlack) && $request->freeSlack!='undefined'){
+            $free_slack = $request->freeSlack;
+            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->end_date);
             $carbonDate = Carbon::parse($cleanedDateString);
-            $carbonDate->addDays($request->freeSlack);
-            $freeSlack = $carbonDate->format('Y-m-d');
-            $task->dependency_critical = $freeSlack;
+            // $carbonDate->addDays($request->freeSlack);
+            $endate2 = $carbonDate->format('Y-m-d');
+            $date2=Utility::exclude_date_calculator($endate2,$free_slack,Session::get('project_id'));
+            $dependency_critical = $date2;
+        }else{
+            $dependency_critical=null;
+            $free_slack =null;
         }
-
+        
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {
                 $implodeusers = implode(',', json_decode($request->users));
@@ -216,11 +225,12 @@ class TaskController extends Controller
 
         if(isset($request->totalStack) && $request->totalStack!='undefined'){
             $n_total_slack = $request->totalStack;
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->end_date);
             $carbonDate = Carbon::parse($cleanedDateString);
-            $carbonDate->addDays($request->totalStack);
-            $total_slack = $carbonDate->format('Y-m-d');
-            $entire_critical = $total_slack;
+            // $carbonDate->addDays($request->totalStack);
+            $endate = $carbonDate->format('Y-m-d');
+            $date=Utility::exclude_date_calculator($endate,$n_total_slack,Session::get('project_id'));
+            $entire_critical = $date;
         }else{
             $entire_critical=null;
             $n_total_slack =null;
@@ -228,11 +238,12 @@ class TaskController extends Controller
 
         if(isset($request->freeSlack) && $request->freeSlack!='undefined'){
             $free_slack = $request->freeSlack;
-            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->start_date);
+            $cleanedDateString = preg_replace('/\s\(.*\)/', '', $request->end_date);
             $carbonDate = Carbon::parse($cleanedDateString);
-            $carbonDate->addDays($request->freeSlack);
-            $freeSlack = $carbonDate->format('Y-m-d');
-            $dependency_critical = $freeSlack;
+            // $carbonDate->addDays($request->freeSlack);
+            $endate2 = $carbonDate->format('Y-m-d');
+            $date2=Utility::exclude_date_calculator($endate2,$free_slack,Session::get('project_id'));
+            $dependency_critical = $date2;
         }else{
             $dependency_critical=null;
             $free_slack =null;

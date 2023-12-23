@@ -189,7 +189,7 @@ class ProjectController extends Controller
             $project->status = $request->status;
             $project->report_to = $request->reportto;
 
-            $project->report_time = $request->report_time;
+            $project->report_time = Utility::time_to_utc($request->report_time);
             $project->tags = $request->tag;
             $project->estimated_days = $request->estimated_days;
 
@@ -2983,20 +2983,26 @@ class ProjectController extends Controller
                 foreach ($data as $value) {
                     if (isset($value->totalStack)) {
                         $n_total_slack = $value->totalStack;
-                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->start_date);
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->end_date);
                         $carbonDate = Carbon::parse($cleanedDateString);
-                        $carbonDate->addDays($value->totalStack);
-                        $total_slack = $carbonDate->format('Y-m-d');
+                        // $carbonDate->addDays($value->totalStack);
+
+                        $endate = $carbonDate->format('Y-m-d');
+                        $date=Utility::exclude_date_calculator($endate,$n_total_slack,Session::get('project_id'));
+                        $entire_critical = $date;
                     } else {
                         $total_slack = null;
                         $n_total_slack=null;
                     }
                     if (isset($value->freeSlack)) {
                         $free_slack = $value->freeSlack;
-                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->start_date);
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->end_date);
                         $carbonDate = Carbon::parse($cleanedDateString);
-                        $carbonDate->addDays($value->freeSlack);
-                        $freeSlack = $carbonDate->format('Y-m-d');
+                        // $carbonDate->addDays($value->freeSlack);
+
+                        $endate2 = $carbonDate->format('Y-m-d');
+                        $date2=Utility::exclude_date_calculator($endate2,$free_slack,Session::get('project_id'));
+                        $dependency_critical = $date2;
                     } else {
                         $freeSlack = null;
                         $free_slack =null;
@@ -3005,9 +3011,9 @@ class ProjectController extends Controller
                     Con_task::where('project_id', Session::get("project_id"))
                         ->where('instance_id', Session::get("project_instance"))
                         ->where('main_id', $value->main_id)
-                        ->update(['dependency_critical' => $freeSlack,
-                            'entire_critical' => $total_slack,
-                            'float_val' => $total_slack,'free_slack'=>$free_slack,'total_slack'=>$n_total_slack]);
+                        ->update(['dependency_critical' => $dependency_critical,
+                            'entire_critical' => $entire_critical,
+                            'float_val' => $n_total_slack,'free_slack'=>$free_slack,'total_slack'=>$n_total_slack]);
 
                 }
 
