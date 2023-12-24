@@ -139,11 +139,11 @@ if($delay>100){
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">
-                    {{ __('Current LookaHead')}}
+                    {{ __('Current Lookahead')}}
                   </h3>
                   <div class="card-actions">
                     <a href="{{ route('micro_taskboard') }}">
-                      {{ __('View the Active LookaHead')}}
+                      {{ __('View the Active Lookahead')}}
                       <!-- Download SVG icon from http://tabler-icons.io/i/edit -->
                     </a>
                   </div>
@@ -467,7 +467,7 @@ if($delay>100){
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-body">
-                  <h3 class="card-title">{{ __('Task summary')}}</h3>
+                  <h3 class="card-title">{{ __('Task Summary')}}</h3>
                   <div id="chart-mentions" class="chart-lg"></div>
                 </div>
               </div>
@@ -480,7 +480,7 @@ if($delay>100){
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title">{{ __('Look a Head')}}</h3>
+                <h3 class="card-title">{{ __('Lookahead Summary')}}</h3>
                 <div id="micro_chart-mentions" class="chart-lg"></div>
               </div>
             </div>
