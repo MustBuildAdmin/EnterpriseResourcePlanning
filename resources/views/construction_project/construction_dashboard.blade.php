@@ -139,11 +139,11 @@ if($delay>100){
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">
-                    {{ __('Current Look a Head')}}
+                    {{ __('Current LookaHead')}}
                   </h3>
                   <div class="card-actions">
                     <a href="{{ route('micro_taskboard') }}">
-                      {{ __('View the Active Look a Head')}}
+                      {{ __('View the Active LookaHead')}}
                       <!-- Download SVG icon from http://tabler-icons.io/i/edit -->
                     </a>
                   </div>
@@ -160,17 +160,17 @@ if($delay>100){
                         {{ Utility::site_date_format($microProgram->schedule_end_date,\Auth::user()->id) }}
                       </dd>
                       <dt class="col-5">{{ __('Holiday in Days')}}:</dt>
-                      <dd class="col-7">{{$holidayCount}}</dd>
+                      <dd class="col-7">{{$holidayCount}} Days</dd>
                       <dt class="col-5">{{ __('Weekends in Days')}}</dt>
-                      <dd class="col-7">{{$microWeekEndCount}}</dd>
+                      <dd class="col-7">{{$microWeekEndCount}} Days</dd>
                       <dt class="col-5">{{ __('Total working days')}}:</dt>
-                      <dd class="col-7">{{$totalWorkingDays}}</dd>
+                      <dd class="col-7">{{$totalWorkingDays}} Days</dd>
                       <dt class="col-5">{{ __('Total Task Taken')}}:</dt>
-                      <dd class="col-7">{{$conTaskTaken}}</dd>
+                      <dd class="col-7">{{$conTaskTaken}} Tasks</dd>
                       <dt class="col-5">{{ __('Total Sub Task Created')}}:</dt>
-                      <dd class="col-7">{{$microTaskCount}}</dd>
+                      <dd class="col-7">{{$microTaskCount}} Tasks</dd>
                     @else
-                      <dd class="col-7">{{ __('No schedule is active')}}</dd>
+                      <dd class="col-7 text-center">{{ __('No schedule is active')}}</dd>
                     @endif
                   </dl>
                 </div>

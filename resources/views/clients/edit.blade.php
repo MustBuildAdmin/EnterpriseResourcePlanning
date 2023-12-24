@@ -1,4 +1,9 @@
 
+<style>
+input#edit_client1 {
+    display: none;
+}
+</style>
 {{ Form::model($client, array('route' => array('clients.update', $client->id),
 'method' => 'PUT' ,'enctype'=>"multipart/form-data",'id'=>'edit_client')) }}
 <div class="modal-body">
@@ -211,19 +216,20 @@
                     </div>
                 </div>
             </div>
-    
-            <div class="col-lg-6 col-md-4 col-sm-6">
+            <div class="col-lg-6 col-md-4 col-sm-6 country_code">
                 <div class="form-group">
                     {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                        <input class="form-control" name="phone" type="number" id="billing_phone" maxlength="16"
-                         placeholder="+91 111 111 1111" value='{{$user->billing_phone}}'>
-                        <span class="invalid-name edit_billing_duplicate" role="alert" style="display: none;">
+                        <input class="form-control" name="phone" type="tel" id="billing_phone" name="billing_phone"
+                        maxlength="16" placeholder="+91 111 111 1111"  required>
+                        <span class="invalid-name billing_duplicate" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
                     </div>
                 </div>
             </div>
+    
             <div class="col-lg-6 col-md-4 col-sm-6">
                 <div class="form-group">
                     {{Form::label('billing_zip',__('Zip Code'),array('class'=>'form-label')) }}
@@ -311,21 +317,19 @@
                     </div>
                 </div>
     
-                <div class="col-lg-4 col-md-4 col-sm-6">
-                    <div class="form-group">
-                        {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
-                        <div class="form-icon-user">
-                            <input {{$disabled_enabled}} class="form-control" name="shipping_phone"
-                             type="number" id="shipping_phone"
-                             maxlength="16" placeholder="+91 111 111 1111"  value='{{$user->shipping_phone}}'>
-                            <span class="invalid-name edit_shipping_mobile_duplicate"
-                                role="alert" style="display: none;">
-                                <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
-                            </span>
-                            {{-- {{Form::text('shipping_phone',null,array('class'=>'form-control'))}} --}}
-                        </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 country_code">
+                <div class="form-group">
+                    {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
+                    <span style='color:red;'>*</span>
+                    <div class="form-icon-user">
+                        <input class="form-control" name="shipping_phone" type="tel" id="shipping_phone"
+                        maxlength="16" placeholder="+91 111 111 1111"  required>
+                        <span class="invalid-name shipping_mobile_duplicate" role="alert" style="display: none;">
+                            <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                        </span>
                     </div>
                 </div>
+            </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="form-group">
                         {{Form::label('shipping_zip',__('Zip Code'),array('class'=>'form-label')) }}
@@ -353,13 +357,33 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" id="edit_client" value="{{__('Update')}}" class="btn  btn-primary">
+    <input type="button" id="edit_client" value="{{__('Update')}}" class="btn  btn-primary">
+    <input type="submit" id="edit_client1" value="{{__('Update')}}" class="btn  btn-primary">
 </div>
 
 {{Form::close()}}
 
 
 <script>
+var billing_phone_number = window.intlTelInput(document.querySelector("#billing_phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "billing_phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+var shipping_phone_number=window.intlTelInput(document.querySelector("#shipping_phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "shipping_phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+
+$('#edit_client').click(function(){
+    $("#billing_phone").val(billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $("#shipping_phone").val(shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $('#edit_client1').click()
+
+});
      $(document).on("change", '#country', function () {
         var name=$(this).val();
         var settings = {
@@ -418,6 +442,9 @@
     });
 
     $(document).ready(function() {
+        billing_phone_number.setNumber("{{$user->billing_phone}}");
+        shipping_phone_number.setNumber("{{$user->shipping_phone}}");
+
 
 
     $(document).on('submit', 'form', function() {
@@ -431,6 +458,8 @@
       $this.find('#shipping_name').val($this.find('#billings_name').val());
       $this.find('#shipping_city').val($this.find('#billing_city').val());
       $this.find('#shipping_phone').val($this.find('#billing_phone').val());
+      shipping_phone_number.setCountry(billing_phone_number.getSelectedCountryData().iso2);
+      $("#shipping_phone").val(shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
       $this.find('#shipping_zip').val($this.find('#billing_zip').val());
       $this.find('#shipping_address').val($this.find('#billing_address').val());
       $this.find('#shipping_country').val($this.find('#billing_country').val());
@@ -523,6 +552,9 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         });
     });
     $(document).on("keyup", '#billing_phone', function () {
+        var full_number = billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+        $("input[name='billing_phone_country'").val(full_number);
+
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
@@ -545,6 +577,9 @@ $("#billing_zip, #shipping_zip").on("keypress",function(event){
         });
 
         $(document).on("keyup", '#shipping_phone', function () {
+            var full_number = shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[name='shipping_phone_country'").val(full_number);
+
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',
