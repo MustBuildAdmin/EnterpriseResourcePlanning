@@ -639,16 +639,25 @@ class UserController extends Controller
             $userDetail = \Auth::user();
             echo $userDetail->id;
             $user = User::findOrFail($userDetail->id);
-
-            $validator = \Validator::make(
-                $request->all(), [
-                    'name' => 'required|max:120',
-                    'email' => 'required|email|unique:users,email,'.$userDetail->id,
-                    'phone' => 'required|unique:users,phone,'.$userDetail->id,
-
-                ]
-            );
-
+            if(\Auth::user()->type=='company'){
+                $validator = \Validator::make(
+                    $request->all(), [
+                        'name' => 'required|max:120',
+                        'email' => 'required|email|unique:users,email,'.$userDetail->id,
+                    ]
+                );
+            }else{
+                $validator = \Validator::make(
+                    $request->all(), [
+                        'name' => 'required|max:120',
+                        'email' => 'required|email|unique:users,email,'.$userDetail->id,
+                        'phone' => 'required|unique:users,phone,'.$userDetail->id,
+    
+                    ]
+                );
+    
+            }
+            
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 

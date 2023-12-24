@@ -162,22 +162,22 @@ integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8
                     <!-- top nav menu list  starts-->
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link undo_action" onclick="gantt.undo();">{{ __('Undo') }}</a>
+                            <a class="nav-link undo_action" onclick="gantt.undo();" style="cursor: pointer;">{{ __('Undo') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link redo_action" onclick="gantt.redo();">{{ __('Redo') }}</a>
+                            <a class="nav-link redo_action" onclick="gantt.redo();" style="cursor: pointer;">{{ __('Redo') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="zoomIn()">{{ __('Zoom In') }}</a>
+                            <a class="nav-link" onclick="zoomIn()" style="cursor: pointer;">{{ __('Zoom In') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="zoomOut()">{{ __('Zoom Out') }}</a>
+                            <a class="nav-link" onclick="zoomOut()" style="cursor: pointer;">{{ __('Zoom Out') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="today_scroll()">{{ __('Today') }}</a>
+                            <a class="nav-link" onclick="today_scroll()" style="cursor: pointer;">{{ __('Today') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()">{{ __('FullScreen') }}</a>
+                            <a class="nav-link" onclick="gantt.ext.fullscreen.toggle()" style="cursor: pointer;">{{ __('FullScreen') }}</a>
                         </li>
                         <li>
                             <a class="nav-link">
@@ -1185,7 +1185,7 @@ var weekend_list=$('#weekends').val();
             const template = `<label class='dropdown-item form-switch'>
                     <input class='form-check-input m-0 me-2'
                     id=${columns[i].name} name="columns" ${columns[i].hide ? "": "checked"} type='checkbox'>
-                    ${columns[i].name}
+                    ${columns[i].name == "text" ? "Task name" : columns[i].name}
                     </label>`
             const parent = document.getElementById("gantt-columns");
             parent.appendTemplate(template);
