@@ -1282,12 +1282,18 @@ class ProjectController extends Controller
                 $completedTask = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
                     ->where("progress", 100)
+                    ->where('type','task')
                     ->get();
 
                 $project_done_task = $completedTask->count();
 
+                $total_task = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where('type','task')
+                    ->get()->count();
+
                 $project_data["task"] = [
-                    "total" => number_format($project_task),
+                    "total" => number_format($total_task),
                     "done" => number_format($project_done_task),
                     "percentage" => Utility::getPercentage(
                         $project_done_task,
