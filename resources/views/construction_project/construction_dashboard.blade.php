@@ -163,7 +163,7 @@ if($delay>100){
                       <dd class="col-7">{{$holidayCount}} Days</dd>
                       <dt class="col-5">{{ __('Weekends in Days')}}</dt>
                       <dd class="col-7">{{$microWeekEndCount}} Days</dd>
-                      <dt class="col-5">{{ __('Total working days')}}:</dt>
+                      <dt class="col-5">{{ __('Total working Days')}}:</dt>
                       <dd class="col-7">{{$totalWorkingDays}} Days</dd>
                       <dt class="col-5">{{ __('Total Task Taken')}}:</dt>
                       <dd class="col-7">{{$conTaskTaken}} Tasks</dd>
