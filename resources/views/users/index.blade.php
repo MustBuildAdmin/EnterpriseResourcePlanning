@@ -167,8 +167,8 @@
 						@if(\Auth::user()->type != 'super admin')
 							<div class="d-flex">
 
-								<a data-bs-toggle="tooltip" data-copy_email="{{ $user->email }}" title="{{ $user->email }}"
-									href="#" class="card-btn" onclick="copyToClipboard(this)">
+								<a data-bs-toggle="tooltip" title="{{ $user->email }}"
+								class="card-btn" href="https://mail.google.com/mail/?view=cm&fs=1&to={{$user->email}}" target="_blank">
 									<!-- Download SVG icon from http://tabler-icons.io/i/mail -->
 									<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
 									viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -180,8 +180,8 @@
 									{{__('Email')}}
 								</a>
 
-								<a id="phone" data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
-									class="card-btn" onclick="copyToClipboardphone(this)">
+								<a id="phone" data-bs-toggle="tooltip"  title="{{ $user->phone }}"
+									class="card-btn" href="tel:{{ $user->phone }}">
 									<!-- Download SVG icon from http://tabler-icons.io/i/phone -->
 									<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
 									viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -258,24 +258,24 @@
 
 @include('new_layouts.footer')
 <script>
-function copyToClipboard(element) {
-  var $temp = $("<input>");
-  $("body").append($temp);
-  copy_email = $(element).data('copy_email');
-  $temp.val(copy_email).select();
-  document.execCommand("copy");
-  $temp.remove();
-  toastr.info("Copying to clipboard was successful!");
-}
-function copyToClipboardphone(element) {
-  var $temp = $("<input>");
-  $("body").append($temp);
-  copy_phone = $(element).data('copy_phone');
-  $temp.val(copy_phone).select();
-  document.execCommand("copy");
-  $temp.remove();
-  toastr.success("Copying to clipboard was successful!");
-}
+// function copyToClipboard(element) {
+//   var $temp = $("<input>");
+//   $("body").append($temp);
+//   copy_email = $(element).data('copy_email');
+//   $temp.val(copy_email).select();
+//   document.execCommand("copy");
+//   $temp.remove();
+//   toastr.info("Copying to clipboard was successful!");
+// }
+// function copyToClipboardphone(element) {
+//   var $temp = $("<input>");
+//   $("body").append($temp);
+//   copy_phone = $(element).data('copy_phone');
+//   $temp.val(copy_phone).select();
+//   document.execCommand("copy");
+//   $temp.remove();
+//   toastr.success("Copying to clipboard was successful!");
+// }
 
 $(document).on('keypress', function (e) {
         if (e.which == 13) {
