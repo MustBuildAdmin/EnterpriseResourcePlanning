@@ -142,8 +142,10 @@ class DrawingsController extends Controller
 
     public function drawing_autocomplete(Request $request){
         $searchValue = $request['q'];
+        $projectid = Session::get('project_id');
         if($request->filled('q')){
-            $drawings = Drawing::where('reference_number','LIKE',"%{$searchValue}%")->get();
+            $drawings = Drawing::where('reference_number','LIKE',"%{$searchValue}%")
+            ->where('project_id', $projectid)->get();
         }
 
         $drawingData = array();
