@@ -2,6 +2,9 @@
     div#choices_multiple1_chosen {
         width: 100% !important;
     }
+#create_consultant1 {
+    display: none;
+}
 </style>
 
 @if(\Auth::user()->type == 'super admin')
@@ -121,18 +124,16 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group col-md-6">
+            <div class="col-lg-6 col-md-4 col-sm-6 country_code">
                 <div class="form-group">
-                    {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}
+                    {{Form::label('contact',__('Contact'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                         <input type="text" name="phone" class="form-control" data-mask="(00) 0000-0000"
-                          data-mask-visible="true" placeholder="(00) 0000-0000" id="phone"
-                          maxlength="16" autocomplete="off" oninput="numeric(this)"/>
+                        <input class="form-control" name="phone" type="tel" id="phone"
+                        maxlength="16" placeholder="+91 111 111 1111"  required>
                         <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
-                        {{-- {{Form::text('phone',null,array('class'=>'form-control'))}} --}}
                     </div>
                 </div>
             </div>
@@ -170,7 +171,8 @@
 
 <div class="modal-footer">
     <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
-    <button type="submit" class="btn btn-primary" id="create_consultant">{{__('Create a Member')}}</button>
+    <button type="button" class="btn btn-primary" id="create_consultant">{{__('Create a Member')}}</button>
+    <button type="submit" class="btn btn-primary" id="create_consultant1">{{__('Create a Member')}}</button>
 </div>
 
 
@@ -200,6 +202,18 @@ $(document).on("change", '#country', function () {
 
 <script>
 
+var phone_number = window.intlTelInput(document.querySelector("#phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+
+$('#create_consultant').click(function(){
+    $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $('#create_consultant1').click()
+
+});
     $(document).ready(function() {
 
         $(document).on('submit', 'form', function() {
