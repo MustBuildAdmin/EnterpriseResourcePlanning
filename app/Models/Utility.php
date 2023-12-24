@@ -1225,6 +1225,8 @@ class Utility extends Model
 
     public static function sendEmailTemplate($emailTemplate, $mailTo, $obj)
     {
+        // echo "<pre>";
+        // print_r($obj);
         $usr = Auth::user();
         if ($usr != null && ! empty($usr)) {
             //Remove Current Login user Email don't send mail to them
@@ -1256,8 +1258,12 @@ class Utility extends Model
                         $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
 
                         $content->from = $template->from;
+                        $content->subject =  self::replaceVariable($content->subject, $obj);
                         if (! empty($content->content)) {
                             $content->content = self::replaceVariable($content->content, $obj);
+                            // echo "<pre>";
+                            // print_r($content);
+                            // exit;
 
                             // send email
                             try {
@@ -1313,8 +1319,13 @@ class Utility extends Model
                     $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
 
                     $content->from = $template->from;
+                    $content->subject =  self::replaceVariable($content->subject, $obj);
                     if (! empty($content->content)) {
+
                         $content->content = self::replaceVariable($content->content, $obj);
+                        // echo "<pre>";
+                        // print_r($content);
+                        // exit;
 
                         // send email
                         try {
@@ -1539,6 +1550,7 @@ class Utility extends Model
         $arrVariable = [
             '{app_name}',
             '{project_name}',
+            '{project_name1}',
             '{company_name}',
             '{user_name}',
             '{app_url}',
@@ -1645,12 +1657,15 @@ class Utility extends Model
             '{inviteconsultantHeader}',
             '{inviteteamMemberHeader}',
             '{invite_link}',
-            '{invite_btn}'
+            '{invite_btn}',
+            '{team_member_name}',
+            '{invite_btn1}'
 
         ];
         $arrValue = [
             'app_name' => '-',
             'project_name'=>'-',
+            'project_name1'=>'-',
             'company_name' => '-',
             'user_name'=>'-',
             'app_url' => '-',
@@ -1758,7 +1773,9 @@ class Utility extends Model
             'inviteconsultantHeader'=>'-',
             'inviteteamMemberHeader'=>'-',
             'invite_link'=>'-',
-            'invite_btn'=>'-'
+            'invite_btn'=>'-',
+            'team_member_name'=>'-',
+            'invite_btn1'=>'-'
 
 
 
@@ -1802,14 +1819,15 @@ class Utility extends Model
             .$short_projname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
 
         if(isset($obj['invite_link'])){
-            $arrValue['invite_link']='<tr> <td class="content pt-0"> You can <a href="'.$obj['invite_link'].
-            '">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'
-            .env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td></tr>';
+            $arrValue['invite_link']='<p>You can <a href="'.$obj['invite_link'].
+            '">accept or decline</a> this invitation by clicking on the following link.<p/>';
             $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr>
             <td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto">
             <tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'"
              class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span>
              </a></td></tr></table></td></tr></table></td></tr>';
+             $arrValue['invite_btn1']='<p>Feel free to visit <a href="'.env('APP_URL').'">'
+             .env('APP_NAME')."</a> to learn more about the platform. The invitation link is valid for 7 days.<br/>If you have any questions or need assistance, please don't hesitate to reach out.</p>";
         }
 
 

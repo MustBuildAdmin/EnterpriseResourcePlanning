@@ -648,7 +648,9 @@ class ProjectController extends Controller
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
+                        'project_name1' => $project->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE',
@@ -714,7 +716,9 @@ class ProjectController extends Controller
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
+                        'project_name1' => $project->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -2473,7 +2477,9 @@ class ProjectController extends Controller
                     'invite_link' => $inviteUrl,
                     'user_name' => \Auth::user()->name,
                     'project_name' => $project->project_name,
+                    'project_name1' => $project->project_name,
                     'email' => \Auth::user()->email,
+                    'team_member_name'=>$get_email->name
                 ];
                 
                 $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -2800,7 +2806,9 @@ class ProjectController extends Controller
                             'invite_link' => $inviteUrl,
                             'user_name' => \Auth::user()->name,
                             'project_name' => $project->project_name,
+                            'project_name1' => $project->project_name,
                             'email' => \Auth::user()->email,
+                            'team_member_name'=>$get_email->name
                         ];
 
                         $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
