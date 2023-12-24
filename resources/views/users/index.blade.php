@@ -34,6 +34,9 @@
 .avatar-xl {
     --tblr-avatar-size: 6.2rem;
 }
+#phone{
+	cursor: pointer;
+}
 </style>
 @php
    // $profile=asset(Storage::url('uploads/avatar/'));
@@ -177,7 +180,7 @@
 									{{__('Email')}}
 								</a>
 
-								<a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
+								<a id="phone" data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" title="{{ $user->phone }}"
 									class="card-btn" onclick="copyToClipboardphone(this)">
 									<!-- Download SVG icon from http://tabler-icons.io/i/phone -->
 									<svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24" height="24"
