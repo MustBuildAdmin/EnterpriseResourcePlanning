@@ -170,7 +170,7 @@
                                 {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
                                 {{ Form::text('project_name', null, ['class' => 'form-control',
-                                    'required'=>'required','disabled'=>'true','readonly'=>true]) }}
+                                    'required'=>'required','readonly'=>true]) }}
                                 {{Form::hidden('freeze_statuss',$project->freeze_status,
                                     array('class'=>'form-control','id'=>'freeze_status'))}}
                             </div>

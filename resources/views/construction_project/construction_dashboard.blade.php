@@ -516,7 +516,7 @@ if($delay>100){
                 opacity: 1,
             },
             series: [all_pending, all_completed, all_inprogress, all_upcoming],
-            labels: ["Pending", "Completed", "In-Progress", "UpComming"],
+            labels: ["Pending", "Completed", "In-Progress", "Upcoming Tasks"],
             tooltip: {
                 theme: 'dark'
             },
@@ -524,7 +524,7 @@ if($delay>100){
                 strokeDashArray: 4,
             },
             colors: [tabler.getColor("danger"), tabler.getColor("green", 0.8),
-            tabler.getColor("primary", 0.6), tabler.getColor("orange -300")],
+            tabler.getColor("primary", 0.6), 'grey'],
             legend: {
                 show: true,
                 position: 'bottom',
