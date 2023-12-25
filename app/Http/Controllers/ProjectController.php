@@ -647,8 +647,8 @@ class ProjectController extends Controller
                     $userArr = [
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
-                        'project_name' => $project->project_name,
-                        'project_name1' => $project->project_name,
+                        'project_name' => $request->project_name,
+                        'projectname' => $request->project_name,
                         'email' => \Auth::user()->email,
                         'team_member_name'=>$get_email->name
                     ];
@@ -716,7 +716,7 @@ class ProjectController extends Controller
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
-                        'project_name1' => $project->project_name,
+                        'projectname' => $project->project_name,
                         'email' => \Auth::user()->email,
                         'team_member_name'=>$get_email->name
                     ];
@@ -2385,6 +2385,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+       
         if (\Auth::user()->can("edit project")) {
             $validator = \Validator::make($request->all(), [
                 // "project_name" => "required",
@@ -2401,6 +2402,7 @@ class ProjectController extends Controller
 
             // $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
+          
             // $project->project_name = $request->project_name;
             $project->start_date = date(
                 "Y-m-d H:i:s",
@@ -2482,8 +2484,8 @@ class ProjectController extends Controller
                 $userArr = [
                     'invite_link' => $inviteUrl,
                     'user_name' => \Auth::user()->name,
-                    'project_name' => $project->project_name,
-                    'project_name1' => $project->project_name,
+                    'project_name' => $request->project_name,
+                    'projectname' => $request->project_name,
                     'email' => \Auth::user()->email,
                     'team_member_name'=>$get_email->name
                 ];
@@ -2812,7 +2814,7 @@ class ProjectController extends Controller
                             'invite_link' => $inviteUrl,
                             'user_name' => \Auth::user()->name,
                             'project_name' => $project->project_name,
-                            'project_name1' => $project->project_name,
+                            'projectname' => $project->project_name,
                             'email' => \Auth::user()->email,
                             'team_member_name'=>$get_email->name
                         ];

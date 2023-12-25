@@ -1820,13 +1820,8 @@ class Utility extends Model
 
         if(isset($obj['invite_link'])){
             $arrValue['invite_link']='<p>You can <a href="'.$obj['invite_link'].
-            '">accept or decline</a> this invitation by clicking on the following link.<p/>';
-            $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr>
-            <td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto">
-            <tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'"
-             class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span>
-             </a></td></tr></table></td></tr></table></td></tr>';
-             $arrValue['invite_btn1']='<p>Feel free to visit <a href="'.env('APP_URL').'">'
+            '">accept or decline</a> this invitation by clicking on the following link:<br/>
+            <a href="'.$obj['invite_link'].'">'.$obj['invite_link'].'</a></p><p>Feel free to visit <a href="'.env('APP_URL').'">'
              .env('APP_NAME')."</a> to learn more about the platform. The invitation link is valid for 7 days.<br/>If you have any questions or need assistance, please don't hesitate to reach out.</p>";
         }
 
