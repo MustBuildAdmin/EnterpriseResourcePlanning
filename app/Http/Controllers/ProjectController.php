@@ -4576,14 +4576,11 @@ class ProjectController extends Controller
                     $userid = \Auth::user()->id;
                 }
 
-                $user_contact=User::leftJoin('project_users', function($join) {
-                    $join->on('users.id', '=', 'project_users.user_id')
-                    ->where('project_users.invite_status', '=', 'accepted');
-                  })
-                  ->whereNotIn("users.type", ["sub_contractor", "consultant", "admin", "client"])
-                  ->whereNot('users.id',Auth::user()->id)
-                  ->pluck("users.id","users.name")
-                  ->toArray();
+                $user_contact = User::where("created_by", $userid)
+                    ->whereNotIn("type", ["sub_contractor", "consultant", "admin", "client"])
+                    ->whereNot('id',Auth::user()->id)
+                    ->pluck("id")
+                    ->toArray();
 
 
                 $arrUser = array_unique($user_contact);
