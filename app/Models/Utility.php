@@ -2986,6 +2986,33 @@ class Utility extends Model
                         $file,
                         $name
                     );
+                }elseif($settings['storage_setting'] == 's3'){
+                 
+                    $credentials = array('key' => env('AWS_ACCESS_KEY_ID'), 'secret' => env('AWS_SECRET_ACCESS_KEY'));
+                    $s3client = S3Client::factory([
+                        'signature' => 'v4',
+                        'version' => 'latest',
+                        'ACL' => 'public',
+                        'region' => env('AWS_DEFAULT_REGION'),
+                        'credentials' => $credentials,
+                        'Statement' => [
+                            'Action ' => "*"
+                        ]
+                    ]);
+
+                    try {
+                        $result = $s3client->putObject(
+                            array(
+                                'Bucket' => env('AWS_BUCKET'),
+                                'Key' => $path."/".$name,
+                                'SourceFile' => $file,
+                                'StorageClass' => 'REDUCED_REDUNDANCY'
+                            )
+                        );
+                    } catch (S3Exception $e) {
+                        dd($e->getMessage());
+                        return Response::json(['success' => false]);
+                    }
                 }
 
                 return [
