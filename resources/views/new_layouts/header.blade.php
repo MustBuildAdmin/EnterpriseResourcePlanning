@@ -322,6 +322,13 @@
                         <div>{{ \Auth::user()->name }}</div>
                         @if(\Auth::user()->type=='company')
                         @php $role='Admin'; @endphp
+                        @elseif(\Auth::user()->type=='sub_contractor')
+                        @php $role='Sub Contractor'; @endphp
+                        @elseif(\Auth::user()->type!='sub_contractor'
+                        || \Auth::user()->type!='client'
+                        || \Auth::user()->type!='company'
+                        || \Auth::user()->type!='consultant')
+                        @php $role='Employee'; @endphp
                         @else
                         @php $role=ucfirst(\Auth::user()->type); @endphp
                         @endif

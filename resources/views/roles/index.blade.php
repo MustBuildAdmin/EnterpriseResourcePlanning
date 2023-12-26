@@ -20,6 +20,9 @@
  table.dataTable thead th, table.dataTable thead td {
      border-bottom: 0px solid #111 !important;
 }
+  div.dataTables_wrapper div.dataTables_paginate {
+      color: white;
+  }
  .dataTables_wrapper > div {
      margin: 5px;
 }
