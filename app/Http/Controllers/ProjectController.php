@@ -2546,6 +2546,9 @@ class ProjectController extends Controller
             $project->longitude = $request->longitude;
             // $project->micro_program = $microProgram;
             $project->otheraddress = $request->otheraddress;
+            if ($request->hasFile("project_image")) {
+                $project->project_image = $fileNameToStore1;
+            }
             $project->save();
             if (Session::has("project_instance")) {
                 $instanceId = Session::get("project_instance");
