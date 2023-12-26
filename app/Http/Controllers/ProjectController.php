@@ -1599,6 +1599,7 @@ class ProjectController extends Controller
                     ->where("type", "task")
                     ->where("progress", "<", 100)
                     ->whereDate('dependency_critical', '<', date('Y-m-d'))
+                    ->whereDate('entire_critical', '>', date('Y-m-d'))
                     ->count();
 
                 $entirecriticalcount = Con_task::where("project_id", $project->id)
