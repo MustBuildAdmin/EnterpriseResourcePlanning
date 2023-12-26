@@ -18,19 +18,23 @@
                   @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                   <div class="card-actions">
                      @can('schedule lookahead schedule')
-                     @if($scheduleGet->active_status == 1)
-                     <button class="btn btn-primary pull-right" type="button" onclick="scheduleComplete()">
-                     {{ __('Complete the Schedule') }}
-                     </button>
-                     @elseif($scheduleGet->active_status == 2)
-                     <button class="btn btn-primary pull-right" type="button" disabled>
-                     {{ __('Completed') }}
-                     </button>
-                     @else
-                     <button class="btn btn-primary pull-right" type="button" onclick="scheduleStart()">
-                     {{ __('Active the Schedule') }}
-                     </button>
-                     @endif
+                        @if($scheduleGet->active_status == 1)
+                           <button class="btn btn-primary pull-right" type="button" onclick="scheduleComplete()">
+                              {{ __('Complete the Schedule') }}
+                           </button>
+                        @elseif($scheduleGet->active_status == 2)
+                           <button class="btn btn-primary pull-right" type="button" disabled>
+                              {{ __('Completed') }}
+                           </button>
+                        @elseif($scheduleCheck == null)
+                           <button class="btn btn-primary pull-right" type="button" onclick="scheduleStart()">
+                              {{ __('Active the Schedule') }}
+                           </button>
+                        @else
+                           <button class="btn btn-primary pull-right" type="button" onclick="scheduleDraftSave()">
+                              {{ __('Save to the draft') }}
+                           </button>
+                        @endif
                      @endcan
                   </div>
                   @endif
@@ -60,10 +64,10 @@
                                        <b>{{ __('Holiday Duration') }}:</b> {{$holidayCount}} {{__('days') }}
                                        </span>
                                     </div>
-                                    <div class="col-4  p-4">
+                                    {{-- <div class="col-4  p-4">
                                        <b>{{ __('Planned Percentage') }}:</b>
                                        {{$current_Planed_percentage}}
-                                    </div>
+                                    </div> --}}
                                     <div class="col-5 p-4">
                                        <span><b>{{ __('Schedule Start Date') }}:</b>
                                        {{ Utility::site_date_format($scheduleGet->schedule_start_date,
@@ -479,6 +483,7 @@
                    data : {
                        'schedulearray' : schedulearray,
                        'schedule_id' : schedule_id,
+                       'schedule_type': 'save_active',
                        '_token' : '{{ csrf_token() }}',
                    },
                    success : function(data_check) {
@@ -502,6 +507,59 @@
            else if (result.dismiss === Swal.DismissReason.cancel) {
            }
        });
+   }
+
+   function scheduleDraftSave(){
+      schedule_id   = $("#schedule_id").val();
+      schedulearray = getData();
+
+      const swalWithBootstrapButtons = Swal.mixin({
+         customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+         },
+         buttonsStyling: false
+      })
+      swalWithBootstrapButtons.fire({
+         title: 'Are you sure?',
+         text: "Schedule save in the draft",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            reverseButtons: true
+         }).then((result) => {
+            if (result.isConfirmed) {
+               $.ajax({
+                  url : '{{route("mainschedule_store")}}',
+                  type : 'POST',
+                  data : {
+                     'schedulearray' : schedulearray,
+                     'schedule_id' : schedule_id,
+                     'schedule_type': 'save_draft',
+                     '_token' : '{{ csrf_token() }}',
+                  },
+                  success : function(data_check) {
+                     if(data_check[0] == "0"){
+                        toastr.warning(data_check[1]);
+                     }
+                     else if(data_check[0] == "1"){
+                        toastr.success(data_check[1]);
+                        location.reload();
+                     }
+                     else{
+                        toastr.error("Somenthing went wrong!");
+                     }
+                  },
+                  error : function(request,error)
+                  {
+                     toastr.error("Somenthing went wrong!.");
+                  }
+               });
+           }
+           else if (result.dismiss === Swal.DismissReason.cancel) {
+           }
+      });
    }
    
    function scheduleComplete(){
