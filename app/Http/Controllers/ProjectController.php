@@ -647,8 +647,10 @@ class ProjectController extends Controller
                     $userArr = [
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
-                        'project_name' => $project->project_name,
+                        'project_name' => $request->project_name,
+                        'projectname' => $request->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE',
@@ -714,7 +716,9 @@ class ProjectController extends Controller
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
+                        'projectname' => $project->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -1296,12 +1300,18 @@ class ProjectController extends Controller
                 $completedTask = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
                     ->where("progress", 100)
+                    ->where('type','task')
                     ->get();
 
                 $project_done_task = $completedTask->count();
 
+                $total_task = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where('type','task')
+                    ->get()->count();
+
                 $project_data["task"] = [
-                    "total" => number_format($project_task),
+                    "total" => number_format($total_task),
                     "done" => number_format($project_done_task),
                     "percentage" => Utility::getPercentage(
                         $project_done_task,
@@ -2393,6 +2403,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+       
         if (\Auth::user()->can("edit project")) {
             $validator = \Validator::make($request->all(), [
                 // "project_name" => "required",
@@ -2409,6 +2420,7 @@ class ProjectController extends Controller
 
             // $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
+          
             // $project->project_name = $request->project_name;
             $project->start_date = date(
                 "Y-m-d H:i:s",
@@ -2490,8 +2502,10 @@ class ProjectController extends Controller
                 $userArr = [
                     'invite_link' => $inviteUrl,
                     'user_name' => \Auth::user()->name,
-                    'project_name' => $project->project_name,
+                    'project_name' => $request->project_name,
+                    'projectname' => $request->project_name,
                     'email' => \Auth::user()->email,
+                    'team_member_name'=>$get_email->name
                 ];
                 
                 $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -2818,7 +2832,9 @@ class ProjectController extends Controller
                             'invite_link' => $inviteUrl,
                             'user_name' => \Auth::user()->name,
                             'project_name' => $project->project_name,
+                            'projectname' => $project->project_name,
                             'email' => \Auth::user()->email,
+                            'team_member_name'=>$get_email->name
                         ];
 
                         $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
