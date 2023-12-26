@@ -139,11 +139,11 @@ if($delay>100){
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">
-                    {{ __('Current Look a Head')}}
+                    {{ __('Current Lookahead')}}
                   </h3>
                   <div class="card-actions">
                     <a href="{{ route('micro_taskboard') }}">
-                      {{ __('View the Active Look a Head')}}
+                      {{ __('View the Active Lookahead')}}
                       <!-- Download SVG icon from http://tabler-icons.io/i/edit -->
                     </a>
                   </div>
@@ -160,17 +160,17 @@ if($delay>100){
                         {{ Utility::site_date_format($microProgram->schedule_end_date,\Auth::user()->id) }}
                       </dd>
                       <dt class="col-5">{{ __('Holiday in Days')}}:</dt>
-                      <dd class="col-7">{{$holidayCount}}</dd>
+                      <dd class="col-7">{{$holidayCount}} Days</dd>
                       <dt class="col-5">{{ __('Weekends in Days')}}</dt>
-                      <dd class="col-7">{{$microWeekEndCount}}</dd>
-                      <dt class="col-5">{{ __('Total working days')}}:</dt>
-                      <dd class="col-7">{{$totalWorkingDays}}</dd>
+                      <dd class="col-7">{{$microWeekEndCount}} Days</dd>
+                      <dt class="col-5">{{ __('Total working Days')}}:</dt>
+                      <dd class="col-7">{{$totalWorkingDays}} Days</dd>
                       <dt class="col-5">{{ __('Total Task Taken')}}:</dt>
-                      <dd class="col-7">{{$conTaskTaken}}</dd>
+                      <dd class="col-7">{{$conTaskTaken}} Tasks</dd>
                       <dt class="col-5">{{ __('Total Sub Task Created')}}:</dt>
-                      <dd class="col-7">{{$microTaskCount}}</dd>
+                      <dd class="col-7">{{$microTaskCount}} Tasks</dd>
                     @else
-                      <dd class="col-7">{{ __('No schedule is active')}}</dd>
+                      <dd class="col-7 text-center">{{ __('No schedule is active')}}</dd>
                     @endif
                   </dl>
                 </div>
@@ -185,7 +185,7 @@ if($delay>100){
                   <div class="d-flex align-items-center">
                     <div class="subheader">{{ __('Total Task')}}</div>
                   </div>
-                  <div class="h1 mb-3">{{$total_sub }} {{ __('Tasks')}}</div>
+                  <div class="h1 mb-3">{{$project_data['task']['total'] }} {{ __('Tasks')}}</div>
                   <div class="d-flex mb-2">
                     <div>{{ __('Planned Percentage')}}</div>
                     <div class="ms-auto">
@@ -467,7 +467,7 @@ if($delay>100){
             <div class="col-lg-12">
               <div class="card">
                 <div class="card-body">
-                  <h3 class="card-title">{{ __('Task summary')}}</h3>
+                  <h3 class="card-title">{{ __('Task Summary')}}</h3>
                   <div id="chart-mentions" class="chart-lg"></div>
                 </div>
               </div>
@@ -480,7 +480,7 @@ if($delay>100){
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title">{{ __('Look a Head')}}</h3>
+                <h3 class="card-title">{{ __('Lookahead Summary')}}</h3>
                 <div id="micro_chart-mentions" class="chart-lg"></div>
               </div>
             </div>
@@ -516,7 +516,7 @@ if($delay>100){
                 opacity: 1,
             },
             series: [all_pending, all_completed, all_inprogress, all_upcoming],
-            labels: ["Pending", "Completed", "In-Progress", "UpComming"],
+            labels: ["Pending", "Completed", "In-Progress", "Upcoming Tasks"],
             tooltip: {
                 theme: 'dark'
             },
@@ -524,7 +524,7 @@ if($delay>100){
                 strokeDashArray: 4,
             },
             colors: [tabler.getColor("danger"), tabler.getColor("green", 0.8),
-            tabler.getColor("primary", 0.6), tabler.getColor("orange -300")],
+            tabler.getColor("primary", 0.6), 'grey'],
             legend: {
                 show: true,
                 position: 'bottom',

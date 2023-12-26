@@ -320,7 +320,12 @@
                         asset(Storage::url('uploads/avatar/avatar.png')) }}')"></span>
                      <div class="d-none d-xl-block ps-2">
                         <div>{{ \Auth::user()->name }}</div>
-                        <div class="mt-1 small text-secondary">Role</div>
+                        @if(\Auth::user()->type=='company')
+                        @php $role='Admin'; @endphp
+                        @else
+                        @php $role=ucfirst(\Auth::user()->type); @endphp
+                        @endif
+                        <div class="mt-1 small text-secondary">{{$role}}</div>
                      </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">

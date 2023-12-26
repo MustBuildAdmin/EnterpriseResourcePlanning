@@ -189,7 +189,7 @@ class ProjectController extends Controller
             $project->status = $request->status;
             $project->report_to = $request->reportto;
 
-            $project->report_time = $request->report_time;
+            $project->report_time = Utility::time_to_utc($request->report_time);
             $project->tags = $request->tag;
             $project->estimated_days = $request->estimated_days;
 
@@ -647,8 +647,10 @@ class ProjectController extends Controller
                     $userArr = [
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
-                        'project_name' => $project->project_name,
+                        'project_name' => $request->project_name,
+                        'projectname' => $request->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE',
@@ -714,7 +716,9 @@ class ProjectController extends Controller
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
+                        'projectname' => $project->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -1278,12 +1282,18 @@ class ProjectController extends Controller
                 $completedTask = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
                     ->where("progress", 100)
+                    ->where('type','task')
                     ->get();
 
                 $project_done_task = $completedTask->count();
 
+                $total_task = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where('type','task')
+                    ->get()->count();
+
                 $project_data["task"] = [
-                    "total" => number_format($project_task),
+                    "total" => number_format($total_task),
                     "done" => number_format($project_done_task),
                     "percentage" => Utility::getPercentage(
                         $project_done_task,
@@ -2375,6 +2385,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+       
         if (\Auth::user()->can("edit project")) {
             $validator = \Validator::make($request->all(), [
                 // "project_name" => "required",
@@ -2391,6 +2402,7 @@ class ProjectController extends Controller
 
             // $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
+          
             // $project->project_name = $request->project_name;
             $project->start_date = date(
                 "Y-m-d H:i:s",
@@ -2472,8 +2484,10 @@ class ProjectController extends Controller
                 $userArr = [
                     'invite_link' => $inviteUrl,
                     'user_name' => \Auth::user()->name,
-                    'project_name' => $project->project_name,
+                    'project_name' => $request->project_name,
+                    'projectname' => $request->project_name,
                     'email' => \Auth::user()->email,
+                    'team_member_name'=>$get_email->name
                 ];
                 
                 $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -2800,7 +2814,9 @@ class ProjectController extends Controller
                             'invite_link' => $inviteUrl,
                             'user_name' => \Auth::user()->name,
                             'project_name' => $project->project_name,
+                            'projectname' => $project->project_name,
                             'email' => \Auth::user()->email,
+                            'team_member_name'=>$get_email->name
                         ];
 
                         $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
@@ -2983,20 +2999,26 @@ class ProjectController extends Controller
                 foreach ($data as $value) {
                     if (isset($value->totalStack)) {
                         $n_total_slack = $value->totalStack;
-                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->start_date);
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->end_date);
                         $carbonDate = Carbon::parse($cleanedDateString);
-                        $carbonDate->addDays($value->totalStack);
-                        $total_slack = $carbonDate->format('Y-m-d');
+                        // $carbonDate->addDays($value->totalStack);
+
+                        $endate = $carbonDate->format('Y-m-d');
+                        $date=Utility::exclude_date_calculator($endate,$n_total_slack,Session::get('project_id'));
+                        $entire_critical = $date;
                     } else {
                         $total_slack = null;
                         $n_total_slack=null;
                     }
                     if (isset($value->freeSlack)) {
                         $free_slack = $value->freeSlack;
-                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->start_date);
+                        $cleanedDateString = preg_replace('/\s\(.*\)/', '', $value->end_date);
                         $carbonDate = Carbon::parse($cleanedDateString);
-                        $carbonDate->addDays($value->freeSlack);
-                        $freeSlack = $carbonDate->format('Y-m-d');
+                        // $carbonDate->addDays($value->freeSlack);
+
+                        $endate2 = $carbonDate->format('Y-m-d');
+                        $date2=Utility::exclude_date_calculator($endate2,$free_slack,Session::get('project_id'));
+                        $dependency_critical = $date2;
                     } else {
                         $freeSlack = null;
                         $free_slack =null;
@@ -3005,9 +3027,9 @@ class ProjectController extends Controller
                     Con_task::where('project_id', Session::get("project_id"))
                         ->where('instance_id', Session::get("project_instance"))
                         ->where('main_id', $value->main_id)
-                        ->update(['dependency_critical' => $freeSlack,
-                            'entire_critical' => $total_slack,
-                            'float_val' => $total_slack,'free_slack'=>$free_slack,'total_slack'=>$n_total_slack]);
+                        ->update(['dependency_critical' => $dependency_critical,
+                            'entire_critical' => $entire_critical,
+                            'float_val' => $n_total_slack,'free_slack'=>$free_slack,'total_slack'=>$n_total_slack]);
 
                 }
 

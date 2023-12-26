@@ -14,7 +14,8 @@ use Session;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Twilio\Rest\Client;
-
+use Aws\S3\S3Client;
+use Aws\S3\Exception\S3Exception;
 class Utility extends Model
 {
     public static function settings()
@@ -1224,6 +1225,8 @@ class Utility extends Model
 
     public static function sendEmailTemplate($emailTemplate, $mailTo, $obj)
     {
+        // echo "<pre>";
+        // print_r($obj);
         $usr = Auth::user();
         if ($usr != null && ! empty($usr)) {
             //Remove Current Login user Email don't send mail to them
@@ -1255,8 +1258,12 @@ class Utility extends Model
                         $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', $usr->lang)->first();
 
                         $content->from = $template->from;
+                        $content->subject =  self::replaceVariable($content->subject, $obj);
                         if (! empty($content->content)) {
                             $content->content = self::replaceVariable($content->content, $obj);
+                            // echo "<pre>";
+                            // print_r($content);
+                            // exit;
 
                             // send email
                             try {
@@ -1312,8 +1319,13 @@ class Utility extends Model
                     $content = EmailTemplateLang::where('parent_id', '=', $template->id)->where('lang', 'LIKE', 'en')->first();
 
                     $content->from = $template->from;
+                    $content->subject =  self::replaceVariable($content->subject, $obj);
                     if (! empty($content->content)) {
+
                         $content->content = self::replaceVariable($content->content, $obj);
+                        // echo "<pre>";
+                        // print_r($content);
+                        // exit;
 
                         // send email
                         try {
@@ -1538,6 +1550,7 @@ class Utility extends Model
         $arrVariable = [
             '{app_name}',
             '{project_name}',
+            '{project_name1}',
             '{company_name}',
             '{user_name}',
             '{app_url}',
@@ -1644,12 +1657,15 @@ class Utility extends Model
             '{inviteconsultantHeader}',
             '{inviteteamMemberHeader}',
             '{invite_link}',
-            '{invite_btn}'
+            '{invite_btn}',
+            '{team_member_name}',
+            '{invite_btn1}'
 
         ];
         $arrValue = [
             'app_name' => '-',
             'project_name'=>'-',
+            'project_name1'=>'-',
             'company_name' => '-',
             'user_name'=>'-',
             'app_url' => '-',
@@ -1757,7 +1773,9 @@ class Utility extends Model
             'inviteconsultantHeader'=>'-',
             'inviteteamMemberHeader'=>'-',
             'invite_link'=>'-',
-            'invite_btn'=>'-'
+            'invite_btn'=>'-',
+            'team_member_name'=>'-',
+            'invite_btn1'=>'-'
 
 
 
@@ -1801,14 +1819,10 @@ class Utility extends Model
             .$short_projname.'</div></td><td class="w-50p">&nbsp;</td></tr></table>';
 
         if(isset($obj['invite_link'])){
-            $arrValue['invite_link']='<tr> <td class="content pt-0"> You can <a href="'.$obj['invite_link'].
-            '">accept or decline</a> this invitation. You can also visit <a href="'.env('APP_URL').'">'
-            .env('APP_NAME').'</a> to learn a bit more about them. The invite link is valid for 7days. </td></tr>';
-            $arrValue['invite_btn']='<tr><td class="content pt-0"><table cellspacing="0" cellpadding="0"><tr>
-            <td align="center"><table cellpadding="0" cellspacing="0" border="0" class="bg-blue rounded w-auto">
-            <tr><td align="center" valign="top" class="lh-1"><a href="'.$obj['invite_link'].'"
-             class="btn bg-blue border-blue"><span class="btn-span">View&nbsp;invitation</span>
-             </a></td></tr></table></td></tr></table></td></tr>';
+            $arrValue['invite_link']='<p>You can <a href="'.$obj['invite_link'].
+            '">accept or decline</a> this invitation by clicking on the following link:<br/>
+            <a href="'.$obj['invite_link'].'">'.$obj['invite_link'].'</a></p><p>Feel free to visit <a href="'.env('APP_URL').'">'
+             .env('APP_NAME')."</a> to learn more about the platform. The invitation link is valid for 7 days.<br/>If you have any questions or need assistance, please don't hesitate to reach out.</p>";
         }
 
 
@@ -2843,6 +2857,49 @@ class Utility extends Model
 
                     // $path = $path.$name;
 
+                }elseif($settings['storage_setting'] == 's3'){
+                    // print_r($name);
+                 
+                    $file = $request->file($key_name);
+                    $credentials = array('key' => env('AWS_ACCESS_KEY_ID'), 'secret' => env('AWS_SECRET_ACCESS_KEY'));
+                    $s3client = S3Client::factory([
+                        'signature' => 'v4',
+                        'version' => 'latest',
+                        'ACL' => 'public',
+                        'region' => env('AWS_DEFAULT_REGION'),
+                        'credentials' => $credentials,
+                        'Statement' => [
+                            'Action ' => "*"
+                        ]
+                    ]);
+
+                    try {
+                        $result = $s3client->putObject(
+                            array(
+                                'Bucket' => env('AWS_BUCKET'),
+                                'Key' => $path."/".$name,
+                                'SourceFile' => $file,
+                                'StorageClass' => 'REDUCED_REDUNDANCY'
+                            )
+                        );
+                    } catch (S3Exception $e) {
+                        dd($e->getMessage());
+                        return Response::json(['success' => false]);
+                    }
+                    
+                    // if (! $path=Storage::disk('s3')->putFileAs($path, $file , $name)) {
+                    //     echo 'no';
+                    // }else{
+                    //     echo 'uploaded';
+                    // }
+                    // $path = \Storage::disk('s3')->putFileAs(
+                    //         $path,
+                    //         $file,
+                    //         $name
+                    // );
+
+                    // $path = $path.$name;
+                    // dd($path);
                 }
                 return [
                     'flag' => 1,
@@ -3493,7 +3550,78 @@ class Utility extends Model
         }
 
     }
+    public static function time_to_utc($time)
+    {
+        $carbon = \Carbon\Carbon::parse($time);
+        $utcTime = $carbon->utc()->format('H:i');
+        return $utcTime;
+    }
 
+    public static function exclude_date_calculator($end,$add, $id)
+    {
+        $project = DB::table('projects')->where('id', $id)->first();
+        if (Session::has('project_instance')) {
+            $instance_id = Session::get('project_instance');
+        } else {
+            $checkInstanceFre = Instance::where('project_id',$id)->orderBy('id','DESC')->first();
+            $instance_id = $checkInstanceFre->instance_id;
+        }
+
+        $holidays = DB::table('project_holidays')->where(['project_id' => $id, 'instance_id' => $instance_id])->get();
+      
+        $nonWorkingDay = NonWorkingDaysModal::where('project_id', $id)
+            ->where('instance_id', $instance_id)->first();
+        if ($project) {
+            if ($nonWorkingDay != null) {
+                $weekarray = explode(',', $nonWorkingDay->non_working_days);
+            } else {
+                $weekarray = [];
+            }
+
+            $excluded_dates = [];
+ 
+            if (count($holidays) > 0) {
+                foreach ($holidays as $key => $value) {
+                    $excluded_dates[] = Carbon::create($value->date);
+                }
+            }
+           
+            $final_count = 0;
+  
+            $start_date = Carbon::create($end);
+            $end_date = Carbon::create($end)->addDay($add);
+            $date_range = CarbonPeriod::create($start_date, $end_date);
+            $n=1;
+            $extra_da=0;
+            for ($i=0; $i < $n ; $i++) { 
+                if($final_count!=0){
+                    $change_end = Carbon::create($end_date)->addDay($extra_da);
+                    $date_range = CarbonPeriod::create($start_date, $change_end);
+                }else{
+                    $change_end=$end_date;
+                }
+                $extra_da=0;
+               foreach ($date_range as $date) {
+                    if ( in_array($date->dayOfWeek, $weekarray) || in_array($date, $excluded_dates)) {
+                        $extra_da++;
+                    }
+                }
+                $final_count++;
+                if($extra_da >0){
+                    $n=$extra_da;
+                    
+                }
+            }
+            
+
+            return $change_end ;
+
+        } else {
+            return '0';
+        }
+
+    }
+    
     public static function rndRGBColorCode()
     {
         //using the inbuilt random function

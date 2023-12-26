@@ -85,8 +85,8 @@ $(document).on("keyup", '#name', function () {
 </script>
 
 
-<script src="{{ asset('tabler/tabler.min.js') }}"></script>
-<script src="{{ asset('theme/demo-theme.min.js') }}"></script>
+{{-- <script src="{{ asset('tabler/tabler.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('theme/demo-theme.min.js') }}"></script> --}}
 <script src="{{ asset('litepicker/litepicker.js') }}"></script>
 <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
 
