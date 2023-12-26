@@ -528,7 +528,8 @@ class ProjectTaskController extends Controller
                 elseif(Session::get('task_filter')=='dependency_critical'){
                     $tasks->where(function($query) {
                         $query->orwhere('progress', '<', '100')
-                        ->whereDate('con_tasks.dependency_critical', '<', date('Y-m-d'));
+                        ->whereDate('con_tasks.dependency_critical', '<', date('Y-m-d'))
+                        ->whereDate('con_tasks.entire_critical', '>', date('Y-m-d'));
                     })
                         ->orderBy('con_tasks.end_date', 'DESC');
                 }

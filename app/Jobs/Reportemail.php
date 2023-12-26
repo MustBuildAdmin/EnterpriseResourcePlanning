@@ -42,8 +42,8 @@ class Reportemail implements ShouldQueue
         $instance_id = $instance;
 
         $project_task = Con_task::where('project_id', $project_id)->where('instance_id', $instance_id)
-            ->where('updated_at', 'like', Carbon::now()->format('Y-m-d').'%')->where('type', 'project')->get();
-
+            ->where('updated_at', 'like', Carbon::now()->format('Y-m-d').'%')->get();
+       
         //    $project_task=Con_task::where(['project_id'=>$project_id,'instance_id'=>$instance_id])
         //     ->whereIn('main_id', function($query){
         //         $query->select('task_id')
@@ -172,7 +172,6 @@ class Reportemail implements ShouldQueue
         foreach ($to_array as $key => $value) {
             $to[] = DB::table('users')->where('id', $value->user_id)->pluck('email')->first();
         }
-
         if ($to) {
             $pdf = Pdf::loadView('project_report.email',
                 compact('taskdata', 'project', 'project_task', 'actual_current_progress',
