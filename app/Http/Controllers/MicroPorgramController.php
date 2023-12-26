@@ -164,6 +164,12 @@ class MicroPorgramController extends Controller
                     ->where('status',1)
                     ->first();
 
+                $scheduleCheck = MicroProgramScheduleModal::where('project_id',$project_id)
+                    ->where('instance_id',$instance_id)
+                    ->where('active_status',1)
+                    ->where('status',1)
+                    ->first();
+
                 $microSchedule = MicroTask::select('micro_tasks.text', 'micro_tasks.users',
                     'micro_tasks.start_date', 'micro_tasks.end_date', 'micro_tasks.id',
                     'micro_tasks.instance_id', 'micro_tasks.task_id','micro_tasks.con_main_id',
@@ -347,6 +353,7 @@ class MicroPorgramController extends Controller
                         ->with('secheduleId',$secheduleId)
                         ->with('start_date',$start_date)
                         ->with('end_date',$end_date)
+                        ->with('scheduleCheck',$scheduleCheck)
                         ->with('task_status',$task_status);
             // }
             // else{
@@ -1339,6 +1346,7 @@ class MicroPorgramController extends Controller
     }
     public function mainschedule_store(Request $request){
         if (\Auth::user()->can('schedule lookahead schedule')) {
+            $schedule_type  = $request->schedule_type;
             $schedulearray  = $request->schedulearray;
             $schedule_id    = $request->schedule_id;
             $project_id     = Session::get('project_id');
@@ -1353,8 +1361,10 @@ class MicroPorgramController extends Controller
            
             if($freeze_check == null){ return array('0', 'Project is not freezed!'); }
 
-            if($checkActiveGet == 1){
-                return array('0', 'Another Schedule is running please Complete that First');
+            if($schedule_type == "save_active"){
+                if($checkActiveGet == 1){
+                    return array('0', 'Another Schedule is running please Complete that First');
+                }
             }
             
             if($checMicroProgress == null){
@@ -1387,7 +1397,9 @@ class MicroPorgramController extends Controller
                                 ->update(['schedule_order' => $sort_number]);
                         }
                         else{
-                            MicroProgramScheduleModal::where('id',$schedule_id)->update(['active_status'=>1]);
+                            if($schedule_type == "save_active"){
+                                MicroProgramScheduleModal::where('id',$schedule_id)->update(['active_status'=>1]);
+                            }
                             $conTask = Con_task::where($where_basic)->where('main_id',$con_main_id)->first();
 
                             $store_array = array(
@@ -1420,7 +1432,13 @@ class MicroPorgramController extends Controller
                             Con_task::where($where_basic)->where('main_id',$con_main_id)->update(['micro_flag'=>1]);
                         }
                     }
-                    return array('1', 'Shedule Activated');
+
+                    if($schedule_type == "save_active"){
+                        return array('1', 'Shedule Activated');
+                    }
+                    else{
+                        return array('1', 'Shedule saved in the draft');
+                    }
                 }
                 else{
                     return array('0', 'Please Drag and Drop the Task List into the Micro Planning');

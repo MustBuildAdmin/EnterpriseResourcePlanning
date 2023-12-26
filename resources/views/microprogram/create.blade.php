@@ -6,7 +6,6 @@
     'enctype' => 'multipart/form-data',
 ]) }}
 <div class="modal-body">
-    <div class="text-secondary mb-3">{{__('Required fields are marked with an asterisk *')}}</div>
     <div class="mb-3">
         <label class="form-label required">{{__('Schedule Name')}}</label>
         <input type="hidden" id="setScheduleDate" class="setScheduleDate" value="{{$all_dates}}">
@@ -61,7 +60,7 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label">{{ __('Schedule Goals') }}<span class="form-label-description">56/100</span></label>
+        <label class="form-label required">{{ __('Schedule Goals') }}</label>
         <textarea class="form-control" name="schedule_goals" rows="6" placeholder="{{ __('Content..') }}" required></textarea>
     </div>
 </div>
