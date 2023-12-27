@@ -2639,79 +2639,85 @@ class ProjectController extends Controller
         }
     }
     public function viewproject(Request $request, $project_id){
-        $clients = User::where(
-            "created_by",
-            "=",
-            \Auth::user()->creatorId()
-        )
-            ->where("type", "=", "client")
-            ->get()
-            ->pluck("name", "id");
-        $users = User::where("created_by", "=", \Auth::user()->creatorId())
-            ->where("type", "!=", "client")
-            ->get()
-            ->pluck("name", "id");
-        $users->prepend("Select User", "");
-        $repoter = User::where(
-            "created_by",
-            "=",
-            \Auth::user()->creatorId()
-        )
-            ->where("type", "!=", "client")
-            ->get()
-            ->pluck("name", "id");
-        $project = Project::findOrfail($project_id);
-        $setting = Utility::settings(\Auth::user()->creatorId());
-        $country = Utility::getcountry();
-        if (Session::has("project_instance")) {
-            $instanceId = Session::get("project_instance");
-        } else {
-            $instanceId = $project->instance_id;
-        }
-        $project_holidays = Project_holiday::where([
-            "project_id" => $project->id,
-            "instance_id" => $instanceId,
-        ])
-            ->orderBy("date", "ASC")
-            ->get();
-        $non_working_days = array(
-                '1' => 'Monday','2' => 'Tuesday', '3' => 'Wednesday',
-                '4' => 'Thursday', '5' => 'Friday',
-                '6' => 'Saturday','0' => 'Sunday' );
-        if ($project->country != null) {
-            $statelist = Utility::getstate($project->country);
-        } else {
-            $statelist = [];
-        }
-        // non working days
-        $non_working=explode(',',$project->non_working_days);
-        $weekendVal=array();
-        foreach($non_working as $weekends){
-            if(isset($weekends) && $weekends!=''){
-                array_push($weekendVal,$non_working_days[$weekends]);
+        if (\Auth::user()->can("view project")) {
+            $clients = User::where(
+                "created_by",
+                "=",
+                \Auth::user()->creatorId()
+            )
+                ->where("type", "=", "client")
+                ->get()
+                ->pluck("name", "id");
+            $users = User::where("created_by", "=", \Auth::user()->creatorId())
+                ->where("type", "!=", "client")
+                ->get()
+                ->pluck("name", "id");
+            $users->prepend("Select User", "");
+            $repoter = User::where(
+                "created_by",
+                "=",
+                \Auth::user()->creatorId()
+            )
+                ->where("type", "!=", "client")
+                ->get()
+                ->pluck("name", "id");
+            $project = Project::findOrfail($project_id);
+            $setting = Utility::settings(\Auth::user()->creatorId());
+            $country = Utility::getcountry();
+            if (Session::has("project_instance")) {
+                $instanceId = Session::get("project_instance");
+            } else {
+                $instanceId = $project->instance_id;
             }
+            $project_holidays = Project_holiday::where([
+                "project_id" => $project->id,
+                "instance_id" => $instanceId,
+            ])
+                ->orderBy("date", "ASC")
+                ->get();
+            $non_working_days = array(
+                    '1' => 'Monday','2' => 'Tuesday', '3' => 'Wednesday',
+                    '4' => 'Thursday', '5' => 'Friday',
+                    '6' => 'Saturday','0' => 'Sunday' );
+            if ($project->country != null) {
+                $statelist = Utility::getstate($project->country);
+            } else {
+                $statelist = [];
+            }
+            // non working days
+            $non_working=explode(',',$project->non_working_days);
+            $weekendVal=array();
+            foreach($non_working as $weekends){
+                if(isset($weekends) && $weekends!=''){
+                    array_push($weekendVal,$non_working_days[$weekends]);
+                }
 
-        }
-        if ($project->created_by == \Auth::user()->creatorId()) {
-            return view(
-                "projects.viewproject",
-                compact(
-                    "project",
-                    "clients",
-                    "users",
-                    "repoter",
-                    "setting",
-                    "country",
-                    "statelist",
-                    "project_holidays",
-                    "weekendVal"
-                )
-            );
-        } else {
-            return response()->json(
-                ["error" => __("Permission Denied.")],
-                401
-            );
+            }
+            if ($project->created_by == \Auth::user()->creatorId()) {
+                return view(
+                    "projects.viewproject",
+                    compact(
+                        "project",
+                        "clients",
+                        "users",
+                        "repoter",
+                        "setting",
+                        "country",
+                        "statelist",
+                        "project_holidays",
+                        "weekendVal"
+                    )
+                );
+            } else {
+                return response()->json(
+                    ["error" => __("Permission Denied.")],
+                    401
+                );
+            }
+        }else{
+                return redirect()
+                        ->back()
+                        ->with("error", __("Permission Denied."));
         }
     }
 
