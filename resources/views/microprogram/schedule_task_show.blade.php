@@ -1,4 +1,10 @@
 @include('new_layouts.header')
+<link rel="stylesheet" href="{{ asset('tokeninput/tokeninput.css') }}">
+<style>
+   ul.token-input-list-bootstrap {
+      margin-top: 7px !important;
+   }
+</style>
 <div class="page-wrapper">
    @include('construction_project.side-menu')
    <div class="container-fluid" id="taskboard_view">
@@ -214,7 +220,14 @@
                                     <div class="row px-5">
                                        <div class="col-3">
                                           <div class="mb-3">
-                                             <label class="form-label required">Task Planned Start Date</label>
+                                             <label class="form-label">{{ __('Search By Task Name or Id') }}</label>
+                                             <input type="text" id="skill_input" value="{{ request()->get('q') }}" style="margin-top: 15px !important;">
+                                          </div>
+                                       </div>
+
+                                       <div class="col-3">
+                                          <div class="mb-3">
+                                             <label class="form-label">Task Planned Start Date</label>
                                              <div class="input-icon">
                                                 <span class="input-icon-addon">
                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
@@ -226,7 +239,7 @@
 
                                        <div class="col-3">
                                           <div class="mb-3">
-                                             <label class="form-label required">Task Planned End Date</label>
+                                             <label class="form-label">Task Planned End Date</label>
                                              <div class="input-icon">
                                                 <span class="input-icon-addon">
                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M11 15h1" /><path d="M12 15v3" /></svg>
@@ -245,21 +258,11 @@
                                              </select>
                                           </div>
                                        </div>
-
-                                       <div class="col-1">
-                                          <div class="mb-3">
-                                             <div class="input-icon" style="margin-top: 40px;">
-                                                <button type="submit" class="btn btn-primary" id="search_task">Search</button>
-                                             </div>
-                                          </div>
-                                       </div>
-
-                                       <div class="col-2">
-                                          <div class="mb-3">
-                                             <div class="input-icon" style="margin-top: 40px;">
-                                                <button type="button" class="btn btn-warning" id="reset_task">Reset</button>
-                                             </div>
-                                          </div>
+                                    </div>
+                                    <div class="row px-5">
+                                       <div class="flex text-center">
+                                          <button type="submit" class="btn btn-primary" id="search_task">Search</button>
+                                          <button type="button" class="btn btn-warning" id="reset_task">Reset</button>
                                        </div>
                                     </div>
                                  </form>
@@ -371,16 +374,37 @@
 @include('new_layouts.footer')
 <script src="{{ asset('tom-select/tom-select.popular.min.js') }}"></script>
 <script src="{{ asset('litepicker/litepicker.js') }}"></script>
+<script src="{{ asset('tokeninput/jquery.tokeninput.js') }}"></script>
 <script src="{{ asset('assets/js/js/Sortable.min.js') }}">
 </script>
 <script>
    var tempcsrf = '{!! csrf_token() !!}';
 
    $("#reset_task").click(function(){
+      $('input#skill_input').tokenInput('clear');
       $(".start_date").val("");
       $(".end_date").val("");
       $(".task_status").val("");
       location.replace(window.location.href);
+   });
+
+   $(document).ready(function() {
+      $("#skill_input").tokenInput("{{route('schedule_task_autocomplete')}}", {
+         propertyToSearch:"text",
+         tokenValue:"id",
+         tokenDelimiter:",",
+         hintText: "{{ __('Search Task...') }}",
+         noResultsText: "{{ __('Task not found.') }}",
+         searchingText: "{{ __('Searching...') }}",
+         deleteText:"&#215;",
+         minChars: 2,
+         tokenLimit: 4,
+         animateDropdown: false,
+         resultsLimit:10,
+         deleteText: "&times;",
+         preventDuplicates: true,
+         theme: "bootstrap"
+      });
    });
 
    document.addEventListener("DOMContentLoaded", function() {

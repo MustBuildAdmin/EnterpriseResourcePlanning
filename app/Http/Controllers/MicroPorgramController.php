@@ -1358,6 +1358,7 @@ class MicroPorgramController extends Controller
             $checkActive    = MicroProgramScheduleModal::where($where_basic)->where('active_status',1)->where('status',1)->first();
             $checkActiveGet = $checkActive != null ? 1 : 0;
             $checMicroProgress = MicroTask::where($where_basic)->where('schedule_id',$schedule_id)->where('progress','>',0)->first();
+            $microAlreadyExist = MicroTask::where($where_basic)->where('schedule_id',$schedule_id)->first();
            
             if($freeze_check == null){ return array('0', 'Project is not freezed!'); }
 
@@ -1369,22 +1370,33 @@ class MicroPorgramController extends Controller
             
             if($checMicroProgress == null){
                 if($schedulearray != null){
-                    $get_schedule = MicroProgramScheduleModal::where($where_basic)->where('id',$schedule_id)->where('status',1)->first();
-                    $microSummary = array(
-                        'task_id'     => 1,
-                        'text'        => $get_schedule->schedule_name,
-                        'project_id'  => $project_id,
-                        'instance_id' => $instance_id,
-                        'duration'    => $get_schedule->schedule_duration,
-                        'progress'    => 0,
-                        'schedule_id' => $schedule_id,
-                        'created_by'  => Auth::user()->id,
-                        'start_date'  => date("Y-m-d", strtotime($get_schedule->schedule_start_date)),
-                        'end_date'    => date("Y-m-d", strtotime($get_schedule->schedule_end_date)),
-                        'type'        => 'project',
-                        'parent'      => 0
-                    );
-                    MicroTask::insert($microSummary);
+                    $get_con_main = MicroTask::select(DB::raw("group_concat(con_main_id) as con_main"))->where($where_basic)
+                        ->where('schedule_id',$schedule_id)
+                        ->WhereNotNull('con_main_id')->groupBy('schedule_id')->first();
+                    if($get_con_main != null){
+                        $con_main = explode(',',$get_con_main->con_main);
+                        $get_con_task = Con_task::where($where_basic)->whereIn('main_id',$con_main)->update(['micro_flag' => 0]);
+                        MicroTask::where($where_basic)->where('schedule_id',$schedule_id)->delete();
+                    }
+                    
+                    if($microAlreadyExist == null){
+                        $get_schedule = MicroProgramScheduleModal::where($where_basic)->where('id',$schedule_id)->where('status',1)->first();
+                        $microSummary = array(
+                            'task_id'     => 1,
+                            'text'        => $get_schedule->schedule_name,
+                            'project_id'  => $project_id,
+                            'instance_id' => $instance_id,
+                            'duration'    => $get_schedule->schedule_duration,
+                            'progress'    => 0,
+                            'schedule_id' => $schedule_id,
+                            'created_by'  => Auth::user()->id,
+                            'start_date'  => date("Y-m-d", strtotime($get_schedule->schedule_start_date)),
+                            'end_date'    => date("Y-m-d", strtotime($get_schedule->schedule_end_date)),
+                            'type'        => 'project',
+                            'parent'      => 0
+                        );
+                        MicroTask::insert($microSummary);
+                    }
 
                     foreach($schedulearray as $schedule){
                         $task_id     = $schedule['task_id'];
@@ -1914,6 +1926,32 @@ class MicroPorgramController extends Controller
             return $e->getMessage();
         }
       
+    }
+
+    public function schedule_task_autocomplete(Request $request){
+        $searchValue = $request['q'];
+        if($request->filled('q')){
+            $consTask = Con_task::search($searchValue)
+                ->where('project_id',Session::get('project_id'))
+                ->where('instance_id',Session::get('project_instance'))
+                ->where('type','task')
+                ->where('micro_flag',0)
+                ->orderBy('text','ASC')
+                ->get();
+        }
+
+        $conData = array();
+        if(count($consTask) > 0){
+            foreach($consTask as $task){
+                $setTask = [
+                    'id' => $task->id,
+                    'text' => $task->text
+                ];
+                $conData[] = $setTask;
+            }
+        }
+
+        echo json_encode($conData);
     }
 
 

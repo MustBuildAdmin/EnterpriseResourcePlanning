@@ -5383,6 +5383,9 @@ Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show
     ]
 );
 
+Route::get('schedule_task_autocomplete', 'MicroPorgramController@schedule_task_autocomplete')->name('schedule_task_autocomplete')
+->middleware(['auth','XSS',]);
+
 Route::any('mainschedule_store', 'MicroPorgramController@mainschedule_store')->name('mainschedule_store')->middleware(
     [
         'auth',
