@@ -316,7 +316,8 @@ $('#edit_user').click(function(){
             });
         });
 
-        $(document).on("keyup", '#phone', function () {
+        $(document).on("keyup", '#phone', function (e) {
+            e.preventDefault();
             var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
             $("input[name='phone_country'").val(full_number);
             $.ajax({
