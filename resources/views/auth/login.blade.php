@@ -86,7 +86,7 @@
     </li>
     </div>
     <div class="text-center mb-4">
-        <a href="." class="navbar-brand navbar-brand-autodark"><img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+        <a href="." class="navbar-brand navbar-brand-autodark"><img src="https://demomustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
     </div>
     {{Form::open(array('route'=>'login','method'=>'post',"class"=>"card card-md",'id'=>'loginForm' ))}}
     @csrf
