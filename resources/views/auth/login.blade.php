@@ -42,11 +42,9 @@
 </style>
 @php
   //  $logo=asset(Storage::url('uploads/logo/'));
-       $logo=\App\Models\Utility::get_file('uploads/logo');
-
-    $company_logo=Utility::getValByName('company_logo');
+    $logo=\App\Models\Utility::get_file('uploads/logo');
     $settings = Utility::settings();
-
+    $logo_dark = \App\Models\Utility::getValByName('logo_dark');
 @endphp
 @push('custom-scripts')
     @if(env('RECAPTCHA_MODULE') == 'on')
@@ -86,7 +84,7 @@
     </li>
     </div>
     <div class="text-center mb-4">
-        <a href="." class="navbar-brand navbar-brand-autodark"><img src="https://demomustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png" height="60" class="backgroundimge" alt=""></a>
+        <a href="." class="navbar-brand navbar-brand-autodark"><img src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'logo-dark.png')}}" height="60" class="backgroundimge"  alt="{{ config('app.name', 'Must BuildApp-SaaS') }}"></a>
     </div>
     {{Form::open(array('route'=>'login','method'=>'post',"class"=>"card card-md",'id'=>'loginForm' ))}}
     @csrf
