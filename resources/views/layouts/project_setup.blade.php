@@ -11,10 +11,13 @@
 @endphp
 <div class="card sticky-top" style="top:30px">
     <div class="list-group list-group-flush" id="useradd-sidenav">
+        @can('view project')
         <a href="{{ route('projects.view', $project_id) }}" class="list-group-item list-group-item-action border-0
         {{ Request::route()->getName() == 'projects.view' ? 'nav-link active' : 'nav-link' }}
         ">{{__('View Project')}}
-          <div class="float-end"><i class="ti ti-chevron-right"></i></div></a>
+          <div class="float-end"><i class="ti ti-chevron-right"></i></div>
+        </a>
+        @endcan
         @can('delete project')
         {!! Form::open(['method' => 'DELETE',
                 'route' => ['projects.destroy', $project_id]]) !!}

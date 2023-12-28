@@ -38,5 +38,6 @@ return [
     'INSR'=>'Invite Sub Contractor',
     'URL'=>'/storage/uploads/avatar/avatar.png',
     'pregreplace'=>'/\s\(.*\)/',
-    'micro_url'=>'../../api/'
+    'micro_url'=>'../../api/',
+    'AVATAR'=>'avatar.png'
 ];

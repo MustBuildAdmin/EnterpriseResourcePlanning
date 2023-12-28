@@ -552,7 +552,7 @@ class UserController extends Controller
                 $request->all(), [
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users,email,'.$userDetail->id,
-                    'phone' => 'required|unique:users,phone,'.$userDetail->id,
+                    // 'phone' => 'required|unique:users,phone,'.$userDetail->id,
 
                 ]
             );

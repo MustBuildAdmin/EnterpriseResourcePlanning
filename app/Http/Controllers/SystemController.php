@@ -52,6 +52,23 @@ class SystemController extends Controller
                 }
             }
 
+            if ($request->logo_light) {
+
+                $logoName = 'logo-light.png';
+                $dir = 'uploads/logo';
+                $validation = [
+                    'mimes:'.'png',
+                    'max:'.'20480',
+                ];
+                $path = Utility::upload_file($request, 'logo_light', $logoName, $dir, []);
+                //    dd($path);
+                if ($path['flag'] == 1) {
+                    $logo = $path['url'];
+                } else {
+                    return redirect()->back()->with('error', __($path['msg']));
+                }
+            }
+
             //                $path     = $request->file('logo_dark')->storeAs('uploads/logo/', $logoName);
             //
             //                \DB::insert(
@@ -65,22 +82,7 @@ class SystemController extends Controller
             //
             //            }
 
-            if ($request->logo_light) {
-
-                $logoName = 'logo-light.png';
-
-                $dir = 'uploads/logo';
-                $validation = [
-                    'mimes:'.'png',
-                    'max:'.'20480',
-                ];
-                $path = Utility::upload_file($request, 'logo_light', $logoName, $dir, $validation);
-                if ($path['flag'] == 1) {
-                    $logo = $path['url'];
-                } else {
-                    return redirect()->back()->with('error', __($path['msg']));
-                }
-            }
+          
             //                $path            = $request->file('logo_light')->storeAs('uploads/logo/', $logoName);
             //
             //                \DB::insert(
@@ -91,27 +93,24 @@ class SystemController extends Controller
             //                                                                                                                                             ]
             //                );
             //            }
-
             if ($request->favicon) {
-                //                $request->validate(
-                //                    [
-                //                        'favicon' => 'image|mimes:png|max:20480',
-                //                    ]
-                //                );
-                $favicon = 'favicon.png';
+
+                $logoName = 'favicon.png';
                 $dir = 'uploads/logo';
                 $validation = [
                     'mimes:'.'png',
                     'max:'.'20480',
                 ];
-
-                $path = Utility::upload_file($request, 'favicon', $favicon, $dir, $validation);
+                $path = Utility::upload_file($request, 'favicon', $logoName, $dir, []);
+                //    dd($path);
                 if ($path['flag'] == 1) {
-                    $favicon = $path['url'];
+                    $logo = $path['url'];
                 } else {
                     return redirect()->back()->with('error', __($path['msg']));
                 }
             }
+
+           
             //                $path    = $request->file('favicon')->storeAs('uploads/logo/', $favicon);
             //
             //                \DB::insert(
