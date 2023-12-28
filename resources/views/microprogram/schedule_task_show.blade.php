@@ -261,106 +261,105 @@
                                     </div>
                                     <div class="row px-5">
                                        <div class="flex text-center">
-                                          <button type="submit" class="btn btn-primary" id="search_task">Search</button>
+                                          <button type="button" class="btn btn-primary" id="search_task" onclick="con_page_record()">Search</button>
                                           <button type="button" class="btn btn-warning" id="reset_task">Reset</button>
                                        </div>
                                     </div>
                                  </form>
                               </div>
-                              <div class="card-body">
-                                 <div class="pt-3 group__goals sortable_task">
-                                    @forelse ($weekSchedule as $key_sort => $schedule)
-                                    @php $key_sort++; @endphp
-                                    <div class="card" data-task_id="{{ $schedule->id }}"
-                                         data-sortnumber="{{$key_sort}}" data-con_main_id="{{ $schedule->main_id }}">
-                                       <div class="row">
-                                          <div
-                                             class="col-md-1 py-3  border-end bg-primary text-white">
-                                             <div class="datagrid-title text-white">
-                                                {{ __('Task Id') }}
-                                             </div>
-                                             <div class="datagrid-content">
-                                                {{ $schedule->id }}
-                                             </div>
-                                          </div>
-                                          <div class="col-md-5 p-3">
-                                             <div class="datagrid-title ">{{ __('Task Name') }}</div>
-                                             <div class="datagrid-content">
-                                                {{ $schedule->text }}
-                                             </div>
-                                          </div>
-                                          <div class="col-md-2 p-3">
-                                             <div class="datagrid-title">{{ __('Start Date') }}</div>
-                                             <div class="datagrid-content">
-                                                {{ Utility::site_date_format($schedule->start_date,
-                                                \Auth::user()->id) }}
-                                             </div>
-                                          </div>
-                                          <div class="col-md-2 p-3">
-                                             <div class="datagrid-title">{{ __('End date') }}</div>
-                                             <div class="datagrid-content">
-                                                {{ Utility::site_date_format($schedule->end_date, \Auth::user()->id) }}
-                                             </div>
-                                          </div>
-                                          <div class="col-md-2 p-3">
-                                             <div class="datagrid-title">{{ __('Assignees') }}</div>
-                                             @php
-                                                $users_data = array();
-                                                if ($schedule->users != '') {
-                                                   $user_set[] = $schedule->users;
-                                                   // $users_data = json_decode($user_set);
-                                                }
-                                             @endphp
-                                             <div class="datagrid-content">
-                                                <div
-                                                   class="avatar-list avatar-list-stacked">
-                                                   @forelse ($users_data as $key => $get_user)
-                                                      @php
-                                                         $user_db = DB::table('users')
-                                                            ->where('id', $get_user)
-                                                            ->first();
-                                                      @endphp
-                                                      @if ($key < 3)
-                                                         @if ($user_db->avatar)
-                                                            <a href="#" class="avatar rounded-circle avatar-sm">
-                                                               @if ($user_db->avatar)
-                                                                  <span
-                                                                     class="avatar avatar-xs rounded"
-                                                                     style="background-image:
-                                                                     url({{ asset('/storage/uploads/avatar/' . $user_db->avatar) }})">
-                                                                  </span>
-                                                               @else
-                                                                  <span
-                                                                     class="avatar avatar-xs rounded"
-                                                                     style="background-image:
-                                                                     url({{ asset('/storage/uploads/avatar/avatar.png') }})">
-                                                                  </span>
-                                                               @endif
-                                                            </a>
-                                                         @else
-                                                            <?php $short = substr($user_db->name, 0, 1); ?>
-                                                            <span
-                                                               class="avatar avatar-xs rounded">{{ strtoupper($short) }}</span>
-                                                         @endif
-                                                      @endif
-                                                   @empty
-                                                      {{ __('Not Assigned') }}
-                                                   @endforelse
+                                <div class="append_search_page">
+                                    <div class="card-body">
+                                        <div class="pt-3 group__goals sortable_task">
+                                            @forelse ($weekSchedule as $key_sort => $schedule)
+                                                @php $key_sort++; @endphp
+                                                <div class="card" data-task_id="{{ $schedule->id }}"
+                                                    data-sortnumber="{{$key_sort}}" data-con_main_id="{{ $schedule->main_id }}">
+                                                    <div class="row">
+                                                        <div class="col-md-1 py-3  border-end bg-primary text-white">
+                                                            <div class="datagrid-title text-white">
+                                                                {{ __('Task Id') }}
+                                                            </div>
+                                                            <div class="datagrid-content">
+                                                                {{ $schedule->id }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-5 p-3">
+                                                            <div class="datagrid-title ">{{ __('Task Name') }}</div>
+                                                            <div class="datagrid-content">
+                                                                {{ $schedule->text }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 p-3">
+                                                            <div class="datagrid-title">{{ __('Start Date') }}</div>
+                                                            <div class="datagrid-content">
+                                                                {{ Utility::site_date_format($schedule->start_date,
+                                                                \Auth::user()->id) }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 p-3">
+                                                            <div class="datagrid-title">{{ __('End date') }}</div>
+                                                            <div class="datagrid-content">
+                                                                {{ Utility::site_date_format($schedule->end_date, \Auth::user()->id) }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 p-3">
+                                                            <div class="datagrid-title">{{ __('Assignees') }}</div>
+                                                            @php
+                                                                $users_data = array();
+                                                                if ($schedule->users != '') {
+                                                                $user_set[] = $schedule->users;
+                                                                // $users_data = json_decode($user_set);
+                                                                }
+                                                            @endphp
+                                                            <div class="datagrid-content">
+                                                                <div class="avatar-list avatar-list-stacked">
+                                                                    @forelse ($users_data as $key => $get_user)
+                                                                        @php
+                                                                            $user_db = DB::table('users')->where('id', $get_user)
+                                                                                ->first();
+                                                                        @endphp
+                                                                        @if ($key < 3)
+                                                                            @if ($user_db->avatar)
+                                                                                <a href="#" class="avatar rounded-circle avatar-sm">
+                                                                                @if ($user_db->avatar)
+                                                                                    <span
+                                                                                        class="avatar avatar-xs rounded"
+                                                                                        style="background-image:
+                                                                                        url({{ asset('/storage/uploads/avatar/' . $user_db->avatar) }})">
+                                                                                    </span>
+                                                                                @else
+                                                                                    <span
+                                                                                        class="avatar avatar-xs rounded"
+                                                                                        style="background-image:
+                                                                                        url({{ asset('/storage/uploads/avatar/avatar.png') }})">
+                                                                                    </span>
+                                                                                @endif
+                                                                                </a>
+                                                                            @else
+                                                                                <?php $short = substr($user_db->name, 0, 1); ?>
+                                                                                <span
+                                                                                class="avatar avatar-xs rounded">{{ strtoupper($short) }}</span>
+                                                                            @endif
+                                                                        @endif
+                                                                    @empty
+                                                                        {{ __('Not Assigned') }}
+                                                                    @endforelse
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                             </div>
-                                          </div>
-                                       </div>
+                                            @empty
+                                            
+                                            @endforelse
+                                        </div>
                                     </div>
-                                    @empty
-                                    
-                                    @endforelse
-                                 </div>
-                              </div>
-                              <div class="d-flex mt-4">
-                                 <ul class="pagination ms-auto">
-                                    {!! $weekSchedule->links() !!}
-                                 </ul>
-                              </div>
+                                    <div class="d-flex mt-4">
+                                        <ul class="pagination ms-auto">
+                                            {!! $weekSchedule->links() !!}
+                                        </ul>
+                                    </div>
+                                </div>
                            </div>
                         </div>
                      </div>
@@ -632,6 +631,62 @@
            }
        });
    }
+
+    $(document).on('click','.pagination a', function(e){
+        e.preventDefault();
+        let page = $(this).attr('href').split('page=')[1]
+        con_page_record(page)
+    });
+
+   function con_page_record(page){
+        if(page == undefined){
+            page = 1;
+        }
+        var task_id_arr = [];
+        schedule_id = $("#schedule_id").val();
+        task_id     = $('input#skill_input').tokenInput('get');
+        start_date  = $(".start_date").val();
+        end_date    = $(".end_date").val();
+        status_task = $(".task_status").val();
+
+        $.each(task_id, function(i, obj){
+            task_id_arr.push(obj.id);
+        });
+
+        $.ajax({
+            url:"{{ route('mainschedule_drag_con') }}?page="+page,
+            data: {
+                start_date  : start_date,
+                end_date    : end_date,
+                status_task : status_task,
+                task_id_arr : task_id_arr,
+                schedule_id : schedule_id
+            },
+            success:function(res){
+                if(res['success'] == true){
+                    $('.append_search_page').html(res['all_task']);
+
+                    document.querySelectorAll(".sortable_task").forEach(node => {
+                        new Sortable(node, {
+                            group: 'scoreboard',
+                            direction: 'vertical',
+                            animation: 250,
+                            scroll: true,
+                            bubbleScroll: true,
+                            onMove: function(evt, originalEvent) {
+                                if (evt.dragged.classList.contains("group") && evt.to.classList.contains("group__goals"))
+                                {
+                                    return false;
+                                }
+                            },
+                            update: function(event, ui) { },
+                            receive : function (event, ui) { },
+                        });
+                    });
+                }
+            }
+        });
+    }
    
    function getData(){
        schedulearray = [];

@@ -222,11 +222,7 @@ class MicroPorgramController extends Controller
 
                 $weekSchedule->orderBy('con_tasks.end_date', 'ASC');
 
-                $weekSchedule = $weekSchedule->paginate(6)->appends([
-                    'start_date' => $start_date,
-                    'end_date'   => $end_date,
-                    'task_status' => $task_status,
-                ]);
+                $weekSchedule = $weekSchedule->paginate(6);
                 // $queries = \DB::getQueryLog();
 
                     $remaining_working_days = Utility::remaining_duration_calculator($scheduleGet->schedule_end_date,$project_id);
@@ -363,6 +359,72 @@ class MicroPorgramController extends Controller
         else {
             return redirect()->route('construction_main')->with('error', __('Session Expired'));
         }
+    }
+
+    public function mainschedule_drag_con(Request $request){
+
+        $now           = Carbon::now();
+        $secheduleId   = $request->id;
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate   = $now->endOfWeek()->format('Y-m-d');
+        $project_id    = Session::get('project_id');
+        $instance_id   = Session::get('project_instance');
+
+        $schedule_id = $request->schedule_id;
+        $task_id_arr = $request->task_id_arr;
+        $start_date  = $request->start_date;
+        $end_date    = $request->end_date;
+        $task_status = $request->task_status;
+        $page        = $request->page;
+
+        $weekSchedule = Con_task::select('con_tasks.text', 'con_tasks.users', 'con_tasks.duration',
+            'con_tasks.progress', 'con_tasks.start_date', 'con_tasks.end_date', 'con_tasks.id',
+            'con_tasks.instance_id', 'con_tasks.main_id', 'pros.project_name',
+            'pros.id as project_id', 'pros.instance_id as pro_instance_id')
+            ->join('projects as pros', 'pros.id', 'con_tasks.project_id')
+            ->whereNotNull('pros.instance_id')
+            ->where('con_tasks.project_id', $project_id)
+            ->where('con_tasks.instance_id', $instance_id)
+            ->where('con_tasks.type', 'task')
+            ->where('con_tasks.micro_flag',0);
+
+            if($task_id_arr != null){
+                $weekSchedule->whereIn('con_tasks.id',$task_id_arr);
+            }
+
+            if($start_date != null && $end_date != null){
+                $weekSchedule->where(function ($query) use ($start_date, $end_date) {
+                    $query->whereDate('con_tasks.start_date', '>=', $start_date);
+                    $query->whereDate('con_tasks.end_date', '<', $end_date);
+                });
+            }
+
+            if($task_status != null && $task_status == "3"){
+                $weekSchedule->where('progress','<','100')
+                    ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+            }
+
+            if($start_date == null && $end_date == null && $task_status == null && $task_id_arr == null){
+                $weekSchedule->where(function($query) use ($weekStartDate, $weekEndDate) {
+                    $query->whereRaw('"'.date('Y-m-d').'"
+                        between date(`con_tasks`.`start_date`) and date(`con_tasks`.`end_date`)')
+                        ->orwhere('progress', '<', '100')
+                        ->whereDate('con_tasks.end_date', '<', date('Y-m-d'));
+                });
+            }
+
+            $weekSchedule->orderBy('con_tasks.end_date', 'ASC');
+
+        $weekSchedule = $weekSchedule->paginate(6);
+
+        $returnHTML = view('microprogram.mainschedule_drag_con', compact('weekSchedule', 'page', 'schedule_id'))->render();
+
+        return response()->json(
+            [
+                'success' => true,
+                'all_task' => $returnHTML,
+            ]
+        );
     }
 
     public function micro_taskboard(Request $request){

@@ -5393,6 +5393,13 @@ Route::any('mainschedule_store', 'MicroPorgramController@mainschedule_store')->n
     ]
 );
 
+Route::any('mainschedule_drag_con', 'MicroPorgramController@mainschedule_drag_con')->name('mainschedule_drag_con')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get(
     'microprogram/{id}/gantt/{duration?}', [
         'as' => 'microprogram.gantt',
