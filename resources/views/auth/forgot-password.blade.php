@@ -45,6 +45,10 @@
 @endif
 
 @section('content')
+@php
+    $logo=\App\Models\Utility::get_file('uploads/logo');
+    $logo_dark = \App\Models\Utility::getValByName('logo_dark');
+@endphp
 <div class="page page-center">
   <div class="container container-tight py-4">
   <div class="topheader">
@@ -73,7 +77,7 @@
      <h2 class="card-title text-center mb-4">{{__('Reset Password')}}</h2>
      <p class="text-muted">{{__('Reset Password Subheader')}}</p>
      <a href="/" class="navbar-brand navbar-brand-autodark">
-        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png"
+        <img src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'logo-dark.png')}}"
          height="36"  class="backgroundimge" alt=""></a>
 
             <div class="form-group mb-3">
