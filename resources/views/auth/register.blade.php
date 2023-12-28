@@ -54,6 +54,7 @@
 @php
     //  $logo=asset(Storage::url('uploads/logo/'));
     $logo = \App\Models\Utility::get_file('uploads/logo');
+    $logo_dark = \App\Models\Utility::getValByName('logo_dark');
 @endphp
 @push('custom-scripts')
     @if (env('RECAPTCHA_MODULE') == 'on')
@@ -78,7 +79,7 @@
         </li>
       </div>
       <a href="/" class="navbar-brand navbar-brand-autodark">
-        <img src="https://mustbuildapp.s3.ap-southeast-1.amazonaws.com/uploads/logo/logo-dark.png"
+        <img src="{{$logo.'/'.(isset($logo_dark) && !empty($logo_dark)?$logo_dark:'logo-dark.png')}}"
         height="60" class="backgroundimge" alt="">
       </a>
       <form class="card card-md" id="registration" method="POST" action="{{ route('register') }}">
