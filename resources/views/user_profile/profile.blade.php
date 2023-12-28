@@ -2,6 +2,7 @@
 @php
 $users=\Auth::user();
 $profile=\App\Models\Utility::get_file('uploads/avatar/');
+$logo=\App\Models\Utility::get_file('uploads/logo/');
 @endphp
 <style>
 #avatar{
@@ -28,7 +29,10 @@ $profile=\App\Models\Utility::get_file('uploads/avatar/');
 			  {{Form::model($userDetail,array('route' => array('new_edit_profile'), 'method' => 'post', 'enctype' => "multipart/form-data"))}}
 			  @csrf
 			  <div class="row align-items-center">
-				<div class="col-auto"><span class="avatar avatar-xl" ><img src="{{(!empty(\Auth::user()->avatar))? $profile.\Auth::user()->avatar: asset(Storage::url("uploads/avatar/avatar.png"))}}" class="img-fluid rounded-circle"></span>
+				@php
+					$avatar='avatar.png';
+				@endphp
+				<div class="col-auto"><span class="avatar avatar-xl" ><img src="{{(!empty(\Auth::user()->avatar))? $profile.\Auth::user()->avatar: $logo.Config::get('constants.AVATAR')}}" class="img-fluid rounded-circle"></span>
 				</div>
 				<div class="col-auto">
 					<input type="file" class="form-control file" name="profile" id="avatar" data-filename="profile_update" accept="image/png, image/jpg,image/jpeg,image/webp">
