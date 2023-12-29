@@ -244,9 +244,9 @@ var phone_number = window.intlTelInput(document.querySelector("#phone"), {
     hiddenInput: "phone_country",
     utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
 });
-$('#edit_user').click(function(){
+$('input#edit_user').click(function(){
     $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#edit_user1').click()
+    $('input#edit_user1').click()
 
 });
      $(document).on("change", '#country', function () {
