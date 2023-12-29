@@ -1157,8 +1157,8 @@ $('#indiangst1').change(function () {
 $(document).ready(function() {
     phone_number.setNumber("{{$settings['company_telephone']}}");
 });
-$('#savebtn').click(function(){
+$('input#savebtn').click(function(){
     $("#company_telephone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#savebtn1').click()
+    $('input#savebtn1').click()
 });
 </script>

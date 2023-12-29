@@ -314,11 +314,11 @@ var shipping_phone_number=window.intlTelInput(document.querySelector("#shipping_
     utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
 });
 
-$('#create_subcontractor').click(function(){
+$('input#create_subcontractor').click(function(){
     $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
     $("#billing_phone").val(billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
     $("#shipping_phone").val(shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#create_subcontractor1').click()
+    $('input#create_subcontractor1').click()
 
 });
     $(document).on("change", '#billing_country', function () {
