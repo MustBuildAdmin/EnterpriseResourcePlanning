@@ -378,10 +378,10 @@ var shipping_phone_number=window.intlTelInput(document.querySelector("#shipping_
     utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
 });
 
-$('#edit_client').click(function(){
+$('input#edit_client').click(function(){
     $("#billing_phone").val(billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
     $("#shipping_phone").val(shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#edit_client1').click()
+    $('input#edit_client1').click()
 
 });
      $(document).on("change", '#country', function () {

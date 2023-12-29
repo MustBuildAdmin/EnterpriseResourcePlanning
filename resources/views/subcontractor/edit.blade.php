@@ -321,11 +321,11 @@ var shipping_phone_number=window.intlTelInput(document.querySelector("#shipping_
     utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
 });
 
-$('#update_subcontractor').click(function(){
+$('input#update_subcontractor').click(function(){
     $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
     $("#billing_phone").val(billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
     $("#shipping_phone").val(shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#update_subcontractor1').click()
+    $('input#update_subcontractor1').click()
 
 });
     $(document).on("change", '#billing_country', function () {

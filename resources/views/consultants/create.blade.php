@@ -209,9 +209,9 @@ var phone_number = window.intlTelInput(document.querySelector("#phone"), {
     utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
 });
 
-$('#create_consultant').click(function(){
+$('input#create_consultant').click(function(){
     $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#create_consultant1').click()
+    $('input#create_consultant1').click()
 
 });
     $(document).ready(function() {
