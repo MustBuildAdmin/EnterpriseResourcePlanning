@@ -282,9 +282,9 @@ var phone_number = window.intlTelInput(document.querySelector("#phone"), {
     hiddenInput: "phone_country",
     utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
 });
-$('#create_user').click(function(){
+$('input#create_user').click(function(){
     $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#create_user1').click()
+    $('input#create_user1').click()
 
 });
 $(document).on("change", '#country', function () {
