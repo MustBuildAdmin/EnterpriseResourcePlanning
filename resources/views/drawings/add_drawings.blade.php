@@ -117,6 +117,7 @@ if($drawing_type == 3 & count($uploadedDrawings))
                                               <span class="badge bg-warning me-1">
                                               @endif{{$drawing->status}}</td>
                                            <td data-filepath="{{asset('/storage/'.$drawing->drawing_path)}}">
+
                                                 {{$drawing->file_name}}
                                                 <button type="button" id="file_path"
                                                 class="btn preview-btn" onclick="getFilepath(this)"
