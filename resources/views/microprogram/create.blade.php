@@ -1,4 +1,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css"/>
+<style>
+    .input-icon-addon {
+        max-height: 2.2em;
+    }
+</style>
 {{ Form::open([
     'url' => "schedule_store",
     'method' => 'post',
@@ -34,7 +39,7 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_start_date" class="form-control"
+            <input name="schedule_start_date" class="form-control" autocomplete="off"
              placeholder="{{__('Select a start date')}}" id="schedule_start_date" required />
         </div>
     </div>
@@ -54,7 +59,7 @@
                     <path d="M12 15v3" />
                 </svg>
             </span>
-            <input name="schedule_end_date" class="form-control"
+            <input name="schedule_end_date" class="form-control" autocomplete="off"
             placeholder="{{__('Select a End date')}}" id="schedule_end_date" required />
         </div>
     </div>

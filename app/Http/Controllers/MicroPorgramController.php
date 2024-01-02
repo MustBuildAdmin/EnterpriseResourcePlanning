@@ -63,16 +63,16 @@ class MicroPorgramController extends Controller
             $all_dates = "";
             $project_id  = Session::get('project_id');
             $instance_id = Session::get('project_instance');
-
+            $all_dates = array();
             $exist_shedule_date = MicroProgramScheduleModal::where('project_id',$project_id)
                 ->where('instance_id',$instance_id)
-                ->where('status',1)->get();
+                ->get();
 
             if(!empty($exist_shedule_date)){
                 foreach ($exist_shedule_date as $checkSchedule) {
                     $startDate = Carbon::createFromFormat('Y-m-d', $checkSchedule->schedule_start_date);
                     $endDate   = Carbon::createFromFormat('Y-m-d', $checkSchedule->schedule_end_date);
-                    $all_dates = array();
+                    
                     while ($startDate->lte($endDate)){
                         $all_dates[] = $startDate->toDateString();
                         $startDate->addDay();
