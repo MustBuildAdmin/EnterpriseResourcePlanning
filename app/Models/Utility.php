@@ -1788,6 +1788,9 @@ class Utility extends Model
         $settings = Utility::settings();
         $company_name = $settings['company_name'];
         $colorcode =Utility::rndRGBColorCode();
+        if($company_name==''){
+            $company_name=env('APP_NAME');
+        }
         $arrValue['app_name']     =  $company_name;
         $arrValue['company_name'] = self::settings()['company_name'];
         $short_lname = substr($arrValue['company_name'], 0, 2);
