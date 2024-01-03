@@ -41,15 +41,14 @@ class ActivityTracker
             'task_id'      => 0,
             'deal_id'    => 0,
             'log_type'         => $activity_old,
-            'remark' => 'dfgfdg',
+            'remark' => 'test',
         );
         if(str_contains($route_url_old,'overallactivity')||str_contains($route_url_old,'overaluserlactivity')||str_contains($route_url_old,'getlogodata')||str_contains($route_url_old,'tabsession_store_check')||str_contains($route_url_old,'tabsession_store')) { 
             
         }else{
             ActivityLog::insert($insertdata);
-            $old_date=ActivityLog::where('created_at','<',Carbon::now()->subYear(1))->Delete();
-            // deactivate the user older than 90 days
-            // Usertable::where('login_at','<',Carbon::now()->subDays(90))->where('login_at','!=',NULL)->update(['status'=>0]);
+            ActivityLog::where('created_at','<',Carbon::now()->subYear(1))->Delete();
+         
         }
         
        
