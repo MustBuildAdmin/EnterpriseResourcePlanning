@@ -1,4 +1,8 @@
 @include('new_layouts.header')
+@php
+   $user= Auth::user();
+    Session::put('ses_user_id',$user->id);
+@endphp
 <main class="page-wrapper">
    <section>
       {{--
