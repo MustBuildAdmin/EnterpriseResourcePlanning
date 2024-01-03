@@ -990,6 +990,12 @@ class ProjectController extends Controller
             if (in_array("Delete", $request->task_status)) {
                 array_push($task_status, 'Deleted Task');
             }
+            if (in_array("url", $request->task_status)) {
+                array_push($task_status, 'Visit the page');
+            }
+            if (in_array("url", $request->task_status)) {
+                array_push($task_status, 'Data changed in the form');
+            }
             if (!empty($task_status)) {
                 $query->whereIn('log_type', $task_status);
             }
@@ -1015,8 +1021,16 @@ class ProjectController extends Controller
         })
         ->addColumn('activity', function ($row) {
             if($row->remark != null && $row->remark != ""){
-                $activity_decode = json_decode($row->remark);
-                $title = $activity_decode->title;
+
+                if (base64_decode($row->remark, true)) {
+                    $activity_decode = json_decode($row->remark);
+                    $title = $activity_decode->title ?? '';
+                } else {
+                    $activity_decode = $row->remark;
+                    $title = $activity_decode;
+                }
+
+               
 
                 if ($row->log_type == 'Invite User') {
                     $activity_fetch = __('has invited').'- <b>'.$title.'</b>';
@@ -1146,7 +1160,15 @@ class ProjectController extends Controller
             return date_format($date, "M j, Y h:i:s");
             // return $user->activitylogcreatedAt;
         })
-        ->rawColumns(['log_type','activity','activity_date'])
+        ->addColumn('url', function ($user) {
+            if ($user->url != '') {
+                $url=$user->url;
+            }else{
+                $url='-';
+            }
+            return $url;
+        })
+        ->rawColumns(['url','log_type','activity','activity_date'])
         ->make(true);
 
         return response()->json(["draw" => $request->draw, "recordsTotal" => $recordsTotal,

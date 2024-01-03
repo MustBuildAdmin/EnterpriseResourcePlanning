@@ -27,6 +27,7 @@ class ActivityTracker
         }
 
         $route_url_old=url()->current();
+ 
         $form_data_old=json_encode($request->all());
             
         if ($request->isMethod('post')) {
@@ -41,13 +42,17 @@ class ActivityTracker
             'task_id'      => 0,
             'deal_id'    => 0,
             'log_type'         => $activity_old,
-            'remark' => 'test',
+            'url'         => $route_url_old,
+            'remark' => '-',
+            'created_at' => Carbon::now()->timestamp,
+            'updated_at' => Carbon::now()->timestamp,
         );
-        if(str_contains($route_url_old,'overallactivity')||str_contains($route_url_old,'overaluserlactivity')||str_contains($route_url_old,'getlogodata')||str_contains($route_url_old,'tabsession_store_check')||str_contains($route_url_old,'tabsession_store')) { 
+        if(str_contains($route_url_old,'activitieslog')) {
             
         }else{
+
             ActivityLog::insert($insertdata);
-            ActivityLog::where('created_at','<',Carbon::now()->subYear(1))->Delete();
+          
          
         }
         
