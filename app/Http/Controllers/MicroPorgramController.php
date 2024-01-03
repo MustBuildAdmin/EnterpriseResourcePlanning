@@ -22,6 +22,7 @@ use DB;
 use Illuminate\Support\Str;
 use Exception;
 use DateTime;
+use Hash;
 class MicroPorgramController extends Controller
 {
     public function microprogram(Request $request){
@@ -88,6 +89,52 @@ class MicroPorgramController extends Controller
         }
     }
 
+    public function microprogram_edit(Request $request){
+        $micro_id = $request->micro_id;
+        $all_dates = "";
+
+        $project_id  = Session::get('project_id');
+        $instance_id = Session::get('project_instance');
+        $all_dates = array();
+        $exist_shedule_date = MicroProgramScheduleModal::where('project_id',$project_id)
+            ->where('instance_id',$instance_id)
+            ->whereNot('id',$micro_id)
+            ->get();
+
+        if(!empty($exist_shedule_date)){
+            foreach ($exist_shedule_date as $checkSchedule) {
+                $startDate = Carbon::createFromFormat('Y-m-d', $checkSchedule->schedule_start_date);
+                $endDate   = Carbon::createFromFormat('Y-m-d', $checkSchedule->schedule_end_date);
+                
+                while ($startDate->lte($endDate)){
+                    $all_dates[] = $startDate->toDateString();
+                    $startDate->addDay();
+                }
+            }
+            $all_dates = json_encode($all_dates);
+        }
+
+        $micro_schedule = MicroProgramScheduleModal::where('project_id',$project_id)
+            ->where('instance_id',$instance_id)
+            ->where('id',$micro_id)
+            ->first();
+
+        return view('microprogram.edit')->with('all_dates',$all_dates)->with('micro_schedule',$micro_schedule)
+            ->with('micro_id',$micro_id);
+    }
+
+    public function microprogram_delete(Request $request){
+        $micro_id    = $request->micro_id;
+        $project_id  = Session::get('project_id');
+        $instance_id = Session::get('project_instance');
+
+        $micro_schedule = MicroProgramScheduleModal::where('project_id',$project_id)
+            ->where('instance_id',$instance_id)
+            ->where('id',$micro_id)->delete();
+
+        return redirect()->back()->with('success', __('Schedule Deleted.'));
+    }
+
     public function change_schedule_status(Request $request){
         $schedule_data = $request->schedule_data;
         $project_id    = Session::get('project_id');
@@ -111,18 +158,13 @@ class MicroPorgramController extends Controller
 
         $project = Project::select('id','project_name')->where('id',$project_id)->first();
         $projectName = str_split($project->project_name, 3);
-        $uuid = $projectName['0'].'-'.substr(base_convert(sha1(uniqid(random_int(9, 999999999))), 16, 36), 0, 5);
+        // $uuid = $projectName['0'].'-'.substr(base_convert(sha1(uniqid(random_int(9, 999999999))), 16, 36), 0, 5);
+        $uuid = $projectName['0'].'-'.substr(base_convert(mt_rand(9, 999999999).date('dmyhisa').$project_id, 16, 36), 0, 5);
 
         $date1 = new DateTime($request->schedule_start_date);
         $date2 = new DateTime($request->schedule_end_date);
         $interval = $date1->diff($date2);
-
-        if($interval->days == 0){
-            $intervalDays = $request->duration;
-        }
-        else{
-            $intervalDays = $interval->days;
-        }
+        $intervalDays = $interval->days == 0 ? $request->duration : $interval->days;
     
         $schedule                      = new MicroProgramScheduleModal;
         $schedule->uid                 = $uuid;
@@ -138,6 +180,36 @@ class MicroPorgramController extends Controller
         $schedule->save();
 
         return redirect()->back()->with('success', __('Schedule Created.'));
+    }
+
+    public function schedule_update(Request $request){
+        if (Session::has('project_id')) {
+            $project_id   = Session::get('project_id');
+            $instance_id  = Session::get('project_instance');
+            $micro_id     = $request->micro_id;
+            $date1        = new DateTime($request->schedule_start_date);
+            $date2        = new DateTime($request->schedule_end_date);
+            $interval     = $date1->diff($date2);
+            $intervalDays = $interval->days == 0 ? $request->duration : $interval->days;
+
+            $update_array  = array(
+                'schedule_name'       => $request->schedule_name,
+                'schedule_duration'   => $intervalDays,
+                'schedule_start_date' => $request->schedule_start_date,
+                'schedule_end_date'   => $request->schedule_end_date,
+                'schedule_goals'      => $request->schedule_goals,
+                'insert_date'         => date('Y-m-d'),
+                'created_by'          => Auth::user()->id,
+            );
+
+            MicroProgramScheduleModal::where('id',$micro_id)->where('project_id',$project_id)
+                ->where('instance_id',$instance_id)->update($update_array);
+
+            return redirect()->back()->with('success', __('Schedule Updated.'));
+        }
+        else {
+            return redirect()->route('construction_main')->with('error', __('Session Expired'));
+        }
     }
 
     public function schedule_task_show(Request $request){
@@ -1392,6 +1464,13 @@ class MicroPorgramController extends Controller
         if($form_name == "scheduleCreate"){
             $getCheckVal = DB::table('microprogram_schedule')
                 ->where("project_id",session::get('project_id'))
+                ->where('schedule_name',$schedule_name)->first();
+        }
+        else if($form_name == "scheduleUpdate"){
+            $micro_id = $request->micro_id;
+            $getCheckVal = DB::table('microprogram_schedule')
+                ->where("project_id",session::get('project_id'))
+                ->whereNot('id',$micro_id)
                 ->where('schedule_name',$schedule_name)->first();
         }
         else {
