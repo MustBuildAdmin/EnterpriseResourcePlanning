@@ -1,21 +1,4 @@
 @include('new_layouts.header')
-<style>
-    html,
-    body {
-        height: 100%;
-        padding: 0px;
-        margin: 0px;
-        overflow: scroll;
-    }
-
-    .ts-dropdown {
-        z-index: 2000;
-    }
-
-    .user-card-dropdown::after {
-        display: none;
-    }
-</style>
 <div class="container-fluid ">
     <div class="card mt-5 p-4">
         <div class="card-header">
@@ -44,15 +27,16 @@
                         <div class="card-body p-4 text-center">
                             <span class="avatar avatar-xl mb-3 rounded"
                                 style="background-image: url(./static/avatars/000m.jpg)"></span>
-                                @php $short = substr($user->name, 0, 1); @endphp
-                                @php $short_lname = substr($user->lname, 0, 1); @endphp
-                            <h3 class="m-0 mb-1"><a href="#"> {{ strtoupper($short) }}{{ strtoupper($short_lname) }}</a></h3>
+                            @php $short = substr($user->name, 0, 1); @endphp
+                            @php $short_lname = substr($user->lname, 0, 1); @endphp
+                            <h3 class="m-0 mb-1"><a href="#">
+                                    {{ strtoupper($short) }}{{ strtoupper($short_lname) }}</a></h3>
                             @php
-                            $name = strlen($user->name) > 20 ? substr($user->name, 0, 19) . '...' : $user->name; 
+                                $name = strlen($user->name) > 20 ? substr($user->name, 0, 19) . '...' : $user->name;
                             @endphp
-                            <div class="text-secondary">{{$name}}</div>
+                            <div class="text-secondary">{{ $name }}</div>
                             <div class="mt-3">
-                                <span class="badge bg-purple-lt"> {{ ucfirst($user->type)  }}</span>
+                                <span class="badge bg-purple-lt"> {{ ucfirst($user->type) }}</span>
                             </div>
                         </div>
                         <div class="d-flex">
@@ -69,7 +53,7 @@
                                     <path d="M3 7l9 6l9 -6"></path>
                                 </svg>
                                 Email</a>
-                            <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}" 
+                            <a data-bs-toggle="tooltip" data-copy_phone="{{ $user->phone }}"
                                 class="card-btn"><!-- Download SVG icon from http://tabler-icons.io/i/phone -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-muted" width="24"
                                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -99,5 +83,5 @@
     </div>
 </div>
 
-</div>
-</div>
+@include('new_layouts.footer')
+    

@@ -143,32 +143,54 @@ class DashboardController extends Controller
 
     public function consultant_index()
     {
+        try {
+            $user= Auth::user();
+            Session::put('role',$user->type);
+            Session::put('ses_current_clientId',$user->id);
+            Session::put('ses_current_clientName',$user->name);
+           
+            $users = DB::table('users as t1')
+                        ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
+                        ->join('consultant_companies as t2', function ($join) {
+                            $join->on('t2.company_id', '=', 't1.id');
+                            $join->where('t2.status','accepted');
+                        })
+                        ->where('t1.type','company')
+                        ->paginate(1);
 
-        $users = DB::table('users as t1')
-                    ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
-                    ->join('consultant_companies as t2', function ($join) {
-                        $join->on('t2.company_id', '=', 't1.id');
-                        $join->where('t2.status','accepted');
-                     })
-                    ->where('t1.type','company')
-                    ->paginate(1);
 
-
-        return view('consultants.dashboard.index',compact('users'));
+            return view('consultants.dashboard.index',compact('users'));
+        } catch (Exception $e) {
+            
+            return $e->getMessage();
+        
+        }
     }
 
     public function subcontractorDashboard(){
+        try {
+            $user= Auth::user();
+            Session::put('role',$user->type);
+            Session::put('ses_current_clientId',$user->id);
+            Session::put('ses_current_clientName',$user->name);
+            $users = DB::table('users as t1')
+            ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
+            ->join('sub_contractor_companies as t2', function ($join) {
+                $join->on('t2.company_id', '=', 't1.id');
+                $join->where('t2.status','accepted');
+             })
+            ->where('t1.type','company')
+            ->paginate(4);
 
-        $users = DB::table('users as t1')
-                    ->select('t1.name','t1.lname','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
-                    ->join('sub_contractor_companies as t2', function ($join) {
-                        $join->on('t2.company_id', '=', 't1.id');
-                        $join->where('t2.status','active');
-                     })
-                    ->where('t1.type','company')
-                    ->paginate(4);
-
-        return view('subcontractor.dashboard',compact('users'));
+            return view('subcontractor.dashboard',compact('users'));
+          
+        
+          } catch (Exception $e) {
+          
+              return $e->getMessage();
+          
+          }
+       
     }
 
     public function project_dashboard_index()
