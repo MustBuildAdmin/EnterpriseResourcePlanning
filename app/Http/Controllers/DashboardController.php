@@ -146,6 +146,9 @@ class DashboardController extends Controller
         try {
             $user= Auth::user();
             Session::put('role',$user->type);
+            Session::put('ses_current_clientId',$user->id);
+            Session::put('ses_current_clientName',$user->name);
+           
             $users = DB::table('users as t1')
                         ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
                         ->join('consultant_companies as t2', function ($join) {
@@ -168,6 +171,8 @@ class DashboardController extends Controller
         try {
             $user= Auth::user();
             Session::put('role',$user->type);
+            Session::put('ses_current_clientId',$user->id);
+            Session::put('ses_current_clientName',$user->name);
             $users = DB::table('users as t1')
             ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
             ->join('sub_contractor_companies as t2', function ($join) {
