@@ -333,7 +333,9 @@
                      </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                     @can('manage company settings')
                      <a href="{{ route('company.settings') }}" class="dropdown-item">{{ __('Settings') }}</a>
+                     @endcan
                      <a href="{{ route('new_profile') }}" class="dropdown-item">{{ __('Profile') }}</a>
                      <div class="dropdown-divider"></div>
                      <a href="{{ route('logout') }}"
