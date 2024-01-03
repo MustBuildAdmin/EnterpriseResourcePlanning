@@ -537,6 +537,7 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
         'auth',
         'XSS',
         'revalidate',
+        'activity',
     ]
 );
 Route::get('/dairy_main/dairy/productivity', 'DashboardController@dairy_main')->name('dairy_main')->middleware(
