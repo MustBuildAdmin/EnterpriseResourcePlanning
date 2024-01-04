@@ -533,6 +533,7 @@
                      <!--Users ends-->
 
                      <!--Planning starts-->
+                     @if(Auth::user()->type =='sub_contractor' && Session::has('company_id'))
                      @if(\Auth::user()->show_project() == 1)
                      @if( Gate::check('manage project'))
                      <li class="nav-item">
@@ -573,6 +574,49 @@
                      </li>
                      @endif
                      @endif
+                     @elseif(Auth::user()->type !='sub_contractor')
+                     @if(\Auth::user()->show_project() == 1)
+                     @if( Gate::check('manage project'))
+                     <li class="nav-item">
+                        <a class="{{ Request::route()->getName() == 'construction_main' ||
+                           Request::route()->getName() == 'projects.show' ||
+                           Request::route()->getName() == 'projects.gantt' ||
+                           Request::route()->getName() == 'revision' ||
+                           Request::route()->getName() == 'project_report.revsion_task_list' ||
+                           Request::route()->getName() == 'taskBoard.view' ||
+                           Request::route()->getName() == 'microprogram' ||
+                           Request::route()->getName() == 'micro_taskboard' ||
+                           Request::route()->getName() == 'micro_task_particular' ||
+                           Request::route()->getName() == 'microprogram.gantt' ||
+                           Request::route()->getName() == 'project.teammembers' ||
+                           Request::route()->getName() == 'project.consultant' ||
+                           Request::route()->getName() == 'project.subcontractor' ||
+                           Request::route()->getName() == 'project.activities' ||
+                           Request::route()->getName() == 'project_report.view_task_report' ||
+                           Request::route()->getName() == 'project-holiday.index' ||
+                           Request::route()->getName() == 'construction_main'
+                               ? 'nav-link active'
+                               : 'nav-link' }}"
+                           href="{{route('construction_main')}}">
+                           <span class="d-md-none d-lg-inline-block">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                               viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                 <path d="M9 11l3 3l8 -8"></path>
+                                 <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                              </svg>
+                           </span>
+                           <span class="nav-link-title">
+                           {{ __('Planning') }}
+                           </span>
+                        </a>
+                     </li>
+                     @endif
+                     @endif
+                     @endif
+                    
                      <!--Planning ends-->
 
                      <!--Dairy starts-->
