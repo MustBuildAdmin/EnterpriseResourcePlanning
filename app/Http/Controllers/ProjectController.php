@@ -1277,7 +1277,8 @@ class ProjectController extends Controller
     }
     public function show(Project $project)
     {
-        if (\Auth::user()->can("show project dashboard")) {
+
+        if (\Auth::user()->can("show project dashboard") || \Auth::user()->type == 'sub_contractor') {
             $usr = Auth::user();
             if (\Auth::user()->type == "client") {
                 $user_projects = Project::where("client_id", \Auth::user()->id)
@@ -1285,12 +1286,12 @@ class ProjectController extends Controller
                     ->toArray();
             }
             else if(Auth::user()->type == "consultant"){
-                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                $user_projects = ProjectConsultant::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
             else if(\Auth::user()->type == 'sub_contractor'){
-                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
+                $user_projects = ProjectSubcontractor::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
@@ -1901,7 +1902,7 @@ class ProjectController extends Controller
             } else {
                 return redirect()
                     ->back()
-                    ->with("error", __("Permission Denied."));
+                    ->with("error", __("No Project Found."));
             }
 
         }
