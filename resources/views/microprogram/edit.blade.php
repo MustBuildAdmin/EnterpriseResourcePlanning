@@ -5,17 +5,18 @@
     }
 </style>
 {{ Form::open([
-    'url' => "schedule_store",
+    'url' => "schedule_update",
     'method' => 'post',
-    'id' => 'subcontractorCreate',
+    'id' => 'subcontractorUpdate',
     'enctype' => 'multipart/form-data',
 ]) }}
 <div class="modal-body">
     <div class="mb-3">
         <label class="form-label required">{{__('Schedule Name')}}</label>
         <input type="hidden" id="setScheduleDate" class="setScheduleDate" value="{{$all_dates}}">
+        <input type="hidden" name="micro_id" id="micro_id" value="{{$micro_id}}">
         <input type="text" class="form-control" name="schedule_name" required id="schedule_name"
-            placeholder="{{__('Enter your Schedule Name')}}">
+           value="{{$micro_schedule->schedule_name}}" placeholder="{{__('Enter your Schedule Name')}}">
     </div>
     {{-- <div class="mb-3">
         <label class="form-label required">Schedule Duration</label>
@@ -40,7 +41,8 @@
                 </svg>
             </span>
             <input name="schedule_start_date" class="form-control" autocomplete="off"
-             placeholder="{{__('Select a start date')}}" id="schedule_start_date" required />
+             placeholder="{{__('Select a start date')}}" id="schedule_start_date" 
+             value="{{$micro_schedule->schedule_start_date}}" required />
         </div>
     </div>
     <div class="mb-3">
@@ -60,18 +62,20 @@
                 </svg>
             </span>
             <input name="schedule_end_date" class="form-control" autocomplete="off"
-            placeholder="{{__('Select a End date')}}" id="schedule_end_date" required />
+            placeholder="{{__('Select a End date')}}" id="schedule_end_date" 
+            value="{{$micro_schedule->schedule_end_date}}" required />
         </div>
     </div>
 
     <div class="mb-3">
         <label class="form-label required">{{ __('Schedule Goals') }}</label>
-        <textarea class="form-control" name="schedule_goals" rows="6" placeholder="{{ __('Content..') }}" required></textarea>
+        <textarea class="form-control" name="schedule_goals" rows="6" placeholder="{{ __('Content..') }}" required 
+        >{{$micro_schedule->schedule_goals}}</textarea>
     </div>
 </div>
 <div class="modal-footer">
     <input type="button" value="{{ __('Cancel') }}" class="btn btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{ __('Create') }}" class="btn btn-primary" id="create_subcontractor">
+    <input type="submit" value="{{ __('Update') }}" class="btn btn-primary" id="create_subcontractor">
 </div>
 {{ Form::close() }}
 <script src="{{ asset('litepicker/litepicker.js') }}"></script>
@@ -104,7 +108,7 @@
             },
         });
 
-        var form = $("#subcontractorCreate");
+        var form = $("#subcontractorUpdate");
 
         form.validate({
             rules: {
@@ -112,7 +116,7 @@
                     required: true,
                     remote: {
                         url: '{{ route("checkschedulename") }}',
-                        data: { 'form_name' : "scheduleCreate" },
+                        data: { 'form_name' : "scheduleUpdate", 'micro_id': $("#micro_id").val() },
                         type: "GET"
                     }
                 }
