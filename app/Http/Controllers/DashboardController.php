@@ -727,12 +727,12 @@ class DashboardController extends Controller
                 ->where('created_by', \Auth::user()->creatorId())->pluck('id', 'id')->toArray();
             }
             else if(\Auth::user()->type == 'consultant'){
-                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                $user_projects = ProjectConsultant::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
             else if(\Auth::user()->type == 'sub_contractor'){
-                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
+                $user_projects = ProjectSubcontractor::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
