@@ -5362,6 +5362,21 @@ Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')-
     ]
 );
 
+Route::any('microprogram_edit/{micro_id}', 'MicroPorgramController@microprogram_edit')->name('microprogram_edit')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('microprogram_delete/{micro_id}', 'MicroPorgramController@microprogram_delete')->name('microprogram_delete')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
 Route::any('change_schedule_status', 'MicroPorgramController@change_schedule_status')->name('change_schedule_status')->middleware(
     [
         'auth',
@@ -5370,6 +5385,13 @@ Route::any('change_schedule_status', 'MicroPorgramController@change_schedule_sta
 );
 
 Route::any('schedule_store', 'MicroPorgramController@schedule_store')->name('schedule_store')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('schedule_update', 'MicroPorgramController@schedule_update')->name('schedule_update')->middleware(
     [
         'auth',
         'XSS',
