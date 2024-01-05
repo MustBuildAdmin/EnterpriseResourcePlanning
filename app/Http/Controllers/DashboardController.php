@@ -150,17 +150,21 @@ class DashboardController extends Controller
             Session::put('ses_current_clientId',$user->id);
             Session::put('ses_current_clientName',$user->name);
             Session::forget('company_id');
-            $users = DB::table('users as t1')
-                        ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
-                        ->join('consultant_companies as t2', function ($join) {
-                            $join->on('t2.company_id', '=', 't1.id');
-                            $join->where('t2.status','accepted');
-                        })
-                        ->where('t1.type','company')
-                        ->paginate(1);
+            // Get Consultant Organization Details 
+            $organization=ProjectConsultant::where(['user_id'=>$user->id,'invite_status'=>'accepted'])->groupBy('invited_by')->pluck('invited_by')->toArray();
+            $organizationList=User::whereIn('id', $organization)->paginate(8);
+
+            // $users = DB::table('users as t1')
+            //             ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
+            //             ->join('consultant_companies as t2', function ($join) {
+            //                 $join->on('t2.company_id', '=', 't1.id');
+            //                 $join->where('t2.status','accepted');
+            //             })
+            //             ->where('t1.type','company')
+            //             ->paginate(1);
 
 
-            return view('consultants.dashboard.index',compact('users'));
+            return view('consultants.dashboard.index',compact('organizationList'));
         } catch (Exception $e) {
             
             return $e->getMessage();

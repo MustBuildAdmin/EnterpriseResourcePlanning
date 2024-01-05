@@ -4534,20 +4534,26 @@ class ProjectController extends Controller
             $type = $request['type'];
             $project_users=ProjectUser::where(['project_id' => $project_id])->pluck("user_id")
             ->toArray();
+            $project_consultants=ProjectConsultant::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
+            $project_subcon=ProjectSubcontractor::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
 
             if ($request->filled('q')) {
 
                 if (str_contains($type, 'subcontractor')) {
-                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                        ->whereIn("type", ["sub_contractor"])
-                        ->whereNotIn("id",array_unique($project_users))
+                    $user_contact = User::
+                    // where("created_by", \Auth::user()->creatorId())
+                        whereIn("type", ["sub_contractor"])
+                        ->whereNotIn("id",array_unique($project_subcon))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'consultant')) {
-                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                        ->whereIn("type", ["consultant"])
-                        ->whereNotIn("id",array_unique($project_users))
+                    $user_contact = User::
+                    // where("created_by", \Auth::user()->creatorId())
+                        whereIn("type", ["consultant"])
+                        ->whereNotIn("id",array_unique($project_consultants))
                         ->pluck("id")
                         ->toArray();
                 }
