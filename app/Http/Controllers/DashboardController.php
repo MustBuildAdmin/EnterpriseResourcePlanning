@@ -182,7 +182,7 @@ class DashboardController extends Controller
                 $join->where('t2.status','accepted');
              })
             ->where('t1.type','company')
-            ->paginate(4);
+            ->paginate(12);
 
             return view('subcontractor.dashboard',compact('users'));
           
@@ -739,6 +739,7 @@ class DashboardController extends Controller
                 Session::put('company_id',$companyid);
                 $user_projects = ProjectSubcontractor::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
+                    ->where('invited_by',Session::get('company_id'))
                     ->pluck('project_id', 'project_id')->toArray();
             }
             else {
