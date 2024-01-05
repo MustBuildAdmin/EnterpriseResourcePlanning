@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Session;
+use Illuminate\Support\Facades\Crypt;
 class DashboardController extends Controller
 {
     /**
@@ -148,7 +149,7 @@ class DashboardController extends Controller
             Session::put('role',$user->type);
             Session::put('ses_current_clientId',$user->id);
             Session::put('ses_current_clientName',$user->name);
-           
+            Session::forget('company_id');
             $users = DB::table('users as t1')
                         ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
                         ->join('consultant_companies as t2', function ($join) {
@@ -173,6 +174,7 @@ class DashboardController extends Controller
             Session::put('role',$user->type);
             Session::put('ses_current_clientId',$user->id);
             Session::put('ses_current_clientName',$user->name);
+            Session::forget('company_id');
             $users = DB::table('users as t1')
             ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
             ->join('sub_contractor_companies as t2', function ($join) {
@@ -727,12 +729,15 @@ class DashboardController extends Controller
                 ->where('created_by', \Auth::user()->creatorId())->pluck('id', 'id')->toArray();
             }
             else if(\Auth::user()->type == 'consultant'){
-                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                $user_projects = ProjectConsultant::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
             else if(\Auth::user()->type == 'sub_contractor'){
-                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
+                $decodeid = Crypt::decryptString($request->id);
+                $companyid = trim($decodeid, '[{"id:;"}]');
+                Session::put('company_id',$companyid);
+                $user_projects = ProjectSubcontractor::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }

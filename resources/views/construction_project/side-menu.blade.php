@@ -300,14 +300,20 @@ table.dataTable thead th.sorting_desc:after {
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
+                                    @if(\App\Models\MicroProgramScheduleModal::where('project_id',$project_id)->where('instance_id',Session::get('project_instance'))
+                                                    ->where('active_status',1)->exists() && Session::has('project_instance'))
+                                        @php $micro_look = ''; @endphp
+                                    @else
+                                        @php $micro_look = 'pointer-events: none;background-color: #dddddd;'; @endphp
+                                    @endif
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
                                             @can('lookahead lookahead grant chart')
-                                            <a href="{{ route('microprogram.gantt', $project_id) }}"
-                                                class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                                ?'dropdown-item active' :'dropdown-item'}}">
-                                                {{ __('Lookahead Gantt') }}
-                                            </a>
+                                                <a style="{{$micro_look}}" href="{{ route('microprogram.gantt', $project_id) }}"
+                                                    class="{{ (Request::route()->getName() == 'microprogram.gantt')
+                                                    ?'dropdown-item active' :'dropdown-item'}}">
+                                                    {{ __('Lookahead Gantt') }}
+                                                </a>
                                             @endcan
 
                                             @can('view lookahead schedule')
@@ -319,11 +325,11 @@ table.dataTable thead th.sorting_desc:after {
                                             @endcan
 
                                             @can('view active lookahead')
-                                            <a href="{{ route('micro_taskboard') }}"
-                                                class="{{ (Request::route()->getName() == 'micro_taskboard')
-                                                ?'dropdown-item active' :'dropdown-item'}}">
-                                                {{ __('Active Lookahead') }}
-                                            </a>
+                                                <a style="{{$micro_look}}" href="{{ route('micro_taskboard') }}"
+                                                    class="{{ (Request::route()->getName() == 'micro_taskboard')
+                                                    ?'dropdown-item active' :'dropdown-item'}}">
+                                                    {{ __('Active Lookahead') }}
+                                                </a>
                                             @endcan
                                         </div>
                                     </div>

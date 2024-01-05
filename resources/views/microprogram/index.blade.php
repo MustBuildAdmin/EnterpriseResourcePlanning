@@ -2,6 +2,12 @@
 {{-- @extends('layouts.admin') --}}
 <link rel="stylesheet" href="{{ asset('assets/css/datatables.min.css') }}">
 <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<style>
+    .merge_action{
+        display: flex;
+        gap: 10px;
+    }
+</style>
 <div class="page-wrapper">
     @include('construction_project.side-menu')
     <div class="container-fluid" id="taskboard_view">
@@ -37,6 +43,7 @@
                                         <th scope="col">{{ __('Schedule End Date') }}</th>
                                         <th scope="col">{{ __('Schedule Status') }}</th>
                                         <th scope="col">{{ __('Schedule Goals') }}</th>
+                                        <th scope="col">{{ __('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="list">
@@ -70,6 +77,24 @@
                                                 @endif
                                             </td>
                                             <td>{{ $microSchedule->schedule_goals }}</td>
+                                            <td align="center">
+                                                @if($microSchedule->active_status == 0)
+                                                    <div class="merge_action">
+                                                        <a class="btn" data-bs-toggle="modal" data-size="xl"
+                                                            data-url="{{ route('microprogram_edit',['micro_id' => $microSchedule->id]) }}"
+                                                            data-ajax-popup="true" data-bs-toggle="tooltip" title="{{ __('Edit Micro Schedule') }}"
+                                                            data-bs-original-title="{{ __('Edit Micro Schedule') }}"><li class="fa fa-pen"></li>
+                                                        </a>
+                                                        {!! Form::open(['method' => 'POST', 'route' => ['microprogram_delete', $microSchedule->id]]) !!}
+                                                            <a class="btn bs-pass-para" data-bs-toggle="tooltip" title="{{__('Delete Micro Schedule')}}">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        {!! Form::close() !!}
+                                                    </div>
+                                                @else
+                                                    <span>-</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @empty
                                     @endforelse
@@ -103,6 +128,12 @@
                 "sNext": "{{ __('Next') }}",
                 "sPrevious": "{{ __('Previous') }}"
             },
+        }
+    });
+
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            swal.closeModal();
         }
     });
 
