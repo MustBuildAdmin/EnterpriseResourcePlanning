@@ -541,6 +541,15 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
         'activity',
     ]
 );
+Route::get('/organization-projects/{id}', 'DashboardController@organization_projects')->name('organization_projects')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+        'activity',
+    ]
+);
+
 Route::get('/dairy_main/dairy/productivity', 'DashboardController@dairy_main')->name('dairy_main')->middleware(
     [
         'auth',

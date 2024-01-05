@@ -718,6 +718,28 @@ class DashboardController extends Controller
     {
         return view('hrm.hrm_main');
     }
+    public function organization_projects(Request $request,$id){
+        $usr = Auth::user();
+        if(\Auth::user()->type == 'consultant'){
+            $user_projects = ProjectConsultant::where('invite_status','accepted')
+                ->where('user_id',\Auth::user()->id)
+                ->pluck('project_id', 'project_id')->toArray();
+        }
+        $sort = explode('-', 'created_at-desc');
+        $projects = Project::where('created_by', $id)->whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
+
+        if (! empty($request->keyword)) {
+            $projects->where('project_name', 'LIKE', '%'.$request->keyword.'%');
+        }
+        if (! empty($request->status)) {
+            $projects->whereIn('status', $request->status);
+        }
+
+        $projects = $projects->paginate(12);
+        $organizationName=User::where(['id'=>$id])->first();
+
+        return view('construction_project.organization_construction_main', compact('projects', 'user_projects','organizationName'));
+    }
 
     public function construction_main(Request $request)
     {

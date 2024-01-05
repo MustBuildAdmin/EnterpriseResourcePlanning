@@ -86,7 +86,7 @@ html,
                             </div>
                             @endif
                             <h3 class="m-0 mb-1">
-                                <a href="#">
+                                <a href="{{ route('organization_projects',$user->id) }}">
                                     {{ $user->company_name}}
                                 </a>
                             </h3>
