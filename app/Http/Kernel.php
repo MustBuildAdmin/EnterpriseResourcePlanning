@@ -70,6 +70,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'XSS' => \App\Http\Middleware\XSS::class,
         'revalidate' => \App\Http\Middleware\RevalidateBackHistory::class,
-
+        'activity' =>\App\Http\Middleware\ActivityTracker::class,
     ];
 }

@@ -86,6 +86,7 @@ th.sorting_disabled{
                                               <option value="Create">Create</option>
                                               <option value="Update">Update</option>
                                               <option value="Delete">Delete</option>
+                                              <option value="url">URL</option>
                                             </select>
                                           </div>
                                         </div>
@@ -110,6 +111,7 @@ th.sorting_disabled{
                                                       <th>Activity</th>
                                                       <th>Activity Done By</th>
                                                       <th>Activity Date and Time</th>
+                                                      <th>URL</th>
                                                     </tr>
                                                   </thead>
                                                 </table>
@@ -186,7 +188,8 @@ th.sorting_disabled{
                     {data: 'log_type'},
                     {data: 'activity'},
                     {data: 'name'},
-                    {data: 'activity_date'}
+                    {data: 'activity_date'},
+                    {data: 'url'}
                 ]
             });
         }

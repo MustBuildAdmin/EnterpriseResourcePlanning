@@ -461,6 +461,7 @@ Route::get('/consultant_index', 'DashboardController@consultant_index')->name('c
     [
         'XSS',
         'revalidate',
+        'activity',
     ]
 );
 
@@ -537,8 +538,18 @@ Route::get('/construction_main/productivity', 'DashboardController@construction_
         'auth',
         'XSS',
         'revalidate',
+        'activity',
     ]
 );
+Route::get('/organization-projects/{id}', 'DashboardController@organization_projects')->name('organization_projects')->middleware(
+    [
+        'auth',
+        'XSS',
+        'revalidate',
+        'activity',
+    ]
+);
+
 Route::get('/dairy_main/dairy/productivity', 'DashboardController@dairy_main')->name('dairy_main')->middleware(
     [
         'auth',
@@ -2346,6 +2357,7 @@ Route::resource('project-holiday', 'Project_holiday_Controller')->middleware(
     [
         'auth',
         'XSS',
+        'activity',
     ]
     );
 Route::resource('construction_asign', 'Construction_asign_Controller')->middleware(
@@ -3030,6 +3042,7 @@ Route::get(
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 
@@ -3078,7 +3091,7 @@ Route::get(
 );
 
 Route::any('task_particular', 'ProjectTaskController@task_particular')->name('task_particular')
-->middleware(['auth', 'XSS']);
+->middleware(['auth', 'XSS','activity']);
 
 Route::any('add_particular_task/{task_id}/{get_date}', 'ProjectTaskController@add_particular_task')
 ->name('add_particular_task')->middleware(['auth', 'XSS']);
@@ -3528,6 +3541,7 @@ Route::get(
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 Route::get(
@@ -3705,6 +3719,7 @@ Route::resource('microtask', 'TaskMicroController')->middleware(
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 
@@ -3734,6 +3749,7 @@ Route::get(
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 
@@ -3796,12 +3812,14 @@ Route::get('projects/{id}/view', 'ProjectController@viewproject')->name('project
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 Route::resource('projects', 'ProjectController')->middleware(
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 Route::get('projects_dairy/{project_id}', 'ProjectController@show_dairy')->name('show_dairy')->middleware(['auth',
@@ -4237,6 +4255,7 @@ Route::get(
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 Route::get(
@@ -4248,6 +4267,7 @@ Route::get(
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 Route::get(
@@ -4259,6 +4279,7 @@ Route::get(
     [
         'auth',
         'XSS',
+        'activity',
     ]);
 Route::get(
     '/project/{id}/timesheet/create', [
@@ -4666,6 +4687,7 @@ Route::any('subcontractordashboard', 'DashboardController@subContractorDashboard
         'auth',
         'XSS',
         'revalidate',
+        'activity',
     ]
 );
 
@@ -5321,6 +5343,7 @@ Route::any('micro_taskboard', 'MicroPorgramController@micro_taskboard')->name('m
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 
@@ -5335,7 +5358,7 @@ Route::get('micro_task_autocomplete_main', 'MicroPorgramController@micro_task_au
 ->middleware(['auth','XSS',]);
 
 Route::any('micro_task_particular', 'MicroPorgramController@micro_task_particular')->name('micro_task_particular')
-->middleware(['auth', 'XSS']);
+->middleware(['auth', 'XSS','activity']);
 
 Route::any('micro_add_particular_task/{task_id}/{get_date}', 'MicroPorgramController@micro_add_particular_task')
 ->name('micro_add_particular_task')->middleware(['auth', 'XSS']);
@@ -5402,6 +5425,7 @@ Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show
     [
         'auth',
         'XSS',
+        'activity',
     ]
 );
 
@@ -5434,10 +5458,18 @@ Route::get(
     ]
 );
 
-Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report');
+Route::any('view_task_report/{id}', 'ProjectTaskController@task_report')->name('project_report.view_task_report')->middleware(
+    [
+        'activity',
+    ]
+);
 Route::any('download_excel_report', 'ProjectReportController@download_excel_report')->name('download_excel_report');
 
-Route::any('view_task_revision', 'ProjectTaskController@revsion_task_list')->name('project_report.revsion_task_list');
+Route::any('view_task_revision', 'ProjectTaskController@revsion_task_list')->name('project_report.revsion_task_list')->middleware(
+    [
+        'activity',
+    ]
+);
 Route::any('report_task_autocomplete', 'ProjectTaskController@report_task_autocomplete')
 ->name('report_task_autocomplete');
 Route::any('show_task_report', 'ProjectTaskController@show_task_report')->name('show_task_report');
@@ -5450,7 +5482,11 @@ Route::any('pdf_report_onsearch', 'ProjectReportController@pdf_report_onsearch')
 Route::any('send_report_con', 'ProjectReportController@send_report_con')->name('send_report_con');
 Route::any('download_report', 'ProjectReportController@download_report')->name('download_report');
 
-Route::any('revision', 'RevisionController@revision')->name('revision');
+Route::any('revision', 'RevisionController@revision')->name('revision')->middleware(
+    [
+        'activity',
+    ]
+);
 Route::any('revision_store', 'RevisionController@revision_store')->name('revision_store');
 
 /*New Diary route*/

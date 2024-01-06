@@ -990,6 +990,12 @@ class ProjectController extends Controller
             if (in_array("Delete", $request->task_status)) {
                 array_push($task_status, 'Deleted Task');
             }
+            if (in_array("url", $request->task_status)) {
+                array_push($task_status, 'Visit the page');
+            }
+            if (in_array("url", $request->task_status)) {
+                array_push($task_status, 'Data changed in the form');
+            }
             if (!empty($task_status)) {
                 $query->whereIn('log_type', $task_status);
             }
@@ -1015,8 +1021,16 @@ class ProjectController extends Controller
         })
         ->addColumn('activity', function ($row) {
             if($row->remark != null && $row->remark != ""){
-                $activity_decode = json_decode($row->remark);
-                $title = $activity_decode->title;
+
+                if (base64_decode($row->remark, true)) {
+                    $activity_decode = json_decode($row->remark);
+                    $title = $activity_decode->title ?? '';
+                } else {
+                    $activity_decode = $row->remark;
+                    $title = $activity_decode;
+                }
+
+               
 
                 if ($row->log_type == 'Invite User') {
                     $activity_fetch = __('has invited').'- <b>'.$title.'</b>';
@@ -1146,7 +1160,15 @@ class ProjectController extends Controller
             return date_format($date, "M j, Y h:i:s");
             // return $user->activitylogcreatedAt;
         })
-        ->rawColumns(['log_type','activity','activity_date'])
+        ->addColumn('url', function ($user) {
+            if ($user->url != '') {
+                $url=$user->url;
+            }else{
+                $url='-';
+            }
+            return $url;
+        })
+        ->rawColumns(['url','log_type','activity','activity_date'])
         ->make(true);
 
         return response()->json(["draw" => $request->draw, "recordsTotal" => $recordsTotal,
@@ -1255,7 +1277,8 @@ class ProjectController extends Controller
     }
     public function show(Project $project)
     {
-        if (\Auth::user()->can("show project dashboard")) {
+
+        if (\Auth::user()->can("show project dashboard") || \Auth::user()->type == 'sub_contractor') {
             $usr = Auth::user();
             if (\Auth::user()->type == "client") {
                 $user_projects = Project::where("client_id", \Auth::user()->id)
@@ -1263,12 +1286,12 @@ class ProjectController extends Controller
                     ->toArray();
             }
             else if(Auth::user()->type == "consultant"){
-                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                $user_projects = ProjectConsultant::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
             else if(\Auth::user()->type == 'sub_contractor'){
-                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
+                $user_projects = ProjectSubcontractor::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
@@ -1879,7 +1902,7 @@ class ProjectController extends Controller
             } else {
                 return redirect()
                     ->back()
-                    ->with("error", __("Permission Denied."));
+                    ->with("error", __("No Project Found."));
             }
 
         }
@@ -4511,20 +4534,26 @@ class ProjectController extends Controller
             $type = $request['type'];
             $project_users=ProjectUser::where(['project_id' => $project_id])->pluck("user_id")
             ->toArray();
+            $project_consultants=ProjectConsultant::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
+            $project_subcon=ProjectSubcontractor::where(['project_id' => $project_id])->pluck("user_id")
+            ->toArray();
 
             if ($request->filled('q')) {
 
                 if (str_contains($type, 'subcontractor')) {
-                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                        ->whereIn("type", ["sub_contractor"])
-                        ->whereNotIn("id",array_unique($project_users))
+                    $user_contact = User::
+                    // where("created_by", \Auth::user()->creatorId())
+                        whereIn("type", ["sub_contractor"])
+                        ->whereNotIn("id",array_unique($project_subcon))
                         ->pluck("id")
                         ->toArray();
                 }
                 if (str_contains($type, 'consultant')) {
-                    $user_contact = User::where("created_by", \Auth::user()->creatorId())
-                        ->whereIn("type", ["consultant"])
-                        ->whereNotIn("id",array_unique($project_users))
+                    $user_contact = User::
+                    // where("created_by", \Auth::user()->creatorId())
+                        whereIn("type", ["consultant"])
+                        ->whereNotIn("id",array_unique($project_consultants))
                         ->pluck("id")
                         ->toArray();
                 }

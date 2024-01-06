@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Session;
+use Illuminate\Support\Facades\Crypt;
 class DashboardController extends Controller
 {
     /**
@@ -143,32 +144,59 @@ class DashboardController extends Controller
 
     public function consultant_index()
     {
+        try {
+            $user= Auth::user();
+            Session::put('role',$user->type);
+            Session::put('ses_current_clientId',$user->id);
+            Session::put('ses_current_clientName',$user->name);
+            Session::forget('company_id');
+            // Get Consultant Organization Details 
+            $organization=ProjectConsultant::where(['user_id'=>$user->id,'invite_status'=>'accepted'])->groupBy('invited_by')->pluck('invited_by')->toArray();
+            $organizationList=User::whereIn('id', $organization)->paginate(8);
 
-        $users = DB::table('users as t1')
-                    ->select('t1.name','t1.lname','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
-                    ->join('consultant_companies as t2', function ($join) {
-                        $join->on('t2.company_id', '=', 't1.id');
-                        $join->where('t2.status','active');
-                     })
-                    ->where('t1.type','company')
-                    ->paginate(4);
+            // $users = DB::table('users as t1')
+            //             ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
+            //             ->join('consultant_companies as t2', function ($join) {
+            //                 $join->on('t2.company_id', '=', 't1.id');
+            //                 $join->where('t2.status','accepted');
+            //             })
+            //             ->where('t1.type','company')
+            //             ->paginate(1);
 
 
-        return view('consultants.dashboard.index',compact('users'));
+            return view('consultants.dashboard.index',compact('organizationList'));
+        } catch (Exception $e) {
+            
+            return $e->getMessage();
+        
+        }
     }
 
     public function subcontractorDashboard(){
+        try {
+            $user= Auth::user();
+            Session::put('role',$user->type);
+            Session::put('ses_current_clientId',$user->id);
+            Session::put('ses_current_clientName',$user->name);
+            Session::forget('company_id');
+            $users = DB::table('users as t1')
+            ->select('t1.name','t1.lname','t1.type','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
+            ->join('sub_contractor_companies as t2', function ($join) {
+                $join->on('t2.company_id', '=', 't1.id');
+                $join->where('t2.status','accepted');
+             })
+            ->where('t1.type','company')
+            ->paginate(4);
 
-        $users = DB::table('users as t1')
-                    ->select('t1.name','t1.lname','t1.email','t1.phone','t1.id','t1.avatar','t1.color_code')
-                    ->join('sub_contractor_companies as t2', function ($join) {
-                        $join->on('t2.company_id', '=', 't1.id');
-                        $join->where('t2.status','active');
-                     })
-                    ->where('t1.type','company')
-                    ->paginate(4);
-
-        return view('subcontractor.dashboard',compact('users'));
+            return view('subcontractor.dashboard',compact('users'));
+          
+        
+          } catch (Exception $e) {
+          
+              return $e->getMessage();
+          
+          }
+       
     }
 
     public function project_dashboard_index()
@@ -690,6 +718,28 @@ class DashboardController extends Controller
     {
         return view('hrm.hrm_main');
     }
+    public function organization_projects(Request $request,$id){
+        $usr = Auth::user();
+        if(\Auth::user()->type == 'consultant'){
+            $user_projects = ProjectConsultant::where('invite_status','accepted')
+                ->where('user_id',\Auth::user()->id)
+                ->pluck('project_id', 'project_id')->toArray();
+        }
+        $sort = explode('-', 'created_at-desc');
+        $projects = Project::where('created_by', $id)->whereIn('id', array_keys($user_projects))->orderBy($sort[0], $sort[1]);
+
+        if (! empty($request->keyword)) {
+            $projects->where('project_name', 'LIKE', '%'.$request->keyword.'%');
+        }
+        if (! empty($request->status)) {
+            $projects->whereIn('status', $request->status);
+        }
+
+        $projects = $projects->paginate(12);
+        $organizationName=User::where(['id'=>$id])->first();
+
+        return view('construction_project.organization_construction_main', compact('projects', 'user_projects','organizationName'));
+    }
 
     public function construction_main(Request $request)
     {
@@ -705,12 +755,15 @@ class DashboardController extends Controller
                 ->where('created_by', \Auth::user()->creatorId())->pluck('id', 'id')->toArray();
             }
             else if(\Auth::user()->type == 'consultant'){
-                $user_projects = ProjectConsultant::where('invite_status','accepeted')
+                $user_projects = ProjectConsultant::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }
             else if(\Auth::user()->type == 'sub_contractor'){
-                $user_projects = ProjectSubcontractor::where('invite_status','accepeted')
+                $decodeid = Crypt::decryptString($request->id);
+                $companyid = trim($decodeid, '[{"id:;"}]');
+                Session::put('company_id',$companyid);
+                $user_projects = ProjectSubcontractor::where('invite_status','accepted')
                     ->where('user_id',\Auth::user()->id)
                     ->pluck('project_id', 'project_id')->toArray();
             }

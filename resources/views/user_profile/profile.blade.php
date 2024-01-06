@@ -26,7 +26,7 @@ $logo=\App\Models\Utility::get_file('uploads/logo/');
 			<div class="card-body">
 			  <h2 class="mb-4">{{ __('Personal Info') }}</h2>
 			  <h3 class="card-title"></h3>
-			  {{Form::model($userDetail,array('route' => array('new_edit_profile'), 'method' => 'post', 'enctype' => "multipart/form-data"))}}
+			  {{Form::model($userDetail,array('route' => array('new_edit_profile'), 'method' => 'post', 'id'=>'profile','enctype' => "multipart/form-data"))}}
 			  @csrf
 			  <div class="row align-items-center">
 				@php
@@ -56,6 +56,8 @@ $logo=\App\Models\Utility::get_file('uploads/logo/');
 					@error('avatar')
 					<span class="invalid-feedback text-danger text-xs" role="alert">{{ $message }}</span>
 					@enderror
+					<span id="file_size" style="color:red;display:none;">{{__('File Size is more than 2MB')}}</span><br>
+					<span id="show_document_error" style="color:red;"></span>
 				</div>
 			</div>
 			  <br>
@@ -92,8 +94,33 @@ $logo=\App\Models\Utility::get_file('uploads/logo/');
 	</div>
   </div>
   <script>
+
+	$('#avatar').bind('change', function() {
+        var a=(this.files[0].size);
+        if(a > 2000000) {
+			$('input[type="submit"]').attr('disabled','disabled');
+			$('#file_size').show();
+        };
+    });
+
+	$(document).on('change', '#avatar', function(){
+        var fileExtension = ['jpeg', 'jpg', 'png'];
+        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            $(".show_document_file").hide();
+            $("#show_document_error").html("Upload only jpeg, jpg, png");
+			$('input[type="submit"]').prop('disabled',true);
+            return false;
+        } else{
+            $(".show_document_file").show();
+            $("#show_document_error").hide();
+			$('input[type="submit"]').prop('disabled',false);
+            return true;
+        }
+
+    });
+
 	document.getElementById("input_btn").addEventListener('click',function(){
-	document.getElementById("avatar").click();  
+	document.getElementById("avatar").click();
 	},false);
 
 	$('#checkdelete').on('click', function(e) {
