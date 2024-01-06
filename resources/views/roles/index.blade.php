@@ -1,11 +1,102 @@
 @include('new_layouts.header')
 <style>
    
-    .dataTables_wrapper .dataTables_paginate {
-        float: right;
-        text-align: right;
-        padding-top: 0.25em;
-    }
+   :root {
+     --theadColor: #206bc4;
+}
+
+ table.dataTable {
+     box-shadow: #bbbbbb 0px 0px 5px 0px;
+}
+ thead {
+     background-color: var(--theadColor);
+}
+ thead > tr, thead > tr > th {
+     background-color: transparent !important;
+     color: #fff  !important;
+     font-weight: normal;
+     text-align: start;
+}
+ table.dataTable thead th, table.dataTable thead td {
+     border-bottom: 0px solid #111 !important;
+}
+  div.dataTables_wrapper div.dataTables_paginate {
+      color: white;
+  }
+ .dataTables_wrapper > div {
+     margin: 5px;
+}
+ table.dataTable.display tbody tr.even > .sorting_1,
+ table.dataTable.order-column.stripe tbody tr.even> .sorting_1,
+ table.dataTable.display tbody tr.even,
+ table.dataTable.display tbody tr.odd > .sorting_1,
+ table.dataTable.order-column.stripe tbody tr.odd > .sorting_1,
+ table.dataTable.display tbody tr.odd {
+     background-color: #ffffff;
+}
+ table.dataTable thead th {
+     position: relative;
+     background-image: none !important;
+}
+ table.dataTable thead th.sorting:after,
+ table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+     position: absolute;
+     top: 12px;
+     right: 8px;
+     display: block;
+     font-family: "Font Awesome\ 5 Free";
+}
+ table.dataTable thead th.sorting:after {
+     content: "\f0dc";
+     color: #ddd;
+     font-size: 0.8em;
+     padding-top: 0.12em;
+}
+ table.dataTable thead th.sorting_asc:after {
+     content: "\f0de";
+}
+ table.dataTable thead th.sorting_desc:after {
+     content: "\f0dd";
+}
+ table.dataTable.display tbody tr:hover > .sorting_1, table.dataTable.order-column.hover tbody tr:hover > .sorting_1 {
+     background-color: #f2f2f2 !important;
+     color: #000;
+}
+ tbody tr:hover {
+     background-color: #f2f2f2 !important;
+     color: #000;
+}
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+     background: none !important;
+     border-radius: 50px;
+     background-color: var(--theadColor) !important;
+     color:#fff !important
+}
+ .paginate_button.current:hover {
+     background: none !important;
+     border-radius: 50px;
+     background-color: var(--theadColor) !important;
+     color:#fff !important
+}
+ .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+ .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+     border: 1px solid #979797;
+     background: none !important;
+     border-radius: 50px !important;
+     background-color: #000 !important;
+     color: #fff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    cursor: default;
+    color: #fff !important;
+    border: 1px solid transparent;
+    background: transparent;
+    box-shadow: none;
+}
     .table-responsive .bg-primary {
         background: #206bc4 !important;
     }
@@ -95,7 +186,7 @@
             <br>
             <br>
             <div class="table-responsive">
-              <table class="table table-vcenter card-table" id="role_table">
+              <table class="table table-vcenter card-table no-footer dataTable" id="role_table">
                 <thead>
                   <tr>
                     <th class="w-1">

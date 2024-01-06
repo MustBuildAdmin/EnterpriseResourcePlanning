@@ -367,10 +367,10 @@ var shipping_phone_number=window.intlTelInput(document.querySelector("#shipping_
     hiddenInput: "shipping_phone_country",
     utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
 });
-$('#create_client').click(function(){
+$('input#create_client').click(function(){
     $("#billing_phone").val(billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
     $("#shipping_phone").val(shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
-    $('#create_client1').click()
+    $('input#create_client1').click()
 
 });
 $(document).on("change", '#country', function () {

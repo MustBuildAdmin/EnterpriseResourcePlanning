@@ -15,7 +15,11 @@
     width: 100%;
     text-indent: 0;
    }
+   input#create_user1 {
+    display: none;
+}
 </style>
+
 {{Form::open(array('url'=>'users','method'=>'post','id'=>'users_form',
   'autocomplete'=>'off','enctype'=>"multipart/form-data"))}}
 
@@ -138,14 +142,13 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group col-md-6">
+                <div class="col-lg-6 col-md-4 col-sm-6 country_code">
                     <div class="form-group">
                         {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}
                         <span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            <input class="form-control" name="phone" type="number" id="phone"
-                             maxlength="16" placeholder="+91 111 111 1111"  required>
+                            <input class="form-control" name="phone" type="tel" id="phone"
+                            maxlength="16" placeholder="+91 111 111 1111"  required>
                             <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                                 <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                             </span>
@@ -265,12 +268,25 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn  btn-primary"  id="create_user">
+    <input type="button" id="create_user" value="{{__('Create')}}" class="btn  btn-primary">
+    <input type="submit" id="create_user1" value="{{__('Create')}}" class="btn  btn-primary">
 </div>
 
 {{Form::close()}}
 <script>
 
+
+var phone_number = window.intlTelInput(document.querySelector("#phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+$('input#create_user').click(function(){
+    $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $('input#create_user1').click()
+
+});
 $(document).on("change", '#country', function () {
     var name=$(this).val();
     var settings = {
@@ -341,6 +357,9 @@ $(document).on("change", '#country', function () {
             });
         });
         $(document).on("keyup", '#phone', function () {
+            var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[name='phone_country'").val(full_number);
+
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',

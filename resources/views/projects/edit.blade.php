@@ -170,7 +170,7 @@
                                 {{ Form::label('project_name', __('Project Name'), ['class' => 'form-label']) }}
                                 <span class="text-danger">*</span>
                                 {{ Form::text('project_name', null, ['class' => 'form-control',
-                                    'required'=>'required','disabled'=>'true','readonly'=>true]) }}
+                                    'required'=>'required','readonly'=>true]) }}
                                 {{Form::hidden('freeze_statuss',$project->freeze_status,
                                     array('class'=>'form-control','id'=>'freeze_status'))}}
                             </div>
@@ -305,7 +305,8 @@
                             <span id="project_image_error" class="invalid-feedback" for="project_image"></span>
 
                             @if($project->project_image != null)
-                                <img id="image"  src="{{  \App\Models\Utility::get_file($project->project_image) }}"
+                                @php $prologo = Utility::get_file('projects/'); @endphp
+                                <img id="image"  src="{{  $prologo.$project->project_image }}"
                                 class="avatar avatar-xl" alt="">
                             @endif
                         </div>

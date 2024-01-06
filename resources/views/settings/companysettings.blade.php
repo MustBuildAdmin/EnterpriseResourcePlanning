@@ -35,6 +35,10 @@
     <link href="{{asset('assets/dist/css/tabler-payments.min.css?1674944402')}}" rel="stylesheet"/>
     <link href="{{asset('assets/dist/css/tabler-vendors.min.css?1674944402')}}" rel="stylesheet"/>
     <link href="{{asset('assets/dist/css/demo.min.css?1674944402')}}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ asset('assets/phonepicker/css/intlTelInput.css') }}" />
+    <script src="{{ asset('assets/phonepicker/js/intlTelInput.js') }}"></script>
+
+
     <style>
         .form-group {
             margin-bottom: 1.3rem;
@@ -42,6 +46,9 @@
         a:hover {
             outline: none;
             text-decoration: none;
+        }
+        #savebtn1{
+            display:none;
         }
         .text-muted {
     --bs-text-opacity: 1;
@@ -562,7 +569,8 @@
                             <div class="card-actions">
                                 <button class="button btn-navigate-form-step" id="previous" type="button" step_number="1">Prev</button>
                                 <!-- <button class="button submit-btn" type="button" id="savebtndummy">Save</button> -->
-                                <button class="button submit-btn" type="submit"  id="savebtn">Save</button>
+                                <button class="button submit-btn" type="button"  id="savebtn">Save</button>
+                                <button class="button submit-btn" type="submit"  id="savebtn1">Save</button>
                             </div>
                         </div>
                         <div class="card-body">
@@ -637,16 +645,22 @@
                                                         </span>
                                     @enderror
                                 </div>
-
-                                <div class="form-group col-md-6">
-                                    {{Form::label('company_telephone',__('Telephone'),array('class' => 'form-label')) }}
-                                    {{Form::number('company_telephone',null,array('class'=>'form-control'))}}
-                                    @error('company_telephone')
-                                    <span class="invalid-company_telephone" role="alert">
-                                                            <strong class="text-danger">{{ $message }}</strong>
-                                                        </span>
-                                    @enderror
+                                <div class="col-lg-6 col-md-4 col-sm-6 country_code">
+                                    <div class="form-group">
+                                        {{Form::label('company_telephone',__('Telephone'),array('class'=>'form-label')) }}
+                                        <span style='color:red;'>*</span>
+                                        <div class="form-icon-user">
+                                            <input class="form-control" name="company_telephone" type="tel" id="company_telephone"
+                                            maxlength="16" placeholder="+91 111 111 1111"  required>
+                                            @error('company_telephone')
+                                            <span class="invalid-company_telephone" role="alert">
+                                                <strong class="text-danger">{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
+
                                 <div class="form-group col-md-6">
                                     {{Form::label('company_email',__('System Email *'),array('class' => 'form-label')) }}
                                     {{Form::email('company_email',null,array('class'=>'form-control','required'=>'required','readonly'=>'true'))}}
@@ -1119,6 +1133,13 @@ $('#company_form').validate({
     }
 </style>
 <script>
+
+var phone_number = window.intlTelInput(document.querySelector("#company_telephone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
 $('#indiangst').change(function () {
     $('#customRadio8').attr("disabled",false);
     $('#customRadio7').attr("disabled",false);
@@ -1132,5 +1153,12 @@ $('#indiangst1').change(function () {
     $('#customRadio8').prop("checked",false);
     $('#customRadio7').prop("checked",false);
     $('#vat_number').prop("value","");
+});
+$(document).ready(function() {
+    phone_number.setNumber("{{$settings['company_telephone']}}");
+});
+$('input#savebtn').click(function(){
+    $("#company_telephone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $('input#savebtn1').click()
 });
 </script>

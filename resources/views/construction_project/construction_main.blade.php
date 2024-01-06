@@ -64,7 +64,8 @@ a.text-dark {
                    ?>
                    @if($project_image!=0 && $project_image!='')
                         @php
-                        $image=\App\Models\Utility::get_file($project->project_image);
+                        $prologo = Utility::get_file('projects/');
+                        $image=$prologo.$project->project_image;
                         @endphp
                        <img id="image"  src="{{$image}}"
                         class="avatar avatar-xl mb-2 rounded" alt="">

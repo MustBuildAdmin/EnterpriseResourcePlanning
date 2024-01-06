@@ -647,8 +647,10 @@ class ProjectController extends Controller
                     $userArr = [
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
-                        'project_name' => $project->project_name,
+                        'project_name' => $request->project_name,
+                        'projectname' => $request->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE',
@@ -714,7 +716,9 @@ class ProjectController extends Controller
                         'invite_link' => $inviteUrl,
                         'user_name' => \Auth::user()->name,
                         'project_name' => $project->project_name,
+                        'projectname' => $project->project_name,
                         'email' => \Auth::user()->email,
+                        'team_member_name'=>$get_email->name
                     ];
                     
                     $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -1176,57 +1180,75 @@ class ProjectController extends Controller
     }
     public function projectTeamMembers(Request $request, $project_id)
     {
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.teammembers", compact("project", "project_id"));
-        } else {
+        if (\Auth::user()->can('view engineers')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.teammembers", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
             return redirect()
-                ->back()
-                ->with("error", __("Permission Denied."));
+            ->back()
+            ->with("error", __("Permission Denied."));
         }
     }
     public function projectConsultant(Request $request, $project_id)
     {
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.consultant", compact("project", "project_id"));
-        } else {
-            return redirect()
+        if (\Auth::user()->can('view consultant project invitation')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.consultant", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
+                return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
         }
     }
     public function projectSubcontractor(Request $request, $project_id)
     {
-        $project = Project::where(["id" => $project_id])->first();
-        $usr = Auth::user();
-        if (\Auth::user()->type == "client") {
-            $user_projects = Project::where("client_id", \Auth::user()->id)
-                ->pluck("id", "id")
-                ->toArray();
-        } else {
-            $user_projects = $usr->projects->pluck("id")->toArray();
-        }
-        if (in_array($project->id, $user_projects)) {
-            return view("construction_project.subcontractor", compact("project", "project_id"));
-        } else {
-            return redirect()
+        if (\Auth::user()->can('view consultant project invitation')) {
+            $project = Project::where(["id" => $project_id])->first();
+            $usr = Auth::user();
+            if (\Auth::user()->type == "client") {
+                $user_projects = Project::where("client_id", \Auth::user()->id)
+                    ->pluck("id", "id")
+                    ->toArray();
+            } else {
+                $user_projects = $usr->projects->pluck("id")->toArray();
+            }
+            if (in_array($project->id, $user_projects)) {
+                return view("construction_project.subcontractor", compact("project", "project_id"));
+            } else {
+                return redirect()
+                    ->back()
+                    ->with("error", __("Permission Denied."));
+            }
+        }else{
+                return redirect()
                 ->back()
                 ->with("error", __("Permission Denied."));
         }
@@ -1278,12 +1300,18 @@ class ProjectController extends Controller
                 $completedTask = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
                     ->where("progress", 100)
+                    ->where('type','task')
                     ->get();
 
                 $project_done_task = $completedTask->count();
 
+                $total_task = Con_task::where("project_id", $project->id)
+                    ->where("instance_id", Session::get("project_instance"))
+                    ->where('type','task')
+                    ->get()->count();
+
                 $project_data["task"] = [
-                    "total" => number_format($project_task),
+                    "total" => number_format($total_task),
                     "done" => number_format($project_done_task),
                     "percentage" => Utility::getPercentage(
                         $project_done_task,
@@ -1808,21 +1836,21 @@ class ProjectController extends Controller
 
                 $all_pending = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->where("end_date", "<", $cur)
                     ->where("progress", "!=", "100")
                     ->count();
 
                 $all_completed = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->where("end_date", "<", $cur)
                     ->where("progress", "100")
                     ->count();
 
                 $all_inprogress = Con_task::where("project_id", $project->id)
                     ->where("instance_id", Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->where("progress", "<", 100)
                     ->where("progress", ">", 0)
                     ->whereDate('end_date', '>', date('Y-m-d'))
@@ -1830,7 +1858,7 @@ class ProjectController extends Controller
 
                 $all_upcoming = Con_task::where('project_id', $project->id)
                     ->where('instance_id', Session::get("project_instance"))
-                    ->where("type", "project")
+                    ->where("type", "task")
                     ->whereDate('start_date', '>', date('Y-m-d'))
                     ->count();
 
@@ -2376,6 +2404,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+       
         if (\Auth::user()->can("edit project")) {
             $validator = \Validator::make($request->all(), [
                 // "project_name" => "required",
@@ -2392,6 +2421,7 @@ class ProjectController extends Controller
 
             // $microProgram = $request->micro_program == "on" ? 1 : 0;
             $project = Project::find($project->id);
+          
             // $project->project_name = $request->project_name;
             $project->start_date = date(
                 "Y-m-d H:i:s",
@@ -2473,8 +2503,10 @@ class ProjectController extends Controller
                 $userArr = [
                     'invite_link' => $inviteUrl,
                     'user_name' => \Auth::user()->name,
-                    'project_name' => $project->project_name,
+                    'project_name' => $request->project_name,
+                    'projectname' => $request->project_name,
                     'email' => \Auth::user()->email,
+                    'team_member_name'=>$get_email->name
                 ];
                 
                 $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))->first();
@@ -2515,6 +2547,9 @@ class ProjectController extends Controller
             $project->longitude = $request->longitude;
             // $project->micro_program = $microProgram;
             $project->otheraddress = $request->otheraddress;
+            if ($request->hasFile("project_image")) {
+                $project->project_image = $fileNameToStore1;
+            }
             $project->save();
             if (Session::has("project_instance")) {
                 $instanceId = Session::get("project_instance");
@@ -2604,79 +2639,85 @@ class ProjectController extends Controller
         }
     }
     public function viewproject(Request $request, $project_id){
-        $clients = User::where(
-            "created_by",
-            "=",
-            \Auth::user()->creatorId()
-        )
-            ->where("type", "=", "client")
-            ->get()
-            ->pluck("name", "id");
-        $users = User::where("created_by", "=", \Auth::user()->creatorId())
-            ->where("type", "!=", "client")
-            ->get()
-            ->pluck("name", "id");
-        $users->prepend("Select User", "");
-        $repoter = User::where(
-            "created_by",
-            "=",
-            \Auth::user()->creatorId()
-        )
-            ->where("type", "!=", "client")
-            ->get()
-            ->pluck("name", "id");
-        $project = Project::findOrfail($project_id);
-        $setting = Utility::settings(\Auth::user()->creatorId());
-        $country = Utility::getcountry();
-        if (Session::has("project_instance")) {
-            $instanceId = Session::get("project_instance");
-        } else {
-            $instanceId = $project->instance_id;
-        }
-        $project_holidays = Project_holiday::where([
-            "project_id" => $project->id,
-            "instance_id" => $instanceId,
-        ])
-            ->orderBy("date", "ASC")
-            ->get();
-        $non_working_days = array(
-                '1' => 'Monday','2' => 'Tuesday', '3' => 'Wednesday',
-                '4' => 'Thursday', '5' => 'Friday',
-                '6' => 'Saturday','0' => 'Sunday' );
-        if ($project->country != null) {
-            $statelist = Utility::getstate($project->country);
-        } else {
-            $statelist = [];
-        }
-        // non working days
-        $non_working=explode(',',$project->non_working_days);
-        $weekendVal=array();
-        foreach($non_working as $weekends){
-            if(isset($weekends) && $weekends!=''){
-                array_push($weekendVal,$non_working_days[$weekends]);
+        if (\Auth::user()->can("view project")) {
+            $clients = User::where(
+                "created_by",
+                "=",
+                \Auth::user()->creatorId()
+            )
+                ->where("type", "=", "client")
+                ->get()
+                ->pluck("name", "id");
+            $users = User::where("created_by", "=", \Auth::user()->creatorId())
+                ->where("type", "!=", "client")
+                ->get()
+                ->pluck("name", "id");
+            $users->prepend("Select User", "");
+            $repoter = User::where(
+                "created_by",
+                "=",
+                \Auth::user()->creatorId()
+            )
+                ->where("type", "!=", "client")
+                ->get()
+                ->pluck("name", "id");
+            $project = Project::findOrfail($project_id);
+            $setting = Utility::settings(\Auth::user()->creatorId());
+            $country = Utility::getcountry();
+            if (Session::has("project_instance")) {
+                $instanceId = Session::get("project_instance");
+            } else {
+                $instanceId = $project->instance_id;
             }
+            $project_holidays = Project_holiday::where([
+                "project_id" => $project->id,
+                "instance_id" => $instanceId,
+            ])
+                ->orderBy("date", "ASC")
+                ->get();
+            $non_working_days = array(
+                    '1' => 'Monday','2' => 'Tuesday', '3' => 'Wednesday',
+                    '4' => 'Thursday', '5' => 'Friday',
+                    '6' => 'Saturday','0' => 'Sunday' );
+            if ($project->country != null) {
+                $statelist = Utility::getstate($project->country);
+            } else {
+                $statelist = [];
+            }
+            // non working days
+            $non_working=explode(',',$project->non_working_days);
+            $weekendVal=array();
+            foreach($non_working as $weekends){
+                if(isset($weekends) && $weekends!=''){
+                    array_push($weekendVal,$non_working_days[$weekends]);
+                }
 
-        }
-        if ($project->created_by == \Auth::user()->creatorId()) {
-            return view(
-                "projects.viewproject",
-                compact(
-                    "project",
-                    "clients",
-                    "users",
-                    "repoter",
-                    "setting",
-                    "country",
-                    "statelist",
-                    "project_holidays",
-                    "weekendVal"
-                )
-            );
-        } else {
-            return response()->json(
-                ["error" => __("Permission Denied.")],
-                401
-            );
+            }
+            if ($project->created_by == \Auth::user()->creatorId()) {
+                return view(
+                    "projects.viewproject",
+                    compact(
+                        "project",
+                        "clients",
+                        "users",
+                        "repoter",
+                        "setting",
+                        "country",
+                        "statelist",
+                        "project_holidays",
+                        "weekendVal"
+                    )
+                );
+            } else {
+                return response()->json(
+                    ["error" => __("Permission Denied.")],
+                    401
+                );
+            }
+        }else{
+                return redirect()
+                        ->back()
+                        ->with("error", __("Permission Denied."));
         }
     }
 
@@ -2801,7 +2842,9 @@ class ProjectController extends Controller
                             'invite_link' => $inviteUrl,
                             'user_name' => \Auth::user()->name,
                             'project_name' => $project->project_name,
+                            'projectname' => $project->project_name,
                             'email' => \Auth::user()->email,
+                            'team_member_name'=>$get_email->name
                         ];
 
                         $team_template = EmailTemplate::where('name', 'LIKE', Config::get('constants.IN_TEAMMEMBER'))
@@ -4545,6 +4588,7 @@ class ProjectController extends Controller
                     ->whereNot('id',Auth::user()->id)
                     ->pluck("id")
                     ->toArray();
+
 
                 $arrUser = array_unique($user_contact);
 

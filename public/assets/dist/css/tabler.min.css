@@ -242,7 +242,7 @@
 body {
     margin: 0;
     font-family: var(--tblr-body-font-family);
-    font-size: var(--tblr-body-font-size);
+    font-size: var(--tblr-body-font-size) !important;
     font-weight: var(--tblr-body-font-weight);
     line-height: var(--tblr-body-line-height);
     color: var(--tblr-body-color);

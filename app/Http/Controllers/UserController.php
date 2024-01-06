@@ -552,7 +552,7 @@ class UserController extends Controller
                 $request->all(), [
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users,email,'.$userDetail->id,
-                    'phone' => 'required|unique:users,phone,'.$userDetail->id,
+                    // 'phone' => 'required|unique:users,phone,'.$userDetail->id,
 
                 ]
             );
@@ -637,18 +637,15 @@ class UserController extends Controller
     {
         try {
             $userDetail = \Auth::user();
-            echo $userDetail->id;
             $user = User::findOrFail($userDetail->id);
-
             $validator = \Validator::make(
                 $request->all(), [
                     'name' => 'required|max:120',
                     'email' => 'required|email|unique:users,email,'.$userDetail->id,
-                    'phone' => 'required|unique:users,phone,'.$userDetail->id,
-
                 ]
             );
-
+           
+            
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
 

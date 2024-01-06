@@ -13,8 +13,10 @@
     .billing_address_title, .shipping_address_title {
         margin-top : 15px;
     }
-</style>
-<div class="modal-body">
+input#create_subcontractor1 {
+    display: none;
+}
+</style><div class="modal-body">
     <h3 class="sub-title">{{__('Basic Info')}}</h3>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
@@ -41,15 +43,13 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="col-lg-6 col-md-4 col-sm-6 country_code">
             <div class="form-group">
-                {{Form::label('contact',__('Contact'),['class'=>'form-label'])}}<span style='color:red;'>*</span>
+                {{Form::label('contact',__('Contact'),array('class'=>'form-label')) }}
+                <span style='color:red;'>*</span>
                 <div class="form-icon-user">
-                    {{Form::text('contact',null,array('id'=>'phone','name'=>'phone','class'=>'form-control',
-                    'Placeholder'=>'(00) 0000-0000','required'=>'required','maxlength' => 16,
-                    'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
-
+                    <input class="form-control" name="phone" type="tel" id="phone"
+                    maxlength="16" placeholder="+91 111 111 1111"  required>
                     <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                         <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                     </span>
@@ -145,14 +145,17 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-4 col-sm-6">
-            <div class="form-group billing_phone">
+        <div class="col-lg-6 col-md-4 col-sm-6 country_code">
+            <div class="form-group">
                 {{Form::label('billing_phone',__('Phone'),array('class'=>'form-label')) }}
                 <span style='color:red;'>*</span>
-                {{Form::text('billing_phone',null,array('class'=>'form-control',
-                'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
-                'id'=>'billing_phone',
-                'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
+                <div class="form-icon-user">
+                    <input class="form-control"  type="tel" id="billing_phone" name="billing_phone"
+                     maxlength="16" placeholder="+91 111 111 1111"  required>
+                    <span class="invalid-name billing_duplicate" role="alert" style="display: none;">
+                        <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                    </span>
+                </div>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6">
@@ -244,14 +247,17 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-4 col-sm-6">
-                <div class="form-group shipping_phone">
+            <div class="col-lg-4 col-md-4 col-sm-6 country_code">
+                <div class="form-group">
                     {{Form::label('shipping_phone',__('Phone'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
-                    {{Form::text('shipping_phone',null,array('class'=>'form-control',
-                    'id'=>'shipping_phone',
-                    'Placeholder'=>'(00) 0000-0000','maxlength' => 16,'required'=>'required',
-                    'oninput'=>"numeric(this)",'data-mask'=>"(00) 0000-0000",'data-mask-visible'=>"true"))}}
+                    <div class="form-icon-user">
+                        <input class="form-control" name="shipping_phone" type="tel" id="shipping_phone"
+                        maxlength="16" placeholder="+91 111 111 1111"  required>
+                        <span class="invalid-name shipping_mobile_duplicate" role="alert" style="display: none;">
+                            <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -279,7 +285,8 @@
 </div>
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn btn-light" data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Create')}}" class="btn btn-primary" id="create_subcontractor">
+    <input type="button" value="{{__('Create')}}" class="btn btn-primary" id="create_subcontractor">
+    <input type="submit" value="{{__('Create')}}" class="btn btn-primary" id="create_subcontractor1">
 </div>
 {{Form::close()}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
@@ -287,6 +294,33 @@
 </script>
 
 <script>
+
+var phone_number = window.intlTelInput(document.querySelector("#phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+var billing_phone_number = window.intlTelInput(document.querySelector("#billing_phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "billing_phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+var shipping_phone_number=window.intlTelInput(document.querySelector("#shipping_phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "shipping_phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+
+$('input#create_subcontractor').click(function(){
+    $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $("#billing_phone").val(billing_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $("#shipping_phone").val(shipping_phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $('input#create_subcontractor1').click()
+
+});
     $(document).on("change", '#billing_country', function () {
         var name=$(this).val();
         var settings = {
@@ -396,6 +430,7 @@
             $this.find('#shipping_name').val($this.find('#billings_name').val());
             $this.find('#shipping_city').val($this.find('#billing_city').val());
             $this.find('#shipping_phone').val($this.find('#billing_phone').val());
+            shipping_phone_number.setCountry(billing_phone_number.getSelectedCountryData().iso2);
             $this.find('.shippings_zip').val($this.find('.billings_zip').val());
             $this.find('#shipping_address').val($this.find('#billing_address').val());
             $this.find('#shipping_country').val($this.find('#billing_country').val());

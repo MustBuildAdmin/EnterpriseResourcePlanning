@@ -2,6 +2,9 @@
     div#choices_multiple1_chosen {
         width: 100% !important;
     }
+    #edit_consultant1{
+        display:none;
+    }
 </style>
 @if(\Auth::user()->type == 'super admin')
     @php $url='consultants.update' @endphp
@@ -124,14 +127,13 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group col-md-6">
+            <div class="col-lg-6 col-md-4 col-sm-6 country_code">
                 <div class="form-group">
-                    {{Form::label('phone',__('Mobile Number'),array('class'=>'form-label')) }}
+                    {{Form::label('contact',__('Contact'),array('class'=>'form-label')) }}
                     <span style='color:red;'>*</span>
                     <div class="form-icon-user">
-                         <input type="text" name="phone" class="form-control" data-mask="(00) 0000-0000"
-                          data-mask-visible="true" placeholder="(00) 0000-0000" id="phone"
-                          maxlength="16" autocomplete="off" oninput="numeric(this)"  value='{{$user->phone}}'/>
+                        <input class="form-control" name="phone" type="tel" id="phone"
+                        maxlength="16" placeholder="+91 111 111 1111"  required>
                         <span class="invalid-name edit_mobile_duplicate_error" role="alert" style="display: none;">
                             <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                         </span>
@@ -173,7 +175,8 @@
 
     <div class="modal-footer">
         <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{__('Close')}}</button>
-        <button type="submit" class="btn btn-primary" id="edit_consultant">
+        <button type="button" class="btn btn-primary" id="edit_consultant"> {{__('Update a Member')}} </button>
+        <button type="submit" class="btn btn-primary" id="edit_consultant1">
             {{__('Update a Member')}}
         </button>
     </div>
@@ -182,6 +185,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"
  integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC" crossorigin="anonymous"></script>
 <script>
+
+var phone_number = window.intlTelInput(document.querySelector("#phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+
+$('input#edit_consultant').click(function(){
+    $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $('input#edit_consultant1').click()
+
+});
      $(document).on("change", '#country', function () {
         var name=$(this).val();
         var settings = {
@@ -203,6 +219,7 @@
 
     $(document).ready(function() {
 
+        phone_number.setNumber("{{$user->phone}}");
         $(document).on('submit', 'form', function() {
             $('#edit_consultant').attr('disabled', 'disabled');
         });

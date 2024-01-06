@@ -14,6 +14,9 @@
     width: 100%;
     text-indent: 0;
    }
+   input#edit_user1 {
+    display: none;
+}
 </style>
 {{Form::model($user,array('route' => array('users.update', $user->id), 'method' => 'PUT','id'=>'edit_user','autocomplete'=>'off','enctype'=>"multipart/form-data")) }}
     <div class="modal-body">
@@ -156,11 +159,13 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-6">
+                <div class="col-lg-6 col-md-4 col-sm-6 country_code">
                     <div class="form-group">
-                        {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}<span style='color:red;'>*</span>
+                        {{Form::label('phone',__('Phone'),array('class'=>'form-label')) }}
+                        <span style='color:red;'>*</span>
                         <div class="form-icon-user">
-                            <input class="form-control" name="phone" type="number" id="phone" maxlength="16" placeholder="+91 111 111 1111" value='{{$user->phone}}' required>
+                            <input class="form-control" name="phone" type="tel" id="phone"
+                            maxlength="16" placeholder="+91 111 111 1111"  required>
                             <span class="invalid-name mobile_duplicate_error" role="alert" style="display: none;">
                                 <span class="text-danger">{{__('Mobile Number Already Exist!')}}</span>
                             </span>
@@ -226,11 +231,24 @@
 
 <div class="modal-footer">
     <input type="button" value="{{__('Cancel')}}" class="btn  btn-light"data-bs-dismiss="modal">
-    <input type="submit" value="{{__('Update')}}" class="btn  btn-primary" id="edit_user">
+    <input type="button" id="edit_user" value="{{__('Update')}}" class="btn  btn-primary">
+    <input type="submit" id="edit_user1" value="{{__('Update')}}" class="btn  btn-primary">
 </div>
 
 {{Form::close()}}
 <script>
+
+var phone_number = window.intlTelInput(document.querySelector("#phone"), {
+    separateDialCode: true,
+    preferredCountries:["in"],
+    hiddenInput: "phone_country",
+    utilsScript:"{{ asset('assets/phonepicker/js/utils.js') }}"
+});
+$('input#edit_user').click(function(){
+    $("#phone").val(phone_number.getNumber(intlTelInputUtils.numberFormat.E164));
+    $('input#edit_user1').click()
+
+});
      $(document).on("change", '#country', function () {
         var name=$(this).val();
         var settings = {
@@ -252,6 +270,8 @@
 </script>
 <script>
     $(document).ready(function() {
+        phone_number.setNumber("{{$user->phone}}");
+
 
         $(document).on('submit', 'form', function() {
             $('#edit_user').attr('disabled', 'disabled');
@@ -296,7 +316,10 @@
             });
         });
 
-        $(document).on("keyup", '#phone', function () {
+        $(document).on("keyup", '#phone', function (e) {
+            e.preventDefault();
+            var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[name='phone_country'").val(full_number);
             $.ajax({
                 url : '{{ route("check_duplicate_mobile") }}',
                 type : 'GET',

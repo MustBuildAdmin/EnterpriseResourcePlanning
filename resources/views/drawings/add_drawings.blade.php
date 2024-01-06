@@ -46,11 +46,11 @@ if($drawing_type == 3 & count($uploadedDrawings))
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Create Drawings Record</h5>
+              <h5 class="modal-title">Show Drawings</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="pdf-viewer"></div>
+              <iframe title="" id="pdf_show" src="" width="100%" height="600px"></iframe>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
@@ -116,7 +116,8 @@ if($drawing_type == 3 & count($uploadedDrawings))
                                             <span class="badge bg-success me-1"> @else
                                               <span class="badge bg-warning me-1">
                                               @endif{{$drawing->status}}</td>
-                                           <td data-filepath="{{$drawing->drawing_path}}">
+                                           <td data-filepath="{{asset('/storage/'.$drawing->drawing_path)}}">
+
                                                 {{$drawing->file_name}}
                                                 <button type="button" id="file_path"
                                                 class="btn preview-btn" onclick="getFilepath(this)"
@@ -166,25 +167,7 @@ if($drawing_type == 3 & count($uploadedDrawings))
         var filePath = filepathElement.data('filepath');
         // $('#imagePreview').attr('src', "{{ asset('') }}" + filePath);
         var pdfPath = "{{ asset('') }}" + filePath;
-        
+        document.getElementById('pdf_show').src = filePath;
 
-    // Asynchronously download the PDF and render it
-    pdfjsLib.getDocument(pdfPath).promise.then(function(pdfDoc) {
-        // Fetch the first page
-        pdfDoc.getPage(1).then(function(page) {
-            var canvas = document.createElement('canvas');
-            var context = canvas.getContext('2d');
-
-            // Set the canvas size to the PDF page size
-            canvas.height = page.view[3];
-            canvas.width = page.view[2];
-
-            // Append the canvas to the PDF container
-            document.getElementById('pdf-viewer').appendChild(canvas);
-
-            // Render the PDF page on the canvas
-            page.render({ canvasContext: context, viewport: page.view });
-        });
-    });
     }
 </script>

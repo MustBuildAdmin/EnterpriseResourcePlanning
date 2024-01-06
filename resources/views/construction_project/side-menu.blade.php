@@ -300,14 +300,20 @@ table.dataTable thead th.sorting_desc:after {
                                     </span>
                                 </a>
                                 <div class="dropdown-menu">
+                                    @if(\App\Models\MicroProgramScheduleModal::where('project_id',$project_id)->where('instance_id',Session::get('project_instance'))
+                                                    ->where('active_status',1)->exists() && Session::has('project_instance'))
+                                        @php $micro_look = ''; @endphp
+                                    @else
+                                        @php $micro_look = 'pointer-events: none;background-color: #dddddd;'; @endphp
+                                    @endif
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
                                             @can('lookahead lookahead grant chart')
-                                            <a href="{{ route('microprogram.gantt', $project_id) }}"
-                                                class="{{ (Request::route()->getName() == 'microprogram.gantt')
-                                                ?'dropdown-item active' :'dropdown-item'}}">
-                                                {{ __('Lookahead Gantt') }}
-                                            </a>
+                                                <a style="{{$micro_look}}" href="{{ route('microprogram.gantt', $project_id) }}"
+                                                    class="{{ (Request::route()->getName() == 'microprogram.gantt')
+                                                    ?'dropdown-item active' :'dropdown-item'}}">
+                                                    {{ __('Lookahead Gantt') }}
+                                                </a>
                                             @endcan
 
                                             @can('view lookahead schedule')
@@ -319,11 +325,11 @@ table.dataTable thead th.sorting_desc:after {
                                             @endcan
 
                                             @can('view active lookahead')
-                                            <a href="{{ route('micro_taskboard') }}"
-                                                class="{{ (Request::route()->getName() == 'micro_taskboard')
-                                                ?'dropdown-item active' :'dropdown-item'}}">
-                                                {{ __('Active Lookahead') }}
-                                            </a>
+                                                <a style="{{$micro_look}}" href="{{ route('micro_taskboard') }}"
+                                                    class="{{ (Request::route()->getName() == 'micro_taskboard')
+                                                    ?'dropdown-item active' :'dropdown-item'}}">
+                                                    {{ __('Active Lookahead') }}
+                                                </a>
                                             @endcan
                                         </div>
                                     </div>
@@ -333,9 +339,9 @@ table.dataTable thead th.sorting_desc:after {
                     @endif
                 @endif
                     <!--LookaHead Planning end-->
-                    @if(Gate::check('invite engineers')
-                    || Gate::check('invite consultant project invitation')
-                    || Gate::check('invite sub contractor project invitation'))
+                    @if(Gate::check('view engineers')
+                    || Gate::check('view consultant project invitation')
+                    || Gate::check('view sub contractor project invitation'))
                     @if (Auth::user()->type != "consultant" && Auth::user()->type != "sub_contractor")
                     <!--Team Members starts-->
                     <li class="nav-item dropdown">
@@ -367,21 +373,21 @@ table.dataTable thead th.sorting_desc:after {
                         <div class="dropdown-menu">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
-                                    @can('invite engineers')
+                                    @can('view engineers')
                                     <a href="{{ route('project.teammembers', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.teammembers' ?
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Engineers') }}
                                     </a>
                                     @endcan
-                                    @can('invite consultant project invitation')
+                                    @can('view consultant project invitation')
                                     <a href="{{ route('project.consultant', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.consultant' ?
                                         'dropdown-item active' : 'dropdown-item' }}">
                                         {{ __('Consultant') }}
                                     </a>
                                     @endcan
-                                    @can('invite sub contractor project invitation')
+                                    @can('view sub contractor project invitation')
                                     <a href="{{ route('project.subcontractor', $project_id) }}"
                                         class="{{ Request::route()->getName() == 'project.subcontractor' ?
                                         'dropdown-item active' : 'dropdown-item' }}">

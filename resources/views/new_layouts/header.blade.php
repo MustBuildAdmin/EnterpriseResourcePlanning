@@ -11,7 +11,7 @@
     $color = !empty($setting['color']) ? $setting['color'] : 'theme-3';
     $profile = \App\Models\Utility::get_file('uploads/avatar/');
     $SITE_RTL = Utility::getValByName('SITE_RTL');
-
+    $userlogo=\App\Models\Utility::get_file('uploads/logo/');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ $SITE_RTL == 'on' ? 'rtl' : '' }}">
@@ -317,10 +317,22 @@
                      <span class="avatar avatar-sm"
                         style="background-image: url('{{ !empty(\Auth::user()->avatar) ?
                         $profile . \Auth::user()->avatar :
-                        asset(Storage::url('uploads/avatar/avatar.png')) }}')"></span>
+                        $userlogo.Config::get('constants.AVATAR') }}')"></span>
                      <div class="d-none d-xl-block ps-2">
                         <div>{{ \Auth::user()->name }}</div>
-                        <div class="mt-1 small text-secondary">Role</div>
+                        @if(\Auth::user()->type=='company')
+                        @php $role='Admin'; @endphp
+                        @elseif(\Auth::user()->type=='sub_contractor')
+                        @php $role='Sub Contractor'; @endphp
+                        @elseif(\Auth::user()->type!='sub_contractor'
+                        || \Auth::user()->type!='client'
+                        || \Auth::user()->type!='company'
+                        || \Auth::user()->type!='consultant')
+                        @php $role='Employee'; @endphp
+                        @else
+                        @php $role=ucfirst(\Auth::user()->type); @endphp
+                        @endif
+                        <div class="mt-1 small text-secondary">{{$role}}</div>
                      </div>
                   </a>
                   <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">

@@ -4457,6 +4457,13 @@ Route::get('consultants/edit/{id}/{color_code}', 'ConsultantController@edit')->n
         ]
     );
 
+Route::resource('rfi', 'RFIController')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::get('drawing_list', 'DrawingsController@index')
 ->name('drawings.index')->middleware(['auth','XSS','revalidate',]);
 Route::get('drawing_reference_add/{reference_id}/{drawing_type}/{projectid}/{reference_number}',
@@ -4465,14 +4472,21 @@ Route::get('drawing_reference_add/{reference_id}/{drawing_type}/{projectid}/{ref
 );
 Route::post('add_drawings/{ref_id}/{drawing_type_id}/{project_id}/{reference_number}',
 'DrawingsController@addDrawings')->name('add.drawings')->middleware(['auth','XSS']);
+Route::post('add_rfi/{projectid}','RFIController@store')->name('add.rfi')->middleware(['auth','XSS']);
 Route::resource('drawings', 'DrawingsController')->middleware(['auth','XSS','revalidate',]);
 Route::delete('drawing_del/{id}/{ref_id}/{drawing_type}/{projectid}/{ref_number}/{user}',
 'DrawingsController@drawingDestroy')->name('uploaded.drawing.destroy')->middleware(
     ['auth','XSS',]
 );
 Route::get('drawings_search', 'DrawingsController@index')->name('drawings.search')->middleware(['auth','XSS']);
+Route::get('get_responding_party', 'RFIController@getRespondingParty')->name('get.responding.party')
+->middleware(['auth','XSS']);
+Route::get('get_dependency_details', 'RFIController@getDependencyDetails')->name('get.dependency.details')
+->middleware(['auth','XSS']);
 Route::get('drawing_autocomplete', 'DrawingsController@drawing_autocomplete')
 ->name('drawing_autocomplete')->middleware(['auth','XSS',]);
+Route::get('rfi_autocomplete', 'RFIController@rfi_autocomplete')
+->name('rfi_autocomplete')->middleware(['auth','XSS',]);
 
 Route::post('save_consultant', 'ConsultantController@normal_store')->name('save_consultant')
     ->middleware(
@@ -5348,6 +5362,21 @@ Route::any('microprogram_create', 'MicroPorgramController@microprogram_create')-
     ]
 );
 
+Route::any('microprogram_edit/{micro_id}', 'MicroPorgramController@microprogram_edit')->name('microprogram_edit')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('microprogram_delete/{micro_id}', 'MicroPorgramController@microprogram_delete')->name('microprogram_delete')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+
 Route::any('change_schedule_status', 'MicroPorgramController@change_schedule_status')->name('change_schedule_status')->middleware(
     [
         'auth',
@@ -5362,6 +5391,13 @@ Route::any('schedule_store', 'MicroPorgramController@schedule_store')->name('sch
     ]
 );
 
+Route::any('schedule_update', 'MicroPorgramController@schedule_update')->name('schedule_update')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
 Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show')->name('schedule_task_show')->middleware(
     [
         'auth',
@@ -5369,7 +5405,17 @@ Route::any('schedule_task_show/{id}', 'MicroPorgramController@schedule_task_show
     ]
 );
 
+Route::get('schedule_task_autocomplete', 'MicroPorgramController@schedule_task_autocomplete')->name('schedule_task_autocomplete')
+->middleware(['auth','XSS',]);
+
 Route::any('mainschedule_store', 'MicroPorgramController@mainschedule_store')->name('mainschedule_store')->middleware(
+    [
+        'auth',
+        'XSS',
+    ]
+);
+
+Route::any('mainschedule_drag_con', 'MicroPorgramController@mainschedule_drag_con')->name('mainschedule_drag_con')->middleware(
     [
         'auth',
         'XSS',
