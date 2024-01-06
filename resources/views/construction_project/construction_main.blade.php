@@ -11,7 +11,7 @@ a.text-dark {
 <div class="container-fluid">
    <div class="card mt-4 p-3">
       <div class="card-header">
-         <h3>{{ __('Projects of the Organisation') }}</h3>
+         <h3>{{ __('Projects of the Organization') }}</h3>
          <div class="card-actions w-50">
             <div class="row">
                <div class="col-8">

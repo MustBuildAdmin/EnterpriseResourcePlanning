@@ -63,16 +63,16 @@
                             {{ Form::textarea('description', null, ['class' => 'form-control',
                             'id' => 'tinymce-mytextarea','rows'=>'3','data-toggle' => 'autosize',
                             'required'=>'required']) }}
-                            <label id="description-error" class="error" for="description"></label>
+                            <label id="description-error2" class="error" for="description"></label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="modal-footer">
                             <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                            <input type="btn" id="add_particularbtn" value="Save changes" class="btn btn-primary">
-                            <input type="submit" id="submitaddparticular" style="display:none;" value="Save changes"
-                             class="btn btn-primary">
+                            <input type="submit" id="add_particularbtn" value="Save changes" class="btn btn-primary">
+                            {{-- <input type="submit" id="submitaddparticular" style="display:none;" value="Save changes"
+                             class="btn btn-primary"> --}}
 
                         </div>
                     </div>
@@ -125,15 +125,16 @@
     });
     $('#add_particularbtn').click(function(){
         let description=tinyMCE.get('tinymce-mytextarea').getContent();
-        if($('#percentage').val()==''){
-            $('#submitaddparticular').click();
-        }
         if(description==''){
-            $('#description-error').html("This field is required.");
+            $('#description-error2').html("This field is required.");
+            $('#description-error2').show();
+            return false;
         }
-        else{
-            $('#submitaddparticular').click();
-        }
+
+        // if($('#percentage').val()==''){
+        //     $('#description-error').html("This field is required.");
+        //     return false;
+        // }
     })
     $( document ).ready(function() {
         let options = {

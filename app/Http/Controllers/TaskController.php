@@ -171,7 +171,6 @@ class TaskController extends Controller
             ->where(['project_id' => Session::get('project_id'),
             'instance_id' => Session::get('project_instance')])
             ->first();
-        
        
         if (isset($request->users)) {
             if (gettype($request->users) == 'array') {

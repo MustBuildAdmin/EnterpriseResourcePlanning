@@ -693,8 +693,8 @@ aria-hidden="true" data-toggle="modal">
                         buttonsStyling: false
                     })
                     swalWithBootstrapButtons.fire({
-                        title: 'Freezed',
-                        text: "This Project Was Freezed! Please Contact Your Company.",
+                        title: 'Saved',
+                        text: "This Project Was Saved! Please Contact Your Company.",
                         icon: 'warning',
                         showCancelButton: false,
                         confirmButtonText: 'Ok',
