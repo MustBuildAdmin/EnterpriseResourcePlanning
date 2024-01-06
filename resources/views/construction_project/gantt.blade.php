@@ -1553,12 +1553,16 @@ var weekend_list=$('#weekends').val();
 
         task.start_date = new Date(get_start_date);
         task.end_date = new Date(get_end_date);
-
         if (task.$new) {
             delete task.$new;
             gantt.addTask(task, task.parent);
         } else {
             gantt.updateTask(task.id);
+        }
+
+        if(task.text==''){
+            gantt.message({type:"error", text:"Please enter The Task Name"});
+            return false();
         }
 
         gantt.hideLightbox();

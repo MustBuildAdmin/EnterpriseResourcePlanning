@@ -139,11 +139,11 @@ if($delay>100){
               <div class="card">
                 <div class="card-header">
                   <h3 class="card-title">
-                    {{ __('Current Look a Head')}}
+                    {{ __('Current Look-a-Head')}}
                   </h3>
                   <div class="card-actions">
                     <a href="{{ route('micro_taskboard') }}">
-                      {{ __('View the Active Look a Head')}}
+                      {{ __('View the Active Look-a-Head')}}
                       <!-- Download SVG icon from http://tabler-icons.io/i/edit -->
                     </a>
                   </div>
@@ -516,7 +516,7 @@ if($delay>100){
                 opacity: 1,
             },
             series: [all_pending, all_completed, all_inprogress, all_upcoming],
-            labels: ["Pending", "Completed", "In-Progress", "UpComming"],
+            labels: ["Pending", "Completed", "In-Progress", "Upcomming"],
             tooltip: {
                 theme: 'dark'
             },

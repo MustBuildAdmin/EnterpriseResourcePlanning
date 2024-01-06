@@ -101,9 +101,9 @@
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">
-                                                                            {{ __('Search By Task Name or Id') }}
+                                                                            {{ __('Search By Task Name or TaskID') }}
                                                                         </label>
-                                                                        <input type="text" id="skill_input"
+                                                                        <input type="text"  id="skill_input"
                                                                         value="{{ request()->get('q') }}" >
                                                                     </div>
                                                                 </div>
@@ -130,7 +130,8 @@
                                                                         </span>
                                                                         <input class="form-control start_date"
                                                                         placeholder="Select a Start date"
-                                                                        id="start-date"/>
+                                                                        id="start-date" required />
+                                                                        <span id='task_error_start'  style='color:red;'></span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12 mb-3">
@@ -155,7 +156,8 @@
                                                                             </svg>
                                                                         </span>
                                                                         <input class="form-control end_date"
-                                                                        placeholder="Select a End date" id="end-date"/>
+                                                                        placeholder="Select a End date" id="end-date" required/>
+                                                                        <span id='task_error_end'  style='color:red;'></span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-12">
@@ -248,7 +250,7 @@
                                                                 <div class="col-md-12">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">
-                                                                            {{ __('Search By Summary Name or Id') }}
+                                                                            {{ __('Search By Summary Name or TaskId') }}
                                                                         </label>
                                                                         <input type="text" id="main_skill_input"
                                                                         value="{{ request()->get('q') }}" >
@@ -688,6 +690,19 @@
         status_task = $(".task_status").val();
         task_id     = $('input#skill_input').tokenInput('get');
         user_id     = $('input#user_select').tokenInput('get');
+
+        if(start_date==''){
+            $('#task_error_start').text('Please Select Start date');
+            return false
+        }else{
+            $('#task_error_start').text('');
+        }
+        if(end_date==''){
+            $('#task_error_end').text('Please Select End date');
+            return false;
+        }else{
+            $('#task_error_end').text('');
+        }
 
         var task_id_arr = [];
         $.each(task_id, function(i, obj){

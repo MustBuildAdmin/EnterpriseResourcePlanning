@@ -336,12 +336,12 @@
                   </div>
                </div>
                <div class="nav-item dropdown px-3">
-                  <a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang"
+                  {{-- <a class="dash-head-link dropdown-toggle arrow-none me-0" id="lang"
                      data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
                      aria-expanded="false">
                   <i class="fas fa-globe"></i>
                   <span class="drp-text hide-mob">{{ Str::upper(isset($lang) ? $lang : 'en') }}</span>
-                  </a>
+                  </a> --}}
                   <div class="dropdown-menu dash-h-dropdown dropdown-menu-end">
                      @foreach ($languages as $language)
                      <a href="{{ route('change.language', $language) }}"

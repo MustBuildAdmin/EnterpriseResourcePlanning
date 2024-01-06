@@ -167,7 +167,7 @@ class ProjectTaskController extends Controller
                             compact('tasks', 'view', 'project_id', 'user_id', 'start_date', 'end_date', 'setting'));
                     }
                 } else {
-                    return redirect()->back()->with('error', __('Project Not Freezed.'));
+                    return redirect()->back()->with('error', __('Project Not Saved.'));
                 }
             } else {
                 return redirect()->route('construction_main')->with('error', __('Session Expired'));
